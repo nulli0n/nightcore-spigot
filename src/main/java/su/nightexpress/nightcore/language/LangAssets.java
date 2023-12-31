@@ -37,7 +37,7 @@ public class LangAssets {
 
         FileUtil.create(file);
 
-        String url = "https://github.com/nulli0n/NexEngine-spigot/raw/master/assets/" + langCode + ".yml";
+        String url = Placeholders.GITHUB_URL + "/raw/master/assets/" + langCode + ".yml";
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             plugin.info("Downloading '" + langCode + "' assets from github...");
