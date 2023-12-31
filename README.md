@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Utility Spigot plugin that provides the most common & useful features for plugin development to reduce duplicated code.
 
 # About
@@ -29,3 +30,6 @@ The main purpose of **NexEngine** is to provide abilities for more easier plugin
 Akiranya fork, that allows to use all Paper's features.
 
 https://github.com/Akiranya/NexEngine-paper
+=======
+# nightcore-spigot
+>>>>>>> 21e19a98d15f4730258a942770cc69f4a9cde477
