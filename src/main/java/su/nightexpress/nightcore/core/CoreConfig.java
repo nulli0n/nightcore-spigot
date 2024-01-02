@@ -3,10 +3,14 @@ package su.nightexpress.nightcore.core;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.tag.impl.ColorTag;
+import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 
 import java.awt.*;
+import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CoreConfig {
 
@@ -68,4 +72,10 @@ public class CoreConfig {
         "This is useful if you want to use custom player nicknames in commands.",
         "(Works only for nightcore based plugins.)",
         "[Default is false]");
+
+    public static final ConfigValue<UniFormatter> NUMBER_FORMAT = ConfigValue.create("Engine.Number_Format",
+            UniFormatter.of("#,###.##", RoundingMode.HALF_EVEN),
+            "Control over how numerical data is formatted and rounded.",
+            "Allowed modes: " + Arrays.stream(RoundingMode.values()).map(RoundingMode::name).map(String::toLowerCase).collect(Collectors.joining(", ")),
+            "A tutorial can be found here: https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html");
 }
