@@ -1,3 +1,15 @@
+<div align="center">
+    <h1>nightcore</h1>
+<p>
+✅ Minimal server version: <b>1.18.2</b><br>
+✅ Supported software: <b>Spigot</b>, <b>Paper</b>, <b>Pufferfish</b>, <b>Purpur</b>.<br>
+❌ Not available for <b>Aternos</b> and <b>modded</b> servers.<br>
+<br>
+When installed, make sure to check out the <code>/nightcore/</code> folder and edit <b>language</b> and <b>config</b> files.
+</p>
+<br>
+</div>
+
 **nightcore** is updated version of the [NexEngine](https://github.com/nulli0n/NexEngine-spigot) utility plugin. Changes are unnoticeable for regular users. Almost all plugin's data is compatible, except [Text Formations](https://github.com/nulli0n/nightcore-spigot/wiki/Text-Formation).
 
 **Technical Changes:**
