@@ -4,6 +4,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.TriFunction;
+import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 import su.nightexpress.nightcore.util.wrapper.UniParticle;
 import su.nightexpress.nightcore.util.wrapper.UniSound;
 
@@ -125,6 +126,14 @@ public class ConfigValue<T> {
     public static ConfigValue<UniParticle> create(@NotNull String path, @NotNull UniParticle defaultValue, @Nullable String... description) {
         Reader<UniParticle> reader = (cfg, path1, def) -> UniParticle.read(cfg, path1);
         Writer<UniParticle> writer = (cfg, path1, obj) -> obj.write(cfg, path1);
+
+        return create(path, reader, writer, defaultValue, description);
+    }
+
+    @NotNull
+    public static ConfigValue<UniFormatter> create(@NotNull String path, @NotNull UniFormatter defaultValue, @Nullable String... description) {
+        Reader<UniFormatter> reader = (cfg, path1, def) -> UniFormatter.read(cfg, path1);
+        Writer<UniFormatter> writer = (cfg, path1, obj) -> obj.write(cfg, path1);
 
         return create(path, reader, writer, defaultValue, description);
     }

@@ -87,6 +87,12 @@ public class CoreLang {
     public static final LangItem EDITOR_ITEM_NEXT_PAGE     = LangItem.of("Editor.Generic.NextPage", WHITE.enclose("Next Page") + GRAY.enclose(" (→)"));
     public static final LangItem EDITOR_ITEM_PREVIOUS_PAGE = LangItem.of("Editor.Generic.PreviousPage", GRAY.enclose("(←) ") + WHITE.enclose("Previous Page"));
 
+    public static final LangString NUMBER_SHORT_THOUSAND    = LangString.of("Number.Thousand", "k");
+    public static final LangString NUMBER_SHORT_MILLION     = LangString.of("Number.Million", "m");
+    public static final LangString NUMBER_SHORT_BILLION     = LangString.of("Number.Billion", "b");
+    public static final LangString NUMBER_SHORT_TRILLION    = LangString.of("Number.Trillion", "t");
+    public static final LangString NUMBER_SHORT_QUADRILLION = LangString.of("Number.Quadrillion", "q");
+
     @NotNull
     public static String getYesOrNo(boolean value) {
         return (value ? OTHER_YES : OTHER_NO).getString();
