@@ -1,4 +1,4 @@
-**nightcore** is updated version of the [NexEngine](https://github.com/nulli0n/NexEngine-spigot) utility plugin. Changes are unnoticeable for regular users. Almost all plugin's data is compatible, except Text Formations.
+**nightcore** is updated version of the [NexEngine](https://github.com/nulli0n/NexEngine-spigot) utility plugin. Changes are unnoticeable for regular users. Almost all plugin's data is compatible, except [Text Formations](https://github.com/nulli0n/nightcore-spigot/wiki/Text-Formation).
 
 **Technical Changes:**
 - JAR size is increased due to legacy objects, so users can use old styled data for a while.
