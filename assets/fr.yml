@@ -1,0 +1,1617 @@
+EntityType:
+  allay: Allay
+  area_effect_cloud: Nuage d'effet persistant
+  armor_stand: Porte-armure
+  arrow: Flèche
+  axolotl: Axolotl
+  bat: Chauve-souris
+  bee: Abeille
+  blaze: Blaze
+  block_display: Bloc holographique
+  boat: Bateau
+  camel: Dromadaire
+  cat: Chat
+  cave_spider: Araignée venimeuse
+  chest_boat: Bateau de stockage
+  chest_minecart: Wagonnet de stockage
+  chicken: Poule
+  cod: Morue
+  command_block_minecart: Wagonnet à bloc de commande
+  cow: Vache
+  creeper: Creeper
+  dolphin: Dauphin
+  donkey: Âne
+  dragon_fireball: Boule de feu de dragon
+  drowned: Noyé
+  egg: Oeuf lancé
+  elder_guardian: Grand gardien
+  end_crystal: Cristal de l'End
+  ender_dragon: Ender Dragon
+  ender_pearl: Perle de l'Ender lancée
+  enderman: Enderman
+  endermite: Endermite
+  evoker: Évocateur
+  evoker_fangs: Mâchoires d'évocateur
+  experience_bottle: Fiole d'expérience lancée
+  experience_orb: Orbe d'expérience
+  eye_of_ender: Œil de l'Ender
+  falling_block: Bloc soumis à la gravité
+  falling_block_type: '%s qui tombe'
+  fireball: Boule de feu
+  firework_rocket: Fusée de feu d'artifice
+  fishing_bobber: Flotteur
+  fox: Renard
+  frog: Grenouille
+  furnace_minecart: Wagonnet motorisé
+  ghast: Ghast
+  giant: Géant
+  glow_item_frame: Cadre luisant
+  glow_squid: Poulpe luisant
+  goat: Chèvre
+  guardian: Gardien
+  hoglin: Hoglin
+  hopper_minecart: Wagonnet à entonnoir
+  horse: Cheval
+  husk: Zombie momifié
+  illusioner: Illusionniste
+  interaction: Interaction
+  iron_golem: Golem de fer
+  item: Objet
+  item_display: Objet holographique
+  item_frame: Cadre
+  killer_bunny: Lapin tueur
+  leash_knot: Nœud de laisse
+  lightning_bolt: Foudre
+  llama: Lama
+  llama_spit: Crachat de lama
+  magma_cube: Cube de magma
+  marker: Repère
+  minecart: Wagonnet
+  mooshroom: Mooshroom
+  mule: Mule
+  ocelot: Ocelot
+  painting: Tableau
+  panda: Panda
+  parrot: Perroquet
+  phantom: Phantom
+  pig: Cochon
+  piglin: Piglin
+  piglin_brute: Piglin barbare
+  pillager: Pillard
+  player: Joueur
+  polar_bear: Ours blanc
+  potion: Potion
+  pufferfish: Poisson-globe
+  rabbit: Lapin
+  ravager: Ravageur
+  salmon: Saumon
+  sheep: Mouton
+  shulker: Shulker
+  shulker_bullet: Projectile de Shulker
+  silverfish: Poisson d'argent
+  skeleton: Squelette
+  skeleton_horse: Cheval-squelette
+  slime: Slime
+  small_fireball: Petite boule de feu
+  sniffer: Renifleur
+  snow_golem: Golem de neige
+  snowball: Boule de neige
+  spawner_minecart: Wagonnet générateur de créatures
+  spectral_arrow: Flèche spectrale
+  spider: Araignée
+  squid: Poulpe
+  stray: Vagabond
+  strider: Arpenteur
+  tadpole: Têtard
+  text_display: Texte holographique
+  tnt: TNT amorcé
+  tnt_minecart: Wagonnet à TNT
+  trader_llama: Lama de marchand
+  trident: Trident
+  tropical_fish: Poisson tropical
+  turtle: Tortue
+  vex: Vex
+  villager: Villageois
+  vindicator: Vindicateur
+  wandering_trader: Marchand ambulant
+  warden: Warden
+  witch: Sorcière
+  wither: Wither
+  wither_skeleton: Wither squelette
+  wither_skull: Crâne de Wither
+  wolf: Loup
+  zoglin: Zoglin
+  zombie: Zombie
+  zombie_horse: Cheval-zombie
+  zombie_villager: Zombie-villageois
+  zombified_piglin: Piglin zombifié
+PotionEffectType:
+  absorption: Absorption
+  bad_omen: Mauvais présage
+  blindness: Cécité
+  conduit_power: Force de conduit
+  darkness: Obscurité
+  dolphins_grace: Grâce du dauphin
+  fire_resistance: Résistance au feu
+  glowing: Surbrillance
+  haste: Célérité
+  health_boost: Bonus de vie
+  hero_of_the_village: Héros du village
+  hunger: Faim
+  instant_damage: Dégâts instantanés
+  instant_health: Soin instantané
+  invisibility: Invisibilité
+  jump_boost: Sauts améliorés
+  levitation: Lévitation
+  luck: Chance
+  mining_fatigue: Fatigue de minage
+  nausea: Nausée
+  night_vision: Nyctalopie
+  poison: Poison
+  regeneration: Régénération
+  resistance: Résistance
+  saturation: Saturation
+  slow_falling: Chute lente
+  slowness: Lenteur
+  speed: Rapidité
+  strength: Force
+  unluck: Malchance
+  water_breathing: Apnée
+  weakness: Faiblesse
+  wither: Décomposition
+Material:
+  acacia_button: Bouton en acacia
+  acacia_door: Porte en acacia
+  acacia_fence: Barrière en acacia
+  acacia_fence_gate: Portillon en acacia
+  acacia_hanging_sign: Pancarte suspendue en acacia
+  acacia_leaves: Feuilles d'acacia
+  acacia_log: Bûche d'acacia
+  acacia_planks: Planches d'acacia
+  acacia_pressure_plate: Plaque de pression en acacia
+  acacia_sapling: Pousse d'acacia
+  acacia_sign: Pancarte en acacia
+  acacia_slab: Dalle en acacia
+  acacia_stairs: Escalier en acacia
+  acacia_trapdoor: Trappe en acacia
+  acacia_wall_hanging_sign: Pancarte suspendue en acacia murale
+  acacia_wall_sign: Pancarte en acacia murale
+  acacia_wood: Bois d'acacia
+  activator_rail: Rails déclencheurs
+  air: Air
+  allium: Allium
+  amethyst_block: Bloc d'améthyste
+  amethyst_cluster: Amas d'améthyste
+  ancient_debris: Débris antiques
+  andesite: Andésite
+  andesite_slab: Dalle d'andésite
+  andesite_stairs: Escalier d'andésite
+  andesite_wall: Muret d'andésite
+  anvil: Enclume
+  attached_melon_stem: Tige de pastèque attachée
+  attached_pumpkin_stem: Tige de citrouille attachée
+  azalea: Azalée
+  azalea_leaves: Feuilles d'azalée
+  azure_bluet: Houstonie bleue
+  bamboo: Bambou
+  bamboo_block: Bloc de bambou
+  bamboo_button: Bouton en bambou
+  bamboo_door: Porte en bambou
+  bamboo_fence: Barrière en bambou
+  bamboo_fence_gate: Portillon en bambou
+  bamboo_hanging_sign: Pancarte suspendue en bambou
+  bamboo_mosaic: Mosaïque de bambou
+  bamboo_mosaic_slab: Dalle en mosaïque de bambou
+  bamboo_mosaic_stairs: Escalier en mosaïque de bambou
+  bamboo_planks: Planches de bambou
+  bamboo_pressure_plate: Plaque de pression en bambou
+  bamboo_sapling: Pousse de bambou
+  bamboo_sign: Pancarte en bambou
+  bamboo_slab: Dalle en bambou
+  bamboo_stairs: Escalier en bambou
+  bamboo_trapdoor: Trappe en bambou
+  bamboo_wall_hanging_sign: Pancarte suspendue en bambou murale
+  bamboo_wall_sign: Pancarte en bambou murale
+  barrel: Tonneau
+  barrier: Barrière invisible
+  basalt: Basalte
+  beacon: Balise
+  bedrock: Bedrock
+  bee_nest: Nid d'abeilles
+  beehive: Ruche
+  beetroots: Betteraves
+  bell: Cloche
+  big_dripleaf: Grande foliogoutte
+  big_dripleaf_stem: Tige de grande foliogoutte
+  birch_button: Bouton en bouleau
+  birch_door: Porte en bouleau
+  birch_fence: Barrière en bouleau
+  birch_fence_gate: Portillon en bouleau
+  birch_hanging_sign: Pancarte suspendue en bouleau
+  birch_leaves: Feuilles de bouleau
+  birch_log: Bûche de bouleau
+  birch_planks: Planches de bouleau
+  birch_pressure_plate: Plaque de pression en bouleau
+  birch_sapling: Pousse de bouleau
+  birch_sign: Pancarte en bouleau
+  birch_slab: Dalle en bouleau
+  birch_stairs: Escalier en bouleau
+  birch_trapdoor: Trappe en bouleau
+  birch_wall_hanging_sign: Pancarte suspendue en bouleau murale
+  birch_wall_sign: Pancarte en bouleau murale
+  birch_wood: Bois de bouleau
+  black_banner: Bannière noire
+  black_bed: Lit noir
+  black_candle: Bougie noire
+  black_candle_cake: Gâteau à bougie noire
+  black_carpet: Tapis noir
+  black_concrete: Béton noir
+  black_concrete_powder: Béton noir en poudre
+  black_glazed_terracotta: Terre cuite émaillée noire
+  black_shulker_box: Boîte de Shulker noire
+  black_stained_glass: Verre noir
+  black_stained_glass_pane: Vitre noire
+  black_terracotta: Terre cuite noire
+  black_wool: Laine noire
+  blackstone: Roche noire
+  blackstone_slab: Dalle de roche noire
+  blackstone_stairs: Escalier de roche noire
+  blackstone_wall: Muret de roche noire
+  blast_furnace: Haut fourneau
+  blue_banner: Bannière bleue
+  blue_bed: Lit bleu
+  blue_candle: Bougie bleue
+  blue_candle_cake: Gâteau à bougie bleue
+  blue_carpet: Tapis bleu
+  blue_concrete: Béton bleu
+  blue_concrete_powder: Béton bleu en poudre
+  blue_glazed_terracotta: Terre cuite émaillée bleue
+  blue_ice: Glace bleue
+  blue_orchid: Orchidée bleue
+  blue_shulker_box: Boîte de Shulker bleue
+  blue_stained_glass: Verre bleu
+  blue_stained_glass_pane: Vitre bleue
+  blue_terracotta: Terre cuite bleue
+  blue_wool: Laine bleue
+  bone_block: Bloc d'os
+  bookshelf: Bibliothèque
+  brain_coral: Corail cerveau
+  brain_coral_block: Bloc de corail cerveau
+  brain_coral_fan: Gorgone de corail cerveau
+  brain_coral_wall_fan: Gorgone de corail cerveau murale
+  brewing_stand: Alambic
+  brick_slab: Dalle en briques
+  brick_stairs: Escalier en briques
+  brick_wall: Muret en briques
+  bricks: Briques
+  brown_banner: Bannière marron
+  brown_bed: Lit marron
+  brown_candle: Bougie marron
+  brown_candle_cake: Gâteau à bougie marron
+  brown_carpet: Tapis marron
+  brown_concrete: Béton marron
+  brown_concrete_powder: Béton marron en poudre
+  brown_glazed_terracotta: Terre cuite émaillée marron
+  brown_mushroom: Champignon brun
+  brown_mushroom_block: Bloc de champignon brun
+  brown_shulker_box: Boîte de Shulker marron
+  brown_stained_glass: Verre marron
+  brown_stained_glass_pane: Vitre marron
+  brown_terracotta: Terre cuite marron
+  brown_wool: Laine marron
+  bubble_column: Colonne de bulles
+  bubble_coral: Corail bulles
+  bubble_coral_block: Bloc de corail bulles
+  bubble_coral_fan: Gorgone de corail bulles
+  bubble_coral_wall_fan: Gorgone de corail bulles murale
+  budding_amethyst: Druse d'améthyste
+  cactus: Cactus
+  cake: Gâteau
+  calcite: Calcite
+  calibrated_sculk_sensor: Capteur sculk calibré
+  campfire: Feu de camp
+  candle: Bougie
+  candle_cake: Gâteau à bougie
+  carrots: Carottes
+  cartography_table: Table de cartographie
+  carved_pumpkin: Citrouille sculptée
+  cauldron: Chaudron
+  cave_air: Air de caverne
+  cave_vines: Lianes des cavernes
+  cave_vines_plant: Plante de lianes des cavernes
+  chain: Chaîne
+  chain_command_block: Bloc de commande en chaîne
+  cherry_button: Bouton en cerisier
+  cherry_door: Porte en cerisier
+  cherry_fence: Barrière en cerisier
+  cherry_fence_gate: Portillon en cerisier
+  cherry_hanging_sign: Pancarte suspendue en cerisier
+  cherry_leaves: Feuilles de cerisier
+  cherry_log: Bûche de cerisier
+  cherry_planks: Planches de cerisier
+  cherry_pressure_plate: Plaque de pression en cerisier
+  cherry_sapling: Pousse de cerisier
+  cherry_sign: Pancarte en cerisier
+  cherry_slab: Dalle en cerisier
+  cherry_stairs: Escalier en cerisier
+  cherry_trapdoor: Trappe en cerisier
+  cherry_wall_hanging_sign: Pancarte suspendue en cerisier murale
+  cherry_wall_sign: Pancarte en cerisier murale
+  cherry_wood: Bois de cerisier
+  chest: Coffre
+  chipped_anvil: Enclume ébréchée
+  chiseled_bookshelf: Bibliothèque sculptée
+  chiseled_deepslate: Ardoise des abîmes sculptée
+  chiseled_nether_bricks: Briques du Nether sculptées
+  chiseled_polished_blackstone: Pierre noire sculptée
+  chiseled_quartz_block: Bloc de quartz sculpté
+  chiseled_red_sandstone: Grès rouge sculpté
+  chiseled_sandstone: Grès sculpté
+  chiseled_stone_bricks: Pierre sculptée
+  chorus_flower: Fleur de chorus
+  chorus_plant: Plante de chorus
+  clay: Argile
+  coal_block: Bloc de charbon
+  coal_ore: Minerai de charbon
+  coarse_dirt: Terre stérile
+  cobbled_deepslate: Pierres des abîmes
+  cobbled_deepslate_slab: Dalle de pierres des abîmes
+  cobbled_deepslate_stairs: Escalier en pierres des abîmes
+  cobbled_deepslate_wall: Muret de pierres des abîmes
+  cobblestone: Pierres
+  cobblestone_slab: Dalle de pierres
+  cobblestone_stairs: Escalier en pierre
+  cobblestone_wall: Muret de pierres
+  cobweb: Toile d'araignée
+  cocoa: Cacao
+  command_block: Bloc de commande
+  comparator: Comparateur de redstone
+  composter: Composteur
+  conduit: Conduit
+  copper_block: Bloc de cuivre
+  copper_ore: Minerai de cuivre
+  cornflower: Bleuet
+  cracked_deepslate_bricks: Ardoise des abîmes taillée craquelée
+  cracked_deepslate_tiles: Ardoise des abîmes carrelée craquelée
+  cracked_nether_bricks: Briques du Nether craquelées
+  cracked_polished_blackstone_bricks: Pierre noire taillée craquelée
+  cracked_stone_bricks: Pierre taillée craquelée
+  crafting_table: Établi
+  creeper_head: Tête de Creeper
+  creeper_wall_head: Tête de Creeper murale
+  crimson_button: Bouton carmin
+  crimson_door: Porte carmin
+  crimson_fence: Barrière carmin
+  crimson_fence_gate: Portillon carmin
+  crimson_fungus: Champignon carmin
+  crimson_hanging_sign: Pancarte suspendue carmin
+  crimson_hyphae: Hyphes carmin
+  crimson_nylium: Nylium carmin
+  crimson_planks: Planches carmin
+  crimson_pressure_plate: Plaque de pression carmin
+  crimson_roots: Racines carmin
+  crimson_sign: Pancarte carmin
+  crimson_slab: Dalle carmin
+  crimson_stairs: Escalier carmin
+  crimson_stem: Tige carmin
+  crimson_trapdoor: Trappe carmin
+  crimson_wall_hanging_sign: Pancarte suspendue carmin murale
+  crimson_wall_sign: Pancarte carmin murale
+  crying_obsidian: Obsidienne pleureuse
+  cut_copper: Cuivre taillé
+  cut_copper_slab: Dalle en cuivre taillé
+  cut_copper_stairs: Escalier en cuivre taillé
+  cut_red_sandstone: Grès rouge taillé
+  cut_red_sandstone_slab: Dalle en grès rouge taillé
+  cut_sandstone: Grès taillé
+  cut_sandstone_slab: Dalle en grès taillé
+  cyan_banner: Bannière cyan
+  cyan_bed: Lit cyan
+  cyan_candle: Bougie cyan
+  cyan_candle_cake: Gâteau à bougie cyan
+  cyan_carpet: Tapis cyan
+  cyan_concrete: Béton cyan
+  cyan_concrete_powder: Béton cyan en poudre
+  cyan_glazed_terracotta: Terre cuite émaillée cyan
+  cyan_shulker_box: Boîte de Shulker cyan
+  cyan_stained_glass: Verre cyan
+  cyan_stained_glass_pane: Vitre cyan
+  cyan_terracotta: Terre cuite cyan
+  cyan_wool: Laine cyan
+  damaged_anvil: Enclume endommagée
+  dandelion: Pissenlit
+  dark_oak_button: Bouton en chêne noir
+  dark_oak_door: Porte en chêne noir
+  dark_oak_fence: Barrière en chêne noir
+  dark_oak_fence_gate: Portillon en chêne noir
+  dark_oak_hanging_sign: Pancarte suspendue en chêne noir
+  dark_oak_leaves: Feuilles de chêne noir
+  dark_oak_log: Bûche de chêne noir
+  dark_oak_planks: Planches de chêne noir
+  dark_oak_pressure_plate: Plaque de pression en chêne noir
+  dark_oak_sapling: Pousse de chêne noir
+  dark_oak_sign: Pancarte en chêne noir
+  dark_oak_slab: Dalle en chêne noir
+  dark_oak_stairs: Escalier en chêne noir
+  dark_oak_trapdoor: Trappe en chêne noir
+  dark_oak_wall_hanging_sign: Pancarte suspendue en chêne noir murale
+  dark_oak_wall_sign: Pancarte en chêne noir murale
+  dark_oak_wood: Bois de chêne noir
+  dark_prismarine: Prismarine sombre
+  dark_prismarine_slab: Dalle de prismarine sombre
+  dark_prismarine_stairs: Escalier en prismarine sombre
+  daylight_detector: Capteur de lumière
+  dead_brain_coral: Corail cerveau mort
+  dead_brain_coral_block: Bloc de corail cerveau mort
+  dead_brain_coral_fan: Gorgone de corail cerveau morte
+  dead_brain_coral_wall_fan: Gorgone de corail cerveau morte murale
+  dead_bubble_coral: Corail bulles mort
+  dead_bubble_coral_block: Bloc de corail bulles mort
+  dead_bubble_coral_fan: Gorgone de corail bulles morte
+  dead_bubble_coral_wall_fan: Gorgone de corail bulles morte murale
+  dead_bush: Arbuste mort
+  dead_fire_coral: Corail de feu mort
+  dead_fire_coral_block: Bloc de corail de feu mort
+  dead_fire_coral_fan: Gorgone de corail de feu morte
+  dead_fire_coral_wall_fan: Gorgone de corail de feu morte murale
+  dead_horn_coral: Corail corné mort
+  dead_horn_coral_block: Bloc de corail corné mort
+  dead_horn_coral_fan: Gorgone de corail corné morte
+  dead_horn_coral_wall_fan: Gorgone de corail corné morte murale
+  dead_tube_coral: Corail tubulaire mort
+  dead_tube_coral_block: Bloc de corail tubulaire mort
+  dead_tube_coral_fan: Gorgone de corail tubulaire morte
+  dead_tube_coral_wall_fan: Gorgone de corail tubulaire morte murale
+  decorated_pot: Vase décoré
+  deepslate: Ardoise des abîmes
+  deepslate_brick_slab: Dalle en ardoise des abîmes taillée
+  deepslate_brick_stairs: Escalier en ardoise des abîmes taillée
+  deepslate_brick_wall: Muret en ardoise des abîmes taillée
+  deepslate_bricks: Ardoise des abîmes taillée
+  deepslate_coal_ore: Minerai de charbon des abîmes
+  deepslate_copper_ore: Minerai de cuivre des abîmes
+  deepslate_diamond_ore: Minerai de diamant des abîmes
+  deepslate_emerald_ore: Minerai d'émeraude des abîmes
+  deepslate_gold_ore: Minerai d'or des abîmes
+  deepslate_iron_ore: Minerai de fer des abîmes
+  deepslate_lapis_ore: Minerai de lapis-lazuli des abîmes
+  deepslate_redstone_ore: Minerai de redstone des abîmes
+  deepslate_tile_slab: Dalle en ardoise des abîmes carrelée
+  deepslate_tile_stairs: Escalier en ardoise des abîmes carrelée
+  deepslate_tile_wall: Muret en ardoise des abîmes carrelée
+  deepslate_tiles: Ardoise des abîmes carrelée
+  detector_rail: Rails détecteurs
+  diamond_block: Bloc de diamant
+  diamond_ore: Minerai de diamant
+  diorite: Diorite
+  diorite_slab: Dalle de diorite
+  diorite_stairs: Escalier de diorite
+  diorite_wall: Muret de diorite
+  dirt: Terre
+  dirt_path: Chemin de terre
+  dispenser: Distributeur
+  dragon_egg: Oeuf de dragon
+  dragon_head: Tête de dragon
+  dragon_wall_head: Tête de dragon murale
+  dried_kelp_block: Bloc d'algues séchées
+  dripstone_block: Bloc de spéléothème
+  dropper: Dropper
+  emerald_block: Bloc d'émeraude
+  emerald_ore: Minerai d'émeraude
+  enchanting_table: Table d'enchantement
+  end_gateway: Passerelle de l'End
+  end_portal: Portail de l'End
+  end_portal_frame: Cadre de portail de l'End
+  end_rod: Barre de l'End
+  end_stone: Pierre de l'End
+  end_stone_brick_slab: Dalle en pierre taillée de l'End
+  end_stone_brick_stairs: Escalier en pierre taillée de l'End
+  end_stone_brick_wall: Muret en pierre taillée de l'End
+  end_stone_bricks: Pierre taillée de l'End
+  ender_chest: Coffre de l'Ender
+  exposed_copper: Cuivre exposé
+  exposed_cut_copper: Cuivre taillé exposé
+  exposed_cut_copper_slab: Dalle en cuivre taillé exposé
+  exposed_cut_copper_stairs: Escalier en cuivre taillé exposé
+  farmland: Terre labourée
+  fern: Fougère
+  fire: Feu
+  fire_coral: Corail de feu
+  fire_coral_block: Bloc de corail de feu
+  fire_coral_fan: Gorgone de corail de feu
+  fire_coral_wall_fan: Gorgone de corail de feu murale
+  fletching_table: Table d'archerie
+  flower_pot: Pot de fleurs
+  flowering_azalea: Azalée fleurie
+  flowering_azalea_leaves: Feuilles d'azalée fleurie
+  frogspawn: Oeufs de grenouille
+  frosted_ice: Glace givrée
+  furnace: Fourneau
+  gilded_blackstone: Roche noire dorée
+  glass: Verre
+  glass_pane: Vitre
+  glow_lichen: Lichen lumineux
+  glowstone: Pierre lumineuse
+  gold_block: Bloc d'or
+  gold_ore: Minerai d'or
+  granite: Granite
+  granite_slab: Dalle de granite
+  granite_stairs: Escalier de granite
+  granite_wall: Muret de granite
+  grass: Herbe
+  grass_block: Bloc d'herbe
+  gravel: Gravier
+  gray_banner: Bannière grise
+  gray_bed: Lit gris
+  gray_candle: Bougie grise
+  gray_candle_cake: Gâteau à bougie grise
+  gray_carpet: Tapis gris
+  gray_concrete: Béton gris
+  gray_concrete_powder: Béton gris en poudre
+  gray_glazed_terracotta: Terre cuite émaillée grise
+  gray_shulker_box: Boîte de Shulker grise
+  gray_stained_glass: Verre gris
+  gray_stained_glass_pane: Vitre grise
+  gray_terracotta: Terre cuite grise
+  gray_wool: Laine grise
+  green_banner: Bannière verte
+  green_bed: Lit vert
+  green_candle: Bougie verte
+  green_candle_cake: Gâteau à bougie verte
+  green_carpet: Tapis vert
+  green_concrete: Béton vert
+  green_concrete_powder: Béton vert en poudre
+  green_glazed_terracotta: Terre cuite émaillée verte
+  green_shulker_box: Boîte de Shulker verte
+  green_stained_glass: Verre vert
+  green_stained_glass_pane: Vitre verte
+  green_terracotta: Terre cuite verte
+  green_wool: Laine verte
+  grindstone: Meule
+  hanging_roots: Racines suspendues
+  hay_block: Botte de paille
+  heavy_weighted_pressure_plate: Plaque de pression pondérée lourde
+  honey_block: Bloc de miel
+  honeycomb_block: Bloc de rayon de miel
+  hopper: Entonnoir
+  horn_coral: Corail corné
+  horn_coral_block: Bloc de corail corné
+  horn_coral_fan: Gorgone de corail corné
+  horn_coral_wall_fan: Gorgone de corail corné murale
+  ice: Glace
+  infested_chiseled_stone_bricks: Pierre sculptée infestée
+  infested_cobblestone: Pierres infestées
+  infested_cracked_stone_bricks: Pierre taillée craquelée infestée
+  infested_deepslate: Ardoise des abîmes infestée
+  infested_mossy_stone_bricks: Pierre taillée moussue infestée
+  infested_stone: Roche infestée
+  infested_stone_bricks: Pierre taillée infestée
+  iron_bars: Barreaux de fer
+  iron_block: Bloc de fer
+  iron_door: Porte en fer
+  iron_ore: Minerai de fer
+  iron_trapdoor: Trappe en fer
+  jack_o_lantern: Citrouille-lanterne
+  jigsaw: Bloc de puzzle
+  jukebox: Jukebox
+  jungle_button: Bouton en acajou
+  jungle_door: Porte en acajou
+  jungle_fence: Barrière en acajou
+  jungle_fence_gate: Portillon en acajou
+  jungle_hanging_sign: Pancarte suspendue en acajou
+  jungle_leaves: Feuilles d'acajou
+  jungle_log: Bûche d'acajou
+  jungle_planks: Planches d'acajou
+  jungle_pressure_plate: Plaque de pression en acajou
+  jungle_sapling: Pousse d'acajou
+  jungle_sign: Pancarte en acajou
+  jungle_slab: Dalle en acajou
+  jungle_stairs: Escalier en acajou
+  jungle_trapdoor: Trappe en acajou
+  jungle_wall_hanging_sign: Pancarte suspendue en acajou murale
+  jungle_wall_sign: Pancarte en acajou murale
+  jungle_wood: Bois d'acajou
+  kelp: Algue
+  kelp_plant: Tige d'algue
+  ladder: Échelle
+  lantern: Lanterne
+  lapis_block: Bloc de lapis-lazuli
+  lapis_ore: Minerai de lapis-lazuli
+  large_amethyst_bud: Grand cristal d'améthyste
+  large_fern: Grande fougère
+  lava: Lave
+  lava_cauldron: Chaudron de lave
+  lectern: Pupitre
+  lever: Levier
+  light: Lumière
+  light_blue_banner: Bannière bleu clair
+  light_blue_bed: Lit bleu clair
+  light_blue_candle: Bougie bleu clair
+  light_blue_candle_cake: Gâteau à bougie bleu clair
+  light_blue_carpet: Tapis bleu clair
+  light_blue_concrete: Béton bleu clair
+  light_blue_concrete_powder: Béton bleu clair en poudre
+  light_blue_glazed_terracotta: Terre cuite émaillée bleu clair
+  light_blue_shulker_box: Boîte de Shulker bleu clair
+  light_blue_stained_glass: Verre bleu clair
+  light_blue_stained_glass_pane: Vitre bleu clair
+  light_blue_terracotta: Terre cuite bleu clair
+  light_blue_wool: Laine bleu clair
+  light_gray_banner: Bannière gris clair
+  light_gray_bed: Lit gris clair
+  light_gray_candle: Bougie gris clair
+  light_gray_candle_cake: Gâteau à bougie gris clair
+  light_gray_carpet: Tapis gris clair
+  light_gray_concrete: Béton gris clair
+  light_gray_concrete_powder: Béton gris clair en poudre
+  light_gray_glazed_terracotta: Terre cuite émaillée gris clair
+  light_gray_shulker_box: Boîte de Shulker gris clair
+  light_gray_stained_glass: Verre gris clair
+  light_gray_stained_glass_pane: Vitre gris clair
+  light_gray_terracotta: Terre cuite gris clair
+  light_gray_wool: Laine gris clair
+  light_weighted_pressure_plate: Plaque de pression pondérée légère
+  lightning_rod: Paratonnerre
+  lilac: Lilas
+  lily_of_the_valley: Muguet
+  lily_pad: Nénuphar
+  lime_banner: Bannière vert clair
+  lime_bed: Lit vert clair
+  lime_candle: Bougie vert clair
+  lime_candle_cake: Gâteau à bougie vert clair
+  lime_carpet: Tapis vert clair
+  lime_concrete: Béton vert clair
+  lime_concrete_powder: Béton vert clair en poudre
+  lime_glazed_terracotta: Terre cuite émaillée vert clair
+  lime_shulker_box: Boîte de Shulker vert clair
+  lime_stained_glass: Verre vert clair
+  lime_stained_glass_pane: Vitre vert clair
+  lime_terracotta: Terre cuite vert clair
+  lime_wool: Laine vert clair
+  lodestone: Magnétite
+  loom: Métier à tisser
+  magenta_banner: Bannière magenta
+  magenta_bed: Lit magenta
+  magenta_candle: Bougie magenta
+  magenta_candle_cake: Gâteau à bougie magenta
+  magenta_carpet: Tapis magenta
+  magenta_concrete: Béton magenta
+  magenta_concrete_powder: Béton magenta en poudre
+  magenta_glazed_terracotta: Terre cuite émaillée magenta
+  magenta_shulker_box: Boîte de Shulker magenta
+  magenta_stained_glass: Verre magenta
+  magenta_stained_glass_pane: Vitre magenta
+  magenta_terracotta: Terre cuite magenta
+  magenta_wool: Laine magenta
+  magma_block: Bloc de magma
+  mangrove_button: Bouton en palétuvier
+  mangrove_door: Porte en palétuvier
+  mangrove_fence: Barrière en palétuvier
+  mangrove_fence_gate: Portillon en palétuvier
+  mangrove_hanging_sign: Pancarte suspendue en palétuvier
+  mangrove_leaves: Feuilles de palétuvier
+  mangrove_log: Bûche de palétuvier
+  mangrove_planks: Planches de palétuvier
+  mangrove_pressure_plate: Plaque de pression en palétuvier
+  mangrove_propagule: Propagule de palétuvier
+  mangrove_roots: Racines de palétuvier
+  mangrove_sign: Pancarte en palétuvier
+  mangrove_slab: Dalle en palétuvier
+  mangrove_stairs: Escalier en palétuvier
+  mangrove_trapdoor: Trappe en palétuvier
+  mangrove_wall_hanging_sign: Pancarte suspendue en palétuvier murale
+  mangrove_wall_sign: Pancarte en palétuvier murale
+  mangrove_wood: Bois de palétuvier
+  medium_amethyst_bud: Cristal moyen d'améthyste
+  melon: Pastèque
+  melon_stem: Tige de pastèque
+  moss_block: Bloc de mousse
+  moss_carpet: Tapis de mousse
+  mossy_cobblestone: Pierres moussues
+  mossy_cobblestone_slab: Dalle en pierres moussues
+  mossy_cobblestone_stairs: Escalier en pierres moussues
+  mossy_cobblestone_wall: Muret de pierres moussues
+  mossy_stone_brick_slab: Dalle en pierre taillée moussue
+  mossy_stone_brick_stairs: Escalier en pierre taillée moussue
+  mossy_stone_brick_wall: Muret en pierre taillée moussue
+  mossy_stone_bricks: Pierre taillée moussue
+  moving_piston: Bloc en mouvement
+  mud: Boue
+  mud_brick_slab: Dalle en briques de terre crue
+  mud_brick_stairs: Escalier en briques de terre crue
+  mud_brick_wall: Muret en briques de terre crue
+  mud_bricks: Briques de terre crue
+  muddy_mangrove_roots: Racines de palétuvier boueuses
+  mushroom_stem: Tige de champignon
+  mycelium: Mycélium
+  nether_brick_fence: Barrière en briques du Nether
+  nether_brick_slab: Dalle en briques du Nether
+  nether_brick_stairs: Escalier en briques du Nether
+  nether_brick_wall: Muret en briques du Nether
+  nether_bricks: Briques du Nether
+  nether_gold_ore: Minerai d'or du Nether
+  nether_portal: Portail du Nether
+  nether_quartz_ore: Minerai de quartz du Nether
+  nether_sprouts: Germes du Nether
+  nether_wart: Verrues du Nether
+  nether_wart_block: Bloc de verrues du Nether
+  netherite_block: Bloc de Netherite
+  netherrack: Netherrack
+  note_block: Bloc musical
+  oak_button: Bouton en chêne
+  oak_door: Porte en chêne
+  oak_fence: Barrière en chêne
+  oak_fence_gate: Portillon en chêne
+  oak_hanging_sign: Pancarte suspendue en chêne
+  oak_leaves: Feuilles de chêne
+  oak_log: Bûche de chêne
+  oak_planks: Planches de chêne
+  oak_pressure_plate: Plaque de pression en chêne
+  oak_sapling: Pousse de chêne
+  oak_sign: Pancarte en chêne
+  oak_slab: Dalle en chêne
+  oak_stairs: Escalier en chêne
+  oak_trapdoor: Trappe en chêne
+  oak_wall_hanging_sign: Pancarte suspendue en chêne murale
+  oak_wall_sign: Pancarte en chêne murale
+  oak_wood: Bois de chêne
+  observer: Observateur
+  obsidian: Obsidienne
+  ochre_froglight: Grelampe ocrée
+  ominous_banner: Bannière menaçante
+  orange_banner: Bannière orange
+  orange_bed: Lit orange
+  orange_candle: Bougie orange
+  orange_candle_cake: Gâteau à bougie orange
+  orange_carpet: Tapis orange
+  orange_concrete: Béton orange
+  orange_concrete_powder: Béton orange en poudre
+  orange_glazed_terracotta: Terre cuite émaillée orange
+  orange_shulker_box: Boîte de Shulker orange
+  orange_stained_glass: Verre orange
+  orange_stained_glass_pane: Vitre orange
+  orange_terracotta: Terre cuite orange
+  orange_tulip: Tulipe orange
+  orange_wool: Laine orange
+  oxeye_daisy: Marguerite
+  oxidized_copper: Cuivre oxydé
+  oxidized_cut_copper: Cuivre taillé oxydé
+  oxidized_cut_copper_slab: Dalle en cuivre taillé oxydé
+  oxidized_cut_copper_stairs: Escalier en cuivre taillé oxydé
+  packed_ice: Glace compactée
+  packed_mud: Terre crue
+  pearlescent_froglight: Grelampe nacrée
+  peony: Pivoine
+  petrified_oak_slab: Dalle en chêne pétrifiée
+  piglin_head: Tête de Piglin
+  piglin_wall_head: Tête de Piglin murale
+  pink_banner: Bannière rose
+  pink_bed: Lit rose
+  pink_candle: Bougie rose
+  pink_candle_cake: Gâteau à bougie rose
+  pink_carpet: Tapis rose
+  pink_concrete: Béton rose
+  pink_concrete_powder: Béton rose en poudre
+  pink_glazed_terracotta: Terre cuite émaillée rose
+  pink_petals: Pétales roses
+  pink_shulker_box: Boîte de Shulker rose
+  pink_stained_glass: Verre rose
+  pink_stained_glass_pane: Vitre rose
+  pink_terracotta: Terre cuite rose
+  pink_tulip: Tulipe rose
+  pink_wool: Laine rose
+  piston: Piston
+  piston_head: Tête de piston
+  pitcher_crop: Plant de planturne
+  pitcher_plant: Planturne
+  player_head: Tête de joueur
+  player_wall_head: Tête de joueur murale
+  podzol: Podzol
+  pointed_dripstone: Spéléothème pointu
+  polished_andesite: Andésite polie
+  polished_andesite_slab: Dalle d'andésite polie
+  polished_andesite_stairs: Escalier d'andésite polie
+  polished_basalt: Basalte poli
+  polished_blackstone: Pierre noire
+  polished_blackstone_brick_slab: Dalle en pierre noire taillée
+  polished_blackstone_brick_stairs: Escalier en pierre noire taillée
+  polished_blackstone_brick_wall: Muret en pierre noire taillée
+  polished_blackstone_bricks: Pierre noire taillée
+  polished_blackstone_button: Bouton en pierre noire
+  polished_blackstone_pressure_plate: Plaque de pression en pierre noire
+  polished_blackstone_slab: Dalle en pierre noire
+  polished_blackstone_stairs: Escalier en pierre noire
+  polished_blackstone_wall: Muret en pierre noire
+  polished_deepslate: Ardoise des abîmes polie
+  polished_deepslate_slab: Dalle en ardoise des abîmes polie
+  polished_deepslate_stairs: Escalier en ardoise des abîmes polie
+  polished_deepslate_wall: Muret en ardoise des abîmes polie
+  polished_diorite: Diorite polie
+  polished_diorite_slab: Dalle en diorite polie
+  polished_diorite_stairs: Escalier en diorite polie
+  polished_granite: Granite poli
+  polished_granite_slab: Dalle en granite poli
+  polished_granite_stairs: Escalier en granite poli
+  poppy: Coquelicot
+  potatoes: Pommes de terre
+  potted_acacia_sapling: Pousse d'acacia en pot
+  potted_allium: Allium en pot
+  potted_azalea_bush: Azalée en pot
+  potted_azure_bluet: Houstonie bleue en pot
+  potted_bamboo: Bambou en pot
+  potted_birch_sapling: Pousse de bouleau en pot
+  potted_blue_orchid: Orchidée bleue en pot
+  potted_brown_mushroom: Champignon brun en pot
+  potted_cactus: Cactus en pot
+  potted_cherry_sapling: Pousse de cerisier en pot
+  potted_cornflower: Bleuet en pot
+  potted_crimson_fungus: Champignon carmin en pot
+  potted_crimson_roots: Racines carmin en pot
+  potted_dandelion: Pissenlit en pot
+  potted_dark_oak_sapling: Pousse de chêne noir en pot
+  potted_dead_bush: Arbuste mort en pot
+  potted_fern: Fougère en pot
+  potted_flowering_azalea_bush: Azalée fleurie en pot
+  potted_jungle_sapling: Pousse d'acajou en pot
+  potted_lily_of_the_valley: Muguet en pot
+  potted_mangrove_propagule: Propagule de palétuvier en pot
+  potted_oak_sapling: Pousse de chêne en pot
+  potted_orange_tulip: Tulipe orange en pot
+  potted_oxeye_daisy: Marguerite en pot
+  potted_pink_tulip: Tulipe rose en pot
+  potted_poppy: Coquelicot en pot
+  potted_red_mushroom: Champignon rouge en pot
+  potted_red_tulip: Tulipe rouge en pot
+  potted_spruce_sapling: Pousse de sapin en pot
+  potted_torchflower: Torche-fleur en pot
+  potted_warped_fungus: Champignon biscornu en pot
+  potted_warped_roots: Racines biscornues en pot
+  potted_white_tulip: Tulipe blanche en pot
+  potted_wither_rose: Rose de Wither en pot
+  powder_snow: Neige poudreuse
+  powder_snow_cauldron: Chaudron de neige poudreuse
+  powered_rail: Rails de propulsion
+  prismarine: Prismarine
+  prismarine_brick_slab: Dalle de prismarine taillée
+  prismarine_brick_stairs: Escalier en prismarine taillée
+  prismarine_bricks: Prismarine taillée
+  prismarine_slab: Dalle de prismarine
+  prismarine_stairs: Escalier en prismarine
+  prismarine_wall: Muret de prismarine
+  pumpkin: Citrouille
+  pumpkin_stem: Tige de citrouille
+  purple_banner: Bannière violette
+  purple_bed: Lit violet
+  purple_candle: Bougie violette
+  purple_candle_cake: Gâteau à bougie violette
+  purple_carpet: Tapis violet
+  purple_concrete: Béton violet
+  purple_concrete_powder: Béton violet en poudre
+  purple_glazed_terracotta: Terre cuite émaillée violette
+  purple_shulker_box: Boîte de Shulker violette
+  purple_stained_glass: Verre violet
+  purple_stained_glass_pane: Vitre violette
+  purple_terracotta: Terre cuite violette
+  purple_wool: Laine violette
+  purpur_block: Bloc de purpur
+  purpur_pillar: Pilier de purpur
+  purpur_slab: Dalle de purpur
+  purpur_stairs: Escalier de purpur
+  quartz_block: Bloc de quartz
+  quartz_bricks: Briques de quartz
+  quartz_pillar: Pilier de quartz
+  quartz_slab: Dalle de quartz
+  quartz_stairs: Escalier en quartz
+  rail: Rails
+  raw_copper_block: Bloc de cuivre brut
+  raw_gold_block: Bloc d'or brut
+  raw_iron_block: Bloc de fer brut
+  red_banner: Bannière rouge
+  red_bed: Lit rouge
+  red_candle: Bougie rouge
+  red_candle_cake: Gâteau à bougie rouge
+  red_carpet: Tapis rouge
+  red_concrete: Béton rouge
+  red_concrete_powder: Béton rouge en poudre
+  red_glazed_terracotta: Terre cuite émaillée rouge
+  red_mushroom: Champignon rouge
+  red_mushroom_block: Bloc de champignon rouge
+  red_nether_brick_slab: Dalle en briques rouges du Nether
+  red_nether_brick_stairs: Escalier en briques rouges du Nether
+  red_nether_brick_wall: Muret en briques rouges du Nether
+  red_nether_bricks: Briques rouges du Nether
+  red_sand: Sable rouge
+  red_sandstone: Grès rouge
+  red_sandstone_slab: Dalle de grès rouge
+  red_sandstone_stairs: Escalier en grès rouge
+  red_sandstone_wall: Muret en grès rouge
+  red_shulker_box: Boîte de Shulker rouge
+  red_stained_glass: Verre rouge
+  red_stained_glass_pane: Vitre rouge
+  red_terracotta: Terre cuite rouge
+  red_tulip: Tulipe rouge
+  red_wool: Laine rouge
+  redstone_block: Bloc de redstone
+  redstone_lamp: Lampe à redstone
+  redstone_ore: Minerai de redstone
+  redstone_torch: Torche de redstone
+  redstone_wall_torch: Torche de redstone murale
+  redstone_wire: Câble de redstone
+  reinforced_deepslate: Ardoise des abîmes renforcée
+  repeater: Répéteur de redstone
+  repeating_command_block: Bloc de commande à répétition
+  respawn_anchor: Ancre de réapparition
+  rooted_dirt: Terre racineuse
+  rose_bush: Rosier
+  sand: Sable
+  sandstone: Grès
+  sandstone_slab: Dalle de grès
+  sandstone_stairs: Escalier en grès
+  sandstone_wall: Muret en grès
+  scaffolding: Échafaudage
+  sculk: Sculk
+  sculk_catalyst: Catalyseur de sculk
+  sculk_sensor: Capteur sculk
+  sculk_shrieker: Hurleur sculk
+  sculk_vein: Veine de sculk
+  sea_lantern: Lanterne aquatique
+  sea_pickle: Cornichon de mer
+  seagrass: Herbe aquatique
+  set_spawn: Point de réapparition défini
+  shroomlight: Champilampe
+  shulker_box: Boîte de Shulker
+  skeleton_skull: Crâne de squelette
+  skeleton_wall_skull: Crâne de squelette mural
+  slime_block: Bloc de Slime
+  small_amethyst_bud: Petit cristal d'améthyste
+  small_dripleaf: Petite foliogoutte
+  smithing_table: Table de forge
+  smoker: Fumoir
+  smooth_basalt: Basalte lisse
+  smooth_quartz: Bloc de quartz lisse
+  smooth_quartz_slab: Dalle en quartz lisse
+  smooth_quartz_stairs: Escalier en quartz lisse
+  smooth_red_sandstone: Grès rouge lisse
+  smooth_red_sandstone_slab: Dalle en grès rouge lisse
+  smooth_red_sandstone_stairs: Escalier en grès rouge lisse
+  smooth_sandstone: Grès lisse
+  smooth_sandstone_slab: Dalle en grès lisse
+  smooth_sandstone_stairs: Escalier en grès lisse
+  smooth_stone: Roche lisse
+  smooth_stone_slab: Dalle de roche lisse
+  sniffer_egg: Oeuf de renifleur
+  snow: Neige
+  snow_block: Bloc de neige
+  soul_campfire: Feu de camp des âmes
+  soul_fire: Feu des âmes
+  soul_lantern: Lanterne des âmes
+  soul_sand: Sable des âmes
+  soul_soil: Terre des âmes
+  soul_torch: Torche des âmes
+  soul_wall_torch: Torche des âmes murale
+  spawner: Générateur de créatures
+  sponge: Éponge
+  spore_blossom: Fleur sporifère
+  spruce_button: Bouton en sapin
+  spruce_door: Porte en sapin
+  spruce_fence: Barrière en sapin
+  spruce_fence_gate: Portillon en sapin
+  spruce_hanging_sign: Pancarte suspendue en sapin
+  spruce_leaves: Feuilles de sapin
+  spruce_log: Bûche de sapin
+  spruce_planks: Planches de sapin
+  spruce_pressure_plate: Plaque de pression en sapin
+  spruce_sapling: Pousse de sapin
+  spruce_sign: Pancarte en sapin
+  spruce_slab: Dalle en sapin
+  spruce_stairs: Escalier en sapin
+  spruce_trapdoor: Trappe en sapin
+  spruce_wall_hanging_sign: Pancarte suspendue en sapin murale
+  spruce_wall_sign: Pancarte en sapin murale
+  spruce_wood: Bois de sapin
+  sticky_piston: Piston collant
+  stone: Roche
+  stone_brick_slab: Dalle en pierre taillée
+  stone_brick_stairs: Escalier en pierre taillée
+  stone_brick_wall: Muret en pierre taillée
+  stone_bricks: Pierre taillée
+  stone_button: Bouton en pierre
+  stone_pressure_plate: Plaque de pression en pierre
+  stone_slab: Dalle de roche
+  stone_stairs: Escalier de roche
+  stonecutter: Tailleur de pierre
+  stripped_acacia_log: Bûche d'acacia écorcée
+  stripped_acacia_wood: Bois d'acacia écorcé
+  stripped_bamboo_block: Bloc de bambou écorcé
+  stripped_birch_log: Bûche de bouleau écorcée
+  stripped_birch_wood: Bois de bouleau écorcé
+  stripped_cherry_log: Bûche de cerisier écorcée
+  stripped_cherry_wood: Bois de cerisier écorcé
+  stripped_crimson_hyphae: Hyphes carmin dénudées
+  stripped_crimson_stem: Tige carmin dénudée
+  stripped_dark_oak_log: Bûche de chêne noir écorcée
+  stripped_dark_oak_wood: Bois de chêne noir écorcé
+  stripped_jungle_log: Bûche d'acajou écorcée
+  stripped_jungle_wood: Bois d'acajou écorcé
+  stripped_mangrove_log: Bûche de palétuvier écorcée
+  stripped_mangrove_wood: Bois de palétuvier écorcé
+  stripped_oak_log: Bûche de chêne écorcée
+  stripped_oak_wood: Bois de chêne écorcé
+  stripped_spruce_log: Bûche de sapin écorcée
+  stripped_spruce_wood: Bois de sapin écorcé
+  stripped_warped_hyphae: Hyphes biscornues dénudées
+  stripped_warped_stem: Tige biscornue dénudée
+  structure_block: Bloc de structure
+  structure_void: Vide de structure
+  sugar_cane: Canne à sucre
+  sunflower: Tournesol
+  suspicious_gravel: Gravier suspect
+  suspicious_sand: Sable suspect
+  sweet_berry_bush: Buisson à baies sucrées
+  tall_grass: Hautes herbes
+  tall_seagrass: Hautes herbes aquatiques
+  target: Cible
+  terracotta: Terre cuite
+  tinted_glass: Verre teinté
+  tnt: TNT
+  torch: Torche
+  torchflower: Torche-fleur
+  torchflower_crop: Plant de torche-fleur
+  trapped_chest: Coffre piégé
+  tripwire: Fil de déclenchement
+  tripwire_hook: Crochet
+  tube_coral: Corail tubulaire
+  tube_coral_block: Bloc de corail tubulaire
+  tube_coral_fan: Gorgone de corail tubulaire
+  tube_coral_wall_fan: Gorgone de corail tubulaire murale
+  tuff: Tuf
+  turtle_egg: Oeuf de tortue
+  twisting_vines: Lianes tortueuses
+  twisting_vines_plant: Plante de lianes tortueuses
+  verdant_froglight: Grelampe verdoyante
+  vine: Lianes
+  void_air: Air du vide
+  wall_torch: Torche murale
+  warped_button: Bouton biscornu
+  warped_door: Porte biscornue
+  warped_fence: Barrière biscornue
+  warped_fence_gate: Portillon biscornu
+  warped_fungus: Champignon biscornu
+  warped_hanging_sign: Pancarte suspendue biscornue
+  warped_hyphae: Hyphes biscornues
+  warped_nylium: Nylium biscornu
+  warped_planks: Planches biscornues
+  warped_pressure_plate: Plaque de pression biscornue
+  warped_roots: Racines biscornues
+  warped_sign: Pancarte biscornue
+  warped_slab: Dalle biscornue
+  warped_stairs: Escalier biscornu
+  warped_stem: Tige biscornue
+  warped_trapdoor: Trappe biscornue
+  warped_wall_hanging_sign: Pancarte suspendue biscornue murale
+  warped_wall_sign: Pancarte biscornue murale
+  warped_wart_block: Bloc de verrues biscornues
+  water: Eau
+  water_cauldron: Chaudron d'eau
+  waxed_copper_block: Bloc de cuivre ciré
+  waxed_cut_copper: Cuivre taillé ciré
+  waxed_cut_copper_slab: Dalle en cuivre taillé cirée
+  waxed_cut_copper_stairs: Escalier en cuivre taillé ciré
+  waxed_exposed_copper: Cuivre exposé ciré
+  waxed_exposed_cut_copper: Cuivre taillé exposé ciré
+  waxed_exposed_cut_copper_slab: Dalle en cuivre taillé exposé cirée
+  waxed_exposed_cut_copper_stairs: Escalier en cuivre taillé exposé ciré
+  waxed_oxidized_copper: Cuivre oxydé ciré
+  waxed_oxidized_cut_copper: Cuivre taillé oxydé ciré
+  waxed_oxidized_cut_copper_slab: Dalle en cuivre taillé oxydé cirée
+  waxed_oxidized_cut_copper_stairs: Escalier en cuivre taillé oxydé ciré
+  waxed_weathered_copper: Cuivre érodé ciré
+  waxed_weathered_cut_copper: Cuivre taillé érodé ciré
+  waxed_weathered_cut_copper_slab: Dalle en cuivre taillé érodé cirée
+  waxed_weathered_cut_copper_stairs: Escalier en cuivre taillé érodé ciré
+  weathered_copper: Cuivre érodé
+  weathered_cut_copper: Cuivre taillé érodé
+  weathered_cut_copper_slab: Dalle en cuivre taillé érodé
+  weathered_cut_copper_stairs: Escalier en cuivre taillé érodé
+  weeping_vines: Lianes pleureuses
+  weeping_vines_plant: Plante de lianes pleureuses
+  wet_sponge: Éponge mouillée
+  wheat: Blé
+  white_banner: Bannière blanche
+  white_bed: Lit blanc
+  white_candle: Bougie blanche
+  white_candle_cake: Gâteau à bougie blanche
+  white_carpet: Tapis blanc
+  white_concrete: Béton blanc
+  white_concrete_powder: Béton blanc en poudre
+  white_glazed_terracotta: Terre cuite émaillée blanche
+  white_shulker_box: Boîte de Shulker blanche
+  white_stained_glass: Verre blanc
+  white_stained_glass_pane: Vitre blanche
+  white_terracotta: Terre cuite blanche
+  white_tulip: Tulipe blanche
+  white_wool: Laine blanche
+  wither_rose: Rose de Wither
+  wither_skeleton_skull: Crâne de Wither squelette
+  wither_skeleton_wall_skull: Crâne de Wither squelette mural
+  yellow_banner: Bannière jaune
+  yellow_bed: Lit jaune
+  yellow_candle: Bougie jaune
+  yellow_candle_cake: Gâteau à bougie jaune
+  yellow_carpet: Tapis jaune
+  yellow_concrete: Béton jaune
+  yellow_concrete_powder: Béton jaune en poudre
+  yellow_glazed_terracotta: Terre cuite émaillée jaune
+  yellow_shulker_box: Boîte de Shulker jaune
+  yellow_stained_glass: Verre jaune
+  yellow_stained_glass_pane: Vitre jaune
+  yellow_terracotta: Terre cuite jaune
+  yellow_wool: Laine jaune
+  zombie_head: Tête de zombie
+  zombie_wall_head: Tête de zombie murale
+  acacia_boat: Bateau en acacia
+  acacia_chest_boat: Bateau de stockage en acacia
+  allay_spawn_egg: Oeuf d'apparition d'Allay
+  amethyst_shard: Éclat d'améthyste
+  angler_pottery_shard: Tesson de poterie de pêcheur
+  angler_pottery_sherd: Tesson de poterie de pêcheur
+  apple: Pomme
+  archer_pottery_shard: Tesson de poterie d'archer
+  archer_pottery_sherd: Tesson de poterie d'archer
+  armor_stand: Porte-armure
+  arms_up_pottery_shard: Tesson de poterie de figure
+  arms_up_pottery_sherd: Tesson de poterie de figure
+  arrow: Flèche
+  axolotl_bucket: Axolotl dans un seau
+  axolotl_spawn_egg: Oeuf d'apparition d'axolotl
+  baked_potato: Pomme de terre cuite
+  bamboo_chest_raft: Radeau de stockage en bambou
+  bamboo_raft: Radeau en bambou
+  bat_spawn_egg: Oeuf d'apparition de chauve-souris
+  bee_spawn_egg: Oeuf d'apparition d'abeille
+  beef: Boeuf cru
+  beetroot: Betterave
+  beetroot_seeds: Graines de betterave
+  beetroot_soup: Soupe de betteraves
+  birch_boat: Bateau en bouleau
+  birch_chest_boat: Bateau de stockage en bouleau
+  black_dye: Teinture noire
+  blade_pottery_shard: Tesson de poterie de lame
+  blade_pottery_sherd: Tesson de poterie de lame
+  blaze_powder: Poudre de Blaze
+  blaze_rod: Bâton de Blaze
+  blaze_spawn_egg: Oeuf d'apparition de Blaze
+  blue_dye: Teinture bleue
+  bone: Os
+  bone_meal: Poudre d'os
+  book: Livre
+  bow: Arc
+  bowl: Bol
+  bread: Pain
+  brewer_pottery_shard: Tesson de poterie d'alchimiste
+  brewer_pottery_sherd: Tesson de poterie d'alchimiste
+  brick: Brique
+  brown_dye: Teinture marron
+  brush: Pinceau
+  bucket: Seau
+  bundle: Sac
+  burn_pottery_shard: Tesson de poterie de feu
+  burn_pottery_sherd: Tesson de poterie de feu
+  camel_spawn_egg: Oeuf d'apparition de dromadaire
+  carrot: Carotte
+  carrot_on_a_stick: Carotte sur un bâton
+  cat_spawn_egg: Oeuf d'apparition de chat
+  cave_spider_spawn_egg: Oeuf d'apparition d'araignée venimeuse
+  chainmail_boots: Bottes de mailles
+  chainmail_chestplate: Cotte de mailles
+  chainmail_helmet: Casque de mailles
+  chainmail_leggings: Jambières de mailles
+  charcoal: Charbon de bois
+  cherry_boat: Bateau en cerisier
+  cherry_chest_boat: Bateau de stockage en cerisier
+  chest_minecart: Wagonnet de stockage
+  chicken: Poulet cru
+  chicken_spawn_egg: Oeuf d'apparition de poule
+  chorus_fruit: Chorus
+  clay_ball: Motte d'argile
+  clock: Montre
+  coal: Charbon
+  coast_armor_trim_smithing_template: Modèle de forge
+  cocoa_beans: Fèves de cacao
+  cod: Morue crue
+  cod_bucket: Morue dans un seau
+  cod_spawn_egg: Oeuf d'apparition de morue
+  command_block_minecart: Wagonnet à bloc de commande
+  compass: Boussole
+  cooked_beef: Steak
+  cooked_chicken: Poulet rôti
+  cooked_cod: Morue cuite
+  cooked_mutton: Mouton cuit
+  cooked_porkchop: Côtelette de porc cuite
+  cooked_rabbit: Lapin cuit
+  cooked_salmon: Saumon cuit
+  cookie: Cookie
+  copper_ingot: Lingot de cuivre
+  cow_spawn_egg: Oeuf d'apparition de vache
+  creeper_banner_pattern: Motif de bannière
+  creeper_spawn_egg: Oeuf d'apparition de Creeper
+  crossbow: Arbalète
+  cyan_dye: Teinture cyan
+  danger_pottery_shard: Tesson de poterie de danger
+  danger_pottery_sherd: Tesson de poterie de danger
+  dark_oak_boat: Bateau en chêne noir
+  dark_oak_chest_boat: Bateau de stockage en chêne noir
+  debug_stick: Bâton de débogage
+  diamond: Diamant
+  diamond_axe: Hache en diamant
+  diamond_boots: Bottes en diamant
+  diamond_chestplate: Plastron en diamant
+  diamond_helmet: Casque en diamant
+  diamond_hoe: Houe en diamant
+  diamond_horse_armor: Armure en diamant pour cheval
+  diamond_leggings: Jambières en diamant
+  diamond_pickaxe: Pioche en diamant
+  diamond_shovel: Pelle en diamant
+  diamond_sword: Épée en diamant
+  disc_fragment_5: Fragment de disque
+  dolphin_spawn_egg: Oeuf d'apparition de dauphin
+  donkey_spawn_egg: Oeuf d'apparition d'âne
+  dragon_breath: Souffle de dragon
+  dried_kelp: Algue séchée
+  drowned_spawn_egg: Oeuf d'apparition de noyé
+  dune_armor_trim_smithing_template: Modèle de forge
+  echo_shard: Éclat d'écho
+  egg: Oeuf
+  elder_guardian_spawn_egg: Oeuf d'apparition de grand gardien
+  elytra: Élytres
+  emerald: Émeraude
+  enchanted_book: Livre enchanté
+  enchanted_golden_apple: Pomme dorée enchantée
+  end_crystal: Cristal de l'End
+  ender_dragon_spawn_egg: Oeuf d'apparition d'Ender Dragon
+  ender_eye: Oeil de l'Ender
+  ender_pearl: Perle de l'Ender
+  enderman_spawn_egg: Oeuf d'apparition d'Enderman
+  endermite_spawn_egg: Oeuf d'apparition d'Endermite
+  evoker_spawn_egg: Oeuf d'apparition d'évocateur
+  experience_bottle: Fiole d'expérience
+  explorer_pottery_shard: Tesson de poterie d'explorateur
+  explorer_pottery_sherd: Tesson de poterie d'explorateur
+  eye_armor_trim_smithing_template: Modèle de forge
+  feather: Plume
+  fermented_spider_eye: Oeil d'araignée fermenté
+  filled_map: Carte
+  fire_charge: Boule de feu
+  firework_rocket: Fusée de feu d'artifice
+  firework_star: Étoile de feu d'artifice
+  fishing_rod: Canne à pêche
+  flint: Silex
+  flint_and_steel: Briquet
+  flower_banner_pattern: Motif de bannière
+  fox_spawn_egg: Oeuf d'apparition de renard
+  friend_pottery_shard: Tesson de poterie d'ami
+  friend_pottery_sherd: Tesson de poterie d'ami
+  frog_spawn_egg: Oeuf d'apparition de grenouille
+  furnace_minecart: Wagonnet motorisé
+  ghast_spawn_egg: Oeuf d'apparition de Ghast
+  ghast_tear: Larme de Ghast
+  glass_bottle: Fiole
+  glistering_melon_slice: Tranche de pastèque scintillante
+  globe_banner_pattern: Motif de bannière
+  glow_berries: Baies lumineuses
+  glow_ink_sac: Poche d'encre luisante
+  glow_item_frame: Cadre luisant
+  glow_squid_spawn_egg: Oeuf d'apparition de poulpe luisant
+  glowstone_dust: Poudre lumineuse
+  goat_horn: Corne de chèvre
+  goat_spawn_egg: Oeuf d'apparition de chèvre
+  gold_ingot: Lingot d'or
+  gold_nugget: Pépite d'or
+  golden_apple: Pomme dorée
+  golden_axe: Hache en or
+  golden_boots: Bottes en or
+  golden_carrot: Carotte dorée
+  golden_chestplate: Plastron en or
+  golden_helmet: Casque en or
+  golden_hoe: Houe en or
+  golden_horse_armor: Armure en or pour cheval
+  golden_leggings: Jambières en or
+  golden_pickaxe: Pioche en or
+  golden_shovel: Pelle en or
+  golden_sword: Épée en or
+  gray_dye: Teinture grise
+  green_dye: Teinture verte
+  guardian_spawn_egg: Oeuf d'apparition de gardien
+  gunpowder: Poudre à canon
+  heart_of_the_sea: Coeur de la mer
+  heart_pottery_shard: Tesson de poterie de coeur
+  heart_pottery_sherd: Tesson de poterie de coeur
+  heartbreak_pottery_shard: Tesson de poterie de coeur brisé
+  heartbreak_pottery_sherd: Tesson de poterie de coeur brisé
+  hoglin_spawn_egg: Oeuf d'apparition de Hoglin
+  honey_bottle: Fiole de miel
+  honeycomb: Rayon de miel
+  hopper_minecart: Wagonnet à entonnoir
+  horse_spawn_egg: Oeuf d'apparition de cheval
+  host_armor_trim_smithing_template: Modèle de forge
+  howl_pottery_shard: Tesson de poterie de loup
+  howl_pottery_sherd: Tesson de poterie de loup
+  husk_spawn_egg: Oeuf d'apparition de zombie momifié
+  ink_sac: Poche d'encre
+  iron_axe: Hache en fer
+  iron_boots: Bottes en fer
+  iron_chestplate: Plastron en fer
+  iron_golem_spawn_egg: Oeuf d'apparition de golem de fer
+  iron_helmet: Casque en fer
+  iron_hoe: Houe en fer
+  iron_horse_armor: Armure en fer pour cheval
+  iron_ingot: Lingot de fer
+  iron_leggings: Jambières en fer
+  iron_nugget: Pépite de fer
+  iron_pickaxe: Pioche en fer
+  iron_shovel: Pelle en fer
+  iron_sword: Épée en fer
+  item_frame: Cadre
+  jungle_boat: Bateau en acajou
+  jungle_chest_boat: Bateau de stockage en acajou
+  knowledge_book: Livre des connaissances
+  lapis_lazuli: Lapis-lazuli
+  lava_bucket: Seau de lave
+  lead: Laisse
+  leather: Cuir
+  leather_boots: Bottes en cuir
+  leather_chestplate: Tunique en cuir
+  leather_helmet: Chapeau en cuir
+  leather_horse_armor: Armure en cuir pour cheval
+  leather_leggings: Pantalon en cuir
+  light_blue_dye: Teinture bleu clair
+  light_gray_dye: Teinture gris clair
+  lime_dye: Teinture vert clair
+  lingering_potion: Potion persistante
+  llama_spawn_egg: Oeuf d'apparition de lama
+  lodestone_compass: Boussole magnétisée
+  magenta_dye: Teinture magenta
+  magma_cream: Crème de magma
+  magma_cube_spawn_egg: Oeuf d'apparition de cube de magma
+  mangrove_boat: Bateau en palétuvier
+  mangrove_chest_boat: Bateau de stockage en palétuvier
+  map: Carte vierge
+  melon_seeds: Graines de pastèque
+  melon_slice: Tranche de pastèque
+  milk_bucket: Seau de lait
+  minecart: Wagonnet
+  miner_pottery_shard: Tesson de poterie de mineur
+  miner_pottery_sherd: Tesson de poterie de mineur
+  mojang_banner_pattern: Motif de bannière
+  mooshroom_spawn_egg: Oeuf d'apparition de Mooshroom
+  mourner_pottery_shard: Tesson de poterie de pleureur
+  mourner_pottery_sherd: Tesson de poterie de pleureur
+  mule_spawn_egg: Oeuf d'apparition de mule
+  mushroom_stew: Soupe de champignons
+  music_disc_11: Disque
+  music_disc_13: Disque
+  music_disc_5: Disque
+  music_disc_blocks: Disque
+  music_disc_cat: Disque
+  music_disc_chirp: Disque
+  music_disc_far: Disque
+  music_disc_mall: Disque
+  music_disc_mellohi: Disque
+  music_disc_otherside: Disque
+  music_disc_pigstep: Disque
+  music_disc_relic: Disque
+  music_disc_stal: Disque
+  music_disc_strad: Disque
+  music_disc_wait: Disque
+  music_disc_ward: Disque
+  mutton: Mouton cru
+  name_tag: Étiquette
+  nautilus_shell: Coquille de nautile
+  nether_brick: Brique du Nether
+  nether_star: Étoile du Nether
+  netherite_axe: Hache en Netherite
+  netherite_boots: Bottes en Netherite
+  netherite_chestplate: Plastron en Netherite
+  netherite_helmet: Casque en Netherite
+  netherite_hoe: Houe en Netherite
+  netherite_ingot: Lingot de Netherite
+  netherite_leggings: Jambières en Netherite
+  netherite_pickaxe: Pioche en Netherite
+  netherite_scrap: Fragments de Netherite
+  netherite_shovel: Pelle en Netherite
+  netherite_sword: Épée en Netherite
+  netherite_upgrade_smithing_template: Modèle de forge
+  oak_boat: Bateau en chêne
+  oak_chest_boat: Bateau de stockage en chêne
+  ocelot_spawn_egg: Oeuf d'apparition d'ocelot
+  orange_dye: Teinture orange
+  painting: Tableau
+  panda_spawn_egg: Oeuf d'apparition de panda
+  paper: Papier
+  parrot_spawn_egg: Oeuf d'apparition de perroquet
+  phantom_membrane: Membrane de Phantom
+  phantom_spawn_egg: Oeuf d'apparition de Phantom
+  pig_spawn_egg: Oeuf d'apparition de cochon
+  piglin_banner_pattern: Motif de bannière
+  piglin_brute_spawn_egg: Oeuf d'apparition de Piglin barbare
+  piglin_spawn_egg: Oeuf d'apparition de Piglin
+  pillager_spawn_egg: Oeuf d'apparition de pillard
+  pink_dye: Teinture rose
+  pitcher_pod: Gousse de planturne
+  plenty_pottery_shard: Tesson de poterie de richesse
+  plenty_pottery_sherd: Tesson de poterie de richesse
+  poisonous_potato: Pomme de terre empoisonnée
+  polar_bear_spawn_egg: Oeuf d'apparition d'ours blanc
+  popped_chorus_fruit: Chorus éclaté
+  porkchop: Côtelette de porc crue
+  potato: Pomme de terre
+  potion: Potion
+  pottery_shard_archer: Tesson de poterie d'archer
+  pottery_shard_arms_up: Tesson de poterie de figure
+  pottery_shard_prize: Tesson de poterie de joyau
+  pottery_shard_skull: Tesson de poterie de crâne
+  powder_snow_bucket: Seau de neige poudreuse
+  prismarine_crystals: Cristaux de prismarine
+  prismarine_shard: Éclat de prismarine
+  prize_pottery_shard: Tesson de poterie de joyau
+  prize_pottery_sherd: Tesson de poterie de joyau
+  pufferfish: Poisson-globe
+  pufferfish_bucket: Poisson-globe dans un seau
+  pufferfish_spawn_egg: Oeuf d'apparition de poisson-globe
+  pumpkin_pie: Tarte à la citrouille
+  pumpkin_seeds: Graines de citrouille
+  purple_dye: Teinture violette
+  quartz: Quartz du Nether
+  rabbit: Lapin cru
+  rabbit_foot: Patte de lapin
+  rabbit_hide: Peau de lapin
+  rabbit_spawn_egg: Oeuf d'apparition de lapin
+  rabbit_stew: Ragoût de lapin
+  raiser_armor_trim_smithing_template: Modèle de forge
+  ravager_spawn_egg: Oeuf d'apparition de ravageur
+  raw_copper: Cuivre brut
+  raw_gold: Or brut
+  raw_iron: Fer brut
+  recovery_compass: Boussole de récupération
+  red_dye: Teinture rouge
+  redstone: Poudre de redstone
+  rib_armor_trim_smithing_template: Modèle de forge
+  rotten_flesh: Chair putréfiée
+  saddle: Selle
+  salmon: Saumon cru
+  salmon_bucket: Saumon dans un seau
+  salmon_spawn_egg: Oeuf d'apparition de saumon
+  scute: Écaille de tortue
+  sentry_armor_trim_smithing_template: Modèle de forge
+  shaper_armor_trim_smithing_template: Modèle de forge
+  sheaf_pottery_shard: Tesson de poterie d'épis
+  sheaf_pottery_sherd: Tesson de poterie d'épis
+  shears: Cisailles
+  sheep_spawn_egg: Oeuf d'apparition de mouton
+  shelter_pottery_shard: Tesson de poterie d'abri
+  shelter_pottery_sherd: Tesson de poterie d'abri
+  shield: Bouclier
+  shulker_shell: Carapace de Shulker
+  shulker_spawn_egg: Oeuf d'apparition de Shulker
+  sign: Pancarte
+  silence_armor_trim_smithing_template: Modèle de forge
+  silverfish_spawn_egg: Oeuf d'apparition de poisson d'argent
+  skeleton_horse_spawn_egg: Oeuf d'apparition de cheval-squelette
+  skeleton_spawn_egg: Oeuf d'apparition de squelette
+  skull_banner_pattern: Motif de bannière
+  skull_pottery_shard: Tesson de poterie de crâne
+  skull_pottery_sherd: Tesson de poterie de crâne
+  slime_ball: Boule de Slime
+  slime_spawn_egg: Oeuf d'apparition de Slime
+  smithing_template: Modèle de forge
+  sniffer_spawn_egg: Oeuf d'apparition de renifleur
+  snort_pottery_shard: Tesson de poterie de renifleur
+  snort_pottery_sherd: Tesson de poterie de renifleur
+  snout_armor_trim_smithing_template: Modèle de forge
+  snow_golem_spawn_egg: Oeuf d'apparition de golem de neige
+  snowball: Boule de neige
+  spectral_arrow: Flèche spectrale
+  spider_eye: Oeil d'araignée
+  spider_spawn_egg: Oeuf d'apparition d'araignée
+  spire_armor_trim_smithing_template: Modèle de forge
+  splash_potion: Potion jetable
+  spruce_boat: Bateau en sapin
+  spruce_chest_boat: Bateau de stockage en sapin
+  spyglass: Longue-vue
+  squid_spawn_egg: Oeuf d'apparition de poulpe
+  stick: Bâton
+  stone_axe: Hache en pierre
+  stone_hoe: Houe en pierre
+  stone_pickaxe: Pioche en pierre
+  stone_shovel: Pelle en pierre
+  stone_sword: Épée en pierre
+  stray_spawn_egg: Oeuf d'apparition de vagabond
+  strider_spawn_egg: Oeuf d'apparition d'arpenteur
+  string: Ficelle
+  sugar: Sucre
+  suspicious_stew: Soupe suspecte
+  sweet_berries: Baies sucrées
+  tadpole_bucket: Têtard dans un seau
+  tadpole_spawn_egg: Oeuf d'apparition de têtard
+  tide_armor_trim_smithing_template: Modèle de forge
+  tipped_arrow: Flèche à effet
+  tnt_minecart: Wagonnet à TNT
+  torchflower_seeds: Graines de torche-fleur
+  totem_of_undying: Totem d'immortalité
+  trader_llama_spawn_egg: Oeuf d'apparition de lama de marchand
+  trident: Trident
+  tropical_fish: Poisson tropical
+  tropical_fish_bucket: Poisson tropical dans un seau
+  tropical_fish_spawn_egg: Oeuf d'apparition de poisson tropical
+  turtle_helmet: Carapace de tortue
+  turtle_spawn_egg: Oeuf d'apparition de tortue
+  vex_armor_trim_smithing_template: Modèle de forge
+  vex_spawn_egg: Oeuf d'apparition de Vex
+  villager_spawn_egg: Oeuf d'apparition de villageois
+  vindicator_spawn_egg: Oeuf d'apparition de vindicateur
+  wandering_trader_spawn_egg: Oeuf d'apparition de marchand ambulant
+  ward_armor_trim_smithing_template: Modèle de forge
+  warden_spawn_egg: Oeuf d'apparition de Warden
+  warped_fungus_on_a_stick: Champignon biscornu sur un bâton
+  water_bucket: Seau d'eau
+  wayfinder_armor_trim_smithing_template: Modèle de forge
+  wheat_seeds: Graines de blé
+  white_dye: Teinture blanche
+  wild_armor_trim_smithing_template: Modèle de forge
+  witch_spawn_egg: Oeuf d'apparition de sorcière
+  wither_skeleton_spawn_egg: Oeuf d'apparition de Wither squelette
+  wither_spawn_egg: Oeuf d'apparition de Wither
+  wolf_spawn_egg: Oeuf d'apparition de loup
+  wooden_axe: Hache en bois
+  wooden_hoe: Houe en bois
+  wooden_pickaxe: Pioche en bois
+  wooden_shovel: Pelle en bois
+  wooden_sword: Épée en bois
+  writable_book: Livre et plume
+  written_book: Livre écrit
+  yellow_dye: Teinture jaune
+  zoglin_spawn_egg: Oeuf d'apparition de Zoglin
+  zombie_horse_spawn_egg: Oeuf d'apparition de cheval-zombie
+  zombie_spawn_egg: Oeuf d'apparition de zombie
+  zombie_villager_spawn_egg: Oeuf d'apparition de zombie-villageois
+  zombified_piglin_spawn_egg: Oeuf d'apparition de Piglin zombifié
+Enchantment:
+  aqua_affinity: Affinité aquatique
+  bane_of_arthropods: Fléau des arthropodes
+  binding_curse: Malédiction du lien éternel
+  blast_protection: Protection contre les explosions
+  channeling: Canalisation
+  depth_strider: Agilité aquatique
+  efficiency: Efficacité
+  feather_falling: Chute amortie
+  fire_aspect: Aura de feu
+  fire_protection: Protection contre le feu
+  flame: Flamme
+  fortune: Fortune
+  frost_walker: Semelles givrantes
+  impaling: Empalement
+  infinity: Infinité
+  knockback: Recul
+  looting: Butin
+  loyalty: Loyauté
+  luck_of_the_sea: Chance de la mer
+  lure: Appât
+  mending: Raccommodage
+  multishot: Tir multiple
+  piercing: Perforation
+  power: Puissance
+  projectile_protection: Protection contre les projectiles
+  protection: Protection
+  punch: Frappe
+  quick_charge: Charge rapide
+  respiration: Apnée
+  riptide: Impulsion
+  sharpness: Tranchant
+  silk_touch: Toucher de soie
+  smite: Châtiment
+  soul_speed: Agilité des âmes
+  sweeping: Affilage
+  swift_sneak: Furtivité rapide
+  thorns: Épines
+  unbreaking: Solidité
+  vanishing_curse: Malédiction de disparition

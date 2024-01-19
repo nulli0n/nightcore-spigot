@@ -1,0 +1,1617 @@
+EntityType:
+  allay: Hilfsgeist
+  area_effect_cloud: Partikelwolke
+  armor_stand: Rüstungsständer
+  arrow: Pfeil
+  axolotl: Axolotl
+  bat: Fledermaus
+  bee: Biene
+  blaze: Lohe
+  block_display: Blockdarsteller
+  boat: Boot
+  camel: Dromedar
+  cat: Katze
+  cave_spider: Höhlenspinne
+  chest_boat: Truhenboot
+  chest_minecart: Güterlore
+  chicken: Huhn
+  cod: Kabeljau
+  command_block_minecart: Befehlsblocklore
+  cow: Kuh
+  creeper: Creeper
+  dolphin: Delfin
+  donkey: Esel
+  dragon_fireball: Drachen-Feuerkugel
+  drowned: Ertrunkener
+  egg: Geworfenes Ei
+  elder_guardian: Großer Wächter
+  end_crystal: Enderkristall
+  ender_dragon: Enderdrache
+  ender_pearl: Geworfene Enderperle
+  enderman: Enderman
+  endermite: Endermite
+  evoker: Magier
+  evoker_fangs: Fangzähne
+  experience_bottle: Geworfenes Erfahrungsfläschchen
+  experience_orb: Erfahrungskugel
+  eye_of_ender: Enderauge
+  falling_block: Fallender Block
+  falling_block_type: Fallender %s
+  fireball: Feuerkugel
+  firework_rocket: Feuerwerksrakete
+  fishing_bobber: Schwimmer
+  fox: Fuchs
+  frog: Frosch
+  furnace_minecart: Ofenlore
+  ghast: Ghast
+  giant: Riese
+  glow_item_frame: Leuchtrahmen
+  glow_squid: Leuchttintenfisch
+  goat: Ziege
+  guardian: Wächter
+  hoglin: Hoglin
+  hopper_minecart: Trichterlore
+  horse: Pferd
+  husk: Wüstenzombie
+  illusioner: Illusionist
+  interaction: Interaktionsobjekt
+  iron_golem: Eisengolem
+  item: Gegenstand
+  item_display: Gegenstandsdarsteller
+  item_frame: Rahmen
+  killer_bunny: Das Killer-Kaninchen
+  leash_knot: Leinenknoten
+  lightning_bolt: Blitz
+  llama: Lama
+  llama_spit: Lamaspucke
+  magma_cube: Magmawürfel
+  marker: Marker
+  minecart: Lore
+  mooshroom: Mooshroom
+  mule: Maultier
+  ocelot: Ozelot
+  painting: Gemälde
+  panda: Panda
+  parrot: Papagei
+  phantom: Phantom
+  pig: Schwein
+  piglin: Piglin
+  piglin_brute: Piglin-Barbar
+  pillager: Plünderer
+  player: Spieler
+  polar_bear: Eisbär
+  potion: Trank
+  pufferfish: Kugelfisch
+  rabbit: Kaninchen
+  ravager: Verwüster
+  salmon: Lachs
+  sheep: Schaf
+  shulker: Shulker
+  shulker_bullet: Shulker-Geschoss
+  silverfish: Silberfischchen
+  skeleton: Skelett
+  skeleton_horse: Skelettpferd
+  slime: Schleim
+  small_fireball: Kleine Feuerkugel
+  sniffer: Schnüffler
+  snow_golem: Schneegolem
+  snowball: Schneeball
+  spawner_minecart: Spawner-Lore
+  spectral_arrow: Spektralpfeil
+  spider: Spinne
+  squid: Tintenfisch
+  stray: Eiswanderer
+  strider: Schreiter
+  tadpole: Kaulquappe
+  text_display: Textdarsteller
+  tnt: Gezündetes TNT
+  tnt_minecart: TNT-Lore
+  trader_llama: Händlerlama
+  trident: Dreizack
+  tropical_fish: Tropenfisch
+  turtle: Schildkröte
+  vex: Plagegeist
+  villager: Dorfbewohner
+  vindicator: Diener
+  wandering_trader: Fahrender Händler
+  warden: Wärter
+  witch: Hexe
+  wither: Wither
+  wither_skeleton: Witherskelett
+  wither_skull: Witherschädel
+  wolf: Wolf
+  zoglin: Zoglin
+  zombie: Zombie
+  zombie_horse: Zombiepferd
+  zombie_villager: Zombiedorfbewohner
+  zombified_piglin: Zombifizierter Piglin
+PotionEffectType:
+  absorption: Absorption
+  bad_omen: Drohendes Unheil
+  blindness: Blindheit
+  conduit_power: Meereskraft
+  darkness: Dunkelheit
+  dolphins_grace: Gunst des Delfins
+  fire_resistance: Feuerschutz
+  glowing: Leuchten
+  haste: Eile
+  health_boost: Extraenergie
+  hero_of_the_village: Held des Dorfes
+  hunger: Hunger
+  instant_damage: Direktschaden
+  instant_health: Direktheilung
+  invisibility: Unsichtbarkeit
+  jump_boost: Sprungkraft
+  levitation: Schwebekraft
+  luck: Glück
+  mining_fatigue: Abbaulähmung
+  nausea: Übelkeit
+  night_vision: Nachtsicht
+  poison: Vergiftung
+  regeneration: Regeneration
+  resistance: Resistenz
+  saturation: Sättigung
+  slow_falling: Sanfter Fall
+  slowness: Langsamkeit
+  speed: Schnelligkeit
+  strength: Stärke
+  unluck: Pech
+  water_breathing: Unterwasseratmung
+  weakness: Schwäche
+  wither: Verdorrung
+Material:
+  acacia_button: Akazienholzknopf
+  acacia_door: Akazienholztür
+  acacia_fence: Akazienholzzaun
+  acacia_fence_gate: Akazienholzzauntor
+  acacia_hanging_sign: Akazienholzhängeschild
+  acacia_leaves: Akazienlaub
+  acacia_log: Akazienstamm
+  acacia_planks: Akazienholzbretter
+  acacia_pressure_plate: Akazienholzdruckplatte
+  acacia_sapling: Akaziensetzling
+  acacia_sign: Akazienholzschild
+  acacia_slab: Akazienholzstufe
+  acacia_stairs: Akazienholztreppe
+  acacia_trapdoor: Akazienholzfalltür
+  acacia_wall_hanging_sign: Akazienholzwandhängeschild
+  acacia_wall_sign: Akazienholzwandschild
+  acacia_wood: Akazienholz
+  activator_rail: Aktivierungsschiene
+  air: Luft
+  allium: Zierlauch
+  amethyst_block: Amethystblock
+  amethyst_cluster: Amethysthaufen
+  ancient_debris: Antiker Schrott
+  andesite: Andesit
+  andesite_slab: Andesitstufe
+  andesite_stairs: Andesittreppe
+  andesite_wall: Andesitmauer
+  anvil: Amboss
+  attached_melon_stem: Melonenranke
+  attached_pumpkin_stem: Kürbisranke
+  azalea: Azalee
+  azalea_leaves: Azaleenlaub
+  azure_bluet: Porzellansternchen
+  bamboo: Bambus
+  bamboo_block: Bambusblock
+  bamboo_button: Bambusknopf
+  bamboo_door: Bambustür
+  bamboo_fence: Bambuszaun
+  bamboo_fence_gate: Bambuszauntor
+  bamboo_hanging_sign: Bambushängeschild
+  bamboo_mosaic: Bambusmosaik
+  bamboo_mosaic_slab: Bambusmosaikstufe
+  bamboo_mosaic_stairs: Bambusmosaiktreppe
+  bamboo_planks: Bambusbretter
+  bamboo_pressure_plate: Bambusdruckplatte
+  bamboo_sapling: Bambussprössling
+  bamboo_sign: Bambusschild
+  bamboo_slab: Bambusstufe
+  bamboo_stairs: Bambustreppe
+  bamboo_trapdoor: Bambusfalltür
+  bamboo_wall_hanging_sign: Bambuswandhängeschild
+  bamboo_wall_sign: Bambuswandschild
+  barrel: Fass
+  barrier: Barriere
+  basalt: Basalt
+  beacon: Leuchtfeuer
+  bedrock: Grundgestein
+  bee_nest: Bienennest
+  beehive: Bienenstock
+  beetroots: Rote Bete
+  bell: Glocke
+  big_dripleaf: Großes Tropfblatt
+  big_dripleaf_stem: Großer Tropfblattstiel
+  birch_button: Birkenholzknopf
+  birch_door: Birkenholztür
+  birch_fence: Birkenholzzaun
+  birch_fence_gate: Birkenholzzauntor
+  birch_hanging_sign: Birkenholzhängeschild
+  birch_leaves: Birkenlaub
+  birch_log: Birkenstamm
+  birch_planks: Birkenholzbretter
+  birch_pressure_plate: Birkenholzdruckplatte
+  birch_sapling: Birkensetzling
+  birch_sign: Birkenholzschild
+  birch_slab: Birkenholzstufe
+  birch_stairs: Birkenholztreppe
+  birch_trapdoor: Birkenholzfalltür
+  birch_wall_hanging_sign: Birkenholzwandhängeschild
+  birch_wall_sign: Birkenholzwandschild
+  birch_wood: Birkenholz
+  black_banner: Schwarzes Banner
+  black_bed: Schwarzes Bett
+  black_candle: Schwarze Kerze
+  black_candle_cake: Kuchen mit schwarzer Kerze
+  black_carpet: Schwarzer Teppich
+  black_concrete: Schwarzer Beton
+  black_concrete_powder: Schwarzer Trockenbeton
+  black_glazed_terracotta: Schwarze glasierte Keramik
+  black_shulker_box: Schwarze Shulker-Kiste
+  black_stained_glass: Schwarzes Glas
+  black_stained_glass_pane: Schwarze Glasscheibe
+  black_terracotta: Schwarze Keramik
+  black_wool: Schwarze Wolle
+  blackstone: Schwarzstein
+  blackstone_slab: Schwarzsteinstufe
+  blackstone_stairs: Schwarzsteintreppe
+  blackstone_wall: Schwarzsteinmauer
+  blast_furnace: Schmelzofen
+  blue_banner: Blaues Banner
+  blue_bed: Blaues Bett
+  blue_candle: Blaue Kerze
+  blue_candle_cake: Kuchen mit blauer Kerze
+  blue_carpet: Blauer Teppich
+  blue_concrete: Blauer Beton
+  blue_concrete_powder: Blauer Trockenbeton
+  blue_glazed_terracotta: Blaue glasierte Keramik
+  blue_ice: Blaueis
+  blue_orchid: Blaue Orchidee
+  blue_shulker_box: Blaue Shulker-Kiste
+  blue_stained_glass: Blaues Glas
+  blue_stained_glass_pane: Blaue Glasscheibe
+  blue_terracotta: Blaue Keramik
+  blue_wool: Blaue Wolle
+  bone_block: Knochenblock
+  bookshelf: Bücherregal
+  brain_coral: Hirnkoralle
+  brain_coral_block: Hirnkorallenblock
+  brain_coral_fan: Hirnkorallenfächer
+  brain_coral_wall_fan: Hirnkorallenwandfächer
+  brewing_stand: Braustand
+  brick_slab: Ziegelstufe
+  brick_stairs: Ziegeltreppe
+  brick_wall: Ziegelsteinmauer
+  bricks: Ziegelsteine
+  brown_banner: Braunes Banner
+  brown_bed: Braunes Bett
+  brown_candle: Braune Kerze
+  brown_candle_cake: Kuchen mit brauner Kerze
+  brown_carpet: Brauner Teppich
+  brown_concrete: Brauner Beton
+  brown_concrete_powder: Brauner Trockenbeton
+  brown_glazed_terracotta: Braune glasierte Keramik
+  brown_mushroom: Brauner Pilz
+  brown_mushroom_block: Brauner Pilzblock
+  brown_shulker_box: Braune Shulker-Kiste
+  brown_stained_glass: Braunes Glas
+  brown_stained_glass_pane: Braune Glasscheibe
+  brown_terracotta: Braune Keramik
+  brown_wool: Braune Wolle
+  bubble_column: Blasensäule
+  bubble_coral: Blasenkoralle
+  bubble_coral_block: Blasenkorallenblock
+  bubble_coral_fan: Blasenkorallenfächer
+  bubble_coral_wall_fan: Blasenkorallenwandfächer
+  budding_amethyst: Amethystknospenblock
+  cactus: Kaktus
+  cake: Kuchen
+  calcite: Kalzit
+  calibrated_sculk_sensor: Kalibrierter Sculk-Sensor
+  campfire: Lagerfeuer
+  candle: Kerze
+  candle_cake: Kuchen mit Kerze
+  carrots: Karotten
+  cartography_table: Kartentisch
+  carved_pumpkin: Geschnitzter Kürbis
+  cauldron: Kessel
+  cave_air: Höhlenluft
+  cave_vines: Höhlenranken
+  cave_vines_plant: Höhlenrankenpflanze
+  chain: Kette
+  chain_command_block: Ketten-Befehlsblock
+  cherry_button: Kirschholzknopf
+  cherry_door: Kirschholztür
+  cherry_fence: Kirschholzzaun
+  cherry_fence_gate: Kirschholzzauntor
+  cherry_hanging_sign: Kirschholzhängeschild
+  cherry_leaves: Kirschlaub
+  cherry_log: Kirschstamm
+  cherry_planks: Kirschholzbretter
+  cherry_pressure_plate: Kirschholzdruckplatte
+  cherry_sapling: Kirschsetzling
+  cherry_sign: Kirschholzschild
+  cherry_slab: Kirschholzstufe
+  cherry_stairs: Kirschholztreppe
+  cherry_trapdoor: Kirschholzfalltür
+  cherry_wall_hanging_sign: Kirschholzwandhängeschild
+  cherry_wall_sign: Kirschholzwandschild
+  cherry_wood: Kirschholz
+  chest: Truhe
+  chipped_anvil: Angeschlagener Amboss
+  chiseled_bookshelf: Gearbeitetes Bücherregal
+  chiseled_deepslate: Gemeißelter Tiefenschiefer
+  chiseled_nether_bricks: Gemeißelte Netherziegel
+  chiseled_polished_blackstone: Gemeißelter polierter Schwarzstein
+  chiseled_quartz_block: Gemeißelter Quarzblock
+  chiseled_red_sandstone: Gemeißelter roter Sandstein
+  chiseled_sandstone: Gemeißelter Sandstein
+  chiseled_stone_bricks: Gemeißelte Steinziegel
+  chorus_flower: Chorusblüte
+  chorus_plant: Choruspflanze
+  clay: Ton
+  coal_block: Kohleblock
+  coal_ore: Steinkohle
+  coarse_dirt: Grobe Erde
+  cobbled_deepslate: Bruchtiefenschiefer
+  cobbled_deepslate_slab: Bruchtiefenschieferstufe
+  cobbled_deepslate_stairs: Bruchtiefenschiefertreppe
+  cobbled_deepslate_wall: Bruchtiefenschiefermauer
+  cobblestone: Bruchstein
+  cobblestone_slab: Bruchsteinstufe
+  cobblestone_stairs: Bruchsteintreppe
+  cobblestone_wall: Bruchsteinmauer
+  cobweb: Spinnennetz
+  cocoa: Kakao
+  command_block: Befehlsblock
+  comparator: Redstone-Komparator
+  composter: Komposter
+  conduit: Aquisator
+  copper_block: Kupferblock
+  copper_ore: Kupfererz
+  cornflower: Kornblume
+  cracked_deepslate_bricks: Rissige Tiefenschieferziegel
+  cracked_deepslate_tiles: Rissige Tiefenschieferfliesen
+  cracked_nether_bricks: Rissige Netherziegel
+  cracked_polished_blackstone_bricks: Rissige polierte Schwarzsteinziegel
+  cracked_stone_bricks: Rissige Steinziegel
+  crafting_table: Werkbank
+  creeper_head: Creeperkopf
+  creeper_wall_head: Creeper-Wandkopf
+  crimson_button: Karmesinknopf
+  crimson_door: Karmesintür
+  crimson_fence: Karmesinzaun
+  crimson_fence_gate: Karmesinzauntor
+  crimson_fungus: Karmesinpilz
+  crimson_hanging_sign: Karmesinhängeschild
+  crimson_hyphae: Karmesinhyphen
+  crimson_nylium: Karmesin-Nezel
+  crimson_planks: Karmesinbretter
+  crimson_pressure_plate: Karmesindruckplatte
+  crimson_roots: Karmesinwurzeln
+  crimson_sign: Karmesinschild
+  crimson_slab: Karmesinstufe
+  crimson_stairs: Karmesintreppe
+  crimson_stem: Karmesinstiel
+  crimson_trapdoor: Karmesinfalltür
+  crimson_wall_hanging_sign: Karmesinwandhängeschild
+  crimson_wall_sign: Karmesinwandschild
+  crying_obsidian: Weinender Obsidian
+  cut_copper: Geschnittener Kupferblock
+  cut_copper_slab: Geschnittene Kupferstufe
+  cut_copper_stairs: Geschnittene Kupfertreppe
+  cut_red_sandstone: Geschnittener roter Sandstein
+  cut_red_sandstone_slab: Geschnittene rote Sandsteinstufe
+  cut_sandstone: Geschnittener Sandstein
+  cut_sandstone_slab: Geschnittene Sandsteinstufe
+  cyan_banner: Türkises Banner
+  cyan_bed: Türkises Bett
+  cyan_candle: Türkise Kerze
+  cyan_candle_cake: Kuchen mit türkiser Kerze
+  cyan_carpet: Türkiser Teppich
+  cyan_concrete: Türkiser Beton
+  cyan_concrete_powder: Türkiser Trockenbeton
+  cyan_glazed_terracotta: Türkise glasierte Keramik
+  cyan_shulker_box: Türkise Shulker-Kiste
+  cyan_stained_glass: Türkises Glas
+  cyan_stained_glass_pane: Türkise Glasscheibe
+  cyan_terracotta: Türkise Keramik
+  cyan_wool: Türkise Wolle
+  damaged_anvil: Beschädigter Amboss
+  dandelion: Löwenzahn
+  dark_oak_button: Schwarzeichenholzknopf
+  dark_oak_door: Schwarzeichenholztür
+  dark_oak_fence: Schwarzeichenholzzaun
+  dark_oak_fence_gate: Schwarzeichenholzzauntor
+  dark_oak_hanging_sign: Schwarzeichenholzhängeschild
+  dark_oak_leaves: Schwarzeichenlaub
+  dark_oak_log: Schwarzeichenstamm
+  dark_oak_planks: Schwarzeichenholzbretter
+  dark_oak_pressure_plate: Schwarzeichenholzdruckplatte
+  dark_oak_sapling: Schwarzeichensetzling
+  dark_oak_sign: Schwarzeichenholzschild
+  dark_oak_slab: Schwarzeichenholzstufe
+  dark_oak_stairs: Schwarzeichenholztreppe
+  dark_oak_trapdoor: Schwarzeichenholzfalltür
+  dark_oak_wall_hanging_sign: Schwarzeichenholzwandhängeschild
+  dark_oak_wall_sign: Schwarzeichenholzwandschild
+  dark_oak_wood: Schwarzeichenholz
+  dark_prismarine: Dunkler Prismarin
+  dark_prismarine_slab: Dunkle Prismarinstufe
+  dark_prismarine_stairs: Dunkle Prismarintreppe
+  daylight_detector: Tageslichtsensor
+  dead_brain_coral: Abgestorbene Hirnkoralle
+  dead_brain_coral_block: Abgestorbener Hirnkorallenblock
+  dead_brain_coral_fan: Abgestorbener Hirnkorallenfächer
+  dead_brain_coral_wall_fan: Abgestorbener Hirnkorallenwandfächer
+  dead_bubble_coral: Abgestorbene Blasenkoralle
+  dead_bubble_coral_block: Abgestorbener Blasenkorallenblock
+  dead_bubble_coral_fan: Abgestorbener Blasenkorallenfächer
+  dead_bubble_coral_wall_fan: Abgestorbener Blasenkorallenwandfächer
+  dead_bush: Toter Busch
+  dead_fire_coral: Abgestorbene Feuerkoralle
+  dead_fire_coral_block: Abgestorbener Feuerkorallenblock
+  dead_fire_coral_fan: Abgestorbener Feuerkorallenfächer
+  dead_fire_coral_wall_fan: Abgestorbener Feuerkorallenwandfächer
+  dead_horn_coral: Abgestorbene Geweihkoralle
+  dead_horn_coral_block: Abgestorbener Geweihkorallenblock
+  dead_horn_coral_fan: Abgestorbener Geweihkorallenfächer
+  dead_horn_coral_wall_fan: Abgestorbener Geweihkorallenwandfächer
+  dead_tube_coral: Abgestorbene Orgelkoralle
+  dead_tube_coral_block: Abgestorbener Orgelkorallenblock
+  dead_tube_coral_fan: Abgestorbener Orgelkorallenfächer
+  dead_tube_coral_wall_fan: Abgestorbener Orgelkorallenwandfächer
+  decorated_pot: Verzierter Krug
+  deepslate: Tiefenschiefer
+  deepslate_brick_slab: Tiefenschieferziegelstufe
+  deepslate_brick_stairs: Tiefenschieferziegeltreppe
+  deepslate_brick_wall: Tiefenschieferziegelmauer
+  deepslate_bricks: Tiefenschieferziegel
+  deepslate_coal_ore: Tiefenschiefer-Steinkohle
+  deepslate_copper_ore: Tiefenschiefer-Kupfererz
+  deepslate_diamond_ore: Tiefenschiefer-Diamanterz
+  deepslate_emerald_ore: Tiefenschiefer-Smaragderz
+  deepslate_gold_ore: Tiefenschiefer-Golderz
+  deepslate_iron_ore: Tiefenschiefer-Eisenerz
+  deepslate_lapis_ore: Tiefenschiefer-Lapislazulierz
+  deepslate_redstone_ore: Tiefenschiefer-Redstone-Erz
+  deepslate_tile_slab: Tiefenschieferfliesenstufe
+  deepslate_tile_stairs: Tiefenschieferfliesentreppe
+  deepslate_tile_wall: Tiefenschieferfliesenmauer
+  deepslate_tiles: Tiefenschieferfliesen
+  detector_rail: Sensorschiene
+  diamond_block: Diamantblock
+  diamond_ore: Diamanterz
+  diorite: Diorit
+  diorite_slab: Dioritstufe
+  diorite_stairs: Diorittreppe
+  diorite_wall: Dioritmauer
+  dirt: Erde
+  dirt_path: Trampelpfad
+  dispenser: Werfer
+  dragon_egg: Drachenei
+  dragon_head: Drachenkopf
+  dragon_wall_head: Drachen-Wandkopf
+  dried_kelp_block: Getrockneter Seetangblock
+  dripstone_block: Tropfsteinblock
+  dropper: Spender
+  emerald_block: Smaragdblock
+  emerald_ore: Smaragderz
+  enchanting_table: Zaubertisch
+  end_gateway: Endtransitportal
+  end_portal: Endportal
+  end_portal_frame: Endportalrahmen
+  end_rod: Endstab
+  end_stone: Endstein
+  end_stone_brick_slab: Endsteinziegelstufe
+  end_stone_brick_stairs: Endsteinziegeltreppe
+  end_stone_brick_wall: Endsteinziegelmauer
+  end_stone_bricks: Endsteinziegel
+  ender_chest: Endertruhe
+  exposed_copper: Angelaufener Kupferblock
+  exposed_cut_copper: Angelaufener geschnittener Kupferblock
+  exposed_cut_copper_slab: Angelaufene geschnittene Kupferstufe
+  exposed_cut_copper_stairs: Angelaufene geschnittene Kupfertreppe
+  farmland: Ackerboden
+  fern: Farn
+  fire: Feuer
+  fire_coral: Feuerkoralle
+  fire_coral_block: Feuerkorallenblock
+  fire_coral_fan: Feuerkorallenfächer
+  fire_coral_wall_fan: Feuerkorallenwandfächer
+  fletching_table: Bognertisch
+  flower_pot: Blumentopf
+  flowering_azalea: Blühende Azalee
+  flowering_azalea_leaves: Blühendes Azaleenlaub
+  frogspawn: Froschlaich
+  frosted_ice: Brüchiges Eis
+  furnace: Ofen
+  gilded_blackstone: Golddurchzogener Schwarzstein
+  glass: Glas
+  glass_pane: Glasscheibe
+  glow_lichen: Leuchtflechte
+  glowstone: Leuchtstein
+  gold_block: Goldblock
+  gold_ore: Golderz
+  granite: Granit
+  granite_slab: Granitstufe
+  granite_stairs: Granittreppe
+  granite_wall: Granitmauer
+  grass: Gras
+  grass_block: Grasblock
+  gravel: Kies
+  gray_banner: Graues Banner
+  gray_bed: Graues Bett
+  gray_candle: Graue Kerze
+  gray_candle_cake: Kuchen mit grauer Kerze
+  gray_carpet: Grauer Teppich
+  gray_concrete: Grauer Beton
+  gray_concrete_powder: Grauer Trockenbeton
+  gray_glazed_terracotta: Graue glasierte Keramik
+  gray_shulker_box: Graue Shulker-Kiste
+  gray_stained_glass: Graues Glas
+  gray_stained_glass_pane: Graue Glasscheibe
+  gray_terracotta: Graue Keramik
+  gray_wool: Graue Wolle
+  green_banner: Grünes Banner
+  green_bed: Grünes Bett
+  green_candle: Grüne Kerze
+  green_candle_cake: Kuchen mit grüner Kerze
+  green_carpet: Grüner Teppich
+  green_concrete: Grüner Beton
+  green_concrete_powder: Grüner Trockenbeton
+  green_glazed_terracotta: Grüne glasierte Keramik
+  green_shulker_box: Grüne Shulker-Kiste
+  green_stained_glass: Grünes Glas
+  green_stained_glass_pane: Grüne Glasscheibe
+  green_terracotta: Grüne Keramik
+  green_wool: Grüne Wolle
+  grindstone: Schleifstein
+  hanging_roots: Hängende Wurzeln
+  hay_block: Strohballen
+  heavy_weighted_pressure_plate: Grobwägeplatte
+  honey_block: Honigblock
+  honeycomb_block: Honigwabenblock
+  hopper: Trichter
+  horn_coral: Geweihkoralle
+  horn_coral_block: Geweihkorallenblock
+  horn_coral_fan: Geweihkorallenfächer
+  horn_coral_wall_fan: Geweihkorallenwandfächer
+  ice: Eis
+  infested_chiseled_stone_bricks: Befallene gemeißelte Steinziegel
+  infested_cobblestone: Befallener Bruchstein
+  infested_cracked_stone_bricks: Befallene rissige Steinziegel
+  infested_deepslate: Befallener Tiefenschiefer
+  infested_mossy_stone_bricks: Befallene bemooste Steinziegel
+  infested_stone: Befallener Stein
+  infested_stone_bricks: Befallene Steinziegel
+  iron_bars: Eisengitter
+  iron_block: Eisenblock
+  iron_door: Eisentür
+  iron_ore: Eisenerz
+  iron_trapdoor: Eisenfalltür
+  jack_o_lantern: Kürbislaterne
+  jigsaw: Verbundblock
+  jukebox: Plattenspieler
+  jungle_button: Tropenholzknopf
+  jungle_door: Tropenholztür
+  jungle_fence: Tropenholzzaun
+  jungle_fence_gate: Tropenholzzauntor
+  jungle_hanging_sign: Tropenholzhängeschild
+  jungle_leaves: Tropenbaumlaub
+  jungle_log: Tropenbaumstamm
+  jungle_planks: Tropenholzbretter
+  jungle_pressure_plate: Tropenholzdruckplatte
+  jungle_sapling: Tropenbaumsetzling
+  jungle_sign: Tropenholzschild
+  jungle_slab: Tropenholzstufe
+  jungle_stairs: Tropenholztreppe
+  jungle_trapdoor: Tropenholzfalltür
+  jungle_wall_hanging_sign: Tropenholzwandhängeschild
+  jungle_wall_sign: Tropenholzwandschild
+  jungle_wood: Tropenholz
+  kelp: Seetang
+  kelp_plant: Seetangstängel
+  ladder: Leiter
+  lantern: Laterne
+  lapis_block: Lapislazuliblock
+  lapis_ore: Lapislazulierz
+  large_amethyst_bud: Große Amethystknospe
+  large_fern: Großer Farn
+  lava: Lava
+  lava_cauldron: Lavakessel
+  lectern: Lesepult
+  lever: Hebel
+  light: Lichtblock
+  light_blue_banner: Hellblaues Banner
+  light_blue_bed: Hellblaues Bett
+  light_blue_candle: Hellblaue Kerze
+  light_blue_candle_cake: Kuchen mit hellblauer Kerze
+  light_blue_carpet: Hellblauer Teppich
+  light_blue_concrete: Hellblauer Beton
+  light_blue_concrete_powder: Hellblauer Trockenbeton
+  light_blue_glazed_terracotta: Hellblaue glasierte Keramik
+  light_blue_shulker_box: Hellblaue Shulker-Kiste
+  light_blue_stained_glass: Hellblaues Glas
+  light_blue_stained_glass_pane: Hellblaue Glasscheibe
+  light_blue_terracotta: Hellblaue Keramik
+  light_blue_wool: Hellblaue Wolle
+  light_gray_banner: Hellgraues Banner
+  light_gray_bed: Hellgraues Bett
+  light_gray_candle: Hellgraue Kerze
+  light_gray_candle_cake: Kuchen mit hellgrauer Kerze
+  light_gray_carpet: Hellgrauer Teppich
+  light_gray_concrete: Hellgrauer Beton
+  light_gray_concrete_powder: Hellgrauer Trockenbeton
+  light_gray_glazed_terracotta: Hellgraue glasierte Keramik
+  light_gray_shulker_box: Hellgraue Shulker-Kiste
+  light_gray_stained_glass: Hellgraues Glas
+  light_gray_stained_glass_pane: Hellgraue Glasscheibe
+  light_gray_terracotta: Hellgraue Keramik
+  light_gray_wool: Hellgraue Wolle
+  light_weighted_pressure_plate: Feinwägeplatte
+  lightning_rod: Blitzableiter
+  lilac: Flieder
+  lily_of_the_valley: Maiglöckchen
+  lily_pad: Seerosenblatt
+  lime_banner: Hellgrünes Banner
+  lime_bed: Hellgrünes Bett
+  lime_candle: Hellgrüne Kerze
+  lime_candle_cake: Kuchen mit hellgrüner Kerze
+  lime_carpet: Hellgrüner Teppich
+  lime_concrete: Hellgrüner Beton
+  lime_concrete_powder: Hellgrüner Trockenbeton
+  lime_glazed_terracotta: Hellgrüne glasierte Keramik
+  lime_shulker_box: Hellgrüne Shulker-Kiste
+  lime_stained_glass: Hellgrünes Glas
+  lime_stained_glass_pane: Hellgrüne Glasscheibe
+  lime_terracotta: Hellgrüne Keramik
+  lime_wool: Hellgrüne Wolle
+  lodestone: Leitstein
+  loom: Webstuhl
+  magenta_banner: Magenta Banner
+  magenta_bed: Magenta Bett
+  magenta_candle: Magenta Kerze
+  magenta_candle_cake: Kuchen mit magenta Kerze
+  magenta_carpet: Magenta Teppich
+  magenta_concrete: Magenta Beton
+  magenta_concrete_powder: Magenta Trockenbeton
+  magenta_glazed_terracotta: Magenta glasierte Keramik
+  magenta_shulker_box: Magenta Shulker-Kiste
+  magenta_stained_glass: Magenta Glas
+  magenta_stained_glass_pane: Magenta Glasscheibe
+  magenta_terracotta: Magenta Keramik
+  magenta_wool: Magenta Wolle
+  magma_block: Magmablock
+  mangrove_button: Mangrovenholzknopf
+  mangrove_door: Mangrovenholztür
+  mangrove_fence: Mangrovenholzzaun
+  mangrove_fence_gate: Mangrovenholzzauntor
+  mangrove_hanging_sign: Mangrovenholzhängeschild
+  mangrove_leaves: Mangrovenlaub
+  mangrove_log: Mangrovenstamm
+  mangrove_planks: Mangrovenholzbretter
+  mangrove_pressure_plate: Mangrovenholzdruckplatte
+  mangrove_propagule: Mangroven-Keimling
+  mangrove_roots: Mangrovenwurzeln
+  mangrove_sign: Mangrovenholzschild
+  mangrove_slab: Mangrovenholzstufe
+  mangrove_stairs: Mangrovenholztreppe
+  mangrove_trapdoor: Mangrovenholzfalltür
+  mangrove_wall_hanging_sign: Mangrovenholzwandhängeschild
+  mangrove_wall_sign: Mangrovenholzwandschild
+  mangrove_wood: Mangrovenholz
+  medium_amethyst_bud: Mittlere Amethystknospe
+  melon: Melone
+  melon_stem: Melonenpflanze
+  moss_block: Moosblock
+  moss_carpet: Moosteppich
+  mossy_cobblestone: Bemooster Bruchstein
+  mossy_cobblestone_slab: Bemooste Bruchsteinstufe
+  mossy_cobblestone_stairs: Bemooste Bruchsteintreppe
+  mossy_cobblestone_wall: Bemooste Bruchsteinmauer
+  mossy_stone_brick_slab: Bemooste Steinziegelstufe
+  mossy_stone_brick_stairs: Bemooste Steinziegeltreppe
+  mossy_stone_brick_wall: Bemooste Steinziegelmauer
+  mossy_stone_bricks: Bemooste Steinziegel
+  moving_piston: Bewegter Block
+  mud: Schlamm
+  mud_brick_slab: Schlammziegelstufe
+  mud_brick_stairs: Schlammziegeltreppe
+  mud_brick_wall: Schlammziegelmauer
+  mud_bricks: Schlammziegel
+  muddy_mangrove_roots: Schlammige Mangrovenwurzeln
+  mushroom_stem: Pilzstiel
+  mycelium: Myzel
+  nether_brick_fence: Netherziegelzaun
+  nether_brick_slab: Netherziegelstufe
+  nether_brick_stairs: Netherziegeltreppe
+  nether_brick_wall: Netherziegelmauer
+  nether_bricks: Netherziegel
+  nether_gold_ore: Nethergolderz
+  nether_portal: Netherportal
+  nether_quartz_ore: Netherquarzerz
+  nether_sprouts: Nethersprossen
+  nether_wart: Netherwarze
+  nether_wart_block: Netherwarzenblock
+  netherite_block: Netheritblock
+  netherrack: Netherrack
+  note_block: Notenblock
+  oak_button: Eichenholzknopf
+  oak_door: Eichenholztür
+  oak_fence: Eichenholzzaun
+  oak_fence_gate: Eichenholzzauntor
+  oak_hanging_sign: Eichenholzhängeschild
+  oak_leaves: Eichenlaub
+  oak_log: Eichenstamm
+  oak_planks: Eichenholzbretter
+  oak_pressure_plate: Eichenholzdruckplatte
+  oak_sapling: Eichensetzling
+  oak_sign: Eichenholzschild
+  oak_slab: Eichenholzstufe
+  oak_stairs: Eichenholztreppe
+  oak_trapdoor: Eichenholzfalltür
+  oak_wall_hanging_sign: Eichenholzwandhängeschild
+  oak_wall_sign: Eichenholzwandschild
+  oak_wood: Eichenholz
+  observer: Beobachter
+  obsidian: Obsidian
+  ochre_froglight: Ockernes Froschlicht
+  ominous_banner: Unheilvolles Banner
+  orange_banner: Oranges Banner
+  orange_bed: Oranges Bett
+  orange_candle: Orange Kerze
+  orange_candle_cake: Kuchen mit oranger Kerze
+  orange_carpet: Oranger Teppich
+  orange_concrete: Oranger Beton
+  orange_concrete_powder: Oranger Trockenbeton
+  orange_glazed_terracotta: Orange glasierte Keramik
+  orange_shulker_box: Orange Shulker-Kiste
+  orange_stained_glass: Oranges Glas
+  orange_stained_glass_pane: Orange Glasscheibe
+  orange_terracotta: Orange Keramik
+  orange_tulip: Orange Tulpe
+  orange_wool: Orange Wolle
+  oxeye_daisy: Margerite
+  oxidized_copper: Oxidierter Kupferblock
+  oxidized_cut_copper: Oxidierter geschnittener Kupferblock
+  oxidized_cut_copper_slab: Oxidierte geschnittene Kupferstufe
+  oxidized_cut_copper_stairs: Oxidierte geschnittene Kupfertreppe
+  packed_ice: Packeis
+  packed_mud: Fester Schlamm
+  pearlescent_froglight: Perlmutternes Froschlicht
+  peony: Pfingstrose
+  petrified_oak_slab: Versteinerte Eichenholzstufe
+  piglin_head: Piglinkopf
+  piglin_wall_head: Piglin-Wandkopf
+  pink_banner: Rosa Banner
+  pink_bed: Rosa Bett
+  pink_candle: Rosa Kerze
+  pink_candle_cake: Kuchen mit rosa Kerze
+  pink_carpet: Rosa Teppich
+  pink_concrete: Rosa Beton
+  pink_concrete_powder: Rosa Trockenbeton
+  pink_glazed_terracotta: Rosa glasierte Keramik
+  pink_petals: Rosa Blütenblätter
+  pink_shulker_box: Rosa Shulker-Kiste
+  pink_stained_glass: Rosa Glas
+  pink_stained_glass_pane: Rosa Glasscheibe
+  pink_terracotta: Rosa Keramik
+  pink_tulip: Rosa Tulpe
+  pink_wool: Rosa Wolle
+  piston: Kolben
+  piston_head: Kolbenkopf
+  pitcher_crop: Kannenpflanzentrieb
+  pitcher_plant: Kannenpflanze
+  player_head: Spielerkopf
+  player_wall_head: Spieler-Wandkopf
+  podzol: Podsol
+  pointed_dripstone: Spitzer Tropfstein
+  polished_andesite: Polierter Andesit
+  polished_andesite_slab: Polierte Andesitstufe
+  polished_andesite_stairs: Polierte Andesittreppe
+  polished_basalt: Polierter Basalt
+  polished_blackstone: Polierter Schwarzstein
+  polished_blackstone_brick_slab: Polierte Schwarzsteinziegelstufe
+  polished_blackstone_brick_stairs: Polierte Schwarzsteinziegeltreppe
+  polished_blackstone_brick_wall: Polierte Schwarzsteinziegelmauer
+  polished_blackstone_bricks: Polierte Schwarzsteinziegel
+  polished_blackstone_button: Polierter Schwarzsteinknopf
+  polished_blackstone_pressure_plate: Polierte Schwarzsteindruckplatte
+  polished_blackstone_slab: Polierte Schwarzsteinstufe
+  polished_blackstone_stairs: Polierte Schwarzsteintreppe
+  polished_blackstone_wall: Polierte Schwarzsteinmauer
+  polished_deepslate: Polierter Tiefenschiefer
+  polished_deepslate_slab: Polierte Tiefenschieferstufe
+  polished_deepslate_stairs: Polierte Tiefenschiefertreppe
+  polished_deepslate_wall: Polierte Tiefenschiefermauer
+  polished_diorite: Polierter Diorit
+  polished_diorite_slab: Polierte Dioritstufe
+  polished_diorite_stairs: Polierte Diorittreppe
+  polished_granite: Polierter Granit
+  polished_granite_slab: Polierte Granitstufe
+  polished_granite_stairs: Polierte Granittreppe
+  poppy: Mohn
+  potatoes: Kartoffeln
+  potted_acacia_sapling: Eingetopfter Akaziensetzling
+  potted_allium: Eingetopfter Zierlauch
+  potted_azalea_bush: Eingetopfte Azalee
+  potted_azure_bluet: Eingetopftes Porzellansternchen
+  potted_bamboo: Eingetopfter Bambus
+  potted_birch_sapling: Eingetopfter Birkensetzling
+  potted_blue_orchid: Eingetopfte blaue Orchidee
+  potted_brown_mushroom: Eingetopfter brauner Pilz
+  potted_cactus: Eingetopfter Kaktus
+  potted_cherry_sapling: Eingetopfter Kirschsetzling
+  potted_cornflower: Eingetopfte Kornblume
+  potted_crimson_fungus: Eingetopfter Karmesinpilz
+  potted_crimson_roots: Eingetopfte Karmesinwurzeln
+  potted_dandelion: Eingetopfter Löwenzahn
+  potted_dark_oak_sapling: Eingetopfter Schwarzeichensetzling
+  potted_dead_bush: Eingetopfter toter Busch
+  potted_fern: Eingetopfter Farn
+  potted_flowering_azalea_bush: Eingetopfte blühende Azalee
+  potted_jungle_sapling: Eingetopfter Tropenbaumsetzling
+  potted_lily_of_the_valley: Eingetopftes Maiglöckchen
+  potted_mangrove_propagule: Eingetopfter Mangroven-Keimling
+  potted_oak_sapling: Eingetopfter Eichensetzling
+  potted_orange_tulip: Eingetopfte orange Tulpe
+  potted_oxeye_daisy: Eingetopfte Margerite
+  potted_pink_tulip: Eingetopfte rosa Tulpe
+  potted_poppy: Eingetopfter Mohn
+  potted_red_mushroom: Eingetopfter roter Pilz
+  potted_red_tulip: Eingetopfte rote Tulpe
+  potted_spruce_sapling: Eingetopfter Fichtensetzling
+  potted_torchflower: Eingetopfte Fackellilie
+  potted_warped_fungus: Eingetopfter Wirrpilz
+  potted_warped_roots: Eingetopfte Wirrwurzeln
+  potted_white_tulip: Eingetopfte weiße Tulpe
+  potted_wither_rose: Eingetopfte Wither-Rose
+  powder_snow: Pulverschnee
+  powder_snow_cauldron: Pulverschneekessel
+  powered_rail: Antriebsschiene
+  prismarine: Prismarin
+  prismarine_brick_slab: Prismarinziegelstufe
+  prismarine_brick_stairs: Prismarinziegeltreppe
+  prismarine_bricks: Prismarinziegel
+  prismarine_slab: Prismarinstufe
+  prismarine_stairs: Prismarintreppe
+  prismarine_wall: Prismarinmauer
+  pumpkin: Kürbis
+  pumpkin_stem: Kürbispflanze
+  purple_banner: Violettes Banner
+  purple_bed: Violettes Bett
+  purple_candle: Violette Kerze
+  purple_candle_cake: Kuchen mit violetter Kerze
+  purple_carpet: Violetter Teppich
+  purple_concrete: Violetter Beton
+  purple_concrete_powder: Violetter Trockenbeton
+  purple_glazed_terracotta: Violette glasierte Keramik
+  purple_shulker_box: Violette Shulker-Kiste
+  purple_stained_glass: Violettes Glas
+  purple_stained_glass_pane: Violette Glasscheibe
+  purple_terracotta: Violette Keramik
+  purple_wool: Violette Wolle
+  purpur_block: Purpurblock
+  purpur_pillar: Purpursäule
+  purpur_slab: Purpurstufe
+  purpur_stairs: Purpurtreppe
+  quartz_block: Quarzblock
+  quartz_bricks: Quarzziegel
+  quartz_pillar: Quarzsäule
+  quartz_slab: Quarzstufe
+  quartz_stairs: Quarztreppe
+  rail: Schiene
+  raw_copper_block: Rohkupferblock
+  raw_gold_block: Rohgoldblock
+  raw_iron_block: Roheisenblock
+  red_banner: Rotes Banner
+  red_bed: Rotes Bett
+  red_candle: Rote Kerze
+  red_candle_cake: Kuchen mit roter Kerze
+  red_carpet: Roter Teppich
+  red_concrete: Roter Beton
+  red_concrete_powder: Roter Trockenbeton
+  red_glazed_terracotta: Rote glasierte Keramik
+  red_mushroom: Roter Pilz
+  red_mushroom_block: Roter Pilzblock
+  red_nether_brick_slab: Rote Netherziegelstufe
+  red_nether_brick_stairs: Rote Netherziegeltreppe
+  red_nether_brick_wall: Rote Netherziegelmauer
+  red_nether_bricks: Rote Netherziegel
+  red_sand: Roter Sand
+  red_sandstone: Roter Sandstein
+  red_sandstone_slab: Rote Sandsteinstufe
+  red_sandstone_stairs: Rote Sandsteintreppe
+  red_sandstone_wall: Rote Sandsteinmauer
+  red_shulker_box: Rote Shulker-Kiste
+  red_stained_glass: Rotes Glas
+  red_stained_glass_pane: Rote Glasscheibe
+  red_terracotta: Rote Keramik
+  red_tulip: Rote Tulpe
+  red_wool: Rote Wolle
+  redstone_block: Redstone-Block
+  redstone_lamp: Redstone-Lampe
+  redstone_ore: Redstone-Erz
+  redstone_torch: Redstone-Fackel
+  redstone_wall_torch: Redstone-Wandfackel
+  redstone_wire: Redstone-Leitung
+  reinforced_deepslate: Verstärkter Tiefenschiefer
+  repeater: Redstone-Verstärker
+  repeating_command_block: Wiederhol-Befehlsblock
+  respawn_anchor: Seelenanker
+  rooted_dirt: Wurzelerde
+  rose_bush: Rosenstrauch
+  sand: Sand
+  sandstone: Sandstein
+  sandstone_slab: Sandsteinstufe
+  sandstone_stairs: Sandsteintreppe
+  sandstone_wall: Sandsteinmauer
+  scaffolding: Gerüst
+  sculk: Sculk
+  sculk_catalyst: Sculk-Katalysator
+  sculk_sensor: Sculk-Sensor
+  sculk_shrieker: Sculk-Kreischer
+  sculk_vein: Sculk-Ader
+  sea_lantern: Seelaterne
+  sea_pickle: Meeresgurke
+  seagrass: Seegras
+  set_spawn: Wiedereinstiegspunkt gesetzt
+  shroomlight: Pilzlicht
+  shulker_box: Shulker-Kiste
+  skeleton_skull: Skelettschädel
+  skeleton_wall_skull: Skelett-Wandschädel
+  slime_block: Schleimblock
+  small_amethyst_bud: Kleine Amethystknospe
+  small_dripleaf: Kleines Tropfblatt
+  smithing_table: Schmiedetisch
+  smoker: Räucherofen
+  smooth_basalt: Glatter Basalt
+  smooth_quartz: Glatter Quarzblock
+  smooth_quartz_slab: Glatte Quarzstufe
+  smooth_quartz_stairs: Glatte Quarztreppe
+  smooth_red_sandstone: Glatter roter Sandstein
+  smooth_red_sandstone_slab: Glatte rote Sandsteinstufe
+  smooth_red_sandstone_stairs: Glatte rote Sandsteintreppe
+  smooth_sandstone: Glatter Sandstein
+  smooth_sandstone_slab: Glatte Sandsteinstufe
+  smooth_sandstone_stairs: Glatte Sandsteintreppe
+  smooth_stone: Glatter Stein
+  smooth_stone_slab: Glatte Steinstufe
+  sniffer_egg: Schnüffler-Ei
+  snow: Schnee
+  snow_block: Schneeblock
+  soul_campfire: Seelenlagerfeuer
+  soul_fire: Seelenfeuer
+  soul_lantern: Seelenlaterne
+  soul_sand: Seelensand
+  soul_soil: Seelenerde
+  soul_torch: Seelenfackel
+  soul_wall_torch: Seelenwandfackel
+  spawner: Spawner
+  sponge: Schwamm
+  spore_blossom: Sporenblüte
+  spruce_button: Fichtenholzknopf
+  spruce_door: Fichtenholztür
+  spruce_fence: Fichtenholzzaun
+  spruce_fence_gate: Fichtenholzzauntor
+  spruce_hanging_sign: Fichtenholzhängeschild
+  spruce_leaves: Fichtennadeln
+  spruce_log: Fichtenstamm
+  spruce_planks: Fichtenholzbretter
+  spruce_pressure_plate: Fichtenholzdruckplatte
+  spruce_sapling: Fichtensetzling
+  spruce_sign: Fichtenholzschild
+  spruce_slab: Fichtenholzstufe
+  spruce_stairs: Fichtenholztreppe
+  spruce_trapdoor: Fichtenholzfalltür
+  spruce_wall_hanging_sign: Fichtenholzwandhängeschild
+  spruce_wall_sign: Fichtenholzwandschild
+  spruce_wood: Fichtenholz
+  sticky_piston: Klebriger Kolben
+  stone: Stein
+  stone_brick_slab: Steinziegelstufe
+  stone_brick_stairs: Steinziegeltreppe
+  stone_brick_wall: Steinziegelmauer
+  stone_bricks: Steinziegel
+  stone_button: Steinknopf
+  stone_pressure_plate: Steindruckplatte
+  stone_slab: Steinstufe
+  stone_stairs: Steintreppe
+  stonecutter: Steinsäge
+  stripped_acacia_log: Entrindeter Akazienstamm
+  stripped_acacia_wood: Entrindetes Akazienholz
+  stripped_bamboo_block: Geschälter Bambusblock
+  stripped_birch_log: Entrindeter Birkenstamm
+  stripped_birch_wood: Entrindetes Birkenholz
+  stripped_cherry_log: Entrindeter Kirschstamm
+  stripped_cherry_wood: Entrindetes Kirschholz
+  stripped_crimson_hyphae: Geschälte Karmesinhyphen
+  stripped_crimson_stem: Geschälter Karmesinstiel
+  stripped_dark_oak_log: Entrindeter Schwarzeichenstamm
+  stripped_dark_oak_wood: Entrindetes Schwarzeichenholz
+  stripped_jungle_log: Entrindeter Tropenbaumstamm
+  stripped_jungle_wood: Entrindetes Tropenholz
+  stripped_mangrove_log: Entrindeter Mangrovenstamm
+  stripped_mangrove_wood: Entrindetes Mangrovenholz
+  stripped_oak_log: Entrindeter Eichenstamm
+  stripped_oak_wood: Entrindetes Eichenholz
+  stripped_spruce_log: Entrindeter Fichtenstamm
+  stripped_spruce_wood: Entrindetes Fichtenholz
+  stripped_warped_hyphae: Geschälte Wirrhyphen
+  stripped_warped_stem: Geschälter Wirrstiel
+  structure_block: Konstruktionsblock
+  structure_void: Konstruktionsleere
+  sugar_cane: Zuckerrohr
+  sunflower: Sonnenblume
+  suspicious_gravel: Seltsamer Kies
+  suspicious_sand: Seltsamer Sand
+  sweet_berry_bush: Süßbeerstrauch
+  tall_grass: Hohes Gras
+  tall_seagrass: Hohes Seegras
+  target: Zielblock
+  terracotta: Keramik
+  tinted_glass: Getöntes Glas
+  tnt: TNT
+  torch: Fackel
+  torchflower: Fackellilie
+  torchflower_crop: Fackellilienpflanze
+  trapped_chest: Redstone-Truhe
+  tripwire: Stolperdraht
+  tripwire_hook: Haken
+  tube_coral: Orgelkoralle
+  tube_coral_block: Orgelkorallenblock
+  tube_coral_fan: Orgelkorallenfächer
+  tube_coral_wall_fan: Orgelkorallenwandfächer
+  tuff: Tuffstein
+  turtle_egg: Schildkrötenei
+  twisting_vines: Zwirbelranken
+  twisting_vines_plant: Zwirbelrankenpflanze
+  verdant_froglight: Junggrünes Froschlicht
+  vine: Ranken
+  void_air: Leerenluft
+  wall_torch: Wandfackel
+  warped_button: Wirrknopf
+  warped_door: Wirrtür
+  warped_fence: Wirrzaun
+  warped_fence_gate: Wirrzauntor
+  warped_fungus: Wirrpilz
+  warped_hanging_sign: Wirrhängeschild
+  warped_hyphae: Wirrhyphen
+  warped_nylium: Wirr-Nezel
+  warped_planks: Wirrbretter
+  warped_pressure_plate: Wirrdruckplatte
+  warped_roots: Wirrwurzeln
+  warped_sign: Wirrschild
+  warped_slab: Wirrstufe
+  warped_stairs: Wirrtreppe
+  warped_stem: Wirrstiel
+  warped_trapdoor: Wirrfalltür
+  warped_wall_hanging_sign: Wirrwandhängeschild
+  warped_wall_sign: Wirrwandschild
+  warped_wart_block: Wirrwarzenblock
+  water: Wasser
+  water_cauldron: Wasserkessel
+  waxed_copper_block: Gewachster Kupferblock
+  waxed_cut_copper: Gewachster geschnittener Kupferblock
+  waxed_cut_copper_slab: Gewachste geschnittene Kupferstufe
+  waxed_cut_copper_stairs: Gewachste geschnittene Kupfertreppe
+  waxed_exposed_copper: Gewachster angelaufener Kupferblock
+  waxed_exposed_cut_copper: Gewachster angelaufener geschnittener Kupferblock
+  waxed_exposed_cut_copper_slab: Gewachste angelaufene geschnittene Kupferstufe
+  waxed_exposed_cut_copper_stairs: Gewachste angelaufene geschnittene Kupfertreppe
+  waxed_oxidized_copper: Gewachster oxidierter Kupferblock
+  waxed_oxidized_cut_copper: Gewachster oxidierter geschnittener Kupferblock
+  waxed_oxidized_cut_copper_slab: Gewachste oxidierte geschnittene Kupferstufe
+  waxed_oxidized_cut_copper_stairs: Gewachste oxidierte geschnittene Kupfertreppe
+  waxed_weathered_copper: Gewachster verwitterter Kupferblock
+  waxed_weathered_cut_copper: Gewachster verwitterter geschnittener Kupferblock
+  waxed_weathered_cut_copper_slab: Gewachste verwitterte geschnittene Kupferstufe
+  waxed_weathered_cut_copper_stairs: Gewachste verwitterte geschnittene Kupfertreppe
+  weathered_copper: Verwitterter Kupferblock
+  weathered_cut_copper: Verwitterter geschnittener Kupferblock
+  weathered_cut_copper_slab: Verwitterte geschnittene Kupferstufe
+  weathered_cut_copper_stairs: Verwitterte geschnittene Kupfertreppe
+  weeping_vines: Trauerranken
+  weeping_vines_plant: Trauerrankenpflanze
+  wet_sponge: Nasser Schwamm
+  wheat: Weizen
+  white_banner: Weißes Banner
+  white_bed: Weißes Bett
+  white_candle: Weiße Kerze
+  white_candle_cake: Kuchen mit weißer Kerze
+  white_carpet: Weißer Teppich
+  white_concrete: Weißer Beton
+  white_concrete_powder: Weißer Trockenbeton
+  white_glazed_terracotta: Weiße glasierte Keramik
+  white_shulker_box: Weiße Shulker-Kiste
+  white_stained_glass: Weißes Glas
+  white_stained_glass_pane: Weiße Glasscheibe
+  white_terracotta: Weiße Keramik
+  white_tulip: Weiße Tulpe
+  white_wool: Weiße Wolle
+  wither_rose: Wither-Rose
+  wither_skeleton_skull: Witherskelettschädel
+  wither_skeleton_wall_skull: Witherskelett-Wandschädel
+  yellow_banner: Gelbes Banner
+  yellow_bed: Gelbes Bett
+  yellow_candle: Gelbe Kerze
+  yellow_candle_cake: Kuchen mit gelber Kerze
+  yellow_carpet: Gelber Teppich
+  yellow_concrete: Gelber Beton
+  yellow_concrete_powder: Gelber Trockenbeton
+  yellow_glazed_terracotta: Gelbe glasierte Keramik
+  yellow_shulker_box: Gelbe Shulker-Kiste
+  yellow_stained_glass: Gelbes Glas
+  yellow_stained_glass_pane: Gelbe Glasscheibe
+  yellow_terracotta: Gelbe Keramik
+  yellow_wool: Gelbe Wolle
+  zombie_head: Zombiekopf
+  zombie_wall_head: Zombie-Wandkopf
+  acacia_boat: Akazienholzboot
+  acacia_chest_boat: Akazienholztruhenboot
+  allay_spawn_egg: Hilfsgeister-Spawn-Ei
+  amethyst_shard: Amethystscherbe
+  angler_pottery_shard: Angler-Töpferscherbe
+  angler_pottery_sherd: Angler-Töpferscherbe
+  apple: Apfel
+  archer_pottery_shard: Schützen-Töpferscherbe
+  archer_pottery_sherd: Schützen-Töpferscherbe
+  armor_stand: Rüstungsständer
+  arms_up_pottery_shard: Gebärden-Töpferscherbe
+  arms_up_pottery_sherd: Gebärden-Töpferscherbe
+  arrow: Pfeil
+  axolotl_bucket: Axolotleimer
+  axolotl_spawn_egg: Axolotl-Spawn-Ei
+  baked_potato: Ofenkartoffel
+  bamboo_chest_raft: Bambus-Truhenfloß
+  bamboo_raft: Bambusfloß
+  bat_spawn_egg: Fledermaus-Spawn-Ei
+  bee_spawn_egg: Bienen-Spawn-Ei
+  beef: Rohes Rindfleisch
+  beetroot: Rote Bete
+  beetroot_seeds: Rote-Bete-Samen
+  beetroot_soup: Borschtsch
+  birch_boat: Birkenholzboot
+  birch_chest_boat: Birkenholztruhenboot
+  black_dye: Schwarzer Farbstoff
+  blade_pottery_shard: Klingen-Töpferscherbe
+  blade_pottery_sherd: Klingen-Töpferscherbe
+  blaze_powder: Lohenstaub
+  blaze_rod: Lohenrute
+  blaze_spawn_egg: Lohen-Spawn-Ei
+  blue_dye: Blauer Farbstoff
+  bone: Knochen
+  bone_meal: Knochenmehl
+  book: Buch
+  bow: Bogen
+  bowl: Schüssel
+  bread: Brot
+  brewer_pottery_shard: Brauer-Töpferscherbe
+  brewer_pottery_sherd: Brauer-Töpferscherbe
+  brick: Ziegel
+  brown_dye: Brauner Farbstoff
+  brush: Pinsel
+  bucket: Eimer
+  bundle: Bündel
+  burn_pottery_shard: Flammen-Töpferscherbe
+  burn_pottery_sherd: Flammen-Töpferscherbe
+  camel_spawn_egg: Dromedar-Spawn-Ei
+  carrot: Karotte
+  carrot_on_a_stick: Karottenrute
+  cat_spawn_egg: Katzen-Spawn-Ei
+  cave_spider_spawn_egg: Höhlenspinnen-Spawn-Ei
+  chainmail_boots: Kettenstiefel
+  chainmail_chestplate: Kettenhemd
+  chainmail_helmet: Kettenhaube
+  chainmail_leggings: Kettenhose
+  charcoal: Holzkohle
+  cherry_boat: Kirschholzboot
+  cherry_chest_boat: Kirschholztruhenboot
+  chest_minecart: Güterlore
+  chicken: Rohes Hühnchen
+  chicken_spawn_egg: Huhn-Spawn-Ei
+  chorus_fruit: Chorusfrucht
+  clay_ball: Tonklumpen
+  clock: Uhr
+  coal: Kohle
+  coast_armor_trim_smithing_template: Schmiedevorlage
+  cocoa_beans: Kakaobohnen
+  cod: Roher Kabeljau
+  cod_bucket: Kabeljaueimer
+  cod_spawn_egg: Kabeljau-Spawn-Ei
+  command_block_minecart: Befehlsblocklore
+  compass: Kompass
+  cooked_beef: Steak
+  cooked_chicken: Gebratenes Hühnchen
+  cooked_cod: Gebratener Kabeljau
+  cooked_mutton: Gebratenes Hammelfleisch
+  cooked_porkchop: Gebratenes Schweinefleisch
+  cooked_rabbit: Gebratenes Kaninchen
+  cooked_salmon: Gebratener Lachs
+  cookie: Keks
+  copper_ingot: Kupferbarren
+  cow_spawn_egg: Kuh-Spawn-Ei
+  creeper_banner_pattern: Bannervorlage
+  creeper_spawn_egg: Creeper-Spawn-Ei
+  crossbow: Armbrust
+  cyan_dye: Türkiser Farbstoff
+  danger_pottery_shard: Gefahren-Töpferscherbe
+  danger_pottery_sherd: Gefahren-Töpferscherbe
+  dark_oak_boat: Schwarzeichenholzboot
+  dark_oak_chest_boat: Schwarzeichenholztruhenboot
+  debug_stick: Debug-Stab
+  diamond: Diamant
+  diamond_axe: Diamantaxt
+  diamond_boots: Diamantstiefel
+  diamond_chestplate: Diamantharnisch
+  diamond_helmet: Diamanthelm
+  diamond_hoe: Diamanthacke
+  diamond_horse_armor: Diamantener Rossharnisch
+  diamond_leggings: Diamantbeinschutz
+  diamond_pickaxe: Diamantspitzhacke
+  diamond_shovel: Diamantschaufel
+  diamond_sword: Diamantschwert
+  disc_fragment_5: Plattenbruchstück
+  dolphin_spawn_egg: Delfin-Spawn-Ei
+  donkey_spawn_egg: Esel-Spawn-Ei
+  dragon_breath: Drachenatem
+  dried_kelp: Getrockneter Seetang
+  drowned_spawn_egg: Ertrunkenen-Spawn-Ei
+  dune_armor_trim_smithing_template: Schmiedevorlage
+  echo_shard: Echoscherbe
+  egg: Ei
+  elder_guardian_spawn_egg: Großer-Wächter-Spawn-Ei
+  elytra: Elytren
+  emerald: Smaragd
+  enchanted_book: Verzaubertes Buch
+  enchanted_golden_apple: Verzauberter goldener Apfel
+  end_crystal: Enderkristall
+  ender_dragon_spawn_egg: Enderdrachen-Spawn-Ei
+  ender_eye: Enderauge
+  ender_pearl: Enderperle
+  enderman_spawn_egg: Enderman-Spawn-Ei
+  endermite_spawn_egg: Endermiten-Spawn-Ei
+  evoker_spawn_egg: Magier-Spawn-Ei
+  experience_bottle: Erfahrungsfläschchen
+  explorer_pottery_shard: Entdecker-Töpferscherbe
+  explorer_pottery_sherd: Entdecker-Töpferscherbe
+  eye_armor_trim_smithing_template: Schmiedevorlage
+  feather: Feder
+  fermented_spider_eye: Fermentiertes Spinnenauge
+  filled_map: Karte
+  fire_charge: Feuerkugel
+  firework_rocket: Feuerwerksrakete
+  firework_star: Feuerwerksstern
+  fishing_rod: Angel
+  flint: Feuerstein
+  flint_and_steel: Feuerzeug
+  flower_banner_pattern: Bannervorlage
+  fox_spawn_egg: Fuchs-Spawn-Ei
+  friend_pottery_shard: Freundes-Töpferscherbe
+  friend_pottery_sherd: Freundes-Töpferscherbe
+  frog_spawn_egg: Frosch-Spawn-Ei
+  furnace_minecart: Ofenlore
+  ghast_spawn_egg: Ghast-Spawn-Ei
+  ghast_tear: Ghast-Träne
+  glass_bottle: Glasflasche
+  glistering_melon_slice: Glitzernde Melonenscheibe
+  globe_banner_pattern: Bannervorlage
+  glow_berries: Leuchtbeeren
+  glow_ink_sac: Leuchttintenbeutel
+  glow_item_frame: Leuchtrahmen
+  glow_squid_spawn_egg: Leuchttintenfisch-Spawn-Ei
+  glowstone_dust: Leuchtsteinstaub
+  goat_horn: Bockshorn
+  goat_spawn_egg: Ziegen-Spawn-Ei
+  gold_ingot: Goldbarren
+  gold_nugget: Goldklumpen
+  golden_apple: Goldener Apfel
+  golden_axe: Goldaxt
+  golden_boots: Goldstiefel
+  golden_carrot: Goldene Karotte
+  golden_chestplate: Goldharnisch
+  golden_helmet: Goldhelm
+  golden_hoe: Goldhacke
+  golden_horse_armor: Goldener Rossharnisch
+  golden_leggings: Goldbeinschutz
+  golden_pickaxe: Goldspitzhacke
+  golden_shovel: Goldschaufel
+  golden_sword: Goldschwert
+  gray_dye: Grauer Farbstoff
+  green_dye: Grüner Farbstoff
+  guardian_spawn_egg: Wächter-Spawn-Ei
+  gunpowder: Schwarzpulver
+  heart_of_the_sea: Herz des Meeres
+  heart_pottery_shard: Herz-Töpferscherbe
+  heart_pottery_sherd: Herz-Töpferscherbe
+  heartbreak_pottery_shard: Herzschmerz-Töpferscherbe
+  heartbreak_pottery_sherd: Herzschmerz-Töpferscherbe
+  hoglin_spawn_egg: Hoglin-Spawn-Ei
+  honey_bottle: Honigflasche
+  honeycomb: Honigwabe
+  hopper_minecart: Trichterlore
+  horse_spawn_egg: Pferde-Spawn-Ei
+  host_armor_trim_smithing_template: Schmiedevorlage
+  howl_pottery_shard: Geheul-Töpferscherbe
+  howl_pottery_sherd: Geheul-Töpferscherbe
+  husk_spawn_egg: Wüstenzombie-Spawn-Ei
+  ink_sac: Tintenbeutel
+  iron_axe: Eisenaxt
+  iron_boots: Eisenstiefel
+  iron_chestplate: Eisenharnisch
+  iron_golem_spawn_egg: Eisengolem-Spawn-Ei
+  iron_helmet: Eisenhelm
+  iron_hoe: Eisenhacke
+  iron_horse_armor: Eiserner Rossharnisch
+  iron_ingot: Eisenbarren
+  iron_leggings: Eisenbeinschutz
+  iron_nugget: Eisenklumpen
+  iron_pickaxe: Eisenspitzhacke
+  iron_shovel: Eisenschaufel
+  iron_sword: Eisenschwert
+  item_frame: Rahmen
+  jungle_boat: Tropenholzboot
+  jungle_chest_boat: Tropenholztruhenboot
+  knowledge_book: Buch des Wissens
+  lapis_lazuli: Lapislazuli
+  lava_bucket: Lavaeimer
+  lead: Leine
+  leather: Leder
+  leather_boots: Lederstiefel
+  leather_chestplate: Lederjacke
+  leather_helmet: Lederkappe
+  leather_horse_armor: Lederner Rossharnisch
+  leather_leggings: Lederhose
+  light_blue_dye: Hellblauer Farbstoff
+  light_gray_dye: Hellgrauer Farbstoff
+  lime_dye: Hellgrüner Farbstoff
+  lingering_potion: Verweiltrank
+  llama_spawn_egg: Lama-Spawn-Ei
+  lodestone_compass: Leitstein-Kompass
+  magenta_dye: Magenta Farbstoff
+  magma_cream: Magmacreme
+  magma_cube_spawn_egg: Magmawürfel-Spawn-Ei
+  mangrove_boat: Mangrovenholzboot
+  mangrove_chest_boat: Mangrovenholztruhenboot
+  map: Leere Karte
+  melon_seeds: Melonenkerne
+  melon_slice: Melonenscheibe
+  milk_bucket: Milcheimer
+  minecart: Lore
+  miner_pottery_shard: Bergarbeiter-Töpferscherbe
+  miner_pottery_sherd: Bergarbeiter-Töpferscherbe
+  mojang_banner_pattern: Bannervorlage
+  mooshroom_spawn_egg: Mooshroom-Spawn-Ei
+  mourner_pottery_shard: Wimmerer-Töpferscherbe
+  mourner_pottery_sherd: Wimmerer-Töpferscherbe
+  mule_spawn_egg: Maultier-Spawn-Ei
+  mushroom_stew: Pilzsuppe
+  music_disc_11: Schallplatte
+  music_disc_13: Schallplatte
+  music_disc_5: Schallplatte
+  music_disc_blocks: Schallplatte
+  music_disc_cat: Schallplatte
+  music_disc_chirp: Schallplatte
+  music_disc_far: Schallplatte
+  music_disc_mall: Schallplatte
+  music_disc_mellohi: Schallplatte
+  music_disc_otherside: Schallplatte
+  music_disc_pigstep: Schallplatte
+  music_disc_relic: Schallplatte
+  music_disc_stal: Schallplatte
+  music_disc_strad: Schallplatte
+  music_disc_wait: Schallplatte
+  music_disc_ward: Schallplatte
+  mutton: Rohes Hammelfleisch
+  name_tag: Namensschild
+  nautilus_shell: Nautilusschale
+  nether_brick: Netherziegel
+  nether_star: Netherstern
+  netherite_axe: Netheritaxt
+  netherite_boots: Netheritstiefel
+  netherite_chestplate: Netheritharnisch
+  netherite_helmet: Netherithelm
+  netherite_hoe: Netherithacke
+  netherite_ingot: Netheritbarren
+  netherite_leggings: Netheritbeinschutz
+  netherite_pickaxe: Netheritspitzhacke
+  netherite_scrap: Netheritplatten
+  netherite_shovel: Netheritschaufel
+  netherite_sword: Netheritschwert
+  netherite_upgrade_smithing_template: Schmiedevorlage
+  oak_boat: Eichenholzboot
+  oak_chest_boat: Eichenholztruhenboot
+  ocelot_spawn_egg: Ozelot-Spawn-Ei
+  orange_dye: Oranger Farbstoff
+  painting: Gemälde
+  panda_spawn_egg: Panda-Spawn-Ei
+  paper: Papier
+  parrot_spawn_egg: Papageien-Spawn-Ei
+  phantom_membrane: Phantomhaut
+  phantom_spawn_egg: Phantom-Spawn-Ei
+  pig_spawn_egg: Schweine-Spawn-Ei
+  piglin_banner_pattern: Bannervorlage
+  piglin_brute_spawn_egg: Piglin-Barbaren-Spawn-Ei
+  piglin_spawn_egg: Piglin-Spawn-Ei
+  pillager_spawn_egg: Plünderer-Spawn-Ei
+  pink_dye: Rosa Farbstoff
+  pitcher_pod: Kannenpflanzenkapsel
+  plenty_pottery_shard: Reichtums-Töpferscherbe
+  plenty_pottery_sherd: Reichtums-Töpferscherbe
+  poisonous_potato: Giftige Kartoffel
+  polar_bear_spawn_egg: Eisbären-Spawn-Ei
+  popped_chorus_fruit: Geplatzte Chorusfrucht
+  porkchop: Rohes Schweinefleisch
+  potato: Kartoffel
+  potion: Trank
+  pottery_shard_archer: Schützen-Töpferscherbe
+  pottery_shard_arms_up: Gebärden-Töpferscherbe
+  pottery_shard_prize: Juwelen-Töpferscherbe
+  pottery_shard_skull: Totenkopf-Töpferscherbe
+  powder_snow_bucket: Pulverschneeeimer
+  prismarine_crystals: Prismarinkristalle
+  prismarine_shard: Prismarinscherbe
+  prize_pottery_shard: Juwelen-Töpferscherbe
+  prize_pottery_sherd: Juwelen-Töpferscherbe
+  pufferfish: Kugelfisch
+  pufferfish_bucket: Kugelfischeimer
+  pufferfish_spawn_egg: Kugelfisch-Spawn-Ei
+  pumpkin_pie: Kürbiskuchen
+  pumpkin_seeds: Kürbiskerne
+  purple_dye: Violetter Farbstoff
+  quartz: Netherquarz
+  rabbit: Rohes Kaninchen
+  rabbit_foot: Hasenpfote
+  rabbit_hide: Kaninchenfell
+  rabbit_spawn_egg: Kaninchen-Spawn-Ei
+  rabbit_stew: Kaninchenragout
+  raiser_armor_trim_smithing_template: Schmiedevorlage
+  ravager_spawn_egg: Verwüster-Spawn-Ei
+  raw_copper: Rohkupfer
+  raw_gold: Rohgold
+  raw_iron: Roheisen
+  recovery_compass: Bergungskompass
+  red_dye: Roter Farbstoff
+  redstone: Redstone-Staub
+  rib_armor_trim_smithing_template: Schmiedevorlage
+  rotten_flesh: Verrottetes Fleisch
+  saddle: Sattel
+  salmon: Roher Lachs
+  salmon_bucket: Lachseimer
+  salmon_spawn_egg: Lachs-Spawn-Ei
+  scute: Hornschild
+  sentry_armor_trim_smithing_template: Schmiedevorlage
+  shaper_armor_trim_smithing_template: Schmiedevorlage
+  sheaf_pottery_shard: Garben-Töpferscherbe
+  sheaf_pottery_sherd: Garben-Töpferscherbe
+  shears: Schere
+  sheep_spawn_egg: Schafs-Spawn-Ei
+  shelter_pottery_shard: Zufluchts-Töpferscherbe
+  shelter_pottery_sherd: Zufluchts-Töpferscherbe
+  shield: Schild
+  shulker_shell: Shulker-Schale
+  shulker_spawn_egg: Shulker-Spawn-Ei
+  sign: Schild
+  silence_armor_trim_smithing_template: Schmiedevorlage
+  silverfish_spawn_egg: Silberfischchen-Spawn-Ei
+  skeleton_horse_spawn_egg: Skelettpferde-Spawn-Ei
+  skeleton_spawn_egg: Skelett-Spawn-Ei
+  skull_banner_pattern: Bannervorlage
+  skull_pottery_shard: Totenkopf-Töpferscherbe
+  skull_pottery_sherd: Totenkopf-Töpferscherbe
+  slime_ball: Schleimball
+  slime_spawn_egg: Schleim-Spawn-Ei
+  smithing_template: Schmiedevorlage
+  sniffer_spawn_egg: Schnüffler-Spawn-Ei
+  snort_pottery_shard: Schnaub-Töpferscherbe
+  snort_pottery_sherd: Schnaub-Töpferscherbe
+  snout_armor_trim_smithing_template: Schmiedevorlage
+  snow_golem_spawn_egg: Schneegolem-Spawn-Ei
+  snowball: Schneeball
+  spectral_arrow: Spektralpfeil
+  spider_eye: Spinnenauge
+  spider_spawn_egg: Spinnen-Spawn-Ei
+  spire_armor_trim_smithing_template: Schmiedevorlage
+  splash_potion: Wurftrank
+  spruce_boat: Fichtenholzboot
+  spruce_chest_boat: Fichtenholztruhenboot
+  spyglass: Fernrohr
+  squid_spawn_egg: Tintenfisch-Spawn-Ei
+  stick: Stock
+  stone_axe: Steinaxt
+  stone_hoe: Steinhacke
+  stone_pickaxe: Steinspitzhacke
+  stone_shovel: Steinschaufel
+  stone_sword: Steinschwert
+  stray_spawn_egg: Eiswanderer-Spawn-Ei
+  strider_spawn_egg: Schreiter-Spawn-Ei
+  string: Faden
+  sugar: Zucker
+  suspicious_stew: Seltsame Suppe
+  sweet_berries: Süßbeeren
+  tadpole_bucket: Kaulquappeneimer
+  tadpole_spawn_egg: Kaulquappen-Spawn-Ei
+  tide_armor_trim_smithing_template: Schmiedevorlage
+  tipped_arrow: Getränkter Pfeil
+  tnt_minecart: TNT-Lore
+  torchflower_seeds: Fackelliliensamen
+  totem_of_undying: Totem der Unsterblichkeit
+  trader_llama_spawn_egg: Händlerlama-Spawn-Ei
+  trident: Dreizack
+  tropical_fish: Tropenfisch
+  tropical_fish_bucket: Tropenfischeimer
+  tropical_fish_spawn_egg: Tropenfisch-Spawn-Ei
+  turtle_helmet: Schildkrötenpanzer
+  turtle_spawn_egg: Schildkröten-Spawn-Ei
+  vex_armor_trim_smithing_template: Schmiedevorlage
+  vex_spawn_egg: Plagegeister-Spawn-Ei
+  villager_spawn_egg: Dorfbewohner-Spawn-Ei
+  vindicator_spawn_egg: Diener-Spawn-Ei
+  wandering_trader_spawn_egg: Fahrender-Händler-Spawn-Ei
+  ward_armor_trim_smithing_template: Schmiedevorlage
+  warden_spawn_egg: Wärter-Spawn-Ei
+  warped_fungus_on_a_stick: Wirrpilzrute
+  water_bucket: Wassereimer
+  wayfinder_armor_trim_smithing_template: Schmiedevorlage
+  wheat_seeds: Weizenkörner
+  white_dye: Weißer Farbstoff
+  wild_armor_trim_smithing_template: Schmiedevorlage
+  witch_spawn_egg: Hexen-Spawn-Ei
+  wither_skeleton_spawn_egg: Witherskelett-Spawn-Ei
+  wither_spawn_egg: Wither-Spawn-Ei
+  wolf_spawn_egg: Wolfs-Spawn-Ei
+  wooden_axe: Holzaxt
+  wooden_hoe: Holzhacke
+  wooden_pickaxe: Holzspitzhacke
+  wooden_shovel: Holzschaufel
+  wooden_sword: Holzschwert
+  writable_book: Buch und Feder
+  written_book: Beschriebenes Buch
+  yellow_dye: Gelber Farbstoff
+  zoglin_spawn_egg: Zoglin-Spawn-Ei
+  zombie_horse_spawn_egg: Zombiepferde-Spawn-Ei
+  zombie_spawn_egg: Zombie-Spawn-Ei
+  zombie_villager_spawn_egg: Zombiedorfbewohner-Spawn-Ei
+  zombified_piglin_spawn_egg: Zombifizierter-Piglin-Spawn-Ei
+Enchantment:
+  aqua_affinity: Wasseraffinität
+  bane_of_arthropods: Nemesis der Gliederfüßer
+  binding_curse: Fluch der Bindung
+  blast_protection: Explosionsschutz
+  channeling: Entladung
+  depth_strider: Wasserläufer
+  efficiency: Effizienz
+  feather_falling: Federfall
+  fire_aspect: Verbrennung
+  fire_protection: Feuerschutz
+  flame: Flamme
+  fortune: Glück
+  frost_walker: Eisläufer
+  impaling: Harpune
+  infinity: Unendlichkeit
+  knockback: Rückstoß
+  looting: Plünderung
+  loyalty: Treue
+  luck_of_the_sea: Glück des Meeres
+  lure: Köder
+  mending: Reparatur
+  multishot: Mehrfachschuss
+  piercing: Durchschuss
+  power: Stärke
+  projectile_protection: Schusssicher
+  protection: Schutz
+  punch: Schlag
+  quick_charge: Schnellladen
+  respiration: Atmung
+  riptide: Sog
+  sharpness: Schärfe
+  silk_touch: Behutsamkeit
+  smite: Bann
+  soul_speed: Seelenläufer
+  sweeping: Schwungkraft
+  swift_sneak: Huschen
+  thorns: Dornen
+  unbreaking: Haltbarkeit
+  vanishing_curse: Fluch des Verschwindens
