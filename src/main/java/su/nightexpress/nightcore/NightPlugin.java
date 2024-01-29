@@ -8,7 +8,6 @@ import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.language.LangManager;
-import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Plugins;
@@ -161,7 +160,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.disable();
 
         HandlerList.unregisterAll(this); // Unregister all plugin listeners.
-        AbstractMenu.PLAYER_MENUS.values().forEach(Menu::close); // Close all GUIs.
+        AbstractMenu.closeAll(); // Close all GUIs.
 
         this.getCommandManager().shutdown();
         this.getLangManager().shutdown();

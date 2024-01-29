@@ -26,6 +26,10 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     public static final Map<UUID, Menu> PLAYER_MENUS = new HashMap<>();
 
+    public static void closeAll() {
+        new HashSet<>(PLAYER_MENUS.values()).forEach(Menu::close);
+    }
+
     protected final P                     plugin;
     protected final UUID                  id;
     protected final MenuOptions           options;

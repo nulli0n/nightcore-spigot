@@ -99,7 +99,8 @@ public class NumberUtil {
             if (!Double.isNaN(amount) && !Double.isInfinite(amount)) {
                 return amount;
             }
-        } catch (NumberFormatException ignored) {}
+        }
+        catch (NumberFormatException ignored) {}
 
         return defaultValue;
     }
@@ -115,7 +116,8 @@ public class NumberUtil {
     public static int getAnyInteger(@NotNull String input, int defaultValue) {
         try {
             return Integer.parseInt(input);
-        } catch (NumberFormatException ignored) {}
+        }
+        catch (NumberFormatException ignored) {}
 
         return defaultValue;
     }

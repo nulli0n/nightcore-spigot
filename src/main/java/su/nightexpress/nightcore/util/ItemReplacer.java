@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
 import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.tag.Tags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,7 @@ public class ItemReplacer {
         this.replace(this.placeholderMap.replacer());
 
         this.meta.setDisplayName(this.getDisplayName() == null ? null : NightMessage.asLegacy(this.getDisplayName()));
-        this.meta.setLore(NightMessage.asLegacy(this.packTrimmedLore()));
+        this.meta.setLore(this.packTrimmedLore());
 
         if (this.isHideFlags()) {
             this.meta.addItemFlags(ItemFlag.values());
@@ -179,7 +180,17 @@ public class ItemReplacer {
     public ItemReplacer replaceLoreExact(@NotNull String placeholder, @NotNull List<String> replacer) {
         if (this.getLore() == null) return this;
 
-        this.setLore(Lists.replace(this.packLore(), placeholder, replacer));
+        this.replace(placeholder, () -> String.join(Tags.LINE_BREAK.getFullName(), replacer));
+        //this.setLore(Lists.replace(this.packLore(), placeholder, replacer));
+        return this;
+    }
+
+    @NotNull
+    public ItemReplacer replaceLore(@NotNull String placeholder, @NotNull Supplier<List<String>> replacer) {
+        //if (this.getLore() == null) return this;
+
+        this.replace(placeholder, () -> String.join(Tags.LINE_BREAK.getFullName(), replacer.get()));
+        //this.setLore(Lists.replace(this.packLore(), placeholder, replacer));
         return this;
     }
 
@@ -210,7 +221,7 @@ public class ItemReplacer {
 
     @NotNull
     public List<String> packTrimmedLore() {
-        List<String> lore = this.packLore();
+        List<String> lore = NightMessage.asLegacy(this.packLore());
         if (this.isTrimLore()) {
             lore = Lists.stripEmpty(lore);
         }

@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.util.Placeholders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public class ItemHandler {
@@ -42,6 +43,18 @@ public class ItemHandler {
         if (clickAction != null) {
             this.getClickActions().add(clickAction);
         }
+    }
+
+    /**
+     * The main purpose of this method is to quickly created ItemHandler object for non-configurable GUIs.
+     * <br><br>
+     * Do NOT use this for items requires specific handler name.
+     * @param action Click action
+     * @return ItemHandler with random UUID as a name.
+     */
+    @NotNull
+    public static ItemHandler forClick(@NotNull ClickAction action) {
+        return new ItemHandler(UUID.randomUUID().toString(), action);
     }
 
     @NotNull

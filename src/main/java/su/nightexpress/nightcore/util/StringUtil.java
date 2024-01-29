@@ -112,6 +112,11 @@ public class StringUtil {
     }
 
     @NotNull
+    public static String inlineEnum(@NotNull Class<? extends Enum<?>> clazz, @NotNull String delimiter) {
+        return String.join(delimiter, Lists.getEnums(clazz));
+    }
+
+    @NotNull
     public static Color getColor(@NotNull String str) {
         String[] rgb = str.split(",");
         int red = NumberUtil.getInteger(rgb[0], 0);

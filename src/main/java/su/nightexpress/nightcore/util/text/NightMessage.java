@@ -23,7 +23,7 @@ public class NightMessage {
 
     static {
         registerTags(
-            Tags.WHITE, Tags.GRAY, Tags.GREEN,
+            Tags.BLACK, Tags.WHITE, Tags.GRAY, Tags.GREEN,
             Tags.YELLOW, Tags.ORANGE, Tags.RED,
             Tags.BLUE, Tags.CYAN, Tags.PURPLE, Tags.PINK,
 
@@ -229,6 +229,8 @@ public class NightMessage {
         }
 
         //System.out.println("parsedTexts = " + parts);
+
+        parts.removeIf(wrappedText -> wrappedText.getText().isEmpty());
 
         fixGradients(parts);
 

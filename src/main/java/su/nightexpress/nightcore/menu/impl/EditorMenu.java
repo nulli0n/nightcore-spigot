@@ -2,7 +2,6 @@ package su.nightexpress.nightcore.menu.impl;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
@@ -17,8 +16,11 @@ import su.nightexpress.nightcore.menu.item.ItemHandler;
 import su.nightexpress.nightcore.menu.item.MenuItem;
 import su.nightexpress.nightcore.menu.link.Linked;
 import su.nightexpress.nightcore.menu.link.ViewLink;
+import su.nightexpress.nightcore.util.ItemReplacer;
 import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.text.WrappedMessage;
+
+import java.util.function.Consumer;
 
 public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractMenu<P> implements Linked<T> {
 
@@ -77,12 +79,7 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
 
     @NotNull
     public MenuItem addItem(@NotNull ItemStack item, @NotNull LangItem locale, int... slots) {
-        ItemUtil.editMeta(item, meta -> {
-            meta.setDisplayName(locale.getLocalizedName());
-            meta.setLore(locale.getLocalizedLore());
-            meta.addItemFlags(ItemFlag.values());
-        });
-
+        ItemReplacer.create(item).trimmed().hideFlags().readLocale(locale).writeMeta();
         MenuItem menuItem = new MenuItem(item).setPriority(100).setSlots(slots);
         this.addItem(menuItem);
         return menuItem;
@@ -98,12 +95,14 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         this.handleInput(player, prompt.getString(), handler);
     }
 
-    public void handleInput(@NotNull MenuViewer viewer, @NotNull LangString prompt, @NotNull DialogHandler handler) {
-        this.handleInput(viewer.getPlayer(), prompt, handler);
+    @NotNull
+    public Dialog handleInput(@NotNull MenuViewer viewer, @NotNull LangString prompt, @NotNull DialogHandler handler) {
+        return this.handleInput(viewer.getPlayer(), prompt, handler);
     }
 
-    public void handleInput(@NotNull Player player, @NotNull LangString prompt, @NotNull DialogHandler handler) {
-        this.handleInput(player, prompt.getString(), handler);
+    @NotNull
+    public Dialog handleInput(@NotNull Player player, @NotNull LangString prompt, @NotNull DialogHandler handler) {
+        return this.handleInput(player, prompt.getMessage(), handler);
     }
 
     @NotNull
@@ -124,8 +123,21 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         return dialog;
     }
 
+    public void editObject(@NotNull MenuViewer viewer, @NotNull Consumer<T> consumer) {
+        this.editObject(viewer.getPlayer(), consumer);
+    }
+
+    public void editObject(@NotNull Player player, @NotNull Consumer<T> consumer) {
+        consumer.accept(this.getObject(player));
+    }
+
     @NotNull
     public T getObject(@NotNull MenuViewer viewer) {
         return this.getLink().get(viewer);
+    }
+
+    @NotNull
+    public T getObject(@NotNull Player player) {
+        return this.getLink().get(player);
     }
 }

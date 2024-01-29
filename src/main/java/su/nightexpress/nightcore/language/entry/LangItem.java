@@ -106,13 +106,13 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
         return wrappedLore;
     }
 
-    protected static final String LMB       = "Left-Click";
-    protected static final String RMB       = "Right-Click";
-    protected static final String DROP_KEY  = "[Q] Drop Key";
-    protected static final String SWAP_KEY  = "[F] Swap Key";
-    protected static final String SHIFT_LMB = "Shift-Left";
-    protected static final String SHIFT_RMB = "Shift-Right";
-    protected static final String DRAG_DROP = "Drag & Drop";
+    public static final String LMB       = "Left-Click";
+    public static final String RMB       = "Right-Click";
+    public static final String DROP_KEY  = "[Q] Drop Key";
+    public static final String SWAP_KEY  = "[F] Swap Key";
+    public static final String SHIFT_LMB = "Shift-Left";
+    public static final String SHIFT_RMB = "Shift-Right";
+    public static final String DRAG_DROP = "Drag & Drop";
 
     @NotNull
     public static Builder builder(@NotNull String key) {
@@ -162,7 +162,7 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
 
         @NotNull
         public Builder current(@NotNull String type, @NotNull String value) {
-            return this.addLore(Tags.YELLOW.enclose("▪ " + Tags.GRAY.enclose(type) + ": " + value));
+            return this.addLore(Tags.YELLOW.enclose("▪ " + Tags.GRAY.enclose(type + ": ") + value));
         }
 
         @NotNull

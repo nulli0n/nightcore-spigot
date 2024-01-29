@@ -32,7 +32,7 @@ public class MenuViewer {
         this.inventory.clear();
 
         if (Version.isAtLeast(Version.V1_19_R3)) {
-            this.view.setTitle(options.getTitle());
+            this.view.setTitle(options.getTitleFormatted());
         }
     }
 

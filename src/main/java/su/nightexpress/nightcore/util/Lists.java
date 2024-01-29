@@ -167,8 +167,9 @@ public class Lists {
     }
 
     @NotNull
+    @Deprecated
     public static String getEnums(@NotNull Class<? extends Enum<?>> clazz, @NotNull String delimiter) {
-        return String.join(delimiter, getEnums(clazz));
+        return StringUtil.inlineEnum(clazz, delimiter);
     }
 
     @NotNull

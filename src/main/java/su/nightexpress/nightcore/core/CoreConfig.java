@@ -77,5 +77,6 @@ public class CoreConfig {
             UniFormatter.of("#,###.##", RoundingMode.HALF_EVEN),
             "Control over how numerical data is formatted and rounded.",
             "Allowed modes: " + Arrays.stream(RoundingMode.values()).map(RoundingMode::name).map(String::toLowerCase).collect(Collectors.joining(", ")),
-            "A tutorial can be found here: https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html");
+            "A tutorial can be found here: https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html"
+    );
 }

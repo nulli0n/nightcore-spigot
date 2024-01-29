@@ -63,14 +63,22 @@ public class RankMap<T extends Number> {
             cfg.remove(path);
         }
 
-        Mode mode = ConfigValue.create(path + ".Mode", Mode.class, Mode.RANK).read(cfg);
-        String permissionPrefix = ConfigValue.create(path + ".Permission_Prefix", "sample.prefix.").read(cfg);
+        Mode mode = ConfigValue.create(path + ".Mode", Mode.class, Mode.RANK,
+            "Available values: " + StringUtil.inlineEnum(Mode.class, ", "),
+            "RANK = Get value by player's permission group. All 'Values' keys will represent permission group names.",
+            "PERMISSION = Get value by player's permissions. All 'Values' keys will become as suffix for 'Permission_Prefix' setting."
+        ).read(cfg);
+
+        String permissionPrefix = ConfigValue.create(path + ".Permission_Prefix", "sample.prefix.",
+            "Sets permission prefix for the 'PERMISSION' mode.",
+            "All 'Values' keys will be used to check if player has permission: <permission_prefix> + <key>."
+        ).read(cfg);
 
         T defaultValue;
         if (clazz == Double.class) {
-            defaultValue = clazz.cast(cfg.getDouble(path + ".Default_Value"));
+            defaultValue = clazz.cast(ConfigValue.create(path + ".Default_Value", -1).read(cfg));
         }
-        else defaultValue = clazz.cast(cfg.getInt(path + ".Default_Value"));
+        else defaultValue = clazz.cast(ConfigValue.create(path + ".Default_Value", -1).read(cfg));
 
         Map<String, T> values = new HashMap<>();
         for (String rank : cfg.getSection(path + ".Values")) {
@@ -89,6 +97,7 @@ public class RankMap<T extends Number> {
     public void write(@NotNull FileConfig cfg, @NotNull String path) {
         cfg.set(path + ".Mode", this.getMode().name());
         cfg.set(path + ".Permission_Prefix", this.getPermissionPrefix());
+        cfg.set(path + ".Default_Value", this.getDefaultValue());
         this.values.forEach((rank, number) -> {
             cfg.set(path + ".Values." + rank, number);
         });
@@ -97,7 +106,7 @@ public class RankMap<T extends Number> {
     @NotNull
     public T getRankValue(@NotNull Player player) {
         String group = Players.getPermissionGroup(player);
-        return this.values.getOrDefault(group, this.getDefaultValue());
+        return this.values.getOrDefault(group, this.values.getOrDefault(Placeholders.DEFAULT, this.getDefaultValue()));
     }
 
     @NotNull

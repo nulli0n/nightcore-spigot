@@ -4,5 +4,5 @@ import org.jetbrains.annotations.NotNull;
 
 public interface DialogHandler {
 
-    boolean onInput(@NotNull WrappedInput input);
+    boolean onInput(@NotNull Dialog dialog, @NotNull WrappedInput input);
 }

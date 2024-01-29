@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.Colorizer;
+import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.util.function.UnaryOperator;
 
@@ -35,12 +35,11 @@ public class MenuOptions {
 
     @NotNull
     public Inventory createInventory() {
-        String title = this.getTitle();
         if (this.getType() == InventoryType.CHEST) {
-            return Bukkit.getServer().createInventory(null, this.getSize(), title);
+            return Bukkit.getServer().createInventory(null, this.getSize(), this.getTitleFormatted());
         }
         else {
-            return Bukkit.getServer().createInventory(null, this.getType(), title);
+            return Bukkit.getServer().createInventory(null, this.getType(), this.getTitleFormatted());
         }
     }
 
@@ -49,8 +48,13 @@ public class MenuOptions {
         return title;
     }
 
+    @NotNull
+    public String getTitleFormatted() {
+        return NightMessage.asLegacy(this.getTitle());
+    }
+
     public void setTitle(@NotNull String title) {
-        this.title = Colorizer.apply(title);
+        this.title = title;
     }
 
     public void editTitle(@NotNull UnaryOperator<String> function) {
