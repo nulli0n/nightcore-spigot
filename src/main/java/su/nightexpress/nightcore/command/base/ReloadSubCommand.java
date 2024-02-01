@@ -22,6 +22,6 @@ public class ReloadSubCommand extends AbstractCommand<NightCorePlugin> {
     @Override
     protected void onExecute(@NotNull CommandSender sender, @NotNull CommandResult result) {
         this.plugin.reload();
-        CoreLang.COMMAND_RELOAD_DONE.getMessage().send(sender);
+        CoreLang.COMMAND_RELOAD_DONE.getMessage(plugin).send(sender);
     }
 }

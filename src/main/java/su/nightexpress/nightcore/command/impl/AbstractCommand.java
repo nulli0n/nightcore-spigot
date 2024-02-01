@@ -213,22 +213,22 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
     }
 
     protected final void errorUsage(@NotNull CommandSender sender) {
-        CoreLang.ERROR_COMMAND_USAGE.getMessage().replace(this.replacePlaceholders()).send(sender);
+        CoreLang.ERROR_COMMAND_USAGE.getMessage(plugin).replace(this.replacePlaceholders()).send(sender);
     }
 
     protected final void errorPermission(@NotNull CommandSender sender) {
-        CoreLang.ERROR_NO_PERMISSION.getMessage().send(sender);
+        CoreLang.ERROR_NO_PERMISSION.getMessage(plugin).send(sender);
     }
 
     protected final void errorPlayer(@NotNull CommandSender sender) {
-        CoreLang.ERROR_INVALID_PLAYER.getMessage().send(sender);
+        CoreLang.ERROR_INVALID_PLAYER.getMessage(plugin).send(sender);
     }
 
     protected final void errorSender(@NotNull CommandSender sender) {
-        CoreLang.ERROR_COMMAND_PLAYER_ONLY.getMessage().send(sender);
+        CoreLang.ERROR_COMMAND_PLAYER_ONLY.getMessage(plugin).send(sender);
     }
 
     protected final void errorNumber(@NotNull CommandSender sender, @NotNull String from) {
-        CoreLang.ERROR_INVALID_NUMBER.getMessage().replace(Placeholders.GENERIC_VALUE, from).send(sender);
+        CoreLang.ERROR_INVALID_NUMBER.getMessage(plugin).replace(Placeholders.GENERIC_VALUE, from).send(sender);
     }
 }

@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.language.tag.MessageDecorator;
@@ -32,10 +33,14 @@ public class LangMessage {
     private final WrappedMessage  message;
 
     public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options) {
+        this(plugin, defaultText, options, null);
+    }
+
+    public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options, @Nullable String prefix) {
         this.plugin = plugin;
         this.defaultText = defaultText;
         this.options = options;
-        this.message = NightMessage.from(defaultText);
+        this.message = NightMessage.from(prefix == null ? defaultText : prefix + defaultText);
         if (CoreConfig.MODERN_TEXT_PRECOMPILE_LANG.get()) {
             this.message.compile();
         }
@@ -105,13 +110,15 @@ public class LangMessage {
             builder.append(letter);
         }
 
-        if (options.getOutputType() == OutputType.CHAT && options.hasPrefix()) {
-            builder.insert(0, plugin.getPrefix());
-        }
-
         String text = builder.toString();
+        String prefix = options.getOutputType() == OutputType.CHAT && options.hasPrefix() ? plugin.getPrefix() : null;
 
-        return new LangMessage(plugin, text, options);
+        return new LangMessage(plugin, text, options, prefix);
+    }
+
+    @NotNull
+    public LangMessage setPrefix(@NotNull String prefix) {
+        return new LangMessage(this.plugin, this.defaultText, this.options, prefix);
     }
 
     @NotNull
