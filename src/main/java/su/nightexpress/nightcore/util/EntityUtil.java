@@ -10,17 +10,22 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.random.Rnd;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class EntityUtil {
 
-    /*@Deprecated
-    public static boolean isNPC(@NotNull Entity entity) {
-        return entity.hasMetadata("NPC");
-    }*/
+    private static final Class<?>      NMS_ENTITY          = Reflex.getClass("net.minecraft.world.entity", "Entity");
+    private static final String        ENTITY_COUNTER_NAME = Version.isAtLeast(Version.V1_19_R3) ? "d" : "c";
+    public static final  AtomicInteger ENTITY_COUNTER      = (AtomicInteger) Reflex.getFieldValue(NMS_ENTITY, ENTITY_COUNTER_NAME);
+
+    public static int nextEntityId() {
+        return ENTITY_COUNTER == null ? Rnd.nextInt(9999) : ENTITY_COUNTER.incrementAndGet();
+    }
 
     public static double getAttribute(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
         AttributeInstance instance = entity.getAttribute(attribute);

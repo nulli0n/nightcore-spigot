@@ -277,7 +277,8 @@ public class ItemUtil {
     @Nullable
     public static String compress(@NotNull ItemStack item) {
         if (NBT_TAG_COMPOUND_NEW == null || AS_NMS_COPY == null || NMS_SAVE == null || NBT_IO_WRITE == null) {
-            throw new UnsupportedOperationException("Unsupported server version!");
+            //throw new UnsupportedOperationException("Unsupported server version!");
+            return null;
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

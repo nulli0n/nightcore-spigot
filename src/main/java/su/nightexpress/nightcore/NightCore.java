@@ -1,5 +1,7 @@
 package su.nightexpress.nightcore;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.base.ReloadSubCommand;
 import su.nightexpress.nightcore.config.PluginDetails;
@@ -11,7 +13,8 @@ import su.nightexpress.nightcore.core.command.CheckPermCommand;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.language.LangAssets;
-import su.nightexpress.nightcore.menu.impl.EditorMenu;
+import su.nightexpress.nightcore.util.EntityUtil;
+import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
@@ -38,6 +41,7 @@ public class NightCore extends NightPlugin {
         }
         this.getBaseCommand().addChildren(new ReloadSubCommand(this, CorePerms.COMMAND_RELOAD));
 
+        this.testMethods();
         this.coreManager.setup();
     }
 
@@ -69,5 +73,17 @@ public class NightCore extends NightPlugin {
     @NotNull
     public Set<NightCorePlugin> getChildrens() {
         return new HashSet<>(this.childrens);
+    }
+
+    private void testMethods() {
+        if (EntityUtil.ENTITY_COUNTER == null) {
+            this.warn("Entity Id Counter: NULL!");
+        }
+        else this.info("Entity Id Counter: OK.");
+
+        if (ItemUtil.compress(new ItemStack(Material.DIAMOND_SWORD)) == null) {
+            this.warn("Item NBT Compress: FAILED!");
+        }
+        else this.info("Item NBT Compress: OK.");
     }
 }
