@@ -40,7 +40,7 @@ public class LangMessage {
         this.plugin = plugin;
         this.defaultText = defaultText;
         this.options = options;
-        this.message = NightMessage.from(prefix == null ? defaultText : prefix + defaultText);
+        this.message = NightMessage.from(prefix == null || !options.hasPrefix() ? defaultText : prefix + defaultText);
         if (CoreConfig.MODERN_TEXT_PRECOMPILE_LANG.get()) {
             this.message.compile();
         }

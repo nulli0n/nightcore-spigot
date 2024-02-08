@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.core;
 
 import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.tag.impl.ColorTag;
 import su.nightexpress.nightcore.util.wrapper.UniFormatter;
@@ -65,6 +66,13 @@ public class CoreConfig {
         "Sets whether or not plugin will cache player names and UUIDs.",
         "This will improve database performance when checking if user exists, but will increase memory usage.",
         "[Default is true]");
+
+    public static final ConfigValue<Boolean> LEGACY_COLOR_SUPPORT = ConfigValue.create("Engine.Legacy_Color_Support",
+        false,
+        "Allows to use legacy color codes (such as '&7', '&l', etc.) in plugin configurations.",
+        "This setting exist for backwards compatibility only! There are NO GUARANTEES that it will persist for future updates!",
+        "You should NOT use it unless you need to add support for your custom language configurations & translations with legacy codes.",
+        "You should migrate to new text format as soon as possible: " + Placeholders.WIKI_TEXT_URL);
 
     public static final ConfigValue<Boolean> RESPECT_PLAYER_DISPLAYNAME = ConfigValue.create("Engine.Respect_Player_DisplayName",
         false,

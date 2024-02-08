@@ -10,6 +10,9 @@ import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class BukkitThing {
 
     @Nullable
@@ -20,9 +23,19 @@ public class BukkitThing {
         return registry.get(namespacedKey);
     }
 
+    @NotNull
+    public static <T extends Keyed> Set<T> allFromRegistry(@NotNull Registry<T> registry) {
+        return registry.stream().collect(Collectors.toSet());
+    }
+
     @Nullable
     public static Material getMaterial(@NotNull String name) {
         return fromRegistry(Registry.MATERIAL, name);
+    }
+
+    @NotNull
+    public static Set<Enchantment> getEnchantments() {
+        return allFromRegistry(Registry.ENCHANTMENT);
     }
 
     @Nullable

@@ -36,7 +36,7 @@ public class ConfigValue<T> {
     }
 
     @NotNull
-    public static <T> ConfigValue<T> create(@NotNull String path,
+    private static <T> ConfigValue<T> create(@NotNull String path,
                                             @NotNull Reader<T> reader,
                                             @NotNull Writer<T> writer,
                                             @NotNull T defaultValue,

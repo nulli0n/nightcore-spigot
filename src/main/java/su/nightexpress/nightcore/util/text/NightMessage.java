@@ -5,8 +5,11 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.core.CoreConfig;
+import su.nightexpress.nightcore.util.Colorizer;
 import su.nightexpress.nightcore.util.Pair;
 import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.regex.TimedMatcher;
 import su.nightexpress.nightcore.util.text.decoration.*;
 import su.nightexpress.nightcore.util.text.tag.*;
 import su.nightexpress.nightcore.util.text.tag.api.DynamicTag;
@@ -112,6 +115,14 @@ public class NightMessage {
     }
 
     public static BaseComponent[] parse(@NotNull String string, @NotNull TagPool tagPool) {
+        if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
+            TimedMatcher timedMatcher = TimedMatcher.create(Colorizer.PATTERN_HEX_LEGACY, string);
+            while (timedMatcher.find()) {
+                String hex = timedMatcher.getMatcher().group(1);
+                string = string.replace(hex, Tag.brackets(hex));
+            }
+        }
+
         List<WrappedText> parts = new ArrayList<>();
 
         WrappedText currentText = new WrappedText();
@@ -236,6 +247,9 @@ public class NightMessage {
 
         ComponentBuilder builder = new ComponentBuilder();
         for (WrappedText wrappedText : parts) {
+            if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
+                wrappedText.setText(Colorizer.apply(wrappedText.getText()));
+            }
             builder.append(wrappedText.toComponent(), ComponentBuilder.FormatRetention.NONE);
         }
 
