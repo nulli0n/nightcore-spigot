@@ -117,8 +117,12 @@ public class NightMessage {
     public static BaseComponent[] parse(@NotNull String string, @NotNull TagPool tagPool) {
         if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
             TimedMatcher timedMatcher = TimedMatcher.create(Colorizer.PATTERN_HEX_LEGACY, string);
+            Set<String> rawCodes = new HashSet<>();
             while (timedMatcher.find()) {
                 String hex = timedMatcher.getMatcher().group(1);
+                rawCodes.add(hex);
+            }
+            for (String hex : rawCodes) {
                 string = string.replace(hex, Tag.brackets(hex));
             }
         }
