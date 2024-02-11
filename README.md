@@ -7,6 +7,7 @@
 <br>
 When installed, make sure to check out the <code>/nightcore/</code> folder and edit <b>language</b> and <b>config</b> files.
 </p>
+<h3><a href="https://github.com/nulli0n/nightcore-spigot/wiki/Migration-from-NexEngine">Migrating from NexEngine</a></h3>
 <br>
 </div>
 
