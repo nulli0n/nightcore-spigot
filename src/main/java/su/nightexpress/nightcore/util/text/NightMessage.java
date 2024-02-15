@@ -38,7 +38,7 @@ public class NightMessage {
         registerTags(Tags.BOLD, Tags.ITALIC, Tags.OBFUSCATED, Tags.STRIKETHROUGH, Tags.UNDERLINED);
 
         registerTags(
-            Tags.FONT, Tags.HEX_COLOR, Tags.GRADIENT,
+            Tags.FONT, Tags.HEX_COLOR, Tags.HEX_COLOR_SHORT, Tags.GRADIENT,
             Tags.HOVER, Tags.CLICK,
             Tags.LINE_BREAK, Tags.RESET
         );

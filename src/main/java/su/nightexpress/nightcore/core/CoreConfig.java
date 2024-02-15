@@ -68,7 +68,7 @@ public class CoreConfig {
         "[Default is true]");
 
     public static final ConfigValue<Boolean> LEGACY_COLOR_SUPPORT = ConfigValue.create("Engine.Legacy_Color_Support",
-        false,
+        true,
         "Allows to use legacy color codes (such as '&7', '&l', etc.) in plugin configurations.",
         "This setting exist for backwards compatibility only! There are NO GUARANTEES that it will persist for future updates!",
         "You should NOT use it unless you need to add support for your custom language configurations & translations with legacy codes.",

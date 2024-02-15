@@ -24,7 +24,7 @@ public class GradientTag extends Tag implements DecoratorParser {
 
     @Override
     public boolean conflictsWith(@NotNull Tag tag) {
-        return super.conflictsWith(tag) || tag instanceof ColorTag || tag instanceof HexColorTag;
+        return super.conflictsWith(tag) || tag instanceof ColorTag || tag instanceof ShortHexColorTag || tag instanceof HexColorTag;
     }
 
     @Override
@@ -55,6 +55,6 @@ public class GradientTag extends Tag implements DecoratorParser {
 
         GradientDecorator decorator = new GradientDecorator(from, to);
 
-        return new ParsedDecorator(decorator, 15 + tagLength);
+        return new ParsedDecorator(decorator, 15 + tagLength); // x2 hex (7+7), +1 for semicolon between
     }
 }

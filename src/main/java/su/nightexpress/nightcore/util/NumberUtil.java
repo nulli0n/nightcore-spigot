@@ -42,6 +42,12 @@ public class NumberUtil {
     }
 
     @NotNull
+    public static String compact(double value) {
+        Pair<String, String> pair = formatCompact(value);
+        return pair.getFirst() + pair.getSecond();
+    }
+
+    @NotNull
     public static Pair<String, String> formatCompact(double value) {
         boolean negative = false;
         if (value < 0) {

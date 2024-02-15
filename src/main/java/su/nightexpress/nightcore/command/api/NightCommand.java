@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.command.CommandFlag;
 import su.nightexpress.nightcore.language.entry.LangString;
-import su.nightexpress.nightcore.language.legacy.LegacyLangString;
 import su.nightexpress.nightcore.util.placeholder.Placeholder;
 
 import java.util.Collection;
@@ -69,11 +68,6 @@ public interface NightCommand extends Placeholder {
 
     @NotNull String getUsage();
 
-    @Deprecated
-    default void setUsage(@NotNull LegacyLangString string) {
-        this.setUsage(string.getString());
-    }
-
     default void setUsage(@NotNull LangString string) {
         this.setUsage(string.getString());
     }
@@ -81,11 +75,6 @@ public interface NightCommand extends Placeholder {
     void setUsage(@NotNull String usage);
 
     @NotNull String getDescription();
-
-    @Deprecated
-    default void setDescription(@NotNull LegacyLangString string) {
-        this.setDescription(string.getString());
-    }
 
     default void setDescription(@NotNull LangString string) {
         this.setDescription(string.getString());

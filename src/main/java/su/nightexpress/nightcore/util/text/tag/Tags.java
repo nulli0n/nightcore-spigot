@@ -4,13 +4,14 @@ import su.nightexpress.nightcore.util.text.tag.impl.*;
 
 public class Tags {
 
-    public static final ClickTag     CLICK      = new ClickTag();
-    public static final FontTag      FONT       = new FontTag();
-    public static final GradientTag  GRADIENT   = new GradientTag();
-    public static final HexColorTag  HEX_COLOR  = new HexColorTag();
-    public static final HoverTag     HOVER      = new HoverTag();
-    public static final LineBreakTag LINE_BREAK = new LineBreakTag();
-    public static final ResetTag     RESET      = new ResetTag();
+    public static final ClickTag         CLICK           = new ClickTag();
+    public static final FontTag          FONT            = new FontTag();
+    public static final GradientTag      GRADIENT        = new GradientTag();
+    public static final HexColorTag      HEX_COLOR       = new HexColorTag();
+    public static final ShortHexColorTag HEX_COLOR_SHORT = new ShortHexColorTag();
+    public static final HoverTag         HOVER           = new HoverTag();
+    public static final LineBreakTag     LINE_BREAK      = new LineBreakTag();
+    public static final ResetTag         RESET           = new ResetTag();
 
     public static final FontStyleTag BOLD          = new FontStyleTag("b", FontStyleTag.Style.BOLD);
     public static final FontStyleTag ITALIC        = new FontStyleTag("i", FontStyleTag.Style.ITALIC);

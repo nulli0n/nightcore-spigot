@@ -10,7 +10,6 @@ import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.dialog.DialogHandler;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangString;
-import su.nightexpress.nightcore.language.legacy.LegacyLangString;
 import su.nightexpress.nightcore.menu.MenuViewer;
 import su.nightexpress.nightcore.menu.item.ItemHandler;
 import su.nightexpress.nightcore.menu.item.MenuItem;
@@ -83,16 +82,6 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         MenuItem menuItem = new MenuItem(item).setPriority(100).setSlots(slots);
         this.addItem(menuItem);
         return menuItem;
-    }
-
-    @Deprecated
-    public void handleInput(@NotNull MenuViewer viewer, @NotNull LegacyLangString prompt, @NotNull DialogHandler handler) {
-        this.handleInput(viewer.getPlayer(), prompt, handler);
-    }
-
-    @Deprecated
-    public void handleInput(@NotNull Player player, @NotNull LegacyLangString prompt, @NotNull DialogHandler handler) {
-        this.handleInput(player, prompt.getString(), handler);
     }
 
     @NotNull

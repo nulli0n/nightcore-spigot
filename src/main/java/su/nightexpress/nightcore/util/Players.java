@@ -133,7 +133,7 @@ public class Players {
 
     @Deprecated
     public static void sendRichMessage(@NotNull CommandSender sender, @NotNull String message) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(Colorizer.apply(NexParser.toPlainText(message)));
             return;
         }
