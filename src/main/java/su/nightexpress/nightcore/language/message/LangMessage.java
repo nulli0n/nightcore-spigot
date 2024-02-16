@@ -4,6 +4,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +13,10 @@ import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.language.tag.MessageDecorator;
 import su.nightexpress.nightcore.language.tag.MessageTags;
+import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Players;
+import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.WrappedMessage;
 import su.nightexpress.nightcore.util.text.tag.api.DynamicTag;
@@ -57,6 +60,56 @@ public class LangMessage {
     public static LangMessage parse(@NotNull NightCorePlugin plugin, @NotNull String string) {
         MessageOptions options = new MessageOptions();
         StringBuilder builder = new StringBuilder();
+
+        // LEGACY STUFF START
+        int legTagOpen = string.indexOf("<!");
+        int legTagClose = string.indexOf("!>");
+        if (legTagOpen >= 0 && legTagClose > legTagOpen) {
+            String legContent = string.substring(legTagOpen, legTagClose + 2);
+            string = string.substring(legTagClose + 2);
+
+            String[] types = {"type", "sound", "prefix", "papi"};
+            for (String type : types) {
+                int typeIndex = legContent.indexOf(type + ":");
+                if (typeIndex == -1) continue;
+
+                String leading = legContent.substring(typeIndex + type.length() + 1);
+                String typeContent = DynamicTag.parseQuotedContentFix(leading);
+                if (typeContent == null) continue;
+
+                if (type.equalsIgnoreCase("type")) {
+                    if (typeContent.equalsIgnoreCase("action_bar")) {
+                        options.setOutputType(OutputType.ACTION_BAR);
+                    }
+                    else if (typeContent.equalsIgnoreCase("chat")) {
+                        options.setOutputType(OutputType.CHAT);
+                    }
+                    else if (typeContent.equalsIgnoreCase("none")) {
+                        options.setOutputType(OutputType.NONE);
+                    }
+                    else if (typeContent.startsWith("titles")) {
+                        String[] split = typeContent.split(":");
+                        int fadeIn = NumberUtil.getAnyInteger(split[1], 20);
+                        int stay = NumberUtil.getAnyInteger(split[2], 60);
+                        int fadeOut = NumberUtil.getAnyInteger(split[3], 20);
+                        options.setOutputType(OutputType.TITLES);
+                        options.setTitleTimes(new int[]{fadeIn, stay, fadeOut});
+                    }
+                }
+                else if (type.equalsIgnoreCase("sound")) {
+                    StringUtil.getEnum(typeContent, Sound.class).ifPresent(options::setSound);
+                }
+                else if (type.equalsIgnoreCase("prefix")) {
+                    boolean b = Boolean.parseBoolean(typeContent);
+                    options.setHasPrefix(b);
+                }
+                else if (type.equalsIgnoreCase("papi")) {
+                    boolean b = Boolean.parseBoolean(typeContent);
+                    options.setUsePlaceholderAPI(b);
+                }
+            }
+        }
+        // LEGACY STUFF END
 
         int length = string.length();
         for (int index = 0; index < length; index++) {

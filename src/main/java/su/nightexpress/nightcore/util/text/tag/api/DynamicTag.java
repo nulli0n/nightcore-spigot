@@ -29,6 +29,7 @@ public abstract class DynamicTag extends Tag {
     }
 
     @Nullable
+    @Deprecated
     public static String parseQuotedContent(@NotNull String string) {
         char quote = string.charAt(0);
         if (quote != '\'' && quote != '"') return null;
@@ -46,6 +47,30 @@ public abstract class DynamicTag extends Tag {
 
             char next = string.charAt(index + 1);
             if (next == Tag.CLOSE_BRACKET) {
+                indexEnd = index;
+                break;
+            }
+        }
+        if (indexEnd == -1) return null;
+
+        return string.substring(1, indexEnd);
+    }
+
+    @Nullable
+    public static String parseQuotedContentFix(@NotNull String string) {
+        char quote = string.charAt(0);
+        if (quote != '\'' && quote != '"') return null;
+
+        int indexEnd = -1;
+        for (int index = 0; index < string.length(); index++) {
+            if (index == (string.length() - 1) || index == 0) continue;
+
+            char letter = string.charAt(index);
+            if (letter == '\\') {
+                index += 2;
+                continue;
+            }
+            if (letter == quote) {
                 indexEnd = index;
                 break;
             }
