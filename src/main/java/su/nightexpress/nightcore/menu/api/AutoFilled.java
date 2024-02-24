@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.menu.MenuViewer;
-import su.nightexpress.nightcore.menu.click.ClickAction;
 import su.nightexpress.nightcore.menu.item.ItemOptions;
 import su.nightexpress.nightcore.menu.item.MenuItem;
 
@@ -13,25 +12,38 @@ import java.util.List;
 
 public interface AutoFilled<I> extends Menu {
 
-    int[] getAutoFillSlots();
+    default boolean open(@NotNull Player player, int page) {
+        return this.open(this.getViewerOrCreate(player), page);
+    }
 
-    @NotNull List<I> getAutoFills(@NotNull Player player);
+    default boolean open(@NotNull MenuViewer viewer, int page) {
+        viewer.setPage(page);
+        return this.open(viewer);
+    }
 
-    @NotNull ItemStack getAutoFillStack(@NotNull Player player, @NotNull I object);
+    void onAutoFill(@NotNull MenuViewer viewer, @NotNull AutoFill<I> autoFill);
 
-    @NotNull ClickAction getAutoFillClick(@NotNull I object);
+    /*@Deprecated int[] getAutoFillSlots();
+
+    @Deprecated @NotNull List<I> getAutoFills(@NotNull Player player);
+
+    @Deprecated @NotNull ItemStack getAutoFillStack(@NotNull Player player, @NotNull I object);
+
+    @Deprecated@NotNull ClickAction getAutoFillClick(@NotNull I object);*/
 
     default void autoFill(@NotNull MenuViewer viewer) {
-        this.getAutoFillItems(viewer).forEach(this::addItem);
+        AutoFill<I> autoFill = new AutoFill<>();
+        this.onAutoFill(viewer, autoFill);
+        this.getAutoFillItems(viewer, autoFill).forEach(this::addItem);
     }
 
     @NotNull
-    default List<MenuItem> getAutoFillItems(@NotNull MenuViewer viewer) {
+    default List<MenuItem> getAutoFillItems(@NotNull MenuViewer viewer, @NotNull AutoFill<I> autoFill) {
         Player player = viewer.getPlayer();
         List<MenuItem> items = new ArrayList<>();
-        List<I> origin = this.getAutoFills(player);
+        List<I> origin = autoFill.getItems();//this.getAutoFills(player);
 
-        int[] slots = this.getAutoFillSlots();
+        int[] slots = autoFill.getSlots();//this.getAutoFillSlots();
         int limit = slots.length;
         int pages = (int) Math.ceil((double) origin.size() / (double) limit);
         viewer.setPages(pages);
@@ -43,12 +55,10 @@ public interface AutoFilled<I> extends Menu {
 
         int count = 0;
         for (I object : list) {
-            ItemStack item = this.getAutoFillStack(player, object);
+            ItemStack item = autoFill.getItemCreator().apply(object);//this.getAutoFillStack(player, object);
             ItemOptions options = ItemOptions.personalWeak(player);
             MenuItem menuItem = new MenuItem(item).setPriority(100).setOptions(options).setSlots(slots[count++])
-                .addClick(this.getAutoFillClick(object));
-            //MenuItem menuItem = new MenuItem(item, 100, options, slots[count++]);
-            //menuItem.addClick(this.getAutoFillClick(object));
+                .addClick(autoFill.getClickAction().apply(object)/*this.getAutoFillClick(object)*/);
             items.add(menuItem);
         }
 

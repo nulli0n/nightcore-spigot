@@ -106,6 +106,11 @@ public class MenuItem {
     }
 
     @NotNull
+    public MenuItem setHandler(@NotNull ClickAction click) {
+        return this.setHandler(ItemHandler.forClick(click));
+    }
+
+    @NotNull
     public MenuItem addClick(@NotNull ClickAction click) {
         this.getHandler().getClickActions().add(click);
         return this;

@@ -14,7 +14,7 @@ public class Placeholders {
 
     public static final String GITHUB_URL     = "https://github.com/nulli0n/nightcore-spigot";
     public static final String WIKI_MAIN_URL     = GITHUB_URL + "/wiki/";
-    public static final String WIKI_ITEMS_URL    = WIKI_MAIN_URL + "Configuration-Tips#item-sections";
+    public static final String WIKI_ITEMS_URL    = WIKI_MAIN_URL + "ItemStack-Options";
     public static final String WIKI_TEXT_URL     = WIKI_MAIN_URL + "Text-Formation";
     public static final String WIKI_LANG_URL     = WIKI_MAIN_URL + "Language-Formation";
 

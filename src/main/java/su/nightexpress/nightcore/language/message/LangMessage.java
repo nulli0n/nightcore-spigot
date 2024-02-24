@@ -74,7 +74,7 @@ public class LangMessage {
                 if (typeIndex == -1) continue;
 
                 String leading = legContent.substring(typeIndex + type.length() + 1);
-                String typeContent = DynamicTag.parseQuotedContentFix(leading);
+                String typeContent = StringUtil.parseQuotedContent(leading);
                 if (typeContent == null) continue;
 
                 if (type.equalsIgnoreCase("type")) {
@@ -146,7 +146,7 @@ public class LangMessage {
                 if (tag instanceof DynamicTag) {
                     int prefixSize = tag.getName().length() + 1; // 1 for semicolon
 
-                    String content = DynamicTag.parseQuotedContent(leading.substring(prefixSize));
+                    String content = StringUtil.parseQuotedContent(leading.substring(prefixSize));
                     if (content == null) break Tag;
 
                     decorator.apply(options, content);
@@ -166,7 +166,18 @@ public class LangMessage {
         String text = builder.toString();
         String prefix = options.getOutputType() == OutputType.CHAT && options.hasPrefix() ? plugin.getPrefix() : null;
 
-        return new LangMessage(plugin, text, options, prefix);
+        // Remove completely empty lines.
+        // Especially useful for message tags lines without extra text.
+        StringBuilder stripper = new StringBuilder();
+        for (String part : text.split(Placeholders.TAG_LINE_BREAK)) {
+            if (part.isEmpty()) continue;
+
+            if (!stripper.isEmpty()) stripper.append(Placeholders.TAG_LINE_BREAK);
+            stripper.append(part);
+        }
+        String strippedText = stripper.toString();
+
+        return new LangMessage(plugin, strippedText, options, prefix);
     }
 
     @NotNull

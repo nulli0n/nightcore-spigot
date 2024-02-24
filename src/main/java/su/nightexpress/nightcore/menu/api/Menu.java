@@ -18,7 +18,15 @@ public interface Menu {
 
     void clear();
 
-    void flush();
+    default void flush() {
+        this.getViewers().forEach(this::flush);
+    }
+
+    default void flush(@NotNull MenuViewer viewer) {
+        this.flush(viewer.getPlayer());
+    }
+
+    void flush(@NotNull Player player);
 
     void close();
 
@@ -41,6 +49,8 @@ public interface Menu {
     @NotNull Collection<MenuViewer> getViewers();
 
     @Nullable MenuViewer getViewer(@NotNull Player player);
+
+    @NotNull MenuViewer getViewerOrCreate(@NotNull Player player);
 
 
 

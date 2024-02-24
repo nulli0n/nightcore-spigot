@@ -2,9 +2,9 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.text.decoration.FontDecorator;
 import su.nightexpress.nightcore.util.text.decoration.ParsedDecorator;
-import su.nightexpress.nightcore.util.text.tag.api.DynamicTag;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 
 public class FontTag extends ContentTag {
@@ -18,7 +18,7 @@ public class FontTag extends ContentTag {
     @Override
     @Nullable
     public ParsedDecorator onParse(@NotNull String str) {
-        String content = DynamicTag.parseQuotedContent(str);
+        String content = StringUtil.parseQuotedContent(str);
         if (content == null) return null;
 
         int length = content.length();// + 2; // 2 for quotes

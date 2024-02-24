@@ -84,8 +84,8 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     @Override
-    public void flush() {
-        this.getViewers().forEach(viewer -> this.open(viewer.getPlayer()));
+    public void flush(@NotNull Player player) {
+        this.open(player);
     }
 
     @Override
@@ -193,8 +193,9 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         return this.getViewersMap().get(player.getUniqueId());
     }
 
+    @Override
     @NotNull
-    private MenuViewer getViewerOrCreate(@NotNull Player player) {
+    public MenuViewer getViewerOrCreate(@NotNull Player player) {
         return this.getViewersMap().computeIfAbsent(player.getUniqueId(), k -> new MenuViewer(player));
     }
 

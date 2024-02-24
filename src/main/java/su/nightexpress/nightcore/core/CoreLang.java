@@ -17,9 +17,9 @@ public class CoreLang {
     public static final LangText COMMAND_HELP_LIST = LangText.of("Command.Help.List",
         TAG_NO_PREFIX,
         "  " + YELLOW.enclose(BOLD.enclose(GENERIC_NAME)) + GRAY.enclose(" - ") + YELLOW.enclose(BOLD.enclose("Commands:")),
-        "",
+        " ",
         GRAY.enclose("  " + RED.enclose(BOLD.enclose("<>")) + " - Required, " + GREEN.enclose(BOLD.enclose("[]")) + " - Optional."),
-        "",
+        " ",
         GENERIC_ENTRY,
         " "
     );

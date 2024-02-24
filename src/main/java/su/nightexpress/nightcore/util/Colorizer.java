@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class Colorizer {
 
     public static final Pattern PATTERN_HEX      = Pattern.compile("#([A-Fa-f0-9]{6})");
-    public static final Pattern PATTERN_HEX_LEGACY = Pattern.compile("(?:^|[^<])(#[A-Fa-f0-9]{6})(?:$|[^>])");
+    public static final Pattern PATTERN_HEX_LEGACY = Pattern.compile("(?:^|[^<])(#[A-Fa-f0-9]{6})(?:$|[^:>])");
     public static final Pattern PATTERN_GRADIENT = Pattern.compile("<gradient:" + PATTERN_HEX.pattern() + ">(.*?)</gradient:" + PATTERN_HEX.pattern() + ">");
 
     @NotNull
@@ -83,6 +83,7 @@ public class Colorizer {
             String start = matcher.group(1);
             String end = matcher.group(3);
             String content = matcher.group(2);
+            System.out.println("content legacy = " + content);
 
             java.awt.Color colorStart = new java.awt.Color(Integer.parseInt(start, 16));
             java.awt.Color colorEnd = new java.awt.Color(Integer.parseInt(end, 16));

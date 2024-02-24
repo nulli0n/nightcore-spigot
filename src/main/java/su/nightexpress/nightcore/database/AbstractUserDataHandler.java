@@ -30,11 +30,11 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
     protected final Set<UUID> existIDs;
     protected final Set<String> existNames;
 
-    protected AbstractUserDataHandler(@NotNull P plugin) {
+    public AbstractUserDataHandler(@NotNull P plugin) {
         this(plugin, DatabaseConfig.read(plugin));
     }
 
-    protected AbstractUserDataHandler(@NotNull P plugin, @NotNull DatabaseConfig config) {
+    public AbstractUserDataHandler(@NotNull P plugin, @NotNull DatabaseConfig config) {
         super(plugin, config);
         this.tableUsers = this.getTablePrefix() + "_users";
         this.existIDs = new HashSet<>();

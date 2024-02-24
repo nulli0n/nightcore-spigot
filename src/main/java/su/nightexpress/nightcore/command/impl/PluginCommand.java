@@ -82,12 +82,22 @@ public abstract class PluginCommand<P extends NightCorePlugin> extends AbstractC
         return childCount;
     }*/
 
+    /*private String[] insertArg(@NotNull String arg, int index, String[] args) {
+        List<String> list = new ArrayList<>(Arrays.asList(args));
+        if (index >= list.size()) {
+            list.add(arg);
+        }
+        else list.add(index, arg);
+        return list.toArray(new String[0]);
+    }*/
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         NightCommand command = this.findChildren(args);
         if (command instanceof NightPluginCommand pluginCommand) {
             if (pluginCommand.getDefaultCommand() != null) {
                 command = pluginCommand.getDefaultCommand();
+                //args = insertArg(command.getAliases()[0], 0, args);
             }
         }
         command.execute(sender, label, args);

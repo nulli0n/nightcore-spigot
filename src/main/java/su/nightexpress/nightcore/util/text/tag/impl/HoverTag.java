@@ -6,11 +6,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.text.decoration.Decorator;
 import su.nightexpress.nightcore.util.text.decoration.ParsedDecorator;
 import su.nightexpress.nightcore.util.text.decoration.ShowItemDecorator;
 import su.nightexpress.nightcore.util.text.decoration.ShowTextDecorator;
-import su.nightexpress.nightcore.util.text.tag.api.DynamicTag;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 
 public class HoverTag extends ContentTag {
@@ -52,7 +52,7 @@ public class HoverTag extends ContentTag {
         int prefixSize = action.name().toLowerCase().length() + 1; // 1 for ':', like "show_text:"
         sub = sub.substring(prefixSize);
 
-        String content = DynamicTag.parseQuotedContent(sub);
+        String content = StringUtil.parseQuotedContent(sub);
         if (content == null) return null;
 
         int length = prefixSize + content.length();// + 2; // 2 for quotes

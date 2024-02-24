@@ -28,7 +28,7 @@ public abstract class DynamicTag extends Tag {
         return leading(prefix, content) + text + this.getClosingName();
     }
 
-    @Nullable
+    /*@Nullable
     @Deprecated
     public static String parseQuotedContent(@NotNull String string) {
         char quote = string.charAt(0);
@@ -39,7 +39,7 @@ public abstract class DynamicTag extends Tag {
             if (index == (string.length() - 1) || index == 0) continue;
 
             char letter = string.charAt(index);
-            if (letter == '\\') { // TODO Replace/remove it
+            if (letter == '\\') {
                 index++;
                 continue;
             }
@@ -54,29 +54,5 @@ public abstract class DynamicTag extends Tag {
         if (indexEnd == -1) return null;
 
         return string.substring(1, indexEnd);
-    }
-
-    @Nullable
-    public static String parseQuotedContentFix(@NotNull String string) {
-        char quote = string.charAt(0);
-        if (quote != '\'' && quote != '"') return null;
-
-        int indexEnd = -1;
-        for (int index = 0; index < string.length(); index++) {
-            if (index == (string.length() - 1) || index == 0) continue;
-
-            char letter = string.charAt(index);
-            if (letter == '\\') {
-                index += 2;
-                continue;
-            }
-            if (letter == quote) {
-                indexEnd = index;
-                break;
-            }
-        }
-        if (indexEnd == -1) return null;
-
-        return string.substring(1, indexEnd);
-    }
+    }*/
 }

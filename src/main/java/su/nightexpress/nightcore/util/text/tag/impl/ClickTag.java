@@ -3,10 +3,10 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 import net.md_5.bungee.api.chat.ClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.text.decoration.ClickEventDecorator;
 import su.nightexpress.nightcore.util.text.decoration.Decorator;
 import su.nightexpress.nightcore.util.text.decoration.ParsedDecorator;
-import su.nightexpress.nightcore.util.text.tag.api.DynamicTag;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 
 public class ClickTag extends ContentTag {
@@ -43,7 +43,7 @@ public class ClickTag extends ContentTag {
         int prefixSize = action.name().toLowerCase().length() + 1; // 1 for ':', like "run_command:"
         sub = sub.substring(prefixSize);
 
-        String content = DynamicTag.parseQuotedContent(sub);
+        String content = StringUtil.parseQuotedContent(sub);
         if (content == null) return null;
 
         int length = prefixSize + content.length();// + 2; // 2 for quotes
