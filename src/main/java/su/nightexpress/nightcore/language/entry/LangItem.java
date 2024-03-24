@@ -8,12 +8,13 @@ import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Pair;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.WrappedMessage;
-import su.nightexpress.nightcore.util.text.tag.Tags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
 public class LangItem extends LangEntry<Pair<String, List<String>>> {
 
@@ -106,10 +107,11 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
         return wrappedLore;
     }
 
+    public static final String CLICK     = "Click";
     public static final String LMB       = "Left-Click";
     public static final String RMB       = "Right-Click";
-    public static final String DROP_KEY  = "[Q] Drop Key";
-    public static final String SWAP_KEY  = "[F] Swap Key";
+    public static final String DROP_KEY  = "[Q / Drop] Key";
+    public static final String SWAP_KEY  = "[F / Swap] Key";
     public static final String SHIFT_LMB = "Shift-Left";
     public static final String SHIFT_RMB = "Shift-Right";
     public static final String DRAG_DROP = "Drag & Drop";
@@ -138,14 +140,14 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
 
         @NotNull
         public Builder name(@NotNull String name) {
-            this.name = Tags.YELLOW.enclose(Tags.BOLD.enclose(name));
+            this.name = LIGHT_YELLOW.enclose(BOLD.enclose(name));
             return this;
         }
 
         @NotNull
         public Builder text(@NotNull String... text) {
             for (String str : text) {
-                this.addLore(Tags.GRAY.enclose(str));
+                this.addLore(LIGHT_GRAY.enclose(str));
             }
             return this;
         }
@@ -157,12 +159,22 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
 
         @NotNull
         public Builder currentHeader() {
-            return this.addLore(Tags.YELLOW.enclose(Tags.BOLD.enclose("Current:")));
+            return this.addLore(LIGHT_YELLOW.enclose(BOLD.enclose("Current:")));
         }
 
         @NotNull
         public Builder current(@NotNull String type, @NotNull String value) {
-            return this.addLore(Tags.YELLOW.enclose("▪ " + Tags.GRAY.enclose(type + ": ") + value));
+            return this.addLore(LIGHT_YELLOW.enclose("● " + LIGHT_GRAY.enclose(type + ": ") + value));
+        }
+
+        @NotNull
+        public Builder current(@NotNull String value) {
+            return this.addLore(LIGHT_YELLOW.enclose("● " + LIGHT_GRAY.enclose(value)));
+        }
+
+        @NotNull
+        public Builder click(@NotNull String action) {
+            return this.click(CLICK, action);
         }
 
         @NotNull
@@ -202,7 +214,7 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
 
         @NotNull
         public Builder click(@NotNull String click, @NotNull String action) {
-            return this.addLore(Tags.GRAY.enclose("(" + Tags.WHITE.enclose(click) + " to " + action + ")"));
+            return this.addLore(LIGHT_YELLOW.enclose("[▶]") + " " + LIGHT_GRAY.enclose(click + " to " + LIGHT_YELLOW.enclose(action) + "."));
         }
 
         @NotNull

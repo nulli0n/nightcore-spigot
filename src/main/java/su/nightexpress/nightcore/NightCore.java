@@ -16,6 +16,7 @@ import su.nightexpress.nightcore.language.LangAssets;
 import su.nightexpress.nightcore.util.EntityUtil;
 import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Plugins;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
 import java.util.HashSet;
@@ -76,6 +77,11 @@ public class NightCore extends NightPlugin {
     }
 
     private void testMethods() {
+        if (Version.getCurrent() == Version.UNKNOWN) {
+            this.warn("Server Version: UNSUPPORTED (!)");
+        }
+        else this.info("Server Version: " + Version.getCurrent().getLocalized() + " (OK)");
+
         if (EntityUtil.ENTITY_COUNTER == null) {
             this.warn("Entity Id Counter: NULL!");
         }

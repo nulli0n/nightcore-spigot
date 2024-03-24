@@ -34,7 +34,9 @@ public class SQLColumn {
 
     @NotNull
     public SQLColumn asLowerCase() {
-        return new SQLColumn("LOWER(" + this.getName() + ")", this.getName(), this.getType(), this.getLength());
+        String name = "LOWER(" + this.getName() + ")";
+
+        return new SQLColumn(name, name, this.getType(), this.getLength());
     }
 
     @NotNull

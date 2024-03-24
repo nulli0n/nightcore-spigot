@@ -159,8 +159,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         this.disable();
 
+        AbstractMenu.closeAll(this); // Close all GUIs.
         HandlerList.unregisterAll(this); // Unregister all plugin listeners.
-        AbstractMenu.closeAll(); // Close all GUIs.
 
         this.getCommandManager().shutdown();
         this.getLangManager().shutdown();

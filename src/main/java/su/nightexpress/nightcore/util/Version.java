@@ -3,6 +3,8 @@ package su.nightexpress.nightcore.util;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.stream.Stream;
+
 public enum Version {
 
     V1_18_R2("1.18.2"),
@@ -12,6 +14,8 @@ public enum Version {
     V1_20_R3("1.20.4"),
     UNKNOWN("Unknown"),
     ;
+
+    public static final String CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
 
     private static Version current;
 
@@ -28,15 +32,20 @@ public enum Version {
     }
 
     @NotNull
+    @Deprecated
     public static String getProtocol() {
-        String[] split = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
-        return split[split.length - 1];
+        return Bukkit.getServer().getBukkitVersion();//.split("-")[0];
+
+        //String[] split = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
+        //return split[split.length - 1];
     }
 
     @NotNull
     public static Version getCurrent() {
         if (current == null) {
-            current = StringUtil.getEnum(getProtocol(), Version.class).orElse(UNKNOWN);
+            String protocol = Bukkit.getServer().getBukkitVersion();
+            current = Stream.of(values()).filter(version -> protocol.startsWith(version.getLocalized())).findFirst().orElse(UNKNOWN);
+            //current = StringUtil.getEnum(getProtocol(), Version.class).orElse(UNKNOWN);
         }
         return current;
     }

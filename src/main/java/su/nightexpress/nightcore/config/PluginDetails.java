@@ -33,7 +33,7 @@ public class PluginDetails {
 
     @NotNull
     public static PluginDetails create(@NotNull String name, @NotNull String[] commandAliases) {
-        String prefix = Tags.YELLOW.enclose(name) + Tags.DARK_GRAY.enclose(" » ") + Tags.GRAY.getFullName();
+        String prefix = Tags.LIGHT_YELLOW.enclose(Tags.BOLD.enclose(name)) + Tags.DARK_GRAY.enclose(" » ") + Tags.GRAY.getFullName();
         String language = Locale.getDefault().getLanguage();
 
         return new PluginDetails(name, prefix, commandAliases, language);

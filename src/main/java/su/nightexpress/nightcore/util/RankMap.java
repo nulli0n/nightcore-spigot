@@ -45,6 +45,8 @@ public class RankMap<T extends Number> {
 
     @NotNull
     public static <T extends Number> RankMap<T> read(@NotNull FileConfig cfg, @NotNull String path, @NotNull Class<T> clazz) {
+        Map<String, T> oldMap = new HashMap<>();
+
         if (!cfg.contains(path + ".Mode")) {
             for (String rank : cfg.getSection(path)) {
                 T number;
@@ -53,15 +55,19 @@ public class RankMap<T extends Number> {
                 }
                 else number = clazz.cast(cfg.getInt(path + "." + rank));
 
-                if (rank.equalsIgnoreCase(Placeholders.DEFAULT)) {
-                    cfg.set(path + ".Default_Value", number);
-                }
-                else {
-                    cfg.set(path + ".Values." + rank, number);
-                }
+                oldMap.put(rank.toLowerCase(), number);
             }
             cfg.remove(path);
         }
+
+        oldMap.forEach((rank, number) -> {
+            if (rank.equalsIgnoreCase(Placeholders.DEFAULT)) {
+                cfg.set(path + ".Default_Value", number);
+            }
+            else {
+                cfg.set(path + ".Values." + rank, number);
+            }
+        });
 
         Mode mode = ConfigValue.create(path + ".Mode", Mode.class, Mode.RANK,
             "Available values: " + StringUtil.inlineEnum(Mode.class, ", "),

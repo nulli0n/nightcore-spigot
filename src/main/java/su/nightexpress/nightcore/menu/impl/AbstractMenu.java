@@ -27,7 +27,23 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     public static final Map<UUID, Menu> PLAYER_MENUS = new HashMap<>();
 
     public static void closeAll() {
-        new HashSet<>(PLAYER_MENUS.values()).forEach(Menu::close);
+        getActiveMenus().forEach(Menu::close);
+    }
+
+    public static void closeAll(@NotNull NightCorePlugin plugin) {
+        getActiveMenus().forEach(menu -> menu.close(plugin));
+    }
+
+    public static Collection<Menu> getActiveMenus() {
+        return new HashSet<>(PLAYER_MENUS.values());
+    }
+
+    public static void purge(@NotNull Player player) {
+        Menu menu = getMenu(player);
+        if (menu == null) return;
+
+        menu.close();
+        PLAYER_MENUS.remove(player.getUniqueId());
     }
 
     protected final P                     plugin;
@@ -71,6 +87,16 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     @Override
     public void close() {
         new HashSet<>(this.getViewers()).forEach(viewer -> viewer.getPlayer().closeInventory());
+        this.viewers.clear();
+    }
+
+    @Override
+    public boolean close(@NotNull NightCorePlugin plugin) {
+        if (this.plugin == plugin) {
+            this.close();
+            return true;
+        }
+        return false;
     }
 
     /*@NotNull
@@ -117,7 +143,11 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
         Inventory inventory = viewer.getInventory();
         if (inventory == null) {
-            this.plugin.debug("Could not create " + this.getClass().getSimpleName() + " inventory for '" + player.getName() + "'.");
+            this.plugin.debug("Could not create " + this.getClass().getSimpleName() + " menu for '" + player.getName() + "'.");
+            return false;
+        }
+        if (inventory.getType() == InventoryType.CRAFTING) {
+            this.plugin.warn("Got CRAFTING inventory when trying to open " + this.getClass().getSimpleName() + " menu for '" + player.getName() + "'.");
             return false;
         }
 

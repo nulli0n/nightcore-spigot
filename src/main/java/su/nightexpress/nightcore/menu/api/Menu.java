@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.menu.MenuOptions;
 import su.nightexpress.nightcore.menu.MenuViewer;
 import su.nightexpress.nightcore.menu.click.ClickResult;
@@ -29,6 +30,8 @@ public interface Menu {
     void flush(@NotNull Player player);
 
     void close();
+
+    boolean close(@NotNull NightCorePlugin plugin);
 
     void runNextTick(@NotNull Runnable runnable);
 

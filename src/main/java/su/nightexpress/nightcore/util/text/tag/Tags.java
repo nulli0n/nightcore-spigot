@@ -12,6 +12,7 @@ public class Tags {
     public static final HoverTag         HOVER           = new HoverTag();
     public static final LineBreakTag     LINE_BREAK      = new LineBreakTag();
     public static final ResetTag         RESET           = new ResetTag();
+    public static final TranslateTag TRANSLATE = new TranslateTag();
 
     public static final FontStyleTag BOLD          = new FontStyleTag("b", FontStyleTag.Style.BOLD);
     public static final FontStyleTag ITALIC        = new FontStyleTag("i", FontStyleTag.Style.ITALIC);

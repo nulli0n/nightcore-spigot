@@ -195,6 +195,14 @@ public class ItemReplacer {
     }
 
     @NotNull
+    public ItemReplacer injectLore(@NotNull String placeholder, @NotNull List<String> replacer) {
+        if (this.getLore() == null) return this;
+
+        this.setLore(Lists.replace(this.packLore(), placeholder, replacer));
+        return this;
+    }
+
+    @NotNull
     public ItemReplacer replaceLoreTrail(@NotNull String placeholder, @NotNull List<String> replacer) {
         if (this.getLore() == null) return this;
 

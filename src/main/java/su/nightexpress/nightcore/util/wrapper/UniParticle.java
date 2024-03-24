@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
-import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.StringUtil;
 
 public class UniParticle {
@@ -86,11 +85,17 @@ public class UniParticle {
             Color colorStart = StringUtil.getColor(cfg.getString(path + ".Color_From", ""));
             Color colorEnd = StringUtil.getColor(cfg.getString(path + ".Color_To", ""));
             double size = cfg.getDouble(path + ".Size", 1D);
-            data = new Particle.DustTransition(colorStart, colorEnd, 1.0f);
+            data = new Particle.DustTransition(colorStart, colorEnd, (float) size);
         }
         else if (dataType == ItemStack.class) {
             ItemStack item = cfg.getItem(path + ".Item");
             data = item.getType().isAir() ? new ItemStack(Material.STONE) : item;
+        }
+        else if (dataType == Float.class) {
+            data = (float) cfg.getDouble(path + ".floatValue", 1F);
+        }
+        else if (dataType == Integer.class) {
+            data = cfg.getInt(path + ".intValue", 1);
         }
         else if (dataType != Void.class) return UniParticle.of(Particle.REDSTONE);
 
@@ -119,6 +124,12 @@ public class UniParticle {
         else if (data instanceof ItemStack item) {
             cfg.setItem(path + ".Item", item);
         }
+        else if (data instanceof Float f) {
+            cfg.set(path + ".floatValue", f);
+        }
+        else if (data instanceof Integer i) {
+            cfg.set(path + ".intValue", i);
+        }
     }
 
     public boolean isEmpty() {
@@ -132,39 +143,6 @@ public class UniParticle {
     @Nullable
     public Object getData() {
         return data;
-    }
-
-    @NotNull
-    @Deprecated
-    public UniParticle parseData(@NotNull String from) {
-        if (this.isEmpty()) return this;
-
-        String[] split = from.split(" ");
-        Class<?> dataType = this.getParticle().getDataType();
-        Object data = null;
-        if (dataType == BlockData.class) {
-            Material material = Material.getMaterial(from.toUpperCase());
-            data = material != null ? material.createBlockData() : Material.STONE.createBlockData();
-        }
-        else if (dataType == Particle.DustOptions.class) {
-            Color color = StringUtil.getColor(split[0]);
-            double size = split.length >= 2 ? NumberUtil.getDouble(split[1], 1D) : 1D;
-            data = new Particle.DustOptions(color, (float) size);
-        }
-        else if (dataType == Particle.DustTransition.class) {
-            Color colorStart = StringUtil.getColor(split[0]);
-            Color colorEnd = split.length >= 2 ? StringUtil.getColor(split[1]) : colorStart;
-            double size = split.length >= 3 ? NumberUtil.getDouble(split[2], 1D) : 1D;
-            data = new Particle.DustTransition(colorStart, colorEnd, 1.0f);
-        }
-        else if (dataType == ItemStack.class) {
-            Material material = Material.getMaterial(from.toUpperCase());
-            if (material != null && !material.isAir()) data = new ItemStack(material);
-            else data = new ItemStack(Material.STONE);
-        }
-        else if (dataType != Void.class) return UniParticle.of(Particle.REDSTONE);
-
-        return UniParticle.of(this.getParticle(), data);
     }
 
     public void play(@NotNull Location location, double speed, int amount) {
@@ -189,6 +167,7 @@ public class UniParticle {
 
     public void play(@Nullable Player player, @NotNull Location location, double xOffset, double yOffset, double zOffset, double speed, int amount) {
         if (this.isEmpty()) return;
+        if (this.particle == null || (this.particle.getDataType() != Void.class && this.data == null)) return;
 
         if (player == null) {
             World world = location.getWorld();

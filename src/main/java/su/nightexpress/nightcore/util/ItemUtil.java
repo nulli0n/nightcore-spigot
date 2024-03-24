@@ -25,12 +25,12 @@ import java.util.function.Consumer;
 
 public class ItemUtil {
 
-    private static final String VERSION = Version.getProtocol();
+    //private static final String VERSION = Version.getProtocol();
     private static final String TEXTURES_HOST = "http://textures.minecraft.net/texture/";
 
     private static final Class<?> NBT_TAG_COMPOUND = Reflex.getClass("net.minecraft.nbt", "NBTTagCompound");
     private static final Class<?> NMS_ITEM         = Reflex.getClass("net.minecraft.world.item", "ItemStack");
-    private static final Class<?> CRAFT_ITEM_STACK = Reflex.getClass("org.bukkit.craftbukkit." + VERSION + ".inventory", "CraftItemStack");
+    private static final Class<?> CRAFT_ITEM_STACK = Reflex.getClass(Version.CRAFTBUKKIT_PACKAGE + ".inventory", "CraftItemStack");
     private static final Class<?> NBT_IO           = Reflex.getClass("net.minecraft.nbt", "NBTCompressedStreamTools");
 
     private static final Constructor<?> NBT_TAG_COMPOUND_NEW = Reflex.getConstructor(NBT_TAG_COMPOUND);

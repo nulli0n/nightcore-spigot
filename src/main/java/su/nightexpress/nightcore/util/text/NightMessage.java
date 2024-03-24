@@ -13,6 +13,7 @@ import su.nightexpress.nightcore.util.regex.TimedMatcher;
 import su.nightexpress.nightcore.util.text.decoration.*;
 import su.nightexpress.nightcore.util.text.tag.*;
 import su.nightexpress.nightcore.util.text.tag.api.DynamicTag;
+import su.nightexpress.nightcore.util.text.tag.api.OrphanTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.impl.*;
 
@@ -40,7 +41,8 @@ public class NightMessage {
         registerTags(
             Tags.FONT, Tags.HEX_COLOR, Tags.HEX_COLOR_SHORT, Tags.GRADIENT,
             Tags.HOVER, Tags.CLICK,
-            Tags.LINE_BREAK, Tags.RESET
+            Tags.LINE_BREAK, Tags.RESET,
+            Tags.TRANSLATE
         );
     }
 
@@ -65,6 +67,11 @@ public class NightMessage {
     @Nullable
     public static Tag getTag(@NotNull String name) {
         return TAG_MAP.get(name.toLowerCase());
+    }
+
+    @NotNull
+    public static String clean(@NotNull String string) {
+        return create(string, TagPool.NONE).toLegacy();
     }
 
     @NotNull
@@ -201,21 +208,20 @@ public class NightMessage {
 
                 if (tag != null) {
                     if (tagPool.isGoodTag(tag)) {
-                        if (tag == Tags.LINE_BREAK) {
+                        if (tag instanceof OrphanTag orphanTag) {
                             if (currentText.getTextBuilder().isEmpty()) {
-                                currentText.getTextBuilder().append("\n");
+                                currentText.getTextBuilder().append(orphanTag.getContent());
                             }
                             else {
                                 currentText = currentText.nested();
-                                currentText.setText("\n");
+                                currentText.setText(orphanTag.getContent());
                                 parts.add(currentText);
                             }
                             currentText = currentText.nested();
                             parts.add(currentText);
                         }
 
-                        // Если был текст ДО текущего тега и не было ДРУГИХ тегов прямо перед ним,
-                        // то вставляем новую часть текста
+                        // Создаем новую "часть текста" только если обнаружен новый тег после текста (но не других тегов).
                         if (lastTag == null && !currentText.getTextBuilder().isEmpty()) {
                             currentText = currentText.nested();
                             parts.add(currentText);
@@ -224,7 +230,7 @@ public class NightMessage {
                         if (closeTag) {
                             currentText.removeLatestTag(tag);
                         }
-                        else if (tag != Tags.LINE_BREAK) {
+                        else if (!(tag instanceof OrphanTag)) {
                             currentText.addTag(tag, decorator);
                         }
 
