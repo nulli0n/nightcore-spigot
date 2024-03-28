@@ -105,7 +105,7 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
         comments.add("=".repeat(20) + " ITEM OPTIONS " + "=".repeat(20));
         comments.add("> Item: Item to display. Please check: " + Placeholders.WIKI_ITEMS_URL);
         comments.add("> Priority: Button priority. Better values will override other item(s) in the same slot(s).");
-        comments.add("> Slots: Button slots. From [0] to [Size - 1]. Split them with a comma.");
+        comments.add("> Slots: Button slots. From [0] to [Size - 1]. Split with commas.");
         comments.add("> Click_Commands: Execute custom commands on click. " + Plugins.PLACEHOLDER_API + " available here.");
         comments.add("    Available click types: " + String.join(", ", Lists.getEnums(ClickType.class)));
         comments.add("    Click_Commands:");
@@ -154,13 +154,13 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
             menuItem.setHandler(handler);
         }
 
-        if (cfg.contains(path + ".Click_Actions")) {
+        if (cfg.contains(path + ".Click_Commands")) {
             Map<ClickType, List<String>> commandMap = new HashMap<>();
-            for (String sType : cfg.getSection(path + ".Click_Actions")) {
+            for (String sType : cfg.getSection(path + ".Click_Commands")) {
                 ClickType clickType = StringUtil.getEnum(sType, ClickType.class).orElse(null);
                 if (clickType == null) continue;
 
-                List<String> commands = cfg.getStringList(path + ".Click_Actions." + sType);
+                List<String> commands = cfg.getStringList(path + ".Click_Commands." + sType);
                 commandMap.put(clickType, commands);
             }
             commandMap.values().removeIf(List::isEmpty);

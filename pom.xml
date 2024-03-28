@@ -88,8 +88,8 @@
         </dependency>
         <dependency>
             <groupId>it.unimi.dsi</groupId>
-            <artifactId>fastutil</artifactId>
-            <version>8.5.11</version>
+            <artifactId>fastutil-core</artifactId>
+            <version>8.5.13</version>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
