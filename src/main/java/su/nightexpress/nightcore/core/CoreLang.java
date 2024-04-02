@@ -9,7 +9,6 @@ import su.nightexpress.nightcore.language.entry.LangText;
 import su.nightexpress.nightcore.util.Placeholders;
 
 import static su.nightexpress.nightcore.util.Placeholders.*;
-import static su.nightexpress.nightcore.language.tag.MessageTags.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
 public class CoreLang {
@@ -33,8 +32,11 @@ public class CoreLang {
     public static final LangString COMMAND_CHECKPERM_DESC  = LangString.of("Command.CheckPerm.Desc", "Print player permission info.");
     public static final LangString COMMAND_CHECKPERM_USAGE = LangString.of("Command.CheckPerm.Usage", "<player>");
 
-    public static final LangString COMMAND_RELOAD_DESC = LangString.of("Command.Reload.Desc", "Reload the plugin.");
-    public static final LangText   COMMAND_RELOAD_DONE = LangText.of("Command.Reload.Done", "Plugin " + GREEN.enclose("reloaded") + "!");
+    public static final LangString COMMAND_RELOAD_DESC = LangString.of("Command.Reload.Desc",
+        "Reload the plugin.");
+
+    public static final LangText   COMMAND_RELOAD_DONE = LangText.of("Command.Reload.Done",
+        LIGHT_GRAY.enclose("Plugin " + LIGHT_GREEN.enclose("reloaded") + "!"));
 
     public static final LangString TIME_DAY       = LangString.of("Time.Day", GENERIC_AMOUNT + "d.");
     public static final LangString TIME_HOUR      = LangString.of("Time.Hour", GENERIC_AMOUNT + "h.");
@@ -68,6 +70,7 @@ public class CoreLang {
 
     public static final LangText EDITOR_ACTION_EXIT = LangText.of("Editor.Action.Exit",
         TAG_NO_PREFIX,
+        "",
         GRAY.enclose("Click " +
             CLICK.enclose(
                 ClickEvent.Action.RUN_COMMAND,
@@ -75,7 +78,7 @@ public class CoreLang {
                 "/" + Dialog.EXIT
             )
             + " to leave input mode."),
-        " ");
+        "");
 
     public static final LangString EDITOR_INPUT_HEADER_MAIN       = LangString.of("Editor.Input.Header.Main", GREEN.enclose(BOLD.enclose("Input Mode")));
     public static final LangString EDITOR_INPUT_HEADER_ERROR      = LangString.of("Editor.Input.Header.Error", RED.enclose(BOLD.enclose("ERROR")));

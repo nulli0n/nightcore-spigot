@@ -26,19 +26,36 @@ import java.util.stream.IntStream;
 
 public class FileConfig extends YamlConfiguration {
 
+    public static final String EXTENSION = ".yml";
+
     private final File    file;
-    private       boolean isChanged = false;
+    private       boolean changed;
 
     public FileConfig(@NotNull String path, @NotNull String file) {
         this(new File(path, file));
     }
 
     public FileConfig(@NotNull File file) {
+        this.changed = false;
         this.options().width(512);
 
         FileUtil.create(file);
         this.file = file;
         this.reload();
+    }
+
+    public static boolean isConfig(@NotNull File file) {
+        return file.getName().endsWith(EXTENSION);
+    }
+
+    @NotNull
+    public static String getName(@NotNull File file) {
+        String name = file.getName();
+
+        if (isConfig(file)) {
+            return name.substring(0, name.length() - EXTENSION.length());
+        }
+        return name;
     }
 
     @NotNull
@@ -61,8 +78,8 @@ public class FileConfig extends YamlConfiguration {
                 InputStream input = plugin.getClass().getResourceAsStream(filePath);
                 if (input != null) FileUtil.copy(input, file);
             }
-            catch (Exception ex) {
-                ex.printStackTrace();
+            catch (Exception exception) {
+                exception.printStackTrace();
             }
         }
         return new FileConfig(file);
@@ -70,23 +87,25 @@ public class FileConfig extends YamlConfiguration {
 
     @NotNull
     public static List<FileConfig> loadAll(@NotNull String path) {
-        return loadAll(path, false);
+        return FileUtil.getConfigFiles(path).stream().map(FileConfig::new).toList();
     }
 
     @NotNull
+    @Deprecated
     public static List<FileConfig> loadAll(@NotNull String path, boolean deep) {
-        return FileUtil.getFiles(path, deep).stream().filter(file -> file.getName().endsWith(".yml")).map(FileConfig::new).toList();
+        return loadAll(path);
+        //return FileUtil.getConfigFiles(path).stream().map(FileConfig::new).toList();
     }
 
     public void initializeOptions(@NotNull Class<?> clazz) {
         initializeOptions(clazz, this);
     }
 
-    public static void initializeOptions(@NotNull Class<?> clazz, @NotNull FileConfig cfg) {
+    public static void initializeOptions(@NotNull Class<?> clazz, @NotNull FileConfig config) {
         for (ConfigValue<?> value : Reflex.getFields(clazz, ConfigValue.class)) {
-            value.read(cfg);
+            value.read(config);
         }
-        cfg.saveChanges();
+        //config.saveChanges();
     }
 
     @NotNull
@@ -104,17 +123,17 @@ public class FileConfig extends YamlConfiguration {
     }
 
     public boolean saveChanges() {
-        if (!this.isChanged) return false;
+        if (!this.changed) return false;
 
         this.save();
-        this.isChanged = false;
+        this.changed = false;
         return true;
     }
 
     public boolean reload() {
         try {
             this.load(this.file);
-            this.isChanged = false;
+            this.changed = false;
             return true;
         }
         catch (IOException | InvalidConfigurationException exception) {
@@ -146,7 +165,7 @@ public class FileConfig extends YamlConfiguration {
             value = en.name();
         }
         super.set(path, value);
-        this.isChanged = true;
+        this.changed = true;
     }
 
     public void setComments(@NotNull String path, @Nullable String... comments) {
@@ -162,7 +181,7 @@ public class FileConfig extends YamlConfiguration {
         if (this.getComments(path).equals(comments)) return;
 
         super.setComments(path, comments);
-        this.isChanged = true;
+        this.changed = true;
     }
 
     @Override

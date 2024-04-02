@@ -33,6 +33,10 @@ public interface NightCorePlugin extends Plugin {
 
     @NotNull PluginDetails getDetails();
 
+    void extractResources(@NotNull String jarPath);
+
+    void extractResources(@NotNull String jarParh, @NotNull String toPath);
+
     @NotNull
     default String getNameLocalized() {
         return this.getDetails().getName();

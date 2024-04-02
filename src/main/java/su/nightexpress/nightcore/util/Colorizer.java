@@ -83,7 +83,6 @@ public class Colorizer {
             String start = matcher.group(1);
             String end = matcher.group(3);
             String content = matcher.group(2);
-            System.out.println("content legacy = " + content);
 
             java.awt.Color colorStart = new java.awt.Color(Integer.parseInt(start, 16));
             java.awt.Color colorEnd = new java.awt.Color(Integer.parseInt(end, 16));

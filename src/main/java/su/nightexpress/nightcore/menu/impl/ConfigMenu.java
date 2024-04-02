@@ -21,14 +21,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu<P> {
 
+    protected static final String DEFAULT_ITEM_SECTION = "Content";
+
     protected final FileConfig               cfg;
     protected final Map<String, ItemHandler> handlerMap;
-    protected       String                   itemSection = "Content";
+    protected       String                   itemSection;
 
     public ConfigMenu(@NotNull P plugin, @NotNull FileConfig cfg) {
         super(plugin);
         this.cfg = cfg;
         this.handlerMap = new HashMap<>();
+        this.itemSection = DEFAULT_ITEM_SECTION;
 
         this.addHandler(ItemHandler.forClose(this));
         if (this instanceof AutoFilled<?>) {

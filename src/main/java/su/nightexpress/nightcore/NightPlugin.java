@@ -9,12 +9,10 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
-import su.nightexpress.nightcore.util.Lists;
-import su.nightexpress.nightcore.util.Plugins;
-import su.nightexpress.nightcore.util.Reflex;
-import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
+import java.io.File;
 import java.util.function.Predicate;
 
 public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin {
@@ -179,5 +177,25 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     @NotNull
     public final CommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    @Override
+    public void extractResources(@NotNull String jarPath) {
+        this.extractResources(jarPath, this.getDataFolder() + jarPath);
+    }
+
+    @Override
+    public void extractResources(@NotNull String jarPath, @NotNull String targetPath) {
+        File destination = new File(targetPath);
+        if (destination.exists()) return;
+
+        if (jarPath.startsWith("/")) {
+            jarPath = jarPath.substring(1);
+        }
+        if (jarPath.endsWith("/")) {
+            jarPath = jarPath.substring(0, jarPath.length() - 1);
+        }
+
+        FileUtil.extractResources(this.getFile(), jarPath, destination);
     }
 }

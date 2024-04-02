@@ -143,7 +143,7 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
     @Override
     @NotNull
     public Collection<NightCommand> getChildrens() {
-        return new HashSet<>(this.childrens.values());
+        return new ArrayList<>(this.childrens.values());
     }
 
     @Override

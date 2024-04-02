@@ -113,12 +113,12 @@ public class Players {
 
     @NotNull
     public static String getPermissionGroup(@NotNull Player player) {
-        return Plugins.hasVault() ? VaultHook.getPermissionGroup(player).toLowerCase() : Placeholders.DEFAULT;
+        return Plugins.hasVault() && VaultHook.hasPermissions() ? VaultHook.getPermissionGroup(player).toLowerCase() : Placeholders.DEFAULT;
     }
 
     @NotNull
     public static Set<String> getPermissionGroups(@NotNull Player player) {
-        return Plugins.hasVault() ? VaultHook.getPermissionGroups(player) : Collections.emptySet();
+        return Plugins.hasVault() && VaultHook.hasPermissions() ? VaultHook.getPermissionGroups(player) : Set.of(Placeholders.DEFAULT);
     }
 
     @NotNull

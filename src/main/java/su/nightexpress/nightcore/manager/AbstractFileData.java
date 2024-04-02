@@ -18,7 +18,7 @@ public abstract class AbstractFileData<P extends NightCorePlugin> {
     }
 
     public AbstractFileData(@NotNull P plugin, @NotNull File file) {
-        this(plugin, file, file.getName().replace(".yml", ""));
+        this(plugin, file, FileConfig.getName(file));
     }
 
     public AbstractFileData(@NotNull P plugin, @NotNull String filePath, @NotNull String id) {
@@ -45,19 +45,14 @@ public abstract class AbstractFileData<P extends NightCorePlugin> {
         config.saveChanges();
     }
 
-    protected abstract boolean onLoad(@NotNull FileConfig cfg);
+    protected abstract boolean onLoad(@NotNull FileConfig config);
 
-    protected abstract void onSave(@NotNull FileConfig cfg);
+    protected abstract void onSave(@NotNull FileConfig config);
 
     @NotNull
     public final File getFile() {
         return this.file;
     }
-
-    /*@NotNull
-    public P plugin() {
-        return this.plugin;
-    }*/
 
     @NotNull
     public final String getId() {
