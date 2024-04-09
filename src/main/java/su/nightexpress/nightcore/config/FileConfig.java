@@ -87,14 +87,12 @@ public class FileConfig extends YamlConfiguration {
 
     @NotNull
     public static List<FileConfig> loadAll(@NotNull String path) {
-        return FileUtil.getConfigFiles(path).stream().map(FileConfig::new).toList();
+        return loadAll(path, false);
     }
 
     @NotNull
-    @Deprecated
     public static List<FileConfig> loadAll(@NotNull String path, boolean deep) {
-        return loadAll(path);
-        //return FileUtil.getConfigFiles(path).stream().map(FileConfig::new).toList();
+        return FileUtil.getConfigFiles(path, deep).stream().map(FileConfig::new).toList();
     }
 
     public void initializeOptions(@NotNull Class<?> clazz) {

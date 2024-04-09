@@ -52,7 +52,12 @@ public class FileUtil {
 
     @NotNull
     public static List<File> getConfigFiles(@NotNull String path) {
-        return getFiles(path, FileConfig.EXTENSION, false);
+        return getConfigFiles(path, false);
+    }
+
+    @NotNull
+    public static List<File> getConfigFiles(@NotNull String path, boolean deep) {
+        return getFiles(path, FileConfig.EXTENSION, deep);
     }
 
     @NotNull

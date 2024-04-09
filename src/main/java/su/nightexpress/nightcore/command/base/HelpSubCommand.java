@@ -9,6 +9,10 @@ import su.nightexpress.nightcore.command.api.NightCommand;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.util.Placeholders;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 public class HelpSubCommand extends AbstractCommand<NightCorePlugin> {
 
     public HelpSubCommand(@NotNull NightCorePlugin plugin) {
@@ -29,7 +33,9 @@ public class HelpSubCommand extends AbstractCommand<NightCorePlugin> {
         CoreLang.COMMAND_HELP_LIST.getMessage()
             .replace(Placeholders.GENERIC_NAME, this.plugin.getNameLocalized())
             .replace(Placeholders.GENERIC_ENTRY, list -> {
-                parent.getChildrens().forEach(children -> {
+                Set<NightCommand> commands = new HashSet<>(parent.getChildrens());
+
+                commands.stream().sorted(Comparator.comparing(command -> command.getAliases()[0])).forEach(children -> {
                     if (!children.hasPermission(sender)) return;
 
                     list.add(children.replacePlaceholders().apply(CoreLang.COMMAND_HELP_ENTRY.getString()));

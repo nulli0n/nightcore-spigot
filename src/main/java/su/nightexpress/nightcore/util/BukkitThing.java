@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class BukkitThing {
 
@@ -25,6 +26,9 @@ public class BukkitThing {
 
     @NotNull
     public static <T extends Keyed> Set<T> allFromRegistry(@NotNull Registry<T> registry) {
+        if (Version.isBehind(Version.V1_20_R2)) {
+            return StreamSupport.stream(registry.spliterator(), false).collect(Collectors.toSet());
+        }
         return registry.stream().collect(Collectors.toSet());
     }
 
