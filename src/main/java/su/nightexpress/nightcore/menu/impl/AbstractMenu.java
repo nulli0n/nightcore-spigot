@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
+import su.nightexpress.nightcore.api.event.PlayerOpenMenuEvent;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.link.Linked;
@@ -42,8 +43,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         Menu menu = getMenu(player);
         if (menu == null) return;
 
-        menu.close();
-        PLAYER_MENUS.remove(player.getUniqueId());
+        menu.close(player);
     }
 
     protected final P                     plugin;
@@ -86,8 +86,20 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     @Override
     public void close() {
-        new HashSet<>(this.getViewers()).forEach(viewer -> viewer.getPlayer().closeInventory());
+        new HashSet<>(this.getViewers()).forEach(viewer -> this.close(viewer.getPlayer()));
         this.viewers.clear();
+    }
+
+    @Override
+    public void close(@NotNull Player player) {
+        Menu current = getMenu(player);
+
+        if (current == this && player.getOpenInventory().getType() != InventoryType.CRAFTING) {
+            player.closeInventory();
+        }
+        else {
+            this.onClose(player);
+        }
     }
 
     @Override
@@ -127,6 +139,13 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     @Override
     public boolean open(@NotNull Player player) {
         if (!this.canOpen(player)) return false;
+
+        PlayerOpenMenuEvent event = new PlayerOpenMenuEvent(player, this);
+        this.plugin.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            //this.close(player);
+            return false;
+        }
 
         MenuOptions options = new MenuOptions(this.getOptions());
         MenuViewer viewer = this.getViewerOrCreate(player);
@@ -190,14 +209,18 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     @Override
     public void onClose(@NotNull MenuViewer viewer, @NotNull InventoryCloseEvent event) {
-        Player player = viewer.getPlayer();
+        this.onClose(viewer.getPlayer());
+    }
 
-        this.getViewersMap().remove(player.getUniqueId());
-        this.getItems().removeIf(menuItem -> menuItem.getOptions().canBeDestroyed(viewer));
+    public void onClose(@NotNull Player player) {
+        MenuViewer viewer = this.viewers.remove(player.getUniqueId());
+        if (viewer != null) {
+            this.getItems().removeIf(menuItem -> menuItem.getOptions().canBeDestroyed(viewer));
+        }
         PLAYER_MENUS.remove(player.getUniqueId());
 
         // Do not clear link if entered Editor, so it can reopen menu without data loss when done.
-        if (this instanceof Linked<?> linked && !Dialog.contains(player)) {
+        if (viewer != null && this instanceof Linked<?> linked && !Dialog.contains(player)) {
             linked.getLink().clear(viewer);
         }
 

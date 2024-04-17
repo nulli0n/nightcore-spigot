@@ -43,13 +43,16 @@ public class UniSound {
     public static UniSound read(@NotNull FileConfig cfg, @NotNull String path) {
         String soundName = ConfigValue.create(path + ".Name", "null",
             "Sound name. You can use Spigot sound names, or ones from your resource pack.",
-            "Spigot Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html").read(cfg);
+            "Spigot Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html"
+        ).read(cfg);
 
-        float volume = ConfigValue.create(path + ".Volume", 0.8F,
-            "Sound volume. From 0.0 to 1.0.").read(cfg).floatValue();
+        float volume = ConfigValue.create(path + ".Volume", 0.8D,
+            "Sound volume. From 0.0 to 1.0."
+        ).read(cfg).floatValue();
 
         float pitch = ConfigValue.create(path + ".Pitch", 1D,
-            "Sound speed. From 0.5 to 2.0").read(cfg).floatValue();
+            "Sound speed. From 0.5 to 2.0"
+        ).read(cfg).floatValue();
 
         Sound soundType = StringUtil.getEnum(soundName, Sound.class).orElse(null);
 

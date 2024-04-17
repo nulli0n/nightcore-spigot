@@ -29,7 +29,13 @@ public interface Menu {
 
     void flush(@NotNull Player player);
 
+    default boolean isViewer(@NotNull Player player) {
+        return this.getViewer(player) != null;
+    }
+
     void close();
+
+    void close(@NotNull Player player);
 
     boolean close(@NotNull NightCorePlugin plugin);
 
