@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.manager;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 
-public abstract class AbstractListener<P extends NightCorePlugin> implements SimpleListener {
+public abstract class AbstractListener<P extends NightCorePlugin> implements SimpeListener {
 
     @NotNull
     public final P plugin;

@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class EntityUtil {
 
+    public static final EquipmentSlot[] EQUIPMENT_SLOTS = {EquipmentSlot.HAND, EquipmentSlot.OFF_HAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+
     private static AtomicInteger entityCounter;
 
     public static boolean setupEntityCounter(@NotNull NightCore core) {
@@ -67,7 +69,7 @@ public class EntityUtil {
 
     @NotNull
     public static Map<EquipmentSlot, ItemStack> getEquippedItems(@NotNull LivingEntity entity) {
-        return getEquippedItems(entity, EquipmentSlot.values());
+        return getEquippedItems(entity, EQUIPMENT_SLOTS);
     }
 
     @NotNull
@@ -77,6 +79,8 @@ public class EntityUtil {
 
         Map<EquipmentSlot, ItemStack> map = new HashMap<>();
         for (EquipmentSlot slot : slots) {
+            if (slot.name().equalsIgnoreCase("BODY")) continue; // from 1.20.6
+
             map.put(slot, equipment.getItem(slot));
         }
         return map;
