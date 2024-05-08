@@ -7,20 +7,10 @@
 <br>
 When installed, make sure to check out the <code>/nightcore/</code> folder and edit <b>language</b> and <b>config</b> files.
 </p>
-<h3><a href="https://github.com/nulli0n/nightcore-spigot/wiki/Migration-from-NexEngine">Migrating from NexEngine</a></h3>
 <br>
 </div>
 
 **nightcore** is updated version of the [NexEngine](https://github.com/nulli0n/NexEngine-spigot) utility plugin. Changes are unnoticeable for regular users. Almost all plugin's data is compatible, except [Text Formations](https://github.com/nulli0n/nightcore-spigot/wiki/Text-Formation).
-
-**Technical Changes:**
-- JAR size is increased due to legacy objects, so users can use old styled data for a while.
-- Reduced RAM usage by various objects.
-- Optimized and improved code where possible.
-- Prepare to use Spigot TextComponents where possible with custom text + tags parser.
-- Getting rid of unnecessary regex usage (Tab Completer, Text Parsing, Language Messages, Command Flags).
-- Many packages, classes and methods renamed/relocated so they makes more sense.
-- Removed useless code.
 
 **Features:**
 * Internal command & permission registration (without usage of plugin.yml).
