@@ -9,9 +9,15 @@ public abstract class Tag {
     public static final char CLOSE_MARK    = '/';
 
     protected final String name;
+    protected final String[] aliases;
 
     public Tag(@NotNull String name) {
+        this(name, new String[0]);
+    }
+
+    public Tag(@NotNull String name, @NotNull String[] aliases) {
         this.name = name.toLowerCase();
+        this.aliases = aliases;
     }
 
     @NotNull
@@ -22,6 +28,11 @@ public abstract class Tag {
     @NotNull
     public String getName() {
         return name;
+    }
+
+    @NotNull
+    public String[] getAliases() {
+        return aliases;
     }
 
     @NotNull

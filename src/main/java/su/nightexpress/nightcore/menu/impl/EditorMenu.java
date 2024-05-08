@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.dialog.DialogHandler;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangString;
+import su.nightexpress.nightcore.menu.MenuSize;
 import su.nightexpress.nightcore.menu.MenuViewer;
 import su.nightexpress.nightcore.menu.item.ItemHandler;
 import su.nightexpress.nightcore.menu.item.MenuItem;
@@ -26,7 +27,13 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
 
     protected final ViewLink<T> link;
 
+    @Deprecated
     public EditorMenu(@NotNull P plugin, @NotNull String title, int size) {
+        super(plugin, title, size);
+        this.link = new ViewLink<>();
+    }
+
+    public EditorMenu(@NotNull P plugin, @NotNull String title, @NotNull MenuSize size) {
         super(plugin, title, size);
         this.link = new ViewLink<>();
     }
@@ -107,7 +114,7 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
     public MenuItem addItem(@NotNull ItemStack item, @NotNull LangItem locale, int slot, @NotNull EditorHandler<T> handler) {
         ItemReplacer.create(item).trimmed().hideFlags().readLocale(locale).writeMeta();
         MenuItem menuItem = new MenuItem(item).setPriority(100).setSlots(slot)
-            .setHandler((viewer, event) -> handler.handle(viewer, event, this.getObject(viewer)));
+            .setHandler((viewer, event) -> handler.handle(viewer, event, this.getLink(viewer)));
         this.addItem(menuItem);
         return menuItem;
     }
@@ -132,6 +139,7 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
     }
 
     @NotNull
+    @Deprecated
     public Dialog handleInput(@NotNull Player player, @NotNull String prompt, @NotNull DialogHandler handler) {
         this.runNextTick(player::closeInventory);
 
@@ -140,20 +148,24 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         return dialog;
     }
 
+    @Deprecated
     public void editObject(@NotNull MenuViewer viewer, @NotNull Consumer<T> consumer) {
         this.editObject(viewer.getPlayer(), consumer);
     }
 
+    @Deprecated
     public void editObject(@NotNull Player player, @NotNull Consumer<T> consumer) {
-        consumer.accept(this.getObject(player));
+        consumer.accept(this.getLink(player));
     }
 
     @NotNull
+    @Deprecated
     public T getObject(@NotNull MenuViewer viewer) {
         return this.getLink().get(viewer);
     }
 
     @NotNull
+    @Deprecated
     public T getObject(@NotNull Player player) {
         return this.getLink().get(player);
     }

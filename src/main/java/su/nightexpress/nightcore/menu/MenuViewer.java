@@ -11,11 +11,11 @@ public class MenuViewer {
 
     private final Player player;
 
-    private Inventory inventory;
+    private Inventory     inventory;
     private InventoryView view;
-    private int page;
-    private int  pages;
-    private long lastClickTime;
+    private int           page;
+    private int           pages;
+    private long          lastClickTime;
 
     public MenuViewer(@NotNull Player player) {
         this.player = player;

@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.util.text;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.text.tag.TagPool;
@@ -48,6 +49,16 @@ public class WrappedMessage {
     @NotNull
     public String toLegacy() {
         return TextComponent.toLegacyText(this.parseIfAbsent());
+    }
+
+    @NotNull
+    public String toJson() {
+        return ComponentSerializer.toString(this.parseIfAbsent());
+    }
+
+    @NotNull
+    public BaseComponent toComponent() {
+        return TextComponent.fromArray(this.parseIfAbsent());
     }
 
     @NotNull

@@ -1,6 +1,8 @@
 package su.nightexpress.nightcore.config;
 
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,7 +15,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.text.NightMessage;
@@ -341,15 +342,7 @@ public class FileConfig extends YamlConfiguration {
         meta.setLore(NightMessage.asLegacy(Colorizer.apply(this.getStringList(path + "Lore"))));
 
         for (String sKey : this.getSection(path + "Enchants")) {
-            Enchantment enchantment;
-            NamespacedKey key = NamespacedKey.minecraft(sKey.toLowerCase());
-
-            if (Version.isAtLeast(Version.V1_19_R3)) {
-                enchantment = Registry.ENCHANTMENT.get(key);
-            }
-            else {
-                enchantment = Enchantment.getByKey(key);
-            }
+            Enchantment enchantment = BukkitThing.getEnchantment(sKey);
             if (enchantment == null) continue;
 
             int eLvl = this.getInt(path + "Enchants." + sKey);
@@ -441,19 +434,19 @@ public class FileConfig extends YamlConfiguration {
         String compressed = this.getString(path);
         if (compressed == null) return null;
 
-        return ItemUtil.decompress(compressed);
+        return ItemNbt.decompress(compressed);
     }
 
     public void setItemEncoded(@NotNull String path, @Nullable ItemStack item) {
-        this.set(path, item == null ? null : ItemUtil.compress(item));
+        this.set(path, item == null ? null : ItemNbt.compress(item));
     }
 
     @NotNull
     public ItemStack[] getItemsEncoded(@NotNull String path) {
-        return ItemUtil.decompress(this.getStringList(path));
+        return ItemNbt.decompress(this.getStringList(path));
     }
 
     public void setItemsEncoded(@NotNull String path, @NotNull List<ItemStack> item) {
-        this.set(path, ItemUtil.compress(item));
+        this.set(path, ItemNbt.compress(item));
     }
 }

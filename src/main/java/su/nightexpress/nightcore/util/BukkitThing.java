@@ -1,12 +1,10 @@
 package su.nightexpress.nightcore.util;
 
-import org.bukkit.Keyed;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,9 +30,19 @@ public class BukkitThing {
         return registry.stream().collect(Collectors.toSet());
     }
 
+    @NotNull
+    public static String toString(@NotNull Keyed keyed) {
+        return keyed.getKey().getKey();
+    }
+
     @Nullable
     public static Material getMaterial(@NotNull String name) {
         return fromRegistry(Registry.MATERIAL, name);
+    }
+
+    @NotNull
+    public static Set<Material> getMaterials() {
+        return allFromRegistry(Registry.MATERIAL);
     }
 
     @NotNull
@@ -58,5 +66,15 @@ public class BukkitThing {
     @Nullable
     public static Attribute getAttribute(@NotNull String name) {
         return fromRegistry(Registry.ATTRIBUTE, name);
+    }
+
+    @Nullable
+    public static PotionEffectType getPotionEffect(@NotNull String name) {
+        return fromRegistry(Registry.EFFECT, name);
+    }
+
+    @Nullable
+    public static Sound getSound(@NotNull String name) {
+        return fromRegistry(Registry.SOUNDS, name);
     }
 }

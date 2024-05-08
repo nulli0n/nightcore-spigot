@@ -3,7 +3,6 @@ main: su.nightexpress.nightcore.NightCore
 version: '${project.version}'
 description: Plugin Creation Kit.
 author: NightExpress
-softdepend: [ Vault]
 api-version: 1.18
 load: STARTUP
 libraries:

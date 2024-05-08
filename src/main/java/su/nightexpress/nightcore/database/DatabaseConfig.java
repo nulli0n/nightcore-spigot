@@ -59,7 +59,13 @@ public class DatabaseConfig {
 
     @NotNull
     public static DatabaseConfig read(@NotNull NightCorePlugin plugin) {
-        FileConfig cfg = plugin.getConfig();
+        String defPrefix = StringUtil.lowerCaseUnderscore(plugin.getName());
+        return read(plugin.getConfig(), defPrefix);
+    }
+
+    @NotNull
+    public static DatabaseConfig read(@NotNull FileConfig cfg, @NotNull String defaultPrefix) {
+        //FileConfig cfg = plugin.getConfig();
         String path = "Database.";
 
         DatabaseType databaseType = ConfigValue.create(path + "Type", DatabaseType.class, DatabaseType.SQLITE,
@@ -78,7 +84,7 @@ public class DatabaseConfig {
             "Set to '-1' to disable.")
             .read(cfg);
 
-        String tablePrefix = ConfigValue.create(path + "Table_Prefix", StringUtil.lowerCaseUnderscore(plugin.getName()),
+        String tablePrefix = ConfigValue.create(path + "Table_Prefix", defaultPrefix,
             "Custom prefix for plugin tables in database.")
             .read(cfg);
 

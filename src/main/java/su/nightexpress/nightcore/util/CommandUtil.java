@@ -3,9 +3,13 @@ package su.nightexpress.nightcore.util;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
+import su.nightexpress.nightcore.command.experimental.CommandContext;
+import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
 import su.nightexpress.nightcore.command.impl.WrappedCommand;
 
 import java.util.*;
@@ -26,6 +30,10 @@ public class CommandUtil {
         if (COMMAND_MAP.register(plugin.getName(), wrappedCommand)) {
             command.setBackend(wrappedCommand);
         }
+    }
+
+    public static boolean register(@NotNull Plugin plugin, @NotNull WrappedCommand wrappedCommand) {
+        return COMMAND_MAP.register(plugin.getName(), wrappedCommand);
     }
 
     /*public static void syncCommands() {
@@ -81,5 +89,21 @@ public class CommandUtil {
         }
 
         return name;
+    }
+
+    @Nullable
+    public static Player getPlayerOrSender(@NotNull CommandContext context, @NotNull ParsedArguments arguments, @NotNull String name) {
+        Player player;
+        if (arguments.hasArgument(name)) {
+            player = arguments.getPlayerArgument(name);
+        }
+        else {
+            if (context.getExecutor() == null) {
+                context.errorPlayerOnly();
+                return null;
+            }
+            player = context.getExecutor();
+        }
+        return player;
     }
 }

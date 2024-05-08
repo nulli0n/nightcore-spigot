@@ -57,9 +57,9 @@ public class NightMessage {
         }
     }
 
-    public static void registerTag(@NotNull Tag tag, @NotNull String... aliases) {
+    public static void registerTag(@NotNull Tag tag) {
         TAG_MAP.put(tag.getName(), tag);
-        for (String alias : aliases) {
+        for (String alias : tag.getAliases()) {
             TAG_MAP.put(alias, tag);
         }
     }
@@ -75,8 +75,17 @@ public class NightMessage {
     }
 
     @NotNull
+    public static String asJson(@NotNull String string) {
+        return create(string).toJson();
+    }
+
+    @NotNull
     public static String asLegacy(@NotNull String string) {
         return create(string).toLegacy();
+    }
+
+    public static BaseComponent asComponent(@NotNull String string) {
+        return create(string).toComponent();
     }
 
     @NotNull
@@ -114,8 +123,6 @@ public class NightMessage {
     public static WrappedMessage from(@NotNull String string, @NotNull TagPool tagPool) {
         return new WrappedMessage(string, tagPool);
     }
-
-
 
     public static BaseComponent[] parse(@NotNull String string) {
         return parse(string, TagPool.ALL);

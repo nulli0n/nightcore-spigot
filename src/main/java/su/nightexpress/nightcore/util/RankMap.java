@@ -29,22 +29,22 @@ public class RankMap<T extends Number> {
     }
 
     @NotNull
-    public static RankMap<Integer> readInt(@NotNull FileConfig cfg, @NotNull String path) {
-        return read(cfg, path, Integer.class);
+    public static RankMap<Integer> readInt(@NotNull FileConfig cfg, @NotNull String path, int defaultValue) {
+        return read(cfg, path, Integer.class, defaultValue);
     }
 
     @NotNull
-    public static RankMap<Double> readDouble(@NotNull FileConfig cfg, @NotNull String path) {
-        return read(cfg, path, Double.class);
+    public static RankMap<Double> readDouble(@NotNull FileConfig cfg, @NotNull String path, double defaultValue) {
+        return read(cfg, path, Double.class, defaultValue);
     }
 
     @NotNull
-    public static RankMap<Long> readLong(@NotNull FileConfig cfg, @NotNull String path) {
-        return read(cfg, path, Long.class);
+    public static RankMap<Long> readLong(@NotNull FileConfig cfg, @NotNull String path, long defaultValue) {
+        return read(cfg, path, Long.class, defaultValue);
     }
 
     @NotNull
-    public static <T extends Number> RankMap<T> read(@NotNull FileConfig cfg, @NotNull String path, @NotNull Class<T> clazz) {
+    public static <T extends Number> RankMap<T> read(@NotNull FileConfig cfg, @NotNull String path, @NotNull Class<T> clazz, @NotNull T defaultValue) {
         Map<String, T> oldMap = new HashMap<>();
 
         if (!cfg.contains(path + ".Mode")) {
@@ -80,11 +80,11 @@ public class RankMap<T extends Number> {
             "All 'Values' keys will be used to check if player has permission: <permission_prefix> + <key>."
         ).read(cfg);
 
-        T defaultValue;
+        T fallback;
         if (clazz == Double.class) {
-            defaultValue = clazz.cast(ConfigValue.create(path + ".Default_Value", -1).read(cfg));
+            fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.doubleValue()).read(cfg));
         }
-        else defaultValue = clazz.cast(ConfigValue.create(path + ".Default_Value", -1).read(cfg));
+        else fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.intValue()).read(cfg));
 
         Map<String, T> values = new HashMap<>();
         for (String rank : cfg.getSection(path + ".Values")) {
@@ -97,7 +97,7 @@ public class RankMap<T extends Number> {
             values.put(rank.toLowerCase(), number);
         }
 
-        return new RankMap<>(mode, permissionPrefix, defaultValue, values);
+        return new RankMap<>(mode, permissionPrefix, fallback, values);
     }
 
     public void write(@NotNull FileConfig cfg, @NotNull String path) {

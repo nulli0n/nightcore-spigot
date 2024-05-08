@@ -12,7 +12,7 @@ public class TranslateTag extends Tag implements Decorator {
     public static final String NAME = "translate";
 
     public TranslateTag() {
-        super(NAME);
+        super(NAME, new String[]{"tr"});
     }
 
     @Override

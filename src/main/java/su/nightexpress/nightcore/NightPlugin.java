@@ -42,6 +42,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
             this.warn("=".repeat(35));
             this.warn("WARNING: You're running an unsupported server version!");
             this.warn("Expect bugs and broken features.");
+            this.warn("! NO DISCORD SUPPORT WILL BE GIVEN !");
             this.warn("=".repeat(35));
         }
         else if (version.isDeprecated()) {
@@ -157,7 +158,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         this.disable();
 
-        AbstractMenu.closeAll(this); // Close all GUIs.
+        AbstractMenu.clearAll(this); // Close all GUIs.
         HandlerList.unregisterAll(this); // Unregister all plugin listeners.
 
         this.getCommandManager().shutdown();

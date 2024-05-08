@@ -1,11 +1,8 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
 import net.md_5.bungee.api.chat.HoverEvent;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.text.decoration.Decorator;
 import su.nightexpress.nightcore.util.text.decoration.ParsedDecorator;
@@ -33,8 +30,12 @@ public class HoverTag extends ContentTag {
 
     @NotNull
     public String enclose(@NotNull String text, @NotNull String hint) {
-        String action = HoverEvent.Action.SHOW_TEXT.name().toLowerCase();
-        return this.enclose(action, hint, text);
+        return this.enclose(HoverEvent.Action.SHOW_TEXT, text, hint);
+    }
+
+    @NotNull
+    public String enclose(@NotNull HoverEvent.Action action, @NotNull String text, @NotNull String hint) {
+        return this.enclose(action.name().toLowerCase(), hint, text);
     }
 
     @Override
@@ -62,15 +63,15 @@ public class HoverTag extends ContentTag {
             decorator = new ShowTextDecorator(content);
         }
         else if (action == HoverEvent.Action.SHOW_ITEM) {
-            ItemStack item;
+            /*ItemStack item;
 
             Material material = Material.getMaterial(content.toUpperCase());
             if (material != null) {
                 item = new ItemStack(material);
             }
-            else item = ItemUtil.decompress(content);
+            else item = ItemUtil.decompress(content);*/
 
-            decorator = new ShowItemDecorator(item);
+            decorator = new ShowItemDecorator(content);
         }
         else return null;
 

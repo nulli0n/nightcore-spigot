@@ -31,14 +31,14 @@ public class Plugins {
     }
 
     public static boolean hasPlaceholderAPI() {
-        return HAS_PLACEHOLDER_API;//hasPlugin(PLACEHOLDER_API);
+        return HAS_PLACEHOLDER_API;
     }
 
     public static boolean hasVault() {
-        return HAS_VAULT;//hasPlugin(VAULT);
+        return HAS_VAULT;
     }
 
     public static boolean hasFloodgate() {
-        return HAS_FLOODGATE;//hasPlugin(FLOODGATE);
+        return HAS_FLOODGATE;
     }
 }

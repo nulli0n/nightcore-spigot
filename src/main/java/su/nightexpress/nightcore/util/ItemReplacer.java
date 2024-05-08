@@ -29,6 +29,7 @@ public class ItemReplacer {
 
     private boolean trimLore;
     private boolean hideFlags;
+    private Player papi;
 
     public ItemReplacer(@NotNull ItemStack item) {
         this(item, item.getItemMeta());
@@ -42,6 +43,16 @@ public class ItemReplacer {
         this.item = item;
         this.meta = meta;
         this.placeholderMap = new PlaceholderMap();
+    }
+
+    @NotNull
+    public static ItemReplacer create(@NotNull ItemStack item) {
+        return new ItemReplacer(item);
+    }
+
+    @NotNull
+    public static ItemReplacer create(@NotNull ItemMeta meta) {
+        return new ItemReplacer(meta);
     }
 
     @NotNull
@@ -66,6 +77,7 @@ public class ItemReplacer {
         if (!this.hasMeta()) return;
 
         this.replace(this.placeholderMap.replacer());
+        if (this.papi != null) this.injectPlaceholderAPI(this.papi);
 
         this.meta.setDisplayName(this.getDisplayName() == null ? null : NightMessage.asLegacy(this.getDisplayName()));
         this.meta.setLore(this.packTrimmedLore());
@@ -79,22 +91,31 @@ public class ItemReplacer {
         }
     }
 
-    @NotNull
-    public static ItemReplacer create(@NotNull ItemStack item) {
-        return new ItemReplacer(item);
-    }
-
-    @NotNull
-    public static ItemReplacer create(@NotNull ItemMeta meta) {
-        return new ItemReplacer(meta);
-    }
-
     public static void replace(@NotNull ItemStack item, @NotNull UnaryOperator<String> replacer) {
         create(item).trimmed().readMeta().replace(replacer).writeMeta();
     }
 
+    @Deprecated
     public static void replace(@NotNull ItemMeta meta, @NotNull UnaryOperator<String> replacer) {
         create(meta).trimmed().readMeta().replace(replacer).writeMeta();
+    }
+
+    public static void replace(@NotNull ItemStack item, @NotNull PlaceholderMap replacer) {
+        create(item).trimmed().readMeta().replace(replacer).writeMeta();
+    }
+
+    @Deprecated
+    public static void replace(@NotNull ItemMeta meta, @NotNull PlaceholderMap replacer) {
+        create(meta).trimmed().readMeta().replace(replacer).writeMeta();
+    }
+
+    public static void replacePlaceholderAPI(@NotNull ItemStack item, @NotNull Player player) {
+        create(item).trimmed().readMeta().replacePlaceholderAPI(player).writeMeta();
+    }
+
+    @Deprecated
+    public static void replacePlaceholderAPI(@NotNull ItemMeta meta, @NotNull Player player) {
+        create(meta).trimmed().readMeta().replacePlaceholderAPI(player).writeMeta();
     }
 
     public boolean hasMeta() {
@@ -170,9 +191,9 @@ public class ItemReplacer {
 
     @NotNull
     public ItemReplacer replacePlaceholderAPI(@NotNull Player player) {
-        if (!Plugins.hasPlaceholderAPI()) return this;
-
-        this.replace(str -> PlaceholderAPI.setPlaceholders(player, str));
+        if (Plugins.hasPlaceholderAPI()) {
+            this.papi = player;
+        }
         return this;
     }
 
@@ -199,6 +220,14 @@ public class ItemReplacer {
         if (this.getLore() == null) return this;
 
         this.setLore(Lists.replace(this.packLore(), placeholder, replacer));
+        return this;
+    }
+
+    @NotNull
+    public ItemReplacer injectPlaceholderAPI(@NotNull Player player) {
+        if (this.papi != null) {
+            this.replace(str -> PlaceholderAPI.setPlaceholders(player, str));
+        }
         return this;
     }
 

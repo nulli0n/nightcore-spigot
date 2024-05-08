@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +14,7 @@ public class Lists {
 
     @NotNull
     public static List<String> worldNames() {
-        return Plugins.CORE.getServer().getWorlds().stream().map(WorldInfo::getName).toList();
+        return Bukkit.getServer().getWorlds().stream().map(WorldInfo::getName).toList();
     }
 
     public static int indexOf(Object[] array, @NotNull Object objectToFind) {

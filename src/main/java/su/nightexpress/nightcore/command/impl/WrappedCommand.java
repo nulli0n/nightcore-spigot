@@ -4,6 +4,7 @@ import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
+import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +27,21 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
                           @NotNull String[] aliases,
                           @NotNull String description,
                           @NotNull String usage) {
-        super(aliases[0], description, usage, Arrays.asList(aliases));
+        /*super(aliases[0], description, usage, Arrays.asList(aliases));
+        this.plugin = plugin;
+        this.executor = executor;
+        this.tabCompleter = tabCompleter;*/
+        this(plugin, executor, tabCompleter, aliases[0], aliases, description, usage);
+    }
+
+    public WrappedCommand(@NotNull Plugin plugin,
+                          @NotNull CommandExecutor executor,
+                          @NotNull TabCompleter tabCompleter,
+                          @NotNull String name,
+                          @NotNull String[] aliases,
+                          @NotNull String description,
+                          @NotNull String usage) {
+        super(name, NightMessage.clean(description), NightMessage.clean(usage), Arrays.asList(aliases));
         this.plugin = plugin;
         this.executor = executor;
         this.tabCompleter = tabCompleter;

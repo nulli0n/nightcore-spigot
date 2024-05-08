@@ -16,6 +16,8 @@ import java.util.HashSet;
 
 public class DialogListener extends AbstractListener<NightCore> {
 
+    // TODO Timeout
+
     public DialogListener(@NotNull NightCore plugin) {
         super(plugin);
     }

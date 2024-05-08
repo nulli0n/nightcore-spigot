@@ -92,7 +92,7 @@ public class LangAssets {
 
     @NotNull
     public static String getAsset(@NotNull String path, @NotNull Keyed keyed) {
-        return getAsset(path, keyed.getKey().getKey());
+        return getAsset(path, BukkitThing.toString(keyed));
     }
 
     @NotNull
@@ -107,7 +107,7 @@ public class LangAssets {
 
     @NotNull
     public static String getOrCreate(@NotNull String path, @NotNull Keyed keyed) {
-        return getOrCreate(path, keyed.getKey().getKey());
+        return getOrCreate(path, BukkitThing.toString(keyed));
     }
 
     @NotNull

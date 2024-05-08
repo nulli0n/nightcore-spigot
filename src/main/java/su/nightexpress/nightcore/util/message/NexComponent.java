@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.Colorizer;
-import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.ItemNbt;
 
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class NexComponent {
     public NexComponent addHoverEvent(@NotNull HoverEvent.Action action, @NotNull String value) {
         return switch (action) {
             case SHOW_ITEM -> {
-                ItemStack item = ItemUtil.decompress(value);
+                ItemStack item = ItemNbt.decompress(value);
                 yield this.showItem(item == null ? new ItemStack(Material.AIR) : item);
             }
             case SHOW_TEXT -> this.showText(value);

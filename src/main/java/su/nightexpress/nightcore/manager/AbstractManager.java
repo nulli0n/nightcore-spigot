@@ -11,8 +11,8 @@ import java.util.Set;
 
 public abstract class AbstractManager<P extends NightCorePlugin> extends SimpleManager<P> {
 
-    protected final Set<SimpeListener> listeners;
-    protected final List<UniTask>      tasks;
+    protected final Set<SimpleListener> listeners;
+    protected final List<UniTask>       tasks;
 
     public AbstractManager(@NotNull P plugin) {
         super(plugin);
@@ -24,12 +24,12 @@ public abstract class AbstractManager<P extends NightCorePlugin> extends SimpleM
     public void shutdown() {
         this.tasks.forEach(UniTask::stop);
         this.tasks.clear();
-        this.listeners.forEach(SimpeListener::unregisterListeners);
+        this.listeners.forEach(SimpleListener::unregisterListeners);
         this.listeners.clear();
         super.shutdown();
     }
 
-    protected void addListener(@NotNull SimpeListener listener) {
+    protected void addListener(@NotNull SimpleListener listener) {
         if (this.listeners.add(listener)) {
             listener.registerListeners();
         }

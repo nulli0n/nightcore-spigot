@@ -48,7 +48,7 @@ public class MenuListener extends AbstractListener<NightCore> {
 
         int slot = event.getRawSlot();
         boolean isMenu = slot < inventory.getSize();
-        boolean isEmptyItem = item == null || item.getType().isAir();
+        //boolean isEmptyItem = item == null || item.getType().isAir();
         ClickResult result = new ClickResult(slot, item, isMenu);
 
         menu.onClick(viewer, result, event);

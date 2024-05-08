@@ -10,15 +10,24 @@ import java.util.function.UnaryOperator;
 
 public class MenuOptions {
 
-    private String title;
-    private int size;
+    private String        title;
+    private int           size;
     private InventoryType type;
-    private int autoRefresh;
+    private int           autoRefresh;
 
     private long lastAutoRefresh;
 
+    @Deprecated
     public MenuOptions(@NotNull String title, int size, @NotNull InventoryType type) {
         this(title, size, type, 0);
+    }
+
+    public MenuOptions(@NotNull String title, @NotNull MenuSize size) {
+        this(title, size.getSize(), InventoryType.CHEST, 0);
+    }
+
+    public MenuOptions(@NotNull String title, @NotNull InventoryType type) {
+        this(title, 27, type, 0);
     }
 
     public MenuOptions(@NotNull String title, int size, @NotNull InventoryType type, int autoRefresh) {
@@ -30,6 +39,8 @@ public class MenuOptions {
 
     public MenuOptions(@NotNull MenuOptions options) {
         this(options.getTitle(), options.getSize(), options.getType(), options.getAutoRefresh());
+        this.size = options.getSize();
+        this.autoRefresh = options.getAutoRefresh();
         this.lastAutoRefresh = 0L;
     }
 

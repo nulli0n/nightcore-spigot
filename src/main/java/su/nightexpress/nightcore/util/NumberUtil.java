@@ -5,6 +5,7 @@ import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.core.CoreLang;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Supplier;
 
@@ -100,15 +101,7 @@ public class NumberUtil {
     }
 
     public static double getAnyDouble(@NotNull String input, double defaultValue) {
-        try {
-            double amount = Double.parseDouble(input);
-            if (!Double.isNaN(amount) && !Double.isInfinite(amount)) {
-                return amount;
-            }
-        }
-        catch (NumberFormatException ignored) {}
-
-        return defaultValue;
+        return parseDouble(input).orElse(defaultValue);
     }
 
     public static int getInteger(@NotNull String input) {
@@ -120,12 +113,31 @@ public class NumberUtil {
     }
 
     public static int getAnyInteger(@NotNull String input, int defaultValue) {
-        try {
-            return Integer.parseInt(input);
-        }
-        catch (NumberFormatException ignored) {}
+        return parseInteger(input).orElse(defaultValue);
+    }
 
-        return defaultValue;
+    @NotNull
+    public static Optional<Integer> parseInteger(@NotNull String input) {
+        try {
+            return Optional.of(Integer.parseInt(input));
+        }
+        catch (NumberFormatException exception) {
+            return Optional.empty();
+        }
+    }
+
+    @NotNull
+    public static Optional<Double> parseDouble(@NotNull String input) {
+        try {
+            double amount = Double.parseDouble(input);
+            if (!Double.isNaN(amount) && !Double.isInfinite(amount)) {
+                return Optional.of(amount);
+            }
+            return Optional.empty();
+        }
+        catch (NumberFormatException exception) {
+            return Optional.empty();
+        }
     }
 
     public static int[] getIntArray(@NotNull String str) {

@@ -12,6 +12,7 @@ public enum Version {
     V1_20_R1("1.20.1", true),
     V1_20_R2("1.20.2", true),
     V1_20_R3("1.20.4"),
+    MC_1_20_6("1.20.6"),
     UNKNOWN("Unknown"),
     ;
 
@@ -34,10 +35,7 @@ public enum Version {
     @NotNull
     @Deprecated
     public static String getProtocol() {
-        return Bukkit.getServer().getBukkitVersion();//.split("-")[0];
-
-        //String[] split = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
-        //return split[split.length - 1];
+        return Bukkit.getServer().getBukkitVersion();
     }
 
     @NotNull
@@ -45,7 +43,6 @@ public enum Version {
         if (current == null) {
             String protocol = Bukkit.getServer().getBukkitVersion();
             current = Stream.of(values()).filter(version -> protocol.startsWith(version.getLocalized())).findFirst().orElse(UNKNOWN);
-            //current = StringUtil.getEnum(getProtocol(), Version.class).orElse(UNKNOWN);
         }
         return current;
     }

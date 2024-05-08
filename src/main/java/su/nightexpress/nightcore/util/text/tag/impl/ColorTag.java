@@ -13,15 +13,27 @@ public class ColorTag extends Tag implements Decorator {
     protected final Color color;
 
     public ColorTag(@NotNull String name, @NotNull String hex) {
-        this(name, Color.decode(hex));
+        this(name, new String[0], hex);
+    }
+
+    public ColorTag(@NotNull String name, @NotNull String[] aliases, @NotNull String hex) {
+        this(name, aliases, Color.decode(hex));
     }
 
     public ColorTag(@NotNull Color color) {
-        this(Integer.toHexString(color.getRGB()).substring(2), color);
+        this(color, new String[0]);
+    }
+
+    public ColorTag(@NotNull Color color, @NotNull String[] aliases) {
+        this(Integer.toHexString(color.getRGB()).substring(2), aliases, color);
     }
 
     public ColorTag(@NotNull String name, @NotNull Color color) {
-        super(name);
+        this(name, new String[0], color);
+    }
+
+    public ColorTag(@NotNull String name, @NotNull String[] aliases, @NotNull Color color) {
+        super(name, aliases);
         this.color = color;
     }
 

@@ -10,6 +10,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.util.random.Rnd;
 
 import java.util.Collections;
@@ -19,12 +20,39 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class EntityUtil {
 
-    private static final Class<?>      NMS_ENTITY          = Reflex.getClass("net.minecraft.world.entity", "Entity");
-    private static final String        ENTITY_COUNTER_NAME = Version.isAtLeast(Version.V1_19_R3) ? "d" : "c";
-    public static final  AtomicInteger ENTITY_COUNTER      = (AtomicInteger) Reflex.getFieldValue(NMS_ENTITY, ENTITY_COUNTER_NAME);
+    private static AtomicInteger entityCounter;
+
+    public static boolean setupEntityCounter(@NotNull NightCore core) {
+        Class<?> entityClass = Reflex.getClass("net.minecraft.world.entity", "Entity");
+        if (entityClass == null) {
+            core.error("Could not find NMS Entity class!");
+            return false;
+        }
+
+        String fieldName = "c";
+        if (Version.isAtLeast(Version.V1_19_R3) && Version.isBehind(Version.MC_1_20_6)) {
+            fieldName = "d";
+        }
+
+        Object object = Reflex.getFieldValue(entityClass, fieldName);
+        if (!(object instanceof AtomicInteger atomicInteger)) {
+            if (object == null) {
+                core.error("Could not find entity counter field!");
+            }
+            else core.error("Field '" + fieldName + "' in " + entityClass.getName() + " class is " + object.getClass().getName()  + " (expected AtomicInteger)");
+            return false;
+        }
+
+        entityCounter = atomicInteger;
+        return true;
+    }
+
+    public static AtomicInteger getEntityCounter() {
+        return entityCounter;
+    }
 
     public static int nextEntityId() {
-        return ENTITY_COUNTER == null ? Rnd.nextInt(9999) : ENTITY_COUNTER.incrementAndGet();
+        return entityCounter == null ? Rnd.nextInt(9999) : entityCounter.incrementAndGet();
     }
 
     public static double getAttribute(@NotNull LivingEntity entity, @NotNull Attribute attribute) {

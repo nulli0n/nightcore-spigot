@@ -88,11 +88,6 @@ public class PDCUtil {
                                   @NotNull NamespacedKey key,
                                   @Nullable Z value) {
         ItemUtil.editMeta(item, meta -> set(meta, dataType, key, value));
-        /*ItemMeta meta = item.getItemMeta();
-        if (meta == null) return;
-
-        set(meta, dataType, key, value);
-        item.setItemMeta(meta);*/
     }
 
     public static <T, Z> void set(@NotNull PersistentDataHolder holder,
@@ -106,26 +101,15 @@ public class PDCUtil {
 
         PersistentDataContainer container = holder.getPersistentDataContainer();
         container.set(key, dataType, value);
-
-        /*if (holder instanceof BlockState state) {
-            state.update();
-        }*/
     }
 
     public static void remove(@NotNull ItemStack holder, @NotNull NamespacedKey key) {
-        //ItemMeta meta = holder.getItemMeta();
-        //if (meta == null) return;
-        //remove(meta, key);
         ItemUtil.editMeta(holder, meta -> remove(meta, key));
     }
 
     public static void remove(@NotNull PersistentDataHolder holder, @NotNull NamespacedKey key) {
         PersistentDataContainer container = holder.getPersistentDataContainer();
         container.remove(key);
-
-        /*if (holder instanceof BlockState state) {
-            state.update();
-        }*/
     }
 
     @NotNull

@@ -27,9 +27,9 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
     protected final Map<String, ItemHandler> handlerMap;
     protected       String                   itemSection;
 
-    public ConfigMenu(@NotNull P plugin, @NotNull FileConfig cfg) {
+    public ConfigMenu(@NotNull P plugin, @NotNull FileConfig config) {
         super(plugin);
-        this.cfg = cfg;
+        this.cfg = config;
         this.handlerMap = new HashMap<>();
         this.itemSection = DEFAULT_ITEM_SECTION;
 
@@ -111,10 +111,12 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
         comments.add("> Slots: Button slots. From [0] to [Size - 1]. Split with commas.");
         comments.add("> Click_Commands: Execute custom commands on click. " + Plugins.PLACEHOLDER_API + " available here.");
         comments.add("    Available click types: " + String.join(", ", Lists.getEnums(ClickType.class)));
+        comments.add("    Use prefix '" + Players.PLAYER_COMMAND_PREFIX + "' to run command by a player.");
         comments.add("    Click_Commands:");
         comments.add("      LEFT:");
         comments.add("      - say Hello");
         comments.add("      - give " + Placeholders.PLAYER_NAME + " diamond 1");
+        comments.add("      - " + Players.PLAYER_COMMAND_PREFIX + " menu open shops");
         comments.add("=".repeat(50));
         this.cfg.setComments(this.itemSection, comments);
         this.cfg.saveChanges();

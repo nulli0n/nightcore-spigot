@@ -65,7 +65,7 @@ public class LocationUtil {
 
     @NotNull
     public static Location getCenter(@NotNull Location location, boolean doVertical) {
-        Location centered = location.clone();
+        //Location centered = location.clone();
         location.setX(location.getBlockX() + 0.5);
         location.setY(location.getBlockY() + (doVertical ? 0.5 : 0));
         location.setZ(location.getBlockZ() + 0.5);

@@ -179,7 +179,7 @@ public class WrappedText {
         }
 
         public Builder showItem(@NotNull ItemStack itemStack) {
-            return this.tag(Tags.HOVER, new ShowItemDecorator(itemStack));
+            return this.tag(Tags.HOVER, ShowItemDecorator.from(itemStack));
         }
 
         public Builder runCommand(@NotNull String value) {

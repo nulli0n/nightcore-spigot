@@ -24,6 +24,8 @@ import java.util.stream.Stream;
 
 public class Players {
 
+    public static final String PLAYER_COMMAND_PREFIX = "player:";
+
     @NotNull
     public static List<String> playerNames() {
         return playerNames(null);
@@ -158,7 +160,9 @@ public class Players {
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {
-        dispatchCommands(player, Arrays.asList(commands));
+        for (String command : commands) {
+            dispatchCommand(player, command);
+        }
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull List<String> commands) {
@@ -168,13 +172,18 @@ public class Players {
     }
 
     public static void dispatchCommand(@NotNull Player player, @NotNull String command) {
-        command = command.replace("[CONSOLE]", "");
-        command = command.trim().replace("%player%", player.getName());
-        command = Placeholders.forPlayer(player).apply(command);
+        CommandSender sender = Bukkit.getConsoleSender();
+        if (command.startsWith(PLAYER_COMMAND_PREFIX)) {
+            command = command.substring(PLAYER_COMMAND_PREFIX.length());
+            sender = player;
+        }
+
+        command = Placeholders.forPlayer(player).apply(command).trim();
+
         if (Plugins.hasPlaceholderAPI()) {
             command = PlaceholderAPI.setPlaceholders(player, command);
         }
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        Bukkit.dispatchCommand(sender, command);
     }
 
     public static boolean hasEmptyInventory(@NotNull Player player) {

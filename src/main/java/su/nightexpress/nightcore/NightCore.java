@@ -1,9 +1,12 @@
 package su.nightexpress.nightcore;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.command.base.ReloadSubCommand;
+import su.nightexpress.nightcore.command.experimental.ImprovedCommands;
+import su.nightexpress.nightcore.command.experimental.impl.ReloadCommand;
+import su.nightexpress.nightcore.command.experimental.node.ChainedNode;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.core.CoreLang;
@@ -13,16 +16,13 @@ import su.nightexpress.nightcore.core.command.CheckPermCommand;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.language.LangAssets;
-import su.nightexpress.nightcore.util.EntityUtil;
-import su.nightexpress.nightcore.util.ItemUtil;
-import su.nightexpress.nightcore.util.Plugins;
-import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class NightCore extends NightPlugin {
+public class NightCore extends NightPlugin implements ImprovedCommands {
 
     private final Set<NightCorePlugin> childrens;
     private final CoreManager          coreManager;
@@ -36,11 +36,13 @@ public class NightCore extends NightPlugin {
     public void enable() {
         LangAssets.load();
 
+        ChainedNode rootNode = this.getRootNode();
+
         if (Plugins.hasVault()) {
             VaultHook.setup();
-            this.getBaseCommand().addChildren(new CheckPermCommand(this));
+            CheckPermCommand.inject(this, rootNode);
         }
-        this.getBaseCommand().addChildren(new ReloadSubCommand(this, CorePerms.COMMAND_RELOAD));
+        ReloadCommand.inject(this, rootNode, CorePerms.COMMAND_RELOAD);
 
         this.testMethods();
         this.coreManager.setup();
@@ -78,18 +80,35 @@ public class NightCore extends NightPlugin {
 
     private void testMethods() {
         if (Version.getCurrent() == Version.UNKNOWN) {
-            this.warn("Server Version: UNSUPPORTED (!)");
+            this.warn("Server Version: UNSUPPORTED ✘");
         }
-        else this.info("Server Version: " + Version.getCurrent().getLocalized() + " (OK)");
+        else this.info("Server Version: " + Version.getCurrent().getLocalized() + " ✔");
 
-        if (EntityUtil.ENTITY_COUNTER == null) {
-            this.warn("Entity Id Counter: NULL!");
+        if (EntityUtil.setupEntityCounter(this)) {
+            this.info("Entity Id Counter: OK ✔");
         }
-        else this.info("Entity Id Counter: OK.");
+        else this.error("Entity Id Counter: FAIL ✘");
 
-        if (ItemUtil.compress(new ItemStack(Material.DIAMOND_SWORD)) == null) {
-            this.warn("Item NBT Compress: FAILED!");
+        if (this.testItemNbt()) {
+            this.info("Item NBT Compress: OK ✔");
         }
-        else this.info("Item NBT Compress: OK.");
+        else this.error("Item NBT Compress: FAIL ✘");
+    }
+
+    private boolean testItemNbt() {
+        if (!ItemNbt.setup(this)) return false;
+
+        ItemStack testItem = new ItemStack(Material.DIAMOND_SWORD);
+        ItemUtil.editMeta(testItem, meta -> {
+            meta.setDisplayName("Test Item");
+            meta.setLore(Lists.newList("Test Lore 1", "Test Lore 2", "Test Lore 3"));
+            meta.addEnchant(Enchantment.FIRE_ASPECT, 10, true);
+        });
+
+        String nbt = ItemNbt.compress(testItem);
+        if (nbt == null) return false;
+
+        ItemStack decompressed = ItemNbt.decompress(nbt);
+        return decompressed != null && decompressed.getType() == testItem.getType();
     }
 }

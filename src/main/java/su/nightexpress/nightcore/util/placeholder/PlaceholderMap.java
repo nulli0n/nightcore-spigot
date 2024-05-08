@@ -50,7 +50,7 @@ public class PlaceholderMap {
 
     @NotNull
     public PlaceholderMap add(@NotNull PlaceholderMap other) {
-        this.getKeys().addAll(other.getKeys());
+        this.keys.addAll(other.getKeys());
         return this;
     }
 
@@ -62,16 +62,16 @@ public class PlaceholderMap {
 
     @NotNull
     public PlaceholderMap add(@NotNull String key, @NotNull Supplier<String> replacer) {
-        this.getKeys().add(Pair.of(key, replacer));
+        this.keys.add(Pair.of(key, replacer));
         return this;
     }
 
     public void clear() {
-        this.getKeys().clear();
+        this.keys.clear();
     }
 
     @NotNull
     public UnaryOperator<String> replacer() {
-        return str -> StringUtil.replaceEach(str, this.getKeys());
+        return str -> StringUtil.replaceEach(str, this.keys);
     }
 }

@@ -17,6 +17,10 @@ public interface Linked<T> extends Menu {
         return this.getLink().get(player);
     }
 
+    default boolean cleanOnClose() {
+        return true;
+    }
+
     default boolean open(@NotNull Player player, @NotNull T obj) {
         this.getLink().set(player, obj);
 

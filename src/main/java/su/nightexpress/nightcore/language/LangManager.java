@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.language.entry.LangEntry;
+import su.nightexpress.nightcore.language.entry.LangEnum;
 import su.nightexpress.nightcore.manager.SimpleManager;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Reflex;
@@ -57,36 +58,18 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
             return DEFAULT_LANGUAGE;
         }
         return langCode;
-
-        /*if (file.exists()) return langCode;
-
-        try {
-            InputStream input = plugin.getClass().getResourceAsStream(DIR_LANG + fileName);
-            if (input != null) {
-                FileUtil.create(file);
-                FileUtil.copy(input, file);
-                return langCode;
-            }
-            return isDefault(langCode) ? langCode : this.extractConfig(DEFAULT_LANGUAGE);
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-            return isDefault(langCode) ? langCode : this.extractConfig(DEFAULT_LANGUAGE);
-        }*/
     }
 
     public void loadEntries(@NotNull Class<?> clazz) {
         Reflex.getFields(clazz, LangEntry.class).forEach(entry -> {
             entry.load(this.plugin);
         });
+        Reflex.getFields(clazz, LangEnum.class).forEach(langEnum -> {
+            langEnum.load(this.plugin);
+        });
     }
 
-    /*public void loadEditor(@NotNull Class<?> clazz) {
-        Reflex.getFields(clazz, LangItem.class).forEach(entry -> {
-            entry.load(this.plugin);
-        });
-    }*/
-
+    @Deprecated
     public void loadEnum(@NotNull Class<? extends Enum<?>> clazz) {
         for (Object eName : clazz.getEnumConstants()) {
             String name = eName.toString();
@@ -97,6 +80,7 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
     }
 
     @NotNull
+    @Deprecated
     public String getEnum(@NotNull Enum<?> entry) {
         String path = entry.getDeclaringClass().getSimpleName() + "." + entry.name();
         String locEnum = this.config.getString(path);

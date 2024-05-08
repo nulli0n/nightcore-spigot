@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.api.event.PlayerOpenMenuEvent;
 import su.nightexpress.nightcore.dialog.Dialog;
+import su.nightexpress.nightcore.menu.MenuSize;
 import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.link.Linked;
 import su.nightexpress.nightcore.menu.MenuOptions;
@@ -33,6 +34,10 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     public static void closeAll(@NotNull NightCorePlugin plugin) {
         getActiveMenus().forEach(menu -> menu.close(plugin));
+    }
+
+    public static void clearAll(@NotNull NightCorePlugin plugin) {
+        getActiveMenus().stream().distinct().forEach(Menu::clear);
     }
 
     public static Collection<Menu> getActiveMenus() {
@@ -57,11 +62,16 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     public AbstractMenu(@NotNull P plugin, @NotNull String title, @NotNull InventoryType type) {
-        this(plugin, new MenuOptions(title, 27, type));
+        this(plugin, new MenuOptions(title, type));
     }
 
+    @Deprecated
     public AbstractMenu(@NotNull P plugin, @NotNull String title, int size) {
         this(plugin, new MenuOptions(title, size, InventoryType.CHEST));
+    }
+
+    public AbstractMenu(@NotNull P plugin, @NotNull String title, @NotNull MenuSize size) {
+        this(plugin, new MenuOptions(title, size));
     }
 
     public AbstractMenu(@NotNull P plugin, @NotNull MenuOptions options) {
@@ -138,11 +148,15 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     @Override
     public boolean open(@NotNull Player player) {
-        if (!this.canOpen(player)) return false;
+        if (!this.canOpen(player)) {
+            this.purgeViewer(player);
+            return false;
+        }
 
         PlayerOpenMenuEvent event = new PlayerOpenMenuEvent(player, this);
         this.plugin.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
+            this.purgeViewer(player);
             //this.close(player);
             return false;
         }
@@ -163,10 +177,12 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         Inventory inventory = viewer.getInventory();
         if (inventory == null) {
             this.plugin.debug("Could not create " + this.getClass().getSimpleName() + " menu for '" + player.getName() + "'.");
+            this.purgeViewer(player);
             return false;
         }
         if (inventory.getType() == InventoryType.CRAFTING) {
             this.plugin.warn("Got CRAFTING inventory when trying to open " + this.getClass().getSimpleName() + " menu for '" + player.getName() + "'.");
+            this.purgeViewer(player);
             return false;
         }
 
@@ -213,20 +229,27 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     public void onClose(@NotNull Player player) {
-        MenuViewer viewer = this.viewers.remove(player.getUniqueId());
-        if (viewer != null) {
-            this.getItems().removeIf(menuItem -> menuItem.getOptions().canBeDestroyed(viewer));
-        }
-        PLAYER_MENUS.remove(player.getUniqueId());
+        MenuViewer viewer = this.purgeViewer(player);
 
         // Do not clear link if entered Editor, so it can reopen menu without data loss when done.
-        if (viewer != null && this instanceof Linked<?> linked && !Dialog.contains(player)) {
+        if (viewer != null && this instanceof Linked<?> linked && linked.cleanOnClose() && !Dialog.contains(player)) {
             linked.getLink().clear(viewer);
         }
+
+        PLAYER_MENUS.remove(player.getUniqueId());
 
         if (this.getViewers().isEmpty() && !this.isPersistent()) {
             this.clear();
         }
+    }
+
+    @Nullable
+    private MenuViewer purgeViewer(@NotNull Player player) {
+        MenuViewer viewer = this.viewers.remove(player.getUniqueId());
+        if (viewer != null) {
+            this.getItems().removeIf(menuItem -> menuItem.getOptions().canBeDestroyed(viewer));
+        }
+        return viewer;
     }
 
     @Override
