@@ -42,7 +42,7 @@ public class ItemNbt {
     static {
         if (Version.isAtLeast(Version.MC_1_20_6)) {
             Class<?> minecraftServerClass = Reflex.getClass("net.minecraft.server", "MinecraftServer");
-            Class<?> holderLookupProviderClass = Reflex.getInnerClass("net.minecraft.core.HolderLookup", "Provider");
+            Class<?> holderLookupProviderClass = Reflex.getInnerClass("net.minecraft.core.HolderLookup", "a"); // Provider
 
             MINECRAFT_SERVER_REGISTRY_ACCESS = Reflex.getMethod(minecraftServerClass, "bc");
             ITEM_STACK_PARSE_OPTIONAL = Reflex.getMethod(ITEM_STACK_CLASS, "a", holderLookupProviderClass, COMPOUND_TAG_CLASS);
