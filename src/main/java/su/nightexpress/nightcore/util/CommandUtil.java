@@ -75,7 +75,7 @@ public class CommandUtil {
     @NotNull
     public static Optional<Command> getCommand(@NotNull String name) {
         return COMMAND_MAP.getCommands().stream()
-            .filter(command -> command.getLabel().equalsIgnoreCase(name) || command.getAliases().contains(name))
+            .filter(command -> command.getName().equalsIgnoreCase(name) || command.getLabel().equalsIgnoreCase(name) || command.getAliases().contains(name))
             .findFirst();
     }
 

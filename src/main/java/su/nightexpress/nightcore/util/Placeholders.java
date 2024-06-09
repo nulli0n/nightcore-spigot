@@ -28,8 +28,8 @@ public class Placeholders {
     public static final String GENERIC_AMOUNT = "%amount%";
     public static final String GENERIC_ENTRY =  "%entry%";
 
-    public static final String TAG_NO_PREFIX = MessageTags.NO_PREFIX.getFullName();
-    public static final String TAG_LINE_BREAK = Tags.LINE_BREAK.getFullName();
+    public static final String TAG_NO_PREFIX  = MessageTags.NO_PREFIX.getBracketsName();
+    public static final String TAG_LINE_BREAK = Tags.LINE_BREAK.getBracketsName();
 
     public static final String PLAYER_NAME         = "%player_name%";
     public static final String PLAYER_DISPLAY_NAME = "%player_display_name%";

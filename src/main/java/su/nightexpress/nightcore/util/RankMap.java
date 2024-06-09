@@ -71,13 +71,27 @@ public class RankMap<T extends Number> {
 
         Mode mode = ConfigValue.create(path + ".Mode", Mode.class, Mode.RANK,
             "Available values: " + StringUtil.inlineEnum(Mode.class, ", "),
-            "RANK = Get value by player's permission group. All 'Values' keys will represent permission group names.",
-            "PERMISSION = Get value by player's permissions. All 'Values' keys will become as suffix for 'Permission_Prefix' setting."
+            "=".repeat(20) + " " + Mode.RANK.name() + " MODE " + "=".repeat(20),
+            "Get value by player's permission group. All keys in 'Values' list will represent permission group names.",
+            "If player has none of specified groups, the 'Default_Value' setting will be used then",
+            "  Values:",
+            "    vip: 1 # -> Player must be in 'vip' permission group.",
+            "    gold: 2 # -> Player must be in 'gold' permission group.",
+            "    emerald: 3 # -> Player must be in 'emerald' permission group.",
+            "",
+            "=".repeat(20) + " " + Mode.PERMISSION.name() + " MODE " + "=".repeat(20),
+            "Get value by player's permissions. All keys in 'Values' list will represent postfixes for the 'Permission_Prefix' setting (see below).",
+            "If player has none of specified permissions, the 'Default_Value' setting will be used then",
+            "  Permission_Prefix: 'example.prefix.'",
+            "  Values:",
+            "    vip: 1 # -> Player must have 'example.prefix.vip' permission.",
+            "    gold: 2 # -> Player must have 'example.prefix.gold' permission.",
+            "    emerald: 3 # -> Player must have 'example.prefix.emerald' permission."
         ).read(cfg);
 
-        String permissionPrefix = ConfigValue.create(path + ".Permission_Prefix", "sample.prefix.",
-            "Sets permission prefix for the 'PERMISSION' mode.",
-            "All 'Values' keys will be used to check if player has permission: <permission_prefix> + <key>."
+        String permissionPrefix = ConfigValue.create(path + ".Permission_Prefix",
+            "example.prefix.",
+            "Sets permission prefix for the '" + Mode.PERMISSION.name() + "' mode."
         ).read(cfg);
 
         T fallback;

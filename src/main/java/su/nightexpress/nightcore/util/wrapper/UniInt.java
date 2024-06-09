@@ -9,9 +9,9 @@ public final class UniInt {
     private final int minInclusive;
     private final int maxInclusive;
 
-    private UniInt(int var0, int var1) {
-        this.minInclusive = var0;
-        this.maxInclusive = var1;
+    private UniInt(int min, int max) {
+        this.minInclusive = min;
+        this.maxInclusive = max;
     }
 
     @NotNull
@@ -20,15 +20,15 @@ public final class UniInt {
     }
 
     @NotNull
-    public static UniInt read(@NotNull FileConfig cfg, @NotNull String path) {
-        int min = cfg.getInt(path + ".Min");
-        int max = cfg.getInt(path + ".Max");
+    public static UniInt read(@NotNull FileConfig config, @NotNull String path) {
+        int min = config.getInt(path + ".Min");
+        int max = config.getInt(path + ".Max");
         return of(min, max);
     }
 
-    public void write(@NotNull FileConfig cfg, @NotNull String path) {
-        cfg.set(path + ".Min", this.getMinValue());
-        cfg.set(path + ".Max", this.getMaxValue());
+    public void write(@NotNull FileConfig config, @NotNull String path) {
+        config.set(path + ".Min", this.getMinValue());
+        config.set(path + ".Max", this.getMaxValue());
     }
 
     public int roll() {

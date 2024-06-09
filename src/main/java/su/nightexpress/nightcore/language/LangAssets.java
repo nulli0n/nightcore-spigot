@@ -102,7 +102,7 @@ public class LangAssets {
 
     @NotNull
     public static Optional<String> getAsset(@NotNull String path) {
-        return Optional.ofNullable(config.getString(path)).map(Colorizer::apply);
+        return Optional.ofNullable(config.getString(path));//.map(NightMessage::asLegacy);
     }
 
     @NotNull

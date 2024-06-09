@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.util.Reflex;
 import su.nightexpress.nightcore.util.StringUtil;
 
 import java.io.File;
+import java.io.InputStream;
 
 public class LangManager extends SimpleManager<NightCorePlugin> {
 
@@ -41,7 +42,12 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
             filePath = "/" + filePath;
         }
 
-        return plugin.getClass().getResourceAsStream(filePath) != null;
+        try (InputStream inputStream = plugin.getClass().getResourceAsStream(filePath)) {
+            return inputStream != null;
+        }
+        catch (Exception ignored) {}
+
+        return false;
     }
 
     @NotNull

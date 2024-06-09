@@ -104,7 +104,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     public void close(@NotNull Player player) {
         Menu current = getMenu(player);
 
-        if (current == this && player.getOpenInventory().getType() != InventoryType.CRAFTING) {
+        if (current == this && player.getOpenInventory().getType() != InventoryType.CRAFTING && player.getOpenInventory().getType() != InventoryType.CREATIVE) {
             player.closeInventory();
         }
         else {
@@ -232,7 +232,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         MenuViewer viewer = this.purgeViewer(player);
 
         // Do not clear link if entered Editor, so it can reopen menu without data loss when done.
-        if (viewer != null && this instanceof Linked<?> linked && linked.cleanOnClose() && !Dialog.contains(player)) {
+        if (viewer != null && this instanceof Linked<?> linked && (!linked.isLinkPersistent() && !Dialog.contains(player))) {
             linked.getLink().clear(viewer);
         }
 

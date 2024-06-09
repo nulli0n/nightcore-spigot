@@ -1,4 +1,4 @@
-package su.nightexpress.nightcore.util.text.decoration;
+package su.nightexpress.nightcore.util.text.tag.decorator;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -6,11 +6,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class ColorDecorator implements Decorator {
+public class BaseColorDecorator implements ColorDecorator {
 
     private final Color color;
 
-    public ColorDecorator(@NotNull Color color) {
+    public BaseColorDecorator(@NotNull Color color) {
         this.color = color;
     }
 

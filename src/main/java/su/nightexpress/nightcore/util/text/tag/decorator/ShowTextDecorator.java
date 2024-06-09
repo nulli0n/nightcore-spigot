@@ -1,12 +1,12 @@
-package su.nightexpress.nightcore.util.text.decoration;
+package su.nightexpress.nightcore.util.text.tag.decorator;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.text.NightMessage;
-import su.nightexpress.nightcore.util.text.tag.Tags;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class ShowTextDecorator implements Decorator {
 
     @NotNull
     public HoverEvent createEvent() {
-        String fused = String.join(Tags.LINE_BREAK.getFullName(), this.text);
+        String fused = String.join(Placeholders.TAG_LINE_BREAK, this.text);
         Text text = new Text(NightMessage.parse(fused));
 
         return new HoverEvent(HoverEvent.Action.SHOW_TEXT, text);

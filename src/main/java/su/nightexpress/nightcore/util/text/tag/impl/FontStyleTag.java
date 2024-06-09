@@ -2,10 +2,10 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.text.decoration.Decorator;
-import su.nightexpress.nightcore.util.text.tag.api.Tag;
+import su.nightexpress.nightcore.util.text.tag.api.SimpleTag;
+import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 
-public class FontStyleTag extends Tag implements Decorator {
+public class FontStyleTag extends SimpleTag implements Decorator {
 
     public enum Style {
         BOLD, ITALIC, UNDERLINED, STRIKETHROUGH, OBFUSCATED
@@ -16,11 +16,6 @@ public class FontStyleTag extends Tag implements Decorator {
     public FontStyleTag(@NotNull String name, @NotNull Style style) {
         super(name);
         this.style = style;
-    }
-
-    @Override
-    public int getWeight() {
-        return 0;
     }
 
     @NotNull

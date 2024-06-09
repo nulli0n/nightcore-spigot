@@ -1,15 +1,15 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
 import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.StringUtil;
-import su.nightexpress.nightcore.util.text.decoration.ClickEventDecorator;
-import su.nightexpress.nightcore.util.text.decoration.Decorator;
-import su.nightexpress.nightcore.util.text.decoration.ParsedDecorator;
+import su.nightexpress.nightcore.util.text.TextRoot;
+import su.nightexpress.nightcore.util.text.tag.api.ComplexTag;
+import su.nightexpress.nightcore.util.text.tag.decorator.ClickDecorator;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 
-public class ClickTag extends ContentTag {
+public class ClickTag extends ComplexTag implements ContentTag {
 
     public static final String NAME = "click";
 
@@ -17,23 +17,37 @@ public class ClickTag extends ContentTag {
         super(NAME);
     }
 
-    @Override
-    public int getWeight() {
-        return 50;
+    @NotNull
+    public String encloseRun(@NotNull String text, @NotNull String command) {
+        return this.enclose(text, ClickEvent.Action.RUN_COMMAND, command);
     }
 
     @NotNull
-    public String enclose(@NotNull ClickEvent.Action action, @NotNull String text, @NotNull String command) {
-        String actionName = action.name().toLowerCase();
-        return this.enclose(actionName, command, text);
+    @Deprecated
+    public String enclose(@NotNull ClickEvent.Action action, @NotNull String text, @NotNull String content) {
+        return this.enclose(text, action, content);
+    }
+
+    @NotNull
+    public String enclose(@NotNull String text, @NotNull ClickEvent.Action action, @NotNull String content) {
+        //content = content.replace("'", "\\'");
+
+        //String tagOpen = brackets(NAME + ":" + action.name().toLowerCase() + ":'" + content + "'");
+        //String tagClose = this.getClosingName();
+
+        //return tagOpen + text + tagClose;
+
+        String data = action.name().toLowerCase() + ":\"" + this.escapeQuotes(content) + "\"";
+
+        return this.encloseContent(text, data);
     }
 
     @Override
     @Nullable
-    public ParsedDecorator onParse(@NotNull String sub) {
+    public ClickDecorator parse(@NotNull String tagContent) {
         ClickEvent.Action action = null;
         for (ClickEvent.Action global : ClickEvent.Action.values()) {
-            if (sub.startsWith(global.name().toLowerCase())) {
+            if (tagContent.startsWith(global.name().toLowerCase())) {
                 action = global;
                 break;
             }
@@ -41,15 +55,10 @@ public class ClickTag extends ContentTag {
         if (action == null) return null;
 
         int prefixSize = action.name().toLowerCase().length() + 1; // 1 for ':', like "run_command:"
-        sub = sub.substring(prefixSize);
+        tagContent = tagContent.substring(prefixSize);
 
-        String content = StringUtil.parseQuotedContent(sub);
-        if (content == null) return null;
+        String value = TextRoot.stripQuotesSlash(tagContent);
 
-        int length = prefixSize + content.length();// + 2; // 2 for quotes
-
-        Decorator decorator = new ClickEventDecorator(action, content);
-
-        return new ParsedDecorator(decorator, length);
+        return new ClickDecorator(action, value);
     }
 }

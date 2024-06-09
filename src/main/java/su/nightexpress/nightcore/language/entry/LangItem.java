@@ -7,7 +7,7 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Pair;
 import su.nightexpress.nightcore.util.text.NightMessage;
-import su.nightexpress.nightcore.util.text.WrappedMessage;
+import su.nightexpress.nightcore.util.text.TextRoot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +23,8 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
     private String localizedName;
     private List<String> localizedLore;
 
-    private WrappedMessage wrappedName;
-    private List<WrappedMessage> wrappedLore;
+    private TextRoot             wrappedName;
+    private List<TextRoot> wrappedLore;
 
     public LangItem(@NotNull String key, @NotNull String defaultName, @NotNull List<String> defaultLore) {
         super(key, defaultName);
@@ -62,7 +62,7 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
     public void apply(@NotNull ItemStack item) {
         ItemUtil.editMeta(item, meta -> {
             meta.setDisplayName(this.getWrappedName().toLegacy());
-            meta.setLore(this.getWrappedLore().stream().map(WrappedMessage::toLegacy).toList());
+            meta.setLore(this.getWrappedLore().stream().map(TextRoot::toLegacy).toList());
         });
     }
 
@@ -98,12 +98,12 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
     }
 
     @NotNull
-    public WrappedMessage getWrappedName() {
+    public TextRoot getWrappedName() {
         return wrappedName;
     }
 
     @NotNull
-    public List<WrappedMessage> getWrappedLore() {
+    public List<TextRoot> getWrappedLore() {
         return wrappedLore;
     }
 

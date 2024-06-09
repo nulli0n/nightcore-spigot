@@ -13,21 +13,25 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extends DataUser> extends AbstractManager<P> {
 
-    private final Map<UUID, U> loadedById;
+    private final Map<UUID, U>   loadedById;
     private final Map<String, U> loadedByName;
+    private final Set<U>         scheduledSaves;
 
     public AbstractUserManager(@NotNull P plugin) {
         super(plugin);
         this.loadedById = new ConcurrentHashMap<>();
         this.loadedByName = new ConcurrentHashMap<>();
+        this.scheduledSaves = ConcurrentHashMap.newKeySet();
     }
 
     @Override
     protected void onLoad() {
         this.addListener(new UserListener<>(this.plugin));
+        this.addTask(this.plugin.createAsyncTask(this::saveScheduled).setTicksInterval(1));
     }
 
     @Override
@@ -35,6 +39,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
         this.getLoaded().forEach(this::save);
         this.getLoadedByIdMap().clear();
         this.getLoadedByNameMap().clear();
+        this.scheduledSaves.clear();
     }
 
     @NotNull
@@ -45,6 +50,11 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
             U user = this.getUserData(id);
             if (user != null) this.cachePermanent(user);
         });
+    }
+
+    public void saveScheduled() {
+        this.scheduledSaves.forEach(this::save);
+        this.scheduledSaves.clear();
     }
 
     @NotNull
@@ -109,36 +119,96 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
         return CompletableFuture.supplyAsync(() -> this.getUserData(uuid));
     }
 
+    /**
+     * Performs an operation on the given user.<br>
+     * Runs immediately in the current thread if player is online or data is already loaded.<br>
+     * Otherwise fetches player data asynchronously and performs an operation in async CompletableFuture thread.
+     * @param name Name of a player.
+     */
+    public void manageUser(@NotNull String name, Consumer<U> consumer) {
+        this.manageUser(() -> this.getLoaded(name), () -> this.getUserDataAsync(name), consumer);
+    }
+
+    /**
+     * Performs an operation on the given user.<br>
+     * Runs immediately in the current thread if player is online or data is already loaded.<br>
+     * Otherwise fetches player data asynchronously and performs an operation in async CompletableFuture thread.
+     * @param playerId UUID of a player.
+     */
+    public void manageUser(@NotNull UUID playerId, Consumer<U> consumer) {
+        this.manageUser(() -> this.getLoaded(playerId), () -> this.getUserDataAsync(playerId), consumer);
+    }
+
+    /**
+     * Performs an operation on the given user.<br>
+     * Runs immediately in the current thread if player is online or data is already loaded.<br>
+     * Otherwise fetches player data asynchronously and performs an operation next tick in the main thread.
+     * @param name Name of a player.
+     */
+    public void manageUserSynchronized(@NotNull String name, Consumer<U> consumer) {
+        this.manageUserSynchronized(() -> this.getLoaded(name), () -> this.getUserDataAsync(name), consumer);
+    }
+
+    /**
+     * Performs an operation on the given user.<br>
+     * Runs immediately in the current thread if player is online or data is already loaded.<br>
+     * Otherwise fetches player data asynchronously and performs an operation next tick in the main thread.
+     * @param playerId UUID of a player.
+     */
+    public void manageUserSynchronized(@NotNull UUID playerId, Consumer<U> consumer) {
+        this.manageUserSynchronized(() -> this.getLoaded(playerId), () -> this.getUserDataAsync(playerId), consumer);
+    }
+
+    private void manageUser(@NotNull Supplier<U> loadedSupplier, @NotNull Supplier<CompletableFuture<U>> fetchSupplier, @NotNull Consumer<U> consumer) {
+        U user = loadedSupplier.get();
+        if (user != null) {
+            consumer.accept(user);
+        }
+        else fetchSupplier.get().thenAccept(consumer);
+    }
+
+    private void manageUserSynchronized(@NotNull Supplier<U> loadedSupplier, @NotNull Supplier<CompletableFuture<U>> fetchSupplier, @NotNull Consumer<U> consumer) {
+        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(task -> consumer.accept(user)));
+    }
+
+    @Deprecated
     public void getUserDataAndPerform(@NotNull String name, Consumer<U> consumer) {
-        U user = this.getLoaded(name);
+        this.manageUserSynchronized(name, consumer);
+        /*U user = this.getLoaded(name);
         if (user != null) {
             consumer.accept(user);
         }
-        else this.getUserDataAsync(name).thenAccept(user2 -> this.plugin.runTask(task -> consumer.accept(user2)));
+        else this.getUserDataAsync(name).thenAccept(user2 -> this.plugin.runTask(task -> consumer.accept(user2)));*/
     }
 
+    @Deprecated
     public void getUserDataAndPerform(@NotNull UUID uuid, Consumer<U> consumer) {
-        U user = this.getLoaded(uuid);
+        this.manageUserSynchronized(uuid, consumer);
+        /*U user = this.getLoaded(uuid);
         if (user != null) {
             consumer.accept(user);
         }
-        else this.getUserDataAsync(uuid).thenAccept(user2 -> this.plugin.runTask(task -> consumer.accept(user2)));
+        else this.getUserDataAsync(uuid).thenAccept(user2 -> this.plugin.runTask(task -> consumer.accept(user2)));*/
     }
 
+    @Deprecated
     public void getUserDataAndPerformAsync(@NotNull String name, Consumer<U> consumer) {
-        U user = this.getLoaded(name);
+        this.manageUser(name, consumer);
+        /*U user = this.getLoaded(name);
         if (user != null) {
             consumer.accept(user);
         }
-        else this.getUserDataAsync(name).thenAccept(consumer);
+        else this.getUserDataAsync(name).thenAccept(consumer);*/
     }
 
+    @Deprecated
     public void getUserDataAndPerformAsync(@NotNull UUID uuid, Consumer<U> consumer) {
-        U user = this.getLoaded(uuid);
+        this.manageUser(uuid, consumer);
+        /*U user = this.getLoaded(uuid);
         if (user != null) {
             consumer.accept(user);
         }
-        else this.getUserDataAsync(uuid).thenAccept(consumer);
+        else this.getUserDataAsync(uuid).thenAccept(consumer);*/
     }
 
     public final void unload(@NotNull Player player) {
@@ -158,7 +228,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
             user.setName(player.getName());
             user.setLastOnline(System.currentTimeMillis());
         }
-        this.saveAsync(user);
+        this.scheduleSave(user);
         this.cacheTemporary(user);
     }
 
@@ -166,8 +236,13 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
         this.plugin.getData().saveUser(user);
     }
 
+    public void scheduleSave(@NotNull U user) {
+        this.scheduledSaves.add(user);
+    }
+
+    @Deprecated
     public void saveAsync(@NotNull U user) {
-        this.plugin.runTaskAsync(task -> this.save(user));
+        this.scheduleSave(user);
     }
 
     @NotNull

@@ -44,6 +44,6 @@ public class UserListener<P extends NightDataPlugin<U>, U extends DataUser> exte
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onUserQuit(PlayerQuitEvent event) {
-        this.plugin.getUserManager().unload(event.getPlayer());
+        this.userManager.unload(event.getPlayer());
     }
 }

@@ -3,12 +3,12 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.text.decoration.Decorator;
-import su.nightexpress.nightcore.util.text.tag.api.Tag;
+import su.nightexpress.nightcore.util.text.tag.api.SimpleTag;
+import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 
 import java.awt.*;
 
-public class ColorTag extends Tag implements Decorator {
+public class ColorTag extends SimpleTag implements ColorDecorator {
 
     protected final Color color;
 
@@ -37,19 +37,9 @@ public class ColorTag extends Tag implements Decorator {
         this.color = color;
     }
 
-    @Override
-    public int getWeight() {
-        return 10;
-    }
-
     @NotNull
     public Color getColor() {
         return color;
-    }
-
-    @Override
-    public boolean conflictsWith(@NotNull Tag tag) {
-        return tag instanceof ColorTag;
     }
 
     @Override

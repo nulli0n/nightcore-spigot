@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.command.impl;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
@@ -17,8 +18,8 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
     protected final TabCompleter    tabCompleter;
 
     public WrappedCommand(@NotNull Plugin plugin, @NotNull NightPluginCommand command) {
-        this(plugin, command, command, command.getAliases(), command.getDescription(), command.getUsage());
-        this.setPermission(command.getPermission());
+        this(plugin, command, command, command.getAliases(), command.getDescription(), command.getUsage(), command.getPermission());
+        //this.setPermission(command.getPermission());
     }
 
     public WrappedCommand(@NotNull Plugin plugin,
@@ -26,12 +27,13 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
                           @NotNull TabCompleter tabCompleter,
                           @NotNull String[] aliases,
                           @NotNull String description,
-                          @NotNull String usage) {
+                          @NotNull String usage,
+                          @Nullable String permission) {
         /*super(aliases[0], description, usage, Arrays.asList(aliases));
         this.plugin = plugin;
         this.executor = executor;
         this.tabCompleter = tabCompleter;*/
-        this(plugin, executor, tabCompleter, aliases[0], aliases, description, usage);
+        this(plugin, executor, tabCompleter, aliases[0], aliases, description, usage, permission);
     }
 
     public WrappedCommand(@NotNull Plugin plugin,
@@ -40,11 +42,13 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
                           @NotNull String name,
                           @NotNull String[] aliases,
                           @NotNull String description,
-                          @NotNull String usage) {
+                          @NotNull String usage,
+                          @Nullable String permission) {
         super(name, NightMessage.clean(description), NightMessage.clean(usage), Arrays.asList(aliases));
         this.plugin = plugin;
         this.executor = executor;
         this.tabCompleter = tabCompleter;
+        this.setPermission(permission);
     }
 
     @Override

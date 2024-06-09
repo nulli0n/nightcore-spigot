@@ -37,8 +37,8 @@ public class VaultHook {
 
     @Nullable
     private static <T> T getProvider(@NotNull Class<T> clazz) {
-        RegisteredServiceProvider<T> rsp = Bukkit.getServer().getServicesManager().getRegistration(clazz);
-        return rsp == null ? null : rsp.getProvider();
+        RegisteredServiceProvider<T> provider = Bukkit.getServer().getServicesManager().getRegistration(clazz);
+        return provider == null ? null : provider.getProvider();
     }
 
     private static void setPermission() {

@@ -1,23 +1,18 @@
 package su.nightexpress.nightcore.language.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.language.message.MessageOptions;
-import su.nightexpress.nightcore.language.tag.MessageDecorator;
-import su.nightexpress.nightcore.util.text.tag.api.Tag;
+import su.nightexpress.nightcore.language.tag.MessageTag;
 
-public class NoPrefixTag extends Tag implements MessageDecorator {
+public class NoPrefixTag extends MessageTag {
 
     public NoPrefixTag() {
         super("noprefix");
     }
 
     @Override
-    public int getWeight() {
-        return 0;
-    }
-
-    @Override
-    public void apply(@NotNull MessageOptions options, @NotNull String value) {
+    public void apply(@NotNull MessageOptions options, @Nullable String tagContent) {
         options.setHasPrefix(false);
     }
 }

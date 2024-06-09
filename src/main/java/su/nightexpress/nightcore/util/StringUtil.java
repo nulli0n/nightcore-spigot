@@ -102,7 +102,7 @@ public class StringUtil {
         return buf.toString();
     }
 
-    @Nullable
+    /*@Nullable
     public static String parseQuotedContent(@NotNull String string) {
         char quote = string.charAt(0);
         if (quote != '\'' && quote != '"') return null;
@@ -123,6 +123,29 @@ public class StringUtil {
         if (indexEnd == -1) return null;
 
         return string.substring(1, indexEnd);
+    }*/
+
+    @Nullable
+    public static String parseQuotedContent(@NotNull String string) {
+        char quote = string.charAt(0);
+        if (quote != '\'' && quote != '"') return null;
+        if (string.length() < 3) return null;
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int index = 1; index < string.length(); index++) {
+            char letter = string.charAt(index);
+            if (letter == '\\') {
+                //index++;
+                continue;
+            }
+            if (letter == quote) {
+                break;
+            }
+            builder.append(letter);
+        }
+
+        return builder.toString();
     }
 
     @NotNull

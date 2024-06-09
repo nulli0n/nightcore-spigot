@@ -2,32 +2,19 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.StringUtil;
-import su.nightexpress.nightcore.util.text.decoration.FontDecorator;
-import su.nightexpress.nightcore.util.text.decoration.ParsedDecorator;
+import su.nightexpress.nightcore.util.text.tag.api.ComplexTag;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
+import su.nightexpress.nightcore.util.text.tag.decorator.FontDecorator;
 
-public class FontTag extends ContentTag {
-
-    public static final String NAME = "font";
+public class FontTag extends ComplexTag implements ContentTag {
 
     public FontTag() {
-        super(NAME);
+        super("font");
     }
 
     @Override
     @Nullable
-    public ParsedDecorator onParse(@NotNull String str) {
-        String content = StringUtil.parseQuotedContent(str);
-        if (content == null) return null;
-
-        int length = content.length();// + 2; // 2 for quotes
-
-        return new ParsedDecorator(new FontDecorator(content), length);
-    }
-
-    @Override
-    public int getWeight() {
-        return 0;
+    public FontDecorator parse(@NotNull String str) {
+        return new FontDecorator(str);
     }
 }

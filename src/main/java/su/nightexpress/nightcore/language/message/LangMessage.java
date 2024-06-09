@@ -1,9 +1,6 @@
 package su.nightexpress.nightcore.language.message;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,15 +8,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.core.CoreConfig;
-import su.nightexpress.nightcore.language.tag.MessageDecorator;
+import su.nightexpress.nightcore.language.tag.MessageTag;
 import su.nightexpress.nightcore.language.tag.MessageTags;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.text.NightMessage;
-import su.nightexpress.nightcore.util.text.WrappedMessage;
-import su.nightexpress.nightcore.util.text.tag.api.DynamicTag;
+import su.nightexpress.nightcore.util.text.TextRoot;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.wrapper.UniSound;
 
@@ -33,7 +29,7 @@ public class LangMessage {
     private final NightCorePlugin plugin;
     private final String          defaultText;
     private final MessageOptions  options;
-    private final WrappedMessage  message;
+    private final TextRoot        message;
 
     public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options) {
         this(plugin, defaultText, options, null);
@@ -44,7 +40,7 @@ public class LangMessage {
         this.defaultText = defaultText;
         this.options = options;
         this.message = NightMessage.from(prefix == null || !options.hasPrefix() ? defaultText : prefix + defaultText);
-        if (CoreConfig.MODERN_TEXT_PRECOMPILE_LANG.get()) {
+        if (CoreConfig.MODERN_TEXT_PRECOMPILE_LANG.get() && options.getOutputType() != OutputType.TITLES) {
             this.message.compile();
         }
     }
@@ -117,48 +113,31 @@ public class LangMessage {
 
             Tag:
             if (letter == Tag.OPEN_BRACKET && index != (length - 1)) {
-                int indexEnd = string.indexOf(Tag.CLOSE_BRACKET, index);
+                int indexEnd = TextRoot.indexOfIgnoreEscaped(string, Tag.CLOSE_BRACKET, index);
                 if (indexEnd == -1) break Tag;
 
                 char next = string.charAt(index + 1);
                 if (next == Tag.CLOSE_BRACKET) break Tag;
 
-                String leading = string.substring(index + 1);
-                String brackets = string.substring(index + 1, indexEnd);
+                String bracketsContent = string.substring(index + 1, indexEnd);
 
-                Tag tag = MessageTags.getTag(brackets);
+                String tagName = bracketsContent;
+                String tagContent = null;
 
-                if (tag == null) {
-                    for (Tag registered : MessageTags.getTags()) {
-                        String tagName = registered.getName();
-                        if (leading.startsWith(tagName)) {
-                            char latest = leading.charAt(tagName.length());
-
-                            if (latest == Tag.CLOSE_BRACKET || registered instanceof DynamicTag) {
-                                tag = registered;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (!(tag instanceof MessageDecorator decorator)) break Tag;
-
-                if (tag instanceof DynamicTag) {
-                    int prefixSize = tag.getName().length() + 1; // 1 for semicolon
-
-                    String content = StringUtil.parseQuotedContent(leading.substring(prefixSize));
-                    if (content == null) break Tag;
-
-                    decorator.apply(options, content);
-
-                    indexEnd = index + prefixSize + content.length() + 3; // 1 for close bracket, 2 for quotes
-                }
-                else {
-                    decorator.apply(options, leading);
+                // Check for content tags
+                int semicolonIndex = bracketsContent.indexOf(':');
+                if (semicolonIndex >= 0) {
+                    tagName = bracketsContent.substring(0, semicolonIndex);
+                    tagContent = TextRoot.stripQuotesSlash(bracketsContent.substring(semicolonIndex + 1));
                 }
 
-                index = indexEnd;
-                continue;
+                MessageTag tag = MessageTags.getTag(tagName);
+
+                if (tag != null) {
+                    tag.apply(options, tagContent);
+                    index = indexEnd;
+                    continue;
+                }
             }
             builder.append(letter);
         }
@@ -191,12 +170,12 @@ public class LangMessage {
     }
 
     @NotNull
-    public WrappedMessage getMessage() {
+    public TextRoot getMessage() {
         return this.message;
     }
 
     @NotNull
-    public WrappedMessage getMessage(@NotNull CommandSender sender) {
+    public TextRoot getMessage(@NotNull CommandSender sender) {
         if (!this.options.usePlaceholderAPI() || !(sender instanceof Player player)) return this.getMessage();
 
         return this.message.copy().replace(line -> PlaceholderAPI.setPlaceholders(player, line));
@@ -217,8 +196,6 @@ public class LangMessage {
 
     @NotNull
     public LangMessage replace(@NotNull String var, @NotNull List<String> replacer) {
-        //String delimiter = CoreConfig.MODERN_TEXT_PRECOMPILE_LANG.get() ? "\n" : StandardTags.LINE_BREAK;
-
         return this.replace(str -> str.replace(var, String.join(Placeholders.TAG_LINE_BREAK, replacer)));
     }
 
@@ -231,26 +208,6 @@ public class LangMessage {
 
         return copy;
     }
-
-    /*@NotNull
-    public LangMessage replace(@NotNull Predicate<String> predicate, @NotNull BiConsumer<String, List<String>> replacer) {
-        if (this.isEmpty()) return this;
-
-        LangMessage msgCopy = new LangMessage(this);
-        List<String> replaced = new ArrayList<>();
-        List<String> text
-
-        msgCopy.getText().forEach(line -> {
-            if (predicate.test(line)) {
-                replacer.accept(line, replaced);
-                return;
-            }
-            replaced.add(line);
-        });
-        msgCopy.setText(replaced);
-
-        return msgCopy;
-    }*/
 
     public boolean isDisabled() {
         return this.options.getOutputType() == OutputType.NONE;
@@ -278,23 +235,13 @@ public class LangMessage {
         if (sender instanceof Player player) {
             if (this.options.getOutputType() == OutputType.ACTION_BAR) {
                 Players.sendActionBar(player, this.getMessage(player));
-                //player.spigot().sendMessage(ChatMessageType.ACTION_BAR, this.getMessage(player).parseIfAbsent());
             }
             else if (this.options.getOutputType() == OutputType.TITLES) {
-                ComponentBuilder titleBuilder = new ComponentBuilder();
-                ComponentBuilder subBuilder = new ComponentBuilder();
-                ComponentBuilder current = titleBuilder;
+                String[] split = this.getMessage(sender).getString().split(Placeholders.TAG_LINE_BREAK);
 
-                for (BaseComponent component : this.getMessage(player).parseIfAbsent()) {
-                    if (component instanceof TextComponent textComponent && textComponent.getText().equals("\n")) {
-                        current = subBuilder;
-                        continue;
-                    }
-                    current.append(component);
-                }
+                String title = NightMessage.asLegacy(split[0]);
+                String subtitle = split.length >= 2 ? NightMessage.asLegacy(split[1]) : "";
 
-                String title = TextComponent.toLegacyText(titleBuilder.create());
-                String subtitle = TextComponent.toLegacyText(subBuilder.create());
                 player.sendTitle(title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
             }
         }

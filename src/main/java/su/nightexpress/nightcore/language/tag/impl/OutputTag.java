@@ -1,39 +1,39 @@
 package su.nightexpress.nightcore.language.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.language.message.MessageOptions;
 import su.nightexpress.nightcore.language.message.OutputType;
-import su.nightexpress.nightcore.language.tag.MessageDecorator;
+import su.nightexpress.nightcore.language.tag.MessageTag;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.StringUtil;
-import su.nightexpress.nightcore.util.text.tag.api.DynamicTag;
 
-public class OutputTag extends DynamicTag implements MessageDecorator {
+public class OutputTag extends MessageTag {
 
     public OutputTag() {
         super("output");
     }
 
-    @Override
-    public int getWeight() {
-        return 0;
-    }
-
     @NotNull
     public String enclose(@NotNull OutputType type) {
         String prefix = type.name().toLowerCase();
-        return this.leading(null, prefix);
+
+        return this.enclose(prefix);
     }
 
     @NotNull
     public String enclose(int fade, int stay) {
         String prefix = OutputType.TITLES.name().toLowerCase();
-        return this.leading(null, prefix + ":" + fade + ":" + stay + ":" + fade);
+        String content = prefix + ":" + fade + ":" + stay + ":" + fade;
+
+        return this.enclose(content);
     }
 
     @Override
-    public void apply(@NotNull MessageOptions options, @NotNull String content) {
-        String[] split = content.split(":");
+    public void apply(@NotNull MessageOptions options, @Nullable String tagContent) {
+        if (tagContent == null) return;
+
+        String[] split = tagContent.split(":");
         OutputType outputType = StringUtil.getEnum(split[0], OutputType.class).orElse(OutputType.CHAT);
 
         options.setOutputType(outputType);

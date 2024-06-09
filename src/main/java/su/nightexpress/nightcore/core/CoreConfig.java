@@ -2,16 +2,15 @@ package su.nightexpress.nightcore.core;
 
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.util.Placeholders;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.text.tag.Tags;
 import su.nightexpress.nightcore.util.text.tag.impl.ColorTag;
 import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 
 import java.awt.*;
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CoreConfig {
 
@@ -27,7 +26,7 @@ public class CoreConfig {
         (cfg, path, id) -> {
             try {
                 Color color = Color.decode(cfg.getString(path + "." + id, "#ffffff"));
-                NightMessage.registerTag(new ColorTag(id, color));
+                Tags.registerTag(new ColorTag(id, color));
                 return color;
             }
             catch (Exception exception) {
@@ -64,7 +63,7 @@ public class CoreConfig {
     public static final ConfigValue<Boolean> USER_CACHE_NAME_AND_UUID = ConfigValue.create("UserData.Cache.Names_And_UUIDs",
         true,
         "Sets whether or not plugin will cache player names and UUIDs.",
-        "This will improve database performance when checking if user exists, but will increase memory usage.",
+        "This will improve database performance when checking if user exists, but will use more memory to store UUIDs and names.",
         "[Default is true]");
 
     public static final ConfigValue<Boolean> LEGACY_COLOR_SUPPORT = ConfigValue.create("Engine.Legacy_Color_Support",
@@ -82,9 +81,9 @@ public class CoreConfig {
         "[Default is false]");
 
     public static final ConfigValue<UniFormatter> NUMBER_FORMAT = ConfigValue.create("Engine.Number_Format",
-            UniFormatter.of("#,###.##", RoundingMode.HALF_EVEN),
-            "Control over how numerical data is formatted and rounded.",
-            "Allowed modes: " + Arrays.stream(RoundingMode.values()).map(RoundingMode::name).map(String::toLowerCase).collect(Collectors.joining(", ")),
-            "A tutorial can be found here: https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html"
+        UniFormatter.of("#,###.##", RoundingMode.HALF_EVEN),
+        "Control over how numerical data is formatted and rounded.",
+        "Allowed modes: " + StringUtil.inlineEnum(RoundingMode.class, ", "),
+        "A tutorial can be found here: https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html"
     );
 }

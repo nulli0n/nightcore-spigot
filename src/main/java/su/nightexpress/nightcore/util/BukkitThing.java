@@ -8,8 +8,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class BukkitThing {
@@ -31,6 +33,14 @@ public class BukkitThing {
     }
 
     @NotNull
+    public static <T extends Keyed> List<String> getNames(@NotNull Registry<T> registry) {
+        if (Version.isBehind(Version.V1_20_R2)) {
+            return StreamSupport.stream(registry.spliterator(), false).map(BukkitThing::toString).toList();
+        }
+        return registry.stream().map(BukkitThing::toString).toList();
+    }
+
+    @NotNull
     public static String toString(@NotNull Keyed keyed) {
         return keyed.getKey().getKey();
     }
@@ -48,6 +58,14 @@ public class BukkitThing {
     @NotNull
     public static Set<Enchantment> getEnchantments() {
         return allFromRegistry(Registry.ENCHANTMENT);
+    }
+
+    @NotNull
+    public static Set<PotionEffectType> getEffectTypes() {
+        if (Version.isBehind(Version.V1_20_R2)) {
+            return Stream.of(PotionEffectType.values()).collect(Collectors.toSet());
+        }
+        return allFromRegistry(Registry.EFFECT);
     }
 
     @Nullable

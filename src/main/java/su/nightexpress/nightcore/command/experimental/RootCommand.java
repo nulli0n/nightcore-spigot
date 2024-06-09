@@ -65,7 +65,8 @@ public class RootCommand<P extends NightCorePlugin, S extends CommandNode> imple
             this.node.getName(),
             this.node.getAliases(),
             this.node.getDescription(),
-            this.node.getUsage()
+            this.node.getUsage(),
+            this.node.getPermission()
         );
         return CommandUtil.register(this.plugin, this.backend);
     }

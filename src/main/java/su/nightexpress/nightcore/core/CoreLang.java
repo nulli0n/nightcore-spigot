@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.core;
 
 import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.language.entry.LangItem;
@@ -143,9 +144,8 @@ public class CoreLang {
         "",
         GRAY.enclose("Click " +
             CLICK.enclose(
-                ClickEvent.Action.RUN_COMMAND,
-                HOVER.enclose(GREEN.enclose("[Here]"), GRAY.enclose("Click to cancel")),
-                "/" + Dialog.EXIT
+                HOVER.enclose(GREEN.enclose("[Here]"), HoverEvent.Action.SHOW_TEXT, GRAY.enclose("Click to cancel")),
+                ClickEvent.Action.RUN_COMMAND, "/" + Dialog.EXIT
             )
             + " to leave input mode."),
         "");

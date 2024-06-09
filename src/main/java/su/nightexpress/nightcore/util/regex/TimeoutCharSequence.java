@@ -28,11 +28,13 @@ public class TimeoutCharSequence implements CharSequence {
     }
 
     @Override
+    @NotNull
     public CharSequence subSequence(int start, int end) {
         return new TimeoutCharSequence(this.chars.subSequence(start, end), this.timeout);
     }
 
     @Override
+    @NotNull
     public String toString() {
         return this.chars.toString();
     }

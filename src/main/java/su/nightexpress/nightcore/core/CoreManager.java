@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.core;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.core.listener.CoreListener;
+import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.dialog.DialogListener;
 import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.menu.MenuListener;
@@ -27,6 +28,9 @@ public class CoreManager extends AbstractManager<NightCore> {
                     menu.getOptions().setLastAutoRefresh(System.currentTimeMillis());
                 }
             });
+
+            Dialog.checkTimeOut();
+
         }).setSecondsInterval(1));
     }
 

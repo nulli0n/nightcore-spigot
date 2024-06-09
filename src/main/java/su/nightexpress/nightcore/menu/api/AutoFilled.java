@@ -23,14 +23,6 @@ public interface AutoFilled<I> extends Menu {
 
     void onAutoFill(@NotNull MenuViewer viewer, @NotNull AutoFill<I> autoFill);
 
-    /*@Deprecated int[] getAutoFillSlots();
-
-    @Deprecated @NotNull List<I> getAutoFills(@NotNull Player player);
-
-    @Deprecated @NotNull ItemStack getAutoFillStack(@NotNull Player player, @NotNull I object);
-
-    @Deprecated@NotNull ClickAction getAutoFillClick(@NotNull I object);*/
-
     default void autoFill(@NotNull MenuViewer viewer) {
         AutoFill<I> autoFill = new AutoFill<>();
         this.onAutoFill(viewer, autoFill);

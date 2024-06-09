@@ -60,6 +60,7 @@ public class ItemUtil {
     }
 
     public static void setHeadSkin(@NotNull ItemStack item, @NotNull String urlData) {
+        if (urlData.isBlank()) return;
         if (item.getType() != Material.PLAYER_HEAD) return;
         if (!(item.getItemMeta() instanceof SkullMeta meta)) return;
 

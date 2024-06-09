@@ -1,18 +1,27 @@
 package su.nightexpress.nightcore.util.text.tag;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.impl.*;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Tags {
 
-    public static final ClickTag         CLICK           = new ClickTag();
-    public static final FontTag          FONT            = new FontTag();
+    private static final Map<String, Tag> REGISTRY = new HashMap<>();
+
     public static final GradientTag      GRADIENT        = new GradientTag();
+    public static final LineBreakTag     LINE_BREAK      = new LineBreakTag();
+    public static final FontTag          FONT            = new FontTag();
+    public static final HoverTag         HOVER           = new HoverTag();
+    public static final ClickTag         CLICK           = new ClickTag();
+    public static final ResetTag         RESET           = new ResetTag();
     public static final HexColorTag      HEX_COLOR       = new HexColorTag();
     public static final ShortHexColorTag HEX_COLOR_SHORT = new ShortHexColorTag();
-    public static final HoverTag         HOVER           = new HoverTag();
-    public static final LineBreakTag     LINE_BREAK      = new LineBreakTag();
-    public static final ResetTag         RESET           = new ResetTag();
-    public static final TranslateTag     TRANSLATE       = new TranslateTag();
+    public static final TranslationTag   TRANSLATE       = new TranslationTag();
 
     public static final FontStyleTag BOLD          = new FontStyleTag("b", FontStyleTag.Style.BOLD);
     public static final FontStyleTag ITALIC        = new FontStyleTag("i", FontStyleTag.Style.ITALIC);
@@ -42,4 +51,44 @@ public class Tags {
     public static final ColorTag LIGHT_CYAN   = new ColorTag("lcyan", new String[]{"light_cyan"}, "#5edefd");
     public static final ColorTag LIGHT_PURPLE = new ColorTag("lpurple", new String[]{"light_purple"}, "#e39fff");
     public static final ColorTag LIGHT_PINK   = new ColorTag("lpink", new String[]{"light_pink"}, "#fd8ddb");
+
+    static {
+        registerTags(
+            Tags.BLACK, Tags.WHITE, Tags.GRAY, Tags.GREEN,
+            Tags.YELLOW, Tags.ORANGE, Tags.RED,
+            Tags.BLUE, Tags.CYAN, Tags.PURPLE, Tags.PINK,
+
+            Tags.DARK_GRAY, Tags.LIGHT_GRAY, Tags.LIGHT_GREEN,
+            Tags.LIGHT_YELLOW, Tags.LIGHT_ORANGE, Tags.LIGHT_RED,
+            Tags.LIGHT_BLUE, Tags.LIGHT_CYAN, Tags.LIGHT_PURPLE, Tags.LIGHT_PINK
+        );
+
+        registerTags(Tags.BOLD, Tags.ITALIC, Tags.OBFUSCATED, Tags.STRIKETHROUGH, Tags.UNDERLINED);
+
+        registerTags(Tags.GRADIENT, Tags.LINE_BREAK, Tags.FONT, Tags.HOVER, Tags.CLICK,
+            Tags.RESET, Tags.HEX_COLOR, Tags.HEX_COLOR_SHORT, Tags.TRANSLATE);
+    }
+
+    @NotNull
+    public static Collection<Tag> getTags() {
+        return REGISTRY.values();
+    }
+
+    public static void registerTags(@NotNull Tag... tags) {
+        for (Tag tag : tags) {
+            registerTag(tag);
+        }
+    }
+
+    public static void registerTag(@NotNull Tag tag) {
+        REGISTRY.put(tag.getName(), tag);
+        for (String alias : tag.getAliases()) {
+            REGISTRY.put(alias, tag);
+        }
+    }
+
+    @Nullable
+    public static Tag getTag(@NotNull String name) {
+        return REGISTRY.get(name.toLowerCase());
+    }
 }

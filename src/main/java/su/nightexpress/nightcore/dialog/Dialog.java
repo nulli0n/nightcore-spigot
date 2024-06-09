@@ -7,18 +7,22 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
-import su.nightexpress.nightcore.util.Colorizer;
+import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.text.NightMessage;
-import su.nightexpress.nightcore.util.text.WrappedMessage;
-import su.nightexpress.nightcore.util.text.tag.Tags;
+import su.nightexpress.nightcore.util.text.TextRoot;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
 public class Dialog {
 
     private static final Map<UUID, Dialog> DIALOG_MAP = new ConcurrentHashMap<>();
+    private static final int DEFAULT_TIMEOUT = 60;
 
     public static final String EXIT       = "#exit";
     public static final String VALUES     = "#values";
@@ -28,11 +32,17 @@ public class Dialog {
 
     private Menu lastMenu;
     private List<String> suggestions;
+    private long timeoutDate;
 
     public Dialog(@NotNull Player player, @NotNull DialogHandler handler) {
         this.player = player;
         this.handler = handler;
         this.suggestions = new ArrayList<>();
+        this.setTimeout(DEFAULT_TIMEOUT);
+    }
+
+    public boolean isTimedOut() {
+        return this.timeoutDate > 0 && System.currentTimeMillis() >= this.timeoutDate;
     }
 
     @NotNull
@@ -68,6 +78,14 @@ public class Dialog {
         return this;
     }
 
+    public long getTimeoutDate() {
+        return timeoutDate;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeoutDate = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(timeout, TimeUnit.SECONDS);
+    }
+
     public void displaySuggestions(boolean autoRun, int page) {
         List<String> values = this.getSuggestions();
         if (values.isEmpty()) return;
@@ -83,78 +101,81 @@ public class Dialog {
         List<String> items = values.stream().skip(skip).limit(perPage).toList();
         ClickEvent.Action action = autoRun ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND;
 
-        NightMessage.Builder builder = NightMessage.builder();
-        builder.append("=".repeat(8) + "[ ", Tags.ORANGE);
-        builder.append("Value Helper", Tags.YELLOW);
-        builder.append("] " + "=".repeat(8), Tags.ORANGE);
-        builder.appendLineBreak();
+        StringBuilder builder = new StringBuilder()
+            .append(ORANGE.enclose("=".repeat(8) + "[ " + YELLOW.enclose("Value Helper") + " ]" + "=".repeat(8)))
+            .append(Placeholders.TAG_LINE_BREAK);
 
         items.forEach(element -> {
-            String value = element.charAt(0) == '/' ? element : '/' + element;
-            builder.append("> ", Tags.DARK_GRAY);
-            builder.append(element, Tags.GREEN)
-                .showText(Tags.GRAY.enclose( "Click me to select " + Tags.CYAN.enclose(element) + "."))
-                .clickEvent(action, value);
-            builder.appendLineBreak();
+            String hoverHint = GRAY.enclose("Click me to select " + CYAN.enclose(element) + ".");
+            String clickCommand = element.charAt(0) == '/' ? element : '/' + element;
+
+            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.encloseHint(CLICK.encloseRun(element, clickCommand), hoverHint)));
+            builder.append(Placeholders.TAG_LINE_BREAK);
         });
 
-        builder.append("=".repeat(9) + " ", Tags.ORANGE);
+        builder.append(ORANGE.enclose("=".repeat(9))).append(" ");
 
         if (isFirstPage) {
-            builder.append("[<]", Tags.GRAY);
+            builder.append(GRAY.enclose("[<]"));
         }
         else {
-            builder.append("[<]", Tags.LIGHT_RED)
-                .showText(Tags.GRAY.enclose("Previous Page"))
-                .runCommand("/" + VALUES + " " + (page - 1) + " " + autoRun);
+            builder.append(LIGHT_RED.enclose(HOVER.encloseHint(CLICK.encloseRun("[<]", "/" + VALUES + " " + (page - 1) + " " + autoRun), GRAY.enclose("Previous Page"))));
         }
 
-        builder.append(" " + page, Tags.YELLOW);
-        builder.append("/", Tags.ORANGE);
-        builder.append(pages + " ", Tags.YELLOW);
+        builder.append(YELLOW.enclose(" " + page));
+        builder.append(ORANGE.enclose("/"));
+        builder.append(YELLOW.enclose(pages + " "));
 
         if (isLastPage) {
-            builder.append("[>]", Tags.GRAY);
+            builder.append(GRAY.enclose("[>]"));
         }
         else {
-            builder.append("[>]", Tags.LIGHT_RED)
-                .showText(Tags.GRAY.enclose("Next Page"))
-                .runCommand("/" + VALUES + " " + (page + 1) + " " + autoRun);
+            builder.append(LIGHT_RED.enclose(HOVER.encloseHint(CLICK.encloseRun("[>]", "/" + VALUES + " " + (page + 1) + " " + autoRun), GRAY.enclose("Next Page"))));
+
         }
 
-        builder.append(" " + "=".repeat(9), Tags.ORANGE);
-        builder.send(this.getPlayer());
+        builder.append(ORANGE.enclose(" " + "=".repeat(9)));
+
+        Players.sendModernMessage(this.player, builder.toString());
     }
 
     @Deprecated
     public void prompt(@NotNull String text) {
-        this.sendInfo(CoreLang.EDITOR_INPUT_HEADER_MAIN.getMessage().toLegacy(), Colorizer.apply(text));
+        this.sendInfo(CoreLang.EDITOR_INPUT_HEADER_MAIN.getMessage().toLegacy(), NightMessage.asLegacy(text));
     }
 
-    public void prompt(@NotNull WrappedMessage text) {
+    public void prompt(@NotNull TextRoot text) {
         this.info(CoreLang.EDITOR_INPUT_HEADER_MAIN.getMessage(), text);
     }
 
     @Deprecated
     public void error(@NotNull String text) {
-        this.sendInfo(CoreLang.EDITOR_INPUT_HEADER_ERROR.getMessage().toLegacy(), Colorizer.apply(text));
+        this.sendInfo(CoreLang.EDITOR_INPUT_HEADER_ERROR.getMessage().toLegacy(), NightMessage.asLegacy(text));
     }
 
-    public void error(@NotNull WrappedMessage text) {
+    public void error(@NotNull TextRoot text) {
         this.info(CoreLang.EDITOR_INPUT_HEADER_ERROR.getMessage(), text);
     }
 
-    public void info(@NotNull WrappedMessage title, @NotNull WrappedMessage text) {
+    public void info(@NotNull TextRoot title, @NotNull TextRoot text) {
         this.sendInfo(title.toLegacy(), text.toLegacy());
     }
 
     @Deprecated
     public void info(@NotNull String title, @NotNull String text) {
-        this.sendInfo(Colorizer.apply(title), Colorizer.apply(text));
+        this.sendInfo(NightMessage.asLegacy(title), NightMessage.asLegacy(text));
     }
 
     private void sendInfo(@NotNull String title, @NotNull String text) {
         this.getPlayer().sendTitle(title, text, 20, Short.MAX_VALUE, 20);
+    }
+
+    public static void checkTimeOut() {
+        new HashSet<>(DIALOG_MAP.values()).forEach(dialog -> {
+            if (dialog.isTimedOut()) {
+                stop(dialog.player);
+            }
+        });
     }
 
     @NotNull

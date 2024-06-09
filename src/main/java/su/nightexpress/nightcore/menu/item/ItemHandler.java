@@ -48,9 +48,9 @@ public class ItemHandler {
     /**
      * The main purpose of this method is to quickly create ItemHandler object for non-configurable GUIs.
      * <br><br>
-     * Do NOT use this for items requires specific handler name.
+     * Do NOT use this for items requiring specific handler name.
      * @param action Click action
-     * @return ItemHandler with random UUID as a name.
+     * @return ItemHandler with a random UUID as a name.
      */
     @NotNull
     public static ItemHandler forClick(@NotNull ClickAction action) {

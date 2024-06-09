@@ -75,8 +75,7 @@ public class FileConfig extends YamlConfiguration {
 
         File file = new File(plugin.getDataFolder() + filePath);
         if (FileUtil.create(file)) {
-            try {
-                InputStream input = plugin.getClass().getResourceAsStream(filePath);
+            try (InputStream input = plugin.getClass().getResourceAsStream(filePath)) {
                 if (input != null) FileUtil.copy(input, file);
             }
             catch (Exception exception) {
@@ -244,7 +243,7 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @NotNull
-    public String @NotNull [] getStringArray(@NotNull String path, @NotNull String[] def) {
+    public String[] getStringArray(@NotNull String path, @NotNull String[] def) {
         String str = this.getString(path);
         return str == null ? def : str.split(",");
     }
@@ -312,19 +311,20 @@ public class FileConfig extends YamlConfiguration {
     public ItemStack getItem(@NotNull String path) {
         if (!path.isEmpty() && !path.endsWith(".")) path = path + ".";
 
-        Material material = Material.getMaterial(this.getString(path + "Material", "").toUpperCase());
-        if (material == null || material == Material.AIR) return new ItemStack(Material.AIR);
+        Material material = BukkitThing.getMaterial(this.getString(path + "Material", BukkitThing.toString(Material.AIR)));
+        if (material == null || material.isAir()) return new ItemStack(Material.AIR);
 
         ItemStack item = new ItemStack(material);
         item.setAmount(this.getInt(path + "Amount", 1));
 
-        String headSkin = this.getString(path + "SkinURL", "");
-        if (!headSkin.isEmpty()) {
+        String headSkin = this.getString(path + "SkinURL");
+        if (headSkin != null) {
             ItemUtil.setHeadSkin(item, headSkin);
         }
         else {
             String headTexture = this.getString(path + "Head_Texture", "");
             if (!headTexture.isEmpty()) {
+                Plugins.CORE.warn("'Head_Texture' itemstack option is deprecated and will be removed soon. Please, use 'SkinURL' option instead.");
                 ItemUtil.setSkullTexture(item, headTexture);
             }
         }
@@ -338,17 +338,17 @@ public class FileConfig extends YamlConfiguration {
         }
 
         String name = this.getString(path + "Name");
-        meta.setDisplayName(name != null ? NightMessage.asLegacy(Colorizer.apply(name)) : null);
-        meta.setLore(NightMessage.asLegacy(Colorizer.apply(this.getStringList(path + "Lore"))));
+        meta.setDisplayName(name != null ? NightMessage.asLegacy(name) : null);
+        meta.setLore(NightMessage.asLegacy(this.getStringList(path + "Lore")));
 
         for (String sKey : this.getSection(path + "Enchants")) {
             Enchantment enchantment = BukkitThing.getEnchantment(sKey);
             if (enchantment == null) continue;
 
-            int eLvl = this.getInt(path + "Enchants." + sKey);
-            if (eLvl <= 0) continue;
+            int level = this.getInt(path + "Enchants." + sKey);
+            if (level <= 0) continue;
 
-            meta.addEnchant(enchantment, eLvl, true);
+            meta.addEnchant(enchantment, level, true);
         }
 
         int model = this.getInt(path + "Custom_Model_Data");

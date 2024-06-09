@@ -9,14 +9,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.manager.AbstractListener;
-import su.nightexpress.nightcore.util.Colorizer;
 import su.nightexpress.nightcore.util.NumberUtil;
 
 import java.util.HashSet;
 
 public class DialogListener extends AbstractListener<NightCore> {
-
-    // TODO Timeout
 
     public DialogListener(@NotNull NightCore plugin) {
         super(plugin);
@@ -54,7 +51,7 @@ public class DialogListener extends AbstractListener<NightCore> {
         event.setCancelled(true);
 
         String raw = event.getMessage();
-        String text = Colorizer.apply(raw.substring(1));
+        String text = raw.substring(1);
         if (text.startsWith(Dialog.VALUES)) {
             String[] split = text.split(" ");
             int page = split.length >= 2 ? NumberUtil.getInteger(split[1], 0) : 0;

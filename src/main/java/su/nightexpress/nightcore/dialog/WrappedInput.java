@@ -3,9 +3,9 @@ package su.nightexpress.nightcore.dialog;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.Colorizer;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.wrapper.UniDouble;
 import su.nightexpress.nightcore.util.wrapper.UniInt;
 
@@ -21,8 +21,8 @@ public class WrappedInput {
 
     public WrappedInput(@NotNull String text) {
         this.text = text;
-        this.textRaw = Colorizer.restrip(text); // TODO Modern formation, but keep colorizer to support legacy codes for other chat format plugins
-        this.textColored = Colorizer.apply(text);
+        this.textRaw = NightMessage.stripAll(text);
+        this.textColored = NightMessage.asLegacy(text);
     }
 
     public int asInt() {

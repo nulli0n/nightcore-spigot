@@ -1,0 +1,111 @@
+Command:
+  Help:
+    List:
+      - <noprefix>
+      - "&b%name% &8- &7命令:"
+      - " "
+      - "&c<> &8- &7必需 &8| &a[] &8- &7可选"
+      - " "
+      - "%entry%"
+      - " "
+    Entry: "  &d/%command_label% %command_usage% &8- &7%command_description%"
+    Desc: 显示帮助页面
+  CheckPerm:
+    Desc: 打印玩家权限信息
+    Usage: <player>
+  Reload:
+    Desc: 重新加载插件
+    Done: "&7插件 &a已重新加载!"
+  Argument:
+    Type:
+      Required: "&c<%name%>"
+      Optional: "&e[%name%]"
+    Name:
+      Generic: 值
+      Type: 类型
+      Name: 名字
+      Player: 玩家
+      World: 世界
+      Amount: 数量
+      Material: 材料
+      ItemMaterial: 物品类型
+      BlockMaterial: 方块类型
+      Enchantment: 附魔
+  Flag:
+    Format: "&7[%name%]"
+Time:
+  Day: "%amount%天"
+  Hour: "%amount%小时"
+  Min: "%amount%分钟"
+  Sec: "%amount%秒"
+  Delimiter: " "
+Other:
+  "Yes": "&a是"
+  "No": "&c否"
+  Enabled: "&a已启用"
+  Disabled: "&c已禁用"
+  Any: 任何
+  None: 无
+  Never: 从不
+  OneTimed: 一次性的
+  Unlimited: 无限的
+  Infinity: ∞
+Error:
+  Invalid_Player: "&c找不到玩家"
+  Invalid_World: "&c无效的世界"
+  Invalid_Number: "&e%value% &c不是一个有效的数字"
+  NoPermission: "&c你没有权限这样做!"
+  Command:
+    NotYourself: "&c此命令不能用于你自己。"
+    PlayerOnly: "&c此命令仅适用于玩家。"
+    Usage:
+      - <noprefix>
+      - "&c错误: &7错误的参数!"
+      - "&c用法: &d/%command_label% %command_usage%"
+      - " "
+    ParseFlag: "&c无效的值 &e%value% &7对应标志 &d%name%"
+    ParseArgument: "&c无效的值 &e%value% &7对应参数 &d%name%"
+    Argument:
+      InvalidPlayer: "&c找不到玩家 &a%value%！"
+      InvalidWorld: "&c找不到世界 &b%value%！"
+      InvalidNumber: "&e%value% &c不是一个有效的数字！"
+      InvalidMaterial: "&b%value% &c不是一个有效的材料！"
+      InvalidEnchantment: "&b%value% &c不是一个有效的附魔！"
+  InvalidMaterial: "&c无效的材料！"
+  InvalidEnchantment: "&c无效的附魔！"
+Editor:
+  Action:
+    Exit:
+      - <noprefix>
+      - "&7点击 <click:run_command:'/#exit'><hover:show_text:'&7点击以取消'>&a[这里]</hover></click> &7以退出输入模式"
+      - " "
+  Input:
+    Header:
+      Main: "&a输入模式"
+      Error: "&c错误"
+    Error:
+      NotInteger: "&7期望 &c整数 数字!"
+      Generic: "&7无效的值!"
+  Generic:
+    Close:
+      Name: "&c退出"
+      Lore: []
+    Return:
+      Name: "&7返回"
+      Lore: []
+    NextPage:
+      Name: "&7下一页"
+      Lore: []
+    PreviousPage:
+      Name: "&7上一页"
+      Lore: []
+Number:
+  Thousand: 千
+  Million: 百万
+  Billion: 十亿
+  Trillion: 万亿
+  Quadrillion: 亿亿
+Entry:
+  Good: "&a✔ &7%entry%"
+  Bad: "&c✘ &7%entry%"
+  Warn: "&7[&6!&7] &7%entry%"

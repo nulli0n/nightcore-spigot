@@ -4,11 +4,11 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
-import su.nightexpress.nightcore.command.experimental.argument.CommandArgument;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
+import su.nightexpress.nightcore.command.experimental.TabContext;
+import su.nightexpress.nightcore.command.experimental.argument.CommandArgument;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArgument;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
-import su.nightexpress.nightcore.command.experimental.TabContext;
 import su.nightexpress.nightcore.command.experimental.builder.DirectNodeBuilder;
 import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
 import su.nightexpress.nightcore.command.experimental.flag.ContentFlag;
@@ -16,6 +16,8 @@ import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.util.Placeholders;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DirectNode extends CommandNode implements DirectExecutor {
 
@@ -68,7 +70,26 @@ public class DirectNode extends CommandNode implements DirectExecutor {
                 return false;
             }
 
-            String arg = args[index++];
+            String arg;
+            // must be last.
+            if (argument.isComplex()) {
+                /*StringBuilder builder = new StringBuilder();
+                for (int textIndex = index; textIndex < args.length; textIndex++) {
+                    String text = args[textIndex];
+                    if (text.charAt(0) == CommandFlag.PREFIX) break;
+
+                    if (!builder.isEmpty()) builder.append(" ");
+                    builder.append(text);
+
+                    index++;
+                }*/
+                arg = /*builder.toString();*/Stream.of(args).skip(index).collect(Collectors.joining(" "));
+            }
+            else {
+                arg = args[index++];
+            }
+
+            //String
             ParsedArgument<?> parsedArgument = argument.parse(arg);
             if (parsedArgument == null) {
                 return context.sendFailure(argument.getFailureMessage()
@@ -131,6 +152,11 @@ public class DirectNode extends CommandNode implements DirectExecutor {
         //System.out.println("index = " + index);
         //System.out.println("arguments.size() = " + arguments.size());
         if (index >= this.arguments.size()) {
+            if (!this.arguments.isEmpty()) {
+                CommandArgument<?> latestArgument = this.arguments.get(this.arguments.size() - 1);
+                if (latestArgument.isComplex()) return this.getArgumentSamples(latestArgument, context);
+            }
+
             List<String> samples = new ArrayList<>();
 
             this.getFlags().forEach(commandFlag -> {
@@ -147,6 +173,10 @@ public class DirectNode extends CommandNode implements DirectExecutor {
         }
 
         CommandArgument<?> argument = this.arguments.get(index);
+        return this.getArgumentSamples(argument, context);
+    }
+
+    private List<String> getArgumentSamples(@NotNull CommandArgument<?> argument, @NotNull TabContext context) {
         if (!argument.hasPermission(context.getSender())) return Collections.emptyList();
 
         //System.out.println("argument = " + argument);
