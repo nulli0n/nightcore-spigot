@@ -76,9 +76,9 @@ public class TextGroup implements ComponentBuildable {
 
         this.childrens.forEach(child -> {
             BaseComponent childComponent = child.toComponent();
-            if (!TextRoot.isEmpty(childComponent)) {
+            //if (!TextRoot.isEmpty(childComponent)) {
                 builder.append(childComponent);
-            }
+            //}
         });
 
         return builder.build();
