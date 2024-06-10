@@ -84,13 +84,13 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         return this.addItem(item, locale, slot, handler);
     }
 
-    /*@NotNull
+    @NotNull
     @Deprecated
-    protected MenuItem addExit(int... slots) {
+    protected MenuItem addExit(int[] slots) {
         //ItemStack item = ItemUtil.getSkinHead("27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065");
         //return this.addItem(item, CoreLang.EDITOR_ITEM_CLOSE, slots).setHandler(ItemHandler.forClose(this));
         return this.addExit(slots[0]);
-    }*/
+    }
 
     @NotNull
     protected MenuItem addExit(int slot) {

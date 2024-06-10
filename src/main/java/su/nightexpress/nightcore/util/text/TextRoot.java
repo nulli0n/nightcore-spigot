@@ -6,21 +6,17 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.util.Colorizer;
-import su.nightexpress.nightcore.util.regex.TimedMatcher;
 import su.nightexpress.nightcore.util.text.tag.TagPool;
 import su.nightexpress.nightcore.util.text.tag.Tags;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.PlaceholderTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
-import su.nightexpress.nightcore.util.text.tag.impl.ShortHexColorTag;
 import su.nightexpress.nightcore.util.text.tag.impl.ResetTag;
+import su.nightexpress.nightcore.util.text.tag.impl.ShortHexColorTag;
 import su.nightexpress.nightcore.util.text.tag.impl.TranslationTag;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.UnaryOperator;
 
 public class TextRoot {
@@ -42,7 +38,9 @@ public class TextRoot {
     }
 
     public void setString(@NotNull String string) {
-        if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
+        string = Colorizer.plain(string);
+
+        /*if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
             TimedMatcher timedMatcher = TimedMatcher.create(Colorizer.PATTERN_HEX_LEGACY, string);
             Set<String> rawCodes = new HashSet<>();
             while (timedMatcher.find()) {
@@ -52,7 +50,7 @@ public class TextRoot {
             for (String hex : rawCodes) {
                 string = string.replace(hex, Tag.brackets(hex));
             }
-        }
+        }*/
 
         this.string = string;
         this.component = null;
@@ -81,13 +79,9 @@ public class TextRoot {
 
     @NotNull
     public String toLegacy() {
-        if (this.string.isBlank()) return "";
-
         this.parseIfAbsent();
 
-        if (this.component instanceof TextComponent textComponent && textComponent.getText().isBlank() && textComponent.getExtra() == null) {
-            return "";
-        }
+        if (this.string.isBlank() || isEmpty(this.component)) return "";
 
         return TextComponent.toLegacyText(this.parseIfAbsent());
     }
@@ -280,6 +274,10 @@ public class TextRoot {
 
     public BaseComponent getComponent() {
         return component;
+    }
+
+    public static boolean isEmpty(@NotNull BaseComponent component) {
+        return component instanceof TextComponent textComponent && textComponent.getText().isBlank() && textComponent.getExtra() == null;
     }
 
     public static int indexOfIgnoreEscaped(@NotNull String string, char what, int from) {

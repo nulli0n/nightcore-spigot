@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.util;
 import net.md_5.bungee.api.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.regex.TimedMatcher;
+import su.nightexpress.nightcore.util.text.tag.api.Tag;
 
 import java.util.List;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 public class Colorizer {
 
     public static final Pattern PATTERN_HEX      = Pattern.compile("#([A-Fa-f0-9]{6})");
-    public static final Pattern PATTERN_HEX_LEGACY = Pattern.compile("(?:^|[^<])(#[A-Fa-f0-9]{6})(?:$|[^:>])");
+    //public static final Pattern PATTERN_HEX_LEGACY = Pattern.compile("(?:^|[^<])(#[A-Fa-f0-9]{6})(?:$|[^:>])");
     public static final Pattern PATTERN_GRADIENT = Pattern.compile("<gradient:" + PATTERN_HEX.pattern() + ">(.*?)</gradient:" + PATTERN_HEX.pattern() + ">");
 
     @NotNull
@@ -126,20 +127,48 @@ public class Colorizer {
 
     @NotNull
     public static String plainHex(@NotNull String str) {
-        StringBuilder buffer = new StringBuilder(str);
+        StringBuilder builder = new StringBuilder(str);
 
         int index;
-        while ((index = buffer.toString().indexOf(ChatColor.COLOR_CHAR + "x")) >= 0) {
+        while ((index = builder.toString().indexOf(ChatColor.COLOR_CHAR + "x")) >= 0) {
             int count = 0;
-            buffer.replace(index, index + 2, "#");
+            builder.replace(index, index + 2, "#");
 
             for (int point = index + 1; count < 6; point += 1) {
-                buffer.deleteCharAt(point);
+                builder.deleteCharAt(point);
                 count++;
             }
         }
 
-        return buffer.toString();
+        return tagPlainHex(builder.toString());
+    }
+
+    @NotNull
+    public static String tagPlainHex(@NotNull String str) {
+        StringBuilder builder = new StringBuilder(str);
+
+        int index;
+        int lastIndex = 0;
+
+        while ((index = builder.toString().indexOf("#", lastIndex)) >= 0) {
+            lastIndex = index + 1;
+
+            if (builder.length() < 7) break;
+            if (index > 0 && builder.charAt(index - 1) == Tag.OPEN_BRACKET) continue;
+
+            String sub = builder.substring(index, index + 7);
+            try {
+                Integer.decode(sub);
+            }
+            catch (NumberFormatException exception) {
+                continue;
+            }
+
+            builder.insert(index, Tag.OPEN_BRACKET);
+            builder.insert(index + 8, Tag.CLOSE_BRACKET);
+        }
+
+        return builder.toString();
     }
 
     @NotNull

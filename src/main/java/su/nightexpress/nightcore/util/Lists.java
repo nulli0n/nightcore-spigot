@@ -111,6 +111,8 @@ public class Lists {
 
     @NotNull
     public static List<String> getSequentialMatches(@NotNull List<String> results, @NotNull String input) {
+        if (input.isBlank()) return results;
+
         char[] chars = input.toCharArray();
         List<String> goods = new ArrayList<>();
 
