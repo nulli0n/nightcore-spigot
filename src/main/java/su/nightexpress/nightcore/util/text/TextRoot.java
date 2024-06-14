@@ -38,7 +38,7 @@ public class TextRoot {
     }
 
     public void setString(@NotNull String string) {
-        string = Colorizer.plain(string);
+        string = Colorizer.tagPlainHex(Colorizer.plain(string));
 
         /*if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
             TimedMatcher timedMatcher = TimedMatcher.create(Colorizer.PATTERN_HEX_LEGACY, string);

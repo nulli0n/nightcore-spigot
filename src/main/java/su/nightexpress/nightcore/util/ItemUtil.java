@@ -64,6 +64,8 @@ public class ItemUtil {
         if (item.getType() != Material.PLAYER_HEAD) return;
         if (!(item.getItemMeta() instanceof SkullMeta meta)) return;
 
+        String name = urlData.substring(0, 16);
+
         if (!urlData.startsWith(TEXTURES_HOST)) {
             urlData = TEXTURES_HOST + urlData;
         }
@@ -73,7 +75,7 @@ public class ItemUtil {
             // If no name, then meta#getOwnerProfile will return 'null' (wtf?)
             // sometimes swtiching to "new" spigot api is a pain.
             // why the hell i have to dig into nms to learn that...
-            PlayerProfile profile = Bukkit.createPlayerProfile(uuid, urlData.substring(0, 16));
+            PlayerProfile profile = Bukkit.createPlayerProfile(uuid, name);
             URL url = new URL(urlData);
             PlayerTextures textures = profile.getTextures();
             textures.setSkin(url);

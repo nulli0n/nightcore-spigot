@@ -3,16 +3,18 @@ package su.nightexpress.nightcore.util;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.stream.Stream;
 
 public enum Version {
 
-    V1_18_R2("1.18.2"),
+    V1_18_R2("1.18.2", true),
     V1_19_R3("1.19.4"),
     V1_20_R1("1.20.1", true),
     V1_20_R2("1.20.2", true),
     V1_20_R3("1.20.4"),
     MC_1_20_6("1.20.6"),
+    MC_1_21("1.21"),
     UNKNOWN("Unknown"),
     ;
 
@@ -42,7 +44,7 @@ public enum Version {
     public static Version getCurrent() {
         if (current == null) {
             String protocol = Bukkit.getServer().getBukkitVersion();
-            current = Stream.of(values()).filter(version -> protocol.startsWith(version.getLocalized())).findFirst().orElse(UNKNOWN);
+            current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> protocol.startsWith(version.getLocalized())).findFirst().orElse(UNKNOWN);
         }
         return current;
     }

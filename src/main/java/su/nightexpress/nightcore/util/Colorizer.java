@@ -140,7 +140,7 @@ public class Colorizer {
             }
         }
 
-        return tagPlainHex(builder.toString());
+        return builder.toString();//tagPlainHex(builder.toString());
     }
 
     @NotNull
@@ -153,8 +153,9 @@ public class Colorizer {
         while ((index = builder.toString().indexOf("#", lastIndex)) >= 0) {
             lastIndex = index + 1;
 
-            if (builder.length() < 7) break;
+            //if (builder.length() < 7) break;
             if (index > 0 && builder.charAt(index - 1) == Tag.OPEN_BRACKET) continue;
+            if (builder.length() < index + 7) break;
 
             String sub = builder.substring(index, index + 7);
             try {

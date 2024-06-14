@@ -2,8 +2,10 @@ package su.nightexpress.nightcore.util.text;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
@@ -81,7 +83,21 @@ public class TextGroup implements ComponentBuildable {
             //}
         });
 
-        return builder.build();
+        return this.build(builder);
+    }
+
+    private BaseComponent build(@NotNull ComponentBuilder builder) {
+        if (Version.isAtLeast(Version.MC_1_20_6)) {
+            return builder.build();
+        }
+
+        TextComponent base = new TextComponent();
+        if (!builder.getParts().isEmpty()) {
+            List<BaseComponent> cloned = new ArrayList<>(builder.getParts());
+            cloned.replaceAll(BaseComponent::duplicate);
+            base.setExtra(cloned);
+        }
+        return base;
     }
 
     private void countLength(@NotNull TextGroup parent, @NotNull AtomicInteger length) {

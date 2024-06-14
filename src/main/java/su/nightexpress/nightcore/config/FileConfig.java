@@ -324,7 +324,7 @@ public class FileConfig extends YamlConfiguration {
         else {
             String headTexture = this.getString(path + "Head_Texture", "");
             if (!headTexture.isEmpty()) {
-                Plugins.CORE.warn("'Head_Texture' itemstack option is deprecated and will be removed soon. Please, use 'SkinURL' option instead.");
+                Plugins.CORE.warn("'Head_Texture' itemstack option is deprecated and will be removed soon. Please, use 'SkinURL' option instead. Caused by: " + file.getPath());
                 ItemUtil.setSkullTexture(item, headTexture);
             }
         }

@@ -59,15 +59,32 @@ public class LocationUtil {
     }
 
     @NotNull
+    @Deprecated
     public static Location getCenter(@NotNull Location location) {
-        return getCenter(location, true);
+        return setCenter3D(location);
     }
 
     @NotNull
+    @Deprecated
     public static Location getCenter(@NotNull Location location, boolean doVertical) {
+        return setCenter(location, doVertical);
+    }
+
+    @NotNull
+    public static Location setCenter2D(@NotNull Location location) {
+        return setCenter(location, false);
+    }
+
+    @NotNull
+    public static Location setCenter3D(@NotNull Location location) {
+        return setCenter(location, true);
+    }
+
+    @NotNull
+    public static Location setCenter(@NotNull Location location, boolean is3D) {
         //Location centered = location.clone();
         location.setX(location.getBlockX() + 0.5);
-        location.setY(location.getBlockY() + (doVertical ? 0.5 : 0));
+        location.setY(location.getBlockY() + (is3D ? 0.5 : 0));
         location.setZ(location.getBlockZ() + 0.5);
         return location;
     }

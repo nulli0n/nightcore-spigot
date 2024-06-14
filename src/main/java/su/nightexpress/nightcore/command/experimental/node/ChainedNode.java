@@ -100,7 +100,8 @@ public class ChainedNode extends CommandNode {
         //System.out.println("context.getArgs() = " + Arrays.toString(context.getArgs()));
         //System.out.println("context.getIndex() = " + context.getIndex());
         if (context.getIndex() == context.getArgs().length - 1) {
-            return new ArrayList<>(this.commandMap.keySet());
+            return this.getChildrens().stream().filter(node -> node.hasPermission(context.getSender())).map(CommandNode::getName).toList();
+            //return new ArrayList<>(this.commandMap.keySet());
         }
         if (context.getIndex() >= context.getArgs().length) {
             return Collections.emptyList();
