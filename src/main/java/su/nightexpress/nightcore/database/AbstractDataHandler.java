@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 import su.nightexpress.nightcore.database.sql.executor.*;
+import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 import su.nightexpress.nightcore.manager.AbstractManager;
 
 import java.sql.Connection;
@@ -135,9 +136,33 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
         InsertQueryExecutor.builder(table).values(values).execute(this.getConnector());
     }
 
+
+
+
+    @Deprecated
     public void update(@NotNull String table, @NotNull List<SQLValue> values, @NotNull SQLCondition... conditions) {
         UpdateQueryExecutor.builder(table).values(values).where(conditions).execute(this.getConnector());
     }
+
+    @NotNull
+    public UpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+        return UpdateQuery.create(table, values, conditions);
+    }
+
+    public void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+        this.executeUpdate(this.updateQuery(table, values, conditions));
+    }
+
+    public void executeUpdate(@NotNull UpdateQuery query) {
+        SQLQueries.executeUpdate(this.connector, query);
+    }
+
+    public void executeUpdates(@NotNull List<UpdateQuery> queries) {
+        SQLQueries.executeUpdates(this.connector, queries);
+    }
+
+
+
 
     public void delete(@NotNull String table, @NotNull SQLCondition... conditions) {
         DeleteQueryExecutor.builder(table).where(conditions).execute(this.getConnector());

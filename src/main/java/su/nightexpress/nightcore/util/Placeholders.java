@@ -54,9 +54,9 @@ public class Placeholders {
     @NotNull
     public static UnaryOperator<String> forLocation(@NotNull Location location) {
         return new PlaceholderMap()
-            .add(LOCATION_X, () -> NumberUtil.format(location.getX()))
-            .add(LOCATION_Y, () -> NumberUtil.format(location.getY()))
-            .add(LOCATION_Z, () -> NumberUtil.format(location.getZ()))
+            .add(LOCATION_X, () -> String.valueOf(location.getBlockX()))
+            .add(LOCATION_Y, () -> String.valueOf(location.getBlockY()))
+            .add(LOCATION_Z, () -> String.valueOf(location.getBlockZ()))
             .add(LOCATION_WORLD, () -> LocationUtil.getWorldName(location))
             .replacer();
     }

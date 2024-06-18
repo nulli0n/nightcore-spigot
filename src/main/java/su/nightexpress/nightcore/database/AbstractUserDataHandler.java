@@ -10,6 +10,8 @@ import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 import su.nightexpress.nightcore.database.sql.column.ColumnType;
 import su.nightexpress.nightcore.core.CoreConfig;
+import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
+import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.sql.ResultSet;
@@ -55,9 +57,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
 
     @Override
     public void onSave() {
-        for (U user : this.plugin.getUserManager().getLoaded()) {
-            this.saveUser(user);
-        }
+        this.executeUpdates(this.plugin.getUserManager().getLoaded().stream().map(this::saveQuery).toList());
     }
 
     @Override
@@ -151,13 +151,30 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
     }
 
     public void saveUser(@NotNull U user) {
+        /*List<SQLValue> values = new ArrayList<>();
+        values.add(COLUMN_USER_NAME.toValue(user.getName()));
+        values.add(COLUMN_USER_DATE_CREATED.toValue(user.getDateCreated()));
+        values.add(COLUMN_USER_LAST_ONLINE.toValue(user.getLastOnline()));
+        values.addAll(this.getSaveColumns(user));
+
+        this.update(this.tableUsers, values, SQLCondition.equal(COLUMN_USER_ID.toValue(user.getId())));*/
+
+        this.executeUpdate(this.saveQuery(user));
+    }
+
+    @NotNull
+    public UpdateQuery saveQuery(@NotNull U user) {
         List<SQLValue> values = new ArrayList<>();
         values.add(COLUMN_USER_NAME.toValue(user.getName()));
         values.add(COLUMN_USER_DATE_CREATED.toValue(user.getDateCreated()));
         values.add(COLUMN_USER_LAST_ONLINE.toValue(user.getLastOnline()));
         values.addAll(this.getSaveColumns(user));
 
-        this.update(this.tableUsers, values, SQLCondition.equal(COLUMN_USER_ID.toValue(user.getId())));
+        List<SQLCondition> conditions = Lists.newList(
+            SQLCondition.equal(COLUMN_USER_ID.toValue(user.getId()))
+        );
+
+        return this.updateQuery(this.tableUsers, values, conditions);
     }
 
     public void addUser(@NotNull U user) {

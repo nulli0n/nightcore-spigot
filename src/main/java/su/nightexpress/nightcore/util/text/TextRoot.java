@@ -6,6 +6,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.util.Colorizer;
 import su.nightexpress.nightcore.util.text.tag.TagPool;
 import su.nightexpress.nightcore.util.text.tag.Tags;
@@ -38,7 +39,9 @@ public class TextRoot {
     }
 
     public void setString(@NotNull String string) {
-        string = Colorizer.tagPlainHex(Colorizer.plain(string));
+        if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
+            string = Colorizer.tagPlainHex(Colorizer.plain(string));
+        }
 
         /*if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
             TimedMatcher timedMatcher = TimedMatcher.create(Colorizer.PATTERN_HEX_LEGACY, string);

@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.database.sql;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.database.AbstractConnector;
+import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 
 import java.sql.*;
 import java.util.*;
@@ -77,6 +78,35 @@ public class SQLQueries {
             }
 
             statement.executeUpdate();
+        }
+        catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void executeUpdate(@NotNull AbstractConnector connector, @NotNull UpdateQuery query) {
+        executeUpdates(connector, List.of(query));
+    }
+
+    public static void executeUpdates(@NotNull AbstractConnector connector, @NotNull List<UpdateQuery> queries) {
+        try (Connection connection = connector.getConnection()) {
+            for (UpdateQuery query : queries) {
+                try (PreparedStatement statement = connection.prepareStatement(query.getSQL())) {
+
+                    int count = 1;
+                    for (String columnValue : query.getValues()) {
+                        statement.setString(count++, columnValue);
+                    }
+                    for (String conditionValue : query.getWheres()) {
+                        statement.setString(count++, conditionValue);
+                    }
+
+                    statement.executeUpdate();
+                }
+                catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
         }
         catch (SQLException exception) {
             exception.printStackTrace();

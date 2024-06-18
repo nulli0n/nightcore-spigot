@@ -1,17 +1,20 @@
 package su.nightexpress.nightcore.database.sql.executor;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.database.AbstractConnector;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLExecutor;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
+import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 public final class UpdateQueryExecutor extends SQLExecutor<Void> {
 
     private final List<SQLValue>     values;
@@ -51,6 +54,24 @@ public final class UpdateQueryExecutor extends SQLExecutor<Void> {
         this.wheres.addAll(wheres);
         return this;
     }
+
+    /*@Nullable
+    public UpdateQuery createObject() {
+        if (this.values.isEmpty()) return null;
+
+        String values = this.values.stream().map(value -> value.getColumn().getNameEscaped() + " = ?")
+            .collect(Collectors.joining(","));
+
+        String wheres = this.wheres.stream().map(where -> where.getColumn().getNameEscaped() + " " + where.getType().getOperator() + " ?")
+            .collect(Collectors.joining(" AND "));
+
+        String sql = "UPDATE " + this.getTable() + " SET " + values + (wheres.isEmpty() ? "" : " WHERE " + wheres);
+
+        List<String> values2 = this.values.stream().map(SQLValue::getValue).toList();
+        List<String> whers2 = this.wheres.stream().map(SQLCondition::getValue).map(SQLValue::getValue).toList();
+
+        return new UpdateQuery(sql, values2, whers2);
+    }*/
 
     @Override
     @NotNull

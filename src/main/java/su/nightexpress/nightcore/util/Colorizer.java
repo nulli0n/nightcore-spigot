@@ -154,10 +154,22 @@ public class Colorizer {
             lastIndex = index + 1;
 
             //if (builder.length() < 7) break;
-            if (index > 0 && builder.charAt(index - 1) == Tag.OPEN_BRACKET) continue;
-            if (builder.length() < index + 7) break;
+            int lookup = index + 7;
+            if (builder.length() < lookup) break;
 
-            String sub = builder.substring(index, index + 7);
+            Character prefix = index > 0 ? builder.charAt(index - 1) : null;
+            Character postfix = builder.length() > lookup ? builder.charAt(lookup) : null;
+
+
+            if (prefix != null && prefix == Tag.OPEN_BRACKET) continue;
+            if (postfix != null && postfix == Tag.CLOSE_BRACKET) continue;
+            if (prefix != null && postfix != null && prefix == ':' && postfix == ':') continue;
+
+            //if (index > 0 && builder.charAt(index - 1) == Tag.OPEN_BRACKET) continue;
+            //if (builder.length() < index + 7) break;
+            //if (builder.length() > index + 7 && builder.charAt(index + 7) == Tag.CLOSE_BRACKET) continue;
+
+            String sub = builder.substring(index, lookup);
             try {
                 Integer.decode(sub);
             }

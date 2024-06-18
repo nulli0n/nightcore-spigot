@@ -95,7 +95,7 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
     @NotNull
     protected MenuItem addExit(int slot) {
         ItemStack item = ItemUtil.getSkinHead("27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065");
-        return this.addItem(item, CoreLang.EDITOR_ITEM_CLOSE, slot, (viewer, event, obj) -> ItemHandler.forClose(this));
+        return this.addItem(item, CoreLang.EDITOR_ITEM_CLOSE, slot, (viewer, event, obj) -> this.runNextTick(() -> viewer.getPlayer().closeInventory()));
     }
 
     @NotNull

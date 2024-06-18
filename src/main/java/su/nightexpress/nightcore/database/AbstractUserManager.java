@@ -4,6 +4,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
+import su.nightexpress.nightcore.database.sql.SQLQueries;
+import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.listener.UserListener;
@@ -43,6 +45,11 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     }
 
     @NotNull
+    private AbstractUserDataHandler<?, U> getDataHandler() {
+        return this.plugin.getData();
+    }
+
+    @NotNull
     public abstract U createUserData(@NotNull UUID uuid, @NotNull String name);
 
     public void loadOnlineUsers() {
@@ -53,8 +60,13 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     }
 
     public void saveScheduled() {
-        this.scheduledSaves.forEach(this::save);
+        List<UpdateQuery> queries = new ArrayList<>();
+        this.scheduledSaves.forEach(user -> queries.add(this.getDataHandler().saveQuery(user)));
         this.scheduledSaves.clear();
+        SQLQueries.executeUpdates(this.getDataHandler().getConnector(), queries);
+
+        //this.scheduledSaves.forEach(this::save);
+        //this.scheduledSaves.clear();
     }
 
     @NotNull
