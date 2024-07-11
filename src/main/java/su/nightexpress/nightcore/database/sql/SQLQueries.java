@@ -2,7 +2,8 @@ package su.nightexpress.nightcore.database.sql;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.database.AbstractConnector;
-import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.SQLUpdateQuery;
 
 import java.sql.*;
 import java.util.*;
@@ -84,13 +85,16 @@ public class SQLQueries {
         }
     }
 
-    public static void executeUpdate(@NotNull AbstractConnector connector, @NotNull UpdateQuery query) {
+    public static void executeUpdate(@NotNull AbstractConnector connector, @NotNull SQLUpdateQuery query) {
         executeUpdates(connector, List.of(query));
     }
 
-    public static void executeUpdates(@NotNull AbstractConnector connector, @NotNull List<UpdateQuery> queries) {
+    public static void executeUpdates(@NotNull AbstractConnector connector, @NotNull List<IUpdateQuery> queries) {
         try (Connection connection = connector.getConnection()) {
-            for (UpdateQuery query : queries) {
+            for (IUpdateQuery q : queries) {
+                if (!(q instanceof SQLUpdateQuery query)) {
+                    throw new IllegalArgumentException("A non-SQLUpdateQuery has been run with SQLQueries.executeUpdates!");
+                }
                 try (PreparedStatement statement = connection.prepareStatement(query.getSQL())) {
 
                     int count = 1;

@@ -26,4 +26,9 @@ public class SQLValue {
     public String getValue() {
         return value;
     }
+
+    @NotNull
+    public Object getConvertedValue() {
+        return column.getType().getConverter().apply(value);
+    }
 }

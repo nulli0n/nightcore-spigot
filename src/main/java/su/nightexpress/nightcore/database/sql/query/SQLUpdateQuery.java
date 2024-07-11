@@ -9,24 +9,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class UpdateQuery extends AbstractQuery {
+public class SQLUpdateQuery extends AbstractSQLQuery implements IUpdateQuery {
 
     private final List<String> values;
     private final List<String> wheres;
 
-    private UpdateQuery(@NotNull String sql, @NotNull List<String> values, @NotNull List<String> wheres) {
+    private SQLUpdateQuery(@NotNull String sql, @NotNull List<String> values, @NotNull List<String> wheres) {
         super(sql);
         this.values = values;
         this.wheres = wheres;
     }
 
     @NotNull
-    public static UpdateQuery create(@NotNull String table, @NotNull List<SQLValue> values) {
+    public static SQLUpdateQuery create(@NotNull String table, @NotNull List<SQLValue> values) {
         return create(table, values, Collections.emptyList());
     }
 
     @NotNull
-    public static UpdateQuery create(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+    public static SQLUpdateQuery create(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
         List<String> columnNames = new ArrayList<>();
         List<String> columnValues = new ArrayList<>();
         List<String> whereColumns = new ArrayList<>();
@@ -51,7 +51,7 @@ public class UpdateQuery extends AbstractQuery {
 
         String sql = builder.toString();
 
-        return new UpdateQuery(sql, columnValues, whereValues);
+        return new SQLUpdateQuery(sql, columnValues, whereValues);
     }
 
     @NotNull

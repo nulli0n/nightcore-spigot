@@ -8,3 +8,4 @@ load: STARTUP
 libraries:
   - com.zaxxer:HikariCP:5.0.1
   - it.unimi.dsi:fastutil-core:8.5.13
+  - org.mongodb:mongodb-driver-sync:5.1.1

@@ -22,6 +22,8 @@ public class DatabaseConfig {
     private final String host;
     private final String database;
     private final String urlOptions;
+    private final String mongoConnectionString;
+    private final String mongoDatabaseName;
 
     private final String filename;
 
@@ -38,6 +40,8 @@ public class DatabaseConfig {
         @NotNull String host,
         @NotNull String database,
         @NotNull String urlOptions,
+        @NotNull String mongoConnectionString,
+        @NotNull String mongoDatabaseName,
 
         @NotNull String filename
     ) {
@@ -53,6 +57,8 @@ public class DatabaseConfig {
         this.host = host;
         this.database = database;
         this.urlOptions = urlOptions;
+        this.mongoConnectionString = mongoConnectionString;
+        this.mongoDatabaseName = mongoDatabaseName;
 
         this.filename = filename;
     }
@@ -113,6 +119,14 @@ public class DatabaseConfig {
             "Connection options. Do not touch unless you know what you're doing."
         ).read(config);
 
+        String mongoConnectionString = ConfigValue.create(path + "MongoDB.ConnectionString", "mongodb://localhost:27017",
+            "MongoDB connection string.")
+            .read(config);
+
+        String mongoDatabaseName = ConfigValue.create(path + "MongoDB.Database", "minecraft",
+            "Name of the MongoDB database where plugin will create collections.")
+            .read(config);
+
         String sqliteFilename = ConfigValue.create(path + "SQLite.FileName", defFileName,
             "File name for the SQLite database file.",
             "Actually it's a path to the file, so you can use directories here.")
@@ -136,7 +150,7 @@ public class DatabaseConfig {
             databaseType, tablePrefix,
             purgeEnabled, purgePeriod,
 
-            mysqlUser, mysqlPassword, mysqlHost, mysqlBase, urlOptions,
+            mysqlUser, mysqlPassword, mysqlHost, mysqlBase, urlOptions, mongoConnectionString, mongoDatabaseName,
 
             sqliteFilename
         );
@@ -196,5 +210,15 @@ public class DatabaseConfig {
     @NotNull
     public String getFilename() {
         return filename;
+    }
+
+    @NotNull
+    public String getMongoConnectionString() {
+        return mongoConnectionString;
+    }
+
+    @NotNull
+    public String getMongoDatabaseName() {
+        return mongoDatabaseName;
     }
 }

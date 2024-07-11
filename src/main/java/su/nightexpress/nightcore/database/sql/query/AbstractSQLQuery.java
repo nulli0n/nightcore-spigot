@@ -2,11 +2,11 @@ package su.nightexpress.nightcore.database.sql.query;
 
 import org.jetbrains.annotations.NotNull;
 
-public class AbstractQuery {
+public class AbstractSQLQuery {
 
     private final String sql;
 
-    protected AbstractQuery(@NotNull String sql) {
+    protected AbstractSQLQuery(@NotNull String sql) {
         this.sql = sql;
     }
 

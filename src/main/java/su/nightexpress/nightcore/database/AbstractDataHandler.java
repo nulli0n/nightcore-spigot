@@ -4,30 +4,27 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.database.serialize.ItemStackSerializer;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
-import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
-import su.nightexpress.nightcore.database.sql.executor.*;
-import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
 import su.nightexpress.nightcore.manager.AbstractManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 public abstract class AbstractDataHandler<P extends NightCorePlugin> extends AbstractManager<P> {
-
-    protected final DatabaseConfig    config;
-    protected final AbstractConnector connector;
-    protected final Gson              gson;
+    protected final AbstractDelegatedDataHandler<P> delegate;
+    protected final DatabaseConfig config;
+    protected final P plugin;
+    protected final Gson gson; // Used by other plugins
 
     public AbstractDataHandler(@NotNull P plugin) {
         this(plugin, getDataConfig(plugin));
@@ -35,41 +32,54 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
 
     public AbstractDataHandler(@NotNull P plugin, @NotNull DatabaseConfig config) {
         super(plugin);
+        this.plugin = plugin;
         this.config = config;
-        this.connector = AbstractConnector.create(plugin, config);
         this.gson = this.registerAdapters(new GsonBuilder().setPrettyPrinting()).create();
-    }
+        AbstractDataHandler<P> root = this;
+        this.delegate = switch (config.getStorageType()) {
+            case MONGODB -> new AbstractMongoDBDataHandler<P>(plugin, config) {
+                @Override
+                public void reload() {
+                    root.reload();
+                }
 
-    @NotNull
-    protected static DatabaseConfig getDataConfig(@NotNull NightCorePlugin plugin) {
-        DatabaseConfig dataConfig = plugin.getDetails().getDatabaseConfig();
-        if (dataConfig == null) {
-            plugin.warn("The plugin didn't have database configuration. Fixing it now...");
-            dataConfig = DatabaseConfig.read(plugin);
-        }
-        return dataConfig;
-    }
+                @Override
+                public void onSynchronize() {
+                    root.onSynchronize();
+                }
 
-    @Override
-    protected void onLoad() {
-        if (this.config.getSaveInterval() > 0) {
-            this.addTask(this.plugin.createAsyncTask(this::onSave).setSecondsInterval(this.config.getSaveInterval() * 60));
-        }
+                @Override
+                public void onSave() {
+                    root.onSave();
+                }
 
-        if (this.config.getSyncInterval() > 0 && this.getDatabaseType() != DatabaseType.SQLITE) {
-            this.addTask(this.plugin.createAsyncTask(this::onSynchronize).setSecondsInterval(this.config.getSyncInterval()));
-            this.plugin.info("Enabled data synchronization with " + config.getSyncInterval() + " seconds interval.");
-        }
+                @Override
+                public void onPurge() {
+                    root.onPurge();
+                }
+            };
+            case MYSQL, SQLITE -> new AbstractSQLDataHandler<>(plugin, config) {
+                @Override
+                public void reload() {
+                    root.reload();
+                }
 
-        if (this.config.isPurgeEnabled() && this.config.getPurgePeriod() > 0) {
-            this.onPurge();
-        }
-    }
+                @Override
+                public void onSynchronize() {
+                    root.onSynchronize();
+                }
 
-    @Override
-    protected void onShutdown() {
-        this.onSave();
-        this.getConnector().close();
+                @Override
+                public void onSave() {
+                    root.onSave();
+                }
+
+                @Override
+                public void onPurge() {
+                    root.onPurge();
+                }
+            };
+        };
     }
 
     public abstract void onSynchronize();
@@ -78,24 +88,30 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
 
     public abstract void onPurge();
 
+    protected void onLoad() {
+        delegate.onLoad();
+    }
+
+    protected void onShutdown() {
+        delegate.onShutdown();
+    }
+
     @NotNull
     public DatabaseConfig getConfig() {
         return this.config;
     }
 
     @NotNull
-    public DatabaseType getDatabaseType() {
-        return this.config.getStorageType();
-    }
-
-    @NotNull
     public String getTablePrefix() {
-        return this.config.getTablePrefix();
+        if (this.getConfig().getTablePrefix().isEmpty()) {
+            return this.plugin.getName().replace(" ", "_").toLowerCase();
+        }
+        return this.getConfig().getTablePrefix();
     }
 
-    @NotNull
+    @Nullable // MongoDB doesn't need this
     public AbstractConnector getConnector() {
-        return this.connector;
+        return this.delegate.getConnector();
     }
 
     @NotNull
@@ -103,111 +119,94 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
         return builder.registerTypeAdapter(ItemStack.class, new ItemStackSerializer());
     }
 
-    @NotNull
-    protected final Connection getConnection() throws SQLException {
-        return this.getConnector().getConnection();
+    @Nullable // MongoDB doesn't need this
+    protected Connection getConnection() throws SQLException {
+        return this.delegate.getConnection();
     }
 
     public void createTable(@NotNull String table, @NotNull List<SQLColumn> columns) {
-        CreateTableExecutor.builder(table, this.getDatabaseType()).columns(columns).execute(this.getConnector());
+        this.delegate.createTable(table, columns);
     }
 
     public void renameTable(@NotNull String from, @NotNull String to) {
-        RenameTableExecutor.builder(from, this.getDatabaseType()).renameTo(to).execute(this.getConnector());
+        this.delegate.renameTable(from, to);
     }
 
     public void addColumn(@NotNull String table, @NotNull SQLValue... columns) {
-        AlterTableExecutor.builder(table, this.getDatabaseType()).addColumn(columns).execute(this.getConnector());
+        this.delegate.addColumn(table, columns);
     }
 
     public void renameColumn(@NotNull String table, @NotNull SQLValue... columns) {
-        AlterTableExecutor.builder(table, this.getDatabaseType()).renameColumn(columns).execute(this.getConnector());
+        this.delegate.renameColumn(table, columns);
     }
 
     public void dropColumn(@NotNull String table, @NotNull SQLColumn... columns) {
-        AlterTableExecutor.builder(table, this.getDatabaseType()).dropColumn(columns).execute(this.getConnector());
+        this.delegate.dropColumn(table, columns);
     }
 
     public boolean hasColumn(@NotNull String table, @NotNull SQLColumn column) {
-        return SQLQueries.hasColumn(this.getConnector(), table, column);
+        return this.delegate.hasColumn(table, column);
     }
 
     public void insert(@NotNull String table, @NotNull List<SQLValue> values) {
-        InsertQueryExecutor.builder(table).values(values).execute(this.getConnector());
+        this.delegate.insert(table, values);
     }
-
-
-
 
     @Deprecated
     public void update(@NotNull String table, @NotNull List<SQLValue> values, @NotNull SQLCondition... conditions) {
-        UpdateQueryExecutor.builder(table).values(values).where(conditions).execute(this.getConnector());
+        this.delegate.update(table, values, conditions);
     }
 
     @NotNull
-    public UpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-        return UpdateQuery.create(table, values, conditions);
+    public IUpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+        return this.delegate.updateQuery(table, values, conditions);
     }
 
     public void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-        this.executeUpdate(this.updateQuery(table, values, conditions));
+        this.delegate.executeUpdate(table, values, conditions);
     }
 
-    public void executeUpdate(@NotNull UpdateQuery query) {
-        SQLQueries.executeUpdate(this.connector, query);
+    public void executeUpdate(@NotNull IUpdateQuery query) {
+        this.delegate.executeUpdate(query);
     }
 
-    public void executeUpdates(@NotNull List<UpdateQuery> queries) {
-        SQLQueries.executeUpdates(this.connector, queries);
+    public void executeUpdates(@NotNull List<IUpdateQuery> queries) {
+        this.delegate.executeUpdates(queries);
     }
-
-
-
 
     public void delete(@NotNull String table, @NotNull SQLCondition... conditions) {
-        DeleteQueryExecutor.builder(table).where(conditions).execute(this.getConnector());
+        this.delegate.delete(table, conditions);
     }
 
     public boolean contains(@NotNull String table, @NotNull SQLCondition... conditions) {
-        return this.load(table, (resultSet -> true), Collections.emptyList(), Arrays.asList(conditions)).isPresent();
+        return this.delegate.contains(table, conditions);
     }
 
     public boolean contains(@NotNull String table, @NotNull List<SQLColumn> columns, @NotNull SQLCondition... conditions) {
-        return this.load(table, (resultSet -> true), columns, Arrays.asList(conditions)).isPresent();
+        return this.delegate.contains(table, columns, conditions);
     }
 
     @NotNull
     public <T> Optional<T> load(@NotNull String table, @NotNull Function<ResultSet, T> function,
                                 @NotNull List<SQLColumn> columns,
                                 @NotNull List<SQLCondition> conditions) {
-        List<T> list = this.load(table, function, columns, conditions, 1);
-        return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
+        return this.delegate.load(table, function, columns, conditions);
     }
 
     @NotNull
-    public <T> List<T> load(@NotNull String table, @NotNull Function<ResultSet, T> dataFunction) {
-        return this.load(table, dataFunction, -1);
-    }
-
-    @NotNull
-    public <T> List<T> load(@NotNull String table, @NotNull Function<ResultSet, T> dataFunction, int amount) {
-        return this.load(table, dataFunction, Collections.emptyList(), amount);
-    }
-
-    @NotNull
-    public <T> List<T> load(@NotNull String table,
-                            @NotNull Function<ResultSet, T> dataFunction,
-                            @NotNull List<SQLColumn> columns,
-                            int amount) {
-        return this.load(table, dataFunction, columns, Collections.emptyList(), amount);
-    }
-
-    @NotNull
-    public <T> List<T> load(@NotNull String table,
-                            @NotNull Function<ResultSet, T> dataFunction,
+    public <T> List<T> load(@NotNull String table, @NotNull Function<ResultSet, T> dataFunction,
                             @NotNull List<SQLColumn> columns,
                             @NotNull List<SQLCondition> conditions,
                             int amount) {
-        return SelectQueryExecutor.builder(table, dataFunction).columns(columns).where(conditions).execute(this.getConnector());
+        return this.delegate.load(table, dataFunction, columns, conditions, amount);
+    }
+    @NotNull
+    protected static DatabaseConfig getDataConfig(@NotNull NightCorePlugin plugin) {
+        DatabaseConfig dataConfig = plugin.getDetails().getDatabaseConfig();
+        if (dataConfig == null) {
+            plugin.warn("The plugin didn't have database configuration. Fixing it now...");
+            dataConfig = DatabaseConfig.read(plugin);
+        }
+        return dataConfig;
     }
 }

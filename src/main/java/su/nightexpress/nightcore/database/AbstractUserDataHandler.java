@@ -4,13 +4,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
+import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 import su.nightexpress.nightcore.database.sql.column.ColumnType;
-import su.nightexpress.nightcore.core.CoreConfig;
-import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.TimeUtil;
 
@@ -163,7 +163,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
     }
 
     @NotNull
-    public UpdateQuery saveQuery(@NotNull U user) {
+    public IUpdateQuery saveQuery(@NotNull U user) {
         List<SQLValue> values = new ArrayList<>();
         values.add(COLUMN_USER_NAME.toValue(user.getName()));
         values.add(COLUMN_USER_DATE_CREATED.toValue(user.getDateCreated()));
