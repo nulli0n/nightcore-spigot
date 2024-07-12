@@ -214,7 +214,10 @@ public abstract class AbstractMongoDBDataHandler<P extends NightCorePlugin> exte
         List<T> list = new ArrayList<>();
         FindIterable<BsonDocument> documents = database.getCollection(table).find(generateFilters(conditions.toArray(new SQLCondition[0])), BsonDocument.class);
         try {
-            list.add(dataFunction.apply(new MongoResultSet(documents.cursor())));
+            var resultSet = new MongoResultSet(documents.cursor());
+            while (resultSet.next() && (amount < 0 || list.size() < amount)) {
+                list.add(dataFunction.apply(resultSet));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -105,12 +105,6 @@ public class MongoResultSet implements ResultSet {
         // The JDBC specification provides the order for each database metadata result set.
         // Because a lot BI tools will access database metadata columns by index, the specification order must be respected.
         this.cursor = cursor;
-        try {
-            this.current = cursor.next();
-        } catch (NoSuchElementException e) {
-            this.current = null;
-            throw new SQLException("No current row in the result set.");
-        }
     }
 
     // This is only used for testing, and that is why it has package level access, and the
