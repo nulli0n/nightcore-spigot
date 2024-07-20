@@ -216,6 +216,8 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         if (menuItem == null) return;
 
         menuItem.getHandler().getClickActions().forEach(action -> action.onClick(viewer, event));
+
+        viewer.setLastClickTime(System.currentTimeMillis());
     }
 
     @Override
