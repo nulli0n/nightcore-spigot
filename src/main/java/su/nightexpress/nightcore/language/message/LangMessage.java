@@ -16,6 +16,7 @@ import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
+import su.nightexpress.nightcore.util.text.tag.Tags;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.wrapper.UniSound;
 
@@ -148,7 +149,7 @@ public class LangMessage {
         // Remove completely empty lines.
         // Especially useful for message tags lines without extra text.
         StringBuilder stripper = new StringBuilder();
-        for (String part : text.split(Placeholders.TAG_LINE_BREAK)) {
+        for (String part : Tags.LINE_BREAK.split(text)) {
             if (part.isEmpty()) continue;
 
             if (!stripper.isEmpty()) stripper.append(Placeholders.TAG_LINE_BREAK);
@@ -237,7 +238,7 @@ public class LangMessage {
                 Players.sendActionBar(player, this.getMessage(player));
             }
             else if (this.options.getOutputType() == OutputType.TITLES) {
-                String[] split = this.getMessage(sender).getString().split(Placeholders.TAG_LINE_BREAK);
+                String[] split = Tags.LINE_BREAK.split(this.getMessage(sender).getString());
 
                 String title = NightMessage.asLegacy(split[0]);
                 String subtitle = split.length >= 2 ? NightMessage.asLegacy(split[1]) : "";

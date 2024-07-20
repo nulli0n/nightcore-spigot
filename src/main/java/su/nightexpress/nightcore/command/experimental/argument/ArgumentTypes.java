@@ -13,30 +13,28 @@ import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Players;
 
-import java.util.function.Function;
-
 public class ArgumentTypes {
 
-    public static final Function<String, String>           STRING         = string -> string;
-    public static final Function<String, Boolean>          BOOLEAN        = Boolean::parseBoolean;
-    public static final Function<String, Integer>          INTEGER        = string -> NumberUtil.parseInteger(string).orElse(null);
-    public static final Function<String, Integer>          INTEGER_ABS    = string -> NumberUtil.parseInteger(string).map(Math::abs).orElse(null);
-    public static final Function<String, Double>           DOUBLE         = string -> NumberUtil.parseDouble(string).orElse(null);
-    public static final Function<String, Double>           DOUBLE_ABS     = string -> NumberUtil.parseDouble(string).map(Math::abs).orElse(null);
-    public static final Function<String, Player>           PLAYER         = Players::getPlayer;
-    public static final Function<String, World>            WORLD          = Bukkit::getWorld;
-    public static final Function<String, Material>         MATERIAL       = BukkitThing::getMaterial;
-    public static final Function<String, Material>         ITEM_MATERIAL  = string -> {
+    public static final ArgumentParser<String>           STRING         = (string, context) -> string;
+    public static final ArgumentParser<Boolean>          BOOLEAN        = (string, context) -> Boolean.parseBoolean(string);
+    public static final ArgumentParser<Integer>          INTEGER        = (string, context) -> NumberUtil.parseInteger(string).orElse(null);
+    public static final ArgumentParser<Integer>          INTEGER_ABS    = (string, context) -> NumberUtil.parseInteger(string).map(Math::abs).orElse(null);
+    public static final ArgumentParser<Double>           DOUBLE         = (string, context) -> NumberUtil.parseDouble(string).orElse(null);
+    public static final ArgumentParser<Double>           DOUBLE_ABS     = (string, context) -> NumberUtil.parseDouble(string).map(Math::abs).orElse(null);
+    public static final ArgumentParser<Player>           PLAYER         = (string, context) -> Players.getPlayer(string);
+    public static final ArgumentParser<World>            WORLD          = (string, context) -> Bukkit.getWorld(string);
+    public static final ArgumentParser<Material>         MATERIAL       = (string, context) -> BukkitThing.getMaterial(string);
+    public static final ArgumentParser<Material>         ITEM_MATERIAL  = (string, context) -> {
         Material material = BukkitThing.getMaterial(string);
         return material == null || !material.isItem() ? null : material;
     };
-    public static final Function<String, Material>         BLOCK_MATERIAL = string -> {
+    public static final ArgumentParser<Material>         BLOCK_MATERIAL = (string, context) -> {
         Material material = BukkitThing.getMaterial(string);
         return material == null || !material.isBlock() ? null : material;
     };
-    public static final Function<String, Enchantment>      ENCHANTMENT    = BukkitThing::getEnchantment;
-    //public static final Function<String, PotionEffectType> POTION_EFFECT  = BukkitThing::getPotionEffect;
-    //public static final Function<String, Attribute>        ATTRIBUTE      = BukkitThing::getAttribute;
+    public static final ArgumentParser<Enchantment>      ENCHANTMENT    = (string, context) -> BukkitThing.getEnchantment(string);
+    //public static final ArgumentParser<PotionEffectType> POTION_EFFECT  = BukkitThing::getPotionEffect;
+    //public static final ArgumentParser<Attribute>        ATTRIBUTE      = BukkitThing::getAttribute;
 
     @NotNull
     public static ArgumentBuilder<String> string(@NotNull String name) {

@@ -14,6 +14,12 @@ import java.util.Map;
 
 public class CoreConfig {
 
+    public static final ConfigValue<Boolean> DATA_FIXER_ENABLED = ConfigValue.create("DataFixer.Enabled",
+        true,
+        "When enabled, uses Mojang's DataFixer util to update ItemStacks from <= 1.20.4 NBT format to 1.20.5+ NBT format.",
+        "IMPORTANT NOTE: You need to use this setting only once! Enable it, reboot the server and re-save all configurations that stores compressed item data: shops, crates, etc."
+    );
+
     public static final ConfigValue<Boolean> MODERN_TEXT_PRECOMPILE_LANG = ConfigValue.create("ModernTextFormation.Precompile_Language",
         true,
         "When enabled, parses (deserializes) language messages to Spigot TextComponent(s) on plugin load.",

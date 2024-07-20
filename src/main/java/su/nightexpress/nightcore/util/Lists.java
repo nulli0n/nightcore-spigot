@@ -98,6 +98,7 @@ public class Lists {
     @NotNull
     public static List<String> stripEmpty(@NotNull List<String> original) {
         List<String> stripped = new ArrayList<>();
+
         for (int index = 0; index < original.size(); index++) {
             String line = original.get(index);
             if (line.isEmpty()) {
@@ -106,6 +107,7 @@ public class Lists {
             }
             stripped.add(line);
         }
+
         return stripped;
     }
 

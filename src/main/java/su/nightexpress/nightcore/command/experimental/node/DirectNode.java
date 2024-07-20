@@ -90,7 +90,7 @@ public class DirectNode extends CommandNode implements DirectExecutor {
             }
 
             //String
-            ParsedArgument<?> parsedArgument = argument.parse(arg);
+            ParsedArgument<?> parsedArgument = argument.parse(arg, context);
             if (parsedArgument == null) {
                 return context.sendFailure(argument.getFailureMessage()
                     .replace(Placeholders.GENERIC_VALUE, arg)
@@ -125,7 +125,7 @@ public class DirectNode extends CommandNode implements DirectExecutor {
                     String content = arg.substring(delimiterIndex + 1);
                     if (content.isEmpty()) continue;
 
-                    ParsedArgument<?> parsed = contentFlag.parse(content);
+                    ParsedArgument<?> parsed = contentFlag.parse(content, context);
                     if (parsed == null) {
                         context.send(CoreLang.ERROR_COMMAND_PARSE_FLAG.getMessage()
                             .replace(Placeholders.GENERIC_VALUE, content)
@@ -148,6 +148,8 @@ public class DirectNode extends CommandNode implements DirectExecutor {
     @Override
     @NotNull
     public List<String> getTab(@NotNull TabContext context) {
+        if (this.isPlayerOnly() && context.getPlayer() == null) return Collections.emptyList();
+
         int index = context.getArgs().length - (context.getIndex() + 1);
         //System.out.println("index = " + index);
         //System.out.println("arguments.size() = " + arguments.size());

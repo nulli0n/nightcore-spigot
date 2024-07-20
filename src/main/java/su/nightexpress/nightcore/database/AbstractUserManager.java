@@ -4,8 +4,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
-import su.nightexpress.nightcore.database.sql.SQLQueries;
-import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.listener.UserListener;
@@ -33,7 +31,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     @Override
     protected void onLoad() {
         this.addListener(new UserListener<>(this.plugin));
-        this.addTask(this.plugin.createAsyncTask(this::saveScheduled).setTicksInterval(1));
+        this.addTask(this.plugin.createAsyncTask(this::saveScheduled).setTicksInterval(20L));
     }
 
     @Override
@@ -60,13 +58,10 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     }
 
     public void saveScheduled() {
-        List<UpdateQuery> queries = new ArrayList<>();
-        this.scheduledSaves.forEach(user -> queries.add(this.getDataHandler().saveQuery(user)));
-        this.scheduledSaves.clear();
-        SQLQueries.executeUpdates(this.getDataHandler().getConnector(), queries);
+        if (this.scheduledSaves.isEmpty()) return;
 
-        //this.scheduledSaves.forEach(this::save);
-        //this.scheduledSaves.clear();
+        this.getDataHandler().saveUsers(this.scheduledSaves);
+        this.scheduledSaves.clear();
     }
 
     @NotNull
@@ -250,6 +245,10 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
 
     public void scheduleSave(@NotNull U user) {
         this.scheduledSaves.add(user);
+    }
+
+    public boolean isScheduledToSave(@NotNull U user) {
+        return this.scheduledSaves.contains(user);
     }
 
     @Deprecated

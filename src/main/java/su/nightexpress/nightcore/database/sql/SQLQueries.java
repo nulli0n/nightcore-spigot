@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.database.sql;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.database.AbstractConnector;
+import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 
 import java.sql.*;
@@ -85,26 +86,60 @@ public class SQLQueries {
     }
 
     public static void executeUpdate(@NotNull AbstractConnector connector, @NotNull UpdateQuery query) {
-        executeUpdates(connector, List.of(query));
+        executeUpdates(connector, query);
     }
 
-    public static void executeUpdates(@NotNull AbstractConnector connector, @NotNull List<UpdateQuery> queries) {
-        try (Connection connection = connector.getConnection()) {
-            for (UpdateQuery query : queries) {
-                try (PreparedStatement statement = connection.prepareStatement(query.getSQL())) {
+    public static void executeUpdates(@NotNull AbstractConnector connector, @NotNull UpdateQuery query) {
+        if (query.isEmpty()) return;
 
-                    int count = 1;
-                    for (String columnValue : query.getValues()) {
-                        statement.setString(count++, columnValue);
-                    }
-                    for (String conditionValue : query.getWheres()) {
-                        statement.setString(count++, conditionValue);
-                    }
+        List<UpdateEntity> entities = query.getEntities();
+        //if (entities.isEmpty()) return;
 
-                    statement.executeUpdate();
+        //if (queries.isEmpty()) return;
+
+//        try (Connection connection = connector.getConnection()) {
+//            for (UpdateQuery query : queries) {
+//                try (PreparedStatement statement = connection.prepareStatement(query.getSQL())) {
+//
+//                    int count = 1;
+//                    for (String columnValue : query.getValues()) {
+//                        statement.setString(count++, columnValue);
+//                    }
+//                    for (String conditionValue : query.getWheres()) {
+//                        statement.setString(count++, conditionValue);
+//                    }
+//
+//                    statement.executeUpdate();
+//                }
+//                catch (SQLException exception) {
+//                    exception.printStackTrace();
+//                }
+//            }
+//        }
+//        catch (SQLException exception) {
+//            exception.printStackTrace();
+//        }
+
+        String sql = query.getSQL();//queries.get(0).getSQL();
+
+        try (Connection connection = connector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            int entityCount = 0;
+            for (UpdateEntity entity : entities) {
+                int paramCount = 1;
+
+                for (String columnValue : entity.getValues()) {
+                    statement.setString(paramCount++, columnValue);
                 }
-                catch (SQLException exception) {
-                    exception.printStackTrace();
+                for (String conditionValue : entity.getWheres()) {
+                    statement.setString(paramCount++, conditionValue);
+                }
+                statement.addBatch();
+                entityCount++;
+
+                if (entityCount % 500 == 0 || entityCount == entities.size()) {
+                    statement.executeBatch();
                 }
             }
         }

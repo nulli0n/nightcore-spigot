@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 import su.nightexpress.nightcore.database.sql.executor.*;
+import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 import su.nightexpress.nightcore.manager.AbstractManager;
 
@@ -145,21 +146,27 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
     }
 
     @NotNull
-    public UpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-        return UpdateQuery.create(table, values, conditions);
+    public UpdateEntity createUpdateEntity(@NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+        return UpdateEntity.create(values, conditions);
     }
 
+//    @NotNull
+//    public UpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+//        return UpdateQuery.create(table, values, conditions);
+//    }
+//
     public void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-        this.executeUpdate(this.updateQuery(table, values, conditions));
+        this.executeUpdate(UpdateQuery.create(table, values, conditions));
     }
 
     public void executeUpdate(@NotNull UpdateQuery query) {
         SQLQueries.executeUpdate(this.connector, query);
     }
 
-    public void executeUpdates(@NotNull List<UpdateQuery> queries) {
-        SQLQueries.executeUpdates(this.connector, queries);
-    }
+//    @Deprecated
+//    public void executeUpdates(@NotNull UpdateQuery queries) {
+//        SQLQueries.executeUpdates(this.connector, queries);
+//    }
 
 
 

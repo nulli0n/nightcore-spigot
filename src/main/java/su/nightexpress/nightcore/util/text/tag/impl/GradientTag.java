@@ -16,6 +16,14 @@ public class GradientTag extends Tag implements ContentTag {
         super(NAME);
     }
 
+    @NotNull
+    public String enclose(@NotNull String hexStart, @NotNull String hexEnd, @NotNull String text) {
+        String tagOpen = brackets(this.getName() + ":" + hexStart + ":" + hexEnd);
+        String tagClose = this.getClosingName();
+
+        return tagOpen + text + tagClose;
+    }
+
     @Override
     @Nullable
     public GradientColorDecorator parse(@NotNull String content) {

@@ -93,6 +93,14 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
             this.info("Item NBT Compress: OK ✔");
         }
         else this.error("Item NBT Compress: FAIL ✘");
+
+        if (Version.isAtLeast(Version.MC_1_20_6) && CoreConfig.DATA_FIXER_ENABLED.get()) {
+            this.warn("=".repeat(10) + " WARNING " + "=".repeat(10));
+            this.warn("Enabled Mojang's DataFixer for ItemStacks to update/fix NBT structure from <= 1.20.4 to 1.20.6+");
+            this.warn("This may significally affect server's performance.");
+            this.warn("Please, re-save all configuration(s) using in-game GUI editor(s) (if there is any).");
+            this.warn("Then disable this 'feature' in the config.yml of nightcore.");
+        }
     }
 
     private boolean testItemNbt() {

@@ -15,4 +15,11 @@ public class LineBreakTag extends Tag implements PlaceholderTag {
     public String getValue() {
         return "\n";
     }
+
+    public String[] split(@NotNull String string) {
+        for (String alias : this.getAliases()) {
+            string = string.replace(brackets(alias), "\n");
+        }
+        return string.split("\n");
+    }
 }

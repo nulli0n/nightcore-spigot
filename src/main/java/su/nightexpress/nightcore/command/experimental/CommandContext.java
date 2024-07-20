@@ -86,6 +86,13 @@ public class CommandContext {
         return executor;
     }
 
+    @NotNull
+    public Player getPlayerOrThrow() {
+        if (this.isPlayer()) return this.executor;
+
+        throw new IllegalStateException("CommandContext is not bound to a player!");
+    }
+
     public int length() {
         return this.args.length;
     }

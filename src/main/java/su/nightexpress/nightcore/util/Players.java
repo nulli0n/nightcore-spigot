@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.integration.VaultHook;
-import su.nightexpress.nightcore.util.message.NexParser;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
@@ -133,22 +132,8 @@ public class Players {
         return Plugins.hasVault() ? VaultHook.getSuffix(player) : "";
     }
 
-    @Deprecated
-    public static void sendRichMessage(@NotNull CommandSender sender, @NotNull String message) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(Colorizer.apply(NexParser.toPlainText(message)));
-            return;
-        }
-        NexParser.toMessage(message).send(sender);
-    }
-
     public static void sendModernMessage(@NotNull CommandSender sender, @NotNull String message) {
         NightMessage.create(message).send(sender);
-    }
-
-    @Deprecated
-    public static void sendActionBar(@NotNull Player player, @NotNull String msg) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, NexParser.toMessage(msg).build());
     }
 
     public static void sendActionBarText(@NotNull Player player, @NotNull String message) {
