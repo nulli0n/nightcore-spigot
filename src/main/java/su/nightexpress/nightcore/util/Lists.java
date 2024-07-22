@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,6 +62,16 @@ public class Lists {
 
     public static boolean contains(int[] array, int valueToFind) {
         return indexOf(array, valueToFind) != -1;
+    }
+
+    @NotNull
+    public static <T, R> Set<R> modify(@NotNull Set<T> set, @NotNull Function<T, R> function) {
+        return set.stream().map(function).collect(Collectors.toCollection(HashSet::new));
+    }
+
+    @NotNull
+    public static <T, R> List<R> modify(@NotNull List<T> set, @NotNull Function<T, R> function) {
+        return set.stream().map(function).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @NotNull

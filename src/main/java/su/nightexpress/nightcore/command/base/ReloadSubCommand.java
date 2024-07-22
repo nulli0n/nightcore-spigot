@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.command.CommandResult;
 import su.nightexpress.nightcore.command.impl.AbstractCommand;
 import su.nightexpress.nightcore.core.CoreLang;
 
+@Deprecated
 public class ReloadSubCommand extends AbstractCommand<NightCorePlugin> {
 
     public ReloadSubCommand(@NotNull NightCorePlugin plugin, @NotNull Permission permission) {

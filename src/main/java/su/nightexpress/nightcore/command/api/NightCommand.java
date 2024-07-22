@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.util.placeholder.Placeholder;
 import java.util.Collection;
 import java.util.List;
 
+@Deprecated
 public interface NightCommand extends Placeholder {
 
     @NotNull List<String> getTab(@NotNull Player player, int arg, @NotNull String[] args);

@@ -5,6 +5,7 @@ import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public interface NightPluginCommand extends NightCommand, TabExecutor {
 
     @Nullable NightCommand getDefaultCommand();

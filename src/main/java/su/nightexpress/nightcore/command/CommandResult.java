@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.util.NumberUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class CommandResult {
 
     private final String label;
