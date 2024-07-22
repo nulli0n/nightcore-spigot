@@ -1,6 +1,7 @@
 EntityType:
   allay: Тихоня
   area_effect_cloud: Облако эффекта
+  armadillo: Броненосец
   armor_stand: Стойка для брони
   arrow: Стрела
   axolotl: Аксолотль
@@ -9,6 +10,9 @@ EntityType:
   blaze: Всполох
   block_display: Визуализатор блока
   boat: Лодка
+  bogged: Болотник
+  breeze: Вихрь
+  breeze_wind_charge: Заряд ветра
   camel: Верблюд
   cat: Кошка
   cave_spider: Пещерный паук
@@ -67,9 +71,10 @@ EntityType:
   magma_cube: Магмовый куб
   marker: Метка
   minecart: Вагонетка
-  mooshroom: Муухомор
+  mooshroom: Муушрум
   mule: Мул
   ocelot: Оцелот
+  ominous_item_spawner: Зловещий рассадник предметов
   painting: Картина
   panda: Панда
   parrot: Попугай
@@ -115,6 +120,7 @@ EntityType:
   vindicator: Поборник
   wandering_trader: Странствующий торговец
   warden: Хранитель
+  wind_charge: Заряд ветра
   witch: Ведьма
   wither: Визер
   wither_skeleton: Визер-скелет
@@ -138,6 +144,7 @@ PotionEffectType:
   health_boost: Прилив здоровья
   hero_of_the_village: Герой деревни
   hunger: Голод
+  infested: Заражение
   instant_damage: Моментальный урон
   instant_health: Исцеление
   invisibility: Невидимость
@@ -147,7 +154,9 @@ PotionEffectType:
   mining_fatigue: Утомление
   nausea: Тошнота
   night_vision: Ночное зрение
+  oozing: Вязкость
   poison: Отравление
+  raid_omen: Знак рейда
   regeneration: Регенерация
   resistance: Сопротивление
   saturation: Насыщенность
@@ -155,9 +164,12 @@ PotionEffectType:
   slowness: Замедление
   speed: Скорость
   strength: Сила
+  trial_omen: Знак испытаний
   unluck: Невезение
   water_breathing: Водное дыхание
   weakness: Слабость
+  weaving: Плетение
+  wind_charged: Заряженность ветром
   wither: Иссушение
 Material:
   acacia_button: Акациевая кнопка
@@ -341,6 +353,7 @@ Material:
   chest: Сундук
   chipped_anvil: Повреждённая наковальня
   chiseled_bookshelf: Резная книжная полка
+  chiseled_copper: Точёный медный блок
   chiseled_deepslate: Резной глубинный сланец
   chiseled_nether_bricks: Резные незерские кирпичи
   chiseled_polished_blackstone: Резной полированный чернит
@@ -348,6 +361,8 @@ Material:
   chiseled_red_sandstone: Резной красный песчаник
   chiseled_sandstone: Резной песчаник
   chiseled_stone_bricks: Резные каменные кирпичи
+  chiseled_tuff: Резной туф
+  chiseled_tuff_bricks: Резные туфовые кирпичи
   chorus_flower: Цветок хоруса
   chorus_plant: Хорус
   clay: Глина
@@ -369,13 +384,18 @@ Material:
   composter: Компостница
   conduit: Морской источник
   copper_block: Медный блок
+  copper_bulb: Медная лампа
+  copper_door: Медная дверь
+  copper_grate: Медная решётка
   copper_ore: Медная руда
+  copper_trapdoor: Медный люк
   cornflower: Синий василёк
   cracked_deepslate_bricks: Потрескавшиеся глубинносланцевые кирпичи
   cracked_deepslate_tiles: Потрескавшийся глубинносланцевый плитняк
   cracked_nether_bricks: Потрескавшиеся незерские кирпичи
   cracked_polished_blackstone_bricks: Потрескавшиеся полированно-чернитные кирпичи
   cracked_stone_bricks: Потрескавшиеся каменные кирпичи
+  crafter: Сборщик
   crafting_table: Верстак
   creeper_head: Голова крипера
   creeper_wall_head: Настенная голова крипера
@@ -509,7 +529,12 @@ Material:
   end_stone_brick_wall: Ограда из эндернякового кирпича
   end_stone_bricks: Эндерняковые кирпичи
   ender_chest: Эндер-сундук
+  exposed_chiseled_copper: Потемневший резной медный блок
   exposed_copper: Потемневший медный блок
+  exposed_copper_bulb: Потемневшая медная лампа
+  exposed_copper_door: Потемневшая медная дверь
+  exposed_copper_grate: Потемневшая медная решётка
+  exposed_copper_trapdoor: Потемневший медный люк
   exposed_cut_copper: Потемневший резной медный блок
   exposed_cut_copper_slab: Потемневшая резная медная плита
   exposed_cut_copper_stairs: Потемневшие резные медные ступеньки
@@ -570,6 +595,7 @@ Material:
   grindstone: Точило
   hanging_roots: Свисающие корни
   hay_block: Сноп сена
+  heavy_core: Навершие булавы
   heavy_weighted_pressure_plate: Большегрузная весовая пластина
   honey_block: Блок мёда
   honeycomb_block: Блок пчелиных сот
@@ -730,7 +756,7 @@ Material:
   nether_brick_wall: Ограда из незерского кирпича
   nether_bricks: Незерские кирпичи
   nether_gold_ore: Незерская золотая руда
-  nether_portal: Портал в Незер
+  nether_portal: Незер-портал
   nether_quartz_ore: Незер-кварцевая руда
   nether_sprouts: Незерские ростки
   nether_wart: Незерский нарост
@@ -774,7 +800,12 @@ Material:
   orange_tulip: Оранжевый тюльпан
   orange_wool: Оранжевая шерсть
   oxeye_daisy: Ромашка
+  oxidized_chiseled_copper: Окисленный резной медный блок
   oxidized_copper: Окисленный медный блок
+  oxidized_copper_bulb: Окисленная медная лампа
+  oxidized_copper_door: Окисленная медная дверь
+  oxidized_copper_grate: Окисленная медная решётка
+  oxidized_copper_trapdoor: Окисленный медный люк
   oxidized_cut_copper: Окисленный резной медный блок
   oxidized_cut_copper_slab: Окисленная резная медная плита
   oxidized_cut_copper_stairs: Окисленные резные медные ступеньки
@@ -832,6 +863,10 @@ Material:
   polished_granite: Полированный гранит
   polished_granite_slab: Плита из полированного гранита
   polished_granite_stairs: Ступеньки из полированного гранита
+  polished_tuff: Полированный туф
+  polished_tuff_slab: Плита из полированного туфа
+  polished_tuff_stairs: Ступеньки из полированного туфа
+  polished_tuff_wall: Ограда из полированного туфа
   poppy: Мак
   potatoes: Картофель
   potted_acacia_sapling: Саженец акации в горшке
@@ -958,6 +993,7 @@ Material:
   sea_pickle: Морской огурец
   seagrass: Морская трава
   set_spawn: Точка возрождения установлена
+  short_grass: Низкая трава
   shroomlight: Грибосвет
   shulker_box: Шалкеровый ящик
   skeleton_skull: Череп
@@ -1058,6 +1094,7 @@ Material:
   torchflower: Факельник
   torchflower_crop: Росток факельника
   trapped_chest: Сундук-ловушка
+  trial_spawner: Рассадник испытаний
   tripwire: Растяжка
   tripwire_hook: Крюк
   tube_coral: Трубчатый коралл
@@ -1065,9 +1102,17 @@ Material:
   tube_coral_fan: Веерный трубчатый коралл
   tube_coral_wall_fan: Горизонтальный веерный трубчатый коралл
   tuff: Туф
+  tuff_brick_slab: Плита из туфового кирпича
+  tuff_brick_stairs: Ступеньки из туфового кирпича
+  tuff_brick_wall: Ограда из туфового кирпича
+  tuff_bricks: Туфовые кирпичи
+  tuff_slab: Туфовая плита
+  tuff_stairs: Туфовые ступеньки
+  tuff_wall: Туфовая ограда
   turtle_egg: Черепашье яйцо
   twisting_vines: Вьющаяся лоза
   twisting_vines_plant: Стебель вьющейся лозы
+  vault: Хранилище
   verdant_froglight: Малахитовая квампа
   vine: Лианы
   void_air: Вакуум
@@ -1093,23 +1138,48 @@ Material:
   warped_wart_block: Блок искажённого нароста
   water: Вода
   water_cauldron: Котёл с водой
+  waxed_chiseled_copper: Вощёный резной медный блок
   waxed_copper_block: Вощёный медный блок
+  waxed_copper_bulb: Вощёная медная лампа
+  waxed_copper_door: Вощёная медная дверь
+  waxed_copper_grate: Вощёная медная решётка
+  waxed_copper_trapdoor: Вощёный медный люк
   waxed_cut_copper: Вощёный резной медный блок
   waxed_cut_copper_slab: Вощёная резная медная плита
   waxed_cut_copper_stairs: Вощёные резные медные ступеньки
+  waxed_exposed_chiseled_copper: Вощёный потемневший резной медный блок
   waxed_exposed_copper: Вощёный потемневший медный блок
+  waxed_exposed_copper_bulb: Вощёная потемневшая медная лампа
+  waxed_exposed_copper_door: Вощёная потемневшая медная дверь
+  waxed_exposed_copper_grate: Вощёная потемневшая медная решётка
+  waxed_exposed_copper_trapdoor: Вощёный потемневший медный люк
   waxed_exposed_cut_copper: Вощёный потемневший резной медный блок
   waxed_exposed_cut_copper_slab: Вощёная потемневшая резная медная плита
   waxed_exposed_cut_copper_stairs: Вощёные потемневшие резные медные ступеньки
+  waxed_oxidized_chiseled_copper: Вощёный окисленный резной медный блок
   waxed_oxidized_copper: Вощёный окисленный медный блок
+  waxed_oxidized_copper_bulb: Вощёная окисленная медная лампа
+  waxed_oxidized_copper_door: Вощёная окисленная медная дверь
+  waxed_oxidized_copper_grate: Вощёная окисленная медная решётка
+  waxed_oxidized_copper_trapdoor: Вощёный окисленный медный люк
   waxed_oxidized_cut_copper: Вощёный окисленный резной медный блок
   waxed_oxidized_cut_copper_slab: Вощёная окисленная резная медная плита
   waxed_oxidized_cut_copper_stairs: Вощёные окисленные резные медные ступеньки
+  waxed_weathered_chiseled_copper: Вощёный состаренный резной медный блок
   waxed_weathered_copper: Вощёный состаренный медный блок
+  waxed_weathered_copper_bulb: Вощёная состаренная медная лампа
+  waxed_weathered_copper_door: Вощёная состаренная медная дверь
+  waxed_weathered_copper_grate: Вощёная состаренная медная решётка
+  waxed_weathered_copper_trapdoor: Вощёный состаренный медный люк
   waxed_weathered_cut_copper: Вощёный состаренный резной медный блок
   waxed_weathered_cut_copper_slab: Вощёная состаренная резная медная плита
   waxed_weathered_cut_copper_stairs: Вощёные состаренные резные медные ступеньки
+  weathered_chiseled_copper: Состаренный резной медный блок
   weathered_copper: Состаренный медный блок
+  weathered_copper_bulb: Состаренная медная лампа
+  weathered_copper_door: Состаренная медная дверь
+  weathered_copper_grate: Состаренная медная решётка
+  weathered_copper_trapdoor: Состаренный медный люк
   weathered_cut_copper: Состаренный резной медный блок
   weathered_cut_copper_slab: Состаренная резная медная плита
   weathered_cut_copper_stairs: Состаренные резные медные ступеньки
@@ -1158,6 +1228,8 @@ Material:
   apple: Яблоко
   archer_pottery_shard: Глиняный черепок «Лучник»
   archer_pottery_sherd: Глиняный черепок «Лучник»
+  armadillo_scute: Щиток броненосца
+  armadillo_spawn_egg: Яйцо призыва броненосца
   armor_stand: Стойка для брони
   arms_up_pottery_shard: Глиняный черепок «Руки вверх»
   arms_up_pottery_sherd: Глиняный черепок «Руки вверх»
@@ -1182,12 +1254,16 @@ Material:
   blaze_rod: Огненный стержень
   blaze_spawn_egg: Яйцо призыва всполоха
   blue_dye: Синий краситель
+  bogged_spawn_egg: Яйцо призыва болотника
+  bolt_armor_trim_smithing_template: Кузнечный шаблон
   bone: Кость
   bone_meal: Костная мука
   book: Книга
   bow: Лук
   bowl: Миска
   bread: Хлеб
+  breeze_rod: Вихревой стержень
+  breeze_spawn_egg: Яйцо призыва вихря
   brewer_pottery_shard: Глиняный черепок «Зельевар»
   brewer_pottery_sherd: Глиняный черепок «Зельевар»
   brick: Кирпич
@@ -1238,7 +1314,7 @@ Material:
   crossbow: Арбалет
   cyan_dye: Бирюзовый краситель
   danger_pottery_shard: Глиняный черепок «Угроза»
-  danger_pottery_sherd: Глиняный черепок «Опасность»
+  danger_pottery_sherd: Глиняный черепок «Угроза»
   dark_oak_boat: Лодка из тёмного дуба
   dark_oak_chest_boat: Грузовая лодка из тёмного дуба
   debug_stick: Палочка отладки
@@ -1287,6 +1363,9 @@ Material:
   fishing_rod: Удочка
   flint: Кремень
   flint_and_steel: Огниво
+  flow_armor_trim_smithing_template: Кузнечный шаблон
+  flow_banner_pattern: Узор флага
+  flow_pottery_sherd: Глиняный черепок «Поток»
   flower_banner_pattern: Узор флага
   fox_spawn_egg: Яйцо призыва лисицы
   friend_pottery_shard: Глиняный черепок «Друг»
@@ -1323,6 +1402,8 @@ Material:
   green_dye: Зелёный краситель
   guardian_spawn_egg: Яйцо призыва стража
   gunpowder: Порох
+  guster_banner_pattern: Узор флага
+  guster_pottery_sherd: Глиняный черепок «Вихрь»
   heart_of_the_sea: Сердце моря
   heart_pottery_shard: Глиняный черепок «Сердце»
   heart_pottery_sherd: Глиняный черепок «Сердце»
@@ -1335,7 +1416,7 @@ Material:
   horse_spawn_egg: Яйцо призыва лошади
   host_armor_trim_smithing_template: Кузнечный шаблон
   howl_pottery_shard: Глиняный черепок «Вой»
-  howl_pottery_sherd: Глиняный черепок «Вой»
+  howl_pottery_sherd: Глиняный черепок «Зов»
   husk_spawn_egg: Яйцо призыва кадавра
   ink_sac: Чернильный мешок
   iron_axe: Железный топор
@@ -1370,6 +1451,7 @@ Material:
   lingering_potion: Туманное зелье
   llama_spawn_egg: Яйцо призыва ламы
   lodestone_compass: Намагниченный компас
+  mace: Булава
   magenta_dye: Пурпурный краситель
   magma_cream: Сгусток магмы
   magma_cube_spawn_egg: Яйцо призыва магмового куба
@@ -1383,7 +1465,7 @@ Material:
   miner_pottery_shard: Глиняный черепок «Шахтёр»
   miner_pottery_sherd: Глиняный черепок «Шахтёр»
   mojang_banner_pattern: Узор флага
-  mooshroom_spawn_egg: Яйцо призыва муухомора
+  mooshroom_spawn_egg: Яйцо призыва муушрума
   mourner_pottery_shard: Глиняный черепок «Скорбь»
   mourner_pottery_sherd: Глиняный черепок «Скорбь»
   mule_spawn_egg: Яйцо призыва мула
@@ -1394,11 +1476,14 @@ Material:
   music_disc_blocks: Пластинка
   music_disc_cat: Пластинка
   music_disc_chirp: Пластинка
+  music_disc_creator: Пластинка
+  music_disc_creator_music_box: Пластинка
   music_disc_far: Пластинка
   music_disc_mall: Пластинка
   music_disc_mellohi: Пластинка
   music_disc_otherside: Пластинка
   music_disc_pigstep: Пластинка
+  music_disc_precipice: Пластинка
   music_disc_relic: Пластинка
   music_disc_stal: Пластинка
   music_disc_strad: Пластинка
@@ -1424,6 +1509,8 @@ Material:
   oak_boat: Дубовая лодка
   oak_chest_boat: Дубовая грузовая лодка
   ocelot_spawn_egg: Яйцо призыва оцелота
+  ominous_bottle: Зловещая бутылка
+  ominous_trial_key: Зловещий ключ испытаний
   orange_dye: Оранжевый краситель
   painting: Картина
   panda_spawn_egg: Яйцо призыва панды
@@ -1481,14 +1568,15 @@ Material:
   salmon: Сырой лосось
   salmon_bucket: Лосось в ведре
   salmon_spawn_egg: Яйцо призыва лосося
+  scrape_pottery_sherd: Глиняный черепок «Обтёсывание»
   scute: Щиток
   sentry_armor_trim_smithing_template: Кузнечный шаблон
   shaper_armor_trim_smithing_template: Кузнечный шаблон
-  sheaf_pottery_shard: Глиняный черепок «Пучок»
-  sheaf_pottery_sherd: Глиняный черепок «Пучок»
+  sheaf_pottery_shard: Глиняный черепок «Сноп»
+  sheaf_pottery_sherd: Глиняный черепок «Сноп»
   shears: Ножницы
   sheep_spawn_egg: Яйцо призыва овцы
-  shelter_pottery_shard: Глиняный черепок «Дом»
+  shelter_pottery_shard: Глиняный черепок «Укрытие»
   shelter_pottery_sherd: Глиняный черепок «Убежище»
   shield: Щит
   shulker_shell: Панцирь шалкера
@@ -1513,7 +1601,7 @@ Material:
   spectral_arrow: Спектральная стрела
   spider_eye: Паучий глаз
   spider_spawn_egg: Яйцо призыва паука
-  spire_armor_trim_smithing_template: Кузнечный орнамент
+  spire_armor_trim_smithing_template: Кузнечный шаблон
   splash_potion: Взрывное зелье
   spruce_boat: Еловая лодка
   spruce_chest_boat: Еловая грузовая лодка
@@ -1539,13 +1627,15 @@ Material:
   torchflower_seeds: Семена факельника
   totem_of_undying: Тотем бессмертия
   trader_llama_spawn_egg: Яйцо призыва ламы торговца
+  trial_key: Ключ испытаний
   trident: Трезубец
   tropical_fish: Тропическая рыба
   tropical_fish_bucket: Тропическая рыба в ведре
   tropical_fish_spawn_egg: Яйцо призыва тропической рыбы
   turtle_helmet: Черепаший панцирь
+  turtle_scute: Черепаший щиток
   turtle_spawn_egg: Яйцо призыва черепахи
-  vex_armor_trim_smithing_template: Шаблон Рыло
+  vex_armor_trim_smithing_template: Кузнечный шаблон
   vex_spawn_egg: Яйцо призыва вредины
   villager_spawn_egg: Яйцо призыва крестьянина
   vindicator_spawn_egg: Яйцо призыва поборника
@@ -1558,9 +1648,11 @@ Material:
   wheat_seeds: Семена пшеницы
   white_dye: Белый краситель
   wild_armor_trim_smithing_template: Кузнечный шаблон
+  wind_charge: Заряд ветра
   witch_spawn_egg: Яйцо призыва ведьмы
   wither_skeleton_spawn_egg: Яйцо призыва визер-скелета
   wither_spawn_egg: Яйцо призыва визера
+  wolf_armor: Волчья броня
   wolf_spawn_egg: Яйцо призыва волка
   wooden_axe: Деревянный топор
   wooden_hoe: Деревянная мотыга
@@ -1580,7 +1672,9 @@ Enchantment:
   bane_of_arthropods: Бич членистоногих
   binding_curse: Проклятие несъёмности
   blast_protection: Взрывоустойчивость
+  breach: Пробитие
   channeling: Громовержец
+  density: Плотность
   depth_strider: Подводная ходьба
   efficiency: Эффективность
   feather_falling: Невесомость
@@ -1611,7 +1705,9 @@ Enchantment:
   smite: Небесная кара
   soul_speed: Скорость души
   sweeping: Разящий клинок
+  sweeping_edge: Разящий клинок
   swift_sneak: Проворство
   thorns: Шипы
   unbreaking: Прочность
   vanishing_curse: Проклятие утраты
+  wind_burst: Шквал

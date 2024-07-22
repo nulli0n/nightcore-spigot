@@ -1,6 +1,7 @@
 EntityType:
   allay: 悦灵
   area_effect_cloud: 区域效果云
+  armadillo: 犰狳
   armor_stand: 盔甲架
   arrow: 箭
   axolotl: 美西螈
@@ -9,6 +10,9 @@ EntityType:
   blaze: 烈焰人
   block_display: 方块展示实体
   boat: 船
+  bogged: 沼骸
+  breeze: 旋风人
+  breeze_wind_charge: 风弹
   camel: 骆驼
   cat: 猫
   cave_spider: 洞穴蜘蛛
@@ -70,6 +74,7 @@ EntityType:
   mooshroom: 哞菇
   mule: 骡
   ocelot: 豹猫
+  ominous_item_spawner: 不祥之物生成器
   painting: 画
   panda: 熊猫
   parrot: 鹦鹉
@@ -115,6 +120,7 @@ EntityType:
   vindicator: 卫道士
   wandering_trader: 流浪商人
   warden: 监守者
+  wind_charge: 风弹
   witch: 女巫
   wither: 凋灵
   wither_skeleton: 凋灵骷髅
@@ -138,6 +144,7 @@ PotionEffectType:
   health_boost: 生命提升
   hero_of_the_village: 村庄英雄
   hunger: 饥饿
+  infested: 寄生
   instant_damage: 瞬间伤害
   instant_health: 瞬间治疗
   invisibility: 隐身
@@ -147,7 +154,9 @@ PotionEffectType:
   mining_fatigue: 挖掘疲劳
   nausea: 反胃
   night_vision: 夜视
+  oozing: 渗浆
   poison: 中毒
+  raid_omen: 袭击之兆
   regeneration: 生命恢复
   resistance: 抗性提升
   saturation: 饱和
@@ -155,9 +164,12 @@ PotionEffectType:
   slowness: 缓慢
   speed: 迅捷
   strength: 力量
+  trial_omen: 试炼之兆
   unluck: 霉运
   water_breathing: 水下呼吸
   weakness: 虚弱
+  weaving: 盘丝
+  wind_charged: 蓄风
   wither: 凋零
 Material:
   acacia_button: 金合欢木按钮
@@ -341,6 +353,7 @@ Material:
   chest: 箱子
   chipped_anvil: 开裂的铁砧
   chiseled_bookshelf: 雕纹书架
+  chiseled_copper: 雕纹铜块
   chiseled_deepslate: 雕纹深板岩
   chiseled_nether_bricks: 雕纹下界砖块
   chiseled_polished_blackstone: 雕纹磨制黑石
@@ -348,9 +361,11 @@ Material:
   chiseled_red_sandstone: 雕纹红砂岩
   chiseled_sandstone: 雕纹砂岩
   chiseled_stone_bricks: 雕纹石砖
+  chiseled_tuff: 雕纹凝灰岩
+  chiseled_tuff_bricks: 雕纹凝灰岩砖
   chorus_flower: 紫颂花
   chorus_plant: 紫颂植株
-  clay: 黏土块
+  clay: 黏土
   coal_block: 煤炭块
   coal_ore: 煤矿石
   coarse_dirt: 砂土
@@ -369,13 +384,18 @@ Material:
   composter: 堆肥桶
   conduit: 潮涌核心
   copper_block: 铜块
+  copper_bulb: 铜灯
+  copper_door: 铜门
+  copper_grate: 铜格栅
   copper_ore: 铜矿石
+  copper_trapdoor: 铜活板门
   cornflower: 矢车菊
   cracked_deepslate_bricks: 裂纹深板岩砖
   cracked_deepslate_tiles: 裂纹深板岩瓦
   cracked_nether_bricks: 裂纹下界砖块
   cracked_polished_blackstone_bricks: 裂纹磨制黑石砖
   cracked_stone_bricks: 裂纹石砖
+  crafter: 合成器
   crafting_table: 工作台
   creeper_head: 苦力怕的头
   creeper_wall_head: 墙上的苦力怕的头
@@ -509,7 +529,12 @@ Material:
   end_stone_brick_wall: 末地石砖墙
   end_stone_bricks: 末地石砖
   ender_chest: 末影箱
+  exposed_chiseled_copper: 斑驳的雕纹铜块
   exposed_copper: 斑驳的铜块
+  exposed_copper_bulb: 斑驳的铜灯
+  exposed_copper_door: 斑驳的铜门
+  exposed_copper_grate: 斑驳的铜格栅
+  exposed_copper_trapdoor: 斑驳的铜活板门
   exposed_cut_copper: 斑驳的切制铜块
   exposed_cut_copper_slab: 斑驳的切制铜台阶
   exposed_cut_copper_stairs: 斑驳的切制铜楼梯
@@ -570,6 +595,7 @@ Material:
   grindstone: 砂轮
   hanging_roots: 垂根
   hay_block: 干草捆
+  heavy_core: 沉重核心
   heavy_weighted_pressure_plate: 重质测重压力板
   honey_block: 蜂蜜块
   honeycomb_block: 蜜脾块
@@ -774,7 +800,12 @@ Material:
   orange_tulip: 橙色郁金香
   orange_wool: 橙色羊毛
   oxeye_daisy: 滨菊
+  oxidized_chiseled_copper: 氧化的雕纹铜块
   oxidized_copper: 氧化的铜块
+  oxidized_copper_bulb: 氧化的铜灯
+  oxidized_copper_door: 氧化的铜门
+  oxidized_copper_grate: 氧化的铜格栅
+  oxidized_copper_trapdoor: 氧化的铜活板门
   oxidized_cut_copper: 氧化的切制铜块
   oxidized_cut_copper_slab: 氧化的切制铜台阶
   oxidized_cut_copper_stairs: 氧化的切制铜楼梯
@@ -832,6 +863,10 @@ Material:
   polished_granite: 磨制花岗岩
   polished_granite_slab: 磨制花岗岩台阶
   polished_granite_stairs: 磨制花岗岩楼梯
+  polished_tuff: 磨制凝灰岩
+  polished_tuff_slab: 磨制凝灰岩台阶
+  polished_tuff_stairs: 磨制凝灰岩楼梯
+  polished_tuff_wall: 磨制凝灰岩墙
   poppy: 虞美人
   potatoes: 马铃薯
   potted_acacia_sapling: 金合欢树苗盆栽
@@ -958,6 +993,7 @@ Material:
   sea_pickle: 海泡菜
   seagrass: 海草
   set_spawn: 已设置重生点
+  short_grass: 矮草丛
   shroomlight: 菌光体
   shulker_box: 潜影盒
   skeleton_skull: 骷髅头颅
@@ -1058,6 +1094,7 @@ Material:
   torchflower: 火把花
   torchflower_crop: 火把花植株
   trapped_chest: 陷阱箱
+  trial_spawner: 试炼刷怪笼
   tripwire: 绊线
   tripwire_hook: 绊线钩
   tube_coral: 管珊瑚
@@ -1065,9 +1102,17 @@ Material:
   tube_coral_fan: 管珊瑚扇
   tube_coral_wall_fan: 墙上的管珊瑚扇
   tuff: 凝灰岩
+  tuff_brick_slab: 凝灰岩砖台阶
+  tuff_brick_stairs: 凝灰岩砖楼梯
+  tuff_brick_wall: 凝灰岩砖墙
+  tuff_bricks: 凝灰岩砖
+  tuff_slab: 凝灰岩台阶
+  tuff_stairs: 凝灰岩楼梯
+  tuff_wall: 凝灰岩墙
   turtle_egg: 海龟蛋
   twisting_vines: 缠怨藤
   twisting_vines_plant: 缠怨藤植株
+  vault: 宝库
   verdant_froglight: 青翠蛙明灯
   vine: 藤蔓
   void_air: 虚空空气
@@ -1093,23 +1138,48 @@ Material:
   warped_wart_block: 诡异疣块
   water: 水
   water_cauldron: 装有水的炼药锅
+  waxed_chiseled_copper: 涂蜡的雕纹铜块
   waxed_copper_block: 涂蜡的铜块
+  waxed_copper_bulb: 涂蜡的铜灯
+  waxed_copper_door: 涂蜡的铜门
+  waxed_copper_grate: 涂蜡的铜格栅
+  waxed_copper_trapdoor: 涂蜡的铜活板门
   waxed_cut_copper: 涂蜡的切制铜块
   waxed_cut_copper_slab: 涂蜡的切制铜台阶
   waxed_cut_copper_stairs: 涂蜡的切制铜楼梯
+  waxed_exposed_chiseled_copper: 涂蜡的斑驳雕纹铜块
   waxed_exposed_copper: 涂蜡的斑驳铜块
+  waxed_exposed_copper_bulb: 涂蜡的斑驳铜灯
+  waxed_exposed_copper_door: 涂蜡的斑驳铜门
+  waxed_exposed_copper_grate: 涂蜡的斑驳铜格栅
+  waxed_exposed_copper_trapdoor: 涂蜡的斑驳铜活板门
   waxed_exposed_cut_copper: 涂蜡的斑驳切制铜块
   waxed_exposed_cut_copper_slab: 涂蜡的斑驳切制铜台阶
   waxed_exposed_cut_copper_stairs: 涂蜡的斑驳切制铜楼梯
+  waxed_oxidized_chiseled_copper: 涂蜡的氧化雕纹铜块
   waxed_oxidized_copper: 涂蜡的氧化铜块
+  waxed_oxidized_copper_bulb: 涂蜡的氧化铜灯
+  waxed_oxidized_copper_door: 涂蜡的氧化铜门
+  waxed_oxidized_copper_grate: 涂蜡的氧化铜格栅
+  waxed_oxidized_copper_trapdoor: 涂蜡的氧化铜活板门
   waxed_oxidized_cut_copper: 涂蜡的氧化切制铜块
   waxed_oxidized_cut_copper_slab: 涂蜡的氧化切制铜台阶
   waxed_oxidized_cut_copper_stairs: 涂蜡的氧化切制铜楼梯
+  waxed_weathered_chiseled_copper: 涂蜡的锈蚀雕纹铜块
   waxed_weathered_copper: 涂蜡的锈蚀铜块
+  waxed_weathered_copper_bulb: 涂蜡的锈蚀铜灯
+  waxed_weathered_copper_door: 涂蜡的锈蚀铜门
+  waxed_weathered_copper_grate: 涂蜡的锈蚀铜格栅
+  waxed_weathered_copper_trapdoor: 涂蜡的锈蚀铜活板门
   waxed_weathered_cut_copper: 涂蜡的锈蚀切制铜块
   waxed_weathered_cut_copper_slab: 涂蜡的锈蚀切制铜台阶
   waxed_weathered_cut_copper_stairs: 涂蜡的锈蚀切制铜楼梯
+  weathered_chiseled_copper: 锈蚀的雕纹铜块
   weathered_copper: 锈蚀的铜块
+  weathered_copper_bulb: 锈蚀的铜灯
+  weathered_copper_door: 锈蚀的铜门
+  weathered_copper_grate: 锈蚀的铜格栅
+  weathered_copper_trapdoor: 锈蚀的铜活板门
   weathered_cut_copper: 锈蚀的切制铜块
   weathered_cut_copper_slab: 锈蚀的切制铜台阶
   weathered_cut_copper_stairs: 锈蚀的切制铜楼梯
@@ -1158,6 +1228,8 @@ Material:
   apple: 苹果
   archer_pottery_shard: 弓箭纹样陶片
   archer_pottery_sherd: 弓箭纹样陶片
+  armadillo_scute: 犰狳鳞甲
+  armadillo_spawn_egg: 犰狳刷怪蛋
   armor_stand: 盔甲架
   arms_up_pottery_shard: 举臂纹样陶片
   arms_up_pottery_sherd: 举臂纹样陶片
@@ -1182,12 +1254,16 @@ Material:
   blaze_rod: 烈焰棒
   blaze_spawn_egg: 烈焰人刷怪蛋
   blue_dye: 蓝色染料
+  bogged_spawn_egg: 沼骸刷怪蛋
+  bolt_armor_trim_smithing_template: 锻造模板
   bone: 骨头
   bone_meal: 骨粉
   book: 书
   bow: 弓
   bowl: 碗
   bread: 面包
+  breeze_rod: 旋风棒
+  breeze_spawn_egg: 旋风人刷怪蛋
   brewer_pottery_shard: 佳酿纹样陶片
   brewer_pottery_sherd: 佳酿纹样陶片
   brick: 红砖
@@ -1287,6 +1363,9 @@ Material:
   fishing_rod: 钓鱼竿
   flint: 燧石
   flint_and_steel: 打火石
+  flow_armor_trim_smithing_template: 锻造模板
+  flow_banner_pattern: 旗帜图案
+  flow_pottery_sherd: 涡流纹样陶片
   flower_banner_pattern: 旗帜图案
   fox_spawn_egg: 狐狸刷怪蛋
   friend_pottery_shard: 挚友纹样陶片
@@ -1323,6 +1402,8 @@ Material:
   green_dye: 绿色染料
   guardian_spawn_egg: 守卫者刷怪蛋
   gunpowder: 火药
+  guster_banner_pattern: 旗帜图案
+  guster_pottery_sherd: 旋风纹样陶片
   heart_of_the_sea: 海洋之心
   heart_pottery_shard: 爱心纹样陶片
   heart_pottery_sherd: 爱心纹样陶片
@@ -1370,6 +1451,7 @@ Material:
   lingering_potion: 滞留药水
   llama_spawn_egg: 羊驼刷怪蛋
   lodestone_compass: 磁石指针
+  mace: 重锤
   magenta_dye: 品红色染料
   magma_cream: 岩浆膏
   magma_cube_spawn_egg: 岩浆怪刷怪蛋
@@ -1394,11 +1476,14 @@ Material:
   music_disc_blocks: 音乐唱片
   music_disc_cat: 音乐唱片
   music_disc_chirp: 音乐唱片
+  music_disc_creator: 音乐唱片
+  music_disc_creator_music_box: 音乐唱片
   music_disc_far: 音乐唱片
   music_disc_mall: 音乐唱片
   music_disc_mellohi: 音乐唱片
   music_disc_otherside: 音乐唱片
   music_disc_pigstep: 音乐唱片
+  music_disc_precipice: 音乐唱片
   music_disc_relic: 音乐唱片
   music_disc_stal: 音乐唱片
   music_disc_strad: 音乐唱片
@@ -1424,6 +1509,8 @@ Material:
   oak_boat: 橡木船
   oak_chest_boat: 橡木运输船
   ocelot_spawn_egg: 豹猫刷怪蛋
+  ominous_bottle: 不祥之瓶
+  ominous_trial_key: 不祥试炼钥匙
   orange_dye: 橙色染料
   painting: 画
   panda_spawn_egg: 熊猫刷怪蛋
@@ -1481,6 +1568,7 @@ Material:
   salmon: 生鲑鱼
   salmon_bucket: 鲑鱼桶
   salmon_spawn_egg: 鲑鱼刷怪蛋
+  scrape_pottery_sherd: 刮削纹样陶片
   scute: 鳞甲
   sentry_armor_trim_smithing_template: 锻造模板
   shaper_armor_trim_smithing_template: 锻造模板
@@ -1539,11 +1627,13 @@ Material:
   torchflower_seeds: 火把花种子
   totem_of_undying: 不死图腾
   trader_llama_spawn_egg: 行商羊驼刷怪蛋
+  trial_key: 试炼钥匙
   trident: 三叉戟
   tropical_fish: 热带鱼
   tropical_fish_bucket: 热带鱼桶
   tropical_fish_spawn_egg: 热带鱼刷怪蛋
   turtle_helmet: 海龟壳
+  turtle_scute: 海龟鳞甲
   turtle_spawn_egg: 海龟刷怪蛋
   vex_armor_trim_smithing_template: 锻造模板
   vex_spawn_egg: 恼鬼刷怪蛋
@@ -1558,9 +1648,11 @@ Material:
   wheat_seeds: 小麦种子
   white_dye: 白色染料
   wild_armor_trim_smithing_template: 锻造模板
+  wind_charge: 风弹
   witch_spawn_egg: 女巫刷怪蛋
   wither_skeleton_spawn_egg: 凋灵骷髅刷怪蛋
   wither_spawn_egg: 凋灵刷怪蛋
+  wolf_armor: 狼铠
   wolf_spawn_egg: 狼刷怪蛋
   wooden_axe: 木斧
   wooden_hoe: 木锄
@@ -1580,7 +1672,9 @@ Enchantment:
   bane_of_arthropods: 节肢杀手
   binding_curse: 绑定诅咒
   blast_protection: 爆炸保护
+  breach: 破甲
   channeling: 引雷
+  density: 致密
   depth_strider: 深海探索者
   efficiency: 效率
   feather_falling: 摔落缓冲
@@ -1611,7 +1705,9 @@ Enchantment:
   smite: 亡灵杀手
   soul_speed: 灵魂疾行
   sweeping: 横扫之刃
+  sweeping_edge: 横扫之刃
   swift_sneak: 迅捷潜行
   thorns: 荆棘
   unbreaking: 耐久
   vanishing_curse: 消失诅咒
+  wind_burst: 风爆

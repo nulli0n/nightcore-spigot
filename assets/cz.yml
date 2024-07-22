@@ -1,6 +1,7 @@
 EntityType:
   allay: alík
   area_effect_cloud: oblak s oblastí účinku
+  armadillo: pásovec
   armor_stand: Stojan na zbroj
   arrow: šíp
   axolotl: Axolotl
@@ -9,6 +10,9 @@ EntityType:
   blaze: ohnivák
   block_display: zobrazovač bloku
   boat: člun
+  bogged: bahnivec
+  breeze: Fičák
+  breeze_wind_charge: větrný náboj
   camel: velbloud
   cat: kočka
   cave_spider: jeskynní pavouk
@@ -70,6 +74,7 @@ EntityType:
   mooshroom: krávomůrka
   mule: mula
   ocelot: ocelot
+  ominous_item_spawner: Zlověstná líheň předmětů
   painting: Obraz
   panda: panda
   parrot: papoušek
@@ -115,6 +120,7 @@ EntityType:
   vindicator: mstitel
   wandering_trader: Potulný obchodník
   warden: vartýř
+  wind_charge: větrná nálož
   witch: čarodějnice
   wither: wither
   wither_skeleton: wither kostlivec
@@ -138,6 +144,7 @@ PotionEffectType:
   health_boost: Zesílení zdraví
   hero_of_the_village: Hrdina vesnice
   hunger: Hlad
+  infested: Zamoření
   instant_damage: Okamžité zranění
   instant_health: Okamžité zdraví
   invisibility: Neviditelnost
@@ -147,7 +154,9 @@ PotionEffectType:
   mining_fatigue: Únava z těžby
   nausea: Nevolnost
   night_vision: Vidění ve tmě
+  oozing: Mokvání
   poison: Otrava
+  raid_omen: Znamení nájezdu
   regeneration: Regenerace
   resistance: Odolnost
   saturation: Sytost
@@ -155,9 +164,12 @@ PotionEffectType:
   slowness: Zpomalení
   speed: Svižnost
   strength: Síla
+  trial_omen: Znamení klání
   unluck: Smůla
   water_breathing: Podvodní dýchání
   weakness: Oslabení
+  weaving: Snování
+  wind_charged: Nabití větrem
   wither: Usychání
 Material:
   acacia_button: Akáciové tlačítko
@@ -341,6 +353,7 @@ Material:
   chest: Truhla
   chipped_anvil: Opotřebená kovadlina
   chiseled_bookshelf: Vyřezávaná knihovna
+  chiseled_copper: Opracovaná měď
   chiseled_deepslate: Opracovaná břidlice
   chiseled_nether_bricks: Opracované netherové cihly
   chiseled_polished_blackstone: Opracovaný leštěný černokámen
@@ -348,6 +361,8 @@ Material:
   chiseled_red_sandstone: Opracovaný rudý pískovec
   chiseled_sandstone: Opracovaný pískovec
   chiseled_stone_bricks: Opracované kamenné cihly
+  chiseled_tuff: Opracovaný tuf
+  chiseled_tuff_bricks: Cihly z opracovaného tufu
   chorus_flower: Květ chorusu
   chorus_plant: Chorus
   clay: Blok jílu
@@ -369,13 +384,18 @@ Material:
   composter: Kompostér
   conduit: Zářič
   copper_block: Blok mědi
+  copper_bulb: Měděná lampa
+  copper_door: Měděné dveře
+  copper_grate: Měděný rošt
   copper_ore: Měděná ruda
+  copper_trapdoor: Měděný poklop
   cornflower: Chrpa
   cracked_deepslate_bricks: Popraskané břidlicové cihly
   cracked_deepslate_tiles: Popraskaná břidlicová dlažba
   cracked_nether_bricks: Popraskané netherové cihly
   cracked_polished_blackstone_bricks: Popraskané cihly z leštěného černokamene
   cracked_stone_bricks: Popraskané kamenné cihly
+  crafter: Výrobník
   crafting_table: Pracovní stůl
   creeper_head: Hlava creepera
   creeper_wall_head: Hlava creepera na zdi
@@ -509,7 +529,12 @@ Material:
   end_stone_brick_wall: Zídka z enderitových cihel
   end_stone_bricks: Enderitové cihly
   ender_chest: Enderitová truhla
+  exposed_chiseled_copper: Opracovaná měď s lehkou měděnkou
   exposed_copper: Měď s lehkou měděnkou
+  exposed_copper_bulb: Měděná lampa s lehkou měděnkou
+  exposed_copper_door: Měděné dveře s lehkou měděnkou
+  exposed_copper_grate: Měděný rošt s lehkou měděnkou
+  exposed_copper_trapdoor: Měděný poklop s lehkou měděnkou
   exposed_cut_copper: Tepaná měď s lehkou měděnkou
   exposed_cut_copper_slab: Tepaný půlblok s lehkou měděnkou
   exposed_cut_copper_stairs: Tepané schody s lehkou měděnkou
@@ -570,6 +595,7 @@ Material:
   grindstone: Brusný kámen
   hanging_roots: Visící kořeny
   hay_block: Balík slámy
+  heavy_core: Těžké jádro
   heavy_weighted_pressure_plate: Zátěžová vážní nášlapná deska
   honey_block: Blok medu
   honeycomb_block: Blok medových pláství
@@ -702,7 +728,7 @@ Material:
   mangrove_wall_hanging_sign: Kořenovníková závěsná cedule na zdi
   mangrove_wall_sign: Kořenovníková cedule na zdi
   mangrove_wood: Kořenovníkové dřevo
-  medium_amethyst_bud: Střední ametystový trs
+  medium_amethyst_bud: Střední trs ametystů
   melon: Meloun
   melon_stem: Stonek melounu
   moss_block: Blok mechu
@@ -774,7 +800,12 @@ Material:
   orange_tulip: Oranžový tulipán
   orange_wool: Oranžová vlna
   oxeye_daisy: Kopretina
+  oxidized_chiseled_copper: Opracovaná měď s měděnkou
   oxidized_copper: Měď pokrytá měděnkou
+  oxidized_copper_bulb: Měděná lampa s měděnkou
+  oxidized_copper_door: Měděné dveře s měděnkou
+  oxidized_copper_grate: Měděný rošt s měděnkou
+  oxidized_copper_trapdoor: Měděný poklop s měděnkou
   oxidized_cut_copper: Tepaná měď pokrytá měděnkou
   oxidized_cut_copper_slab: Tepaný půlblok pokrytý měděnkou
   oxidized_cut_copper_stairs: Tepané schody pokryté měděnkou
@@ -832,6 +863,10 @@ Material:
   polished_granite: Leštěná žula
   polished_granite_slab: Půlblok z leštěné žuly
   polished_granite_stairs: Schody z leštěné žuly
+  polished_tuff: Leštěný tuf
+  polished_tuff_slab: Půlblok z leštěného tufu
+  polished_tuff_stairs: Schody z leštěného tufu
+  polished_tuff_wall: Zídka z leštěného tufu
   poppy: Vlčí mák
   potatoes: Brambory
   potted_acacia_sapling: Sazenice akácie v květináči
@@ -958,6 +993,7 @@ Material:
   sea_pickle: Ohnivka
   seagrass: Mořská tráva
   set_spawn: Místo oživení nastaveno
+  short_grass: Nízká tráva
   shroomlight: Světlohubka
   shulker_box: Shulkerova schránka
   skeleton_skull: Lebka kostlivce
@@ -1058,6 +1094,7 @@ Material:
   torchflower: Plamněnka
   torchflower_crop: Rostoucí plamněnka
   trapped_chest: Nástražná truhla
+  trial_spawner: Líheň klání
   tripwire: Nástražný drát
   tripwire_hook: Uchycení nástražného drátu
   tube_coral: Varhanitkový korál
@@ -1065,9 +1102,17 @@ Material:
   tube_coral_fan: Vějíř varhanitkového korálu
   tube_coral_wall_fan: Vějíř varhanitkového korálu na zdi
   tuff: Tuf
+  tuff_brick_slab: Půlblok z tufových cihel
+  tuff_brick_stairs: Schody z tufových cihel
+  tuff_brick_wall: Zídka z tufových cihel
+  tuff_bricks: Tufové cihly
+  tuff_slab: Tufový půlblok
+  tuff_stairs: Tufové schody
+  tuff_wall: Tufová zídka
   turtle_egg: Želví vajíčko
   twisting_vines: Přízračná liána
   twisting_vines_plant: Stonek přízračné liány
+  vault: Pokladnice
   verdant_froglight: Nazelenalý žabosvit
   vine: Liána
   void_air: Vzduch
@@ -1093,23 +1138,48 @@ Material:
   warped_wart_block: Blok přízračného bradavičníku
   water: Voda
   water_cauldron: Kotel s vodou
+  waxed_chiseled_copper: Navoskovaná opracovaná měď
   waxed_copper_block: Navoskovaný blok mědi
+  waxed_copper_bulb: Navoskovaná měděná lampa
+  waxed_copper_door: Navoskované měděné dveře
+  waxed_copper_grate: Navoskovaný měděný rošt
+  waxed_copper_trapdoor: Navoskovaný měděný poklop
   waxed_cut_copper: Navoskovaná tepaná měď
   waxed_cut_copper_slab: Navoskovaný půlblok z tepané mědi
   waxed_cut_copper_stairs: Navoskované schody z tepané mědi
+  waxed_exposed_chiseled_copper: Navoskovaná opracovaná měď s lehkou měděnkou
   waxed_exposed_copper: Navoskovaná měď s lehkou měděnkou
+  waxed_exposed_copper_bulb: Navoskovaná měděná lampa s lehkou měděnkou
+  waxed_exposed_copper_door: Navoskované měděné dveře s lehkou měděnkou
+  waxed_exposed_copper_grate: Navoskovaný měděný rošt s lehkou měděnkou
+  waxed_exposed_copper_trapdoor: Navoskovaný měděný poklop s lehkou měděnkou
   waxed_exposed_cut_copper: Navoskovaná tepaná měď s lehkou měděnkou
   waxed_exposed_cut_copper_slab: Navoskovaný tepaný půlblok s lehkou měděnkou
   waxed_exposed_cut_copper_stairs: Navoskované tepané schody s lehkou měděnkou
+  waxed_oxidized_chiseled_copper: Navoskovaná opracovaná měď s měděnkou
   waxed_oxidized_copper: Navoskovaná měď pokrytá měděnkou
+  waxed_oxidized_copper_bulb: Navoskovaná měděná lampa s měděnkou
+  waxed_oxidized_copper_door: Navoskované měděné dveře s měděnkou
+  waxed_oxidized_copper_grate: Navoskovaný měděný rošt s měděnkou
+  waxed_oxidized_copper_trapdoor: Navoskovaný měděný poklop s měděnkou
   waxed_oxidized_cut_copper: Navoskovaná tepaná měď pokrytá měděnkou
   waxed_oxidized_cut_copper_slab: Navoskovaný půlblok pokrytý měděnkou
   waxed_oxidized_cut_copper_stairs: Navoskované schody pokryté měděnkou
+  waxed_weathered_chiseled_copper: Navoskovaná opracovaná měď se střední měděnkou
   waxed_weathered_copper: Navoskovaná měď pokrytá střední měděnkou
+  waxed_weathered_copper_bulb: Navoskovaná měděná lampa se střední měděnkou
+  waxed_weathered_copper_door: Navoskované měděné dveře se střední měděnkou
+  waxed_weathered_copper_grate: Navoskovaný měděný rošt se střední měděnkou
+  waxed_weathered_copper_trapdoor: Navoskovaný měděný poklop se střední měděnkou
   waxed_weathered_cut_copper: Navoskovaná tepaná měď pokrytá střední měděnkou
   waxed_weathered_cut_copper_slab: Navoskovaný tepaný půlblok pokrytý střední měděnkou
   waxed_weathered_cut_copper_stairs: Navoskované tepané schody pokryté střední měděnkou
+  weathered_chiseled_copper: Opracovaná měď se střední měděnkou
   weathered_copper: Měď se střední měděnkou
+  weathered_copper_bulb: Měděná lampa se střední měděnkou
+  weathered_copper_door: Měděné dveře se střední měděnkou
+  weathered_copper_grate: Měděný rošt se střední měděnkou
+  weathered_copper_trapdoor: Měděný poklop se střední měděnkou
   weathered_cut_copper: Tepaná měď pokrytá střední měděnkou
   weathered_cut_copper_slab: Tepaný půlblok pokrytý střední měděnkou
   weathered_cut_copper_stairs: Tepané schody pokryté střední měděnkou
@@ -1158,6 +1228,8 @@ Material:
   apple: Jablko
   archer_pottery_shard: Střep s lukem
   archer_pottery_sherd: Střep s lukem
+  armadillo_scute: Destička pásovce
+  armadillo_spawn_egg: Vajíčko s pásovcem
   armor_stand: Stojan na zbroj
   arms_up_pottery_shard: Střep s rukama nad hlavou
   arms_up_pottery_sherd: Střep s rukama nad hlavou
@@ -1182,12 +1254,16 @@ Material:
   blaze_rod: Ohnivá hůl
   blaze_spawn_egg: Vajíčko s ohnivákem
   blue_dye: Modré barvivo
+  bogged_spawn_egg: Vajíčko s bahnivcem
+  bolt_armor_trim_smithing_template: Kovářská předloha
   bone: Kost
   bone_meal: Kostní moučka
   book: Kniha
   bow: Luk
   bowl: Miska
   bread: Chléb
+  breeze_rod: Fičákova hůl
+  breeze_spawn_egg: Vajíčko s fičákem
   brewer_pottery_shard: Střep s baňkou
   brewer_pottery_sherd: Střep s baňkou
   brick: Cihla
@@ -1287,6 +1363,9 @@ Material:
   fishing_rod: Rybářský prut
   flint: Pazourek
   flint_and_steel: Křesadlo
+  flow_armor_trim_smithing_template: Kovářská předloha
+  flow_banner_pattern: Vzor praporu
+  flow_pottery_sherd: Střep s vírem
   flower_banner_pattern: Vzor praporu
   fox_spawn_egg: Vajíčko s liškou
   friend_pottery_shard: Střep s vesničanem
@@ -1323,6 +1402,8 @@ Material:
   green_dye: Zelené barvivo
   guardian_spawn_egg: Vajíčko se strážcem
   gunpowder: Střelný prach
+  guster_banner_pattern: Vzor praporu
+  guster_pottery_sherd: Střep se smrští
   heart_of_the_sea: Srdce moře
   heart_pottery_shard: Střep se srdcem
   heart_pottery_sherd: Střep se srdcem
@@ -1370,6 +1451,7 @@ Material:
   lingering_potion: Doznívající lektvar
   llama_spawn_egg: Vajíčko s lamou
   lodestone_compass: Spárovaný kompas
+  mace: Palcát
   magenta_dye: Purpurové barvivo
   magma_cream: Lávová pěna
   magma_cube_spawn_egg: Vajíčko s magmaslizounem
@@ -1394,11 +1476,14 @@ Material:
   music_disc_blocks: Gramofonová deska
   music_disc_cat: Gramofonová deska
   music_disc_chirp: Gramofonová deska
+  music_disc_creator: Gramofonová deska
+  music_disc_creator_music_box: Gramofonová deska
   music_disc_far: Gramofonová deska
   music_disc_mall: Gramofonová deska
   music_disc_mellohi: Gramofonová deska
   music_disc_otherside: Gramofonová deska
   music_disc_pigstep: Gramofonová deska
+  music_disc_precipice: Gramofonová deska
   music_disc_relic: Gramofonová deska
   music_disc_stal: Gramofonová deska
   music_disc_strad: Gramofonová deska
@@ -1424,6 +1509,8 @@ Material:
   oak_boat: Dubový člun
   oak_chest_boat: Dubový člun s truhlou
   ocelot_spawn_egg: Vajíčko s ocelotem
+  ominous_bottle: Zlověstná lahvička
+  ominous_trial_key: Zlověstný klíč klání
   orange_dye: Oranžové barvivo
   painting: Obraz
   panda_spawn_egg: Vajíčko s pandou
@@ -1481,7 +1568,8 @@ Material:
   salmon: Syrový losos
   salmon_bucket: Kbelík s lososem
   salmon_spawn_egg: Vajíčko s lososem
-  scute: Želví destička
+  scrape_pottery_sherd: Střep se sekerou
+  scute: Destička
   sentry_armor_trim_smithing_template: Kovářská předloha
   shaper_armor_trim_smithing_template: Kovářská předloha
   sheaf_pottery_shard: Střep se snopem
@@ -1504,7 +1592,7 @@ Material:
   slime_ball: Sliz
   slime_spawn_egg: Vajíčko se slizounem
   smithing_template: Kovářská předloha
-  sniffer_spawn_egg: Vejce se čmuchalem
+  sniffer_spawn_egg: Vajíčko se čmuchalem
   snort_pottery_shard: Střep s čmuchalem
   snort_pottery_sherd: Střep s čmuchalem
   snout_armor_trim_smithing_template: Kovářská předloha
@@ -1539,11 +1627,13 @@ Material:
   torchflower_seeds: Semínka plamněnky
   totem_of_undying: Totem nesmrtelnosti
   trader_llama_spawn_egg: Vajíčko s obchodníkovou lamou
+  trial_key: Klíč klání
   trident: Trojzubec
   tropical_fish: Tropická ryba
   tropical_fish_bucket: Kbelík s tropickou rybou
   tropical_fish_spawn_egg: Vajíčko s tropickou rybou
   turtle_helmet: Helma z želvoviny
+  turtle_scute: Želví destička
   turtle_spawn_egg: Vajíčko se želvou
   vex_armor_trim_smithing_template: Kovářská předloha
   vex_spawn_egg: Vajíčko s protivou
@@ -1558,9 +1648,11 @@ Material:
   wheat_seeds: Semínka pšenice
   white_dye: Bílé barvivo
   wild_armor_trim_smithing_template: Kovářská předloha
+  wind_charge: Větrný náboj
   witch_spawn_egg: Vajíčko s čarodějnicí
   wither_skeleton_spawn_egg: Vajíčko s wither kostlivcem
   wither_spawn_egg: Vajíčko s witherem
+  wolf_armor: Vlčí brnění
   wolf_spawn_egg: Vajíčko s vlkem
   wooden_axe: Dřevěná sekera
   wooden_hoe: Dřevěná motyka
@@ -1580,7 +1672,9 @@ Enchantment:
   bane_of_arthropods: Hmyzákova záhuba
   binding_curse: Kletba spoutání
   blast_protection: Ochrana proti výbuchu
+  breach: Prolomení
   channeling: Výboj
+  density: Hustota
   depth_strider: Rychloplavec
   efficiency: Účinnost
   feather_falling: Lehkost pírka
@@ -1611,7 +1705,9 @@ Enchantment:
   smite: Rána nemrtvým
   soul_speed: Rychlost duší
   sweeping: Svištivé ostří
+  sweeping_edge: Svištivé ostří
   swift_sneak: Tichošlápek
   thorns: Trny
   unbreaking: Nerozbitnost
   vanishing_curse: Kletba zmizení
+  wind_burst: Poryv
