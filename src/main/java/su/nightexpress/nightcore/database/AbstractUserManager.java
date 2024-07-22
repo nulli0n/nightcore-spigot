@@ -36,7 +36,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
 
     @Override
     protected void onShutdown() {
-        this.getLoaded().forEach(this::save);
+        this.saveAll();
         this.getLoadedByIdMap().clear();
         this.getLoadedByNameMap().clear();
         this.scheduledSaves.clear();
@@ -61,6 +61,14 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
         if (this.scheduledSaves.isEmpty()) return;
 
         this.getDataHandler().saveUsers(this.scheduledSaves);
+        this.scheduledSaves.clear();
+    }
+
+    public void saveAll() {
+        Set<U> users = new HashSet<>();
+        users.addAll(this.scheduledSaves);
+        users.addAll(this.getLoaded());
+        this.getDataHandler().saveUsers(users);
         this.scheduledSaves.clear();
     }
 
