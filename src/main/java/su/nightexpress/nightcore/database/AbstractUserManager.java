@@ -39,7 +39,6 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
         this.saveAll();
         this.getLoadedByIdMap().clear();
         this.getLoadedByNameMap().clear();
-        this.scheduledSaves.clear();
     }
 
     @NotNull
