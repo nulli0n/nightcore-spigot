@@ -15,9 +15,25 @@ public interface DataUser {
 
     boolean isCacheExpired();
 
+    boolean isAutoSaveReady();
+
+    boolean isSyncReady();
+
     long getCachedUntil();
 
+    long getAutoSaveIn();
+
+    long getNextSyncIn();
+
+    void cancelAutoSave();
+
+    void cancelSynchronization();
+
     void setCachedUntil(long cachedUntil);
+
+    void setAutoSaveIn(int seconds);
+
+    void setNextSyncIn(int seconds);
 
     @NotNull UUID getId();
 

@@ -12,7 +12,7 @@ import su.nightexpress.nightcore.util.StringUtil;
 public class UniParticle {
 
     private final Particle particle;
-    private final Object   data;
+    private Object   data;
 
     public UniParticle(@Nullable Particle particle, @Nullable Object data) {
         this.particle = particle;
@@ -65,70 +65,70 @@ public class UniParticle {
     }
 
     @NotNull
-    public static UniParticle read(@NotNull FileConfig cfg, @NotNull String path) {
-        String name = cfg.getString(path + ".Name", "");
+    public static UniParticle read(@NotNull FileConfig config, @NotNull String path) {
+        String name = config.getString(path + ".Name", "");
         Particle particle = StringUtil.getEnum(name, Particle.class).orElse(null);
         if (particle == null) return UniParticle.of(null);
 
         Class<?> dataType = particle.getDataType();
         Object data = null;
         if (dataType == BlockData.class) {
-            Material material = Material.getMaterial(cfg.getString(path + ".Material", ""));
+            Material material = Material.getMaterial(config.getString(path + ".Material", ""));
             data = material != null ? material.createBlockData() : Material.STONE.createBlockData();
         }
         else if (dataType == Particle.DustOptions.class) {
-            Color color = StringUtil.getColor(cfg.getString(path + ".Color", ""));
-            double size = cfg.getDouble(path + ".Size", 1D);
+            Color color = StringUtil.getColor(config.getString(path + ".Color", ""));
+            double size = config.getDouble(path + ".Size", 1D);
             data = new Particle.DustOptions(color, (float) size);
         }
         else if (dataType == Particle.DustTransition.class) {
-            Color colorStart = StringUtil.getColor(cfg.getString(path + ".Color_From", ""));
-            Color colorEnd = StringUtil.getColor(cfg.getString(path + ".Color_To", ""));
-            double size = cfg.getDouble(path + ".Size", 1D);
+            Color colorStart = StringUtil.getColor(config.getString(path + ".Color_From", ""));
+            Color colorEnd = StringUtil.getColor(config.getString(path + ".Color_To", ""));
+            double size = config.getDouble(path + ".Size", 1D);
             data = new Particle.DustTransition(colorStart, colorEnd, (float) size);
         }
         else if (dataType == ItemStack.class) {
-            ItemStack item = cfg.getItem(path + ".Item");
+            ItemStack item = config.getItem(path + ".Item");
             data = item.getType().isAir() ? new ItemStack(Material.STONE) : item;
         }
         else if (dataType == Float.class) {
-            data = (float) cfg.getDouble(path + ".floatValue", 1F);
+            data = (float) config.getDouble(path + ".floatValue", 1F);
         }
         else if (dataType == Integer.class) {
-            data = cfg.getInt(path + ".intValue", 1);
+            data = config.getInt(path + ".intValue", 1);
         }
-        else if (dataType != Void.class) return UniParticle.of(Particle.REDSTONE);
+        else if (dataType != Void.class) return UniParticle.of(Particle.CLOUD);
 
         return UniParticle.of(particle, data);
     }
 
-    public void write(@NotNull FileConfig cfg, @NotNull String path) {
-        cfg.set(path + ".Name", this.isEmpty() ? "null" : this.getParticle().name());
+    public void write(@NotNull FileConfig config, @NotNull String path) {
+        config.set(path + ".Name", this.isEmpty() ? "null" : this.getParticle().name());
 
         Object data = this.getData();
         if (data instanceof BlockData blockData) {
-            cfg.set(path + ".Material", blockData.getMaterial().name());
+            config.set(path + ".Material", blockData.getMaterial().name());
         }
         else if (data instanceof Particle.DustTransition dustTransition) {
             Color colorStart = dustTransition.getColor();
             Color colorEnd = dustTransition.getToColor();
-            cfg.set(path + ".Color_From", colorStart.getRed() + "," + colorStart.getGreen() + "," + colorStart.getBlue());
-            cfg.set(path + ".Color_To", colorEnd.getRed() + "," + colorEnd.getGreen() + "," + colorEnd.getBlue());
-            cfg.set(path + ".Size", dustTransition.getSize());
+            config.set(path + ".Color_From", colorStart.getRed() + "," + colorStart.getGreen() + "," + colorStart.getBlue());
+            config.set(path + ".Color_To", colorEnd.getRed() + "," + colorEnd.getGreen() + "," + colorEnd.getBlue());
+            config.set(path + ".Size", dustTransition.getSize());
         }
         else if (data instanceof Particle.DustOptions dustOptions) {
             Color color = dustOptions.getColor();
-            cfg.set(path + ".Color", color.getRed() + "," + color.getGreen() + "," + color.getBlue());
-            cfg.set(path + ".Size", dustOptions.getSize());
+            config.set(path + ".Color", color.getRed() + "," + color.getGreen() + "," + color.getBlue());
+            config.set(path + ".Size", dustOptions.getSize());
         }
         else if (data instanceof ItemStack item) {
-            cfg.setItem(path + ".Item", item);
+            config.setItem(path + ".Item", item);
         }
         else if (data instanceof Float f) {
-            cfg.set(path + ".floatValue", f);
+            config.set(path + ".floatValue", f);
         }
         else if (data instanceof Integer i) {
-            cfg.set(path + ".intValue", i);
+            config.set(path + ".intValue", i);
         }
     }
 
@@ -143,6 +143,32 @@ public class UniParticle {
     @Nullable
     public Object getData() {
         return data;
+    }
+
+    public void validateData() {
+        if (this.particle == null) return;
+
+        Class<?> dataType = this.particle.getDataType();
+        if (this.data != null && this.data.getClass() == dataType) return;
+
+        if (dataType == BlockData.class) {
+            this.data = Material.STONE.createBlockData();
+        }
+        else if (dataType == Particle.DustOptions.class) {
+            this.data = new Particle.DustOptions(Color.WHITE, 1F);
+        }
+        else if (dataType == Particle.DustTransition.class) {
+            this.data = new Particle.DustTransition(Color.BLACK, Color.WHITE, 1F);
+        }
+        else if (dataType == ItemStack.class) {
+            this.data = new ItemStack(Material.STONE);
+        }
+        else if (dataType == Float.class) {
+            this.data = 1F;
+        }
+        else if (dataType == Integer.class) {
+            this.data = 1;
+        }
     }
 
     public void play(@NotNull Location location, double speed, int amount) {

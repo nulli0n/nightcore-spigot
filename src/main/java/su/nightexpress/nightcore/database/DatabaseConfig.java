@@ -101,7 +101,7 @@ public class DatabaseConfig {
             .read(config);
 
         String mysqlHost = ConfigValue.create(path + "MySQL.Host", "localhost:3306",
-            "Database address. Like http://127.0.0.1:3306/")
+            "Database host. Example: localhost:3306, 127.0.0.1:3306")
             .read(config);
 
         String mysqlBase = ConfigValue.create(path + "MySQL.Database", "minecraft",
