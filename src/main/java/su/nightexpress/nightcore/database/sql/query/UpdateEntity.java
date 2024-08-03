@@ -1,5 +1,8 @@
 package su.nightexpress.nightcore.database.sql.query;
 
+import com.mongodb.client.model.Updates;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLValue;
@@ -59,6 +62,24 @@ public class UpdateEntity {
             builder.append(" WHERE ").append(String.join(" AND ", this.whereColumns));
         }
         return builder.toString();
+    }
+
+    @NotNull
+    public Bson createMongoFilters() {
+        Document filters = new Document();
+        for (int i = 0; i < whereColumns.size(); i++) {
+            filters.append(whereColumns.get(i), wheres.get(i));
+        }
+        return filters;
+    }
+
+    @NotNull
+    public Bson createMongoUpdates() {
+        List<Bson> updates = new ArrayList<>();
+        for (int i = 0; i < columnNames.size(); i++) {
+            updates.add(Updates.set(columnNames.get(i), values.get(i)));
+        }
+        return Updates.combine(updates);
     }
 
     @NotNull

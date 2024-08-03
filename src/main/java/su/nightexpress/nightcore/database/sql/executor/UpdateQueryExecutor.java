@@ -1,13 +1,11 @@
 package su.nightexpress.nightcore.database.sql.executor;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.database.AbstractConnector;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLExecutor;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
-import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +54,7 @@ public final class UpdateQueryExecutor extends SQLExecutor<Void> {
     }
 
     /*@Nullable
-    public UpdateQuery createObject() {
+    public SQLUpdateQuery createObject() {
         if (this.values.isEmpty()) return null;
 
         String values = this.values.stream().map(value -> value.getColumn().getNameEscaped() + " = ?")
@@ -70,7 +68,7 @@ public final class UpdateQueryExecutor extends SQLExecutor<Void> {
         List<String> values2 = this.values.stream().map(SQLValue::getValue).toList();
         List<String> whers2 = this.wheres.stream().map(SQLCondition::getValue).map(SQLValue::getValue).toList();
 
-        return new UpdateQuery(sql, values2, whers2);
+        return new SQLUpdateQuery(sql, values2, whers2);
     }*/
 
     @Override

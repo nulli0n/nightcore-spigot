@@ -4,14 +4,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
+import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 import su.nightexpress.nightcore.database.sql.column.ColumnType;
-import su.nightexpress.nightcore.core.CoreConfig;
+import su.nightexpress.nightcore.database.sql.query.SQLUpdateQuery;
 import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
-import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.TimeUtil;
 
@@ -84,7 +84,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
 
     public boolean isNameIdCacheEnabled() {
         // TODO NOT WORKING FOR MYSQL DUE TO LOCAL CACHE, OTHER SERVERS THINK THAT PLAYER NOT EXISTS
-        return CoreConfig.USER_CACHE_NAME_AND_UUID.get() && this.getDatabaseType() == DatabaseType.SQLITE;
+        return CoreConfig.USER_CACHE_NAME_AND_UUID.get() && this.getConfig().getStorageType() == DatabaseType.SQLITE;
     }
 
     public void cacheNamesAndIds() {
@@ -131,14 +131,14 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
     @Nullable
     public final U getUser(@NotNull String name) {
         return this.load(this.tableUsers, this.getUserFunction(), this.getReadColumns(),
-            Collections.singletonList(SQLCondition.equal(COLUMN_USER_NAME.asLowerCase().toValue(name.toLowerCase())))
+                Collections.singletonList(SQLCondition.equal(COLUMN_USER_NAME.asLowerCase().toValue(name.toLowerCase())))
         ).orElse(null);
     }
 
     @Nullable
     public final U getUser(@NotNull UUID uuid) {
         return this.load(this.tableUsers, this.getUserFunction(), this.getReadColumns(),
-            Collections.singletonList(SQLCondition.equal(COLUMN_USER_ID.toValue(uuid)))
+                Collections.singletonList(SQLCondition.equal(COLUMN_USER_ID.toValue(uuid)))
         ).orElse(null);
     }
 
@@ -157,11 +157,11 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
     }
 
     public void saveUser(@NotNull U user) {
-        this.executeUpdate(UpdateQuery.create(this.tableUsers, this.createUpdateEntity(user)));
+        this.executeUpdate(SQLUpdateQuery.create(this.tableUsers, this.createUpdateEntity(user)));
     }
 
     public void saveUsers(@NotNull Collection<U> users) {
-        this.executeUpdate(UpdateQuery.create(this.tableUsers, users.stream().map(this::createUpdateEntity).toList()));
+        this.executeUpdate(SQLUpdateQuery.create(this.tableUsers, users.stream().map(this::createUpdateEntity).toList()));
     }
 
     @NotNull
@@ -173,7 +173,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
         values.addAll(this.getSaveColumns(user));
 
         List<SQLCondition> conditions = Lists.newList(
-            SQLCondition.equal(COLUMN_USER_ID.toValue(user.getId()))
+                SQLCondition.equal(COLUMN_USER_ID.toValue(user.getId()))
         );
 
         return this.createUpdateEntity(values, conditions);
