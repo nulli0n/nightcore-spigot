@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.database.sql;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.database.AbstractConnector;
-import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 import su.nightexpress.nightcore.database.sql.query.SQLUpdateQuery;
 
 import java.sql.*;
@@ -86,29 +86,33 @@ public class SQLQueries {
     }
 
     public static void executeUpdate(@NotNull AbstractConnector connector, @NotNull SQLUpdateQuery query) {
-        executeUpdates(connector, List.of(query));
+        executeUpdates(connector, query);
     }
 
-    public static void executeUpdates(@NotNull AbstractConnector connector, @NotNull List<IUpdateQuery> queries) {
-        try (Connection connection = connector.getConnection()) {
-            for (IUpdateQuery q : queries) {
-                if (!(q instanceof SQLUpdateQuery query)) {
-                    throw new IllegalArgumentException("A non-SQLUpdateQuery has been run with SQLQueries.executeUpdates!");
-                }
-                try (PreparedStatement statement = connection.prepareStatement(query.getSQL())) {
+    public static void executeUpdates(@NotNull AbstractConnector connector, @NotNull SQLUpdateQuery query) {
+        if (query.isEmpty()) return;
 
-                    int count = 1;
-                    for (String columnValue : query.getValues()) {
-                        statement.setString(count++, columnValue);
-                    }
-                    for (String conditionValue : query.getWheres()) {
-                        statement.setString(count++, conditionValue);
-                    }
+        List<UpdateEntity> entities = query.getEntities();
+        String sql = query.getSQL();//queries.get(0).getSQL();
 
-                    statement.executeUpdate();
+        try (Connection connection = connector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            int entityCount = 0;
+            for (UpdateEntity entity : entities) {
+                int paramCount = 1;
+
+                for (String columnValue : entity.getValues()) {
+                    statement.setString(paramCount++, columnValue);
                 }
-                catch (SQLException exception) {
-                    exception.printStackTrace();
+                for (String conditionValue : entity.getWheres()) {
+                    statement.setString(paramCount++, conditionValue);
+                }
+                statement.addBatch();
+                entityCount++;
+
+                if (entityCount % 500 == 0 || entityCount == entities.size()) {
+                    statement.executeBatch();
                 }
             }
         }

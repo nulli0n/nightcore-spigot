@@ -1,17 +1,22 @@
 package su.nightexpress.nightcore.command.experimental.builder;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.command.experimental.argument.ArgumentParser;
 import su.nightexpress.nightcore.command.experimental.flag.ContentFlag;
-
-import java.util.function.Function;
 
 public class ContentFlagBuilder<T> extends FlagBuilder<ContentFlag<T>, ContentFlagBuilder<T>> {
 
-    private final Function<String, T> parser;
+    private final ArgumentParser<T> parser;
 
     private String sample;
 
-    public ContentFlagBuilder(@NotNull String name, @NotNull Function<String , T> parser) {
+//    public ContentFlagBuilder(@NotNull String name, @NotNull Function<String , T> parser) {
+//        super(name);
+//        this.parser = parser;
+//        this.sample = "";
+//    }
+
+    public ContentFlagBuilder(@NotNull String name, @NotNull ArgumentParser<T> parser) {
         super(name);
         this.parser = parser;
         this.sample = "";

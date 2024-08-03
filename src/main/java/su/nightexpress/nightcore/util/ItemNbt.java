@@ -1,10 +1,15 @@
 package su.nightexpress.nightcore.util;
 
+import com.mojang.datafixers.DSL;
+import com.mojang.datafixers.DataFixer;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.DynamicOps;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCore;
+import su.nightexpress.nightcore.core.CoreConfig;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -29,6 +34,18 @@ public class ItemNbt {
     private static final Method NBT_IO_WRITE = Reflex.getMethod(NBT_IO_CLASS, "a", COMPOUND_TAG_CLASS, DataOutput.class);
     private static final Method NBT_IO_READ  = Reflex.getMethod(NBT_IO_CLASS, "a", DataInput.class);
 
+    private static final Class<?> DATA_FIXERS_CLASS = Reflex.getClass("net.minecraft.util.datafix", "DataConverterRegistry"); // DataFixers
+    private static final Method GET_DATA_FIXER = Reflex.getMethod(DATA_FIXERS_CLASS, "a");
+    private static final Class<?> NBT_OPS_CLASS = Reflex.getClass("net.minecraft.nbt", "DynamicOpsNBT"); // NbtOps
+    private static final Class<?> REFERENCES_CLASS = Reflex.getClass("net.minecraft.util.datafix.fixes", "DataConverterTypes"); // References
+
+    private static final int DATA_FIXER_SOURCE_VERSION = 3700; // 1.20.4
+    private static final int DATA_FXIER_TARGET_VERSION = 3953; // 1.21
+
+    private static DataFixer DATA_FIXER;
+    private static Object NBT_OPS_INSTANCE;
+    private static Object REFERENCE_ITEM_STACK;
+
     // For 1.20.6+
     private static Method MINECRAFT_SERVER_REGISTRY_ACCESS;
     private static Method ITEM_STACK_PARSE_OPTIONAL;
@@ -40,6 +57,16 @@ public class ItemNbt {
     private static Method         NMS_SAVE;
 
     static {
+        if (GET_DATA_FIXER != null) {
+            DATA_FIXER = (DataFixer) Reflex.invokeMethod(GET_DATA_FIXER, DATA_FIXERS_CLASS);
+        }
+        if (NBT_OPS_CLASS != null) {
+            NBT_OPS_INSTANCE = Reflex.getFieldValue(NBT_OPS_CLASS, "a");
+        }
+        if (REFERENCES_CLASS != null) {
+            REFERENCE_ITEM_STACK = Reflex.getFieldValue(REFERENCES_CLASS, "t");
+        }
+
         if (Version.isAtLeast(Version.MC_1_20_6)) {
             Class<?> minecraftServerClass = Reflex.getClass("net.minecraft.server", "MinecraftServer");
             Class<?> holderLookupProviderClass = Reflex.getInnerClass("net.minecraft.core.HolderLookup", "a"); // Provider
@@ -131,6 +158,12 @@ public class ItemNbt {
         try {
             Object compoundTag = NBT_IO_READ.invoke(null, new DataInputStream(inputStream));
             Object itemStack;
+
+            if (Version.isAtLeast(Version.MC_1_20_6) && CoreConfig.DATA_FIXER_ENABLED.get()) {
+                @SuppressWarnings({"rawtypes", "unchecked"})
+                Dynamic<?> dynamic = new Dynamic<>((DynamicOps) NBT_OPS_INSTANCE, compoundTag);
+                compoundTag = DATA_FIXER.update((DSL.TypeReference) REFERENCE_ITEM_STACK, dynamic, DATA_FIXER_SOURCE_VERSION, DATA_FXIER_TARGET_VERSION).getValue();
+            }
 
             if (useRegistry) {
                 if (ITEM_STACK_PARSE_OPTIONAL == null) return null;

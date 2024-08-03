@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.command.experimental.argument;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.TabContext;
 import su.nightexpress.nightcore.command.experimental.builder.ArgumentBuilder;
 import su.nightexpress.nightcore.core.CoreLang;
@@ -17,16 +18,28 @@ import java.util.function.Function;
 public class CommandArgument<T> {
 
     private final String                             name;
-    private final Function<String, T>                parser;
+    private final ArgumentParser<T>                  parser;
     private final boolean                            required;
-    private final boolean complex;
+    private final boolean                            complex;
     private final String                             localized;
     private final String                             permission;
     private final Function<TabContext, List<String>> samples;
     private final LangMessage                        failureMessage;
 
+//    @Deprecated
+//    public CommandArgument(@NotNull String name,
+//                           @NotNull Function<String, T> parser,
+//                           boolean required,
+//                           boolean complex,
+//                           @Nullable String localized,
+//                           @Nullable String permission,
+//                           @Nullable LangMessage failureMessage,
+//                           @Nullable Function<TabContext, List<String>> samples) {
+//        this(name, ((string, context) -> parser.apply(string)), required, complex, localized, permission, failureMessage, samples);
+//    }
+
     public CommandArgument(@NotNull String name,
-                           @NotNull Function<String, T> parser,
+                           @NotNull ArgumentParser<T> parser,
                            boolean required,
                            boolean complex,
                            @Nullable String localized,
@@ -44,13 +57,20 @@ public class CommandArgument<T> {
     }
 
     @NotNull
+    @Deprecated
     public static <T> ArgumentBuilder<T> builder(@NotNull String name, @NotNull Function<String, T> parser) {
+//        return new ArgumentBuilder<>(name, parser);
+        return builder(name, (string, context) -> parser.apply(string));
+    }
+
+    @NotNull
+    public static <T> ArgumentBuilder<T> builder(@NotNull String name, @NotNull ArgumentParser<T> parser) {
         return new ArgumentBuilder<>(name, parser);
     }
 
     @Nullable
-    public ParsedArgument<T> parse(@NotNull String str) {
-        T result = this.parser.apply(str);
+    public ParsedArgument<T> parse(@NotNull String str, @NotNull CommandContext context) {
+        T result = this.parser.parse(str, context);
         return result == null ? null : new ParsedArgument<>(result);
     }
 
@@ -85,7 +105,7 @@ public class CommandArgument<T> {
     }
 
     @NotNull
-    public Function<String, T> getParser() {
+    public ArgumentParser<T> getParser() {
         return parser;
     }
 

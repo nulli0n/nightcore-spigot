@@ -6,7 +6,8 @@ import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLValue;
-import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.SQLUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 import su.nightexpress.nightcore.manager.AbstractManager;
 
 import java.sql.Connection;
@@ -70,14 +71,9 @@ public abstract class AbstractDelegatedDataHandler<P extends NightCorePlugin> ex
 
     public abstract void update(@NotNull String table, @NotNull List<SQLValue> values, @NotNull SQLCondition... conditions);
 
-    @NotNull
-    public abstract IUpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions);
-
     public abstract void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions);
 
-    public abstract void executeUpdate(@NotNull IUpdateQuery query);
-
-    public abstract void executeUpdates(@NotNull List<IUpdateQuery> queries);
+    public abstract void executeUpdate(@NotNull SQLUpdateQuery query);
 
     public abstract void delete(@NotNull String table, @NotNull SQLCondition... conditions);
 

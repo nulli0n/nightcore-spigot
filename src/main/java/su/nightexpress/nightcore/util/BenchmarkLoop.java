@@ -6,8 +6,10 @@ package su.nightexpress.nightcore.util;
 //@Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
 public class BenchmarkLoop {
 
-    /*public static void main(String[] args) throws RunnerException {
+//    public static void main(String[] args) {
+//    }
 
+    /*public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
             .include(BenchmarkLoop.class.getSimpleName())
             .forks(1)

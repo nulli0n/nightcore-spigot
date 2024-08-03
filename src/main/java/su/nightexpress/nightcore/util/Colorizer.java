@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 public class Colorizer {
 
-    public static final Pattern PATTERN_HEX      = Pattern.compile("#([A-Fa-f0-9]{6})");
+    @Deprecated public static final Pattern PATTERN_HEX      = Pattern.compile("#([A-Fa-f0-9]{6})");
     //public static final Pattern PATTERN_HEX_LEGACY = Pattern.compile("(?:^|[^<])(#[A-Fa-f0-9]{6})(?:$|[^:>])");
-    public static final Pattern PATTERN_GRADIENT = Pattern.compile("<gradient:" + PATTERN_HEX.pattern() + ">(.*?)</gradient:" + PATTERN_HEX.pattern() + ">");
+    @Deprecated public static final Pattern PATTERN_GRADIENT = Pattern.compile("<gradient:" + PATTERN_HEX.pattern() + ">(.*?)</gradient:" + PATTERN_HEX.pattern() + ">");
 
     @NotNull
     public static String apply(@NotNull String str) {
@@ -44,6 +44,7 @@ public class Colorizer {
     }
 
     @NotNull
+    @Deprecated
     public static String hex(@NotNull String str) {
         TimedMatcher timedMatcher = TimedMatcher.create(PATTERN_HEX, str);
         //Matcher matcher = PATTERN_HEX.matcher(str);
@@ -60,6 +61,7 @@ public class Colorizer {
         return timedMatcher.getMatcher().appendTail(buffer).toString();
     }
 
+    @Deprecated
     private static ChatColor[] createGradient(@NotNull java.awt.Color start, @NotNull java.awt.Color end, int length) {
         ChatColor[] colors = new ChatColor[length];
         for (int index = 0; index < length; index++) {
@@ -76,6 +78,7 @@ public class Colorizer {
     }
 
     @NotNull
+    @Deprecated
     public static String gradient(@NotNull String string) {
         TimedMatcher timedMatcher = TimedMatcher.create(PATTERN_GRADIENT, string);
         //Matcher matcher = PATTERN_GRADIENT.matcher(string);
@@ -126,6 +129,7 @@ public class Colorizer {
     }
 
     @NotNull
+    @Deprecated
     public static String plainHex(@NotNull String str) {
         StringBuilder builder = new StringBuilder(str);
 

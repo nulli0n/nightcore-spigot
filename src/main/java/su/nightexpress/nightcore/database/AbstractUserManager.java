@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
-import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
 import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.listener.UserListener;
@@ -18,29 +17,31 @@ import java.util.function.Supplier;
 
 public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extends DataUser> extends AbstractManager<P> {
 
+    private final UserdataConfig config;
+
     private final Map<UUID, U>   loadedById;
     private final Map<String, U> loadedByName;
-    private final Set<U>         scheduledSaves;
+    private final Map<UUID, U>   scheduledSaves;
 
     public AbstractUserManager(@NotNull P plugin) {
         super(plugin);
+        this.config = UserdataConfig.read(plugin);
         this.loadedById = new ConcurrentHashMap<>();
         this.loadedByName = new ConcurrentHashMap<>();
-        this.scheduledSaves = ConcurrentHashMap.newKeySet();
+        this.scheduledSaves = new ConcurrentHashMap<>();
     }
 
     @Override
     protected void onLoad() {
         this.addListener(new UserListener<>(this.plugin));
-        this.addTask(this.plugin.createAsyncTask(this::saveScheduled).setTicksInterval(1));
+        this.addTask(this.plugin.createAsyncTask(this::saveScheduled).setTicksInterval(this.config.getScheduledSaveInterval()));
     }
 
     @Override
     protected void onShutdown() {
-        this.getLoaded().forEach(this::save);
+        this.saveAll();
         this.getLoadedByIdMap().clear();
         this.getLoadedByNameMap().clear();
-        this.scheduledSaves.clear();
     }
 
     @NotNull
@@ -59,13 +60,33 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     }
 
     public void saveScheduled() {
-        List<IUpdateQuery> queries = new ArrayList<>();
-        this.scheduledSaves.forEach(user -> queries.add(this.getDataHandler().saveQuery(user)));
-        this.scheduledSaves.clear();
-        this.getDataHandler().executeUpdates(queries);
+        if (this.scheduledSaves.isEmpty()) return;
 
-        //this.scheduledSaves.forEach(this::save);
-        //this.scheduledSaves.clear();
+        Set<U> users = new HashSet<>();
+
+        this.scheduledSaves.values().forEach(user -> {
+            if (user.isAutoSaveReady()) {
+                users.add(user);
+            }
+        });
+
+        this.getDataHandler().saveUsers(users);
+
+        users.forEach(user -> {
+            user.cancelAutoSave(); // Reset autosave timestamp.
+            user.setNextSyncIn(this.config.getScheduledSaveSyncPause()); // Unlock synchronization only when all data was pushed to the database.
+        });
+
+        this.scheduledSaves.values().removeAll(users);
+    }
+
+    public void saveAll() {
+        Set<U> users = new HashSet<>();
+        users.addAll(this.scheduledSaves.values());
+        users.addAll(this.getLoaded());
+        this.getDataHandler().saveUsers(users);
+        this.scheduledSaves.values().forEach(DataUser::cancelAutoSave);
+        this.scheduledSaves.clear();
     }
 
     @NotNull
@@ -185,41 +206,21 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     @Deprecated
     public void getUserDataAndPerform(@NotNull String name, Consumer<U> consumer) {
         this.manageUserSynchronized(name, consumer);
-        /*U user = this.getLoaded(name);
-        if (user != null) {
-            consumer.accept(user);
-        }
-        else this.getUserDataAsync(name).thenAccept(user2 -> this.plugin.runTask(task -> consumer.accept(user2)));*/
     }
 
     @Deprecated
     public void getUserDataAndPerform(@NotNull UUID uuid, Consumer<U> consumer) {
         this.manageUserSynchronized(uuid, consumer);
-        /*U user = this.getLoaded(uuid);
-        if (user != null) {
-            consumer.accept(user);
-        }
-        else this.getUserDataAsync(uuid).thenAccept(user2 -> this.plugin.runTask(task -> consumer.accept(user2)));*/
     }
 
     @Deprecated
     public void getUserDataAndPerformAsync(@NotNull String name, Consumer<U> consumer) {
         this.manageUser(name, consumer);
-        /*U user = this.getLoaded(name);
-        if (user != null) {
-            consumer.accept(user);
-        }
-        else this.getUserDataAsync(name).thenAccept(consumer);*/
     }
 
     @Deprecated
     public void getUserDataAndPerformAsync(@NotNull UUID uuid, Consumer<U> consumer) {
         this.manageUser(uuid, consumer);
-        /*U user = this.getLoaded(uuid);
-        if (user != null) {
-            consumer.accept(user);
-        }
-        else this.getUserDataAsync(uuid).thenAccept(consumer);*/
     }
 
     public final void unload(@NotNull Player player) {
@@ -248,7 +249,13 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     }
 
     public void scheduleSave(@NotNull U user) {
-        this.scheduledSaves.add(user);
+        user.setAutoSaveIn(this.config.getScheduledSaveDelay());
+        user.cancelSynchronization();
+        this.scheduledSaves.put(user.getId(), user);
+    }
+
+    public boolean isScheduledToSave(@NotNull U user) {
+        return this.scheduledSaves.containsKey(user.getId());
     }
 
     @Deprecated

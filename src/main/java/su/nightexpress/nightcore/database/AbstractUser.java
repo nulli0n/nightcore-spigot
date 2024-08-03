@@ -17,6 +17,8 @@ public abstract class AbstractUser<P extends NightCorePlugin> implements DataUse
     protected long   dateCreated;
     protected long   lastOnline;
     protected long   cachedUntil;
+    protected long   autoSaveIn;
+    protected long   nextSyncIn;
 
     public AbstractUser(@NotNull P plugin, @NotNull UUID uuid, @NotNull String name, long dateCreated, long lastOnline) {
         this.plugin = plugin;
@@ -35,16 +37,62 @@ public abstract class AbstractUser<P extends NightCorePlugin> implements DataUse
 
     }
 
-    public boolean isCacheExpired() {
-        return this.getCachedUntil() > 0 && System.currentTimeMillis() > this.getCachedUntil();
+    private long getTimestamp(int seconds) {
+        return seconds < 0 ? -1L : System.currentTimeMillis() + 1000L * seconds;
     }
 
+    public boolean isCacheExpired() {
+        return this.getCachedUntil() > 0 && System.currentTimeMillis() >= this.getCachedUntil();
+    }
+
+    @Override
+    public boolean isAutoSaveReady() {
+        return this.getAutoSaveIn() > 0 && System.currentTimeMillis() >= this.getAutoSaveIn();
+    }
+
+    @Override
+    public boolean isSyncReady() {
+        return this.getNextSyncIn() >= 0 && System.currentTimeMillis() >= this.getNextSyncIn();
+    }
+
+    @Override
+    public void cancelAutoSave() {
+        this.setAutoSaveIn(-1);
+    }
+
+    @Override
+    public void cancelSynchronization() {
+        this.setNextSyncIn(-1);
+    }
+
+    @Override
     public long getCachedUntil() {
         return cachedUntil;
     }
 
+    @Override
     public void setCachedUntil(long cachedUntil) {
         this.cachedUntil = cachedUntil;
+    }
+
+    @Override
+    public long getAutoSaveIn() {
+        return autoSaveIn;
+    }
+
+    @Override
+    public void setAutoSaveIn(int seconds) {
+        this.autoSaveIn = this.getTimestamp(seconds);
+    }
+
+    @Override
+    public long getNextSyncIn() {
+        return nextSyncIn;
+    }
+
+    @Override
+    public void setNextSyncIn(int seconds) {
+        this.nextSyncIn = this.getTimestamp(seconds);
     }
 
     @NotNull

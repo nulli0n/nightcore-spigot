@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.util.NumberUtil;
 
 import java.util.function.Function;
 
+@Deprecated
 public class CommandFlag<T> {
 
     public static final char PREFIX = '-';

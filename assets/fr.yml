@@ -1,6 +1,7 @@
 EntityType:
   allay: Allay
   area_effect_cloud: Nuage d'effet persistant
+  armadillo: Tatou
   armor_stand: Porte-armure
   arrow: Flèche
   axolotl: Axolotl
@@ -9,6 +10,9 @@ EntityType:
   blaze: Blaze
   block_display: Bloc holographique
   boat: Bateau
+  bogged: Embourbé
+  breeze: Breeze
+  breeze_wind_charge: Charge de vent
   camel: Dromadaire
   cat: Chat
   cave_spider: Araignée venimeuse
@@ -70,6 +74,7 @@ EntityType:
   mooshroom: Mooshroom
   mule: Mule
   ocelot: Ocelot
+  ominous_item_spawner: Générateur d'objets funeste
   painting: Tableau
   panda: Panda
   parrot: Perroquet
@@ -115,6 +120,7 @@ EntityType:
   vindicator: Vindicateur
   wandering_trader: Marchand ambulant
   warden: Warden
+  wind_charge: Charge de vent
   witch: Sorcière
   wither: Wither
   wither_skeleton: Wither squelette
@@ -138,6 +144,7 @@ PotionEffectType:
   health_boost: Bonus de vie
   hero_of_the_village: Héros du village
   hunger: Faim
+  infested: Infestation
   instant_damage: Dégâts instantanés
   instant_health: Soin instantané
   invisibility: Invisibilité
@@ -146,8 +153,10 @@ PotionEffectType:
   luck: Chance
   mining_fatigue: Fatigue de minage
   nausea: Nausée
-  night_vision: Nyctalopie
+  night_vision: Vision nocturne
+  oozing: Viscosité
   poison: Poison
+  raid_omen: Présage d'invasion
   regeneration: Régénération
   resistance: Résistance
   saturation: Saturation
@@ -155,9 +164,12 @@ PotionEffectType:
   slowness: Lenteur
   speed: Rapidité
   strength: Force
+  trial_omen: Présage d'épreuve
   unluck: Malchance
-  water_breathing: Apnée
+  water_breathing: Respiration aquatique
   weakness: Faiblesse
+  weaving: Tissage
+  wind_charged: Souffle
   wither: Décomposition
 Material:
   acacia_button: Bouton en acacia
@@ -185,7 +197,7 @@ Material:
   ancient_debris: Débris antiques
   andesite: Andésite
   andesite_slab: Dalle d'andésite
-  andesite_stairs: Escalier d'andésite
+  andesite_stairs: Escalier en andésite
   andesite_wall: Muret d'andésite
   anvil: Enclume
   attached_melon_stem: Tige de pastèque attachée
@@ -201,7 +213,7 @@ Material:
   bamboo_fence_gate: Portillon en bambou
   bamboo_hanging_sign: Pancarte suspendue en bambou
   bamboo_mosaic: Mosaïque de bambou
-  bamboo_mosaic_slab: Dalle en mosaïque de bambou
+  bamboo_mosaic_slab: Dalle de mosaïque de bambou
   bamboo_mosaic_stairs: Escalier en mosaïque de bambou
   bamboo_planks: Planches de bambou
   bamboo_pressure_plate: Plaque de pression en bambou
@@ -255,7 +267,7 @@ Material:
   black_wool: Laine noire
   blackstone: Roche noire
   blackstone_slab: Dalle de roche noire
-  blackstone_stairs: Escalier de roche noire
+  blackstone_stairs: Escalier en roche noire
   blackstone_wall: Muret de roche noire
   blast_furnace: Haut fourneau
   blue_banner: Bannière bleue
@@ -280,9 +292,9 @@ Material:
   brain_coral_fan: Gorgone de corail cerveau
   brain_coral_wall_fan: Gorgone de corail cerveau murale
   brewing_stand: Alambic
-  brick_slab: Dalle en briques
+  brick_slab: Dalle de briques
   brick_stairs: Escalier en briques
-  brick_wall: Muret en briques
+  brick_wall: Muret de briques
   bricks: Briques
   brown_banner: Bannière marron
   brown_bed: Lit marron
@@ -341,6 +353,7 @@ Material:
   chest: Coffre
   chipped_anvil: Enclume ébréchée
   chiseled_bookshelf: Bibliothèque sculptée
+  chiseled_copper: Cuivre sculpté
   chiseled_deepslate: Ardoise des abîmes sculptée
   chiseled_nether_bricks: Briques du Nether sculptées
   chiseled_polished_blackstone: Pierre noire sculptée
@@ -348,6 +361,8 @@ Material:
   chiseled_red_sandstone: Grès rouge sculpté
   chiseled_sandstone: Grès sculpté
   chiseled_stone_bricks: Pierre sculptée
+  chiseled_tuff: Tuf sculpté
+  chiseled_tuff_bricks: Tuf taillé sculpté
   chorus_flower: Fleur de chorus
   chorus_plant: Plante de chorus
   clay: Argile
@@ -369,13 +384,18 @@ Material:
   composter: Composteur
   conduit: Conduit
   copper_block: Bloc de cuivre
+  copper_bulb: Ampoule en cuivre
+  copper_door: Porte en cuivre
+  copper_grate: Grille en cuivre
   copper_ore: Minerai de cuivre
+  copper_trapdoor: Trappe en cuivre
   cornflower: Bleuet
   cracked_deepslate_bricks: Ardoise des abîmes taillée craquelée
   cracked_deepslate_tiles: Ardoise des abîmes carrelée craquelée
   cracked_nether_bricks: Briques du Nether craquelées
   cracked_polished_blackstone_bricks: Pierre noire taillée craquelée
   cracked_stone_bricks: Pierre taillée craquelée
+  crafter: Fabricateur
   crafting_table: Établi
   creeper_head: Tête de Creeper
   creeper_wall_head: Tête de Creeper murale
@@ -399,12 +419,12 @@ Material:
   crimson_wall_sign: Pancarte carmin murale
   crying_obsidian: Obsidienne pleureuse
   cut_copper: Cuivre taillé
-  cut_copper_slab: Dalle en cuivre taillé
+  cut_copper_slab: Dalle de cuivre taillé
   cut_copper_stairs: Escalier en cuivre taillé
   cut_red_sandstone: Grès rouge taillé
-  cut_red_sandstone_slab: Dalle en grès rouge taillé
+  cut_red_sandstone_slab: Dalle de grès rouge taillé
   cut_sandstone: Grès taillé
-  cut_sandstone_slab: Dalle en grès taillé
+  cut_sandstone_slab: Dalle de grès taillé
   cyan_banner: Bannière cyan
   cyan_bed: Lit cyan
   cyan_candle: Bougie cyan
@@ -464,9 +484,9 @@ Material:
   dead_tube_coral_wall_fan: Gorgone de corail tubulaire morte murale
   decorated_pot: Vase décoré
   deepslate: Ardoise des abîmes
-  deepslate_brick_slab: Dalle en ardoise des abîmes taillée
+  deepslate_brick_slab: Dalle d'ardoise des abîmes taillée
   deepslate_brick_stairs: Escalier en ardoise des abîmes taillée
-  deepslate_brick_wall: Muret en ardoise des abîmes taillée
+  deepslate_brick_wall: Muret d'ardoise des abîmes taillée
   deepslate_bricks: Ardoise des abîmes taillée
   deepslate_coal_ore: Minerai de charbon des abîmes
   deepslate_copper_ore: Minerai de cuivre des abîmes
@@ -476,16 +496,16 @@ Material:
   deepslate_iron_ore: Minerai de fer des abîmes
   deepslate_lapis_ore: Minerai de lapis-lazuli des abîmes
   deepslate_redstone_ore: Minerai de redstone des abîmes
-  deepslate_tile_slab: Dalle en ardoise des abîmes carrelée
+  deepslate_tile_slab: Dalle d'ardoise des abîmes carrelée
   deepslate_tile_stairs: Escalier en ardoise des abîmes carrelée
-  deepslate_tile_wall: Muret en ardoise des abîmes carrelée
+  deepslate_tile_wall: Muret d'ardoise des abîmes carrelée
   deepslate_tiles: Ardoise des abîmes carrelée
   detector_rail: Rails détecteurs
   diamond_block: Bloc de diamant
   diamond_ore: Minerai de diamant
   diorite: Diorite
   diorite_slab: Dalle de diorite
-  diorite_stairs: Escalier de diorite
+  diorite_stairs: Escalier en diorite
   diorite_wall: Muret de diorite
   dirt: Terre
   dirt_path: Chemin de terre
@@ -504,14 +524,19 @@ Material:
   end_portal_frame: Cadre de portail de l'End
   end_rod: Barre de l'End
   end_stone: Pierre de l'End
-  end_stone_brick_slab: Dalle en pierre taillée de l'End
+  end_stone_brick_slab: Dalle de pierre taillée de l'End
   end_stone_brick_stairs: Escalier en pierre taillée de l'End
-  end_stone_brick_wall: Muret en pierre taillée de l'End
+  end_stone_brick_wall: Muret de pierre taillée de l'End
   end_stone_bricks: Pierre taillée de l'End
   ender_chest: Coffre de l'Ender
+  exposed_chiseled_copper: Cuivre sculpté exposé
   exposed_copper: Cuivre exposé
+  exposed_copper_bulb: Ampoule en cuivre exposé
+  exposed_copper_door: Porte en cuivre exposé
+  exposed_copper_grate: Grille en cuivre exposé
+  exposed_copper_trapdoor: Trappe en cuivre exposé
   exposed_cut_copper: Cuivre taillé exposé
-  exposed_cut_copper_slab: Dalle en cuivre taillé exposé
+  exposed_cut_copper_slab: Dalle de cuivre taillé exposé
   exposed_cut_copper_stairs: Escalier en cuivre taillé exposé
   farmland: Terre labourée
   fern: Fougère
@@ -536,7 +561,7 @@ Material:
   gold_ore: Minerai d'or
   granite: Granite
   granite_slab: Dalle de granite
-  granite_stairs: Escalier de granite
+  granite_stairs: Escalier en granite
   granite_wall: Muret de granite
   grass: Herbe
   grass_block: Bloc d'herbe
@@ -570,6 +595,7 @@ Material:
   grindstone: Meule
   hanging_roots: Racines suspendues
   hay_block: Botte de paille
+  heavy_core: Noyau lourd
   heavy_weighted_pressure_plate: Plaque de pression pondérée lourde
   honey_block: Bloc de miel
   honeycomb_block: Bloc de rayon de miel
@@ -708,26 +734,26 @@ Material:
   moss_block: Bloc de mousse
   moss_carpet: Tapis de mousse
   mossy_cobblestone: Pierres moussues
-  mossy_cobblestone_slab: Dalle en pierres moussues
+  mossy_cobblestone_slab: Dalle de pierres moussues
   mossy_cobblestone_stairs: Escalier en pierres moussues
   mossy_cobblestone_wall: Muret de pierres moussues
-  mossy_stone_brick_slab: Dalle en pierre taillée moussue
+  mossy_stone_brick_slab: Dalle de pierre taillée moussue
   mossy_stone_brick_stairs: Escalier en pierre taillée moussue
-  mossy_stone_brick_wall: Muret en pierre taillée moussue
+  mossy_stone_brick_wall: Muret de pierre taillée moussue
   mossy_stone_bricks: Pierre taillée moussue
   moving_piston: Bloc en mouvement
   mud: Boue
-  mud_brick_slab: Dalle en briques de terre crue
+  mud_brick_slab: Dalle de briques de terre crue
   mud_brick_stairs: Escalier en briques de terre crue
-  mud_brick_wall: Muret en briques de terre crue
+  mud_brick_wall: Muret de briques de terre crue
   mud_bricks: Briques de terre crue
   muddy_mangrove_roots: Racines de palétuvier boueuses
   mushroom_stem: Tige de champignon
   mycelium: Mycélium
   nether_brick_fence: Barrière en briques du Nether
-  nether_brick_slab: Dalle en briques du Nether
+  nether_brick_slab: Dalle de briques du Nether
   nether_brick_stairs: Escalier en briques du Nether
-  nether_brick_wall: Muret en briques du Nether
+  nether_brick_wall: Muret de briques du Nether
   nether_bricks: Briques du Nether
   nether_gold_ore: Minerai d'or du Nether
   nether_portal: Portail du Nether
@@ -758,7 +784,7 @@ Material:
   observer: Observateur
   obsidian: Obsidienne
   ochre_froglight: Grelampe ocrée
-  ominous_banner: Bannière menaçante
+  ominous_banner: Bannière funeste
   orange_banner: Bannière orange
   orange_bed: Lit orange
   orange_candle: Bougie orange
@@ -774,9 +800,14 @@ Material:
   orange_tulip: Tulipe orange
   orange_wool: Laine orange
   oxeye_daisy: Marguerite
+  oxidized_chiseled_copper: Cuivre sculpté oxydé
   oxidized_copper: Cuivre oxydé
+  oxidized_copper_bulb: Ampoule en cuivre oxydé
+  oxidized_copper_door: Porte en cuivre oxydé
+  oxidized_copper_grate: Grille en cuivre oxydé
+  oxidized_copper_trapdoor: Trappe en cuivre oxydé
   oxidized_cut_copper: Cuivre taillé oxydé
-  oxidized_cut_copper_slab: Dalle en cuivre taillé oxydé
+  oxidized_cut_copper_slab: Dalle de cuivre taillé oxydé
   oxidized_cut_copper_stairs: Escalier en cuivre taillé oxydé
   packed_ice: Glace compactée
   packed_mud: Terre crue
@@ -810,28 +841,32 @@ Material:
   pointed_dripstone: Spéléothème pointu
   polished_andesite: Andésite polie
   polished_andesite_slab: Dalle d'andésite polie
-  polished_andesite_stairs: Escalier d'andésite polie
+  polished_andesite_stairs: Escalier en andésite polie
   polished_basalt: Basalte poli
   polished_blackstone: Pierre noire
-  polished_blackstone_brick_slab: Dalle en pierre noire taillée
+  polished_blackstone_brick_slab: Dalle de pierre noire taillée
   polished_blackstone_brick_stairs: Escalier en pierre noire taillée
-  polished_blackstone_brick_wall: Muret en pierre noire taillée
+  polished_blackstone_brick_wall: Muret de pierre noire taillée
   polished_blackstone_bricks: Pierre noire taillée
   polished_blackstone_button: Bouton en pierre noire
   polished_blackstone_pressure_plate: Plaque de pression en pierre noire
-  polished_blackstone_slab: Dalle en pierre noire
+  polished_blackstone_slab: Dalle de pierre noire
   polished_blackstone_stairs: Escalier en pierre noire
-  polished_blackstone_wall: Muret en pierre noire
+  polished_blackstone_wall: Muret de pierre noire
   polished_deepslate: Ardoise des abîmes polie
-  polished_deepslate_slab: Dalle en ardoise des abîmes polie
+  polished_deepslate_slab: Dalle d'ardoise des abîmes polie
   polished_deepslate_stairs: Escalier en ardoise des abîmes polie
-  polished_deepslate_wall: Muret en ardoise des abîmes polie
+  polished_deepslate_wall: Muret d'ardoise des abîmes polie
   polished_diorite: Diorite polie
-  polished_diorite_slab: Dalle en diorite polie
+  polished_diorite_slab: Dalle de diorite polie
   polished_diorite_stairs: Escalier en diorite polie
   polished_granite: Granite poli
-  polished_granite_slab: Dalle en granite poli
+  polished_granite_slab: Dalle de granite poli
   polished_granite_stairs: Escalier en granite poli
+  polished_tuff: Tuf poli
+  polished_tuff_slab: Dalle de tuf poli
+  polished_tuff_stairs: Escalier en tuf poli
+  polished_tuff_wall: Muret de tuf poli
   poppy: Coquelicot
   potatoes: Pommes de terre
   potted_acacia_sapling: Pousse d'acacia en pot
@@ -872,9 +907,9 @@ Material:
   powder_snow_cauldron: Chaudron de neige poudreuse
   powered_rail: Rails de propulsion
   prismarine: Prismarine
-  prismarine_brick_slab: Dalle de prismarine taillée
-  prismarine_brick_stairs: Escalier en prismarine taillée
-  prismarine_bricks: Prismarine taillée
+  prismarine_brick_slab: Dalle de briques de prismarine
+  prismarine_brick_stairs: Escalier en briques de prismarine
+  prismarine_bricks: Briques de prismarine
   prismarine_slab: Dalle de prismarine
   prismarine_stairs: Escalier en prismarine
   prismarine_wall: Muret de prismarine
@@ -896,7 +931,7 @@ Material:
   purpur_block: Bloc de purpur
   purpur_pillar: Pilier de purpur
   purpur_slab: Dalle de purpur
-  purpur_stairs: Escalier de purpur
+  purpur_stairs: Escalier en purpur
   quartz_block: Bloc de quartz
   quartz_bricks: Briques de quartz
   quartz_pillar: Pilier de quartz
@@ -916,15 +951,15 @@ Material:
   red_glazed_terracotta: Terre cuite émaillée rouge
   red_mushroom: Champignon rouge
   red_mushroom_block: Bloc de champignon rouge
-  red_nether_brick_slab: Dalle en briques rouges du Nether
+  red_nether_brick_slab: Dalle de briques rouges du Nether
   red_nether_brick_stairs: Escalier en briques rouges du Nether
-  red_nether_brick_wall: Muret en briques rouges du Nether
+  red_nether_brick_wall: Muret de briques rouges du Nether
   red_nether_bricks: Briques rouges du Nether
   red_sand: Sable rouge
   red_sandstone: Grès rouge
   red_sandstone_slab: Dalle de grès rouge
   red_sandstone_stairs: Escalier en grès rouge
-  red_sandstone_wall: Muret en grès rouge
+  red_sandstone_wall: Muret de grès rouge
   red_shulker_box: Boîte de Shulker rouge
   red_stained_glass: Verre rouge
   red_stained_glass_pane: Vitre rouge
@@ -947,7 +982,7 @@ Material:
   sandstone: Grès
   sandstone_slab: Dalle de grès
   sandstone_stairs: Escalier en grès
-  sandstone_wall: Muret en grès
+  sandstone_wall: Muret de grès
   scaffolding: Échafaudage
   sculk: Sculk
   sculk_catalyst: Catalyseur de sculk
@@ -958,6 +993,7 @@ Material:
   sea_pickle: Cornichon de mer
   seagrass: Herbe aquatique
   set_spawn: Point de réapparition défini
+  short_grass: Herbes courtes
   shroomlight: Champilampe
   shulker_box: Boîte de Shulker
   skeleton_skull: Crâne de squelette
@@ -969,13 +1005,13 @@ Material:
   smoker: Fumoir
   smooth_basalt: Basalte lisse
   smooth_quartz: Bloc de quartz lisse
-  smooth_quartz_slab: Dalle en quartz lisse
+  smooth_quartz_slab: Dalle de quartz lisse
   smooth_quartz_stairs: Escalier en quartz lisse
   smooth_red_sandstone: Grès rouge lisse
-  smooth_red_sandstone_slab: Dalle en grès rouge lisse
+  smooth_red_sandstone_slab: Dalle de grès rouge lisse
   smooth_red_sandstone_stairs: Escalier en grès rouge lisse
   smooth_sandstone: Grès lisse
-  smooth_sandstone_slab: Dalle en grès lisse
+  smooth_sandstone_slab: Dalle de grès lisse
   smooth_sandstone_stairs: Escalier en grès lisse
   smooth_stone: Roche lisse
   smooth_stone_slab: Dalle de roche lisse
@@ -1011,14 +1047,14 @@ Material:
   spruce_wood: Bois de sapin
   sticky_piston: Piston collant
   stone: Roche
-  stone_brick_slab: Dalle en pierre taillée
+  stone_brick_slab: Dalle de pierre taillée
   stone_brick_stairs: Escalier en pierre taillée
-  stone_brick_wall: Muret en pierre taillée
+  stone_brick_wall: Muret de pierre taillée
   stone_bricks: Pierre taillée
   stone_button: Bouton en pierre
   stone_pressure_plate: Plaque de pression en pierre
   stone_slab: Dalle de roche
-  stone_stairs: Escalier de roche
+  stone_stairs: Escalier en roche
   stonecutter: Tailleur de pierre
   stripped_acacia_log: Bûche d'acacia écorcée
   stripped_acacia_wood: Bois d'acacia écorcé
@@ -1058,6 +1094,7 @@ Material:
   torchflower: Torche-fleur
   torchflower_crop: Plant de torche-fleur
   trapped_chest: Coffre piégé
+  trial_spawner: Générateur des épreuves
   tripwire: Fil de déclenchement
   tripwire_hook: Crochet
   tube_coral: Corail tubulaire
@@ -1065,9 +1102,17 @@ Material:
   tube_coral_fan: Gorgone de corail tubulaire
   tube_coral_wall_fan: Gorgone de corail tubulaire murale
   tuff: Tuf
+  tuff_brick_slab: Dalle de tuf taillé
+  tuff_brick_stairs: Escalier en tuf taillé
+  tuff_brick_wall: Muret de tuf taillé
+  tuff_bricks: Tuf taillé
+  tuff_slab: Dalle de tuf
+  tuff_stairs: Escalier en tuf
+  tuff_wall: Muret de tuf
   turtle_egg: Oeuf de tortue
   twisting_vines: Lianes tortueuses
   twisting_vines_plant: Plante de lianes tortueuses
+  vault: Coffre-fort
   verdant_froglight: Grelampe verdoyante
   vine: Lianes
   void_air: Air du vide
@@ -1093,25 +1138,50 @@ Material:
   warped_wart_block: Bloc de verrues biscornues
   water: Eau
   water_cauldron: Chaudron d'eau
+  waxed_chiseled_copper: Cuivre sculpté ciré
   waxed_copper_block: Bloc de cuivre ciré
+  waxed_copper_bulb: Ampoule en cuivre ciré
+  waxed_copper_door: Porte en cuivre ciré
+  waxed_copper_grate: Grille en cuivre ciré
+  waxed_copper_trapdoor: Trappe en cuivre ciré
   waxed_cut_copper: Cuivre taillé ciré
-  waxed_cut_copper_slab: Dalle en cuivre taillé cirée
+  waxed_cut_copper_slab: Dalle de cuivre taillé ciré
   waxed_cut_copper_stairs: Escalier en cuivre taillé ciré
+  waxed_exposed_chiseled_copper: Cuivre sculpté exposé ciré
   waxed_exposed_copper: Cuivre exposé ciré
+  waxed_exposed_copper_bulb: Ampoule en cuivre exposé ciré
+  waxed_exposed_copper_door: Porte en cuivre exposé ciré
+  waxed_exposed_copper_grate: Grille en cuivre exposé ciré
+  waxed_exposed_copper_trapdoor: Trappe en cuivre exposé ciré
   waxed_exposed_cut_copper: Cuivre taillé exposé ciré
-  waxed_exposed_cut_copper_slab: Dalle en cuivre taillé exposé cirée
+  waxed_exposed_cut_copper_slab: Dalle de cuivre taillé exposé ciré
   waxed_exposed_cut_copper_stairs: Escalier en cuivre taillé exposé ciré
+  waxed_oxidized_chiseled_copper: Cuivre sculpté oxydé ciré
   waxed_oxidized_copper: Cuivre oxydé ciré
+  waxed_oxidized_copper_bulb: Ampoule en cuivre oxydé ciré
+  waxed_oxidized_copper_door: Porte en cuivre oxydé ciré
+  waxed_oxidized_copper_grate: Grille en cuivre oxydé ciré
+  waxed_oxidized_copper_trapdoor: Trappe en cuivre oxydé ciré
   waxed_oxidized_cut_copper: Cuivre taillé oxydé ciré
-  waxed_oxidized_cut_copper_slab: Dalle en cuivre taillé oxydé cirée
+  waxed_oxidized_cut_copper_slab: Dalle de cuivre taillé oxydé ciré
   waxed_oxidized_cut_copper_stairs: Escalier en cuivre taillé oxydé ciré
+  waxed_weathered_chiseled_copper: Cuivre sculpté érodé ciré
   waxed_weathered_copper: Cuivre érodé ciré
+  waxed_weathered_copper_bulb: Ampoule en cuivre érodé ciré
+  waxed_weathered_copper_door: Porte en cuivre érodé ciré
+  waxed_weathered_copper_grate: Grille en cuivre érodé ciré
+  waxed_weathered_copper_trapdoor: Trappe en cuivre érodé ciré
   waxed_weathered_cut_copper: Cuivre taillé érodé ciré
-  waxed_weathered_cut_copper_slab: Dalle en cuivre taillé érodé cirée
+  waxed_weathered_cut_copper_slab: Dalle de cuivre taillé érodé ciré
   waxed_weathered_cut_copper_stairs: Escalier en cuivre taillé érodé ciré
+  weathered_chiseled_copper: Cuivre sculpté érodé
   weathered_copper: Cuivre érodé
+  weathered_copper_bulb: Ampoule en cuivre érodé
+  weathered_copper_door: Porte en cuivre érodé
+  weathered_copper_grate: Grille en cuivre érodé
+  weathered_copper_trapdoor: Trappe en cuivre érodé
   weathered_cut_copper: Cuivre taillé érodé
-  weathered_cut_copper_slab: Dalle en cuivre taillé érodé
+  weathered_cut_copper_slab: Dalle de cuivre taillé érodé
   weathered_cut_copper_stairs: Escalier en cuivre taillé érodé
   weeping_vines: Lianes pleureuses
   weeping_vines_plant: Plante de lianes pleureuses
@@ -1158,6 +1228,8 @@ Material:
   apple: Pomme
   archer_pottery_shard: Tesson de poterie d'archer
   archer_pottery_sherd: Tesson de poterie d'archer
+  armadillo_scute: Écaille de tatou
+  armadillo_spawn_egg: Oeuf d'apparition de tatou
   armor_stand: Porte-armure
   arms_up_pottery_shard: Tesson de poterie de figure
   arms_up_pottery_sherd: Tesson de poterie de figure
@@ -1182,12 +1254,16 @@ Material:
   blaze_rod: Bâton de Blaze
   blaze_spawn_egg: Oeuf d'apparition de Blaze
   blue_dye: Teinture bleue
+  bogged_spawn_egg: Oeuf d'apparition d'embourbé
+  bolt_armor_trim_smithing_template: Modèle de forge
   bone: Os
   bone_meal: Poudre d'os
   book: Livre
   bow: Arc
   bowl: Bol
   bread: Pain
+  breeze_rod: Bâton de Breeze
+  breeze_spawn_egg: Oeuf d'apparition de Breeze
   brewer_pottery_shard: Tesson de poterie d'alchimiste
   brewer_pottery_sherd: Tesson de poterie d'alchimiste
   brick: Brique
@@ -1281,12 +1357,15 @@ Material:
   feather: Plume
   fermented_spider_eye: Oeil d'araignée fermenté
   filled_map: Carte
-  fire_charge: Boule de feu
+  fire_charge: Charge de feu
   firework_rocket: Fusée de feu d'artifice
   firework_star: Étoile de feu d'artifice
   fishing_rod: Canne à pêche
   flint: Silex
   flint_and_steel: Briquet
+  flow_armor_trim_smithing_template: Modèle de forge
+  flow_banner_pattern: Motif de bannière
+  flow_pottery_sherd: Tesson de poterie de tourbillon
   flower_banner_pattern: Motif de bannière
   fox_spawn_egg: Oeuf d'apparition de renard
   friend_pottery_shard: Tesson de poterie d'ami
@@ -1323,6 +1402,8 @@ Material:
   green_dye: Teinture verte
   guardian_spawn_egg: Oeuf d'apparition de gardien
   gunpowder: Poudre à canon
+  guster_banner_pattern: Motif de bannière
+  guster_pottery_sherd: Tesson de poterie de rafaleur
   heart_of_the_sea: Coeur de la mer
   heart_pottery_shard: Tesson de poterie de coeur
   heart_pottery_sherd: Tesson de poterie de coeur
@@ -1370,6 +1451,7 @@ Material:
   lingering_potion: Potion persistante
   llama_spawn_egg: Oeuf d'apparition de lama
   lodestone_compass: Boussole magnétisée
+  mace: Masse
   magenta_dye: Teinture magenta
   magma_cream: Crème de magma
   magma_cube_spawn_egg: Oeuf d'apparition de cube de magma
@@ -1394,11 +1476,14 @@ Material:
   music_disc_blocks: Disque
   music_disc_cat: Disque
   music_disc_chirp: Disque
+  music_disc_creator: Disque
+  music_disc_creator_music_box: Disque
   music_disc_far: Disque
   music_disc_mall: Disque
   music_disc_mellohi: Disque
   music_disc_otherside: Disque
   music_disc_pigstep: Disque
+  music_disc_precipice: Disque
   music_disc_relic: Disque
   music_disc_stal: Disque
   music_disc_strad: Disque
@@ -1424,6 +1509,8 @@ Material:
   oak_boat: Bateau en chêne
   oak_chest_boat: Bateau de stockage en chêne
   ocelot_spawn_egg: Oeuf d'apparition d'ocelot
+  ominous_bottle: Fiole funeste
+  ominous_trial_key: Clé des épreuves funeste
   orange_dye: Teinture orange
   painting: Tableau
   panda_spawn_egg: Oeuf d'apparition de panda
@@ -1481,7 +1568,8 @@ Material:
   salmon: Saumon cru
   salmon_bucket: Saumon dans un seau
   salmon_spawn_egg: Oeuf d'apparition de saumon
-  scute: Écaille de tortue
+  scrape_pottery_sherd: Tesson de poterie de hache
+  scute: Écaille
   sentry_armor_trim_smithing_template: Modèle de forge
   shaper_armor_trim_smithing_template: Modèle de forge
   sheaf_pottery_shard: Tesson de poterie d'épis
@@ -1539,11 +1627,13 @@ Material:
   torchflower_seeds: Graines de torche-fleur
   totem_of_undying: Totem d'immortalité
   trader_llama_spawn_egg: Oeuf d'apparition de lama de marchand
+  trial_key: Clé des épreuves
   trident: Trident
   tropical_fish: Poisson tropical
   tropical_fish_bucket: Poisson tropical dans un seau
   tropical_fish_spawn_egg: Oeuf d'apparition de poisson tropical
   turtle_helmet: Carapace de tortue
+  turtle_scute: Écaille de tortue
   turtle_spawn_egg: Oeuf d'apparition de tortue
   vex_armor_trim_smithing_template: Modèle de forge
   vex_spawn_egg: Oeuf d'apparition de Vex
@@ -1558,9 +1648,11 @@ Material:
   wheat_seeds: Graines de blé
   white_dye: Teinture blanche
   wild_armor_trim_smithing_template: Modèle de forge
+  wind_charge: Charge de vent
   witch_spawn_egg: Oeuf d'apparition de sorcière
   wither_skeleton_spawn_egg: Oeuf d'apparition de Wither squelette
   wither_spawn_egg: Oeuf d'apparition de Wither
+  wolf_armor: Armure pour loup
   wolf_spawn_egg: Oeuf d'apparition de loup
   wooden_axe: Hache en bois
   wooden_hoe: Houe en bois
@@ -1580,7 +1672,9 @@ Enchantment:
   bane_of_arthropods: Fléau des arthropodes
   binding_curse: Malédiction du lien éternel
   blast_protection: Protection contre les explosions
+  breach: Brèche
   channeling: Canalisation
+  density: Densité
   depth_strider: Agilité aquatique
   efficiency: Efficacité
   feather_falling: Chute amortie
@@ -1611,7 +1705,9 @@ Enchantment:
   smite: Châtiment
   soul_speed: Agilité des âmes
   sweeping: Affilage
+  sweeping_edge: Affilage
   swift_sneak: Furtivité rapide
   thorns: Épines
   unbreaking: Solidité
   vanishing_curse: Malédiction de disparition
+  wind_burst: Rafale de vent

@@ -1,6 +1,7 @@
 EntityType:
   allay: Allay
   area_effect_cloud: Area Effect Cloud
+  armadillo: Armadillo
   armor_stand: Armour Stand
   arrow: Arrow
   axolotl: Axolotl
@@ -9,6 +10,9 @@ EntityType:
   blaze: Blaze
   block_display: Block Display
   boat: Boat
+  bogged: Bogged
+  breeze: Breeze
+  breeze_wind_charge: Wind Charge
   camel: Camel
   cat: Cat
   cave_spider: Cave Spider
@@ -70,6 +74,7 @@ EntityType:
   mooshroom: Mooshroom
   mule: Mule
   ocelot: Ocelot
+  ominous_item_spawner: Ominous Item Spawner
   painting: Painting
   panda: Panda
   parrot: Parrot
@@ -115,6 +120,7 @@ EntityType:
   vindicator: Vindicator
   wandering_trader: Wandering Trader
   warden: Warden
+  wind_charge: Wind Charge
   witch: Witch
   wither: Wither
   wither_skeleton: Wither Skeleton
@@ -138,6 +144,7 @@ PotionEffectType:
   health_boost: Health Boost
   hero_of_the_village: Hero of the Village
   hunger: Hunger
+  infested: Infested
   instant_damage: Instant Damage
   instant_health: Instant Health
   invisibility: Invisibility
@@ -147,7 +154,9 @@ PotionEffectType:
   mining_fatigue: Mining Fatigue
   nausea: Nausea
   night_vision: Night Vision
+  oozing: Oozing
   poison: Poison
+  raid_omen: Raid Omen
   regeneration: Regeneration
   resistance: Resistance
   saturation: Saturation
@@ -155,9 +164,12 @@ PotionEffectType:
   slowness: Slowness
   speed: Speed
   strength: Strength
+  trial_omen: Trial Omen
   unluck: Bad Luck
   water_breathing: Water Breathing
   weakness: Weakness
+  weaving: Weaving
+  wind_charged: Wind Charged
   wither: Wither
 Material:
   acacia_button: Acacia Button
@@ -341,6 +353,7 @@ Material:
   chest: Chest
   chipped_anvil: Chipped Anvil
   chiseled_bookshelf: Chiselled Bookshelf
+  chiseled_copper: Chiselled Copper
   chiseled_deepslate: Chiselled Deepslate
   chiseled_nether_bricks: Chiselled Nether Bricks
   chiseled_polished_blackstone: Chiselled Polished Blackstone
@@ -348,6 +361,8 @@ Material:
   chiseled_red_sandstone: Chiselled Red Sandstone
   chiseled_sandstone: Chiselled Sandstone
   chiseled_stone_bricks: Chiselled Stone Bricks
+  chiseled_tuff: Chiselled Tuff
+  chiseled_tuff_bricks: Chiselled Tuff Bricks
   chorus_flower: Chorus Flower
   chorus_plant: Chorus Plant
   clay: Clay
@@ -369,13 +384,18 @@ Material:
   composter: Composter
   conduit: Conduit
   copper_block: Block of Copper
+  copper_bulb: Copper Bulb
+  copper_door: Copper Door
+  copper_grate: Copper Grate
   copper_ore: Copper Ore
+  copper_trapdoor: Copper Trapdoor
   cornflower: Cornflower
   cracked_deepslate_bricks: Cracked Deepslate Bricks
   cracked_deepslate_tiles: Cracked Deepslate Tiles
   cracked_nether_bricks: Cracked Nether Bricks
   cracked_polished_blackstone_bricks: Cracked Polished Blackstone Bricks
   cracked_stone_bricks: Cracked Stone Bricks
+  crafter: Crafter
   crafting_table: Crafting Table
   creeper_head: Creeper Head
   creeper_wall_head: Creeper Wall Head
@@ -509,7 +529,12 @@ Material:
   end_stone_brick_wall: End Stone Brick Wall
   end_stone_bricks: End Stone Bricks
   ender_chest: Ender Chest
+  exposed_chiseled_copper: Exposed Chiselled Copper
   exposed_copper: Exposed Copper
+  exposed_copper_bulb: Exposed Copper Bulb
+  exposed_copper_door: Exposed Copper Door
+  exposed_copper_grate: Exposed Copper Grate
+  exposed_copper_trapdoor: Exposed Copper Trapdoor
   exposed_cut_copper: Exposed Cut Copper
   exposed_cut_copper_slab: Exposed Cut Copper Slab
   exposed_cut_copper_stairs: Exposed Cut Copper Stairs
@@ -570,6 +595,7 @@ Material:
   grindstone: Grindstone
   hanging_roots: Hanging Roots
   hay_block: Hay Bale
+  heavy_core: Heavy Core
   heavy_weighted_pressure_plate: Heavy Weighted Pressure Plate
   honey_block: Honey Block
   honeycomb_block: Honeycomb Block
@@ -774,7 +800,12 @@ Material:
   orange_tulip: Orange Tulip
   orange_wool: Orange Wool
   oxeye_daisy: Oxeye Daisy
+  oxidized_chiseled_copper: Oxidised Chiselled Copper
   oxidized_copper: Oxidised Copper
+  oxidized_copper_bulb: Oxidised Copper Bulb
+  oxidized_copper_door: Oxidised Copper Door
+  oxidized_copper_grate: Oxidised Copper Grate
+  oxidized_copper_trapdoor: Oxidised Copper Trapdoor
   oxidized_cut_copper: Oxidised Cut Copper
   oxidized_cut_copper_slab: Oxidised Cut Copper Slab
   oxidized_cut_copper_stairs: Oxidised Cut Copper Stairs
@@ -832,6 +863,10 @@ Material:
   polished_granite: Polished Granite
   polished_granite_slab: Polished Granite Slab
   polished_granite_stairs: Polished Granite Stairs
+  polished_tuff: Polished Tuff
+  polished_tuff_slab: Polished Tuff Slab
+  polished_tuff_stairs: Polished Tuff Stairs
+  polished_tuff_wall: Polished Tuff Wall
   poppy: Poppy
   potatoes: Potatoes
   potted_acacia_sapling: Potted Acacia Sapling
@@ -958,6 +993,7 @@ Material:
   sea_pickle: Sea Pickle
   seagrass: Seagrass
   set_spawn: Respawn point set
+  short_grass: Short Grass
   shroomlight: Shroomlight
   shulker_box: Shulker Box
   skeleton_skull: Skeleton Skull
@@ -1058,6 +1094,7 @@ Material:
   torchflower: Torchflower
   torchflower_crop: Torchflower Crop
   trapped_chest: Trapped Chest
+  trial_spawner: Trial Spawner
   tripwire: Tripwire
   tripwire_hook: Tripwire Hook
   tube_coral: Tube Coral
@@ -1065,9 +1102,17 @@ Material:
   tube_coral_fan: Tube Coral Fan
   tube_coral_wall_fan: Tube Coral Wall Fan
   tuff: Tuff
+  tuff_brick_slab: Tuff Brick Slab
+  tuff_brick_stairs: Tuff Brick Stairs
+  tuff_brick_wall: Tuff Brick Wall
+  tuff_bricks: Tuff Bricks
+  tuff_slab: Tuff Slab
+  tuff_stairs: Tuff Stairs
+  tuff_wall: Tuff Wall
   turtle_egg: Turtle Egg
   twisting_vines: Twisting Vines
   twisting_vines_plant: Twisting Vines Plant
+  vault: Vault
   verdant_froglight: Verdant Froglight
   vine: Vines
   void_air: Void Air
@@ -1093,23 +1138,48 @@ Material:
   warped_wart_block: Warped Wart Block
   water: Water
   water_cauldron: Water Cauldron
+  waxed_chiseled_copper: Waxed Chiselled Copper
   waxed_copper_block: Waxed Block of Copper
+  waxed_copper_bulb: Waxed Copper Bulb
+  waxed_copper_door: Waxed Copper Door
+  waxed_copper_grate: Waxed Copper Grate
+  waxed_copper_trapdoor: Waxed Copper Trapdoor
   waxed_cut_copper: Waxed Cut Copper
   waxed_cut_copper_slab: Waxed Cut Copper Slab
   waxed_cut_copper_stairs: Waxed Cut Copper Stairs
+  waxed_exposed_chiseled_copper: Waxed Exposed Chiselled Copper
   waxed_exposed_copper: Waxed Exposed Copper
+  waxed_exposed_copper_bulb: Waxed Exposed Copper Bulb
+  waxed_exposed_copper_door: Waxed Exposed Copper Door
+  waxed_exposed_copper_grate: Waxed Exposed Copper Grate
+  waxed_exposed_copper_trapdoor: Waxed Exposed Copper Trapdoor
   waxed_exposed_cut_copper: Waxed Exposed Cut Copper
   waxed_exposed_cut_copper_slab: Waxed Exposed Cut Copper Slab
   waxed_exposed_cut_copper_stairs: Waxed Exposed Cut Copper Stairs
+  waxed_oxidized_chiseled_copper: Waxed Oxidised Chiselled Copper
   waxed_oxidized_copper: Waxed Oxidised Copper
+  waxed_oxidized_copper_bulb: Waxed Oxidised Copper Bulb
+  waxed_oxidized_copper_door: Waxed Oxidised Copper Door
+  waxed_oxidized_copper_grate: Waxed Oxidised Copper Grate
+  waxed_oxidized_copper_trapdoor: Waxed Oxidised Copper Trapdoor
   waxed_oxidized_cut_copper: Waxed Oxidised Cut Copper
   waxed_oxidized_cut_copper_slab: Waxed Oxidised Cut Copper Slab
   waxed_oxidized_cut_copper_stairs: Waxed Oxidised Cut Copper Stairs
+  waxed_weathered_chiseled_copper: Waxed Weathered Chiselled Copper
   waxed_weathered_copper: Waxed Weathered Copper
+  waxed_weathered_copper_bulb: Waxed Weathered Copper Bulb
+  waxed_weathered_copper_door: Waxed Weathered Copper Door
+  waxed_weathered_copper_grate: Waxed Weathered Copper Grate
+  waxed_weathered_copper_trapdoor: Waxed Weathered Copper Trapdoor
   waxed_weathered_cut_copper: Waxed Weathered Cut Copper
   waxed_weathered_cut_copper_slab: Waxed Weathered Cut Copper Slab
   waxed_weathered_cut_copper_stairs: Waxed Weathered Cut Copper Stairs
+  weathered_chiseled_copper: Weathered Chiselled Copper
   weathered_copper: Weathered Copper
+  weathered_copper_bulb: Weathered Copper Bulb
+  weathered_copper_door: Weathered Copper Door
+  weathered_copper_grate: Weathered Copper Grate
+  weathered_copper_trapdoor: Weathered Copper Trapdoor
   weathered_cut_copper: Weathered Cut Copper
   weathered_cut_copper_slab: Weathered Cut Copper Slab
   weathered_cut_copper_stairs: Weathered Cut Copper Stairs
@@ -1158,6 +1228,8 @@ Material:
   apple: Apple
   archer_pottery_shard: Archer Pottery Shard
   archer_pottery_sherd: Archer Pottery Sherd
+  armadillo_scute: Armadillo Scute
+  armadillo_spawn_egg: Armadillo Spawn Egg
   armor_stand: Armour Stand
   arms_up_pottery_shard: Arms Up Pottery Shard
   arms_up_pottery_sherd: Arms Up Pottery Sherd
@@ -1182,12 +1254,16 @@ Material:
   blaze_rod: Blaze Rod
   blaze_spawn_egg: Blaze Spawn Egg
   blue_dye: Blue Dye
+  bogged_spawn_egg: Bogged Spawn Egg
+  bolt_armor_trim_smithing_template: Smithing Template
   bone: Bone
   bone_meal: Bone Meal
   book: Book
   bow: Bow
   bowl: Bowl
   bread: Bread
+  breeze_rod: Breeze Rod
+  breeze_spawn_egg: Breeze Spawn Egg
   brewer_pottery_shard: Brewer Pottery Shard
   brewer_pottery_sherd: Brewer Pottery Sherd
   brick: Brick
@@ -1287,6 +1363,9 @@ Material:
   fishing_rod: Fishing Rod
   flint: Flint
   flint_and_steel: Flint and Steel
+  flow_armor_trim_smithing_template: Smithing Template
+  flow_banner_pattern: Banner Pattern
+  flow_pottery_sherd: Flow Pottery Sherd
   flower_banner_pattern: Banner Pattern
   fox_spawn_egg: Fox Spawn Egg
   friend_pottery_shard: Friend Pottery Shard
@@ -1323,6 +1402,8 @@ Material:
   green_dye: Green Dye
   guardian_spawn_egg: Guardian Spawn Egg
   gunpowder: Gunpowder
+  guster_banner_pattern: Banner Pattern
+  guster_pottery_sherd: Guster Pottery Sherd
   heart_of_the_sea: Heart of the Sea
   heart_pottery_shard: Heart Pottery Shard
   heart_pottery_sherd: Heart Pottery Sherd
@@ -1370,6 +1451,7 @@ Material:
   lingering_potion: Lingering Potion
   llama_spawn_egg: Llama Spawn Egg
   lodestone_compass: Lodestone Compass
+  mace: Mace
   magenta_dye: Magenta Dye
   magma_cream: Magma Cream
   magma_cube_spawn_egg: Magma Cube Spawn Egg
@@ -1387,18 +1469,21 @@ Material:
   mourner_pottery_shard: Mourner Pottery Shard
   mourner_pottery_sherd: Mourner Pottery Sherd
   mule_spawn_egg: Mule Spawn Egg
-  mushroom_stew: Mushroom Soup
+  mushroom_stew: Mushroom Stew
   music_disc_11: Music Disc
   music_disc_13: Music Disc
   music_disc_5: Music Disc
   music_disc_blocks: Music Disc
   music_disc_cat: Music Disc
   music_disc_chirp: Music Disc
+  music_disc_creator: Music Disc
+  music_disc_creator_music_box: Music Disc
   music_disc_far: Music Disc
   music_disc_mall: Music Disc
   music_disc_mellohi: Music Disc
   music_disc_otherside: Music Disc
   music_disc_pigstep: Music Disc
+  music_disc_precipice: Music Disc
   music_disc_relic: Music Disc
   music_disc_stal: Music Disc
   music_disc_strad: Music Disc
@@ -1424,6 +1509,8 @@ Material:
   oak_boat: Oak Boat
   oak_chest_boat: Oak Boat with Chest
   ocelot_spawn_egg: Ocelot Spawn Egg
+  ominous_bottle: Ominous Bottle
+  ominous_trial_key: Ominous Trial Key
   orange_dye: Orange Dye
   painting: Painting
   panda_spawn_egg: Panda Spawn Egg
@@ -1481,6 +1568,7 @@ Material:
   salmon: Raw Salmon
   salmon_bucket: Bucket of Salmon
   salmon_spawn_egg: Salmon Spawn Egg
+  scrape_pottery_sherd: Scrape Pottery Sherd
   scute: Scute
   sentry_armor_trim_smithing_template: Smithing Template
   shaper_armor_trim_smithing_template: Smithing Template
@@ -1539,11 +1627,13 @@ Material:
   torchflower_seeds: Torchflower Seeds
   totem_of_undying: Totem of Undying
   trader_llama_spawn_egg: Trader Llama Spawn Egg
+  trial_key: Trial Key
   trident: Trident
   tropical_fish: Tropical Fish
   tropical_fish_bucket: Bucket of Tropical Fish
   tropical_fish_spawn_egg: Tropical Fish Spawn Egg
   turtle_helmet: Turtle Shell
+  turtle_scute: Turtle Scute
   turtle_spawn_egg: Turtle Spawn Egg
   vex_armor_trim_smithing_template: Smithing Template
   vex_spawn_egg: Vex Spawn Egg
@@ -1558,9 +1648,11 @@ Material:
   wheat_seeds: Wheat Seeds
   white_dye: White Dye
   wild_armor_trim_smithing_template: Smithing Template
+  wind_charge: Wind Charge
   witch_spawn_egg: Witch Spawn Egg
   wither_skeleton_spawn_egg: Wither Skeleton Spawn Egg
   wither_spawn_egg: Wither Spawn Egg
+  wolf_armor: Wolf Armour
   wolf_spawn_egg: Wolf Spawn Egg
   wooden_axe: Wooden Axe
   wooden_hoe: Wooden Hoe
@@ -1580,7 +1672,9 @@ Enchantment:
   bane_of_arthropods: Bane of Arthropods
   binding_curse: Curse of Binding
   blast_protection: Blast Protection
+  breach: Breach
   channeling: Channelling
+  density: Density
   depth_strider: Depth Strider
   efficiency: Efficiency
   feather_falling: Feather Falling
@@ -1611,7 +1705,9 @@ Enchantment:
   smite: Smite
   soul_speed: Soul Speed
   sweeping: Sweeping Edge
+  sweeping_edge: Sweeping Edge
   swift_sneak: Swift Sneak
   thorns: Thorns
   unbreaking: Unbreaking
   vanishing_curse: Curse of Vanishing
+  wind_burst: Wind Burst

@@ -17,6 +17,7 @@ import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
 import java.util.*;
 import java.util.stream.Stream;
 
+@Deprecated
 public abstract class AbstractCommand<P extends NightCorePlugin> implements NightCommand {
 
     protected final P                           plugin;

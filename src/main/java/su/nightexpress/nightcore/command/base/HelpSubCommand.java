@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public class HelpSubCommand extends AbstractCommand<NightCorePlugin> {
 
     public HelpSubCommand(@NotNull NightCorePlugin plugin) {

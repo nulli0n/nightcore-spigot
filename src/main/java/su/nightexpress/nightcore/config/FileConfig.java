@@ -1,5 +1,7 @@
 package su.nightexpress.nightcore.config;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,6 +24,7 @@ import su.nightexpress.nightcore.util.text.NightMessage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -103,7 +106,6 @@ public class FileConfig extends YamlConfiguration {
         for (ConfigValue<?> value : Reflex.getFields(clazz, ConfigValue.class)) {
             value.read(config);
         }
-        //config.saveChanges();
     }
 
     @NotNull
@@ -317,16 +319,30 @@ public class FileConfig extends YamlConfiguration {
         ItemStack item = new ItemStack(material);
         item.setAmount(this.getInt(path + "Amount", 1));
 
+        // -------- UPDATE OLD TEXTURE FIELD - START --------
+        String headTexture = this.getString(path + "Head_Texture");
+        if (headTexture != null && !headTexture.isEmpty()) {
+
+            try {
+                byte[] decoded = Base64.getDecoder().decode(headTexture);
+                String decodedStr = new String(decoded, StandardCharsets.UTF_8);
+                JsonElement element = JsonParser.parseString(decodedStr);
+
+                String url = element.getAsJsonObject().getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
+                url = url.substring(ItemUtil.TEXTURES_HOST.length());
+
+                this.set(path + "SkinURL", url);
+                this.remove(path + "Head_Texture");
+            }
+            catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+        // -------- UPDATE OLD TEXTURE FIELD - END --------
+
         String headSkin = this.getString(path + "SkinURL");
         if (headSkin != null) {
             ItemUtil.setHeadSkin(item, headSkin);
-        }
-        else {
-            String headTexture = this.getString(path + "Head_Texture", "");
-            if (!headTexture.isEmpty()) {
-                Plugins.CORE.warn("'Head_Texture' itemstack option is deprecated and will be removed soon. Please, use 'SkinURL' option instead. Caused by: " + file.getPath());
-                ItemUtil.setSkullTexture(item, headTexture);
-            }
         }
 
         ItemMeta meta = item.getItemMeta();
@@ -392,9 +408,9 @@ public class FileConfig extends YamlConfiguration {
         this.set(path + "Material", material.name());
         this.set(path + "Amount", item.getAmount() <= 1 ? null : item.getAmount());
         this.set(path + "SkinURL", ItemUtil.getHeadSkin(item));
-        if (!this.contains(path + "SkinURL")) {
-            this.set(path + "Head_Texture", ItemUtil.getSkullTexture(item));
-        }
+//        if (!this.contains(path + "SkinURL")) {
+//            this.set(path + "Head_Texture", ItemUtil.getSkullTexture(item));
+//        }
 
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;

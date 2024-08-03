@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.util.text;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.Colorizer;
-import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.text.tag.TagPool;
+import su.nightexpress.nightcore.util.text.tag.Tags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,8 @@ public class NightMessage {
         return from(string, tagPool).parseIfAbsent();
     }
 
+
+
     @NotNull
     public static String clean(@NotNull String string) {
         return create(string, TagPool.NONE).toLegacy();
@@ -56,6 +58,27 @@ public class NightMessage {
     @NotNull
     public static String stripAll(@NotNull String string) {
         return Colorizer.strip(clean(string));
+    }
+
+    /**
+     * Removes all known tags from the given string. Does not affect legacy color codes.
+     * @param string A string to remove tags from.
+     * @return String with no tags formations.
+     */
+    @NotNull
+    public static String stripTags(@NotNull String string) {
+        return stripTags(string, TagPool.NONE);
+    }
+
+    /**
+     * Removes tags from the given string according to a TagPool configuration. Does not affect legacy color codes.
+     * @param string A string to remove tags from.
+     * @param tagPool List of allowed tags.
+     * @return String with allowed tags only in the original tag format <tag>Text</tag>.
+     */
+    @NotNull
+    public static String stripTags(@NotNull String string, @NotNull TagPool tagPool) {
+        return from(string, tagPool).strip();
     }
 
     @NotNull
@@ -77,7 +100,7 @@ public class NightMessage {
     public static List<String> asLegacy(@NotNull List<String> string) {
         List<String> list = new ArrayList<>();
         for (String str : string) {
-            for (String br : str.split(Placeholders.TAG_LINE_BREAK)) {
+            for (String br : Tags.LINE_BREAK.split(str)) {
                 list.add(asLegacy(br));
             }
         }

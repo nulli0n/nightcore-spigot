@@ -18,6 +18,7 @@ import su.nightexpress.nightcore.util.text.tag.impl.ResetTag;
 import su.nightexpress.nightcore.util.text.tag.impl.ShortHexColorTag;
 import su.nightexpress.nightcore.util.text.tag.impl.TranslationTag;
 
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 public class TextRoot {
@@ -156,12 +157,18 @@ public class TextRoot {
         return this.component == null ? this.parse() : this.component;
     }
 
+    public enum Mode {
+        PARSE, STRIP
+    }
+
     @NotNull
     public BaseComponent parse() {
         this.rootGroup = new TextGroup(ROOT_NAME);
         this.currentGroup = this.rootGroup;
 
-        int length = string.length();
+        this.doJob(Mode.PARSE, letter -> this.currentNode().append(letter));
+
+        /*int length = string.length();
         for (int index = 0; index < length; index++) {
             char letter = string.charAt(index);
 
@@ -217,11 +224,140 @@ public class TextRoot {
             }
 
             this.currentNode().append(letter);
-        }
+        }*/
 
         this.component = this.rootGroup.toComponent();
 
+        // Clean memory
+        this.rootGroup = null;
+        this.currentGroup = null;
+        this.currentNode = null;
+
         return this.component;
+    }
+
+    @NotNull
+    public String strip() {
+        StringBuilder builder = new StringBuilder();
+
+        this.doJob(Mode.STRIP, builder::append);
+
+        /*int length = string.length();
+        for (int index = 0; index < length; index++) {
+            char letter = string.charAt(index);
+
+            Tag:
+            if (letter == Tag.OPEN_BRACKET && index != (length - 1)) {
+                int indexEnd = indexOfIgnoreEscaped(string, Tag.CLOSE_BRACKET, index);
+                if (indexEnd == -1) break Tag;
+
+                char next = string.charAt(index + 1);
+                if (next == Tag.CLOSE_BRACKET) break Tag;
+
+                boolean closeTag = false;
+                if (next == Tag.CLOSE_SLASH) {
+                    closeTag = true;
+                    index++;
+                }
+
+                String bracketsContent = string.substring(index + 1, indexEnd);
+                String tagName = bracketsContent;
+
+                // Check for content tags
+                int semicolonIndex = bracketsContent.indexOf(':');
+                if (semicolonIndex >= 0) {
+                    tagName = bracketsContent.substring(0, semicolonIndex);
+                }
+                else if (tagName.startsWith(ShortHexColorTag.NAME)) {
+                    tagName = ShortHexColorTag.NAME;
+                }
+
+                Tag tag = Tags.getTag(tagName);
+                if (tag != null) {
+                    if (!tagPool.isGoodTag(tag)) {
+                        index = indexEnd;
+                        continue;
+                    }
+                }
+
+                // Move cursor back to '/' of invalid closing tag.
+                if (closeTag) {
+                    index--;
+                }
+            }
+
+            builder.append(letter);
+        }*/
+
+        return builder.toString();
+    }
+
+    private void doJob(@NotNull Mode mode, @NotNull Consumer<Character> consumer) {
+        int length = string.length();
+        for (int index = 0; index < length; index++) {
+            char letter = string.charAt(index);
+
+            Tag:
+            if (letter == Tag.OPEN_BRACKET && index != (length - 1)) {
+                int indexEnd = indexOfIgnoreEscaped(string, Tag.CLOSE_BRACKET, index);//string.indexOf(Tag.CLOSE_BRACKET, index);
+                //System.out.println("indexEnd = " + indexEnd);
+                if (indexEnd == -1) break Tag;
+
+                char next = string.charAt(index + 1);
+                if (next == Tag.CLOSE_BRACKET) break Tag;
+
+                boolean closeTag = false;
+                if (next == Tag.CLOSE_SLASH) {
+                    closeTag = true;
+                    index++;
+                }
+
+                String bracketsContent = string.substring(index + 1, indexEnd);
+                //System.out.println("bracketsContent = " + bracketsContent);
+
+                String tagName = bracketsContent;
+                String tagContent = null;
+
+                // Check for content tags
+                int semicolonIndex = bracketsContent.indexOf(':');
+                if (semicolonIndex >= 0) {
+                    tagName = bracketsContent.substring(0, semicolonIndex);
+                    tagContent = bracketsContent.substring(semicolonIndex + 1);
+                    //System.out.println("tagName = " + tagName);
+                    //System.out.println("tagContent = " + tagContent);
+                }
+                else if (tagName.startsWith(ShortHexColorTag.NAME)) {
+                    tagName = ShortHexColorTag.NAME;
+                    tagContent = bracketsContent;
+                }
+
+                Tag tag = Tags.getTag(tagName);
+                //System.out.println("found tag = " + tag);
+
+                if (tag != null) {
+                    if (mode == Mode.PARSE) {
+                        if (tagPool.isGoodTag(tag)) {
+                            this.proceedTag(tag, closeTag, tagContent);
+                        }
+                        index = indexEnd;
+                        continue;
+                    }
+                    else {
+                        if (!tagPool.isGoodTag(tag)) {
+                            index = indexEnd;
+                            continue;
+                        }
+                    }
+                }
+
+                // Move cursor back to '/' of invalid closing tag.
+                if (closeTag) {
+                    index--;
+                }
+            }
+
+            consumer.accept(letter);
+        }
     }
 
     private void proceedTag(@NotNull Tag tag, boolean closeTag, @Nullable String tagContent) {

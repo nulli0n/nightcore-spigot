@@ -25,6 +25,7 @@ public class Tag {
         for (String alias : aliases) {
             this.aliases.add(alias.toLowerCase());
         }
+        this.aliases.add(this.name);
     }
 
     @NotNull

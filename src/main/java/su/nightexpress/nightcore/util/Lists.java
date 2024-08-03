@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -64,6 +65,16 @@ public class Lists {
     }
 
     @NotNull
+    public static <T, R> Set<R> modify(@NotNull Set<T> set, @NotNull Function<T, R> function) {
+        return set.stream().map(function).collect(Collectors.toCollection(HashSet::new));
+    }
+
+    @NotNull
+    public static <T, R> List<R> modify(@NotNull List<T> set, @NotNull Function<T, R> function) {
+        return set.stream().map(function).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @NotNull
     public static <T> List<List<T>> split(@NotNull List<T> list, int targetSize) {
         List<List<T>> lists = new ArrayList<>();
         if (targetSize <= 0) return lists;
@@ -98,6 +109,7 @@ public class Lists {
     @NotNull
     public static List<String> stripEmpty(@NotNull List<String> original) {
         List<String> stripped = new ArrayList<>();
+
         for (int index = 0; index < original.size(); index++) {
             String line = original.get(index);
             if (line.isEmpty()) {
@@ -106,6 +118,7 @@ public class Lists {
             }
             stripped.add(line);
         }
+
         return stripped;
     }
 

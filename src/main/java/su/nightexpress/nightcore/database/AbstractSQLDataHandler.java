@@ -1,7 +1,5 @@
 package su.nightexpress.nightcore.database;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
@@ -9,8 +7,8 @@ import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 import su.nightexpress.nightcore.database.sql.executor.*;
-import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
 import su.nightexpress.nightcore.database.sql.query.SQLUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -103,21 +101,12 @@ public abstract class AbstractSQLDataHandler<P extends NightCorePlugin> extends 
         UpdateQueryExecutor.builder(table).values(values).where(conditions).execute(this.getConnector());
     }
 
-    @NotNull
-    public SQLUpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-        return SQLUpdateQuery.create(table, values, conditions);
-    }
-
     public void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-        this.executeUpdate(this.updateQuery(table, values, conditions));
+        this.executeUpdate(SQLUpdateQuery.create(table, values, conditions));
     }
 
-    public void executeUpdate(@NotNull IUpdateQuery query) {
-        SQLQueries.executeUpdate(this.connector, (SQLUpdateQuery) query);
-    }
-
-    public void executeUpdates(@NotNull List<IUpdateQuery> queries) {
-        SQLQueries.executeUpdates(this.connector, queries);
+    public void executeUpdate(@NotNull SQLUpdateQuery query) {
+        SQLQueries.executeUpdate(this.connector, query);
     }
 
     public void delete(@NotNull String table, @NotNull SQLCondition... conditions) {

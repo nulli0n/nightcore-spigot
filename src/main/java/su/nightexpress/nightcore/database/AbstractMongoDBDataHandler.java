@@ -21,13 +21,15 @@ import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLValue;
-import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
-import su.nightexpress.nightcore.database.sql.query.MongoUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.SQLUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -150,40 +152,15 @@ public abstract class AbstractMongoDBDataHandler<P extends NightCorePlugin> exte
     }
 
     @Override
-    public @NotNull IUpdateQuery updateQuery(@NotNull String collection, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-        List<Bson> updates = new ArrayList<>();
-        for (SQLValue value : values) {
-            updates.add(Updates.set(value.getColumn().getName(), value.getConvertedValue()));
+    public void executeUpdate(@NotNull SQLUpdateQuery query) {
+        for (var entity : query.getEntities()) {
+            database.getCollection(query.getTable()).updateMany(entity.createMongoFilters(), entity.createMongoUpdates());
         }
-        return new MongoUpdateQuery(collection, generateFilters(conditions.toArray(new SQLCondition[]{})), Updates.combine(updates));
-    }
-
-    @Override
-    public void executeUpdate(@NotNull IUpdateQuery query) {
-        var mongoQuery = (MongoUpdateQuery) query;
-        database.getCollection(mongoQuery.getCollection()).updateMany(mongoQuery.getFilter(), mongoQuery.getUpdate());
     }
 
     @Override
     public void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
         update(table, values, conditions.toArray(new SQLCondition[0]));
-    }
-
-    @Override
-    public void executeUpdates(@NotNull List<IUpdateQuery> queries) {
-        var mappedMongoQueries = new HashMap<String, List<MongoUpdateQuery>>();
-        for (var query : queries) {
-            var mongoQuery = (MongoUpdateQuery) query;
-            if (!mappedMongoQueries.containsKey(mongoQuery.getCollection())) {
-                mappedMongoQueries.put(mongoQuery.getCollection(), new ArrayList<>());
-            }
-            mappedMongoQueries.get(mongoQuery.getCollection()).add(mongoQuery);
-        }
-        for (var entry : mappedMongoQueries.entrySet()) {
-            var collection = entry.getKey();
-            var mongoQueries = entry.getValue().stream().map(MongoUpdateQuery::toUpdateManyModel).toList();
-            database.getCollection(collection).bulkWrite(mongoQueries);
-        }
     }
 
     public void delete(@NotNull String table, @NotNull SQLCondition... conditions) {

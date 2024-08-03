@@ -33,6 +33,13 @@ public class TabContext {
     }
 
     @NotNull
+    public Player getPlayerOrThrow() {
+        if (this.player != null) return this.player;
+
+        throw new IllegalStateException("TabContext is not bound to a player!");
+    }
+
+    @NotNull
     public String getLabel() {
         return label;
     }

@@ -42,7 +42,11 @@ public class TimeUtil {
             if (!str.isEmpty()) {
                 str.append(delimiter);
             }
-            str.append(CoreLang.TIME_SECOND.getString().replace(Placeholders.GENERIC_AMOUNT, String.valueOf(seconds)));
+
+            boolean doDecimal = seconds < 5 && str.isEmpty();
+            String secondsStr = doDecimal ? NumberUtil.format((double) time / 1000D) : String.valueOf(seconds);
+
+            str.append(CoreLang.TIME_SECOND.getString().replace(Placeholders.GENERIC_AMOUNT, secondsStr));
         }
 
         return str.toString();

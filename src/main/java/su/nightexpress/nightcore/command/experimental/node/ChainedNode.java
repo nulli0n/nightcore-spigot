@@ -18,7 +18,7 @@ public class ChainedNode extends CommandNode {
 
     private final String                   localized;
     private final Map<String, CommandNode> commandMap;
-    private final NodeExecutor             fallback;
+    private NodeExecutor             fallback;
 
     public ChainedNode(@NotNull NightCorePlugin plugin,
                        @NotNull String name,
@@ -32,7 +32,7 @@ public class ChainedNode extends CommandNode {
         super(plugin, name, aliases, description, permission, playerOnly);
         this.localized = localized == null ? StringUtil.capitalizeUnderscored(name) : localized;
         this.commandMap = new HashMap<>();
-        this.fallback = fallback;
+        this.setFallback(fallback);
 
         this.addChildren(DirectNode.builder(plugin, "help")
             .description(CoreLang.COMMAND_HELP_DESC)
@@ -67,6 +67,10 @@ public class ChainedNode extends CommandNode {
         //System.out.println("children run");
         context.setArgumentIndex(context.getArgumentIndex() + 1);
         return children.run(context);
+    }
+
+    public void setFallback(@Nullable NodeExecutor fallback) {
+        this.fallback = fallback;
     }
 
     private boolean onFallback(@NotNull CommandContext context) {

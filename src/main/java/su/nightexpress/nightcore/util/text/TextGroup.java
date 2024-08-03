@@ -10,10 +10,7 @@ import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TextGroup implements ComponentBuildable {
@@ -28,7 +25,7 @@ public class TextGroup implements ComponentBuildable {
     public TextGroup(@NotNull String name) {
         this.name = name;
         this.childrens = new ArrayList<>();
-        this.decorators = new HashSet<>();
+        this.decorators = new LinkedHashSet<>();
     }
 
     @NotNull

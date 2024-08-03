@@ -37,15 +37,8 @@ public class HoverTag extends ComplexTag implements ContentTag {
 
     @NotNull
     public String enclose(@NotNull String text, @NotNull HoverEvent.Action action, @NotNull String content) {
-        //content = content.replace("'", "\\'");
-
-        //String tagOpen = brackets(NAME + ":" + action.name().toLowerCase() + ":'" + content + "'");
-        //String tagClose = this.getClosingName();
-
         String data = action.name().toLowerCase() + ":'" + this.escapeQuotes(content) + "'";
         return this.encloseContent(text, data);
-
-        //return tagOpen + text + tagClose;
     }
 
     @Override
@@ -68,7 +61,7 @@ public class HoverTag extends ComplexTag implements ContentTag {
         if (action == HoverEvent.Action.SHOW_TEXT) {
             return new ShowTextDecorator(value);
         }
-       else  if (action == HoverEvent.Action.SHOW_ITEM) {
+        else if (action == HoverEvent.Action.SHOW_ITEM) {
             return new ShowItemDecorator(value);
         }
         return null;

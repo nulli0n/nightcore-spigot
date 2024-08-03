@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.command.experimental.builder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.TabContext;
+import su.nightexpress.nightcore.command.experimental.argument.ArgumentParser;
 import su.nightexpress.nightcore.command.experimental.argument.CommandArgument;
 import su.nightexpress.nightcore.language.entry.LangString;
 import su.nightexpress.nightcore.language.entry.LangText;
@@ -14,8 +15,8 @@ import java.util.function.Function;
 
 public class ArgumentBuilder<T> {
 
-    protected final String              name;
-    protected final Function<String, T> parser;
+    protected final String         name;
+    protected final ArgumentParser<T> parser;
 
     protected boolean                            required;
     protected boolean complex;
@@ -24,7 +25,12 @@ public class ArgumentBuilder<T> {
     protected Function<TabContext, List<String>> samples;
     protected LangMessage                        failureMessage;
 
+    @Deprecated
     public ArgumentBuilder(@NotNull String name, @NotNull Function<String, T> parser) {
+        this(name, (string, context) -> parser.apply(string));
+    }
+
+    public ArgumentBuilder(@NotNull String name, @NotNull ArgumentParser<T> parser) {
         this.name = name;
         this.parser = parser;
     }

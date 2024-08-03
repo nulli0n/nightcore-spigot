@@ -1,6 +1,7 @@
 EntityType:
   allay: Hilfsgeist
   area_effect_cloud: Partikelwolke
+  armadillo: Gürteltier
   armor_stand: Rüstungsständer
   arrow: Pfeil
   axolotl: Axolotl
@@ -9,6 +10,9 @@ EntityType:
   blaze: Lohe
   block_display: Blockdarsteller
   boat: Boot
+  bogged: Sumpfskelett
+  breeze: Böe
+  breeze_wind_charge: Windkugel
   camel: Dromedar
   cat: Katze
   cave_spider: Höhlenspinne
@@ -24,7 +28,7 @@ EntityType:
   dragon_fireball: Drachen-Feuerkugel
   drowned: Ertrunkener
   egg: Geworfenes Ei
-  elder_guardian: Großer Wächter
+  elder_guardian: Großwächter
   end_crystal: Enderkristall
   ender_dragon: Enderdrache
   ender_pearl: Geworfene Enderperle
@@ -70,6 +74,7 @@ EntityType:
   mooshroom: Mooshroom
   mule: Maultier
   ocelot: Ozelot
+  ominous_item_spawner: Unheilvoller Gegenstands-Spawner
   painting: Gemälde
   panda: Panda
   parrot: Papagei
@@ -115,10 +120,11 @@ EntityType:
   vindicator: Diener
   wandering_trader: Fahrender Händler
   warden: Wärter
+  wind_charge: Windkugel
   witch: Hexe
   wither: Wither
-  wither_skeleton: Witherskelett
-  wither_skull: Witherschädel
+  wither_skeleton: Wither-Skelett
+  wither_skull: Wither-Schädel
   wolf: Wolf
   zoglin: Zoglin
   zombie: Zombie
@@ -132,12 +138,13 @@ PotionEffectType:
   conduit_power: Meereskraft
   darkness: Dunkelheit
   dolphins_grace: Gunst des Delfins
-  fire_resistance: Feuerschutz
+  fire_resistance: Feuerresistenz
   glowing: Leuchten
   haste: Eile
   health_boost: Extraenergie
   hero_of_the_village: Held des Dorfes
   hunger: Hunger
+  infested: Befallen
   instant_damage: Direktschaden
   instant_health: Direktheilung
   invisibility: Unsichtbarkeit
@@ -147,7 +154,9 @@ PotionEffectType:
   mining_fatigue: Abbaulähmung
   nausea: Übelkeit
   night_vision: Nachtsicht
+  oozing: Schleimen
   poison: Vergiftung
+  raid_omen: Drohender Überfall
   regeneration: Regeneration
   resistance: Resistenz
   saturation: Sättigung
@@ -155,9 +164,12 @@ PotionEffectType:
   slowness: Langsamkeit
   speed: Schnelligkeit
   strength: Stärke
+  trial_omen: Drohende Prüfung
   unluck: Pech
   water_breathing: Unterwasseratmung
   weakness: Schwäche
+  weaving: Weben
+  wind_charged: Windgeladen
   wither: Verdorrung
 Material:
   acacia_button: Akazienholzknopf
@@ -341,6 +353,7 @@ Material:
   chest: Truhe
   chipped_anvil: Angeschlagener Amboss
   chiseled_bookshelf: Gearbeitetes Bücherregal
+  chiseled_copper: Gemeißelter Kupferblock
   chiseled_deepslate: Gemeißelter Tiefenschiefer
   chiseled_nether_bricks: Gemeißelte Netherziegel
   chiseled_polished_blackstone: Gemeißelter polierter Schwarzstein
@@ -348,6 +361,8 @@ Material:
   chiseled_red_sandstone: Gemeißelter roter Sandstein
   chiseled_sandstone: Gemeißelter Sandstein
   chiseled_stone_bricks: Gemeißelte Steinziegel
+  chiseled_tuff: Gemeißelter Tuffstein
+  chiseled_tuff_bricks: Gemeißelte Tuffsteinziegel
   chorus_flower: Chorusblüte
   chorus_plant: Choruspflanze
   clay: Ton
@@ -369,13 +384,18 @@ Material:
   composter: Komposter
   conduit: Aquisator
   copper_block: Kupferblock
+  copper_bulb: Kupferleuchte
+  copper_door: Kupfertür
+  copper_grate: Kupferrost
   copper_ore: Kupfererz
+  copper_trapdoor: Kupferfalltür
   cornflower: Kornblume
   cracked_deepslate_bricks: Rissige Tiefenschieferziegel
   cracked_deepslate_tiles: Rissige Tiefenschieferfliesen
   cracked_nether_bricks: Rissige Netherziegel
   cracked_polished_blackstone_bricks: Rissige polierte Schwarzsteinziegel
   cracked_stone_bricks: Rissige Steinziegel
+  crafter: Werker
   crafting_table: Werkbank
   creeper_head: Creeperkopf
   creeper_wall_head: Creeper-Wandkopf
@@ -509,7 +529,12 @@ Material:
   end_stone_brick_wall: Endsteinziegelmauer
   end_stone_bricks: Endsteinziegel
   ender_chest: Endertruhe
+  exposed_chiseled_copper: Angelaufener gemeißelter Kupferblock
   exposed_copper: Angelaufener Kupferblock
+  exposed_copper_bulb: Angelaufene Kupferleuchte
+  exposed_copper_door: Angelaufene Kupfertür
+  exposed_copper_grate: Angelaufener Kupferrost
+  exposed_copper_trapdoor: Angelaufene Kupferfalltür
   exposed_cut_copper: Angelaufener geschnittener Kupferblock
   exposed_cut_copper_slab: Angelaufene geschnittene Kupferstufe
   exposed_cut_copper_stairs: Angelaufene geschnittene Kupfertreppe
@@ -570,6 +595,7 @@ Material:
   grindstone: Schleifstein
   hanging_roots: Hängende Wurzeln
   hay_block: Strohballen
+  heavy_core: Schwerer Kern
   heavy_weighted_pressure_plate: Grobwägeplatte
   honey_block: Honigblock
   honeycomb_block: Honigwabenblock
@@ -774,7 +800,12 @@ Material:
   orange_tulip: Orange Tulpe
   orange_wool: Orange Wolle
   oxeye_daisy: Margerite
+  oxidized_chiseled_copper: Oxidierter gemeißelter Kupferblock
   oxidized_copper: Oxidierter Kupferblock
+  oxidized_copper_bulb: Oxidierte Kupferleuchte
+  oxidized_copper_door: Oxidierte Kupfertür
+  oxidized_copper_grate: Oxidierter Kupferrost
+  oxidized_copper_trapdoor: Oxidierte Kupferfalltür
   oxidized_cut_copper: Oxidierter geschnittener Kupferblock
   oxidized_cut_copper_slab: Oxidierte geschnittene Kupferstufe
   oxidized_cut_copper_stairs: Oxidierte geschnittene Kupfertreppe
@@ -832,6 +863,10 @@ Material:
   polished_granite: Polierter Granit
   polished_granite_slab: Polierte Granitstufe
   polished_granite_stairs: Polierte Granittreppe
+  polished_tuff: Polierter Tuffstein
+  polished_tuff_slab: Polierte Tuffsteinstufe
+  polished_tuff_stairs: Polierte Tuffsteintreppe
+  polished_tuff_wall: Polierte Tuffsteinmauer
   poppy: Mohn
   potatoes: Kartoffeln
   potted_acacia_sapling: Eingetopfter Akaziensetzling
@@ -958,6 +993,7 @@ Material:
   sea_pickle: Meeresgurke
   seagrass: Seegras
   set_spawn: Wiedereinstiegspunkt gesetzt
+  short_grass: Niedriges Gras
   shroomlight: Pilzlicht
   shulker_box: Shulker-Kiste
   skeleton_skull: Skelettschädel
@@ -1058,6 +1094,7 @@ Material:
   torchflower: Fackellilie
   torchflower_crop: Fackellilienpflanze
   trapped_chest: Redstone-Truhe
+  trial_spawner: Prüfungs-Spawner
   tripwire: Stolperdraht
   tripwire_hook: Haken
   tube_coral: Orgelkoralle
@@ -1065,9 +1102,17 @@ Material:
   tube_coral_fan: Orgelkorallenfächer
   tube_coral_wall_fan: Orgelkorallenwandfächer
   tuff: Tuffstein
+  tuff_brick_slab: Tuffsteinziegelstufe
+  tuff_brick_stairs: Tuffsteinziegeltreppe
+  tuff_brick_wall: Tuffsteinziegelmauer
+  tuff_bricks: Tuffsteinziegel
+  tuff_slab: Tuffsteinstufe
+  tuff_stairs: Tuffsteintreppe
+  tuff_wall: Tuffsteinmauer
   turtle_egg: Schildkrötenei
   twisting_vines: Zwirbelranken
   twisting_vines_plant: Zwirbelrankenpflanze
+  vault: Tresor
   verdant_froglight: Junggrünes Froschlicht
   vine: Ranken
   void_air: Leerenluft
@@ -1093,23 +1138,48 @@ Material:
   warped_wart_block: Wirrwarzenblock
   water: Wasser
   water_cauldron: Wasserkessel
+  waxed_chiseled_copper: Gewachster gemeißelter Kupferblock
   waxed_copper_block: Gewachster Kupferblock
+  waxed_copper_bulb: Gewachste Kupferleuchte
+  waxed_copper_door: Gewachste Kupfertür
+  waxed_copper_grate: Gewachster Kupferrost
+  waxed_copper_trapdoor: Gewachste Kupferfalltür
   waxed_cut_copper: Gewachster geschnittener Kupferblock
   waxed_cut_copper_slab: Gewachste geschnittene Kupferstufe
   waxed_cut_copper_stairs: Gewachste geschnittene Kupfertreppe
+  waxed_exposed_chiseled_copper: Gewachster angelaufener gemeißelter Kupferblock
   waxed_exposed_copper: Gewachster angelaufener Kupferblock
+  waxed_exposed_copper_bulb: Gewachste angelaufene Kupferleuchte
+  waxed_exposed_copper_door: Gewachste angelaufene Kupfertür
+  waxed_exposed_copper_grate: Gewachster angelaufener Kupferrost
+  waxed_exposed_copper_trapdoor: Gewachste angelaufene Kupferfalltür
   waxed_exposed_cut_copper: Gewachster angelaufener geschnittener Kupferblock
   waxed_exposed_cut_copper_slab: Gewachste angelaufene geschnittene Kupferstufe
   waxed_exposed_cut_copper_stairs: Gewachste angelaufene geschnittene Kupfertreppe
+  waxed_oxidized_chiseled_copper: Gewachster oxidierter gemeißelter Kupferblock
   waxed_oxidized_copper: Gewachster oxidierter Kupferblock
+  waxed_oxidized_copper_bulb: Gewachste oxidierte Kupferleuchte
+  waxed_oxidized_copper_door: Gewachste oxidierte Kupfertür
+  waxed_oxidized_copper_grate: Gewachster oxidierter Kupferrost
+  waxed_oxidized_copper_trapdoor: Gewachste oxidierte Kupferfalltür
   waxed_oxidized_cut_copper: Gewachster oxidierter geschnittener Kupferblock
   waxed_oxidized_cut_copper_slab: Gewachste oxidierte geschnittene Kupferstufe
   waxed_oxidized_cut_copper_stairs: Gewachste oxidierte geschnittene Kupfertreppe
+  waxed_weathered_chiseled_copper: Gewachster verwitterter gemeißelter Kupferblock
   waxed_weathered_copper: Gewachster verwitterter Kupferblock
+  waxed_weathered_copper_bulb: Gewachste verwitterte Kupferleuchte
+  waxed_weathered_copper_door: Gewachste verwitterte Kupfertür
+  waxed_weathered_copper_grate: Gewachster verwitterter Kupferrost
+  waxed_weathered_copper_trapdoor: Gewachste verwitterte Kupferfalltür
   waxed_weathered_cut_copper: Gewachster verwitterter geschnittener Kupferblock
   waxed_weathered_cut_copper_slab: Gewachste verwitterte geschnittene Kupferstufe
   waxed_weathered_cut_copper_stairs: Gewachste verwitterte geschnittene Kupfertreppe
+  weathered_chiseled_copper: Verwitterter gemeißelter Kupferblock
   weathered_copper: Verwitterter Kupferblock
+  weathered_copper_bulb: Verwitterte Kupferleuchte
+  weathered_copper_door: Verwitterte Kupfertür
+  weathered_copper_grate: Verwitterter Kupferrost
+  weathered_copper_trapdoor: Verwitterte Kupferfalltür
   weathered_cut_copper: Verwitterter geschnittener Kupferblock
   weathered_cut_copper_slab: Verwitterte geschnittene Kupferstufe
   weathered_cut_copper_stairs: Verwitterte geschnittene Kupfertreppe
@@ -1132,8 +1202,8 @@ Material:
   white_tulip: Weiße Tulpe
   white_wool: Weiße Wolle
   wither_rose: Wither-Rose
-  wither_skeleton_skull: Witherskelettschädel
-  wither_skeleton_wall_skull: Witherskelett-Wandschädel
+  wither_skeleton_skull: Wither-Skelettschädel
+  wither_skeleton_wall_skull: Wither-Skelett-Wandschädel
   yellow_banner: Gelbes Banner
   yellow_bed: Gelbes Bett
   yellow_candle: Gelbe Kerze
@@ -1158,6 +1228,8 @@ Material:
   apple: Apfel
   archer_pottery_shard: Schützen-Töpferscherbe
   archer_pottery_sherd: Schützen-Töpferscherbe
+  armadillo_scute: Gürteltier-Hornschild
+  armadillo_spawn_egg: Gürteltier-Spawn-Ei
   armor_stand: Rüstungsständer
   arms_up_pottery_shard: Gebärden-Töpferscherbe
   arms_up_pottery_sherd: Gebärden-Töpferscherbe
@@ -1182,12 +1254,16 @@ Material:
   blaze_rod: Lohenrute
   blaze_spawn_egg: Lohen-Spawn-Ei
   blue_dye: Blauer Farbstoff
+  bogged_spawn_egg: Sumpfskelett-Spawn-Ei
+  bolt_armor_trim_smithing_template: Schmiedevorlage
   bone: Knochen
   bone_meal: Knochenmehl
   book: Buch
   bow: Bogen
   bowl: Schüssel
   bread: Brot
+  breeze_rod: Böenrute
+  breeze_spawn_egg: Böen-Spawn-Ei
   brewer_pottery_shard: Brauer-Töpferscherbe
   brewer_pottery_sherd: Brauer-Töpferscherbe
   brick: Ziegel
@@ -1262,7 +1338,7 @@ Material:
   dune_armor_trim_smithing_template: Schmiedevorlage
   echo_shard: Echoscherbe
   egg: Ei
-  elder_guardian_spawn_egg: Großer-Wächter-Spawn-Ei
+  elder_guardian_spawn_egg: Großwächter-Spawn-Ei
   elytra: Elytren
   emerald: Smaragd
   enchanted_book: Verzaubertes Buch
@@ -1287,6 +1363,9 @@ Material:
   fishing_rod: Angel
   flint: Feuerstein
   flint_and_steel: Feuerzeug
+  flow_armor_trim_smithing_template: Schmiedevorlage
+  flow_banner_pattern: Bannervorlage
+  flow_pottery_sherd: Fluss-Töpferscherbe
   flower_banner_pattern: Bannervorlage
   fox_spawn_egg: Fuchs-Spawn-Ei
   friend_pottery_shard: Freundes-Töpferscherbe
@@ -1323,6 +1402,8 @@ Material:
   green_dye: Grüner Farbstoff
   guardian_spawn_egg: Wächter-Spawn-Ei
   gunpowder: Schwarzpulver
+  guster_banner_pattern: Bannervorlage
+  guster_pottery_sherd: Windstoßer-Töpferscherbe
   heart_of_the_sea: Herz des Meeres
   heart_pottery_shard: Herz-Töpferscherbe
   heart_pottery_sherd: Herz-Töpferscherbe
@@ -1370,6 +1451,7 @@ Material:
   lingering_potion: Verweiltrank
   llama_spawn_egg: Lama-Spawn-Ei
   lodestone_compass: Leitstein-Kompass
+  mace: Streitkolben
   magenta_dye: Magenta Farbstoff
   magma_cream: Magmacreme
   magma_cube_spawn_egg: Magmawürfel-Spawn-Ei
@@ -1394,11 +1476,14 @@ Material:
   music_disc_blocks: Schallplatte
   music_disc_cat: Schallplatte
   music_disc_chirp: Schallplatte
+  music_disc_creator: Schallplatte
+  music_disc_creator_music_box: Schallplatte
   music_disc_far: Schallplatte
   music_disc_mall: Schallplatte
   music_disc_mellohi: Schallplatte
   music_disc_otherside: Schallplatte
   music_disc_pigstep: Schallplatte
+  music_disc_precipice: Schallplatte
   music_disc_relic: Schallplatte
   music_disc_stal: Schallplatte
   music_disc_strad: Schallplatte
@@ -1424,6 +1509,8 @@ Material:
   oak_boat: Eichenholzboot
   oak_chest_boat: Eichenholztruhenboot
   ocelot_spawn_egg: Ozelot-Spawn-Ei
+  ominous_bottle: Unheilvolle Flasche
+  ominous_trial_key: Unheilvoller Prüfungsschlüssel
   orange_dye: Oranger Farbstoff
   painting: Gemälde
   panda_spawn_egg: Panda-Spawn-Ei
@@ -1481,6 +1568,7 @@ Material:
   salmon: Roher Lachs
   salmon_bucket: Lachseimer
   salmon_spawn_egg: Lachs-Spawn-Ei
+  scrape_pottery_sherd: Abschabe-Töpferscherbe
   scute: Hornschild
   sentry_armor_trim_smithing_template: Schmiedevorlage
   shaper_armor_trim_smithing_template: Schmiedevorlage
@@ -1539,11 +1627,13 @@ Material:
   torchflower_seeds: Fackelliliensamen
   totem_of_undying: Totem der Unsterblichkeit
   trader_llama_spawn_egg: Händlerlama-Spawn-Ei
+  trial_key: Prüfungsschlüssel
   trident: Dreizack
   tropical_fish: Tropenfisch
   tropical_fish_bucket: Tropenfischeimer
   tropical_fish_spawn_egg: Tropenfisch-Spawn-Ei
   turtle_helmet: Schildkrötenpanzer
+  turtle_scute: Schildkröten-Hornschild
   turtle_spawn_egg: Schildkröten-Spawn-Ei
   vex_armor_trim_smithing_template: Schmiedevorlage
   vex_spawn_egg: Plagegeister-Spawn-Ei
@@ -1558,9 +1648,11 @@ Material:
   wheat_seeds: Weizenkörner
   white_dye: Weißer Farbstoff
   wild_armor_trim_smithing_template: Schmiedevorlage
+  wind_charge: Windkugel
   witch_spawn_egg: Hexen-Spawn-Ei
-  wither_skeleton_spawn_egg: Witherskelett-Spawn-Ei
+  wither_skeleton_spawn_egg: Wither-Skelett-Spawn-Ei
   wither_spawn_egg: Wither-Spawn-Ei
+  wolf_armor: Wolfspanzer
   wolf_spawn_egg: Wolfs-Spawn-Ei
   wooden_axe: Holzaxt
   wooden_hoe: Holzhacke
@@ -1580,7 +1672,9 @@ Enchantment:
   bane_of_arthropods: Nemesis der Gliederfüßer
   binding_curse: Fluch der Bindung
   blast_protection: Explosionsschutz
+  breach: Durchbruch
   channeling: Entladung
+  density: Dichte
   depth_strider: Wasserläufer
   efficiency: Effizienz
   feather_falling: Federfall
@@ -1600,7 +1694,7 @@ Enchantment:
   multishot: Mehrfachschuss
   piercing: Durchschuss
   power: Stärke
-  projectile_protection: Schusssicher
+  projectile_protection: Schusssicherheit
   protection: Schutz
   punch: Schlag
   quick_charge: Schnellladen
@@ -1611,7 +1705,9 @@ Enchantment:
   smite: Bann
   soul_speed: Seelenläufer
   sweeping: Schwungkraft
+  sweeping_edge: Schwungkraft
   swift_sneak: Huschen
   thorns: Dornen
   unbreaking: Haltbarkeit
   vanishing_curse: Fluch des Verschwindens
+  wind_burst: Windstoß

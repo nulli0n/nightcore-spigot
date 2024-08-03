@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.util.random.Rnd;
 import su.nightexpress.nightcore.util.regex.TimedMatcher;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -100,6 +101,36 @@ public class StringUtil {
             buf.append(text.charAt(i));
         }
         return buf.toString();
+    }
+
+    public static String replacePlaceholders(@NotNull String string, @NotNull Map<String, Supplier<String>> placeholders) {
+        if (string.isBlank()) return string;
+
+        StringBuilder builder = new StringBuilder();
+
+        char[] chars = string.toCharArray();
+        int length = string.length();
+        //int index = 0;
+        for (int index = 0; index < length; index++) {
+            if (index == length - 1) continue;
+
+            char letter = string.charAt(index);
+            if (letter == '%') {
+                int indexNext = string.indexOf(letter, index + 1);
+                if (indexNext != -1) {
+                    String key = string.substring(index + 1, indexNext);
+                    Supplier<String> supplier = placeholders.get(key);
+                    if (supplier != null) {
+                        builder.append(supplier.get());
+                        index = indexNext;
+                        continue;
+                    }
+                }
+            }
+            builder.append(letter);
+        }
+
+        return builder.toString();
     }
 
     /*@Nullable

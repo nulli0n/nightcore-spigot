@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 
 public class ItemUtil {
 
-    private static final String TEXTURES_HOST = "http://textures.minecraft.net/texture/";
+    public static final String TEXTURES_HOST = "http://textures.minecraft.net/texture/";
 
     @NotNull
     public static String getItemName(@NotNull ItemStack item) {

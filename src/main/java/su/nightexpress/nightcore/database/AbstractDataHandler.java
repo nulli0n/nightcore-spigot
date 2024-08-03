@@ -10,7 +10,8 @@ import su.nightexpress.nightcore.database.serialize.ItemStackSerializer;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLValue;
-import su.nightexpress.nightcore.database.sql.query.IUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.SQLUpdateQuery;
+import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 import su.nightexpress.nightcore.manager.AbstractManager;
 
 import java.sql.Connection;
@@ -158,20 +159,16 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
     }
 
     @NotNull
-    public IUpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-        return this.delegate.updateQuery(table, values, conditions);
+    public UpdateEntity createUpdateEntity(@NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+        return UpdateEntity.create(values, conditions);
     }
 
     public void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
         this.delegate.executeUpdate(table, values, conditions);
     }
 
-    public void executeUpdate(@NotNull IUpdateQuery query) {
+    public void executeUpdate(@NotNull SQLUpdateQuery query) {
         this.delegate.executeUpdate(query);
-    }
-
-    public void executeUpdates(@NotNull List<IUpdateQuery> queries) {
-        this.delegate.executeUpdates(queries);
     }
 
     public void delete(@NotNull String table, @NotNull SQLCondition... conditions) {

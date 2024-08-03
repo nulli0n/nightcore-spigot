@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.CommandResult;
 
+@Deprecated
 public class BaseCommand extends PluginCommand<NightCorePlugin> {
 
     public BaseCommand(@NotNull NightCorePlugin plugin) {

@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.util.wrapper.UniSound;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 public class ConfigValue<T> {
@@ -22,6 +23,7 @@ public class ConfigValue<T> {
     private final Writer<T> writer;
 
     private T value;
+    private UnaryOperator<T> onRead;
 
     public ConfigValue(@NotNull String path,
                        @NotNull Reader<T> reader,
@@ -246,22 +248,31 @@ public class ConfigValue<T> {
     }
 
     @NotNull
-    public T read(@NotNull FileConfig cfg) {
-        if (!cfg.contains(this.getPath())) {
-            this.write(cfg);
+    public ConfigValue<T> onRead(@NotNull UnaryOperator<T> onRead) {
+        this.onRead = onRead;
+        return this;
+    }
+
+    @NotNull
+    public T read(@NotNull FileConfig config) {
+        if (!config.contains(this.getPath())) {
+            this.write(config);
         }
         if (this.getDescription().length > 0 && !this.getDescription()[0].isEmpty()) {
-            cfg.setComments(this.getPath(), this.getDescription());
+            config.setComments(this.getPath(), this.getDescription());
         }
-        return (this.value = this.reader.read(cfg, this.getPath(), this.getDefaultValue()));
+
+        UnaryOperator<T> operator = this.onRead == null ? value -> value : this.onRead;
+
+        return (this.value = operator.apply(this.reader.read(config, this.getPath(), this.getDefaultValue())));
     }
 
-    public void write(@NotNull FileConfig cfg) {
-        this.getWriter().write(cfg, this.getPath(), this.get());
+    public void write(@NotNull FileConfig config) {
+        this.getWriter().write(config, this.getPath(), this.get());
     }
 
-    public boolean remove(@NotNull FileConfig cfg) {
-        return cfg.remove(this.getPath());
+    public boolean remove(@NotNull FileConfig config) {
+        return config.remove(this.getPath());
     }
 
     @NotNull
@@ -300,11 +311,11 @@ public class ConfigValue<T> {
 
     public interface Reader<T> {
 
-        @NotNull T read(@NotNull FileConfig cfg, @NotNull String path, @NotNull T def);
+        @NotNull T read(@NotNull FileConfig config, @NotNull String path, @NotNull T def);
     }
 
     public interface Writer<T> {
 
-        void write(@NotNull FileConfig cfg, @NotNull String path, @NotNull T obj);
+        void write(@NotNull FileConfig config, @NotNull String path, @NotNull T obj);
     }
 }

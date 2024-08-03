@@ -1,6 +1,7 @@
 EntityType:
   allay: Allay
   area_effect_cloud: Nube de efecto persistente
+  armadillo: Armadillo
   armor_stand: Soporte para armadura
   arrow: Flecha
   axolotl: Ajolote
@@ -9,6 +10,9 @@ EntityType:
   blaze: Blaze
   block_display: Bloque holográfico
   boat: Barca
+  bogged: Ciénago
+  breeze: Breeze
+  breeze_wind_charge: Carga de viento
   camel: Camello
   cat: Gato
   cave_spider: Araña de cueva
@@ -70,6 +74,7 @@ EntityType:
   mooshroom: Mooshroom
   mule: Mula
   ocelot: Ocelote
+  ominous_item_spawner: Generador de objetos ominoso
   painting: Cuadro
   panda: Panda
   parrot: Loro
@@ -115,6 +120,7 @@ EntityType:
   vindicator: Vindicador
   wandering_trader: Vendedor ambulante
   warden: Warden
+  wind_charge: Carga de viento
   witch: Bruja
   wither: Wither
   wither_skeleton: Esqueleto del Wither
@@ -138,6 +144,7 @@ PotionEffectType:
   health_boost: Salud mejorada
   hero_of_the_village: Héroe de la aldea
   hunger: Hambre
+  infested: Infestación
   instant_damage: Daño instantáneo
   instant_health: Curación instantánea
   invisibility: Invisibilidad
@@ -147,7 +154,9 @@ PotionEffectType:
   mining_fatigue: Fatiga minera
   nausea: Náusea
   night_vision: Visión nocturna
+  oozing: Mucosidad
   poison: Veneno
+  raid_omen: Presagio de invasión
   regeneration: Regeneración
   resistance: Resistencia
   saturation: Saturación
@@ -155,9 +164,12 @@ PotionEffectType:
   slowness: Lentitud
   speed: Velocidad
   strength: Fuerza
+  trial_omen: Presagio de desafío
   unluck: Mala suerte
   water_breathing: Apnea
   weakness: Debilidad
+  weaving: Tejedura
+  wind_charged: Cierzo
   wither: Descomposición
 Material:
   acacia_button: Botón de acacia
@@ -341,6 +353,7 @@ Material:
   chest: Cofre
   chipped_anvil: Yunque dañado
   chiseled_bookshelf: Estantería
+  chiseled_copper: Cobre cincelado
   chiseled_deepslate: Pizarra profunda cincelada
   chiseled_nether_bricks: Ladrillos del Nether cincelados
   chiseled_polished_blackstone: Piedra negra pulida cincelada
@@ -348,6 +361,8 @@ Material:
   chiseled_red_sandstone: Arenisca roja cincelada
   chiseled_sandstone: Arenisca cincelada
   chiseled_stone_bricks: Ladrillos de piedra cincelados
+  chiseled_tuff: Toba cincelada
+  chiseled_tuff_bricks: Ladrillos de toba cincelados
   chorus_flower: Flor chorus
   chorus_plant: Planta chorus
   clay: Bloque de arcilla
@@ -369,13 +384,18 @@ Material:
   composter: Compostador
   conduit: Canalizador
   copper_block: Bloque de cobre
+  copper_bulb: Lámpara de cobre
+  copper_door: Puerta de cobre
+  copper_grate: Rejilla de cobre
   copper_ore: Mena de cobre
+  copper_trapdoor: Trampilla de cobre
   cornflower: Aciano
   cracked_deepslate_bricks: Ladrillos de pizarra profunda agrietados
   cracked_deepslate_tiles: Baldosas de pizarra profunda agrietadas
   cracked_nether_bricks: Ladrillos del Nether agrietados
   cracked_polished_blackstone_bricks: Ladrillos de piedra negra pulida agrietados
   cracked_stone_bricks: Ladrillos de piedra agrietados
+  crafter: Fabricador
   crafting_table: Mesa de trabajo
   creeper_head: Cabeza de creeper
   creeper_wall_head: Cabeza de creeper en pared
@@ -494,7 +514,7 @@ Material:
   dragon_head: Cabeza de dragón
   dragon_wall_head: Cabeza de dragón en pared
   dried_kelp_block: Bloque de algas secas
-  dripstone_block: Bloque de espeleotema
+  dripstone_block: Bloque de caliza
   dropper: Soltador
   emerald_block: Bloque de esmeralda
   emerald_ore: Mena de esmeralda
@@ -509,7 +529,12 @@ Material:
   end_stone_brick_wall: Muro de ladrillos de piedra del End
   end_stone_bricks: Ladrillos de piedra del End
   ender_chest: Cofre de ender
+  exposed_chiseled_copper: Cobre cincelado expuesto
   exposed_copper: Cobre expuesto
+  exposed_copper_bulb: Lámpara de cobre expuesto
+  exposed_copper_door: Puerta de cobre expuesto
+  exposed_copper_grate: Rejilla de cobre expuesto
+  exposed_copper_trapdoor: Trampilla de cobre expuesto
   exposed_cut_copper: Cobre cortado expuesto
   exposed_cut_copper_slab: Losa de cobre cortado expuesto
   exposed_cut_copper_stairs: Escaleras de cobre cortado expuesto
@@ -570,6 +595,7 @@ Material:
   grindstone: Afiladora
   hanging_roots: Raíces colgantes
   hay_block: Bala de heno
+  heavy_core: Núcleo pesado
   heavy_weighted_pressure_plate: Placa de presión para peso elevado
   honey_block: Bloque de miel
   honeycomb_block: Bloque de panal
@@ -774,7 +800,12 @@ Material:
   orange_tulip: Tulipán naranja
   orange_wool: Lana naranja
   oxeye_daisy: Margarita
+  oxidized_chiseled_copper: Cobre cincelado oxidado
   oxidized_copper: Cobre oxidado
+  oxidized_copper_bulb: Lámpara de cobre oxidado
+  oxidized_copper_door: Puerta de cobre oxidado
+  oxidized_copper_grate: Rejilla de cobre oxidado
+  oxidized_copper_trapdoor: Trampilla de cobre oxidado
   oxidized_cut_copper: Cobre cortado oxidado
   oxidized_cut_copper_slab: Losa de cobre cortado oxidado
   oxidized_cut_copper_stairs: Escaleras de cobre cortado oxidado
@@ -807,7 +838,7 @@ Material:
   player_head: Cabeza de jugador
   player_wall_head: Cabeza de jugador en pared
   podzol: Podsol
-  pointed_dripstone: Espeleotema puntiagudo
+  pointed_dripstone: Caliza puntiaguda
   polished_andesite: Andesita pulida
   polished_andesite_slab: Losa de andesita pulida
   polished_andesite_stairs: Escaleras de andesita pulida
@@ -832,6 +863,10 @@ Material:
   polished_granite: Granito pulido
   polished_granite_slab: Losa de granito pulido
   polished_granite_stairs: Escaleras de granito pulido
+  polished_tuff: Toba pulida
+  polished_tuff_slab: Losa de toba pulida
+  polished_tuff_stairs: Escaleras de toba pulida
+  polished_tuff_wall: Muro de toba pulida
   poppy: Amapola
   potatoes: Patatas
   potted_acacia_sapling: Maceta con brote de acacia
@@ -958,6 +993,7 @@ Material:
   sea_pickle: Pepino de mar
   seagrass: Hierba marina
   set_spawn: Se ha establecido el punto de reaparición
+  short_grass: Hierba corta
   shroomlight: Brillongo
   shulker_box: Caja de shulker
   skeleton_skull: Calavera de esqueleto
@@ -1058,6 +1094,7 @@ Material:
   torchflower: Plantorcha
   torchflower_crop: Cultivo de plantorcha
   trapped_chest: Cofre trampa
+  trial_spawner: Generador de desafío
   tripwire: Hilo trampa
   tripwire_hook: Gancho de cuerda
   tube_coral: Coral de tubo
@@ -1065,9 +1102,17 @@ Material:
   tube_coral_fan: Gorgonia de tubo
   tube_coral_wall_fan: Gorgonia de tubo en pared
   tuff: Toba
+  tuff_brick_slab: Losa de ladrillos de toba
+  tuff_brick_stairs: Escaleras de ladrillos de toba
+  tuff_brick_wall: Muro de ladrillos de toba
+  tuff_bricks: Ladrillos de toba
+  tuff_slab: Losa de toba
+  tuff_stairs: Escaleras de toba
+  tuff_wall: Muro de toba
   turtle_egg: Huevo de tortuga
   twisting_vines: Enredaderas retorcidas
   twisting_vines_plant: Planta de enredaderas retorcidas
+  vault: Arca
   verdant_froglight: Ranaluz verde
   vine: Enredaderas
   void_air: Aire de vacío
@@ -1093,23 +1138,48 @@ Material:
   warped_wart_block: Bloque de verrugas distorsionadas
   water: Agua
   water_cauldron: Caldero con agua
+  waxed_chiseled_copper: Cobre cincelado encerado
   waxed_copper_block: Bloque de cobre encerado
+  waxed_copper_bulb: Lámpara de cobre encerado
+  waxed_copper_door: Puerta de cobre encerado
+  waxed_copper_grate: Rejilla de cobre encerado
+  waxed_copper_trapdoor: Trampilla de cobre encerado
   waxed_cut_copper: Cobre cortado encerado
   waxed_cut_copper_slab: Losa de cobre cortado encerado
   waxed_cut_copper_stairs: Escaleras de cobre cortado encerado
+  waxed_exposed_chiseled_copper: Cobre cincelado expuesto encerado
   waxed_exposed_copper: Cobre expuesto encerado
+  waxed_exposed_copper_bulb: Lámpara de cobre expuesto encerado
+  waxed_exposed_copper_door: Puerta de cobre expuesto encerado
+  waxed_exposed_copper_grate: Rejilla de cobre expuesto encerado
+  waxed_exposed_copper_trapdoor: Trampilla de cobre expuesto encerado
   waxed_exposed_cut_copper: Cobre cortado expuesto encerado
   waxed_exposed_cut_copper_slab: Losa de cobre cortado expuesto encerado
   waxed_exposed_cut_copper_stairs: Escaleras de cobre cortado expuesto encerado
+  waxed_oxidized_chiseled_copper: Cobre cincelado oxidado encerado
   waxed_oxidized_copper: Cobre oxidado encerado
+  waxed_oxidized_copper_bulb: Lámpara de cobre oxidado encerado
+  waxed_oxidized_copper_door: Puerta de cobre oxidado encerado
+  waxed_oxidized_copper_grate: Rejilla de cobre oxidado encerado
+  waxed_oxidized_copper_trapdoor: Trampilla de cobre oxidado encerado
   waxed_oxidized_cut_copper: Cobre cortado oxidado encerado
   waxed_oxidized_cut_copper_slab: Losa de cobre cortado oxidado encerado
   waxed_oxidized_cut_copper_stairs: Escaleras de cobre cortado oxidado encerado
+  waxed_weathered_chiseled_copper: Cobre cincelado degradado encerado
   waxed_weathered_copper: Cobre degradado encerado
+  waxed_weathered_copper_bulb: Lámpara de cobre degradado encerado
+  waxed_weathered_copper_door: Puerta de cobre degradado encerado
+  waxed_weathered_copper_grate: Rejilla de cobre degradado encerado
+  waxed_weathered_copper_trapdoor: Trampilla de cobre degradado encerado
   waxed_weathered_cut_copper: Cobre cortado degradado encerado
   waxed_weathered_cut_copper_slab: Losa de cobre cortado degradado encerado
   waxed_weathered_cut_copper_stairs: Escaleras de cobre cortado degradado encerado
+  weathered_chiseled_copper: Cobre cincelado degradado
   weathered_copper: Cobre degradado
+  weathered_copper_bulb: Lámpara de cobre degradado
+  weathered_copper_door: Puerta de cobre degradado
+  weathered_copper_grate: Rejilla de cobre degradado
+  weathered_copper_trapdoor: Trampilla de cobre degradado
   weathered_cut_copper: Cobre cortado degradado
   weathered_cut_copper_slab: Losa de cobre cortado degradado
   weathered_cut_copper_stairs: Escaleras de cobre cortado degradado
@@ -1158,6 +1228,8 @@ Material:
   apple: Manzana
   archer_pottery_shard: Fragmento de cerámica de arco
   archer_pottery_sherd: Fragmento de cerámica de arco
+  armadillo_scute: Escama de armadillo
+  armadillo_spawn_egg: Generar armadillo
   armor_stand: Soporte para armadura
   arms_up_pottery_shard: Fragmento de cerámica de monigote
   arms_up_pottery_sherd: Fragmento de cerámica de monigote
@@ -1182,12 +1254,16 @@ Material:
   blaze_rod: Vara de blaze
   blaze_spawn_egg: Generar blaze
   blue_dye: Tinte azul
+  bogged_spawn_egg: Generar ciénago
+  bolt_armor_trim_smithing_template: Molde de herrería
   bone: Hueso
   bone_meal: Polvo de hueso
   book: Libro
   bow: Arco
   bowl: Cuenco
   bread: Pan
+  breeze_rod: Vara de breeze
+  breeze_spawn_egg: Generar breeze
   brewer_pottery_shard: Fragmento de cerámica de poción
   brewer_pottery_sherd: Fragmento de cerámica de poción
   brick: Ladrillo
@@ -1287,6 +1363,9 @@ Material:
   fishing_rod: Caña de pescar
   flint: Pedernal
   flint_and_steel: Mechero
+  flow_armor_trim_smithing_template: Molde de herrería
+  flow_banner_pattern: Diseño de estandarte
+  flow_pottery_sherd: Fragmento de cerámica de espiral
   flower_banner_pattern: Diseño de estandarte
   fox_spawn_egg: Generar zorro
   friend_pottery_shard: Fragmento de cerámica de amistad
@@ -1323,6 +1402,8 @@ Material:
   green_dye: Tinte verde
   guardian_spawn_egg: Generar guardián
   gunpowder: Pólvora
+  guster_banner_pattern: Diseño de estandarte
+  guster_pottery_sherd: Fragmento de cerámica de breeze
   heart_of_the_sea: Corazón del mar
   heart_pottery_shard: Fragmento de cerámica de corazón
   heart_pottery_sherd: Fragmento de cerámica de corazón
@@ -1370,6 +1451,7 @@ Material:
   lingering_potion: Poción persistente
   llama_spawn_egg: Generar llama
   lodestone_compass: Brújula imantada
+  mace: Maza
   magenta_dye: Tinte magenta
   magma_cream: Crema de magma
   magma_cube_spawn_egg: Generar cubo de magma
@@ -1394,11 +1476,14 @@ Material:
   music_disc_blocks: Disco de música
   music_disc_cat: Disco de música
   music_disc_chirp: Disco de música
+  music_disc_creator: Disco de música
+  music_disc_creator_music_box: Disco de música
   music_disc_far: Disco de música
   music_disc_mall: Disco de música
   music_disc_mellohi: Disco de música
   music_disc_otherside: Disco de música
   music_disc_pigstep: Disco de música
+  music_disc_precipice: Disco de música
   music_disc_relic: Disco de música
   music_disc_stal: Disco de música
   music_disc_strad: Disco de música
@@ -1424,6 +1509,8 @@ Material:
   oak_boat: Barca de roble
   oak_chest_boat: Barca de roble con cofre
   ocelot_spawn_egg: Generar ocelote
+  ominous_bottle: Frasco ominoso
+  ominous_trial_key: Llave de desafío ominosa
   orange_dye: Tinte naranja
   painting: Cuadro
   panda_spawn_egg: Generar panda
@@ -1481,7 +1568,8 @@ Material:
   salmon: Salmón crudo
   salmon_bucket: Cubo con salmón
   salmon_spawn_egg: Generar salmón
-  scute: Escama de tortuga
+  scrape_pottery_sherd: Fragmento de cerámica de hacha
+  scute: Escama
   sentry_armor_trim_smithing_template: Molde de herrería
   shaper_armor_trim_smithing_template: Molde de herrería
   sheaf_pottery_shard: Fragmento de cerámica de paja
@@ -1539,11 +1627,13 @@ Material:
   torchflower_seeds: Semillas de plantorcha
   totem_of_undying: Tótem de inmortalidad
   trader_llama_spawn_egg: Generar llama ambulante
+  trial_key: Llave de desafío
   trident: Tridente
   tropical_fish: Pez tropical
   tropical_fish_bucket: Cubo con pez tropical
   tropical_fish_spawn_egg: Generar pez tropical
   turtle_helmet: Caparazón de tortuga
+  turtle_scute: Escama de tortuga
   turtle_spawn_egg: Generar tortuga
   vex_armor_trim_smithing_template: Molde de herrería
   vex_spawn_egg: Generar vex
@@ -1558,9 +1648,11 @@ Material:
   wheat_seeds: Semillas de trigo
   white_dye: Tinte blanco
   wild_armor_trim_smithing_template: Molde de herrería
+  wind_charge: Carga de viento
   witch_spawn_egg: Generar bruja
   wither_skeleton_spawn_egg: Generar esqueleto del Wither
   wither_spawn_egg: Generar Wither
+  wolf_armor: Armadura para lobo
   wolf_spawn_egg: Generar lobo
   wooden_axe: Hacha de madera
   wooden_hoe: Azada de madera
@@ -1580,7 +1672,9 @@ Enchantment:
   bane_of_arthropods: Perdición de los artrópodos
   binding_curse: Maldición de ligamiento
   blast_protection: Protección contra explosiones
+  breach: Fisura
   channeling: Conductividad
+  density: Densidad
   depth_strider: Agilidad acuática
   efficiency: Eficiencia
   feather_falling: Caída de pluma
@@ -1611,7 +1705,9 @@ Enchantment:
   smite: Golpeo
   soul_speed: Velocidad del alma
   sweeping: Barrido
+  sweeping_edge: Barrido
   swift_sneak: Sigilo veloz
   thorns: Espinas
   unbreaking: Irrompibilidad
   vanishing_curse: Maldición de desaparición
+  wind_burst: Aeroimpulso
