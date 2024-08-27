@@ -4,6 +4,7 @@ version: '${project.version}'
 description: Plugin Creation Kit.
 author: NightExpress
 api-version: 1.18
+folia-supported: true
 load: STARTUP
 libraries:
   - com.zaxxer:HikariCP:5.0.1

@@ -82,8 +82,7 @@ public class ItemUtil {
             profile.setTextures(textures);
             meta.setOwnerProfile(profile);
             item.setItemMeta(meta);
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
@@ -115,8 +114,7 @@ public class ItemUtil {
         Method method = Reflex.getMethod(meta.getClass(), "setProfile", GameProfile.class);
         if (method != null) {
             Reflex.invokeMethod(method, meta, profile);
-        }
-        else {
+        } else {
             Reflex.setFieldValue(meta, "profile", profile);
         }
 
@@ -139,8 +137,7 @@ public class ItemUtil {
             String name;
             if (Version.isAtLeast(Version.V1_20_R2)) {
                 name = prop.name();
-            }
-            else {
+            } else {
                 name = (String) Reflex.getFieldValue(profile, "name");
             }
             return name != null && name.equalsIgnoreCase("textures");
@@ -150,8 +147,7 @@ public class ItemUtil {
 
         if (Version.isAtLeast(Version.V1_20_R2)) {
             return opt.get().value();
-        }
-        else {
+        } else {
             return (String) Reflex.getFieldValue(opt.get(), "value");
         }
     }
@@ -175,8 +171,8 @@ public class ItemUtil {
 
         Material material = item.getType();
         return material == Material.DIAMOND_SWORD || material == Material.GOLDEN_SWORD
-            || material == Material.IRON_SWORD || material == Material.NETHERITE_SWORD
-            || material == Material.STONE_SWORD || material == Material.WOODEN_SWORD;
+                || material == Material.IRON_SWORD || material == Material.NETHERITE_SWORD
+                || material == Material.STONE_SWORD || material == Material.WOODEN_SWORD;
     }
 
     public static boolean isAxe(@NotNull ItemStack item) {
@@ -186,8 +182,8 @@ public class ItemUtil {
 
         Material material = item.getType();
         return material == Material.DIAMOND_AXE || material == Material.GOLDEN_AXE
-            || material == Material.IRON_AXE || material == Material.NETHERITE_AXE
-            || material == Material.STONE_AXE || material == Material.WOODEN_AXE;
+                || material == Material.IRON_AXE || material == Material.NETHERITE_AXE
+                || material == Material.STONE_AXE || material == Material.WOODEN_AXE;
     }
 
     public static boolean isTrident(@NotNull ItemStack item) {
@@ -201,8 +197,8 @@ public class ItemUtil {
 
         Material material = item.getType();
         return material == Material.DIAMOND_PICKAXE || material == Material.GOLDEN_PICKAXE
-            || material == Material.IRON_PICKAXE || material == Material.NETHERITE_PICKAXE
-            || material == Material.STONE_PICKAXE || material == Material.WOODEN_PICKAXE;
+                || material == Material.IRON_PICKAXE || material == Material.NETHERITE_PICKAXE
+                || material == Material.STONE_PICKAXE || material == Material.WOODEN_PICKAXE;
     }
 
     public static boolean isShovel(@NotNull ItemStack item) {
@@ -212,8 +208,8 @@ public class ItemUtil {
 
         Material material = item.getType();
         return material == Material.DIAMOND_SHOVEL || material == Material.GOLDEN_SHOVEL
-            || material == Material.IRON_SHOVEL || material == Material.NETHERITE_SHOVEL
-            || material == Material.STONE_SHOVEL || material == Material.WOODEN_SHOVEL;
+                || material == Material.IRON_SHOVEL || material == Material.NETHERITE_SHOVEL
+                || material == Material.STONE_SHOVEL || material == Material.WOODEN_SHOVEL;
     }
 
     public static boolean isHoe(@NotNull ItemStack item) {
@@ -223,8 +219,8 @@ public class ItemUtil {
 
         Material material = item.getType();
         return material == Material.DIAMOND_HOE || material == Material.GOLDEN_HOE
-            || material == Material.IRON_HOE || material == Material.NETHERITE_HOE
-            || material == Material.STONE_HOE || material == Material.WOODEN_HOE;
+                || material == Material.IRON_HOE || material == Material.NETHERITE_HOE
+                || material == Material.STONE_HOE || material == Material.WOODEN_HOE;
     }
 
     public static boolean isElytra(@NotNull ItemStack item) {

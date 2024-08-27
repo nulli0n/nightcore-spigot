@@ -96,8 +96,7 @@ public class Lists {
         for (String line : origin) {
             if (line.equalsIgnoreCase(var)) {
                 replaced.addAll(with);
-            }
-            else replaced.add(line);
+            } else replaced.add(line);
         }
         return replaced;
     }
@@ -140,8 +139,7 @@ public class Lists {
 
                 if (nextIndex < 0) {
                     nextIndex = 0;
-                }
-                else if (nextIndex < itemLength - 1) {
+                } else if (nextIndex < itemLength - 1) {
                     nextIndex++; // This fixes an issue, where method fails for similar characters in a row, like 'oo'.
                 }
 
@@ -186,7 +184,7 @@ public class Lists {
     @NotNull
     public static <K, V extends Comparable<? super V>> Map<K, V> sort(@NotNull Map<K, V> map, @NotNull Comparator<Map.Entry<K, V>> comparator) {
         return new LinkedList<>(map.entrySet()).stream().sorted(comparator)
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (old, nev) -> nev, LinkedHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (old, nev) -> nev, LinkedHashMap::new));
     }
 
     @NotNull

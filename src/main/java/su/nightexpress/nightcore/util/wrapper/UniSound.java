@@ -42,16 +42,16 @@ public class UniSound {
     @NotNull
     public static UniSound read(@NotNull FileConfig cfg, @NotNull String path) {
         String soundName = ConfigValue.create(path + ".Name", "null",
-            "Sound name. You can use Spigot sound names, or ones from your resource pack.",
-            "Spigot Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html"
+                "Sound name. You can use Spigot sound names, or ones from your resource pack.",
+                "Spigot Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html"
         ).read(cfg);
 
         float volume = ConfigValue.create(path + ".Volume", 0.8D,
-            "Sound volume. From 0.0 to 1.0."
+                "Sound volume. From 0.0 to 1.0."
         ).read(cfg).floatValue();
 
         float pitch = ConfigValue.create(path + ".Pitch", 1D,
-            "Sound speed. From 0.5 to 2.0"
+                "Sound speed. From 0.5 to 2.0"
         ).read(cfg).floatValue();
 
         Sound soundType = StringUtil.getEnum(soundName, Sound.class).orElse(null);
@@ -75,8 +75,7 @@ public class UniSound {
         Location location = player.getLocation();
         if (this.getSoundType() == null) {
             player.playSound(location, this.getSoundName(), this.getVolume(), this.getPitch());
-        }
-        else {
+        } else {
             player.playSound(location, this.getSoundType(), this.getVolume(), this.getPitch());
         }
     }
@@ -89,8 +88,7 @@ public class UniSound {
 
         if (this.getSoundType() == null) {
             world.playSound(location, this.getSoundName(), this.getVolume(), this.getPitch());
-        }
-        else {
+        } else {
             world.playSound(location, this.getSoundType(), this.getVolume(), this.getPitch());
         }
     }

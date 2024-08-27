@@ -9,9 +9,9 @@ import java.io.File;
 
 public abstract class AbstractFileData<P extends NightCorePlugin> {
 
-    protected final P      plugin;
-    protected final File   file;
-    private final   String id;
+    protected final P plugin;
+    protected final File file;
+    private final String id;
 
     public AbstractFileData(@NotNull P plugin, @NotNull String filePath) {
         this(plugin, new File(filePath));

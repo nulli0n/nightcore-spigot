@@ -28,8 +28,7 @@ public class FileUtil {
             }
             outputStream.close();
             inputStream.close();
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
     }
@@ -43,8 +42,7 @@ public class FileUtil {
         parent.mkdirs();
         try {
             return file.createNewFile();
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
             return false;
         }
@@ -83,8 +81,7 @@ public class FileUtil {
                 if (extension == null || file.getName().endsWith(extension)) {
                     files.add(file);
                 }
-            }
-            else if (file.isDirectory() && deep) {
+            } else if (file.isDirectory() && deep) {
                 files.addAll(getFiles(file.getPath(), true));
             }
         }
@@ -147,8 +144,7 @@ public class FileUtil {
             }
 
             jar.close();
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
     }

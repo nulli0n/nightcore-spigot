@@ -22,7 +22,7 @@ public class CommandManager extends SimpleManager<NightPlugin> {
     private final Set<NightPluginCommand> commands;
     private final Set<ServerCommand> serverCommands;
 
-    private BaseCommand                 mainCommand;
+    private BaseCommand mainCommand;
     private RootCommand<NightPlugin, ChainedNode> rootCommand;
 
     public CommandManager(@NotNull NightPlugin plugin) {
@@ -41,12 +41,11 @@ public class CommandManager extends SimpleManager<NightPlugin> {
 
         if (this.plugin instanceof ImprovedCommands) {
             this.rootCommand = RootCommand.chained(this.plugin, aliases, builder -> builder
-                // TODO Permission?
-                .localized(this.plugin.getNameLocalized())
+                    // TODO Permission?
+                    .localized(this.plugin.getNameLocalized())
             );
             this.registerCommand(this.rootCommand);
-        }
-        else {
+        } else {
             // Create main plugin command and attach help sub-command as a default executor.
             this.mainCommand = new BaseCommand(this.plugin);
             this.mainCommand.addDefaultCommand(new HelpSubCommand(this.plugin));
@@ -91,15 +90,15 @@ public class CommandManager extends SimpleManager<NightPlugin> {
     @Nullable
     public NightPluginCommand getCommand(@NotNull String alias) {
         return this.getCommands().stream()
-            .filter(command -> Lists.contains(command.getAliases(), alias))
-            .findFirst().orElse(null);
+                .filter(command -> Lists.contains(command.getAliases(), alias))
+                .findFirst().orElse(null);
     }
 
     @Nullable
     public ServerCommand getServerCommand(@NotNull String alias) {
         return this.serverCommands.stream()
-            .filter(command -> command.getNode().getName().equalsIgnoreCase(alias) || Lists.contains(command.getNode().getAliases(), alias))
-            .findFirst().orElse(null);
+                .filter(command -> command.getNode().getName().equalsIgnoreCase(alias) || Lists.contains(command.getNode().getAliases(), alias))
+                .findFirst().orElse(null);
     }
 
     public void registerCommand(@NotNull NightPluginCommand command) {

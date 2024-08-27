@@ -7,11 +7,11 @@ import java.util.Set;
 
 public class Tag {
 
-    public static final char OPEN_BRACKET  = '<';
+    public static final char OPEN_BRACKET = '<';
     public static final char CLOSE_BRACKET = '>';
-    public static final char CLOSE_SLASH   = '/';
+    public static final char CLOSE_SLASH = '/';
 
-    protected final String      name;
+    protected final String name;
     protected final Set<String> aliases;
 
     public Tag(@NotNull String name) {
@@ -72,7 +72,7 @@ public class Tag {
     @Override
     public String toString() {
         return "Tag{" +
-            "name='" + name + '\'' +
-            '}';
+                "name='" + name + '\'' +
+                '}';
     }
 }

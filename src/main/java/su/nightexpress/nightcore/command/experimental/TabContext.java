@@ -8,9 +8,9 @@ import org.jetbrains.annotations.Nullable;
 public class TabContext {
 
     private final CommandSender sender;
-    private final Player        player;
-    private final String        label;
-    private final String[]      args;
+    private final Player player;
+    private final String label;
+    private final String[] args;
 
     private int index;
 

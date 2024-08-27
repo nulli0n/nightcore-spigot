@@ -10,17 +10,20 @@ import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TextGroup implements ComponentBuildable {
 
-    private final String                   name;
+    private final String name;
     private final List<ComponentBuildable> childrens;
-    private final Set<Decorator>           decorators;
+    private final Set<Decorator> decorators;
 
     private ColorDecorator colorDecorator;
-    private TextGroup      parent;
+    private TextGroup parent;
 
     public TextGroup(@NotNull String name) {
         this.name = name;
@@ -48,8 +51,7 @@ public class TextGroup implements ComponentBuildable {
     public void addDecorator(@NotNull Decorator decorator) {
         if (decorator instanceof ColorDecorator color) {
             this.colorDecorator = color;
-        }
-        else {
+        } else {
             this.decorators.add(decorator);
         }
     }
@@ -76,7 +78,7 @@ public class TextGroup implements ComponentBuildable {
         this.childrens.forEach(child -> {
             BaseComponent childComponent = child.toComponent();
             //if (!TextRoot.isEmpty(childComponent)) {
-                builder.append(childComponent);
+            builder.append(childComponent);
             //}
         });
 

@@ -86,11 +86,9 @@ public class Players {
             int length;
             if (nameReal.startsWith(lowerName)) {
                 length = player.getName().length();
-            }
-            else if (nameCustom.startsWith(lowerName)) {
+            } else if (nameCustom.startsWith(lowerName)) {
                 length = player.getDisplayName().length();
-            }
-            else continue;
+            } else continue;
 
             int curDelta = Math.abs(length - lowerLength);
             if (curDelta < delta) {
@@ -194,8 +192,8 @@ public class Players {
 
     public static int countItem(@NotNull Player player, @NotNull Predicate<ItemStack> predicate) {
         return Stream.of(player.getInventory().getContents())
-            .filter(item -> item != null && predicate.test(item))
-            .mapToInt(ItemStack::getAmount).sum();
+                .filter(item -> item != null && predicate.test(item))
+                .mapToInt(ItemStack::getAmount).sum();
     }
 
     public static int countItem(@NotNull Player player, @NotNull ItemStack item) {

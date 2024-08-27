@@ -32,8 +32,7 @@ public class ShowTextDecorator implements Decorator {
         Text text;
         if (Version.isAtLeast(Version.MC_1_20_6)) {
             text = new Text(component);
-        }
-        else {
+        } else {
             text = new Text(new ComponentBuilder().append(component).create());
         }
 

@@ -8,7 +8,7 @@ import su.nightexpress.nightcore.util.text.TextRoot;
 
 public class LangString extends LangEntry<String> {
 
-    private String   string;
+    private String string;
     private TextRoot message;
 
     public LangString(@NotNull String path, @NotNull String defaultText) {

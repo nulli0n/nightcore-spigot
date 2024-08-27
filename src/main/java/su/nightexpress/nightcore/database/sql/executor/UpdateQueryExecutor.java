@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Deprecated
 public final class UpdateQueryExecutor extends SQLExecutor<Void> {
 
-    private final List<SQLValue>     values;
+    private final List<SQLValue> values;
     private final List<SQLCondition> wheres;
 
     private UpdateQueryExecutor(@NotNull String table) {
@@ -79,10 +79,10 @@ public final class UpdateQueryExecutor extends SQLExecutor<Void> {
         if (this.values.isEmpty()) return null;
 
         String values = this.values.stream().map(value -> value.getColumn().getNameEscaped() + " = ?")
-            .collect(Collectors.joining(","));
+                .collect(Collectors.joining(","));
 
         String wheres = this.wheres.stream().map(where -> where.getColumn().getNameEscaped() + " " + where.getType().getOperator() + " ?")
-            .collect(Collectors.joining(" AND "));
+                .collect(Collectors.joining(" AND "));
 
         String sql = "UPDATE " + this.getTable() + " SET " + values + (wheres.isEmpty() ? "" : " WHERE " + wheres);
 

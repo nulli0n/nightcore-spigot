@@ -75,8 +75,8 @@ public class CommandUtil {
     @NotNull
     public static Optional<Command> getCommand(@NotNull String name) {
         return COMMAND_MAP.getCommands().stream()
-            .filter(command -> command.getName().equalsIgnoreCase(name) || command.getLabel().equalsIgnoreCase(name) || command.getAliases().contains(name))
-            .findFirst();
+                .filter(command -> command.getName().equalsIgnoreCase(name) || command.getLabel().equalsIgnoreCase(name) || command.getAliases().contains(name))
+                .findFirst();
     }
 
     @NotNull
@@ -96,8 +96,7 @@ public class CommandUtil {
         Player player;
         if (arguments.hasArgument(name)) {
             player = arguments.getPlayerArgument(name);
-        }
-        else {
+        } else {
             if (context.getExecutor() == null) {
                 context.errorPlayerOnly();
                 return null;

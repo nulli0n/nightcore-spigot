@@ -8,13 +8,13 @@ public class Plugins {
 
     public static final NightCore CORE = NightCore.getPlugin(NightCore.class);
 
-    public static final String VAULT           = "Vault";
+    public static final String VAULT = "Vault";
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
-    public static final String FLOODGATE       = "floodgate";
+    public static final String FLOODGATE = "floodgate";
 
     private static final boolean HAS_PLACEHOLDER_API = isInstalled(PLACEHOLDER_API);
-    private static final boolean HAS_VAULT           = isInstalled(VAULT);
-    private static final boolean HAS_FLOODGATE       = isInstalled(FLOODGATE);
+    private static final boolean HAS_VAULT = isInstalled(VAULT);
+    private static final boolean HAS_FLOODGATE = isInstalled(FLOODGATE);
 
     public static boolean isInstalled(@NotNull String pluginName) {
         Plugin plugin = CORE.getPluginManager().getPlugin(pluginName);

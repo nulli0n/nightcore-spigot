@@ -17,10 +17,6 @@ public class RankMap<T extends Number> {
     private final T defaultValue;
     private final Map<String, T> values;
 
-    public enum Mode {
-        RANK, PERMISSION
-    }
-
     public RankMap(@NotNull Mode mode, @NotNull String permissionPrefix, @NotNull T defaultValue, @NotNull Map<String, T> values) {
         this.mode = mode;
         this.permissionPrefix = permissionPrefix;
@@ -52,8 +48,7 @@ public class RankMap<T extends Number> {
                 T number;
                 if (clazz == Double.class) {
                     number = clazz.cast(cfg.getDouble(path + "." + rank));
-                }
-                else number = clazz.cast(cfg.getInt(path + "." + rank));
+                } else number = clazz.cast(cfg.getInt(path + "." + rank));
 
                 oldMap.put(rank.toLowerCase(), number);
             }
@@ -63,50 +58,47 @@ public class RankMap<T extends Number> {
         oldMap.forEach((rank, number) -> {
             if (rank.equalsIgnoreCase(Placeholders.DEFAULT)) {
                 cfg.set(path + ".Default_Value", number);
-            }
-            else {
+            } else {
                 cfg.set(path + ".Values." + rank, number);
             }
         });
 
         Mode mode = ConfigValue.create(path + ".Mode", Mode.class, Mode.RANK,
-            "Available values: " + StringUtil.inlineEnum(Mode.class, ", "),
-            "=".repeat(20) + " " + Mode.RANK.name() + " MODE " + "=".repeat(20),
-            "Get value by player's permission group. All keys in 'Values' list will represent permission group names.",
-            "If player has none of specified groups, the 'Default_Value' setting will be used then",
-            "  Values:",
-            "    vip: 1 # -> Player must be in 'vip' permission group.",
-            "    gold: 2 # -> Player must be in 'gold' permission group.",
-            "    emerald: 3 # -> Player must be in 'emerald' permission group.",
-            "",
-            "=".repeat(20) + " " + Mode.PERMISSION.name() + " MODE " + "=".repeat(20),
-            "Get value by player's permissions. All keys in 'Values' list will represent postfixes for the 'Permission_Prefix' setting (see below).",
-            "If player has none of specified permissions, the 'Default_Value' setting will be used then",
-            "  Permission_Prefix: 'example.prefix.'",
-            "  Values:",
-            "    vip: 1 # -> Player must have 'example.prefix.vip' permission.",
-            "    gold: 2 # -> Player must have 'example.prefix.gold' permission.",
-            "    emerald: 3 # -> Player must have 'example.prefix.emerald' permission."
+                "Available values: " + StringUtil.inlineEnum(Mode.class, ", "),
+                "=".repeat(20) + " " + Mode.RANK.name() + " MODE " + "=".repeat(20),
+                "Get value by player's permission group. All keys in 'Values' list will represent permission group names.",
+                "If player has none of specified groups, the 'Default_Value' setting will be used then",
+                "  Values:",
+                "    vip: 1 # -> Player must be in 'vip' permission group.",
+                "    gold: 2 # -> Player must be in 'gold' permission group.",
+                "    emerald: 3 # -> Player must be in 'emerald' permission group.",
+                "",
+                "=".repeat(20) + " " + Mode.PERMISSION.name() + " MODE " + "=".repeat(20),
+                "Get value by player's permissions. All keys in 'Values' list will represent postfixes for the 'Permission_Prefix' setting (see below).",
+                "If player has none of specified permissions, the 'Default_Value' setting will be used then",
+                "  Permission_Prefix: 'example.prefix.'",
+                "  Values:",
+                "    vip: 1 # -> Player must have 'example.prefix.vip' permission.",
+                "    gold: 2 # -> Player must have 'example.prefix.gold' permission.",
+                "    emerald: 3 # -> Player must have 'example.prefix.emerald' permission."
         ).read(cfg);
 
         String permissionPrefix = ConfigValue.create(path + ".Permission_Prefix",
-            "example.prefix.",
-            "Sets permission prefix for the '" + Mode.PERMISSION.name() + "' mode."
+                "example.prefix.",
+                "Sets permission prefix for the '" + Mode.PERMISSION.name() + "' mode."
         ).read(cfg);
 
         T fallback;
         if (clazz == Double.class) {
             fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.doubleValue()).read(cfg));
-        }
-        else fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.intValue()).read(cfg));
+        } else fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.intValue()).read(cfg));
 
         Map<String, T> values = new HashMap<>();
         for (String rank : cfg.getSection(path + ".Values")) {
             T number;
             if (clazz == Double.class) {
                 number = clazz.cast(cfg.getDouble(path + ".Values." + rank));
-            }
-            else number = clazz.cast(cfg.getInt(path + ".Values." + rank));
+            } else number = clazz.cast(cfg.getInt(path + ".Values." + rank));
 
             values.put(rank.toLowerCase(), number);
         }
@@ -143,9 +135,9 @@ public class RankMap<T extends Number> {
             return this.getRankValue(player);
         }
         return this.values.entrySet().stream()
-            .filter(entry -> player.hasPermission(this.getPermissionPrefix() + entry.getKey()))
-            .map(Map.Entry::getValue)
-            .max(Comparator.comparingDouble(Number::doubleValue)).orElse(this.getDefaultValue());
+                .filter(entry -> player.hasPermission(this.getPermissionPrefix() + entry.getKey()))
+                .map(Map.Entry::getValue)
+                .max(Comparator.comparingDouble(Number::doubleValue)).orElse(this.getDefaultValue());
     }
 
     @NotNull
@@ -154,9 +146,9 @@ public class RankMap<T extends Number> {
             return this.getRankValue(player);
         }
         return this.values.entrySet().stream()
-            .filter(entry -> player.hasPermission(this.getPermissionPrefix() + entry.getKey()))
-            .map(Map.Entry::getValue)
-            .min(Comparator.comparingDouble(Number::doubleValue)).orElse(this.getDefaultValue());
+                .filter(entry -> player.hasPermission(this.getPermissionPrefix() + entry.getKey()))
+                .map(Map.Entry::getValue)
+                .min(Comparator.comparingDouble(Number::doubleValue)).orElse(this.getDefaultValue());
     }
 
     @NotNull
@@ -172,5 +164,9 @@ public class RankMap<T extends Number> {
     @NotNull
     public T getDefaultValue() {
         return defaultValue;
+    }
+
+    public enum Mode {
+        RANK, PERMISSION
     }
 }

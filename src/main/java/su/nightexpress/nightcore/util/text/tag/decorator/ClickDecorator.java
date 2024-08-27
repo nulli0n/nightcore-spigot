@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class ClickDecorator implements Decorator {
 
     private final ClickEvent.Action action;
-    private final String            value;
+    private final String value;
 
     public ClickDecorator(@NotNull ClickEvent.Action action, @NotNull String value) {
         this.action = action;

@@ -7,10 +7,10 @@ import org.jetbrains.annotations.Nullable;
 public class MessageOptions {
 
     private OutputType outputType;
-    private boolean    hasPrefix;
-    private boolean    usePlaceholderAPI;
-    private Sound      sound;
-    private int[]      titleTimes;
+    private boolean hasPrefix;
+    private boolean usePlaceholderAPI;
+    private Sound sound;
+    private int[] titleTimes;
 
     public MessageOptions() {
         this.setOutputType(OutputType.CHAT);

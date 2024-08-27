@@ -8,8 +8,8 @@ import su.nightexpress.nightcore.menu.click.ClickAction;
 public class MenuItem {
 
     protected ItemStack itemStack;
-    protected int       priority;
-    protected int[]     slots;
+    protected int priority;
+    protected int[] slots;
 
     protected ItemOptions options;
     protected ItemHandler handler;

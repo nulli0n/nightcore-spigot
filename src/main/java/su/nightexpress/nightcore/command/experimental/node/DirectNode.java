@@ -23,7 +23,7 @@ public class DirectNode extends CommandNode implements DirectExecutor {
 
     private final List<CommandArgument<?>> arguments;
     private final Map<String, CommandFlag> flags;
-    private final DirectExecutor           executor;
+    private final DirectExecutor executor;
 
     private final int requiredArguments;
 
@@ -84,8 +84,7 @@ public class DirectNode extends CommandNode implements DirectExecutor {
                     index++;
                 }*/
                 arg = /*builder.toString();*/Stream.of(args).skip(index).collect(Collectors.joining(" "));
-            }
-            else {
+            } else {
                 arg = args[index++];
             }
 
@@ -93,8 +92,8 @@ public class DirectNode extends CommandNode implements DirectExecutor {
             ParsedArgument<?> parsedArgument = argument.parse(arg, context);
             if (parsedArgument == null) {
                 return context.sendFailure(argument.getFailureMessage()
-                    .replace(Placeholders.GENERIC_VALUE, arg)
-                    .replace(Placeholders.GENERIC_NAME, argument.getLocalized())
+                        .replace(Placeholders.GENERIC_VALUE, arg)
+                        .replace(Placeholders.GENERIC_NAME, argument.getLocalized())
                 );
             }
 
@@ -103,8 +102,8 @@ public class DirectNode extends CommandNode implements DirectExecutor {
 
         if (parsedArguments.getArgumentMap().size() < this.requiredArguments) {
             return context.sendFailure(CoreLang.ERROR_COMMAND_USAGE.getMessage(this.plugin)
-                .replace(Placeholders.COMMAND_LABEL, this.getNameWithParents())
-                .replace(Placeholders.COMMAND_USAGE, this.getUsage()));
+                    .replace(Placeholders.COMMAND_LABEL, this.getNameWithParents())
+                    .replace(Placeholders.COMMAND_USAGE, this.getUsage()));
         }
 
         if (!this.flags.isEmpty() && index < args.length) {
@@ -128,15 +127,14 @@ public class DirectNode extends CommandNode implements DirectExecutor {
                     ParsedArgument<?> parsed = contentFlag.parse(content, context);
                     if (parsed == null) {
                         context.send(CoreLang.ERROR_COMMAND_PARSE_FLAG.getMessage()
-                            .replace(Placeholders.GENERIC_VALUE, content)
-                            .replace(Placeholders.GENERIC_NAME, flag.getName())
+                                .replace(Placeholders.GENERIC_VALUE, content)
+                                .replace(Placeholders.GENERIC_NAME, flag.getName())
                         );
                         continue;
                     }
 
                     parsedArguments.addFlag(flag, parsed);
-                }
-                else {
+                } else {
                     parsedArguments.addFlag(flag, new ParsedArgument<>(true));
                 }
             }
@@ -165,8 +163,7 @@ public class DirectNode extends CommandNode implements DirectExecutor {
                 if (!commandFlag.hasPermission(context.getSender())) return;
                 if (commandFlag instanceof ContentFlag<?> contentFlag) {
                     samples.add(contentFlag.getSampled());
-                }
-                else {
+                } else {
                     samples.add(commandFlag.getPrefixed());
                 }
             });

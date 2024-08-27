@@ -14,11 +14,11 @@ import java.util.stream.Stream;
 public abstract class CommandNode implements NodeExecutor {
 
     protected final NightCorePlugin plugin;
-    protected final String          name;
-    protected final String[]        aliases;
-    protected final String          description;
-    protected final String          permission;
-    protected final boolean         playerOnly;
+    protected final String name;
+    protected final String[] aliases;
+    protected final String description;
+    protected final String permission;
+    protected final boolean playerOnly;
 
     protected CommandNode parent;
 

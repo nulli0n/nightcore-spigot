@@ -7,8 +7,7 @@ public enum MenuSize {
     CHEST_27(27),
     CHEST_36(36),
     CHEST_45(45),
-    CHEST_54(54)
-    ;
+    CHEST_54(54);
 
     private final int size;
 

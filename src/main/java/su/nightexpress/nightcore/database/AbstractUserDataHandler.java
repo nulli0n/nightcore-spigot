@@ -4,12 +4,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
+import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 import su.nightexpress.nightcore.database.sql.column.ColumnType;
-import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 import su.nightexpress.nightcore.util.Lists;
@@ -23,10 +23,10 @@ import java.util.function.Function;
 
 public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U extends DataUser> extends AbstractDataHandler<P> {
 
-    protected static final SQLColumn COLUMN_USER_ID           = SQLColumn.of("uuid", ColumnType.STRING);
-    protected static final SQLColumn COLUMN_USER_NAME         = SQLColumn.of("name", ColumnType.STRING);
+    protected static final SQLColumn COLUMN_USER_ID = SQLColumn.of("uuid", ColumnType.STRING);
+    protected static final SQLColumn COLUMN_USER_NAME = SQLColumn.of("name", ColumnType.STRING);
     protected static final SQLColumn COLUMN_USER_DATE_CREATED = SQLColumn.of("dateCreated", ColumnType.LONG);
-    protected static final SQLColumn COLUMN_USER_LAST_ONLINE  = SQLColumn.of("last_online", ColumnType.LONG);
+    protected static final SQLColumn COLUMN_USER_LAST_ONLINE = SQLColumn.of("last_online", ColumnType.LONG);
 
     protected final String tableUsers;
 
@@ -94,8 +94,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
             try {
                 this.existIDs.add(UUID.fromString(resultSet.getString(COLUMN_USER_ID.getName())));
                 this.existNames.add(resultSet.getString(COLUMN_USER_NAME.getName()).toLowerCase());
-            }
-            catch (SQLException exception) {
+            } catch (SQLException exception) {
                 exception.printStackTrace();
             }
             return null;
@@ -131,14 +130,14 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
     @Nullable
     public final U getUser(@NotNull String name) {
         return this.load(this.tableUsers, this.getUserFunction(), this.getReadColumns(),
-            Collections.singletonList(SQLCondition.equal(COLUMN_USER_NAME.asLowerCase().toValue(name.toLowerCase())))
+                Collections.singletonList(SQLCondition.equal(COLUMN_USER_NAME.asLowerCase().toValue(name.toLowerCase())))
         ).orElse(null);
     }
 
     @Nullable
     public final U getUser(@NotNull UUID uuid) {
         return this.load(this.tableUsers, this.getUserFunction(), this.getReadColumns(),
-            Collections.singletonList(SQLCondition.equal(COLUMN_USER_ID.toValue(uuid)))
+                Collections.singletonList(SQLCondition.equal(COLUMN_USER_ID.toValue(uuid)))
         ).orElse(null);
     }
 
@@ -173,7 +172,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
         values.addAll(this.getSaveColumns(user));
 
         List<SQLCondition> conditions = Lists.newList(
-            SQLCondition.equal(COLUMN_USER_ID.toValue(user.getId()))
+                SQLCondition.equal(COLUMN_USER_ID.toValue(user.getId()))
         );
 
         return this.createUpdateEntity(values, conditions);

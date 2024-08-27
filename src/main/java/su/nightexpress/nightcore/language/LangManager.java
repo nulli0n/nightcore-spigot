@@ -24,6 +24,10 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
         super(plugin);
     }
 
+    public static boolean isDefault(@NotNull String langCode) {
+        return langCode.equalsIgnoreCase(DEFAULT_LANGUAGE);
+    }
+
     @Override
     protected void onLoad() {
         this.plugin.extractResources(DIR_LANG);
@@ -44,8 +48,8 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
 
         try (InputStream inputStream = plugin.getClass().getResourceAsStream(filePath)) {
             return inputStream != null;
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {}
 
         return false;
     }
@@ -94,10 +98,6 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
             return Plugins.CORE.getLangManager().getEnum(entry);
         }
         return locEnum == null ? StringUtil.capitalizeFully(entry.name()) : locEnum;
-    }
-
-    public static boolean isDefault(@NotNull String langCode) {
-        return langCode.equalsIgnoreCase(DEFAULT_LANGUAGE);
     }
 
     @NotNull

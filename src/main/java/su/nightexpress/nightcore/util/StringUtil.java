@@ -54,8 +54,7 @@ public class StringUtil {
             // see if we need to keep searching for this
             if (tempIndex == -1) {
                 noMoreMatchesForReplIndex[i] = true;
-            }
-            else if (textIndex == -1 || tempIndex < textIndex) {
+            } else if (textIndex == -1 || tempIndex < textIndex) {
                 textIndex = tempIndex;
                 replaceIndex = i;
             }
@@ -88,8 +87,7 @@ public class StringUtil {
                 // see if we need to keep searching for this
                 if (tempIndex == -1) {
                     noMoreMatchesForReplIndex[i] = true;
-                }
-                else if (textIndex == -1 || tempIndex < textIndex) {
+                } else if (textIndex == -1 || tempIndex < textIndex) {
                     textIndex = tempIndex;
                     replaceIndex = i;
                 }
@@ -183,8 +181,7 @@ public class StringUtil {
     public static <T extends Enum<T>> Optional<T> getEnum(String str, @NotNull Class<T> clazz) {
         try {
             return str == null ? Optional.empty() : Optional.of(Enum.valueOf(clazz, str.toUpperCase()));
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             return Optional.empty();
         }
     }
@@ -264,12 +261,10 @@ public class StringUtil {
             if (Character.isWhitespace(letter)) {
                 builder.append(letter);
                 capitalizeNext = true;
-            }
-            else if (capitalizeNext) {
+            } else if (capitalizeNext) {
                 builder.append(Character.toTitleCase(letter));
                 capitalizeNext = false;
-            }
-            else {
+            } else {
                 builder.append(letter);
             }
         }

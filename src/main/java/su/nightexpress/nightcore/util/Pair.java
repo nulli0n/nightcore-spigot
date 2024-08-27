@@ -15,6 +15,11 @@ public class Pair<F, S> {
     }
 
     @NotNull
+    public static <F, S> Pair<F, S> of(@NotNull F first, @NotNull S second) {
+        return new Pair<>(first, second);
+    }
+
+    @NotNull
     public F getFirst() {
         return this.first;
     }
@@ -40,10 +45,5 @@ public class Pair<F, S> {
             return Objects.equals(this.first, other.first) && Objects.equals(this.second, other.second);
         }
         return false;
-    }
-
-    @NotNull
-    public static <F, S> Pair<F, S> of(@NotNull F first, @NotNull S second) {
-        return new Pair<>(first, second);
     }
 }

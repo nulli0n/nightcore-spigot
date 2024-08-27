@@ -12,12 +12,11 @@ import java.util.Map;
 
 public class MessageTags {
 
-    private static final Map<String, MessageTag> REGISTRY = new HashMap<>();
-
-    public static final NoPrefixTag    NO_PREFIX   = new NoPrefixTag();
-    public static final OutputTag      OUTPUT      = new OutputTag();
-    public static final SoundTag       SOUND       = new SoundTag();
+    public static final NoPrefixTag NO_PREFIX = new NoPrefixTag();
+    public static final OutputTag OUTPUT = new OutputTag();
+    public static final SoundTag SOUND = new SoundTag();
     public static final PlaceholderTag PLACEHOLDER = new PlaceholderTag();
+    private static final Map<String, MessageTag> REGISTRY = new HashMap<>();
 
     static {
         registerTags(NO_PREFIX, OUTPUT, SOUND, PLACEHOLDER);

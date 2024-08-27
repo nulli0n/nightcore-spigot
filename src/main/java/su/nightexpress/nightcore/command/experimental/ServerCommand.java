@@ -11,7 +11,9 @@ public interface ServerCommand extends TabExecutor {
 
     boolean unregister();
 
-    @NotNull CommandNode getNode();
+    @NotNull
+    CommandNode getNode();
 
-    @NotNull WrappedCommand getBackend();
+    @NotNull
+    WrappedCommand getBackend();
 }

@@ -39,25 +39,51 @@ public class TextRoot {
         this.setString(string);
     }
 
-    public void setString(@NotNull String string) {
-        if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
-            string = Colorizer.tagPlainHex(Colorizer.plain(string));
+    public static boolean isEmpty(@NotNull BaseComponent component) {
+        return component instanceof TextComponent textComponent && textComponent.getText().isBlank() && textComponent.getExtra() == null;
+    }
+
+    public static int indexOfIgnoreEscaped(@NotNull String string, char what, int from) {
+        int length = string.length();
+        if (from >= length) return -1;
+
+        Character foundQuote = null;
+        int quoteCount = 0;
+
+        for (int index = from; index < length; index++) {
+            char letter = string.charAt(index);
+            if (letter == '\\') {
+                index++;
+                continue;
+            }
+
+            if (letter == '\'' || letter == '"') {
+                quoteCount++;
+                if (foundQuote != null) {
+                    if (foundQuote == letter) {
+                        foundQuote = null;
+                    }
+                } else foundQuote = letter;
+            }
+
+            if (letter == what) {
+                if (foundQuote != null && quoteCount < 2) continue;
+                return index;
+            }
         }
 
-        /*if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
-            TimedMatcher timedMatcher = TimedMatcher.create(Colorizer.PATTERN_HEX_LEGACY, string);
-            Set<String> rawCodes = new HashSet<>();
-            while (timedMatcher.find()) {
-                String hex = timedMatcher.getMatcher().group(1);
-                rawCodes.add(hex);
-            }
-            for (String hex : rawCodes) {
-                string = string.replace(hex, Tag.brackets(hex));
-            }
-        }*/
+        return -1;
+    }
 
-        this.string = string;
-        this.component = null;
+    @NotNull
+    public static String stripQuotesSlash(@NotNull String str) {
+        if (str.startsWith("\"") || str.startsWith("'")) {
+            str = str.substring(1);
+        }
+        if (str.endsWith("\"") || str.endsWith("'")) {
+            str = str.substring(0, str.length() - 1);
+        }
+        return str.replace("\\", "");
     }
 
     @NotNull
@@ -155,10 +181,6 @@ public class TextRoot {
 
     public BaseComponent parseIfAbsent() {
         return this.component == null ? this.parse() : this.component;
-    }
-
-    public enum Mode {
-        PARSE, STRIP
     }
 
     @NotNull
@@ -325,8 +347,7 @@ public class TextRoot {
                     tagContent = bracketsContent.substring(semicolonIndex + 1);
                     //System.out.println("tagName = " + tagName);
                     //System.out.println("tagContent = " + tagContent);
-                }
-                else if (tagName.startsWith(ShortHexColorTag.NAME)) {
+                } else if (tagName.startsWith(ShortHexColorTag.NAME)) {
                     tagName = ShortHexColorTag.NAME;
                     tagContent = bracketsContent;
                 }
@@ -341,8 +362,7 @@ public class TextRoot {
                         }
                         index = indexEnd;
                         continue;
-                    }
-                    else {
+                    } else {
                         if (!tagPool.isGoodTag(tag)) {
                             index = indexEnd;
                             continue;
@@ -393,8 +413,7 @@ public class TextRoot {
 
         if (tag instanceof ContentTag contentTag && tagContent != null) {
             decorator = contentTag.parse(tagContent);
-        }
-        else if (tag instanceof Decorator tagDecorator) {
+        } else if (tag instanceof Decorator tagDecorator) {
             decorator = tagDecorator;
         }
 
@@ -407,6 +426,27 @@ public class TextRoot {
         return string;
     }
 
+    public void setString(@NotNull String string) {
+        if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
+            string = Colorizer.tagPlainHex(Colorizer.plain(string));
+        }
+
+        /*if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
+            TimedMatcher timedMatcher = TimedMatcher.create(Colorizer.PATTERN_HEX_LEGACY, string);
+            Set<String> rawCodes = new HashSet<>();
+            while (timedMatcher.find()) {
+                String hex = timedMatcher.getMatcher().group(1);
+                rawCodes.add(hex);
+            }
+            for (String hex : rawCodes) {
+                string = string.replace(hex, Tag.brackets(hex));
+            }
+        }*/
+
+        this.string = string;
+        this.component = null;
+    }
+
     public TextGroup getRootGroup() {
         return rootGroup;
     }
@@ -415,52 +455,8 @@ public class TextRoot {
         return component;
     }
 
-    public static boolean isEmpty(@NotNull BaseComponent component) {
-        return component instanceof TextComponent textComponent && textComponent.getText().isBlank() && textComponent.getExtra() == null;
-    }
-
-    public static int indexOfIgnoreEscaped(@NotNull String string, char what, int from) {
-        int length = string.length();
-        if (from >= length) return -1;
-
-        Character foundQuote = null;
-        int quoteCount = 0;
-
-        for (int index = from; index < length; index++) {
-            char letter = string.charAt(index);
-            if (letter == '\\') {
-                index++;
-                continue;
-            }
-
-            if (letter == '\'' || letter == '"') {
-                quoteCount++;
-                if (foundQuote != null) {
-                    if (foundQuote == letter) {
-                        foundQuote = null;
-                    }
-                }
-                else foundQuote = letter;
-            }
-
-            if (letter == what) {
-                if (foundQuote != null && quoteCount < 2) continue;
-                return index;
-            }
-        }
-
-        return -1;
-    }
-
-    @NotNull
-    public static String stripQuotesSlash(@NotNull String str) {
-        if (str.startsWith("\"") || str.startsWith("'")) {
-            str = str.substring(1);
-        }
-        if (str.endsWith("\"") || str.endsWith("'")) {
-            str = str.substring(0, str.length() - 1);
-        }
-        return str.replace("\\", "");
+    public enum Mode {
+        PARSE, STRIP
     }
 
     /*@NotNull

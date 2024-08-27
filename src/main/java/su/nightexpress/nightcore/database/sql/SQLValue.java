@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public class SQLValue {
 
     private final SQLColumn column;
-    private final String    value;
+    private final String value;
 
     public SQLValue(@NotNull SQLColumn column, @NotNull String value) {
         this.column = column;

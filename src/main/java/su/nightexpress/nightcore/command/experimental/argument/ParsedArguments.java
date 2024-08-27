@@ -128,8 +128,7 @@ public class ParsedArguments {
         Object result = argument.getResult();
         if (clazz.isAssignableFrom(result.getClass())) {
             return clazz.cast(result);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Argument '" + name + "' is defined as " + result.getClass().getSimpleName() + ", not " + clazz);
         }
     }
@@ -176,8 +175,7 @@ public class ParsedArguments {
         Object result = parsed.getResult();
         if (clazz.isAssignableFrom(result.getClass())) {
             return clazz.cast(result);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Flag '" + name + "' is defined as " + result.getClass().getSimpleName() + ", not " + clazz);
         }
     }

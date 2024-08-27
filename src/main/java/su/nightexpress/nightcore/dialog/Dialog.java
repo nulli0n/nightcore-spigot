@@ -21,13 +21,11 @@ import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
 public class Dialog {
 
+    public static final String EXIT = "#exit";
+    public static final String VALUES = "#values";
     private static final Map<UUID, Dialog> DIALOG_MAP = new ConcurrentHashMap<>();
     private static final int DEFAULT_TIMEOUT = 60;
-
-    public static final String EXIT       = "#exit";
-    public static final String VALUES     = "#values";
-
-    private final Player        player;
+    private final Player player;
     private final DialogHandler handler;
 
     private Menu lastMenu;
@@ -39,6 +37,48 @@ public class Dialog {
         this.handler = handler;
         this.suggestions = new ArrayList<>();
         this.setTimeout(DEFAULT_TIMEOUT);
+    }
+
+    public static void checkTimeOut() {
+        new HashSet<>(DIALOG_MAP.values()).forEach(dialog -> {
+            if (dialog.isTimedOut()) {
+                stop(dialog.player);
+            }
+        });
+    }
+
+    @NotNull
+    public static Dialog create(@NotNull Player player, @NotNull DialogHandler handler) {
+        Dialog dialog = new Dialog(player, handler)
+                .setLastMenu(AbstractMenu.getMenu(player));
+
+        DIALOG_MAP.put(player.getUniqueId(), dialog);
+        CoreLang.EDITOR_ACTION_EXIT.getMessage().send(player);
+        return dialog;
+    }
+
+    @Nullable
+    public static Dialog get(@NotNull Player player) {
+        return DIALOG_MAP.get(player.getUniqueId());
+    }
+
+    public static void stop(@NotNull Player player) {
+        Dialog dialog = DIALOG_MAP.remove(player.getUniqueId());
+        if (dialog == null) return;
+
+        Menu menu = dialog.getLastMenu();
+        if (menu != null) {
+            menu.open(player);
+        }
+        player.sendTitle("", "", 1, 1, 1);
+    }
+
+    public static void shutdown() {
+        DIALOG_MAP.clear();
+    }
+
+    public static boolean contains(@NotNull Player player) {
+        return get(player) != null;
     }
 
     public boolean isTimedOut() {
@@ -102,8 +142,8 @@ public class Dialog {
         ClickEvent.Action action = autoRun ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND;
 
         StringBuilder builder = new StringBuilder()
-            .append(ORANGE.enclose("=".repeat(8) + "[ " + YELLOW.enclose("Value Helper") + " ]" + "=".repeat(8)))
-            .append(Placeholders.TAG_LINE_BREAK);
+                .append(ORANGE.enclose("=".repeat(8) + "[ " + YELLOW.enclose("Value Helper") + " ]" + "=".repeat(8)))
+                .append(Placeholders.TAG_LINE_BREAK);
 
         items.forEach(element -> {
             String hoverHint = GRAY.enclose("Click me to select " + CYAN.enclose(element) + ".");
@@ -117,8 +157,7 @@ public class Dialog {
 
         if (isFirstPage) {
             builder.append(GRAY.enclose("[<]"));
-        }
-        else {
+        } else {
             builder.append(LIGHT_RED.enclose(HOVER.encloseHint(CLICK.encloseRun("[<]", "/" + VALUES + " " + (page - 1) + " " + autoRun), GRAY.enclose("Previous Page"))));
         }
 
@@ -128,8 +167,7 @@ public class Dialog {
 
         if (isLastPage) {
             builder.append(GRAY.enclose("[>]"));
-        }
-        else {
+        } else {
             builder.append(LIGHT_RED.enclose(HOVER.encloseHint(CLICK.encloseRun("[>]", "/" + VALUES + " " + (page + 1) + " " + autoRun), GRAY.enclose("Next Page"))));
 
         }
@@ -168,47 +206,5 @@ public class Dialog {
 
     private void sendInfo(@NotNull String title, @NotNull String text) {
         this.getPlayer().sendTitle(title, text, 20, Short.MAX_VALUE, 20);
-    }
-
-    public static void checkTimeOut() {
-        new HashSet<>(DIALOG_MAP.values()).forEach(dialog -> {
-            if (dialog.isTimedOut()) {
-                stop(dialog.player);
-            }
-        });
-    }
-
-    @NotNull
-    public static Dialog create(@NotNull Player player, @NotNull DialogHandler handler) {
-        Dialog dialog = new Dialog(player, handler)
-            .setLastMenu(AbstractMenu.getMenu(player));
-
-        DIALOG_MAP.put(player.getUniqueId(), dialog);
-        CoreLang.EDITOR_ACTION_EXIT.getMessage().send(player);
-        return dialog;
-    }
-
-    @Nullable
-    public static Dialog get(@NotNull Player player) {
-        return DIALOG_MAP.get(player.getUniqueId());
-    }
-
-    public static void stop(@NotNull Player player) {
-        Dialog dialog = DIALOG_MAP.remove(player.getUniqueId());
-        if (dialog == null) return;
-
-        Menu menu = dialog.getLastMenu();
-        if (menu != null) {
-            menu.open(player);
-        }
-        player.sendTitle("", "", 1,  1, 1);
-    }
-
-    public static void shutdown() {
-        DIALOG_MAP.clear();
-    }
-
-    public static boolean contains(@NotNull Player player) {
-        return get(player) != null;
     }
 }

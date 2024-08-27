@@ -7,8 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
-import su.nightexpress.nightcore.menu.api.AutoFilled;
 import su.nightexpress.nightcore.menu.MenuOptions;
+import su.nightexpress.nightcore.menu.api.AutoFilled;
 import su.nightexpress.nightcore.menu.click.ClickAction;
 import su.nightexpress.nightcore.menu.click.ClickType;
 import su.nightexpress.nightcore.menu.item.ItemHandler;
@@ -23,9 +23,9 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
 
     protected static final String DEFAULT_ITEM_SECTION = "Content";
 
-    protected final FileConfig               cfg;
+    protected final FileConfig cfg;
     protected final Map<String, ItemHandler> handlerMap;
-    protected       String                   itemSection;
+    protected String itemSection;
 
     public ConfigMenu(@NotNull P plugin, @NotNull FileConfig config) {
         super(plugin);
@@ -56,21 +56,21 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
         MenuOptions defaultOptions = this.createDefaultOptions();
 
         String title = ConfigValue.create("Settings.Title", defaultOptions.getTitle(),
-            "GUI title."
+                "GUI title."
         ).read(cfg);
 
         int size = ConfigValue.create("Settings.Size", defaultOptions.getSize(),
-            "GUI size. Must be multiply of 9.",
-            "Useful for '" + InventoryType.CHEST.name() + "' Inventory Type only."
+                "GUI size. Must be multiply of 9.",
+                "Useful for '" + InventoryType.CHEST.name() + "' Inventory Type only."
         ).read(cfg);
 
         InventoryType type = ConfigValue.create("Settings.Inventory_Type", InventoryType.class, defaultOptions.getType(),
-            "GUI type.",
-            "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/inventory/InventoryType.html"
+                "GUI type.",
+                "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/inventory/InventoryType.html"
         ).read(cfg);
 
         int autoRefresh = ConfigValue.create("Settings.Auto_Refresh", defaultOptions.getAutoRefresh(),
-            "Sets GUI auto-refresh interval (in seconds). Set this to 0 to disable."
+                "Sets GUI auto-refresh interval (in seconds). Set this to 0 to disable."
         ).read(cfg);
 
         this.getOptions().setTitle(NightMessage.asLegacy(title));

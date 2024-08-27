@@ -18,12 +18,18 @@ import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
 public class LangItem extends LangEntry<Pair<String, List<String>>> {
 
+    public static final String CLICK = "Click";
+    public static final String LMB = "Left-Click";
+    public static final String RMB = "Right-Click";
+    public static final String DROP_KEY = "[Q / Drop] Key";
+    public static final String SWAP_KEY = "[F / Swap] Key";
+    public static final String SHIFT_LMB = "Shift-Left";
+    public static final String SHIFT_RMB = "Shift-Right";
+    public static final String DRAG_DROP = "Drag & Drop";
     private final List<String> defaultLore;
-
     private String localizedName;
     private List<String> localizedLore;
-
-    private TextRoot             wrappedName;
+    private TextRoot wrappedName;
     private List<TextRoot> wrappedLore;
 
     public LangItem(@NotNull String key, @NotNull String defaultName, @NotNull List<String> defaultLore) {
@@ -34,6 +40,11 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
     @NotNull
     public static LangItem of(@NotNull String key, @NotNull String name, @NotNull String... lore) {
         return new LangItem(key, name, Arrays.asList(lore));
+    }
+
+    @NotNull
+    public static Builder builder(@NotNull String key) {
+        return new Builder(key);
     }
 
     @Override
@@ -107,25 +118,11 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
         return wrappedLore;
     }
 
-    public static final String CLICK     = "Click";
-    public static final String LMB       = "Left-Click";
-    public static final String RMB       = "Right-Click";
-    public static final String DROP_KEY  = "[Q / Drop] Key";
-    public static final String SWAP_KEY  = "[F / Swap] Key";
-    public static final String SHIFT_LMB = "Shift-Left";
-    public static final String SHIFT_RMB = "Shift-Right";
-    public static final String DRAG_DROP = "Drag & Drop";
-
-    @NotNull
-    public static Builder builder(@NotNull String key) {
-        return new Builder(key);
-    }
-
     public static final class Builder {
 
         private final String key;
-        private       String       name;
         private final List<String> lore;
+        private String name;
 
         public Builder(@NotNull String key) {
             this.key = key;

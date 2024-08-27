@@ -23,7 +23,7 @@ public enum Version {
     private static Version current;
 
     private final boolean deprecated;
-    private final String  localized;
+    private final String localized;
 
     Version(@NotNull String localized) {
         this(localized, false);
@@ -49,6 +49,18 @@ public enum Version {
         return current;
     }
 
+    public static boolean isAtLeast(@NotNull Version version) {
+        return version.isCurrent() || getCurrent().isHigher(version);
+    }
+
+    public static boolean isAbove(@NotNull Version version) {
+        return getCurrent().isHigher(version);
+    }
+
+    public static boolean isBehind(@NotNull Version version) {
+        return getCurrent().isLower(version);
+    }
+
     public boolean isDeprecated() {
         return deprecated;
     }
@@ -64,18 +76,6 @@ public enum Version {
 
     public boolean isHigher(@NotNull Version version) {
         return this.ordinal() > version.ordinal();
-    }
-
-    public static boolean isAtLeast(@NotNull Version version) {
-        return version.isCurrent() || getCurrent().isHigher(version);
-    }
-
-    public static boolean isAbove(@NotNull Version version) {
-        return getCurrent().isHigher(version);
-    }
-
-    public static boolean isBehind(@NotNull Version version) {
-        return getCurrent().isLower(version);
     }
 
     public boolean isCurrent() {

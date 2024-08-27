@@ -69,7 +69,7 @@ public class CommandFlag<T> {
     @Override
     public String toString() {
         return "CommandFlag{" +
-            "name='" + name + '\'' +
-            '}';
+                "name='" + name + '\'' +
+                '}';
     }
 }

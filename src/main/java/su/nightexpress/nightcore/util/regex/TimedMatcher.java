@@ -60,8 +60,7 @@ public class TimedMatcher {
     public String replaceAll(@NotNull String with) {
         try {
             return this.matcher.replaceAll(with);
-        }
-        catch (MatcherTimeoutException exception) {
+        } catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
                 Plugins.CORE.warn("Matcher " + exception.getTimeout() + "ms timeout error for replaceAll: '" + matcher.pattern().pattern() + "'.");
             }
@@ -72,8 +71,7 @@ public class TimedMatcher {
     public boolean matches() {
         try {
             return this.matcher.matches();
-        }
-        catch (MatcherTimeoutException exception) {
+        } catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
                 Plugins.CORE.warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern().pattern() + "'.");
             }
@@ -84,8 +82,7 @@ public class TimedMatcher {
     public boolean find() {
         try {
             return this.matcher.find();
-        }
-        catch (MatcherTimeoutException exception) {
+        } catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
                 Plugins.CORE.warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern().pattern() + "'.");
             }

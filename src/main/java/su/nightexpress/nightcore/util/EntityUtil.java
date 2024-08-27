@@ -40,8 +40,8 @@ public class EntityUtil {
         if (!(object instanceof AtomicInteger atomicInteger)) {
             if (object == null) {
                 core.error("Could not find entity counter field!");
-            }
-            else core.error("Field '" + fieldName + "' in " + entityClass.getName() + " class is " + object.getClass().getName()  + " (expected AtomicInteger)");
+            } else
+                core.error("Field '" + fieldName + "' in " + entityClass.getName() + " class is " + object.getClass().getName() + " (expected AtomicInteger)");
             return false;
         }
 

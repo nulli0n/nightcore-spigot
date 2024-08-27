@@ -15,7 +15,8 @@ import java.util.List;
 @Deprecated
 public interface NightCommand extends Placeholder {
 
-    @NotNull List<String> getTab(@NotNull Player player, int arg, @NotNull String[] args);
+    @NotNull
+    List<String> getTab(@NotNull Player player, int arg, @NotNull String[] args);
 
     void execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args);
 
@@ -39,17 +40,22 @@ public interface NightCommand extends Placeholder {
         return builder.toString();
     }
 
-    @Nullable NightCommand getParent();
+    @Nullable
+    NightCommand getParent();
 
     void setParent(@Nullable NightCommand parent);
 
-    @Nullable NightCommand getChildren(@NotNull String alias);
+    @Nullable
+    NightCommand getChildren(@NotNull String alias);
 
-    @NotNull Collection<NightCommand> getChildrens();
+    @NotNull
+    Collection<NightCommand> getChildrens();
 
-    @NotNull String[] getAliases();
+    @NotNull
+    String[] getAliases();
 
-    @Nullable String getPermission();
+    @Nullable
+    String getPermission();
 
     default void setPermission(@Nullable Permission permission) {
         this.setPermission(permission == null ? null : permission.getName());
@@ -57,9 +63,11 @@ public interface NightCommand extends Placeholder {
 
     void setPermission(@Nullable String permission);
 
-    @Nullable CommandFlag<?> getFlag(@NotNull String name);
+    @Nullable
+    CommandFlag<?> getFlag(@NotNull String name);
 
-    @NotNull Collection<CommandFlag<?>> getFlags();
+    @NotNull
+    Collection<CommandFlag<?>> getFlags();
 
     default void addFlag(@NotNull CommandFlag<?>... flags) {
         for (CommandFlag<?> flag : flags) this.addFlag(flag);
@@ -67,7 +75,8 @@ public interface NightCommand extends Placeholder {
 
     void addFlag(@NotNull CommandFlag<?> flag);
 
-    @NotNull String getUsage();
+    @NotNull
+    String getUsage();
 
     default void setUsage(@NotNull LangString string) {
         this.setUsage(string.getString());
@@ -75,7 +84,8 @@ public interface NightCommand extends Placeholder {
 
     void setUsage(@NotNull String usage);
 
-    @NotNull String getDescription();
+    @NotNull
+    String getDescription();
 
     default void setDescription(@NotNull LangString string) {
         this.setDescription(string.getString());

@@ -49,8 +49,7 @@ public class TrackedWorld {
         PersistentDataContainer container = chunk.getPersistentDataContainer();
         if (trackedChunk.isEmpty()) {
             container.remove(PlayerBlockTracker.TRACKED_DATA_KEY);
-        }
-        else {
+        } else {
             trackedChunk.saveTo(container);
         }
     }

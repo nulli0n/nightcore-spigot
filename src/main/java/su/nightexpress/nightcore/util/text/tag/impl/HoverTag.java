@@ -60,8 +60,7 @@ public class HoverTag extends ComplexTag implements ContentTag {
 
         if (action == HoverEvent.Action.SHOW_TEXT) {
             return new ShowTextDecorator(value);
-        }
-        else if (action == HoverEvent.Action.SHOW_ITEM) {
+        } else if (action == HoverEvent.Action.SHOW_ITEM) {
             return new ShowItemDecorator(value);
         }
         return null;

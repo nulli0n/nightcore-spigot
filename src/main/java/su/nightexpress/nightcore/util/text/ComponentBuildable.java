@@ -5,5 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface ComponentBuildable {
 
-    @NotNull BaseComponent toComponent();
+    @NotNull
+    BaseComponent toComponent();
 }

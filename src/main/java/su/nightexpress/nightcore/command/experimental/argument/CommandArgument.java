@@ -17,14 +17,14 @@ import java.util.function.Function;
 
 public class CommandArgument<T> {
 
-    private final String                             name;
-    private final ArgumentParser<T>                  parser;
-    private final boolean                            required;
-    private final boolean                            complex;
-    private final String                             localized;
-    private final String                             permission;
+    private final String name;
+    private final ArgumentParser<T> parser;
+    private final boolean required;
+    private final boolean complex;
+    private final String localized;
+    private final String permission;
     private final Function<TabContext, List<String>> samples;
-    private final LangMessage                        failureMessage;
+    private final LangMessage failureMessage;
 
 //    @Deprecated
 //    public CommandArgument(@NotNull String name,

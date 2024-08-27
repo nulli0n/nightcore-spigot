@@ -32,12 +32,12 @@ public class RootCommand<P extends NightCorePlugin, S extends CommandNode> imple
 
     @NotNull
     public static <T extends NightCorePlugin> RootCommand<T, DirectNode> direct(@NotNull T plugin, @NotNull String name, @NotNull Consumer<DirectNodeBuilder> consumer) {
-        return direct(plugin, new String[] {name}, consumer);
+        return direct(plugin, new String[]{name}, consumer);
     }
 
     @NotNull
     public static <T extends NightCorePlugin> RootCommand<T, ChainedNode> chained(@NotNull T plugin, @NotNull String name, @NotNull Consumer<ChainedNodeBuilder> consumer) {
-        return chained(plugin, new String[] {name}, consumer);
+        return chained(plugin, new String[]{name}, consumer);
     }
 
     @NotNull
@@ -62,11 +62,11 @@ public class RootCommand<P extends NightCorePlugin, S extends CommandNode> imple
     @Override
     public boolean register() {
         this.backend = new WrappedCommand(this.plugin, this, this,
-            this.node.getName(),
-            this.node.getAliases(),
-            this.node.getDescription(),
-            this.node.getUsage(),
-            this.node.getPermission()
+                this.node.getName(),
+                this.node.getAliases(),
+                this.node.getDescription(),
+                this.node.getUsage(),
+                this.node.getPermission()
         );
         return CommandUtil.register(this.plugin, this.backend);
     }

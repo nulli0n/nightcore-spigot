@@ -16,9 +16,9 @@ import java.util.*;
 
 public class ChainedNode extends CommandNode {
 
-    private final String                   localized;
+    private final String localized;
     private final Map<String, CommandNode> commandMap;
-    private NodeExecutor             fallback;
+    private NodeExecutor fallback;
 
     public ChainedNode(@NotNull NightCorePlugin plugin,
                        @NotNull String name,
@@ -35,9 +35,9 @@ public class ChainedNode extends CommandNode {
         this.setFallback(fallback);
 
         this.addChildren(DirectNode.builder(plugin, "help")
-            .description(CoreLang.COMMAND_HELP_DESC)
-            .permission(permission)
-            .executes((context, arguments) -> this.sendCommandList(context))
+                .description(CoreLang.COMMAND_HELP_DESC)
+                .permission(permission)
+                .executes((context, arguments) -> this.sendCommandList(context))
         );
 
         commandMap.values().forEach(this::addChildren);
@@ -84,18 +84,18 @@ public class ChainedNode extends CommandNode {
         CommandSender sender = context.getSender();
 
         return context.sendSuccess(CoreLang.COMMAND_HELP_LIST.getMessage()
-            .replace(Placeholders.GENERIC_NAME, this.getLocalized())
-            .replace(Placeholders.GENERIC_ENTRY, list -> {
-                this.getChildrens().stream().sorted(Comparator.comparing(CommandNode::getName)).forEach(children -> {
-                    if (!children.hasPermission(sender)) return;
+                .replace(Placeholders.GENERIC_NAME, this.getLocalized())
+                .replace(Placeholders.GENERIC_ENTRY, list -> {
+                    this.getChildrens().stream().sorted(Comparator.comparing(CommandNode::getName)).forEach(children -> {
+                        if (!children.hasPermission(sender)) return;
 
-                    list.add(CoreLang.COMMAND_HELP_ENTRY.getString()
-                        .replace(Placeholders.COMMAND_LABEL, children.getNameWithParents())
-                        .replace(Placeholders.COMMAND_USAGE, children.getUsage())
-                        .replace(Placeholders.COMMAND_DESCRIPTION, children.getDescription())
-                    );
-                });
-            }));
+                        list.add(CoreLang.COMMAND_HELP_ENTRY.getString()
+                                .replace(Placeholders.COMMAND_LABEL, children.getNameWithParents())
+                                .replace(Placeholders.COMMAND_USAGE, children.getUsage())
+                                .replace(Placeholders.COMMAND_DESCRIPTION, children.getDescription())
+                        );
+                    });
+                }));
     }
 
     @Override

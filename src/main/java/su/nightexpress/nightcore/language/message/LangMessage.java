@@ -28,9 +28,9 @@ import java.util.function.UnaryOperator;
 public class LangMessage {
 
     private final NightCorePlugin plugin;
-    private final String          defaultText;
-    private final MessageOptions  options;
-    private final TextRoot        message;
+    private final String defaultText;
+    private final MessageOptions options;
+    private final TextRoot message;
 
     public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options) {
         this(plugin, defaultText, options, null);
@@ -77,14 +77,11 @@ public class LangMessage {
                 if (type.equalsIgnoreCase("type")) {
                     if (typeContent.equalsIgnoreCase("action_bar")) {
                         options.setOutputType(OutputType.ACTION_BAR);
-                    }
-                    else if (typeContent.equalsIgnoreCase("chat")) {
+                    } else if (typeContent.equalsIgnoreCase("chat")) {
                         options.setOutputType(OutputType.CHAT);
-                    }
-                    else if (typeContent.equalsIgnoreCase("none")) {
+                    } else if (typeContent.equalsIgnoreCase("none")) {
                         options.setOutputType(OutputType.NONE);
-                    }
-                    else if (typeContent.startsWith("titles")) {
+                    } else if (typeContent.startsWith("titles")) {
                         String[] split = typeContent.split(":");
                         int fadeIn = NumberUtil.getAnyInteger(split[1], 20);
                         int stay = NumberUtil.getAnyInteger(split[2], 60);
@@ -92,15 +89,12 @@ public class LangMessage {
                         options.setOutputType(OutputType.TITLES);
                         options.setTitleTimes(new int[]{fadeIn, stay, fadeOut});
                     }
-                }
-                else if (type.equalsIgnoreCase("sound")) {
+                } else if (type.equalsIgnoreCase("sound")) {
                     StringUtil.getEnum(typeContent, Sound.class).ifPresent(options::setSound);
-                }
-                else if (type.equalsIgnoreCase("prefix")) {
+                } else if (type.equalsIgnoreCase("prefix")) {
                     boolean b = Boolean.parseBoolean(typeContent);
                     options.setHasPrefix(b);
-                }
-                else if (type.equalsIgnoreCase("papi")) {
+                } else if (type.equalsIgnoreCase("papi")) {
                     boolean b = Boolean.parseBoolean(typeContent);
                     options.setUsePlaceholderAPI(b);
                 }
@@ -236,8 +230,7 @@ public class LangMessage {
         if (sender instanceof Player player) {
             if (this.options.getOutputType() == OutputType.ACTION_BAR) {
                 Players.sendActionBar(player, this.getMessage(player));
-            }
-            else if (this.options.getOutputType() == OutputType.TITLES) {
+            } else if (this.options.getOutputType() == OutputType.TITLES) {
                 String[] split = Tags.LINE_BREAK.split(this.getMessage(sender).getString());
 
                 String title = NightMessage.asLegacy(split[0]);

@@ -12,10 +12,10 @@ import su.nightexpress.nightcore.language.message.LangMessage;
 public class CommandContext {
 
     private final NightCorePlugin plugin;
-    private final CommandSender   sender;
-    private final Player          executor;
-    private final String          label;
-    private final String[]        args;
+    private final CommandSender sender;
+    private final Player executor;
+    private final String label;
+    private final String[] args;
 
     private int argumentIndex;
 

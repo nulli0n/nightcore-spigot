@@ -8,7 +8,7 @@ import su.nightexpress.nightcore.util.Placeholders;
 
 public abstract class CommandFlag {
 
-    public static final char PREFIX    = '-';
+    public static final char PREFIX = '-';
     public static final char DELIMITER = '=';
 
     private final String name;
@@ -46,7 +46,7 @@ public abstract class CommandFlag {
     @Override
     public String toString() {
         return "CommandFlag{" +
-            "name='" + name + '\'' +
-            '}';
+                "name='" + name + '\'' +
+                '}';
     }
 }

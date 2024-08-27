@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.database.sql.executor;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.database.DatabaseType;
 import su.nightexpress.nightcore.database.AbstractConnector;
+import su.nightexpress.nightcore.database.DatabaseType;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLExecutor;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public final class CreateTableExecutor extends SQLExecutor<Void> {
 
-    private final DatabaseType    databaseType;
+    private final DatabaseType databaseType;
     private final List<SQLColumn> columns;
 
     private CreateTableExecutor(@NotNull String table, @NotNull DatabaseType databaseType) {
@@ -49,14 +49,13 @@ public final class CreateTableExecutor extends SQLExecutor<Void> {
         String id = "`id` " + ColumnFormer.INTEGER.build(this.databaseType, 11);
         if (this.databaseType == DatabaseType.SQLITE) {
             id += " PRIMARY KEY AUTOINCREMENT";
-        }
-        else {
+        } else {
             id += " PRIMARY KEY AUTO_INCREMENT";
         }
 
         String columns = id + "," + this.columns.stream()
-            .map(column -> column.getNameEscaped() + " " + column.formatType(this.databaseType))
-            .collect(Collectors.joining(", "));
+                .map(column -> column.getNameEscaped() + " " + column.formatType(this.databaseType))
+                .collect(Collectors.joining(", "));
 
         String sql = "CREATE TABLE IF NOT EXISTS " + this.getTable() + "(" + columns + ");";
 

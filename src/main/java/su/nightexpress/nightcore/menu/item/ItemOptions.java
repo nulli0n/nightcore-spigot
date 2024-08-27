@@ -72,8 +72,7 @@ public class ItemOptions {
     public ItemOptions addVisibilityPolicy(@NotNull Predicate<MenuViewer> visibilityPolicy) {
         if (this.visibilityPolicy == null) {
             this.setVisibilityPolicy(visibilityPolicy);
-        }
-        else {
+        } else {
             this.visibilityPolicy = this.visibilityPolicy.and(visibilityPolicy);
         }
 
@@ -106,8 +105,7 @@ public class ItemOptions {
     public ItemOptions addDisplayModifier(@NotNull BiConsumer<MenuViewer, ItemStack> displayModifier) {
         if (this.displayModifier == null) {
             this.setDisplayModifier(displayModifier);
-        }
-        else {
+        } else {
             this.displayModifier = this.displayModifier.andThen(displayModifier);
         }
         return this;

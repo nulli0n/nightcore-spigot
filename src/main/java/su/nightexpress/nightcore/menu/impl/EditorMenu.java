@@ -122,7 +122,7 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
     public MenuItem addItem(@NotNull ItemStack item, @NotNull LangItem locale, int slot, @NotNull EditorHandler<T> handler) {
         ItemReplacer.create(item).trimmed().hideFlags().readLocale(locale).writeMeta();
         MenuItem menuItem = new MenuItem(item).setPriority(100).setSlots(slot)
-            .setHandler((viewer, event) -> handler.handle(viewer, event, this.getLink(viewer)));
+                .setHandler((viewer, event) -> handler.handle(viewer, event, this.getLink(viewer)));
         this.addItem(menuItem);
         return menuItem;
     }

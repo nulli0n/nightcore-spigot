@@ -7,7 +7,8 @@ import su.nightexpress.nightcore.menu.api.Menu;
 
 public interface Linked<T> extends Menu {
 
-    @NotNull ViewLink<T> getLink();
+    @NotNull
+    ViewLink<T> getLink();
 
     default T getLink(@NotNull MenuViewer viewer) {
         return this.getLink(viewer.getPlayer());
