@@ -1,16 +1,17 @@
 package su.nightexpress.nightcore.util.wrapper;
 
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class UniTask {
-
     private final NightCorePlugin plugin;
-    private final Runnable        runnable;
-
-    private long    interval;
+    private final Runnable runnable;
+    private final ConcurrentHashMap<Integer, MyScheduledTask> taskIdHashMap;
+    private long interval;
     private boolean async;
-    private int     taskId;
 
     public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable) {
         this(plugin, runnable, 0L);
@@ -23,10 +24,9 @@ public class UniTask {
     public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval, boolean async) {
         this.plugin = plugin;
         this.runnable = runnable;
+        this.taskIdHashMap = new ConcurrentHashMap<>();
         this.setTicksInterval(interval);
         this.setAsync(async);
-
-        this.taskId = -1;
     }
 
     public UniTask setSecondsInterval(int interval) {
@@ -48,7 +48,7 @@ public class UniTask {
     }
 
     public boolean isRunning() {
-        return this.taskId >= 0 && this.plugin.getScheduler().isCurrentlyRunning(this.taskId);
+        return !this.taskIdHashMap.isEmpty();
     }
 
     public final void restart() {
@@ -57,22 +57,21 @@ public class UniTask {
     }
 
     public UniTask start() {
-        if (this.taskId >= 0 || this.interval <= 0L) return this;
+        if (this.taskIdHashMap.isEmpty() || this.interval <= 0L) return this;
 
         if (this.async) {
-            this.taskId = plugin.getScheduler().runTaskTimerAsynchronously(plugin, runnable, 0L, interval).getTaskId();
-        }
-        else {
-            this.taskId = plugin.getScheduler().runTaskTimer(plugin, runnable, 0L, interval).getTaskId();
+            this.taskIdHashMap.put(taskIdHashMap.size() + 1, plugin.getScheduler().runTaskTimerAsynchronously(plugin, runnable, 0L, interval));
+        } else {
+            this.taskIdHashMap.put(taskIdHashMap.size() + 1, plugin.getScheduler().runTaskTimer(plugin, runnable, 0L, interval));
         }
         return this;
     }
 
     public boolean stop() {
-        if (this.taskId < 0) return false;
+        if (this.taskIdHashMap.isEmpty()) return false;
 
-        this.plugin.getServer().getScheduler().cancelTask(this.taskId);
-        this.taskId = -1;
+        this.taskIdHashMap.forEach((id, task) -> task.cancel());
+        this.taskIdHashMap.remove(taskIdHashMap.size() - 1);
         return true;
     }
 }

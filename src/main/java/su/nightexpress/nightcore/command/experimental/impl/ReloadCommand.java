@@ -13,9 +13,9 @@ public class ReloadCommand {
 
     public static void inject(@NotNull NightCorePlugin plugin, @NotNull ChainedNode node, @NotNull UniPermission permission) {
         node.addChildren(DirectNode.builder(plugin, "reload")
-            .permission(permission)
-            .description(CoreLang.COMMAND_RELOAD_DESC)
-            .executes((context, arguments) -> execute(plugin, context, arguments))
+                .permission(permission)
+                .description(CoreLang.COMMAND_RELOAD_DESC)
+                .executes((context, arguments) -> execute(plugin, context, arguments))
         );
     }
 

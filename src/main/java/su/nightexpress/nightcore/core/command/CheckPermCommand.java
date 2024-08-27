@@ -14,8 +14,8 @@ import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.util.Colorizer;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
+import static su.nightexpress.nightcore.util.Placeholders.TAG_LINE_BREAK;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
-import static su.nightexpress.nightcore.util.Placeholders.*;
 
 public class CheckPermCommand {
 
@@ -23,25 +23,25 @@ public class CheckPermCommand {
 
     public static void inject(@NotNull NightCore plugin, @NotNull ChainedNode node) {
         node.addChildren(DirectNode.builder(plugin, "checkperm")
-            .permission(CorePerms.COMMAND_CHECK_PERM)
-            .description(CoreLang.COMMAND_CHECKPERM_DESC)
-            .withArgument(ArgumentTypes.player(ARG_PLAYER).required())
-            .executes(CheckPermCommand::execute)
+                .permission(CorePerms.COMMAND_CHECK_PERM)
+                .description(CoreLang.COMMAND_CHECKPERM_DESC)
+                .withArgument(ArgumentTypes.player(ARG_PLAYER).required())
+                .executes(CheckPermCommand::execute)
         );
     }
 
     public static boolean execute(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         Player player = arguments.getPlayerArgument(ARG_PLAYER);
         String builder =
-            BOLD.enclose(LIGHT_YELLOW.enclose("Permissions report for ") + LIGHT_ORANGE.enclose(player.getName() + ":")) +
-                TAG_LINE_BREAK +
-                LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("Primary Group: ") + Colorizer.plain(VaultHook.getPermissionGroup(player))) +
-                TAG_LINE_BREAK +
-                LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("All Groups: ") + Colorizer.plain(String.join(", ", VaultHook.getPermissionGroups(player)))) +
-                TAG_LINE_BREAK +
-                LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("Prefix: ") + VaultHook.getPrefix(player)) +
-                TAG_LINE_BREAK +
-                LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("Suffix: ") + VaultHook.getSuffix(player));
+                BOLD.enclose(LIGHT_YELLOW.enclose("Permissions report for ") + LIGHT_ORANGE.enclose(player.getName() + ":")) +
+                        TAG_LINE_BREAK +
+                        LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("Primary Group: ") + Colorizer.plain(VaultHook.getPermissionGroup(player))) +
+                        TAG_LINE_BREAK +
+                        LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("All Groups: ") + Colorizer.plain(String.join(", ", VaultHook.getPermissionGroups(player)))) +
+                        TAG_LINE_BREAK +
+                        LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("Prefix: ") + VaultHook.getPrefix(player)) +
+                        TAG_LINE_BREAK +
+                        LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("Suffix: ") + VaultHook.getSuffix(player));
         NightMessage.create(builder).send(context.getSender());
         return true;
     }

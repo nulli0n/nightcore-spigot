@@ -13,9 +13,9 @@ import java.util.List;
 
 public class WrappedCommand extends Command implements PluginIdentifiableCommand {
 
-    protected final Plugin          plugin;
+    protected final Plugin plugin;
     protected final CommandExecutor executor;
-    protected final TabCompleter    tabCompleter;
+    protected final TabCompleter tabCompleter;
 
     public WrappedCommand(@NotNull Plugin plugin, @NotNull NightPluginCommand command) {
         this(plugin, command, command, command.getAliases(), command.getDescription(), command.getUsage(), command.getPermission());

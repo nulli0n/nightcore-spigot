@@ -14,11 +14,11 @@ public abstract class AbstractUser<P extends NightCorePlugin> implements DataUse
     protected final UUID uuid;
 
     protected String name;
-    protected long   dateCreated;
-    protected long   lastOnline;
-    protected long   cachedUntil;
-    protected long   autoSaveIn;
-    protected long   nextSyncIn;
+    protected long dateCreated;
+    protected long lastOnline;
+    protected long cachedUntil;
+    protected long autoSaveIn;
+    protected long nextSyncIn;
 
     public AbstractUser(@NotNull P plugin, @NotNull UUID uuid, @NotNull String name, long dateCreated, long lastOnline) {
         this.plugin = plugin;

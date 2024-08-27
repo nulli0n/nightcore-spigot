@@ -53,10 +53,10 @@ public class Rnd {
     @NotNull
     public static <T> T getByWeight(@NotNull Map<T, Double> itemsMap) {
         List<Pair<T, Double>> items = itemsMap.entrySet().stream()
-            .filter(entry -> entry.getValue() > 0D)
-            .map(entry -> Pair.of(entry.getKey(), entry.getValue()))
-            .sorted(Comparator.comparing(Pair::getSecond))
-            .toList();
+                .filter(entry -> entry.getValue() > 0D)
+                .map(entry -> Pair.of(entry.getKey(), entry.getValue()))
+                .sorted(Comparator.comparing(Pair::getSecond))
+                .toList();
         double totalWeight = items.stream().mapToDouble(Pair::getSecond).sum();
 
         int index = 0;

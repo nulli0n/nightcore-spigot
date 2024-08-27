@@ -21,7 +21,8 @@ public class AutoFill<T> {
         this.setSlots();
         this.setItems(new ArrayList<>());
         this.setItemCreator(obj -> new ItemStack(Material.AIR));
-        this.setClickAction(obj -> (viewer, event) -> {});
+        this.setClickAction(obj -> (viewer, event) -> {
+        });
     }
 
     public int[] getSlots() {

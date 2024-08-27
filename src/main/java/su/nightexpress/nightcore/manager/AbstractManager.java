@@ -12,7 +12,7 @@ import java.util.Set;
 public abstract class AbstractManager<P extends NightCorePlugin> extends SimpleManager<P> {
 
     protected final Set<SimpeListener> listeners;
-    protected final List<UniTask>       tasks;
+    protected final List<UniTask> tasks;
 
     public AbstractManager(@NotNull P plugin) {
         super(plugin);

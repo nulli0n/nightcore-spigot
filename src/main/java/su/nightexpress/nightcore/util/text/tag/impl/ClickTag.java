@@ -1,13 +1,12 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.text.TextRoot;
 import su.nightexpress.nightcore.util.text.tag.api.ComplexTag;
-import su.nightexpress.nightcore.util.text.tag.decorator.ClickDecorator;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
+import su.nightexpress.nightcore.util.text.tag.decorator.ClickDecorator;
 
 public class ClickTag extends ComplexTag implements ContentTag {
 

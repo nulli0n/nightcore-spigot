@@ -7,10 +7,6 @@ import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 
 public class FontStyleTag extends SimpleTag implements Decorator {
 
-    public enum Style {
-        BOLD, ITALIC, UNDERLINED, STRIKETHROUGH, OBFUSCATED
-    }
-
     private final Style style;
 
     public FontStyleTag(@NotNull String name, @NotNull Style style) {
@@ -32,5 +28,9 @@ public class FontStyleTag extends SimpleTag implements Decorator {
             case UNDERLINED -> component.setUnderlined(true);
             case STRIKETHROUGH -> component.setStrikethrough(true);
         }
+    }
+
+    public enum Style {
+        BOLD, ITALIC, UNDERLINED, STRIKETHROUGH, OBFUSCATED
     }
 }

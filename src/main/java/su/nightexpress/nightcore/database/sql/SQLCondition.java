@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public class SQLCondition {
 
     private final SQLValue value;
-    private final Type      type;
+    private final Type type;
 
     public SQLCondition(@NotNull SQLValue value, @NotNull Type type) {
         this.value = value;

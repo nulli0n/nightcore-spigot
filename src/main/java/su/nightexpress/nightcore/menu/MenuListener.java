@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.core.CoreConfig;
-import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.manager.AbstractListener;
+import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.click.ClickResult;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 

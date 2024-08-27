@@ -10,10 +10,10 @@ import java.util.function.UnaryOperator;
 
 public class MenuOptions {
 
-    private String        title;
-    private int           size;
+    private String title;
+    private int size;
     private InventoryType type;
-    private int           autoRefresh;
+    private int autoRefresh;
 
     private long lastAutoRefresh;
 
@@ -48,8 +48,7 @@ public class MenuOptions {
     public Inventory createInventory() {
         if (this.getType() == InventoryType.CHEST) {
             return Bukkit.getServer().createInventory(null, this.getSize(), this.getTitleFormatted());
-        }
-        else {
+        } else {
             return Bukkit.getServer().createInventory(null, this.getType(), this.getTitleFormatted());
         }
     }
@@ -59,13 +58,13 @@ public class MenuOptions {
         return title;
     }
 
+    public void setTitle(@NotNull String title) {
+        this.title = title;
+    }
+
     @NotNull
     public String getTitleFormatted() {
         return NightMessage.asLegacy(this.getTitle());
-    }
-
-    public void setTitle(@NotNull String title) {
-        this.title = title;
     }
 
     public void editTitle(@NotNull UnaryOperator<String> function) {

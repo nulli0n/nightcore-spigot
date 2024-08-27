@@ -120,8 +120,7 @@ public class NumberUtil {
     public static Optional<Integer> parseInteger(@NotNull String input) {
         try {
             return Optional.of(Integer.parseInt(input));
-        }
-        catch (NumberFormatException exception) {
+        } catch (NumberFormatException exception) {
             return Optional.empty();
         }
     }
@@ -134,8 +133,7 @@ public class NumberUtil {
                 return Optional.of(amount);
             }
             return Optional.empty();
-        }
-        catch (NumberFormatException exception) {
+        } catch (NumberFormatException exception) {
             return Optional.empty();
         }
     }

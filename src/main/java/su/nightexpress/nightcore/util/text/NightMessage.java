@@ -22,7 +22,6 @@ public class NightMessage {
     }
 
     /**
-     *
      * @param string Text to deserialize.
      * @return Precompiled TextRoot object.
      */
@@ -37,7 +36,6 @@ public class NightMessage {
     }
 
 
-
     @NotNull
     public static BaseComponent parse(@NotNull String string) {
         return parse(string, TagPool.ALL);
@@ -47,7 +45,6 @@ public class NightMessage {
     public static BaseComponent parse(@NotNull String string, @NotNull TagPool tagPool) {
         return from(string, tagPool).parseIfAbsent();
     }
-
 
 
     @NotNull
@@ -62,6 +59,7 @@ public class NightMessage {
 
     /**
      * Removes all known tags from the given string. Does not affect legacy color codes.
+     *
      * @param string A string to remove tags from.
      * @return String with no tags formations.
      */
@@ -72,7 +70,8 @@ public class NightMessage {
 
     /**
      * Removes tags from the given string according to a TagPool configuration. Does not affect legacy color codes.
-     * @param string A string to remove tags from.
+     *
+     * @param string  A string to remove tags from.
      * @param tagPool List of allowed tags.
      * @return String with allowed tags only in the original tag format <tag>Text</tag>.
      */

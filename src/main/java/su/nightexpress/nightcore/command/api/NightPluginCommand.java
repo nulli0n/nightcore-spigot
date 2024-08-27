@@ -8,7 +8,8 @@ import org.jetbrains.annotations.Nullable;
 @Deprecated
 public interface NightPluginCommand extends NightCommand, TabExecutor {
 
-    @Nullable NightCommand getDefaultCommand();
+    @Nullable
+    NightCommand getDefaultCommand();
 
     void addDefaultCommand(@NotNull NightCommand command);
 

@@ -13,7 +13,10 @@ import su.nightexpress.nightcore.menu.MenuViewer;
 import su.nightexpress.nightcore.menu.click.ClickResult;
 import su.nightexpress.nightcore.menu.item.MenuItem;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public interface Menu {
 
@@ -55,31 +58,42 @@ public interface Menu {
 
     boolean isPersistent();
 
-    @NotNull Collection<MenuViewer> getViewers();
+    @NotNull
+    Collection<MenuViewer> getViewers();
 
-    @Nullable MenuViewer getViewer(@NotNull Player player);
+    @Nullable
+    MenuViewer getViewer(@NotNull Player player);
 
-    @NotNull MenuViewer getViewerOrCreate(@NotNull Player player);
+    @NotNull
+    MenuViewer getViewerOrCreate(@NotNull Player player);
 
 
+    @NotNull
+    List<MenuItem> getItems(@NotNull MenuViewer viewer);
 
-    @NotNull List<MenuItem> getItems(@NotNull MenuViewer viewer);
+    @Nullable
+    MenuItem getItem(int slot);
 
-    @Nullable MenuItem getItem(int slot);
+    @Nullable
+    MenuItem getItem(@NotNull MenuViewer viewer, int slot);
 
-    @Nullable MenuItem getItem(@NotNull MenuViewer viewer, int slot);
+    @NotNull
+    MenuItem addItem(@NotNull ItemStack item, int... slots);
 
-    @NotNull MenuItem addItem(@NotNull ItemStack item, int... slots);
+    @NotNull
+    MenuItem addWeakItem(@NotNull Player player, @NotNull ItemStack item, int... slots);
 
-    @NotNull MenuItem addWeakItem(@NotNull Player player, @NotNull ItemStack item, int... slots);
+    @NotNull
+    MenuItem addItem(@NotNull MenuItem menuItem);
 
-    @NotNull MenuItem addItem(@NotNull MenuItem menuItem);
-
-    @NotNull UUID getId();
+    @NotNull
+    UUID getId();
 
     //@NotNull Map<UUID, MenuViewer> getViewersMap();
 
-    @NotNull Set<MenuItem> getItems();
+    @NotNull
+    Set<MenuItem> getItems();
 
-    @NotNull MenuOptions getOptions();
+    @NotNull
+    MenuOptions getOptions();
 }

@@ -12,7 +12,7 @@ import java.util.function.Function;
 public class ContentFlag<T> extends CommandFlag {
 
     private final ArgumentParser<T> parser;
-    private final String            sample;
+    private final String sample;
 
     public ContentFlag(@NotNull String name, @NotNull ArgumentParser<T> parser, @Nullable String sample, @Nullable String permission) {
         super(name, permission);
@@ -22,7 +22,7 @@ public class ContentFlag<T> extends CommandFlag {
 
     @NotNull
     @Deprecated
-    public static <T> ContentFlagBuilder<T> builder(@NotNull String name, @NotNull Function<String , T> parser) {
+    public static <T> ContentFlagBuilder<T> builder(@NotNull String name, @NotNull Function<String, T> parser) {
 //        return new ContentFlagBuilder<>(name, parser);
         return builder(name, (string, context) -> parser.apply(string));
     }

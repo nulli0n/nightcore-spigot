@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public abstract class AbstractConnector {
 
     protected final NightCorePlugin plugin;
-    protected final HikariConfig    config;
+    protected final HikariConfig config;
     protected final HikariDataSource dataSource;
 
     public AbstractConnector(@NotNull NightCorePlugin plugin, @NotNull DatabaseConfig config) {

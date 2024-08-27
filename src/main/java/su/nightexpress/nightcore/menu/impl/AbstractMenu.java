@@ -12,14 +12,14 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.api.event.PlayerOpenMenuEvent;
 import su.nightexpress.nightcore.dialog.Dialog;
-import su.nightexpress.nightcore.menu.MenuSize;
-import su.nightexpress.nightcore.menu.api.Menu;
-import su.nightexpress.nightcore.menu.link.Linked;
 import su.nightexpress.nightcore.menu.MenuOptions;
+import su.nightexpress.nightcore.menu.MenuSize;
 import su.nightexpress.nightcore.menu.MenuViewer;
+import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.click.ClickResult;
 import su.nightexpress.nightcore.menu.item.ItemOptions;
 import su.nightexpress.nightcore.menu.item.MenuItem;
+import su.nightexpress.nightcore.menu.link.Linked;
 import su.nightexpress.nightcore.util.Lists;
 
 import java.util.*;
@@ -27,6 +27,32 @@ import java.util.*;
 public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     public static final Map<UUID, Menu> PLAYER_MENUS = new HashMap<>();
+    protected final P plugin;
+    protected final UUID id;
+    protected final MenuOptions options;
+    protected final Map<UUID, MenuViewer> viewers;
+    protected final Set<MenuItem> items;
+
+    public AbstractMenu(@NotNull P plugin) {
+        this(plugin, "NC Inventory", InventoryType.CHEST);
+    }
+    public AbstractMenu(@NotNull P plugin, @NotNull String title, @NotNull InventoryType type) {
+        this(plugin, new MenuOptions(title, type));
+    }
+    @Deprecated
+    public AbstractMenu(@NotNull P plugin, @NotNull String title, int size) {
+        this(plugin, new MenuOptions(title, size, InventoryType.CHEST));
+    }
+    public AbstractMenu(@NotNull P plugin, @NotNull String title, @NotNull MenuSize size) {
+        this(plugin, new MenuOptions(title, size));
+    }
+    public AbstractMenu(@NotNull P plugin, @NotNull MenuOptions options) {
+        this.plugin = plugin;
+        this.id = UUID.randomUUID();
+        this.options = new MenuOptions(options);
+        this.viewers = new HashMap<>();
+        this.items = new HashSet<>();
+    }
 
     public static void closeAll() {
         getActiveMenus().forEach(Menu::close);
@@ -49,37 +75,6 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         if (menu == null) return;
 
         menu.close(player);
-    }
-
-    protected final P                     plugin;
-    protected final UUID                  id;
-    protected final MenuOptions           options;
-    protected final Map<UUID, MenuViewer> viewers;
-    protected final Set<MenuItem>         items;
-
-    public AbstractMenu(@NotNull P plugin) {
-        this(plugin, "NC Inventory", InventoryType.CHEST);
-    }
-
-    public AbstractMenu(@NotNull P plugin, @NotNull String title, @NotNull InventoryType type) {
-        this(plugin, new MenuOptions(title, type));
-    }
-
-    @Deprecated
-    public AbstractMenu(@NotNull P plugin, @NotNull String title, int size) {
-        this(plugin, new MenuOptions(title, size, InventoryType.CHEST));
-    }
-
-    public AbstractMenu(@NotNull P plugin, @NotNull String title, @NotNull MenuSize size) {
-        this(plugin, new MenuOptions(title, size));
-    }
-
-    public AbstractMenu(@NotNull P plugin, @NotNull MenuOptions options) {
-        this.plugin = plugin;
-        this.id = UUID.randomUUID();
-        this.options = new MenuOptions(options);
-        this.viewers = new HashMap<>();
-        this.items = new HashSet<>();
     }
 
     @Nullable
@@ -106,8 +101,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
         if (current == this && player.getOpenInventory().getType() != InventoryType.CRAFTING && player.getOpenInventory().getType() != InventoryType.CREATIVE) {
             player.closeInventory();
-        }
-        else {
+        } else {
             this.onClose(player);
         }
     }
@@ -128,7 +122,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     @Override
     public void runNextTick(@NotNull Runnable runnable) {
-        this.plugin.runTask(task -> runnable.run());
+        this.plugin.runTask(() -> runnable.run());
     }
 
     @Override
@@ -169,8 +163,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
         if (!viewer.hasInventory()) {
             viewer.openInventory(options.createInventory());
-        }
-        else {
+        } else {
             viewer.flushInventory(options);
         }
 
@@ -278,29 +271,28 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
 
-
     @Override
     @NotNull
     public List<MenuItem> getItems(@NotNull MenuViewer viewer) {
         return this.getItems().stream()
-            .filter(menuItem -> menuItem.canSee(viewer))
-            .sorted(Comparator.comparingInt(MenuItem::getPriority)).toList();
+                .filter(menuItem -> menuItem.canSee(viewer))
+                .sorted(Comparator.comparingInt(MenuItem::getPriority)).toList();
     }
 
     @Override
     @Nullable
     public MenuItem getItem(int slot) {
         return this.getItems().stream()
-            .filter(item -> Lists.contains(item.getSlots(), slot))
-            .max(Comparator.comparingInt(MenuItem::getPriority)).orElse(null);
+                .filter(item -> Lists.contains(item.getSlots(), slot))
+                .max(Comparator.comparingInt(MenuItem::getPriority)).orElse(null);
     }
 
     @Override
     @Nullable
     public MenuItem getItem(@NotNull MenuViewer viewer, int slot) {
         return this.getItems(viewer).stream()
-            .filter(menuItem -> Lists.contains(menuItem.getSlots(), slot))
-            .max(Comparator.comparingInt(MenuItem::getPriority)).orElse(null);
+                .filter(menuItem -> Lists.contains(menuItem.getSlots(), slot))
+                .max(Comparator.comparingInt(MenuItem::getPriority)).orElse(null);
     }
 
     @Override

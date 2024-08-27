@@ -19,9 +19,9 @@ import java.util.stream.Stream;
 
 public class VaultHook {
 
-    private static Economy    economy;
+    private static Economy economy;
     private static Permission permission;
-    private static Chat       chat;
+    private static Chat chat;
 
     public static void setup() {
         setPermission();
@@ -67,11 +67,9 @@ public class VaultHook {
 
         if (economy == null && provider instanceof Economy) {
             setEconomy();
-        }
-        else if (permission == null && provider instanceof Permission) {
+        } else if (permission == null && provider instanceof Permission) {
             setPermission();
-        }
-        else if (chat == null && provider instanceof Chat) {
+        } else if (chat == null && provider instanceof Chat) {
             setChat();
         }
     }
@@ -121,7 +119,7 @@ public class VaultHook {
         if (!hasPermissions() || !permission.hasGroupSupport()) return Collections.emptySet();
 
         String[] groups = permission.getPlayerGroups(player);
-        if (groups == null) groups = new String[] {getPermissionGroup(player)};
+        if (groups == null) groups = new String[]{getPermissionGroup(player)};
 
         return Stream.of(groups).map(String::toLowerCase).collect(Collectors.toSet());
     }

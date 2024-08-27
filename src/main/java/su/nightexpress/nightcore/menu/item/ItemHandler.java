@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.menu.item;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.MenuViewer;
+import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.click.ClickAction;
 import su.nightexpress.nightcore.util.Placeholders;
 
@@ -14,13 +14,13 @@ import java.util.function.Predicate;
 
 public class ItemHandler {
 
-    public static final String RETURN        = "return";
-    public static final String CLOSE         = "close";
-    public static final String NEXT_PAGE     = "page_next";
+    public static final String RETURN = "return";
+    public static final String CLOSE = "close";
+    public static final String NEXT_PAGE = "page_next";
     public static final String PREVIOUS_PAGE = "page_previous";
 
-    private final String                name;
-    private final List<ClickAction>     clickActions;
+    private final String name;
+    private final List<ClickAction> clickActions;
     private final Predicate<MenuViewer> visibilityPolicy;
 
     public ItemHandler() {
@@ -49,6 +49,7 @@ public class ItemHandler {
      * The main purpose of this method is to quickly create ItemHandler object for non-configurable GUIs.
      * <br><br>
      * Do NOT use this for items requiring specific handler name.
+     *
      * @param action Click action
      * @return ItemHandler with a random UUID as a name.
      */
@@ -60,25 +61,25 @@ public class ItemHandler {
     @NotNull
     public static ItemHandler forNextPage(@NotNull Menu menu) {
         return new ItemHandler(NEXT_PAGE,
-            (viewer, event) -> {
-                if (viewer.getPage() < viewer.getPages()) {
-                    viewer.setPage(viewer.getPage() + 1);
-                    menu.open(viewer.getPlayer());
-                }
-            },
-            viewer -> viewer.getPage() < viewer.getPages());
+                (viewer, event) -> {
+                    if (viewer.getPage() < viewer.getPages()) {
+                        viewer.setPage(viewer.getPage() + 1);
+                        menu.open(viewer.getPlayer());
+                    }
+                },
+                viewer -> viewer.getPage() < viewer.getPages());
     }
 
     @NotNull
     public static ItemHandler forPreviousPage(@NotNull Menu menu) {
         return new ItemHandler(PREVIOUS_PAGE,
-            (viewer, event) -> {
-                if (viewer.getPage() > 1) {
-                    viewer.setPage(viewer.getPage() - 1);
-                    menu.open(viewer.getPlayer());
-                }
-            },
-            viewer -> viewer.getPage() > 1);
+                (viewer, event) -> {
+                    if (viewer.getPage() > 1) {
+                        viewer.setPage(viewer.getPage() - 1);
+                        menu.open(viewer.getPlayer());
+                    }
+                },
+                viewer -> viewer.getPage() > 1);
     }
 
     @NotNull

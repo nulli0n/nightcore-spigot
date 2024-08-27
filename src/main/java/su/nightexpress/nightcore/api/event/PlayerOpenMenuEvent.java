@@ -21,13 +21,13 @@ public class PlayerOpenMenuEvent extends Event implements Cancellable {
         this.menu = menu;
     }
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
+    public static HandlerList getHandlerList() {
         return HANDLER_LIST;
     }
 
-    public static HandlerList getHandlerList() {
+    @NotNull
+    @Override
+    public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 

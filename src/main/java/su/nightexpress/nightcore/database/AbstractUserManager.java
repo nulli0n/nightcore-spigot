@@ -4,9 +4,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
-import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.listener.UserListener;
+import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.util.Players;
 
 import java.util.*;
@@ -19,9 +19,9 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
 
     private final UserdataConfig config;
 
-    private final Map<UUID, U>   loadedById;
+    private final Map<UUID, U> loadedById;
     private final Map<String, U> loadedByName;
-    private final Map<UUID, U>   scheduledSaves;
+    private final Map<UUID, U> scheduledSaves;
 
     public AbstractUserManager(@NotNull P plugin) {
         super(plugin);
@@ -155,6 +155,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
      * Performs an operation on the given user.<br>
      * Runs immediately in the current thread if player is online or data is already loaded.<br>
      * Otherwise fetches player data asynchronously and performs an operation in async CompletableFuture thread.
+     *
      * @param name Name of a player.
      */
     public void manageUser(@NotNull String name, Consumer<U> consumer) {
@@ -165,6 +166,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
      * Performs an operation on the given user.<br>
      * Runs immediately in the current thread if player is online or data is already loaded.<br>
      * Otherwise fetches player data asynchronously and performs an operation in async CompletableFuture thread.
+     *
      * @param playerId UUID of a player.
      */
     public void manageUser(@NotNull UUID playerId, Consumer<U> consumer) {
@@ -175,6 +177,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
      * Performs an operation on the given user.<br>
      * Runs immediately in the current thread if player is online or data is already loaded.<br>
      * Otherwise fetches player data asynchronously and performs an operation next tick in the main thread.
+     *
      * @param name Name of a player.
      */
     public void manageUserSynchronized(@NotNull String name, Consumer<U> consumer) {
@@ -185,6 +188,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
      * Performs an operation on the given user.<br>
      * Runs immediately in the current thread if player is online or data is already loaded.<br>
      * Otherwise fetches player data asynchronously and performs an operation next tick in the main thread.
+     *
      * @param playerId UUID of a player.
      */
     public void manageUserSynchronized(@NotNull UUID playerId, Consumer<U> consumer) {
@@ -195,12 +199,11 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
         U user = loadedSupplier.get();
         if (user != null) {
             consumer.accept(user);
-        }
-        else fetchSupplier.get().thenAccept(consumer);
+        } else fetchSupplier.get().thenAccept(consumer);
     }
 
     private void manageUserSynchronized(@NotNull Supplier<U> loadedSupplier, @NotNull Supplier<CompletableFuture<U>> fetchSupplier, @NotNull Consumer<U> consumer) {
-        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(task -> consumer.accept(user)));
+        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(() -> consumer.accept(user)));
     }
 
     @Deprecated

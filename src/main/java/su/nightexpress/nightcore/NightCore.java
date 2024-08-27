@@ -25,7 +25,7 @@ import java.util.Set;
 public class NightCore extends NightPlugin implements ImprovedCommands {
 
     private final Set<NightCorePlugin> childrens;
-    private final CoreManager          coreManager;
+    private final CoreManager coreManager;
 
     public NightCore() {
         this.childrens = new HashSet<>();
@@ -63,9 +63,9 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
     @NotNull
     protected PluginDetails getDefaultDetails() {
         return PluginDetails.create("nightcore", new String[]{"nightcore", "ncore"})
-            .setConfigClass(CoreConfig.class)
-            .setLangClass(CoreLang.class)
-            .setPermissionsClass(CorePerms.class);
+                .setConfigClass(CoreConfig.class)
+                .setLangClass(CoreLang.class)
+                .setPermissionsClass(CorePerms.class);
     }
 
     void addChildren(@NotNull NightCorePlugin child) {
@@ -81,18 +81,15 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
     private void testMethods() {
         if (Version.getCurrent() == Version.UNKNOWN) {
             this.warn("Server Version: UNSUPPORTED ✘");
-        }
-        else this.info("Server Version: " + Version.getCurrent().getLocalized() + " ✔");
+        } else this.info("Server Version: " + Version.getCurrent().getLocalized() + " ✔");
 
         if (EntityUtil.setupEntityCounter(this)) {
             this.info("Entity Id Counter: OK ✔");
-        }
-        else this.error("Entity Id Counter: FAIL ✘");
+        } else this.error("Entity Id Counter: FAIL ✘");
 
         if (this.testItemNbt()) {
             this.info("Item NBT Compress: OK ✔");
-        }
-        else this.error("Item NBT Compress: FAIL ✘");
+        } else this.error("Item NBT Compress: FAIL ✘");
 
         if (Version.isAtLeast(Version.MC_1_20_6) && CoreConfig.DATA_FIXER_ENABLED.get()) {
             this.warn("=".repeat(10) + " WARNING " + "=".repeat(10));

@@ -12,10 +12,10 @@ import java.util.Locale;
 
 public class PluginDetails {
 
-    private final String   name;
-    private final String   prefix;
+    private final String name;
+    private final String prefix;
     private final String[] commandAliases;
-    private final String   language;
+    private final String language;
 
     private DatabaseConfig databaseConfig;
 
@@ -24,10 +24,10 @@ public class PluginDetails {
     private Class<?> permissionsClass;
 
     public PluginDetails(
-        @NotNull String name,
-        @NotNull String prefix,
-        @NotNull String[] commandAliases,
-        @NotNull String language
+            @NotNull String name,
+            @NotNull String prefix,
+            @NotNull String[] commandAliases,
+            @NotNull String language
     ) {
         this.name = name;
         this.prefix = prefix;
@@ -49,24 +49,24 @@ public class PluginDetails {
         PluginDetails defaults = plugin.getDetails();
 
         String pluginName = ConfigValue.create("Plugin.Name", defaults.getName(),
-            "Localized plugin name. It's used in messages and with internal placeholders.")
-            .read(config);
+                        "Localized plugin name. It's used in messages and with internal placeholders.")
+                .read(config);
 
         String pluginPrefix = ConfigValue.create("Plugin.Prefix", defaults.getPrefix(),
-            "Plugin prefix. Used in messages."
+                "Plugin prefix. Used in messages."
         ).read(config);
 
         String[] commandAliases = ConfigValue.create("Plugin.Command_Aliases", defaults.getCommandAliases(),
-            "Command names that will be registered as main plugin commands.",
-            "Do not leave this empty. Split multiple names with a comma.")
-            .read(config);
+                        "Command names that will be registered as main plugin commands.",
+                        "Do not leave this empty. Split multiple names with a comma.")
+                .read(config);
 
         String languageCode = ConfigValue.create("Plugin.Language", defaults.getLanguage(),
-            "Sets the plugin language.",
-            "Basically it tells the plugin to use certain messages config from the '" + LangManager.DIR_LANG + "' sub-folder.",
-            "If specified language is not available, default one (English) will be used instead.",
-            "[Default is System Locale]")
-            .read(config);
+                        "Sets the plugin language.",
+                        "Basically it tells the plugin to use certain messages config from the '" + LangManager.DIR_LANG + "' sub-folder.",
+                        "If specified language is not available, default one (English) will be used instead.",
+                        "[Default is System Locale]")
+                .read(config);
 
         DatabaseConfig dataConfig = null;
         if (plugin instanceof NightDataPlugin<?>) {
@@ -75,10 +75,10 @@ public class PluginDetails {
         }
 
         return new PluginDetails(pluginName, pluginPrefix, commandAliases, languageCode)
-            .setDatabaseConfig(dataConfig)
-            .setConfigClass(defaults.getConfigClass())
-            .setLangClass(defaults.getLangClass())
-            .setPermissionsClass(defaults.getPermissionsClass());
+                .setDatabaseConfig(dataConfig)
+                .setConfigClass(defaults.getConfigClass())
+                .setLangClass(defaults.getLangClass())
+                .setPermissionsClass(defaults.getPermissionsClass());
     }
 
     @NotNull

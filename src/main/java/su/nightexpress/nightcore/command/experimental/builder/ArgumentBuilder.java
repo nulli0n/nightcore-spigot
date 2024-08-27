@@ -15,15 +15,15 @@ import java.util.function.Function;
 
 public class ArgumentBuilder<T> {
 
-    protected final String         name;
+    protected final String name;
     protected final ArgumentParser<T> parser;
 
-    protected boolean                            required;
+    protected boolean required;
     protected boolean complex;
-    protected String                             localized;
-    protected String                             permission;
+    protected String localized;
+    protected String permission;
     protected Function<TabContext, List<String>> samples;
-    protected LangMessage                        failureMessage;
+    protected LangMessage failureMessage;
 
     @Deprecated
     public ArgumentBuilder(@NotNull String name, @NotNull Function<String, T> parser) {

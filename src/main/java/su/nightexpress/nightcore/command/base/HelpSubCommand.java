@@ -3,9 +3,9 @@ package su.nightexpress.nightcore.command.base;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
-import su.nightexpress.nightcore.command.impl.AbstractCommand;
 import su.nightexpress.nightcore.command.CommandResult;
 import su.nightexpress.nightcore.command.api.NightCommand;
+import su.nightexpress.nightcore.command.impl.AbstractCommand;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.util.Placeholders;
 
@@ -32,15 +32,15 @@ public class HelpSubCommand extends AbstractCommand<NightCorePlugin> {
         }
 
         CoreLang.COMMAND_HELP_LIST.getMessage()
-            .replace(Placeholders.GENERIC_NAME, this.plugin.getNameLocalized())
-            .replace(Placeholders.GENERIC_ENTRY, list -> {
-                Set<NightCommand> commands = new HashSet<>(parent.getChildrens());
+                .replace(Placeholders.GENERIC_NAME, this.plugin.getNameLocalized())
+                .replace(Placeholders.GENERIC_ENTRY, list -> {
+                    Set<NightCommand> commands = new HashSet<>(parent.getChildrens());
 
-                commands.stream().sorted(Comparator.comparing(command -> command.getAliases()[0])).forEach(children -> {
-                    if (!children.hasPermission(sender)) return;
+                    commands.stream().sorted(Comparator.comparing(command -> command.getAliases()[0])).forEach(children -> {
+                        if (!children.hasPermission(sender)) return;
 
-                    list.add(children.replacePlaceholders().apply(CoreLang.COMMAND_HELP_ENTRY.getString()));
-                });
-            }).send(sender);
+                        list.add(children.replacePlaceholders().apply(CoreLang.COMMAND_HELP_ENTRY.getString()));
+                    });
+                }).send(sender);
     }
 }

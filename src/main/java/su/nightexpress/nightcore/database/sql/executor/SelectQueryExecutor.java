@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 public final class SelectQueryExecutor<T> extends SQLExecutor<List<T>> {
 
-    private final List<SQLColumn>        columns;
-    private final List<SQLCondition>     wheres;
+    private final List<SQLColumn> columns;
+    private final List<SQLCondition> wheres;
     private final Function<ResultSet, T> dataFunction;
-    private       int                    amount;
+    private int amount;
 
     private SelectQueryExecutor(@NotNull String table, @NotNull Function<ResultSet, T> dataFunction) {
         super(table);
@@ -74,7 +74,7 @@ public final class SelectQueryExecutor<T> extends SQLExecutor<List<T>> {
         if (columns.isEmpty()) columns = "*";
 
         String wheres = this.wheres.stream().map(where -> where.getColumn().getNameEscaped() + " " + where.getType().getOperator() + " ?")
-            .collect(Collectors.joining(" AND "));
+                .collect(Collectors.joining(" AND "));
 
         String sql = "SELECT " + columns + " FROM " + this.getTable() + (wheres.isEmpty() ? "" : " WHERE " + wheres);
 

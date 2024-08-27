@@ -89,16 +89,16 @@ Editor:
   Generic:
     Close:
       Name: "&c退出"
-      Lore: []
+      Lore: [ ]
     Return:
       Name: "&7返回"
-      Lore: []
+      Lore: [ ]
     NextPage:
       Name: "&7下一页"
-      Lore: []
+      Lore: [ ]
     PreviousPage:
       Name: "&7上一页"
-      Lore: []
+      Lore: [ ]
 Number:
   Thousand: 千
   Million: 百万

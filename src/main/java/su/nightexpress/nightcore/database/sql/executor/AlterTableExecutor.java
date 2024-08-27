@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.database.sql.executor;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.database.DatabaseType;
 import su.nightexpress.nightcore.database.AbstractConnector;
+import su.nightexpress.nightcore.database.DatabaseType;
 import su.nightexpress.nightcore.database.connection.SQLiteConnector;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLExecutor;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public final class AlterTableExecutor extends SQLExecutor<Void> {
 
-    private final DatabaseType   databaseType;
+    private final DatabaseType databaseType;
     private final List<SQLValue> columns;
     private Type type;
 
@@ -24,10 +24,6 @@ public final class AlterTableExecutor extends SQLExecutor<Void> {
         super(table);
         this.databaseType = databaseType;
         this.columns = new ArrayList<>();
-    }
-
-    private enum Type {
-        ADD_COLUMN, RENAME_COLUMN, DROP_COLUMN
     }
 
     @NotNull
@@ -82,7 +78,7 @@ public final class AlterTableExecutor extends SQLExecutor<Void> {
                 if (SQLQueries.hasColumn(connector, this.getTable(), value.getColumn())) return;
 
                 String sql = "ALTER TABLE " + this.getTable() + " ADD "
-                    + value.getColumn().getName() + " " + value.getColumn().formatType(this.databaseType);
+                        + value.getColumn().getName() + " " + value.getColumn().formatType(this.databaseType);
 
                 if (connector instanceof SQLiteConnector || value.getColumn().getType() != ColumnType.STRING) {
                     sql = sql + " DEFAULT '" + value.getValue() + "'";
@@ -90,16 +86,14 @@ public final class AlterTableExecutor extends SQLExecutor<Void> {
 
                 SQLQueries.executeStatement(connector, sql);
             });
-        }
-        else if (this.type == Type.RENAME_COLUMN) {
+        } else if (this.type == Type.RENAME_COLUMN) {
             this.columns.forEach(value -> {
                 if (!SQLQueries.hasColumn(connector, this.getTable(), value.getColumn())) return;
 
                 String sql = "ALTER TABLE " + this.getTable() + " RENAME COLUMN " + value.getColumn().getName() + " TO " + value.getValue();
                 SQLQueries.executeStatement(connector, sql);
             });
-        }
-        else if (this.type == Type.DROP_COLUMN) {
+        } else if (this.type == Type.DROP_COLUMN) {
             this.columns.forEach(value -> {
                 if (!SQLQueries.hasColumn(connector, this.getTable(), value.getColumn())) return;
 
@@ -108,5 +102,9 @@ public final class AlterTableExecutor extends SQLExecutor<Void> {
             });
         }
         return null;
+    }
+
+    private enum Type {
+        ADD_COLUMN, RENAME_COLUMN, DROP_COLUMN
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public class UpdateQuery /*extends AbstractQuery*/ {
 
     private final List<UpdateEntity> entities;
-    private final String             table;
+    private final String table;
 
     private String sql;
 
@@ -21,19 +21,6 @@ public class UpdateQuery /*extends AbstractQuery*/ {
         //super(table, sql);
         this.table = SQLUtils.escape(table);
         this.entities = new ArrayList<>();
-    }
-
-    public UpdateQuery append(@NotNull UpdateEntity entity) {
-        String entitySQL = entity.createSQL(this.table);
-        if (this.sql == null) {
-            this.sql = entitySQL;
-        }
-        else if (!entitySQL.equalsIgnoreCase(this.sql)) {
-            throw new IllegalStateException("Can not add SQLEntity with a different signature!");
-        }
-
-        this.entities.add(entity);
-        return this;
     }
 
     @NotNull
@@ -58,7 +45,17 @@ public class UpdateQuery /*extends AbstractQuery*/ {
         return query;
     }
 
+    public UpdateQuery append(@NotNull UpdateEntity entity) {
+        String entitySQL = entity.createSQL(this.table);
+        if (this.sql == null) {
+            this.sql = entitySQL;
+        } else if (!entitySQL.equalsIgnoreCase(this.sql)) {
+            throw new IllegalStateException("Can not add SQLEntity with a different signature!");
+        }
 
+        this.entities.add(entity);
+        return this;
+    }
 
     public boolean isEmpty() {
         return this.sql == null || this.table.isBlank() || this.sql.isBlank() || this.entities.isEmpty();

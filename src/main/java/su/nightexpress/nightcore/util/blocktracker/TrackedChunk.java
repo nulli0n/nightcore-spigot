@@ -15,8 +15,7 @@ public class TrackedChunk {
         final int[] data = container.get(PlayerBlockTracker.TRACKED_DATA_KEY, PersistentDataType.INTEGER_ARRAY);
         if (data == null) {
             this.trackedBlockPositions = new IntOpenHashSet();
-        }
-        else {
+        } else {
             this.trackedBlockPositions = new IntOpenHashSet(data);
         }
     }

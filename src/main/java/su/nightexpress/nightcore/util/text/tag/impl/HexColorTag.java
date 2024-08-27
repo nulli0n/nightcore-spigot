@@ -2,9 +2,9 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.text.tag.decorator.BaseColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
+import su.nightexpress.nightcore.util.text.tag.decorator.BaseColorDecorator;
 
 import java.awt.*;
 
@@ -24,8 +24,7 @@ public class HexColorTag extends Tag implements ContentTag {
         try {
             Color color = Color.decode(tagContent);
             return new BaseColorDecorator(color);
-        }
-        catch (NumberFormatException exception) {
+        } catch (NumberFormatException exception) {
             return null;
         }
     }

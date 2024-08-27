@@ -12,35 +12,35 @@ import java.util.function.Predicate;
 
 public class TagPool {
 
-    public static final TagPool ALL  = new TagPool(tag -> true);
+    public static final TagPool ALL = new TagPool(tag -> true);
     public static final TagPool NONE = new TagPool(tag -> false);
 
     public static final TagPool ALL_COLORS = new TagPool(
-        tag -> tag instanceof ColorDecorator ||
-            tag instanceof GradientTag ||
-            tag instanceof HexColorTag ||
-            tag instanceof ShortHexColorTag
+            tag -> tag instanceof ColorDecorator ||
+                    tag instanceof GradientTag ||
+                    tag instanceof HexColorTag ||
+                    tag instanceof ShortHexColorTag
     );
 
     public static final TagPool ALL_COLORS_AND_STYLES = new TagPool(
-        tag -> tag instanceof ColorDecorator ||
-            tag instanceof GradientTag ||
-            tag instanceof HexColorTag ||
-            tag instanceof ShortHexColorTag ||
-            tag instanceof FontStyleTag
+            tag -> tag instanceof ColorDecorator ||
+                    tag instanceof GradientTag ||
+                    tag instanceof HexColorTag ||
+                    tag instanceof ShortHexColorTag ||
+                    tag instanceof FontStyleTag
     );
 
     public static final TagPool BASE_COLORS = new TagPool(
-        tag -> tag instanceof ColorDecorator ||
-            tag instanceof HexColorTag ||
-            tag instanceof ShortHexColorTag
+            tag -> tag instanceof ColorDecorator ||
+                    tag instanceof HexColorTag ||
+                    tag instanceof ShortHexColorTag
     );
 
     public static final TagPool BASE_COLORS_AND_STYLES = new TagPool(
-        tag -> tag instanceof ColorDecorator ||
-            tag instanceof HexColorTag ||
-            tag instanceof ShortHexColorTag ||
-            tag instanceof FontStyleTag
+            tag -> tag instanceof ColorDecorator ||
+                    tag instanceof HexColorTag ||
+                    tag instanceof ShortHexColorTag ||
+                    tag instanceof FontStyleTag
     );
 
     private Predicate<Tag> predicate;

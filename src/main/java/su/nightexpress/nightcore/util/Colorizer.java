@@ -13,9 +13,11 @@ import java.util.stream.Collectors;
 
 public class Colorizer {
 
-    @Deprecated public static final Pattern PATTERN_HEX      = Pattern.compile("#([A-Fa-f0-9]{6})");
+    @Deprecated
+    public static final Pattern PATTERN_HEX = Pattern.compile("#([A-Fa-f0-9]{6})");
     //public static final Pattern PATTERN_HEX_LEGACY = Pattern.compile("(?:^|[^<])(#[A-Fa-f0-9]{6})(?:$|[^:>])");
-    @Deprecated public static final Pattern PATTERN_GRADIENT = Pattern.compile("<gradient:" + PATTERN_HEX.pattern() + ">(.*?)</gradient:" + PATTERN_HEX.pattern() + ">");
+    @Deprecated
+    public static final Pattern PATTERN_GRADIENT = Pattern.compile("<gradient:" + PATTERN_HEX.pattern() + ">(.*?)</gradient:" + PATTERN_HEX.pattern() + ">");
 
     @NotNull
     public static String apply(@NotNull String str) {
@@ -53,10 +55,10 @@ public class Colorizer {
             Matcher matcher = timedMatcher.getMatcher();
             String group = matcher.group(1);
             matcher.appendReplacement(buffer,
-                ChatColor.COLOR_CHAR + "x" + ChatColor.COLOR_CHAR + group.charAt(0) +
-                    ChatColor.COLOR_CHAR + group.charAt(1) + ChatColor.COLOR_CHAR + group.charAt(2) +
-                    ChatColor.COLOR_CHAR + group.charAt(3) + ChatColor.COLOR_CHAR + group.charAt(4) +
-                    ChatColor.COLOR_CHAR + group.charAt(5));
+                    ChatColor.COLOR_CHAR + "x" + ChatColor.COLOR_CHAR + group.charAt(0) +
+                            ChatColor.COLOR_CHAR + group.charAt(1) + ChatColor.COLOR_CHAR + group.charAt(2) +
+                            ChatColor.COLOR_CHAR + group.charAt(3) + ChatColor.COLOR_CHAR + group.charAt(4) +
+                            ChatColor.COLOR_CHAR + group.charAt(5));
         }
         return timedMatcher.getMatcher().appendTail(buffer).toString();
     }
@@ -101,16 +103,13 @@ public class Colorizer {
                     if (index + 1 < characters.length) {
                         if (characters[index + 1] == 'r') {
                             specialColors.setLength(0);
-                        }
-                        else {
+                        } else {
                             specialColors.append(characters[index]);
                             specialColors.append(characters[index + 1]);
                         }
                         index++;
-                    }
-                    else gradiented.append(colors[outIndex++]).append(specialColors).append(characters[index]);
-                }
-                else gradiented.append(colors[outIndex++]).append(specialColors).append(characters[index]);
+                    } else gradiented.append(colors[outIndex++]).append(specialColors).append(characters[index]);
+                } else gradiented.append(colors[outIndex++]).append(specialColors).append(characters[index]);
             }
 
             string = string.replace(matcher.group(0), gradiented.toString());
@@ -176,8 +175,7 @@ public class Colorizer {
             String sub = builder.substring(index, lookup);
             try {
                 Integer.decode(sub);
-            }
-            catch (NumberFormatException exception) {
+            } catch (NumberFormatException exception) {
                 continue;
             }
 

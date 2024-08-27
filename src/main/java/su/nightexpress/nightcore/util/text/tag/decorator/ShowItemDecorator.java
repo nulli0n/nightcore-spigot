@@ -16,13 +16,13 @@ public class ShowItemDecorator implements Decorator {
 
     private final String itemData;
 
+    public ShowItemDecorator(@NotNull String string) {
+        this.itemData = string;
+    }
+
     public static ShowItemDecorator from(@NotNull ItemStack item) {
         String content = ItemNbt.compress(item);
         return new ShowItemDecorator(content == null ? BukkitThing.toString(item.getType()) : content);
-    }
-
-    public ShowItemDecorator(@NotNull String string) {
-        this.itemData = string;
     }
 
     @NotNull
@@ -31,12 +31,10 @@ public class ShowItemDecorator implements Decorator {
 
         try {
             itemStack = Bukkit.getItemFactory().createItemStack(this.itemData);
-        }
-        catch (IllegalArgumentException exception) {
+        } catch (IllegalArgumentException exception) {
             try {
                 itemStack = ItemNbt.decompress(this.itemData);
-            }
-            catch (NumberFormatException ignored) {
+            } catch (NumberFormatException ignored) {
 
             }
         }

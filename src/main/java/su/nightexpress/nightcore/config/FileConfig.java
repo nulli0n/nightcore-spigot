@@ -32,8 +32,8 @@ public class FileConfig extends YamlConfiguration {
 
     public static final String EXTENSION = ".yml";
 
-    private final File    file;
-    private       boolean changed;
+    private final File file;
+    private boolean changed;
 
     public FileConfig(@NotNull String path, @NotNull String file) {
         this(new File(path, file));
@@ -80,8 +80,7 @@ public class FileConfig extends YamlConfiguration {
         if (FileUtil.create(file)) {
             try (InputStream input = plugin.getClass().getResourceAsStream(filePath)) {
                 if (input != null) FileUtil.copy(input, file);
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 exception.printStackTrace();
             }
         }
@@ -98,14 +97,14 @@ public class FileConfig extends YamlConfiguration {
         return FileUtil.getConfigFiles(path, deep).stream().map(FileConfig::new).toList();
     }
 
-    public void initializeOptions(@NotNull Class<?> clazz) {
-        initializeOptions(clazz, this);
-    }
-
     public static void initializeOptions(@NotNull Class<?> clazz, @NotNull FileConfig config) {
         for (ConfigValue<?> value : Reflex.getFields(clazz, ConfigValue.class)) {
             value.read(config);
         }
+    }
+
+    public void initializeOptions(@NotNull Class<?> clazz) {
+        initializeOptions(clazz, this);
     }
 
     @NotNull
@@ -116,8 +115,7 @@ public class FileConfig extends YamlConfiguration {
     public void save() {
         try {
             this.save(this.file);
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
     }
@@ -135,8 +133,7 @@ public class FileConfig extends YamlConfiguration {
             this.load(this.file);
             this.changed = false;
             return true;
-        }
-        catch (IOException | InvalidConfigurationException exception) {
+        } catch (IOException | InvalidConfigurationException exception) {
             exception.printStackTrace();
         }
         return false;
@@ -152,16 +149,13 @@ public class FileConfig extends YamlConfiguration {
     public void set(@NotNull String path, @Nullable Object value) {
         if (value instanceof String str) {
             value = Colorizer.plain(str);
-        }
-        else if (value instanceof Collection<?> collection) {
+        } else if (value instanceof Collection<?> collection) {
             List<Object> list = new ArrayList<>(collection);
             list.replaceAll(obj -> obj instanceof String str ? Colorizer.plain(str) : obj);
             value = list;
-        }
-        else if (value instanceof Location location) {
+        } else if (value instanceof Location location) {
             value = LocationUtil.serialize(location);
-        }
-        else if (value instanceof Enum<?> en) {
+        } else if (value instanceof Enum<?> en) {
             value = en.name();
         }
         super.set(path, value);
@@ -271,7 +265,7 @@ public class FileConfig extends YamlConfiguration {
     @NotNull
     public <T extends Enum<T>> List<T> getEnumList(@NotNull String path, @NotNull Class<T> clazz) {
         return this.getStringSet(path).stream().map(str -> StringUtil.getEnum(str, clazz).orElse(null))
-            .filter(Objects::nonNull).toList();
+                .filter(Objects::nonNull).toList();
     }
 
     /*@NotNull
@@ -333,8 +327,7 @@ public class FileConfig extends YamlConfiguration {
 
                 this.set(path + "SkinURL", url);
                 this.remove(path + "Head_Texture");
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 exception.printStackTrace();
             }
         }
@@ -373,8 +366,7 @@ public class FileConfig extends YamlConfiguration {
         List<String> flags = this.getStringList(path + "Item_Flags");
         if (flags.contains(Placeholders.WILDCARD)) {
             meta.addItemFlags(ItemFlag.values());
-        }
-        else {
+        } else {
             flags.stream().map(str -> StringUtil.getEnum(str, ItemFlag.class).orElse(null)).filter(Objects::nonNull).forEach(meta::addItemFlags);
         }
 
@@ -383,8 +375,7 @@ public class FileConfig extends YamlConfiguration {
             Color color = StringUtil.getColor(colorRaw);
             if (meta instanceof LeatherArmorMeta armorMeta) {
                 armorMeta.setColor(color);
-            }
-            else if (meta instanceof PotionMeta potionMeta) {
+            } else if (meta instanceof PotionMeta potionMeta) {
                 potionMeta.setColor(color);
             }
         }
@@ -431,8 +422,7 @@ public class FileConfig extends YamlConfiguration {
         String colorRaw = null;
         if (meta instanceof PotionMeta potionMeta) {
             color = potionMeta.getColor();
-        }
-        else if (meta instanceof LeatherArmorMeta armorMeta) {
+        } else if (meta instanceof LeatherArmorMeta armorMeta) {
             color = armorMeta.getColor();
         }
         if (color != null) {

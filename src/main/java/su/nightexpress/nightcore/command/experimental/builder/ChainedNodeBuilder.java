@@ -3,10 +3,10 @@ package su.nightexpress.nightcore.command.experimental.builder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
-import su.nightexpress.nightcore.command.experimental.node.NodeExecutor;
 import su.nightexpress.nightcore.command.experimental.node.ChainedNode;
 import su.nightexpress.nightcore.command.experimental.node.CommandNode;
 import su.nightexpress.nightcore.command.experimental.node.DirectNode;
+import su.nightexpress.nightcore.command.experimental.node.NodeExecutor;
 import su.nightexpress.nightcore.language.entry.LangString;
 
 import java.util.HashMap;
@@ -77,6 +77,6 @@ public class ChainedNodeBuilder extends NodeBuilder<ChainedNode, ChainedNodeBuil
     @NotNull
     public ChainedNode build() {
         return new ChainedNode(this.plugin, this.name, this.aliases, this.description, this.localized, this.permission, this.playerOnly,
-            this.executor, this.childrenMap);
+                this.executor, this.childrenMap);
     }
 }

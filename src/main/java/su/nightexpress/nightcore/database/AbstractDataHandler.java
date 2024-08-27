@@ -26,9 +26,9 @@ import java.util.function.Function;
 
 public abstract class AbstractDataHandler<P extends NightCorePlugin> extends AbstractManager<P> {
 
-    protected final DatabaseConfig    config;
+    protected final DatabaseConfig config;
     protected final AbstractConnector connector;
-    protected final Gson              gson;
+    protected final Gson gson;
 
     public AbstractDataHandler(@NotNull P plugin) {
         this(plugin, getDataConfig(plugin));
@@ -138,8 +138,6 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
     }
 
 
-
-
     @Deprecated
     public void update(@NotNull String table, @NotNull List<SQLValue> values, @NotNull SQLCondition... conditions) {
         UpdateQueryExecutor.builder(table).values(values).where(conditions).execute(this.getConnector());
@@ -150,7 +148,7 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
         return UpdateEntity.create(values, conditions);
     }
 
-//    @NotNull
+    //    @NotNull
 //    public UpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
 //        return UpdateQuery.create(table, values, conditions);
 //    }
@@ -167,8 +165,6 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
 //    public void executeUpdates(@NotNull UpdateQuery queries) {
 //        SQLQueries.executeUpdates(this.connector, queries);
 //    }
-
-
 
 
     public void delete(@NotNull String table, @NotNull SQLCondition... conditions) {

@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 
 public class ConfigValue<T> {
 
-    private final String    path;
-    private final T         defaultValue;
-    private final String[]  description;
+    private final String path;
+    private final T defaultValue;
+    private final String[] description;
     private final Reader<T> reader;
     private final Writer<T> writer;
 
@@ -39,10 +39,10 @@ public class ConfigValue<T> {
 
     @NotNull
     private static <T> ConfigValue<T> create(@NotNull String path,
-                                            @NotNull Reader<T> reader,
-                                            @NotNull Writer<T> writer,
-                                            @NotNull T defaultValue,
-                                            @Nullable String... description) {
+                                             @NotNull Reader<T> reader,
+                                             @NotNull Writer<T> writer,
+                                             @NotNull T defaultValue,
+                                             @Nullable String... description) {
         return new ConfigValue<>(path, reader, writer, defaultValue, description);
     }
 
@@ -311,7 +311,8 @@ public class ConfigValue<T> {
 
     public interface Reader<T> {
 
-        @NotNull T read(@NotNull FileConfig config, @NotNull String path, @NotNull T def);
+        @NotNull
+        T read(@NotNull FileConfig config, @NotNull String path, @NotNull T def);
     }
 
     public interface Writer<T> {

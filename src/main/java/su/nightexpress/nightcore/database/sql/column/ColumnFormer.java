@@ -31,5 +31,6 @@ public interface ColumnFormer {
         return storageType == DatabaseType.SQLITE ? "INTEGER NOT NULL" : "tinyint(1) NOT NULL";
     };
 
-    @NotNull String build(@NotNull DatabaseType databaseType, int length);
+    @NotNull
+    String build(@NotNull DatabaseType databaseType, int length);
 }

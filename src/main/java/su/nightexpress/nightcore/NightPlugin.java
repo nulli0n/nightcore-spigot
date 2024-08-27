@@ -17,12 +17,12 @@ import java.util.function.Predicate;
 
 public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin {
 
-    protected LangManager    langManager;
+    protected LangManager langManager;
     protected CommandManager commandManager;
 
-    protected FileConfig    config;
+    protected FileConfig config;
     protected PluginDetails details;
-    private   boolean       isEngine;
+    private boolean isEngine;
 
     public final boolean isEngine() {
         return this.isEngine;
@@ -44,8 +44,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
             this.warn("Expect bugs and broken features.");
             this.warn("! NO DISCORD SUPPORT WILL BE GIVEN !");
             this.warn("=".repeat(35));
-        }
-        else if (version.isDeprecated()) {
+        } else if (version.isDeprecated()) {
             this.warn("=".repeat(35));
             this.warn("WARNING: You're running an outdated/deprecated server version (" + Version.getCurrent().getLocalized() + ")!");
             this.warn("Support for this version will be dropped soon.");

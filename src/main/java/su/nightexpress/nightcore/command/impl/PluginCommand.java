@@ -19,7 +19,7 @@ import java.util.List;
 @Deprecated
 public abstract class PluginCommand<P extends NightCorePlugin> extends AbstractCommand<P> implements NightPluginCommand {
 
-    private Command      backend;
+    private Command backend;
     private NightCommand defaultCommand;
 
     public PluginCommand(@NotNull P plugin, @NotNull String[] aliases) {
@@ -117,9 +117,8 @@ public abstract class PluginCommand<P extends NightCorePlugin> extends AbstractC
         List<String> list = new ArrayList<>();
         if (!command.getChildrens().isEmpty()) {
             command.getChildrens().stream().filter(child -> child.hasPermission(sender))
-                .forEach(child -> list.addAll(Arrays.asList(child.getAliases())));
-        }
-        else {
+                    .forEach(child -> list.addAll(Arrays.asList(child.getAliases())));
+        } else {
             list.addAll(command.getTab(player, command.equals(this) ? (args.length) : (args.length - 1), args));
         }
         return Lists.getSequentialMatches(list, args[args.length - 1]);

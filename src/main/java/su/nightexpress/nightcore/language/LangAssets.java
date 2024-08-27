@@ -47,8 +47,7 @@ public class LangAssets {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
             return langCode;
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             //exception.printStackTrace();
             plugin.error("Could not download language assets for '" + langCode + "' (no such assets?).");
             return LangManager.isDefault(langCode) ? langCode : downloadAssets(plugin, LangManager.DEFAULT_LANGUAGE);

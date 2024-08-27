@@ -2,9 +2,9 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
+import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
 
 import java.awt.*;
 
@@ -40,8 +40,7 @@ public class GradientTag extends Tag implements ContentTag {
         try {
             from = Color.decode(code1);
             to = Color.decode(code2);
-        }
-        catch (NumberFormatException exception) {
+        } catch (NumberFormatException exception) {
             return null;
         }
 

@@ -7,9 +7,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightDataPlugin;
 import su.nightexpress.nightcore.core.CoreConfig;
+import su.nightexpress.nightcore.database.AbstractUserManager;
 import su.nightexpress.nightcore.database.DataUser;
 import su.nightexpress.nightcore.manager.AbstractListener;
-import su.nightexpress.nightcore.database.AbstractUserManager;
 
 import java.util.UUID;
 
@@ -34,8 +34,7 @@ public class UserListener<P extends NightDataPlugin<U>, U extends DataUser> exte
             if (CoreConfig.USER_DEBUG_ENABLED.get()) {
                 plugin.info("Created new data for: '" + uuid + "'");
             }
-        }
-        else user = this.userManager.getUserData(uuid);
+        } else user = this.userManager.getUserData(uuid);
 
         if (user != null) {
             this.userManager.cachePermanent(user);

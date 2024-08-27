@@ -50,7 +50,7 @@ public interface AutoFilled<I> extends Menu {
             ItemStack item = autoFill.getItemCreator().apply(object);//this.getAutoFillStack(player, object);
             ItemOptions options = ItemOptions.personalWeak(player);
             MenuItem menuItem = new MenuItem(item).setPriority(100).setOptions(options).setSlots(slots[count++])
-                .addClick(autoFill.getClickAction().apply(object)/*this.getAutoFillClick(object)*/);
+                    .addClick(autoFill.getClickAction().apply(object)/*this.getAutoFillClick(object)*/);
             items.add(menuItem);
         }
 

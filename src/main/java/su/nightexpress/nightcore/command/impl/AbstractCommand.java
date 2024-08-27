@@ -20,17 +20,17 @@ import java.util.stream.Stream;
 @Deprecated
 public abstract class AbstractCommand<P extends NightCorePlugin> implements NightCommand {
 
-    protected final P                           plugin;
-    private final   String[]                    aliases;
-    private final   Map<String, NightCommand>   childrens;
-    private final   Map<String, CommandFlag<?>> commandFlags;
-    private final   PlaceholderMap              placeholderMap;
+    protected final P plugin;
+    private final String[] aliases;
+    private final Map<String, NightCommand> childrens;
+    private final Map<String, CommandFlag<?>> commandFlags;
+    private final PlaceholderMap placeholderMap;
 
     private NightCommand parent;
-    private String       permission;
-    private String       usage;
-    private String       description;
-    private boolean      playerOnly;
+    private String permission;
+    private String usage;
+    private String description;
+    private boolean playerOnly;
 
     public AbstractCommand(@NotNull P plugin, @NotNull String[] aliases) {
         this(plugin, aliases, (String) null);
@@ -47,9 +47,9 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
         this.childrens = new TreeMap<>();
         this.commandFlags = new HashMap<>();
         this.placeholderMap = new PlaceholderMap()
-            .add(Placeholders.COMMAND_DESCRIPTION, this::getDescription)
-            .add(Placeholders.COMMAND_USAGE, this::getUsage)
-            .add(Placeholders.COMMAND_LABEL, this::getLabelWithParents);
+                .add(Placeholders.COMMAND_DESCRIPTION, this::getDescription)
+                .add(Placeholders.COMMAND_USAGE, this::getUsage)
+                .add(Placeholders.COMMAND_LABEL, this::getLabelWithParents);
 
     }
 
@@ -90,14 +90,12 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
             if (found != null) {
                 flagContent.put(found, new StringBuilder());
                 lastFlag = found;
-            }
-            else if (lastFlag != null) {
+            } else if (lastFlag != null) {
                 StringBuilder builder = flagContent.get(lastFlag);
                 if (!builder.isEmpty()) builder.append(" ");
 
                 builder.append(arg);
-            }
-            else {
+            } else {
                 cleanArgs.add(arg);
             }
         }
