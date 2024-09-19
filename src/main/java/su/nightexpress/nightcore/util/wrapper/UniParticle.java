@@ -31,22 +31,22 @@ public class UniParticle {
 
     @NotNull
     public static UniParticle itemCrack(@NotNull ItemStack item) {
-        return new UniParticle(Particle.ITEM_CRACK, new ItemStack(item));
+        return new UniParticle(Particle.ITEM, new ItemStack(item));
     }
 
     @NotNull
     public static UniParticle itemCrack(@NotNull Material material) {
-        return new UniParticle(Particle.ITEM_CRACK, new ItemStack(material));
+        return new UniParticle(Particle.ITEM, new ItemStack(material));
     }
 
     @NotNull
     public static UniParticle blockCrack(@NotNull Material material) {
-        return new UniParticle(Particle.BLOCK_CRACK, material.createBlockData());
+        return new UniParticle(Particle.BLOCK, material.createBlockData());
     }
 
     @NotNull
     public static UniParticle blockDust(@NotNull Material material) {
-        return new UniParticle(Particle.BLOCK_DUST, material.createBlockData());
+        return new UniParticle(Particle.BLOCK, material.createBlockData());
     }
 
     @NotNull
@@ -61,7 +61,7 @@ public class UniParticle {
 
     @NotNull
     public static UniParticle redstone(@NotNull Color color, float size) {
-        return new UniParticle(Particle.REDSTONE, new Particle.DustOptions(color, size));
+        return new UniParticle(Particle.DUST, new Particle.DustOptions(color, size));
     }
 
     @NotNull
