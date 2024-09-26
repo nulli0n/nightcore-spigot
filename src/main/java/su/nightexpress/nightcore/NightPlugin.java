@@ -13,7 +13,6 @@ import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
 import java.io.File;
-import java.util.function.Predicate;
 
 public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin {
 
@@ -40,17 +39,27 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         Version version = Version.getCurrent();
         if (version == Version.UNKNOWN) {
             this.warn("=".repeat(35));
-            this.warn("WARNING: You're running an unsupported server version!");
+            this.warn("WARNING: The plugin is not yet compatible with your server version!");
             this.warn("Expect bugs and broken features.");
-            this.warn("! NO DISCORD SUPPORT WILL BE GIVEN !");
+            this.warn("ABSOLUTELY NO DISCORD SUPPORT WILL BE PROVIDED!");
             this.warn("=".repeat(35));
         }
         else if (version.isDeprecated()) {
             this.warn("=".repeat(35));
-            this.warn("WARNING: You're running an outdated/deprecated server version (" + Version.getCurrent().getLocalized() + ")!");
-            this.warn("Support for this version will be dropped soon.");
-            this.warn("Please, upgrade your server to at least " + Lists.next(Version.getCurrent(), Predicate.not(Version::isDeprecated)).getLocalized() + ".");
+            this.warn("WARNING: You're running an outdated server version (" + Version.getCurrent().getLocalized() + ")!");
+            this.warn("This version will no longer be supported in future relases.");
+            this.warn("Please upgrade your server to " + Lists.next(Version.getCurrent(), (Version::isSupported)).getLocalized() + ".");
+            this.warn("NO DISCORD SUPPORT WILL BE PROVIDED!");
             this.warn("=".repeat(35));
+        }
+        else if (version.isDropped()) {
+            this.error("=".repeat(35));
+            this.error("ERROR: You're running an unsupported server version (" + Version.getCurrent().getLocalized() + ")!");
+            this.error("Please upgrade your server to " + Lists.next(Version.getCurrent(), (Version::isSupported)).getLocalized() + ".");
+            this.error("ABSOLUTELY NO DISCORD SUPPORT WILL BE PROVIDED!");
+            this.error("=".repeat(35));
+            this.getPluginManager().disablePlugin(this);
+            return;
         }
 
         this.loadManagers();

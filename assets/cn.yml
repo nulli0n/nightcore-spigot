@@ -784,7 +784,7 @@ Material:
   observer: 侦测器
   obsidian: 黑曜石
   ochre_froglight: 赭黄蛙明灯
-  ominous_banner: 灾厄旗帜
+  ominous_banner: 不祥旗帜
   orange_banner: 橙色旗帜
   orange_bed: 橙色床
   orange_candle: 橙色蜡烛
@@ -1259,6 +1259,7 @@ Material:
   bone: 骨头
   bone_meal: 骨粉
   book: 书
+  bordure_indented_banner_pattern: 波纹边旗帜图案
   bow: 弓
   bowl: 碗
   bread: 面包
@@ -1356,6 +1357,7 @@ Material:
   eye_armor_trim_smithing_template: 锻造模板
   feather: 羽毛
   fermented_spider_eye: 发酵蛛眼
+  field_masoned_banner_pattern: 砖纹旗帜图案
   filled_map: 地图
   fire_charge: 火焰弹
   firework_rocket: 烟花火箭

@@ -1,11 +1,14 @@
 package su.nightexpress.nightcore.util;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -15,8 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.language.LangAssets;
 
-import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -36,6 +39,20 @@ public class ItemUtil {
 
         function.accept(meta);
         item.setItemMeta(meta);
+    }
+
+    public static void hideAttributes(@NotNull ItemStack itemStack) {
+        editMeta(itemStack, meta -> hideAttributes(meta, itemStack.getType()));
+    }
+
+    public static void hideAttributes(@NotNull ItemMeta meta, @NotNull Material material) {
+        if (Version.isAtLeast(Version.MC_1_20_6)) {
+            EquipmentSlot slot = material.getEquipmentSlot();
+            material.getDefaultAttributeModifiers(slot).forEach((meta::addAttributeModifier));
+            //meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier("veryNiceItemChanges", 1, AttributeModifier.Operation.ADD_NUMBER));
+        }
+
+        meta.addItemFlags(ItemFlag.values());
     }
 
     @NotNull
@@ -106,21 +123,35 @@ public class ItemUtil {
     @Deprecated
     public static void setSkullTexture(@NotNull ItemStack item, @NotNull String value) {
         if (item.getType() != Material.PLAYER_HEAD) return;
-        if (!(item.getItemMeta() instanceof SkullMeta meta)) return;
+        //if (!(item.getItemMeta() instanceof SkullMeta meta)) return;
 
-        UUID uuid = UUID.nameUUIDFromBytes(value.getBytes());
-        GameProfile profile = new GameProfile(uuid, "null");
-        profile.getProperties().put("textures", new Property("textures", value));
+        try {
+            byte[] decoded = Base64.getDecoder().decode(value);
+            String decodedStr = new String(decoded, StandardCharsets.UTF_8);
+            JsonElement element = JsonParser.parseString(decodedStr);
 
-        Method method = Reflex.getMethod(meta.getClass(), "setProfile", GameProfile.class);
-        if (method != null) {
-            Reflex.invokeMethod(method, meta, profile);
+            String url = element.getAsJsonObject().getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
+            url = url.substring(ItemUtil.TEXTURES_HOST.length());
+
+            setHeadSkin(item, url);
         }
-        else {
-            Reflex.setFieldValue(meta, "profile", profile);
+        catch (Exception exception) {
+            exception.printStackTrace();
         }
 
-        item.setItemMeta(meta);
+//        UUID uuid = UUID.nameUUIDFromBytes(value.getBytes());
+//        GameProfile profile = new GameProfile(uuid, "null");
+//        profile.getProperties().put("textures", new Property("textures", value));
+//
+//        Method method = Reflex.getMethod(meta.getClass(), "setProfile", GameProfile.class);
+//        if (method != null) {
+//            Reflex.invokeMethod(method, meta, profile);
+//        }
+//        else {
+//            Reflex.setFieldValue(meta, "profile", profile);
+//        }
+//
+//        item.setItemMeta(meta);
     }
 
     @Nullable

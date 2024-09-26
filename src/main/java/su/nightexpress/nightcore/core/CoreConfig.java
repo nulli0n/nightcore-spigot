@@ -87,7 +87,7 @@ public class CoreConfig {
         "[Default is false]");
 
     public static final ConfigValue<UniFormatter> NUMBER_FORMAT = ConfigValue.create("Engine.Number_Format",
-        UniFormatter.of("#,###.##", RoundingMode.HALF_EVEN),
+        UniFormatter.of("#,###.###", RoundingMode.HALF_EVEN),
         "Control over how numerical data is formatted and rounded.",
         "Allowed modes: " + StringUtil.inlineEnum(RoundingMode.class, ", "),
         "A tutorial can be found here: https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html"

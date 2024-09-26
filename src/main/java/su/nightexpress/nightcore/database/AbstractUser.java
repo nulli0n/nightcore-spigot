@@ -37,8 +37,8 @@ public abstract class AbstractUser<P extends NightCorePlugin> implements DataUse
 
     }
 
-    private long getTimestamp(int seconds) {
-        return seconds < 0 ? -1L : System.currentTimeMillis() + 1000L * seconds;
+    private long getTimestamp(double seconds) {
+        return seconds < 0 ? -1L : System.currentTimeMillis() + (long) (1000D * seconds);
     }
 
     public boolean isCacheExpired() {
@@ -81,7 +81,7 @@ public abstract class AbstractUser<P extends NightCorePlugin> implements DataUse
     }
 
     @Override
-    public void setAutoSaveIn(int seconds) {
+    public void setAutoSaveIn(double seconds) {
         this.autoSaveIn = this.getTimestamp(seconds);
     }
 

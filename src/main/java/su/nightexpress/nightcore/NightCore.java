@@ -57,6 +57,7 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
             VaultHook.shutdown();
         }
         PlayerBlockTracker.shutdown();
+        LangAssets.shutdown();
     }
 
     @Override

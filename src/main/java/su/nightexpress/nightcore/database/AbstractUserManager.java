@@ -240,7 +240,11 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
             user.setName(player.getName());
             user.setLastOnline(System.currentTimeMillis());
         }
-        this.scheduleSave(user);
+        if (this.isScheduledToSave(user)) {
+            this.scheduledSaves.remove(user.getId());
+        }
+        this.plugin.runTaskAsync(task -> this.save(user));
+        //this.scheduleSave(user);
         this.cacheTemporary(user);
     }
 

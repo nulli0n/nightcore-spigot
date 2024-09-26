@@ -31,7 +31,7 @@ public interface DataUser {
 
     void setCachedUntil(long cachedUntil);
 
-    void setAutoSaveIn(int seconds);
+    void setAutoSaveIn(double seconds);
 
     void setNextSyncIn(int seconds);
 

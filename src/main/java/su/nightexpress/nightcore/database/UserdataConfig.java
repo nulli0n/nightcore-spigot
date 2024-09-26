@@ -8,10 +8,10 @@ import su.nightexpress.nightcore.config.FileConfig;
 public class UserdataConfig {
 
     private final long scheduledSaveInterval;
-    private final int scheduledSaveDelay;
+    private final double scheduledSaveDelay;
     private final int scheduledSaveSyncPause;
 
-    public UserdataConfig(long scheduledSaveInterval, int scheduledSaveDelay, int scheduledSaveSyncPause) {
+    public UserdataConfig(long scheduledSaveInterval, double scheduledSaveDelay, int scheduledSaveSyncPause) {
         this.scheduledSaveInterval = scheduledSaveInterval;
         this.scheduledSaveDelay = scheduledSaveDelay;
         this.scheduledSaveSyncPause = scheduledSaveSyncPause;
@@ -30,8 +30,8 @@ public class UserdataConfig {
             "[Default is 20]"
         ).read(config);
 
-        int scheduledSaveDelay = ConfigValue.create("Database.UserData.Scheduled_Save_Delay",
-            1,
+        double scheduledSaveDelay = ConfigValue.create("Database.UserData.Scheduled_Save_Delay",
+            1D,
             "Sets scheduled save delay (in seconds) for a user when marked to be saved.",
             "This means that a user will be saved X seconds later after being marked.",
             "Generally, you should keep this value less than 'Scheduled_Save_Interval' for best results,",
@@ -42,6 +42,7 @@ public class UserdataConfig {
             "",
             "Users marked for save when their data has been changed/affected in some way.",
             "However this is higly depends on the plugin.",
+            "[Decimals allowed]",
             "[Default is 1]"
         ).read(config);
 
@@ -61,7 +62,7 @@ public class UserdataConfig {
         return scheduledSaveInterval;
     }
 
-    public int getScheduledSaveDelay() {
+    public double getScheduledSaveDelay() {
         return scheduledSaveDelay;
     }
 

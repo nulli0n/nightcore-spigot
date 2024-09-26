@@ -1259,6 +1259,7 @@ Material:
   bone: Knochen
   bone_meal: Knochenmehl
   book: Buch
+  bordure_indented_banner_pattern: Spickelbord-Bannervorlage
   bow: Bogen
   bowl: Schüssel
   bread: Brot
@@ -1356,6 +1357,7 @@ Material:
   eye_armor_trim_smithing_template: Schmiedevorlage
   feather: Feder
   fermented_spider_eye: Fermentiertes Spinnenauge
+  field_masoned_banner_pattern: Mauerung-Bannervorlage
   filled_map: Karte
   fire_charge: Feuerkugel
   firework_rocket: Feuerwerksrakete
@@ -1694,7 +1696,7 @@ Enchantment:
   multishot: Mehrfachschuss
   piercing: Durchschuss
   power: Stärke
-  projectile_protection: Schusssicherheit
+  projectile_protection: Schussschutz
   protection: Schutz
   punch: Schlag
   quick_charge: Schnellladen

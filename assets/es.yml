@@ -1259,6 +1259,7 @@ Material:
   bone: Hueso
   bone_meal: Polvo de hueso
   book: Libro
+  bordure_indented_banner_pattern: Estampado de bordura dentada
   bow: Arco
   bowl: Cuenco
   bread: Pan
@@ -1356,6 +1357,7 @@ Material:
   eye_armor_trim_smithing_template: Molde de herrería
   feather: Pluma
   fermented_spider_eye: Ojo de araña fermentado
+  field_masoned_banner_pattern: Estampado de mazonado
   filled_map: Mapa
   fire_charge: Carga ígnea
   firework_rocket: Cohete de fuegos artificiales

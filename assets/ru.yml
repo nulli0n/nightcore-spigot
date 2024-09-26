@@ -133,7 +133,7 @@ EntityType:
   zombified_piglin: Зомбифицированный пиглин
 PotionEffectType:
   absorption: Поглощение
-  bad_omen: Дурное знамение
+  bad_omen: Дурной знак
   blindness: Слепота
   conduit_power: Сила источника
   darkness: Тьма
@@ -154,7 +154,7 @@ PotionEffectType:
   mining_fatigue: Утомление
   nausea: Тошнота
   night_vision: Ночное зрение
-  oozing: Вязкость
+  oozing: Слизистость
   poison: Отравление
   raid_omen: Знак рейда
   regeneration: Регенерация
@@ -169,7 +169,7 @@ PotionEffectType:
   water_breathing: Водное дыхание
   weakness: Слабость
   weaving: Плетение
-  wind_charged: Заряженность ветром
+  wind_charged: Ветровой заряд
   wither: Иссушение
 Material:
   acacia_button: Акациевая кнопка
@@ -529,7 +529,7 @@ Material:
   end_stone_brick_wall: Ограда из эндернякового кирпича
   end_stone_bricks: Эндерняковые кирпичи
   ender_chest: Эндер-сундук
-  exposed_chiseled_copper: Потемневший резной медный блок
+  exposed_chiseled_copper: Потемневший точёный медный блок
   exposed_copper: Потемневший медный блок
   exposed_copper_bulb: Потемневшая медная лампа
   exposed_copper_door: Потемневшая медная дверь
@@ -800,7 +800,7 @@ Material:
   orange_tulip: Оранжевый тюльпан
   orange_wool: Оранжевая шерсть
   oxeye_daisy: Ромашка
-  oxidized_chiseled_copper: Окисленный резной медный блок
+  oxidized_chiseled_copper: Окисленный точёный медный блок
   oxidized_copper: Окисленный медный блок
   oxidized_copper_bulb: Окисленная медная лампа
   oxidized_copper_door: Окисленная медная дверь
@@ -1138,7 +1138,7 @@ Material:
   warped_wart_block: Блок искажённого нароста
   water: Вода
   water_cauldron: Котёл с водой
-  waxed_chiseled_copper: Вощёный резной медный блок
+  waxed_chiseled_copper: Вощёный точёный медный блок
   waxed_copper_block: Вощёный медный блок
   waxed_copper_bulb: Вощёная медная лампа
   waxed_copper_door: Вощёная медная дверь
@@ -1147,7 +1147,7 @@ Material:
   waxed_cut_copper: Вощёный резной медный блок
   waxed_cut_copper_slab: Вощёная резная медная плита
   waxed_cut_copper_stairs: Вощёные резные медные ступеньки
-  waxed_exposed_chiseled_copper: Вощёный потемневший резной медный блок
+  waxed_exposed_chiseled_copper: Вощёный потемневший точёный медный блок
   waxed_exposed_copper: Вощёный потемневший медный блок
   waxed_exposed_copper_bulb: Вощёная потемневшая медная лампа
   waxed_exposed_copper_door: Вощёная потемневшая медная дверь
@@ -1156,7 +1156,7 @@ Material:
   waxed_exposed_cut_copper: Вощёный потемневший резной медный блок
   waxed_exposed_cut_copper_slab: Вощёная потемневшая резная медная плита
   waxed_exposed_cut_copper_stairs: Вощёные потемневшие резные медные ступеньки
-  waxed_oxidized_chiseled_copper: Вощёный окисленный резной медный блок
+  waxed_oxidized_chiseled_copper: Вощёный окисленный точёный медный блок
   waxed_oxidized_copper: Вощёный окисленный медный блок
   waxed_oxidized_copper_bulb: Вощёная окисленная медная лампа
   waxed_oxidized_copper_door: Вощёная окисленная медная дверь
@@ -1165,7 +1165,7 @@ Material:
   waxed_oxidized_cut_copper: Вощёный окисленный резной медный блок
   waxed_oxidized_cut_copper_slab: Вощёная окисленная резная медная плита
   waxed_oxidized_cut_copper_stairs: Вощёные окисленные резные медные ступеньки
-  waxed_weathered_chiseled_copper: Вощёный состаренный резной медный блок
+  waxed_weathered_chiseled_copper: Вощёный состаренный точёный медный блок
   waxed_weathered_copper: Вощёный состаренный медный блок
   waxed_weathered_copper_bulb: Вощёная состаренная медная лампа
   waxed_weathered_copper_door: Вощёная состаренная медная дверь
@@ -1174,7 +1174,7 @@ Material:
   waxed_weathered_cut_copper: Вощёный состаренный резной медный блок
   waxed_weathered_cut_copper_slab: Вощёная состаренная резная медная плита
   waxed_weathered_cut_copper_stairs: Вощёные состаренные резные медные ступеньки
-  weathered_chiseled_copper: Состаренный резной медный блок
+  weathered_chiseled_copper: Состаренный точёный медный блок
   weathered_copper: Состаренный медный блок
   weathered_copper_bulb: Состаренная медная лампа
   weathered_copper_door: Состаренная медная дверь
@@ -1259,6 +1259,7 @@ Material:
   bone: Кость
   bone_meal: Костная мука
   book: Книга
+  bordure_indented_banner_pattern: Узор флага «Зубчатая кайма»
   bow: Лук
   bowl: Миска
   bread: Хлеб
@@ -1356,6 +1357,7 @@ Material:
   eye_armor_trim_smithing_template: Кузнечный шаблон
   feather: Перо
   fermented_spider_eye: Маринованный паучий глаз
+  field_masoned_banner_pattern: Узор флага «Муровка»
   filled_map: Карта
   fire_charge: Огненный заряд
   firework_rocket: Фейерверк
@@ -1416,7 +1418,7 @@ Material:
   horse_spawn_egg: Яйцо призыва лошади
   host_armor_trim_smithing_template: Кузнечный шаблон
   howl_pottery_shard: Глиняный черепок «Вой»
-  howl_pottery_sherd: Глиняный черепок «Зов»
+  howl_pottery_sherd: Глиняный черепок «Вой»
   husk_spawn_egg: Яйцо призыва кадавра
   ink_sac: Чернильный мешок
   iron_axe: Железный топор
@@ -1509,7 +1511,7 @@ Material:
   oak_boat: Дубовая лодка
   oak_chest_boat: Дубовая грузовая лодка
   ocelot_spawn_egg: Яйцо призыва оцелота
-  ominous_bottle: Зловещая бутылка
+  ominous_bottle: Зловещая бутылочка
   ominous_trial_key: Зловещий ключ испытаний
   orange_dye: Оранжевый краситель
   painting: Картина
@@ -1577,7 +1579,7 @@ Material:
   shears: Ножницы
   sheep_spawn_egg: Яйцо призыва овцы
   shelter_pottery_shard: Глиняный черепок «Укрытие»
-  shelter_pottery_sherd: Глиняный черепок «Убежище»
+  shelter_pottery_sherd: Глиняный черепок «Укрытие»
   shield: Щит
   shulker_shell: Панцирь шалкера
   shulker_spawn_egg: Яйцо призыва шалкера
@@ -1594,7 +1596,7 @@ Material:
   smithing_template: Кузнечный шаблон
   sniffer_spawn_egg: Яйцо призыва нюхача
   snort_pottery_shard: Глиняный черепок «Шмыг»
-  snort_pottery_sherd: Глиняный черепок «Нюхач»
+  snort_pottery_sherd: Глиняный черепок «Шмыг»
   snout_armor_trim_smithing_template: Кузнечный шаблон
   snow_golem_spawn_egg: Яйцо призыва снежного голема
   snowball: Снежок
@@ -1710,4 +1712,4 @@ Enchantment:
   thorns: Шипы
   unbreaking: Прочность
   vanishing_curse: Проклятие утраты
-  wind_burst: Шквал
+  wind_burst: Порыв ветра

@@ -1,0 +1,111 @@
+Command:
+  Help:
+    List:
+      - <noprefix>
+      - '  <yellow><b>%name%</b></yellow><gray> - </gray><yellow><b>指令:</b></yellow>'
+      - ' '
+      - <gray>  <red><b><></b></red> - 必填, <green><b>[]</b></green> - 選填。</gray>
+      - ' '
+      - '%entry%'
+      - ' '
+    Entry: '  <yellow>/%command_label%</yellow> <orange>%command_usage%</orange><gray> - %command_description%</gray>'
+    Desc: 顯示幫助頁面。
+  CheckPerm:
+    Desc: 顯示玩家權限資訊。
+    Usage: <player>
+  Reload:
+    Desc: 重新加載插件。
+    Done: 插件 <green>已重新加載</green>！
+  Argument:
+    Type:
+      Required: <lred><%name%></lred>
+      Optional: <lyellow>[%name%]</lyellow>
+    Name:
+      Generic: 數值
+      Type: 類型
+      Name: 名稱
+      Player: 玩家
+      World: 世界
+      Amount: 數量
+      Material: 材料
+      ItemMaterial: 物品類型
+      BlockMaterial: 方塊類型
+      Enchantment: 附魔
+  Flag:
+    Format: <lgray>[%name%]</lgray>
+Time:
+  Day: '%amount%天.'
+  Hour: '%amount%小時.'
+  Min: '%amount%分鐘.'
+  Sec: '%amount%秒.'
+  Delimiter: ' '
+Other:
+  'Yes': <green>是</green>
+  'No': <red>否</red>
+  Enabled: <green>啟用</green>
+  Disabled: <red>停用</red>
+  Any: 任意
+  None: 無
+  Never: 從不
+  OneTimed: 單次
+  Unlimited: 無限
+  Infinity: ∞
+Error:
+  Invalid_Player: <red>找不到玩家。</red>
+  Invalid_World: <red>無效的世界。</red>
+  Invalid_Number: <red>%value% 不是有效的數字。</red>
+  NoPermission: <red>您沒有權限執行此操作！</red>
+  Command:
+    NotYourself: <red>此命令無法用於自己。</red>
+    PlayerOnly: <red>此命令僅適用於玩家。</red>
+    Usage:
+      - <noprefix>
+      - '<red>錯誤: </red><gray>參數錯誤！</gray>'
+      - '<red>用法: </red><yellow>/%command_label%</yellow> <orange>%command_usage%</orange>'
+      - ' '
+    ParseFlag: <lgray>無效的值 <lred>%value%</lred> 用於 <lred>%name%</lred> 標誌。</lgray>
+    ParseArgument: <lgray>無效的值 <lred>%value%</lred> 用於 <lred>%name%</lred> 參數。</lgray>
+    Argument:
+      InvalidPlayer: <lgray><lred>找不到玩家 %value%</lred>！</lgray>
+      InvalidWorld: <lgray><lred>找不到世界 %value%</lred>！</lgray>
+      InvalidNumber: <lgray><lred>%value%</lred> 不是有效的數字！</lgray>
+      InvalidMaterial: <lgray><lred>%value%</lred> 不是有效的材料！</lgray>
+      InvalidEnchantment: <lgray><lred>%value%</lred> 不是有效的附魔！</lgray>
+  InvalidMaterial: <red>無效的材料！</red>
+  InvalidEnchantment: <red>無效的附魔！</red>
+Editor:
+  Action:
+    Exit:
+      - <noprefix>
+      - <gray>點擊 <click:run_command:'/#exit'><hover:show_text:'<gray>點擊以取消</gray>'><green>[此處]</green></hover></click> 退出輸入模式。</gray>
+      - ' '
+  Input:
+    Header:
+      Main: <green><b>輸入模式</b></green>
+      Error: <red><b>錯誤</b></red>
+    Error:
+      NotInteger: <gray>預期的 <red>整數</red>！</gray>
+      Generic: <gray>無效的值！</gray>
+  Generic:
+    Close:
+      Name: <red>(✕) 退出</red>
+      Lore: []
+    Return:
+      Name: <gray>() </gray><white>返回</white>
+      Lore: []
+    NextPage:
+      Name: <white>下一頁</white><gray> (→)</gray>
+      Lore: []
+    PreviousPage:
+      Name: <gray>(←) </gray><white>上一頁</white>
+      Lore: []
+Number:
+  Thousand: 千
+  Million: 百萬
+  Billion: 十億
+  Trillion: 兆
+  Quadrillion: 千兆
+Entry:
+  Good: <green>✔</green> <gray>%entry%</gray>
+  Bad: <red>✘</red> <gray>%entry%</gray>
+  Warn: <orange>[❗]</orange> <gray>%entry%</gray>

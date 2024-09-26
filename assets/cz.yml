@@ -1259,6 +1259,7 @@ Material:
   bone: Kost
   bone_meal: Kostní moučka
   book: Kniha
+  bordure_indented_banner_pattern: Vzor praporu s ozdobným lemováním
   bow: Luk
   bowl: Miska
   bread: Chléb
@@ -1356,6 +1357,7 @@ Material:
   eye_armor_trim_smithing_template: Kovářská předloha
   feather: Pírko
   fermented_spider_eye: Zkvašené pavoučí oko
+  field_masoned_banner_pattern: Cihlový vzor praporu
   filled_map: Mapa
   fire_charge: Ohnivá koule
   firework_rocket: Rachejtle

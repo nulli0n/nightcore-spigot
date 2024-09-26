@@ -10,7 +10,7 @@ EntityType:
   blaze: Blaze
   block_display: Entidade-bloco
   boat: Bote
-  bogged: Esqueleto-pantanoso
+  bogged: Pantanoso
   breeze: Vórtice
   breeze_wind_charge: Projétil de vento
   camel: Camelo
@@ -48,7 +48,7 @@ EntityType:
   frog: Sapo
   furnace_minecart: Carrinho de mina com fornalha
   ghast: Ghast
-  giant: Zumbi gigante
+  giant: Gigante
   glow_item_frame: Moldura brilhante
   glow_squid: Lula-brilhante
   goat: Cabra
@@ -65,7 +65,7 @@ EntityType:
   item_frame: Moldura
   killer_bunny: Coelho assassino
   leash_knot: Nó de laço
-  lightning_bolt: Trovão
+  lightning_bolt: Relâmpago
   llama: Lhama
   llama_spit: Cuspe de lhama
   magma_cube: Cubo de magma
@@ -105,7 +105,7 @@ EntityType:
   spectral_arrow: Flecha espectral
   spider: Aranha
   squid: Lula
-  stray: Esqueleto-errante
+  stray: Errante
   strider: Lavagante
   tadpole: Girino
   text_display: Entidade-texto
@@ -123,8 +123,8 @@ EntityType:
   wind_charge: Projétil de vento
   witch: Bruxa
   wither: Wither
-  wither_skeleton: Esqueleto wither
-  wither_skull: Crânio de Wither
+  wither_skeleton: Esqueleto Wither
+  wither_skull: Crânio do Wither
   wolf: Lobo
   zoglin: Zoglin
   zombie: Zumbi
@@ -133,40 +133,40 @@ EntityType:
   zombified_piglin: Piglin-zumbi
 PotionEffectType:
   absorption: Absorção
-  bad_omen: Mau presságio
+  bad_omen: Mau Presságio
   blindness: Cegueira
-  conduit_power: Proteção do mar
+  conduit_power: Proteção do Mar
   darkness: Escuridão
-  dolphins_grace: Graça marinha
-  fire_resistance: Resist. ao fogo
+  dolphins_grace: Dádiva Marinha
+  fire_resistance: Resistência ao Fogo
   glowing: Brilho
   haste: Pressa
-  health_boost: Vida extra
-  hero_of_the_village: Herói da vila
+  health_boost: Vida Extra
+  hero_of_the_village: Herói da Vila
   hunger: Fome
   infested: Infestação
-  instant_damage: Dano instantâneo
-  instant_health: Vida instantânea
+  instant_damage: Dano Instantâneo
+  instant_health: Vida Instantânea
   invisibility: Invisibilidade
   jump_boost: Supersalto
   levitation: Levitação
   luck: Sorte
   mining_fatigue: Exaustão
   nausea: Náusea
-  night_vision: Visão noturna
+  night_vision: Visão Noturna
   oozing: Pegajoso
   poison: Veneno
-  raid_omen: Presságio de invasão
+  raid_omen: Presságio de Invasão
   regeneration: Regeneração
   resistance: Resistência
   saturation: Saturação
-  slow_falling: Queda lenta
+  slow_falling: Queda Lenta
   slowness: Lentidão
   speed: Velocidade
   strength: Força
-  trial_omen: Presságio de desafio
-  unluck: Má sorte
-  water_breathing: Respir. aquática
+  trial_omen: Presságio de Desafio
+  unluck: Má Sorte
+  water_breathing: Respiração Aquática
   weakness: Fraqueza
   weaving: Tecitura
   wind_charged: Ventania
@@ -228,7 +228,7 @@ Material:
   barrier: Barreira
   basalt: Basalto
   beacon: Sinalizador
-  bedrock: Rocha-mãe
+  bedrock: Rocha matriz
   bee_nest: Colmeia
   beehive: Colmeia artificial
   beetroots: Beterrabas
@@ -469,7 +469,7 @@ Material:
   dead_bubble_coral_block: Bloco de coral-de-bolha morto
   dead_bubble_coral_fan: Gorgônia-de-bolha morta
   dead_bubble_coral_wall_fan: Gorgônia-de-bolha morta de parede
-  dead_bush: Arbusto seco
+  dead_bush: Arbusto morto
   dead_fire_coral: Coral-de-fogo morto
   dead_fire_coral_block: Bloco de coral-de-fogo morto
   dead_fire_coral_fan: Gorgônia-de-fogo morta
@@ -510,9 +510,9 @@ Material:
   dirt: Terra
   dirt_path: Caminho de terra
   dispenser: Ejetor
-  dragon_egg: Ovo de dragão
-  dragon_head: Cabeça de dragão
-  dragon_wall_head: Cabeça de dragão de parede
+  dragon_egg: Ovo do dragão
+  dragon_head: Cabeça do dragão
+  dragon_wall_head: Cabeça do dragão de parede
   dried_kelp_block: Bloco de algas secas
   dripstone_block: Bloco de espeleotema
   dropper: Liberador
@@ -522,7 +522,7 @@ Material:
   end_gateway: Passagem do End
   end_portal: Portal do End
   end_portal_frame: Moldura do portal do End
-  end_rod: Lâmpada do End
+  end_rod: Vara do End
   end_stone: Pedra do End
   end_stone_brick_slab: Laje de tijolos de pedra do End
   end_stone_brick_stairs: Escadas de tijolos de pedra do End
@@ -620,22 +620,22 @@ Material:
   jack_o_lantern: Abóbora de Halloween
   jigsaw: Bloco-quebra-cabeça
   jukebox: Toca-discos
-  jungle_button: Botão de madeira da selva
-  jungle_door: Porta de madeira da selva
-  jungle_fence: Cerca de madeira da selva
-  jungle_fence_gate: Portão de madeira da selva
-  jungle_hanging_sign: Placa suspensa de madeira da selva
+  jungle_button: Botão da selva
+  jungle_door: Porta da selva
+  jungle_fence: Cerca da selva
+  jungle_fence_gate: Portão da selva
+  jungle_hanging_sign: Placa suspensa da selva
   jungle_leaves: Folhas da selva
-  jungle_log: Tronco de árvore da selva
-  jungle_planks: Tábuas de madeira da selva
-  jungle_pressure_plate: Placa de pressão de madeira da selva
-  jungle_sapling: Muda de árvore da selva
-  jungle_sign: Placa de madeira da selva
-  jungle_slab: Laje de madeira da selva
-  jungle_stairs: Escadas de madeira da selva
-  jungle_trapdoor: Alçapão de madeira da selva
-  jungle_wall_hanging_sign: Placa suspensa de madeira da selva de parede
-  jungle_wall_sign: Placa de madeira da selva de parede
+  jungle_log: Tronco da selva
+  jungle_planks: Tábuas da selva
+  jungle_pressure_plate: Placa de pressão da selva
+  jungle_sapling: Muda da selva
+  jungle_sign: Placa da selva
+  jungle_slab: Laje da selva
+  jungle_stairs: Escadas da selva
+  jungle_trapdoor: Alçapão da selva
+  jungle_wall_hanging_sign: Placa suspensa da selva de parede
+  jungle_wall_sign: Placa da selva de parede
   jungle_wood: Madeira da selva
   kelp: Alga
   kelp_plant: Talo de alga
@@ -884,10 +884,10 @@ Material:
   potted_crimson_roots: Raízes carmesins envasadas
   potted_dandelion: Dente-de-leão envasado
   potted_dark_oak_sapling: Muda de carvalho escuro envasada
-  potted_dead_bush: Arbusto seco envasado
+  potted_dead_bush: Arbusto morto envasado
   potted_fern: Samambaia envasada
   potted_flowering_azalea_bush: Azaleia florescente envasada
-  potted_jungle_sapling: Muda de árvore da selva envasada
+  potted_jungle_sapling: Muda da selva envasada
   potted_lily_of_the_valley: Lírio-do-vale envasado
   potted_mangrove_propagule: Propágulo de mangue envasado
   potted_oak_sapling: Muda de carvalho envasada
@@ -989,7 +989,7 @@ Material:
   sculk_sensor: Sensor de sculk
   sculk_shrieker: Emissor de sculk
   sculk_vein: Veio de sculk
-  sea_lantern: Lanterna do mar
+  sea_lantern: Lanterna marinha
   sea_pickle: Pepino-do-mar
   seagrass: Erva marinha
   set_spawn: O ponto de renascimento foi definido
@@ -1067,8 +1067,8 @@ Material:
   stripped_crimson_stem: Caule carmesim descascado
   stripped_dark_oak_log: Tronco de carvalho escuro descascado
   stripped_dark_oak_wood: Madeira de carvalho escuro descascada
-  stripped_jungle_log: Tronco de árvore da selva descascado
-  stripped_jungle_wood: Madeira de árvore da selva descascada
+  stripped_jungle_log: Tronco da selva descascado
+  stripped_jungle_wood: Madeira da selva descascada
   stripped_mangrove_log: Tronco de mangue descascado
   stripped_mangrove_wood: Madeira de mangue descascada
   stripped_oak_log: Tronco de carvalho descascado
@@ -1202,8 +1202,8 @@ Material:
   white_tulip: Tulipa branca
   white_wool: Lã branca
   wither_rose: Rosa do Wither
-  wither_skeleton_skull: Crânio de esqueleto wither
-  wither_skeleton_wall_skull: Crânio de esqueleto wither de parede
+  wither_skeleton_skull: Crânio de esqueleto Wither
+  wither_skeleton_wall_skull: Crânio de esqueleto Wither de parede
   yellow_banner: Estandarte amarelo
   yellow_bed: Cama amarela
   yellow_candle: Vela amarela
@@ -1254,11 +1254,12 @@ Material:
   blaze_rod: Vara de blaze
   blaze_spawn_egg: Ovo gerador de blaze
   blue_dye: Corante azul
-  bogged_spawn_egg: Ovo gerador de esqueleto-pantanoso
+  bogged_spawn_egg: Ovo gerador de pantanoso
   bolt_armor_trim_smithing_template: Molde de ferraria
   bone: Osso
   bone_meal: Farinha de osso
   book: Livro
+  bordure_indented_banner_pattern: Figura para estandarte de bordadura dentada
   bow: Arco
   bowl: Tigela
   bread: Pão
@@ -1309,7 +1310,7 @@ Material:
   cookie: Biscoito
   copper_ingot: Barra de cobre
   cow_spawn_egg: Ovo gerador de vaca
-  creeper_banner_pattern: Desenho para estandarte
+  creeper_banner_pattern: Figura para estandarte
   creeper_spawn_egg: Ovo gerador de creeper
   crossbow: Besta
   cyan_dye: Corante ciano
@@ -1344,7 +1345,7 @@ Material:
   enchanted_book: Livro encantado
   enchanted_golden_apple: Maçã dourada encantada
   end_crystal: Cristal do End
-  ender_dragon_spawn_egg: Ovo gerador de Dragão Ender
+  ender_dragon_spawn_egg: Ovo gerador do Dragão Ender
   ender_eye: Olho de ender
   ender_pearl: Pérola de ender
   enderman_spawn_egg: Ovo gerador de enderman
@@ -1356,6 +1357,7 @@ Material:
   eye_armor_trim_smithing_template: Molde de ferraria
   feather: Pena
   fermented_spider_eye: Olho de aranha fermentado
+  field_masoned_banner_pattern: Figura para estandarte de muro
   filled_map: Mapa
   fire_charge: Bola de fogo
   firework_rocket: Fogo de artifício
@@ -1364,9 +1366,9 @@ Material:
   flint: Sílex
   flint_and_steel: Pederneira
   flow_armor_trim_smithing_template: Molde de ferraria
-  flow_banner_pattern: Desenho para estandarte
+  flow_banner_pattern: Figura para estandarte
   flow_pottery_sherd: Óstraco de fluxo
-  flower_banner_pattern: Desenho para estandarte
+  flower_banner_pattern: Figura para estandarte
   fox_spawn_egg: Ovo gerador de raposa
   friend_pottery_shard: Óstraco de amigo
   friend_pottery_sherd: Óstraco de amigo
@@ -1374,9 +1376,9 @@ Material:
   furnace_minecart: Carrinho de mina com fornalha
   ghast_spawn_egg: Ovo gerador de ghast
   ghast_tear: Lágrima de ghast
-  glass_bottle: Frasco
+  glass_bottle: Frasco de vidro
   glistering_melon_slice: Fatia de melancia reluzente
-  globe_banner_pattern: Desenho para estandarte
+  globe_banner_pattern: Figura para estandarte
   glow_berries: Bagas brilhantes
   glow_ink_sac: Bolsa de tinta brilhante
   glow_item_frame: Moldura brilhante
@@ -1402,7 +1404,7 @@ Material:
   green_dye: Corante verde
   guardian_spawn_egg: Ovo gerador de guardião
   gunpowder: Pólvora
-  guster_banner_pattern: Desenho para estandarte
+  guster_banner_pattern: Figura para estandarte
   guster_pottery_sherd: Óstraco de vórtice
   heart_of_the_sea: Coração do mar
   heart_pottery_shard: Óstraco de coração
@@ -1433,8 +1435,8 @@ Material:
   iron_shovel: Pá de ferro
   iron_sword: Espada de ferro
   item_frame: Moldura
-  jungle_boat: Bote de madeira da selva
-  jungle_chest_boat: Bote de madeira da selva com baú
+  jungle_boat: Bote da selva
+  jungle_chest_boat: Bote da selva com baú
   knowledge_book: Enciclopédia
   lapis_lazuli: Lápis-lazúli
   lava_bucket: Balde de lava
@@ -1464,7 +1466,7 @@ Material:
   minecart: Carrinho de mina
   miner_pottery_shard: Óstraco de picareta
   miner_pottery_sherd: Óstraco de picareta
-  mojang_banner_pattern: Desenho para estandarte
+  mojang_banner_pattern: Figura para estandarte
   mooshroom_spawn_egg: Ovo gerador de mooshroom
   mourner_pottery_shard: Óstraco de defensor
   mourner_pottery_sherd: Óstraco de defensor
@@ -1519,7 +1521,7 @@ Material:
   phantom_membrane: Membrana de phantom
   phantom_spawn_egg: Ovo gerador de phantom
   pig_spawn_egg: Ovo gerador de porco
-  piglin_banner_pattern: Desenho para estandarte
+  piglin_banner_pattern: Figura para estandarte
   piglin_brute_spawn_egg: Ovo gerador de piglin bárbaro
   piglin_spawn_egg: Ovo gerador de piglin
   pillager_spawn_egg: Ovo gerador de saqueador
@@ -1586,7 +1588,7 @@ Material:
   silverfish_spawn_egg: Ovo gerador de traça
   skeleton_horse_spawn_egg: Ovo gerador de cavalo-esqueleto
   skeleton_spawn_egg: Ovo gerador de esqueleto
-  skull_banner_pattern: Desenho para estandarte
+  skull_banner_pattern: Figura para estandarte
   skull_pottery_shard: Óstraco de caveira
   skull_pottery_sherd: Óstraco de caveira
   slime_ball: Bola de slime
@@ -1613,7 +1615,7 @@ Material:
   stone_pickaxe: Picareta de pedra
   stone_shovel: Pá de pedra
   stone_sword: Espada de pedra
-  stray_spawn_egg: Ovo gerador de esqueleto-errante
+  stray_spawn_egg: Ovo gerador de errante
   strider_spawn_egg: Ovo gerador de lavagante
   string: Linha
   sugar: Açúcar
@@ -1650,8 +1652,8 @@ Material:
   wild_armor_trim_smithing_template: Molde de ferraria
   wind_charge: Projétil de vento
   witch_spawn_egg: Ovo gerador de bruxa
-  wither_skeleton_spawn_egg: Ovo gerador de esqueleto wither
-  wither_spawn_egg: Ovo gerador de Wither
+  wither_skeleton_spawn_egg: Ovo gerador de esqueleto Wither
+  wither_spawn_egg: Ovo gerador do Wither
   wolf_armor: Armadura de lobo
   wolf_spawn_egg: Ovo gerador de lobo
   wooden_axe: Machado de madeira
@@ -1668,46 +1670,46 @@ Material:
   zombie_villager_spawn_egg: Ovo gerador de aldeão zumbi
   zombified_piglin_spawn_egg: Ovo gerador de piglin-zumbi
 Enchantment:
-  aqua_affinity: Afinidade aquática
-  bane_of_arthropods: Ruína dos artrópodes
-  binding_curse: Maldição do ligamento
-  blast_protection: Proteção contra explosões
+  aqua_affinity: Afinidade Aquática
+  bane_of_arthropods: Ruína dos Artrópodes
+  binding_curse: Maldição do Ligamento
+  blast_protection: Proteção contra Explosões
   breach: Ruptura
   channeling: Condutividade
   density: Densidade
-  depth_strider: Passos profundos
+  depth_strider: Passos Profundos
   efficiency: Eficiência
   feather_falling: Peso-pena
-  fire_aspect: Aspecto flamejante
-  fire_protection: Proteção contra o fogo
+  fire_aspect: Aspecto Flamejante
+  fire_protection: Proteção contra Fogo
   flame: Chama
   fortune: Fortuna
-  frost_walker: Passos gelados
+  frost_walker: Passos Gelados
   impaling: Penetração
   infinity: Infinidade
   knockback: Repulsão
   looting: Saque
   loyalty: Lealdade
-  luck_of_the_sea: Sorte do mar
+  luck_of_the_sea: Sorte do Mar
   lure: Isca
   mending: Remendo
   multishot: Rajada
   piercing: Perfuração
   power: Força
-  projectile_protection: Proteção contra projéteis
+  projectile_protection: Proteção contra Projéteis
   protection: Proteção
   punch: Impacto
-  quick_charge: Carga rápida
+  quick_charge: Carga Rápida
   respiration: Respiração
   riptide: Correnteza
   sharpness: Afiação
-  silk_touch: Toque suave
+  silk_touch: Toque Suave
   smite: Julgamento
-  soul_speed: Velocidade das almas
+  soul_speed: Velocidade das Almas
   sweeping: Alcance
   sweeping_edge: Alcance
-  swift_sneak: Passos furtivos
+  swift_sneak: Passos Furtivos
   thorns: Espinhos
-  unbreaking: Durabilidade
-  vanishing_curse: Maldição do desaparecimento
-  wind_burst: Rajada de vento
+  unbreaking: Inquebrável
+  vanishing_curse: Maldição do Desaparecimento
+  wind_burst: Rajada de Vento

@@ -126,16 +126,16 @@ public class Lists {
     public static List<String> getSequentialMatches(@NotNull List<String> results, @NotNull String input) {
         if (input.isBlank()) return results;
 
-        char[] chars = input.toCharArray();
+        char[] inputChars = input.toCharArray();
         List<String> goods = new ArrayList<>();
 
         Result:
-        for (String item : results) {
-            int itemLength = item.length();
+        for (String resultItem : results) {
+            int itemLength = resultItem.length();
             if (input.length() > itemLength) continue;
 
             int lastIndex = -1;
-            for (char letter : chars) {
+            for (char letter : inputChars) {
                 int nextIndex = lastIndex;
 
                 if (nextIndex < 0) {
@@ -145,14 +145,15 @@ public class Lists {
                     nextIndex++; // This fixes an issue, where method fails for similar characters in a row, like 'oo'.
                 }
 
-                int index = item.indexOf(letter, nextIndex);
+                letter = Character.toLowerCase(letter);
+                int index = resultItem.toLowerCase().indexOf(letter, nextIndex);
                 if (index <= lastIndex) {
                     continue Result;
                 }
 
                 lastIndex = index;
             }
-            goods.add(item);
+            goods.add(resultItem);
         }
         return goods;
     }

@@ -26,18 +26,6 @@ public class CommandArgument<T> {
     private final Function<TabContext, List<String>> samples;
     private final LangMessage                        failureMessage;
 
-//    @Deprecated
-//    public CommandArgument(@NotNull String name,
-//                           @NotNull Function<String, T> parser,
-//                           boolean required,
-//                           boolean complex,
-//                           @Nullable String localized,
-//                           @Nullable String permission,
-//                           @Nullable LangMessage failureMessage,
-//                           @Nullable Function<TabContext, List<String>> samples) {
-//        this(name, ((string, context) -> parser.apply(string)), required, complex, localized, permission, failureMessage, samples);
-//    }
-
     public CommandArgument(@NotNull String name,
                            @NotNull ArgumentParser<T> parser,
                            boolean required,
@@ -80,7 +68,7 @@ public class CommandArgument<T> {
 
     @NotNull
     public List<String> getSamples(@NotNull TabContext context) {
-        return this.samples == null ? Lists.newList(NightMessage.asLegacy(this.getLocalized())) : this.samples.apply(context);
+        return this.samples == null ? Lists.newList(NightMessage.stripAll(this.getLocalized())) : this.samples.apply(context);
     }
 
     @NotNull

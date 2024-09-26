@@ -109,7 +109,7 @@ public class Dialog {
             String hoverHint = GRAY.enclose("Click me to select " + CYAN.enclose(element) + ".");
             String clickCommand = element.charAt(0) == '/' ? element : '/' + element;
 
-            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.encloseHint(CLICK.encloseRun(element, clickCommand), hoverHint)));
+            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.encloseHint(CLICK.enclose(element, action, clickCommand), hoverHint)));
             builder.append(Placeholders.TAG_LINE_BREAK);
         });
 

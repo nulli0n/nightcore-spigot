@@ -6,7 +6,7 @@
 
     <groupId>su.nightexpress.nightcore</groupId>
     <artifactId>nightcore</artifactId>
-    <version>2.6.3</version>
+    <version>2.6.4</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -55,59 +55,70 @@
             <artifactId>spigot-api</artifactId>
             <version>1.20.4-R0.1-SNAPSHOT</version>
         </dependency>
+
         <!--<dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
             <version>1.21</version>
         </dependency>
+
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>1.21</version>
         </dependency>
+
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>-->
+
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>5.0.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
             <version>5.0.47</version>
         </dependency>
+
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>datafixerupper</artifactId>
             <version>8.0.16</version>
         </dependency>
+
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.41.2.2</version>
         </dependency>
+
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil-core</artifactId>
             <version>8.5.13</version>
         </dependency>
+
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.10</version>
+            <version>2.11.2</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.geysermc.floodgate</groupId>
             <artifactId>api</artifactId>

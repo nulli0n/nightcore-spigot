@@ -1259,6 +1259,7 @@ Material:
   bone: Os
   bone_meal: Poudre d'os
   book: Livre
+  bordure_indented_banner_pattern: Motif de bordure cannelée pour bannière
   bow: Arc
   bowl: Bol
   bread: Pain
@@ -1356,6 +1357,7 @@ Material:
   eye_armor_trim_smithing_template: Modèle de forge
   feather: Plume
   fermented_spider_eye: Oeil d'araignée fermenté
+  field_masoned_banner_pattern: Motif de champ maçonné pour bannière
   filled_map: Carte
   fire_charge: Charge de feu
   firework_rocket: Fusée de feu d'artifice

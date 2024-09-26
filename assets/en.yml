@@ -1259,6 +1259,7 @@ Material:
   bone: Bone
   bone_meal: Bone Meal
   book: Book
+  bordure_indented_banner_pattern: Bordure Indented Banner Pattern
   bow: Bow
   bowl: Bowl
   bread: Bread
@@ -1356,6 +1357,7 @@ Material:
   eye_armor_trim_smithing_template: Smithing Template
   feather: Feather
   fermented_spider_eye: Fermented Spider Eye
+  field_masoned_banner_pattern: Field Masoned Banner Pattern
   filled_map: Map
   fire_charge: Fire Charge
   firework_rocket: Firework Rocket

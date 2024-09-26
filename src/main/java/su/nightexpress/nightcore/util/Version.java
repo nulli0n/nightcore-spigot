@@ -8,13 +8,14 @@ import java.util.stream.Stream;
 
 public enum Version {
 
-    V1_18_R2("1.18.2", true),
+    V1_18_R2("1.18.2", Status.DROPPED),
     V1_19_R3("1.19.4"),
-    V1_20_R1("1.20.1", true),
-    V1_20_R2("1.20.2", true),
+    V1_20_R1("1.20.1", Status.OUTDATED),
+    V1_20_R2("1.20.2", Status.OUTDATED),
     V1_20_R3("1.20.4"),
-    MC_1_20_6("1.20.6"),
-    MC_1_21("1.21"),
+    MC_1_20_6("1.20.6", Status.DROPPED),
+    MC_1_21_0("1.21", Status.OUTDATED),
+    MC_1_21("1.21.1"),
     UNKNOWN("Unknown"),
     ;
 
@@ -22,16 +23,16 @@ public enum Version {
 
     private static Version current;
 
-    private final boolean deprecated;
+    private final Status status;
     private final String  localized;
 
     Version(@NotNull String localized) {
-        this(localized, false);
+        this(localized, Status.SUPPORTED);
     }
 
-    Version(@NotNull String localized, boolean deprecated) {
+    Version(@NotNull String localized, @NotNull Status status) {
         this.localized = localized;
-        this.deprecated = deprecated;
+        this.status = status;
     }
 
     @NotNull
@@ -40,17 +41,38 @@ public enum Version {
         return Bukkit.getServer().getBukkitVersion();
     }
 
+    public enum Status {
+        SUPPORTED,
+        OUTDATED,
+        DROPPED
+    }
+
     @NotNull
     public static Version getCurrent() {
         if (current == null) {
             String protocol = Bukkit.getServer().getBukkitVersion();
-            current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> protocol.startsWith(version.getLocalized())).findFirst().orElse(UNKNOWN);
+            String exact = protocol.split("-")[0];
+
+            current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
         }
         return current;
     }
 
     public boolean isDeprecated() {
-        return deprecated;
+        return this.status == Status.OUTDATED;
+    }
+
+    public boolean isDropped() {
+        return this.status == Status.DROPPED;
+    }
+
+    public boolean isSupported() {
+        return this.status == Status.SUPPORTED;
+    }
+
+    @NotNull
+    public Status getStatus() {
+        return status;
     }
 
     @NotNull

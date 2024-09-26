@@ -47,6 +47,10 @@ public class Placeholders {
     public static final String SKIN_ARROW_RIGHT      = "f32ca66056b72863e98f7f32bd7d94c7a0d796af691c9ac3a9136331352288f9";
     public static final String SKIN_ARROW_DOWN       = "be9ae7a4be65fcbaee65181389a2f7d47e2e326db59ea3eb789a92c85ea46";
 
+    public static final String EMPTY_IF_ABOVE = "%empty-if-above%";
+    public static final String EMPTY_IF_BELOW = "%empty-if-below%";
+    public static final String EMPTY_IF_BOTH  = "%empty-if-both%";
+
     public static final String COMMAND_USAGE       = "%command_usage%";
     public static final String COMMAND_DESCRIPTION = "%command_description%";
     public static final String COMMAND_LABEL       = "%command_label%";

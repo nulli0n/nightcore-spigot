@@ -43,7 +43,7 @@ public class Tags {
 
     public static final ColorTag DARK_GRAY    = new ColorTag("dgray", new String[]{"dark_gray"}, "#6c6c62");
     public static final ColorTag LIGHT_GRAY   = new ColorTag("lgray", new String[]{"light_gray"}, "#d4d9d8");
-    public static final ColorTag LIGHT_GREEN  = new ColorTag("lgreen", new String[]{"light_green"}, "#aefd5e");
+    public static final ColorTag LIGHT_GREEN  = new ColorTag("lgreen", new String[]{"light_green"}, "#91f251");
     public static final ColorTag LIGHT_YELLOW = new ColorTag("lyellow", new String[]{"light_yellow"}, "#ffeea2");
     public static final ColorTag LIGHT_ORANGE = new ColorTag("lorange", new String[]{"light_orange"}, "#fdba5e");
     public static final ColorTag LIGHT_RED    = new ColorTag("lred", new String[]{"light_red"}, "#fd5e5e");
