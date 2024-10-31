@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.database.sql.column;
 
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class ColumnType {
 
     public static final ColumnType INTEGER = new ColumnType(ColumnFormer.INTEGER);

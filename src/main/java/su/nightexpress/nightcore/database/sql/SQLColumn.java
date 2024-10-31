@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.database.DatabaseType;
 import su.nightexpress.nightcore.database.sql.column.ColumnType;
 
+@Deprecated
 public class SQLColumn {
 
     private final String     name;
@@ -33,6 +34,7 @@ public class SQLColumn {
     }
 
     @NotNull
+    @Deprecated
     public SQLColumn asLowerCase() {
         String name = "LOWER(" + this.getName() + ")";
 
@@ -48,6 +50,12 @@ public class SQLColumn {
     public String getNameEscaped() {
         return this.nameEscaped;
     }
+
+    @NotNull
+    public String getNameLowercase() {
+        return "LOWER(" + this.getName() + ")";
+    }
+
 
     @NotNull
     public ColumnType getType() {

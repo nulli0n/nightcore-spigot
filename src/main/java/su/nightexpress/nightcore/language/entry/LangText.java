@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LangText extends LangEntry<LangMessage> {
+public class LangText extends LangEntry {
 
     private LangMessage message;
 
@@ -40,8 +40,7 @@ public class LangText extends LangEntry<LangMessage> {
     }
 
     @Override
-    @NotNull
-    public LangMessage load(@NotNull NightCorePlugin plugin) {
+    public void load(@NotNull NightCorePlugin plugin) {
         FileConfig config = plugin.getLang();
 
         this.write(config);
@@ -53,7 +52,7 @@ public class LangText extends LangEntry<LangMessage> {
 
         this.setMessage(LangMessage.parse(plugin, String.join(Placeholders.TAG_LINE_BREAK, text)));
 
-        return this.getMessage();
+        //return this.getMessage();
     }
 
     @NotNull

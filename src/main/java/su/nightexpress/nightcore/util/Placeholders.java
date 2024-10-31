@@ -1,11 +1,12 @@
 package su.nightexpress.nightcore.util;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.language.tag.MessageTags;
-import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderList;
 import su.nightexpress.nightcore.util.text.tag.Tags;
 
 import java.util.function.UnaryOperator;
@@ -55,31 +56,71 @@ public class Placeholders {
     public static final String COMMAND_DESCRIPTION = "%command_description%";
     public static final String COMMAND_LABEL       = "%command_label%";
 
+    public static final PlaceholderList<Player> PLAYER = new PlaceholderList<Player>()
+        .add(PLAYER_NAME, Player::getName)
+        .add(PLAYER_DISPLAY_NAME, Player::getDisplayName);
+
+    public static final PlaceholderList<Location> LOCATION = new PlaceholderList<Location>()
+        .add(LOCATION_X, location -> String.valueOf(location.getBlockX()))
+        .add(LOCATION_Y, location -> String.valueOf(location.getBlockY()))
+        .add(LOCATION_Z, location -> String.valueOf(location.getBlockZ()))
+        .add(LOCATION_WORLD, LocationUtil::getWorldName)
+        ;
+
+    public static final PlaceholderList<CommandSender> SENDER = new PlaceholderList<CommandSender>()
+        .add(PLAYER_NAME, CommandSender::getName)
+        .add(PLAYER_DISPLAY_NAME, CommandSender::getName);
+
     @NotNull
     public static UnaryOperator<String> forLocation(@NotNull Location location) {
-        return new PlaceholderMap()
-            .add(LOCATION_X, () -> String.valueOf(location.getBlockX()))
-            .add(LOCATION_Y, () -> String.valueOf(location.getBlockY()))
-            .add(LOCATION_Z, () -> String.valueOf(location.getBlockZ()))
-            .add(LOCATION_WORLD, () -> LocationUtil.getWorldName(location))
-            .replacer();
+        return LOCATION.replacer(location);
+//
+//        return new PlaceholderMap()
+//            .add(LOCATION_X, () -> String.valueOf(location.getBlockX()))
+//            .add(LOCATION_Y, () -> String.valueOf(location.getBlockY()))
+//            .add(LOCATION_Z, () -> String.valueOf(location.getBlockZ()))
+//            .add(LOCATION_WORLD, () -> LocationUtil.getWorldName(location))
+//            .replacer();
     }
 
     @NotNull
     public static UnaryOperator<String> forPlayer(@NotNull Player player) {
-        return new PlaceholderMap()
-            .add(PLAYER_NAME, player::getName)
-            .add(PLAYER_DISPLAY_NAME, player::getDisplayName)
-            .replacer();
+        return PLAYER.replacer(player);
+//        return new PlaceholderMap()
+//            .add(PLAYER_NAME, player::getName)
+//            .add(PLAYER_DISPLAY_NAME, player::getDisplayName)
+//            .replacer();
+    }
+
+    @NotNull
+    public static UnaryOperator<String> forPlayerWithPAPI(@NotNull Player player) {
+        return str -> setPlaceholderAPI(forPlayer(player).apply(str), player);
     }
 
     @NotNull
     public static UnaryOperator<String> forSender(@NotNull CommandSender sender) {
         if (sender instanceof Player player) return forPlayer(player);
 
-        return new PlaceholderMap()
-            .add(PLAYER_NAME, sender::getName)
-            .add(PLAYER_DISPLAY_NAME, sender::getName)
-            .replacer();
+        return SENDER.replacer(sender);
+//
+//        return new PlaceholderMap()
+//            .add(PLAYER_NAME, sender::getName)
+//            .add(PLAYER_DISPLAY_NAME, sender::getName)
+//            .replacer();
+    }
+
+    @NotNull
+    public static UnaryOperator<String> forPlaceholderAPI(@NotNull Player player) {
+        return str -> {
+            if (Plugins.hasPlaceholderAPI()) {
+                return PlaceholderAPI.setPlaceholders(player, str);
+            }
+            return str;
+        };
+    }
+
+    @NotNull
+    public static String setPlaceholderAPI(@NotNull String str, @NotNull Player player) {
+        return forPlaceholderAPI(player).apply(str);
     }
 }

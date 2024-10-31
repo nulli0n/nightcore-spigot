@@ -10,11 +10,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class RankMap<T extends Number> {
 
-    private final Mode mode;
-    private final String permissionPrefix;
-    private final T defaultValue;
+    private final Mode           mode;
+    private final String         permissionPrefix;
+    private final T              defaultValue;
     private final Map<String, T> values;
 
     public enum Mode {
@@ -44,28 +45,28 @@ public class RankMap<T extends Number> {
     }
 
     @NotNull
-    public static <T extends Number> RankMap<T> read(@NotNull FileConfig cfg, @NotNull String path, @NotNull Class<T> clazz, @NotNull T defaultValue) {
+    public static <T extends Number> RankMap<T> read(@NotNull FileConfig config, @NotNull String path, @NotNull Class<T> clazz, @NotNull T defaultValue) {
         Map<String, T> oldMap = new HashMap<>();
 
-        if (!cfg.contains(path + ".Mode")) {
-            for (String rank : cfg.getSection(path)) {
+        if (!config.contains(path + ".Mode")) {
+            for (String rank : config.getSection(path)) {
                 T number;
                 if (clazz == Double.class) {
-                    number = clazz.cast(cfg.getDouble(path + "." + rank));
+                    number = clazz.cast(config.getDouble(path + "." + rank));
                 }
-                else number = clazz.cast(cfg.getInt(path + "." + rank));
+                else number = clazz.cast(config.getInt(path + "." + rank));
 
                 oldMap.put(rank.toLowerCase(), number);
             }
-            cfg.remove(path);
+            config.remove(path);
         }
 
         oldMap.forEach((rank, number) -> {
             if (rank.equalsIgnoreCase(Placeholders.DEFAULT)) {
-                cfg.set(path + ".Default_Value", number);
+                config.set(path + ".Default_Value", number);
             }
             else {
-                cfg.set(path + ".Values." + rank, number);
+                config.set(path + ".Values." + rank, number);
             }
         });
 
@@ -87,26 +88,26 @@ public class RankMap<T extends Number> {
             "    vip: 1 # -> Player must have 'example.prefix.vip' permission.",
             "    gold: 2 # -> Player must have 'example.prefix.gold' permission.",
             "    emerald: 3 # -> Player must have 'example.prefix.emerald' permission."
-        ).read(cfg);
+        ).read(config);
 
         String permissionPrefix = ConfigValue.create(path + ".Permission_Prefix",
             "example.prefix.",
             "Sets permission prefix for the '" + Mode.PERMISSION.name() + "' mode."
-        ).read(cfg);
+        ).read(config);
 
         T fallback;
         if (clazz == Double.class) {
-            fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.doubleValue()).read(cfg));
+            fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.doubleValue()).read(config));
         }
-        else fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.intValue()).read(cfg));
+        else fallback = clazz.cast(ConfigValue.create(path + ".Default_Value", defaultValue.intValue()).read(config));
 
         Map<String, T> values = new HashMap<>();
-        for (String rank : cfg.getSection(path + ".Values")) {
+        for (String rank : config.getSection(path + ".Values")) {
             T number;
             if (clazz == Double.class) {
-                number = clazz.cast(cfg.getDouble(path + ".Values." + rank));
+                number = clazz.cast(config.getDouble(path + ".Values." + rank));
             }
-            else number = clazz.cast(cfg.getInt(path + ".Values." + rank));
+            else number = clazz.cast(config.getInt(path + ".Values." + rank));
 
             values.put(rank.toLowerCase(), number);
         }
@@ -114,19 +115,19 @@ public class RankMap<T extends Number> {
         return new RankMap<>(mode, permissionPrefix, fallback, values);
     }
 
-    public void write(@NotNull FileConfig cfg, @NotNull String path) {
-        cfg.set(path + ".Mode", this.getMode().name());
-        cfg.set(path + ".Permission_Prefix", this.getPermissionPrefix());
-        cfg.set(path + ".Default_Value", this.getDefaultValue());
+    public void write(@NotNull FileConfig config, @NotNull String path) {
+        config.set(path + ".Mode", this.mode.name());
+        config.set(path + ".Permission_Prefix", this.permissionPrefix);
+        config.set(path + ".Default_Value", this.defaultValue);
         this.values.forEach((rank, number) -> {
-            cfg.set(path + ".Values." + rank, number);
+            config.set(path + ".Values." + rank, number);
         });
     }
 
     @NotNull
     public T getRankValue(@NotNull Player player) {
         String group = Players.getPermissionGroup(player);
-        return this.values.getOrDefault(group, this.values.getOrDefault(Placeholders.DEFAULT, this.getDefaultValue()));
+        return this.values.getOrDefault(group, this.defaultValue);
     }
 
     @NotNull
@@ -139,24 +140,24 @@ public class RankMap<T extends Number> {
 
     @NotNull
     public T getGreatest(@NotNull Player player) {
-        if (this.getMode() == Mode.RANK) {
+        if (this.mode == Mode.RANK) {
             return this.getRankValue(player);
         }
         return this.values.entrySet().stream()
-            .filter(entry -> player.hasPermission(this.getPermissionPrefix() + entry.getKey()))
+            .filter(entry -> player.hasPermission(this.permissionPrefix + entry.getKey()))
             .map(Map.Entry::getValue)
-            .max(Comparator.comparingDouble(Number::doubleValue)).orElse(this.getDefaultValue());
+            .max(Comparator.comparingDouble(Number::doubleValue)).orElse(this.defaultValue);
     }
 
     @NotNull
     public T getSmallest(@NotNull Player player) {
-        if (this.getMode() == Mode.RANK) {
+        if (this.mode == Mode.RANK) {
             return this.getRankValue(player);
         }
         return this.values.entrySet().stream()
-            .filter(entry -> player.hasPermission(this.getPermissionPrefix() + entry.getKey()))
+            .filter(entry -> player.hasPermission(this.permissionPrefix + entry.getKey()))
             .map(Map.Entry::getValue)
-            .min(Comparator.comparingDouble(Number::doubleValue)).orElse(this.getDefaultValue());
+            .min(Comparator.comparingDouble(Number::doubleValue)).orElse(this.defaultValue);
     }
 
     @NotNull

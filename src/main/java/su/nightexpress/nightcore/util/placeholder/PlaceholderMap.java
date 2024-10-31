@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
+@Deprecated
 public class PlaceholderMap {
 
     private final List<Pair<String, Supplier<String>>> keys;

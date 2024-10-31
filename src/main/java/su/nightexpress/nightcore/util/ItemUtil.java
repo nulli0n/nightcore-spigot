@@ -2,8 +2,6 @@ package su.nightexpress.nightcore.util;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -48,8 +46,11 @@ public class ItemUtil {
     public static void hideAttributes(@NotNull ItemMeta meta, @NotNull Material material) {
         if (Version.isAtLeast(Version.MC_1_20_6)) {
             EquipmentSlot slot = material.getEquipmentSlot();
-            material.getDefaultAttributeModifiers(slot).forEach((meta::addAttributeModifier));
-            //meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier("veryNiceItemChanges", 1, AttributeModifier.Operation.ADD_NUMBER));
+            material.getDefaultAttributeModifiers(slot).forEach((attribute, modifier) -> {
+                if (meta.getAttributeModifiers(attribute) == null) {
+                    meta.addAttributeModifier(attribute, modifier);
+                }
+            });
         }
 
         meta.addItemFlags(ItemFlag.values());
@@ -95,6 +96,7 @@ public class ItemUtil {
             PlayerProfile profile = Bukkit.createPlayerProfile(uuid, name);
             URL url = new URL(urlData);
             PlayerTextures textures = profile.getTextures();
+
             textures.setSkin(url);
             profile.setTextures(textures);
             meta.setOwnerProfile(profile);
@@ -123,7 +125,6 @@ public class ItemUtil {
     @Deprecated
     public static void setSkullTexture(@NotNull ItemStack item, @NotNull String value) {
         if (item.getType() != Material.PLAYER_HEAD) return;
-        //if (!(item.getItemMeta() instanceof SkullMeta meta)) return;
 
         try {
             byte[] decoded = Base64.getDecoder().decode(value);
@@ -137,53 +138,6 @@ public class ItemUtil {
         }
         catch (Exception exception) {
             exception.printStackTrace();
-        }
-
-//        UUID uuid = UUID.nameUUIDFromBytes(value.getBytes());
-//        GameProfile profile = new GameProfile(uuid, "null");
-//        profile.getProperties().put("textures", new Property("textures", value));
-//
-//        Method method = Reflex.getMethod(meta.getClass(), "setProfile", GameProfile.class);
-//        if (method != null) {
-//            Reflex.invokeMethod(method, meta, profile);
-//        }
-//        else {
-//            Reflex.setFieldValue(meta, "profile", profile);
-//        }
-//
-//        item.setItemMeta(meta);
-    }
-
-    @Nullable
-    @Deprecated
-    public static String getSkullTexture(@NotNull ItemStack item) {
-        if (item.getType() != Material.PLAYER_HEAD) return null;
-
-        SkullMeta meta = (SkullMeta) item.getItemMeta();
-        if (meta == null) return null;
-
-        GameProfile profile = (GameProfile) Reflex.getFieldValue(meta, "profile");
-        if (profile == null) return null;
-
-        Collection<Property> properties = profile.getProperties().get("textures");
-        Optional<Property> opt = properties.stream().filter(prop -> {
-            String name;
-            if (Version.isAtLeast(Version.V1_20_R2)) {
-                name = prop.name();
-            }
-            else {
-                name = (String) Reflex.getFieldValue(profile, "name");
-            }
-            return name != null && name.equalsIgnoreCase("textures");
-        }).findFirst();
-
-        if (opt.isEmpty()) return null;
-
-        if (Version.isAtLeast(Version.V1_20_R2)) {
-            return opt.get().value();
-        }
-        else {
-            return (String) Reflex.getFieldValue(opt.get(), "value");
         }
     }
 
@@ -200,25 +154,11 @@ public class ItemUtil {
     }
 
     public static boolean isSword(@NotNull ItemStack item) {
-        if (Version.isAtLeast(Version.V1_19_R3)) {
-            return Tag.ITEMS_SWORDS.isTagged(item.getType());
-        }
-
-        Material material = item.getType();
-        return material == Material.DIAMOND_SWORD || material == Material.GOLDEN_SWORD
-            || material == Material.IRON_SWORD || material == Material.NETHERITE_SWORD
-            || material == Material.STONE_SWORD || material == Material.WOODEN_SWORD;
+        return Tag.ITEMS_SWORDS.isTagged(item.getType());
     }
 
     public static boolean isAxe(@NotNull ItemStack item) {
-        if (Version.isAtLeast(Version.V1_19_R3)) {
-            return Tag.ITEMS_AXES.isTagged(item.getType());
-        }
-
-        Material material = item.getType();
-        return material == Material.DIAMOND_AXE || material == Material.GOLDEN_AXE
-            || material == Material.IRON_AXE || material == Material.NETHERITE_AXE
-            || material == Material.STONE_AXE || material == Material.WOODEN_AXE;
+        return Tag.ITEMS_AXES.isTagged(item.getType());
     }
 
     public static boolean isTrident(@NotNull ItemStack item) {
@@ -226,36 +166,15 @@ public class ItemUtil {
     }
 
     public static boolean isPickaxe(@NotNull ItemStack item) {
-        if (Version.isAtLeast(Version.V1_19_R3)) {
-            return Tag.ITEMS_PICKAXES.isTagged(item.getType());
-        }
-
-        Material material = item.getType();
-        return material == Material.DIAMOND_PICKAXE || material == Material.GOLDEN_PICKAXE
-            || material == Material.IRON_PICKAXE || material == Material.NETHERITE_PICKAXE
-            || material == Material.STONE_PICKAXE || material == Material.WOODEN_PICKAXE;
+        return Tag.ITEMS_PICKAXES.isTagged(item.getType());
     }
 
     public static boolean isShovel(@NotNull ItemStack item) {
-        if (Version.isAtLeast(Version.V1_19_R3)) {
-            return Tag.ITEMS_SHOVELS.isTagged(item.getType());
-        }
-
-        Material material = item.getType();
-        return material == Material.DIAMOND_SHOVEL || material == Material.GOLDEN_SHOVEL
-            || material == Material.IRON_SHOVEL || material == Material.NETHERITE_SHOVEL
-            || material == Material.STONE_SHOVEL || material == Material.WOODEN_SHOVEL;
+        return Tag.ITEMS_SHOVELS.isTagged(item.getType());
     }
 
     public static boolean isHoe(@NotNull ItemStack item) {
-        if (Version.isAtLeast(Version.V1_19_R3)) {
-            return Tag.ITEMS_HOES.isTagged(item.getType());
-        }
-
-        Material material = item.getType();
-        return material == Material.DIAMOND_HOE || material == Material.GOLDEN_HOE
-            || material == Material.IRON_HOE || material == Material.NETHERITE_HOE
-            || material == Material.STONE_HOE || material == Material.WOODEN_HOE;
+        return Tag.ITEMS_HOES.isTagged(item.getType());
     }
 
     public static boolean isElytra(@NotNull ItemStack item) {

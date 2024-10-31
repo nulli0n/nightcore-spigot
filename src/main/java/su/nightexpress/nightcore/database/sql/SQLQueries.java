@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.function.Function;
 
+@Deprecated
 public class SQLQueries {
 
     public static boolean hasTable(@NotNull AbstractConnector connector, @NotNull String table) {

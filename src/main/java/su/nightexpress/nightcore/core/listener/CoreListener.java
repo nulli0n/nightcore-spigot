@@ -16,8 +16,8 @@ public class CoreListener extends AbstractListener<NightCore> {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onServiceRegisterEvent(ServiceRegisterEvent event) {
-        if (Plugins.isLoaded(Plugins.VAULT)) {
+    public void onServiceRegister(ServiceRegisterEvent event) {
+        if (Plugins.hasVault()) {
             VaultHook.onServiceRegisterEvent(event);
         }
     }

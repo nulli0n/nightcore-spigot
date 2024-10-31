@@ -63,7 +63,7 @@ public class TimedMatcher {
         }
         catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
-                Plugins.CORE.warn("Matcher " + exception.getTimeout() + "ms timeout error for replaceAll: '" + matcher.pattern().pattern() + "'.");
+                Plugins.getCore().warn("Matcher " + exception.getTimeout() + "ms timeout error for replaceAll: '" + matcher.pattern().pattern() + "'.");
             }
             return "";
         }
@@ -75,7 +75,7 @@ public class TimedMatcher {
         }
         catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
-                Plugins.CORE.warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern().pattern() + "'.");
+                Plugins.getCore().warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern().pattern() + "'.");
             }
             return false;
         }
@@ -87,7 +87,7 @@ public class TimedMatcher {
         }
         catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
-                Plugins.CORE.warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern().pattern() + "'.");
+                Plugins.getCore().warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern().pattern() + "'.");
             }
             return false;
         }

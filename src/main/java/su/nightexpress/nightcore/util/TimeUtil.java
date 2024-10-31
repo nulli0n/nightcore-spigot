@@ -43,13 +43,37 @@ public class TimeUtil {
                 str.append(delimiter);
             }
 
-            boolean doDecimal = seconds < 5 && str.isEmpty();
+            boolean doDecimal = seconds != 0 && seconds < 5 && str.isEmpty();
             String secondsStr = doDecimal ? NumberUtil.format((double) time / 1000D) : String.valueOf(seconds);
 
             str.append(CoreLang.TIME_SECOND.getString().replace(Placeholders.GENERIC_AMOUNT, secondsStr));
         }
 
         return str.toString();
+    }
+
+    public static boolean isPassed(long timestamp) {
+        return timestamp >= 0 && System.currentTimeMillis() > timestamp;
+    }
+
+    public static long createFutureTimestamp(double seconds) {
+        return seconds < 0 ? -1L : createTimestamp(Math.abs(seconds));
+    }
+
+    public static long createPastTimestamp(double seconds) {
+        return createTimestamp(-Math.abs(seconds));
+    }
+
+    public static long createTimestamp(double seconds) {
+        return System.currentTimeMillis() + (long) (seconds * 1000D);
+    }
+
+    public static long secondsToTicks(int seconds) {
+        return seconds * 20L;
+    }
+
+    public static double ticksToSeconds(long ticks) {
+        return (double) ticks / 20D;
     }
 
     @NotNull

@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.manager;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
+import su.nightexpress.nightcore.util.bukkit.NightTask;
 import su.nightexpress.nightcore.util.wrapper.UniTask;
 
 import java.util.ArrayList;
@@ -12,18 +13,22 @@ import java.util.Set;
 public abstract class AbstractManager<P extends NightCorePlugin> extends SimpleManager<P> {
 
     protected final Set<SimpeListener> listeners;
-    protected final List<UniTask>       tasks;
+    protected final List<UniTask>   tasks;
+    protected final List<NightTask> taskList;
 
     public AbstractManager(@NotNull P plugin) {
         super(plugin);
         this.listeners = new HashSet<>();
         this.tasks = new ArrayList<>();
+        this.taskList = new ArrayList<>();
     }
 
     @Override
     public void shutdown() {
         this.tasks.forEach(UniTask::stop);
         this.tasks.clear();
+        this.taskList.forEach(NightTask::stop);
+        this.taskList.clear();
         this.listeners.forEach(SimpeListener::unregisterListeners);
         this.listeners.clear();
         super.shutdown();
@@ -35,8 +40,31 @@ public abstract class AbstractManager<P extends NightCorePlugin> extends SimpleM
         }
     }
 
+    protected void addTask(@NotNull Runnable runnable, int interval) {
+        this.addTask(NightTask.create(plugin, runnable, interval));
+    }
+
+    protected void addTask(@NotNull Runnable runnable, long interval) {
+        this.addTask(NightTask.create(plugin, runnable, interval));
+    }
+
+    protected void addAsyncTask(@NotNull Runnable runnable, int interval) {
+        this.addTask(NightTask.createAsync(plugin, runnable, interval));
+    }
+
+    protected void addAsyncTask(@NotNull Runnable runnable, long interval) {
+        this.addTask(NightTask.createAsync(plugin, runnable, interval));
+    }
+
+    @Deprecated
     protected void addTask(@NotNull UniTask task) {
         this.tasks.add(task);
         task.start();
+    }
+
+    protected void addTask(@NotNull NightTask task) {
+        if (task.isValid()) {
+            this.taskList.add(task);
+        }
     }
 }

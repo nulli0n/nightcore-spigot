@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.database.sql;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.database.AbstractConnector;
 
+@Deprecated
 public abstract class SQLExecutor<T> {
 
     protected final String table;

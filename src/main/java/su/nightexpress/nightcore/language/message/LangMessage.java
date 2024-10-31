@@ -14,6 +14,7 @@ import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 import su.nightexpress.nightcore.util.text.tag.Tags;
@@ -46,6 +47,7 @@ public class LangMessage {
         }
     }
 
+    @Deprecated
     private LangMessage(@NotNull LangMessage from) {
         this.plugin = from.plugin;
         this.defaultText = from.defaultText;
@@ -176,6 +178,12 @@ public class LangMessage {
     }
 
     @NotNull
+    public MessageOptions getOptions() {
+        return this.options;
+    }
+
+    @NotNull
+    @Deprecated
     public TextRoot getMessage(@NotNull CommandSender sender) {
         if (!this.options.usePlaceholderAPI() || !(sender instanceof Player player)) return this.getMessage();
 
@@ -183,11 +191,13 @@ public class LangMessage {
     }
 
     @NotNull
+    @Deprecated
     public LangMessage replace(@NotNull String var, @NotNull Object replacer) {
         return this.replace(str -> str.replace(var, String.valueOf(replacer)));
     }
 
     @NotNull
+    @Deprecated
     public LangMessage replace(@NotNull String var, @NotNull Consumer<List<String>> replacer) {
         List<String> list = new ArrayList<>();
         replacer.accept(list);
@@ -196,11 +206,13 @@ public class LangMessage {
     }
 
     @NotNull
+    @Deprecated
     public LangMessage replace(@NotNull String var, @NotNull List<String> replacer) {
         return this.replace(str -> str.replace(var, String.join(Placeholders.TAG_LINE_BREAK, replacer)));
     }
 
     @NotNull
+    @Deprecated
     public LangMessage replace(@NotNull UnaryOperator<String> replacer) {
         if (this.isDisabled()) return this;
 
@@ -222,23 +234,60 @@ public class LangMessage {
     }
 
     public void send(@NotNull CommandSender sender) {
+        this.send(sender, replacer -> {});
+//
+//        if (this.isDisabled()) return;
+//
+//        if (this.options.getSound() != null && sender instanceof Player player) {
+//            UniSound.of(this.options.getSound()).play(player);
+//        }
+//
+//        if (this.options.getOutputType() == OutputType.CHAT) {
+//            this.getMessage(sender).send(sender);
+//            return;
+//        }
+//
+//        if (sender instanceof Player player) {
+//            if (this.options.getOutputType() == OutputType.ACTION_BAR) {
+//                Players.sendActionBar(player, this.getMessage(player));
+//            }
+//            else if (this.options.getOutputType() == OutputType.TITLES) {
+//                String[] split = Tags.LINE_BREAK.split(this.getMessage(sender).getString());
+//
+//                String title = NightMessage.asLegacy(split[0]);
+//                String subtitle = split.length >= 2 ? NightMessage.asLegacy(split[1]) : "";
+//
+//                player.sendTitle(title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
+//            }
+//        }
+    }
+
+    public void send(@NotNull CommandSender sender, @NotNull Consumer<Replacer> consumer) {
         if (this.isDisabled()) return;
 
         if (this.options.getSound() != null && sender instanceof Player player) {
             UniSound.of(this.options.getSound()).play(player);
         }
 
+        Replacer replacer = new Replacer();
+        consumer.accept(replacer);
+        if (this.options.usePlaceholderAPI() && sender instanceof Player player) {
+            replacer.replacePlaceholderAPI(player);
+        }
+
+        TextRoot message = replacer.getReplaced(this.message);
+
         if (this.options.getOutputType() == OutputType.CHAT) {
-            this.getMessage(sender).send(sender);
+            message.send(sender);
             return;
         }
 
         if (sender instanceof Player player) {
             if (this.options.getOutputType() == OutputType.ACTION_BAR) {
-                Players.sendActionBar(player, this.getMessage(player));
+                Players.sendActionBar(player, message);
             }
             else if (this.options.getOutputType() == OutputType.TITLES) {
-                String[] split = Tags.LINE_BREAK.split(this.getMessage(sender).getString());
+                String[] split = Tags.LINE_BREAK.split(message.getString());
 
                 String title = NightMessage.asLegacy(split[0]);
                 String subtitle = split.length >= 2 ? NightMessage.asLegacy(split[1]) : "";

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.UnaryOperator;
 
+@Deprecated
 public interface Placeholder {
 
     @NotNull PlaceholderMap getPlaceholders();

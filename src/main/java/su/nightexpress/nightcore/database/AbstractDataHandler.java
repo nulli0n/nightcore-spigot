@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+@Deprecated
 public abstract class AbstractDataHandler<P extends NightCorePlugin> extends AbstractManager<P> {
 
     protected final DatabaseConfig    config;
@@ -150,11 +151,6 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
         return UpdateEntity.create(values, conditions);
     }
 
-//    @NotNull
-//    public UpdateQuery updateQuery(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
-//        return UpdateQuery.create(table, values, conditions);
-//    }
-//
     public void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
         this.executeUpdate(UpdateQuery.create(table, values, conditions));
     }
@@ -162,11 +158,6 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
     public void executeUpdate(@NotNull UpdateQuery query) {
         SQLQueries.executeUpdate(this.connector, query);
     }
-
-//    @Deprecated
-//    public void executeUpdates(@NotNull UpdateQuery queries) {
-//        SQLQueries.executeUpdates(this.connector, queries);
-//    }
 
 
 

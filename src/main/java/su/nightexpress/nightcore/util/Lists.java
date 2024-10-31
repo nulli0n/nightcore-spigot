@@ -1,7 +1,5 @@
 package su.nightexpress.nightcore.util;
 
-import org.bukkit.Bukkit;
-import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,8 +12,9 @@ import java.util.stream.Stream;
 public class Lists {
 
     @NotNull
+    @Deprecated
     public static List<String> worldNames() {
-        return Bukkit.getServer().getWorlds().stream().map(WorldInfo::getName).toList();
+        return BukkitThing.worldNames();
     }
 
     public static int indexOf(Object[] array, @NotNull Object objectToFind) {
@@ -107,6 +106,7 @@ public class Lists {
      * @return A list with no multiple empty lines in a row.
      */
     @NotNull
+    @Deprecated
     public static List<String> stripEmpty(@NotNull List<String> original) {
         List<String> stripped = new ArrayList<>();
 

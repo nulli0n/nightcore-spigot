@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.database.connection.SQLiteConnector;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Deprecated
 public abstract class AbstractConnector {
 
     protected final NightCorePlugin plugin;

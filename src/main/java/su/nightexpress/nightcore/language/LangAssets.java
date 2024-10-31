@@ -24,14 +24,15 @@ public class LangAssets {
 
     private static FileConfig config;
 
-    public static void load() {
-        NightCore core = Plugins.CORE;
+    public static void load(@NotNull NightCore core) {
         String langCode = core.getLanguage();
 
         String assetsCode = downloadAssets(core, langCode);
         config = FileConfig.loadOrExtract(core, LangManager.DIR_LANG, getFileName(assetsCode));
 
-        loadDamageTypes();
+        if (Version.isAtLeast(Version.MC_1_21)) {
+            loadDamageTypes();
+        }
     }
 
     public static void shutdown() {

@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.ItemUtil;
-import su.nightexpress.nightcore.util.Pair;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
@@ -16,7 +15,7 @@ import java.util.List;
 
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
-public class LangItem extends LangEntry<Pair<String, List<String>>> {
+public class LangItem extends LangEntry/*<Pair<String, List<String>>>*/ {
 
     private final List<String> defaultLore;
 
@@ -47,8 +46,7 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
     }
 
     @Override
-    @NotNull
-    public Pair<String, List<String>> load(@NotNull NightCorePlugin plugin) {
+    public void load(@NotNull NightCorePlugin plugin) {
         FileConfig config = plugin.getLang();
 
         this.write(config);
@@ -56,7 +54,7 @@ public class LangItem extends LangEntry<Pair<String, List<String>>> {
         this.setLocalizedName(config.getString(this.getPath() + ".Name", this.getDefaultName()));
         this.setLocalizedLore(config.getStringList(this.getPath() + ".Lore"));
 
-        return Pair.of(this.getLocalizedName(), this.getLocalizedLore());
+        //return Pair.of(this.getLocalizedName(), this.getLocalizedLore());
     }
 
     public void apply(@NotNull ItemStack item) {

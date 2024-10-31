@@ -5,6 +5,8 @@ import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.DynamicOps;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -85,7 +87,7 @@ public class ItemNbt {
     private static boolean useRegistry;
     private static Object registryAccess;
 
-    public static boolean setup(@NotNull NightCore core) {
+    public static boolean load(@NotNull NightCore core) {
         if (Version.isBehind(Version.MC_1_20_6)) return true;
 
         useRegistry = true;
@@ -112,6 +114,21 @@ public class ItemNbt {
             exception.printStackTrace();
             return false;
         }
+    }
+
+    public static boolean test() {
+        ItemStack testItem = new ItemStack(Material.DIAMOND_SWORD);
+        ItemUtil.editMeta(testItem, meta -> {
+            meta.setDisplayName("Test Item");
+            meta.setLore(Lists.newList("Test Lore 1", "Test Lore 2", "Test Lore 3"));
+            meta.addEnchant(Enchantment.FIRE_ASPECT, 10, true);
+        });
+
+        String nbt = ItemNbt.compress(testItem);
+        if (nbt == null) return false;
+
+        ItemStack decompressed = ItemNbt.decompress(nbt);
+        return decompressed != null && decompressed.isSimilar(testItem);
     }
 
     @Nullable

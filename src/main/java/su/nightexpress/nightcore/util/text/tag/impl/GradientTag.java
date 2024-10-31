@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
@@ -33,17 +34,17 @@ public class GradientTag extends Tag implements ContentTag {
         String code1 = split[0];
         String code2 = split[1];
 
-        Color from;
-        Color to;
+        Color from = TagUtils.colorFromHexString(code1);
+        Color to = TagUtils.colorFromHexString(code2);
 
         // TODO Support for named colors
-        try {
-            from = Color.decode(code1);
-            to = Color.decode(code2);
-        }
-        catch (NumberFormatException exception) {
-            return null;
-        }
+//        try {
+//            from = Color.decode(code1);
+//            to = Color.decode(code2);
+//        }
+//        catch (NumberFormatException exception) {
+//            return null;
+//        }
 
         return new GradientColorDecorator(from, to);
     }

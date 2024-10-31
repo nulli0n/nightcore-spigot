@@ -1,6 +1,5 @@
 package su.nightexpress.nightcore.util;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
@@ -26,37 +24,48 @@ public class Players {
     public static final String PLAYER_COMMAND_PREFIX = "player:";
 
     @NotNull
+    public static Set<Player> getOnline() {
+        return new HashSet<>(Bukkit.getServer().getOnlinePlayers());
+    }
+
+    @NotNull
     public static List<String> playerNames() {
         return playerNames(null);
     }
 
     @NotNull
     public static List<String> playerNames(@Nullable Player viewer) {
-        return playerNames(viewer, true);
+        return getOnline().stream().filter(player -> viewer == null || viewer.canSee(player)).map(Player::getName).sorted(String::compareTo).toList();
+        //return playerNames(viewer, true);
     }
 
     @NotNull
+    @Deprecated
     public static List<String> realPlayerNames() {
         return realPlayerNames(null);
     }
 
     @NotNull
+    @Deprecated
     public static List<String> realPlayerNames(@Nullable Player viewer) {
         return playerNames(viewer, false);
     }
 
     @NotNull
+    @Deprecated
     public static List<String> playerNames(@Nullable Player viewer, boolean includeCustom) {
-        Set<String> names = new HashSet<>();
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (viewer != null && !viewer.canSee(player)) continue;
-
-            names.add(player.getName());
-            if (includeCustom && CoreConfig.RESPECT_PLAYER_DISPLAYNAME.get()) {
-                names.add(Colorizer.strip(player.getDisplayName()));
-            }
-        }
-        return names.stream().sorted(String::compareTo).toList();
+        return playerNames(viewer);
+//
+//        Set<String> names = new HashSet<>();
+//        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+//            if (viewer != null && !viewer.canSee(player)) continue;
+//
+//            names.add(player.getName());
+//            if (includeCustom && CoreConfig.RESPECT_PLAYER_DISPLAYNAME.get()) {
+//                names.add(Colorizer.strip(player.getDisplayName()));
+//            }
+//        }
+//        return names.stream().sorted(String::compareTo).toList();
     }
 
     @NotNull
@@ -65,43 +74,45 @@ public class Players {
     }
 
     @Nullable
-    public static Player getPlayer(@NotNull String nameOrNick) {
-        if (!CoreConfig.RESPECT_PLAYER_DISPLAYNAME.get()) {
-            return Bukkit.getServer().getPlayer(nameOrNick);
-        }
-
-        Player found = Bukkit.getServer().getPlayerExact(nameOrNick);
-        if (found != null) {
-            return found;
-        }
-
-        String lowerName = nameOrNick.toLowerCase();
-        int lowerLength = lowerName.length();
-        int delta = Integer.MAX_VALUE;
-
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            String nameReal = player.getName().toLowerCase(Locale.ENGLISH);
-            String nameCustom = player.getDisplayName().toLowerCase();
-
-            int length;
-            if (nameReal.startsWith(lowerName)) {
-                length = player.getName().length();
-            }
-            else if (nameCustom.startsWith(lowerName)) {
-                length = player.getDisplayName().length();
-            }
-            else continue;
-
-            int curDelta = Math.abs(length - lowerLength);
-            if (curDelta < delta) {
-                found = player;
-                delta = curDelta;
-            }
-
-            if (curDelta == 0) break;
-        }
-
-        return found;
+    public static Player getPlayer(@NotNull String name) {
+        return Bukkit.getServer().getPlayer(name);
+//
+//        if (!CoreConfig.RESPECT_PLAYER_DISPLAYNAME.get()) {
+//            return Bukkit.getServer().getPlayer(nameOrNick);
+//        }
+//
+//        Player found = Bukkit.getServer().getPlayerExact(nameOrNick);
+//        if (found != null) {
+//            return found;
+//        }
+//
+//        String lowerName = nameOrNick.toLowerCase();
+//        int lowerLength = lowerName.length();
+//        int delta = Integer.MAX_VALUE;
+//
+//        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+//            String nameReal = player.getName().toLowerCase(Locale.ENGLISH);
+//            String nameCustom = player.getDisplayName().toLowerCase();
+//
+//            int length;
+//            if (nameReal.startsWith(lowerName)) {
+//                length = player.getName().length();
+//            }
+//            else if (nameCustom.startsWith(lowerName)) {
+//                length = player.getDisplayName().length();
+//            }
+//            else continue;
+//
+//            int curDelta = Math.abs(length - lowerLength);
+//            if (curDelta < delta) {
+//                found = player;
+//                delta = curDelta;
+//            }
+//
+//            if (curDelta == 0) break;
+//        }
+//
+//        return found;
     }
 
     public static boolean isBedrock(@NotNull Player player) {
@@ -163,11 +174,11 @@ public class Players {
             sender = player;
         }
 
-        command = Placeholders.forPlayer(player).apply(command).trim();
+        command = Placeholders.forPlayerWithPAPI(player).apply(command).trim();
 
-        if (Plugins.hasPlaceholderAPI()) {
-            command = PlaceholderAPI.setPlaceholders(player, command);
-        }
+//        if (Plugins.hasPlaceholderAPI()) {
+//            command = PlaceholderAPI.setPlaceholders(player, command);
+//        }
         Bukkit.dispatchCommand(sender, command);
     }
 
@@ -258,19 +269,19 @@ public class Players {
         }
     }
 
-    public static void addItem(@NotNull Player player, @NotNull ItemStack item2, int amount) {
-        if (amount <= 0 || item2.getType().isAir()) return;
+    public static void addItem(@NotNull Player player, @NotNull ItemStack itemStack, int amount) {
+        if (amount <= 0 || itemStack.getType().isAir()) return;
 
         World world = player.getWorld();
-        ItemStack item = new ItemStack(item2);
+        ItemStack split = new ItemStack(itemStack);
 
-        int realAmount = Math.min(item.getMaxStackSize(), amount);
-        item.setAmount(realAmount);
-        player.getInventory().addItem(item).values().forEach(left -> {
+        int realAmount = Math.min(split.getMaxStackSize(), amount);
+        split.setAmount(realAmount);
+        player.getInventory().addItem(split).values().forEach(left -> {
             world.dropItem(player.getLocation(), left);
         });
 
         amount -= realAmount;
-        if (amount > 0) addItem(player, item2, amount);
+        if (amount > 0) addItem(player, itemStack, amount);
     }
 }

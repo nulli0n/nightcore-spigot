@@ -69,6 +69,7 @@ public class CommandManager extends SimpleManager<NightPlugin> {
     }
 
     @NotNull
+    @Deprecated
     public Set<NightPluginCommand> getCommands() {
         return this.commands;
     }
@@ -79,6 +80,7 @@ public class CommandManager extends SimpleManager<NightPlugin> {
     }
 
     @NotNull
+    @Deprecated
     public BaseCommand getMainCommand() {
         return this.mainCommand;
     }
@@ -102,6 +104,7 @@ public class CommandManager extends SimpleManager<NightPlugin> {
             .findFirst().orElse(null);
     }
 
+    @Deprecated
     public void registerCommand(@NotNull NightPluginCommand command) {
         if (this.commands.add(command)) {
             CommandUtil.register(this.plugin, command);
@@ -116,6 +119,7 @@ public class CommandManager extends SimpleManager<NightPlugin> {
         return false;
     }
 
+    @Deprecated
     public boolean unregisterCommand(@NotNull NightPluginCommand command) {
         if (this.commands.remove(command)) {
             return CommandUtil.unregister(command.getAliases()[0]);

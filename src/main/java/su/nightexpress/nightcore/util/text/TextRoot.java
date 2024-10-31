@@ -103,6 +103,7 @@ public class TextRoot {
     }
 
     @NotNull
+    @Deprecated
     public TextRoot replace(@NotNull String what, @NotNull Object object) {
         return this.replace(str -> str.replace(what, String.valueOf(object)));
     }

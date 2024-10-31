@@ -11,8 +11,8 @@ import java.util.function.Predicate;
 
 public class ItemOptions {
 
-    private Predicate<MenuViewer> visibilityPolicy;
-    private Predicate<MenuViewer> weakPolicy;
+    private Predicate<MenuViewer>             visibilityPolicy;
+    private Predicate<MenuViewer>             weakPolicy;
     private BiConsumer<MenuViewer, ItemStack> displayModifier;
 
     public ItemOptions() {

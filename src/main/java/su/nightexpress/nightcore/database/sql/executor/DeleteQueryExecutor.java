@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 public final class DeleteQueryExecutor extends SQLExecutor<Void> {
 
     private final List<SQLCondition> wheres;

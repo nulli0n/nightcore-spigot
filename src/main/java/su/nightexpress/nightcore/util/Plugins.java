@@ -6,39 +6,55 @@ import su.nightexpress.nightcore.NightCore;
 
 public class Plugins {
 
-    public static final NightCore CORE = NightCore.getPlugin(NightCore.class);
-
     public static final String VAULT           = "Vault";
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
     public static final String FLOODGATE       = "floodgate";
 
-    private static final boolean HAS_PLACEHOLDER_API = isInstalled(PLACEHOLDER_API);
-    private static final boolean HAS_VAULT           = isInstalled(VAULT);
-    private static final boolean HAS_FLOODGATE       = isInstalled(FLOODGATE);
+    private static boolean hasPlaceholderAPI;
+    private static boolean hasVault;
+    private static boolean hasFloodgate;
+
+    private static NightCore core;
+
+    public static void load(@NotNull NightCore nightCore) {
+        core = nightCore;
+    }
+
+    public static void detectPlugins() {
+        hasPlaceholderAPI = isInstalled(PLACEHOLDER_API);
+        hasVault = isInstalled(VAULT);
+        hasFloodgate = isInstalled(FLOODGATE);
+    }
+
+    @NotNull
+    public static NightCore getCore() {
+        return core;
+    }
 
     public static boolean isInstalled(@NotNull String pluginName) {
-        Plugin plugin = CORE.getPluginManager().getPlugin(pluginName);
+        Plugin plugin = core.getPluginManager().getPlugin(pluginName);
         return plugin != null;
     }
 
     public static boolean isLoaded(@NotNull String pluginName) {
-        Plugin plugin = CORE.getPluginManager().getPlugin(pluginName);
+        Plugin plugin = core.getPluginManager().getPlugin(pluginName);
         return plugin != null && plugin.isEnabled();
     }
 
+    @Deprecated
     public static boolean isSpigot() {
-        return CORE.getServer().getVersion().contains("Spigot");
+        return Version.isSpigot();
     }
 
     public static boolean hasPlaceholderAPI() {
-        return HAS_PLACEHOLDER_API;
+        return hasPlaceholderAPI;
     }
 
     public static boolean hasVault() {
-        return HAS_VAULT;
+        return hasVault;
     }
 
     public static boolean hasFloodgate() {
-        return HAS_FLOODGATE;
+        return hasFloodgate;
     }
 }

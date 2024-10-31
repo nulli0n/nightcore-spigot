@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.util;
 import java.util.Objects;
 import java.util.function.Function;
 
+@Deprecated
 public interface TriFunction<T, U, V, R> {
 
     R apply(T t, U u, V v);

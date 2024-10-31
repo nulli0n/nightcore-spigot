@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.database.sql;
 
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class SQLCondition {
 
     private final SQLValue value;

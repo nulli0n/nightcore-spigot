@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Deprecated
 public final class AlterTableExecutor extends SQLExecutor<Void> {
 
     private final DatabaseType   databaseType;

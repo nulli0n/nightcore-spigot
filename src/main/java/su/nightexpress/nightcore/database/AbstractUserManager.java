@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@Deprecated
 public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extends DataUser> extends AbstractManager<P> {
 
     private final UserdataConfig config;
@@ -34,7 +35,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     @Override
     protected void onLoad() {
         this.addListener(new UserListener<>(this.plugin));
-        this.addTask(this.plugin.createAsyncTask(this::saveScheduled).setTicksInterval(this.config.getScheduledSaveInterval()));
+        this.addTask(this.plugin.createAsyncTask(this::saveScheduled).setTicksInterval(this.config.getSaveInterval()));
     }
 
     @Override
@@ -74,7 +75,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
 
         users.forEach(user -> {
             user.cancelAutoSave(); // Reset autosave timestamp.
-            user.setNextSyncIn(this.config.getScheduledSaveSyncPause()); // Unlock synchronization only when all data was pushed to the database.
+            user.setNextSyncIn(this.config.getSaveSyncPause()); // Unlock synchronization only when all data was pushed to the database.
         });
 
         this.scheduledSaves.values().removeAll(users);
@@ -99,10 +100,10 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
         if (Players.isReal(player)) {
             user = this.getUserData(uuid);
             if (user != null) {
-                if (CoreConfig.USER_DEBUG_ENABLED.get()) {
-                    new Throwable().printStackTrace();
-                    this.plugin.warn("Main thread user data load for '" + uuid + "' aka '" + player.getName() + "'.");
-                }
+//                if (CoreConfig.USER_DEBUG_ENABLED.get()) {
+//                    new Throwable().printStackTrace();
+//                    this.plugin.warn("Main thread user data load for '" + uuid + "' aka '" + player.getName() + "'.");
+//                }
                 return user;
             }
         }
@@ -253,7 +254,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     }
 
     public void scheduleSave(@NotNull U user) {
-        user.setAutoSaveIn(this.config.getScheduledSaveDelay());
+        user.setAutoSaveIn(this.config.getSaveDelay());
         user.cancelSynchronization();
         this.scheduledSaves.put(user.getId(), user);
     }

@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCore;
-import su.nightexpress.nightcore.util.random.Rnd;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,11 +19,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class EntityUtil {
 
-    public static final EquipmentSlot[] EQUIPMENT_SLOTS = {EquipmentSlot.HAND, EquipmentSlot.OFF_HAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+    public static final EquipmentSlot[] EQUIPMENT_SLOTS = {
+        EquipmentSlot.HAND, EquipmentSlot.OFF_HAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
+    };
 
     private static AtomicInteger entityCounter;
 
-    public static boolean setupEntityCounter(@NotNull NightCore core) {
+    public static boolean loadEntityCounter(@NotNull NightCore core) {
         Class<?> entityClass = Reflex.getClass("net.minecraft.world.entity", "Entity");
         if (entityClass == null) {
             core.error("Could not find NMS Entity class!");
@@ -54,7 +55,7 @@ public class EntityUtil {
     }
 
     public static int nextEntityId() {
-        return entityCounter == null ? Rnd.nextInt(9999) : entityCounter.incrementAndGet();
+        return entityCounter.incrementAndGet();
     }
 
     public static double getAttribute(@NotNull LivingEntity entity, @NotNull Attribute attribute) {

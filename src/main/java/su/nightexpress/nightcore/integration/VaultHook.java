@@ -3,14 +3,13 @@ package su.nightexpress.nightcore.integration;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.Plugins;
+import su.nightexpress.nightcore.NightCore;
 
 import java.util.Collections;
 import java.util.Set;
@@ -19,11 +18,14 @@ import java.util.stream.Stream;
 
 public class VaultHook {
 
+    private static NightCore  core;
     private static Economy    economy;
     private static Permission permission;
     private static Chat       chat;
 
-    public static void setup() {
+    public static void load(@NotNull NightCore core) {
+        VaultHook.core = core;
+
         setPermission();
         setEconomy();
         setChat();
@@ -33,32 +35,33 @@ public class VaultHook {
         economy = null;
         permission = null;
         chat = null;
+        core = null;
     }
 
     @Nullable
     private static <T> T getProvider(@NotNull Class<T> clazz) {
-        RegisteredServiceProvider<T> provider = Bukkit.getServer().getServicesManager().getRegistration(clazz);
+        RegisteredServiceProvider<T> provider = core.getServer().getServicesManager().getRegistration(clazz);
         return provider == null ? null : provider.getProvider();
     }
 
     private static void setPermission() {
         permission = getProvider(Permission.class);
         if (permission != null) {
-            Plugins.CORE.info("Found permissions provider: " + permission.getName());
+            core.info("Found permissions provider: " + permission.getName());
         }
     }
 
     private static void setEconomy() {
         economy = getProvider(Economy.class);
         if (economy != null) {
-            Plugins.CORE.info("Found economy provider: " + economy.getName());
+            core.info("Found economy provider: " + economy.getName());
         }
     }
 
     private static void setChat() {
         chat = getProvider(Chat.class);
         if (chat != null) {
-            Plugins.CORE.info("Found chat provider: " + chat.getName());
+            core.info("Found chat provider: " + chat.getName());
         }
     }
 
@@ -77,7 +80,7 @@ public class VaultHook {
     }
 
     public static boolean hasPermissions() {
-        return getPermissions() != null;
+        return permission != null;
     }
 
     @Nullable
@@ -86,7 +89,7 @@ public class VaultHook {
     }
 
     public static boolean hasChat() {
-        return getChat() != null;
+        return chat != null;
     }
 
     @Nullable
@@ -95,7 +98,7 @@ public class VaultHook {
     }
 
     public static boolean hasEconomy() {
-        return getEconomy() != null;
+        return economy != null;
     }
 
     @Nullable
@@ -137,26 +140,46 @@ public class VaultHook {
     }
 
     public static double getBalance(@NotNull Player player) {
-        return economy.getBalance(player);
+        return getBalance((OfflinePlayer) player);
     }
 
     public static double getBalance(@NotNull OfflinePlayer player) {
         return economy.getBalance(player);
     }
 
+    @Deprecated
     public static boolean addMoney(@NotNull Player player, double amount) {
-        return addMoney((OfflinePlayer) player, amount);
+        return deposit((OfflinePlayer) player, amount);
     }
 
+    @Deprecated
     public static boolean addMoney(@NotNull OfflinePlayer player, double amount) {
-        return economy.depositPlayer(player, amount).transactionSuccess();
+        return deposit(player, amount);
     }
 
+    public static boolean deposit(@NotNull Player player, double amount) {
+        return deposit((OfflinePlayer) player, amount);
+    }
+
+    public static boolean deposit(@NotNull OfflinePlayer player, double amount) {
+        return economy.depositPlayer(player, Math.abs(amount)).transactionSuccess();
+    }
+
+    @Deprecated
     public static boolean takeMoney(@NotNull Player player, double amount) {
-        return takeMoney((OfflinePlayer) player, amount);
+        return withdraw((OfflinePlayer) player, amount);
     }
 
+    @Deprecated
     public static boolean takeMoney(@NotNull OfflinePlayer player, double amount) {
+        return withdraw(player, Math.abs(amount));
+    }
+
+    public static boolean withdraw(@NotNull Player player, double amount) {
+        return withdraw((OfflinePlayer) player, amount);
+    }
+
+    public static boolean withdraw(@NotNull OfflinePlayer player, double amount) {
         return economy.withdrawPlayer(player, Math.abs(amount)).transactionSuccess();
     }
 }

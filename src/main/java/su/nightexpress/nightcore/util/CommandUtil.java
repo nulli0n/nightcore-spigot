@@ -25,6 +25,7 @@ public class CommandUtil {
         return (SimpleCommandMap) Reflex.getFieldValue(Bukkit.getServer(), FIELD_COMMAND_MAP);
     }
 
+    @Deprecated
     public static void register(@NotNull Plugin plugin, @NotNull NightPluginCommand command) {
         WrappedCommand wrappedCommand = new WrappedCommand(plugin, command);
         if (COMMAND_MAP.register(plugin.getName(), wrappedCommand)) {

@@ -5,6 +5,7 @@ import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.database.AbstractConnector;
 import su.nightexpress.nightcore.database.DatabaseConfig;
 
+@Deprecated
 public class SQLiteConnector extends AbstractConnector {
 
     public SQLiteConnector(@NotNull NightCorePlugin plugin, @NotNull DatabaseConfig config) {

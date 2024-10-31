@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.util;
 import org.bukkit.Color;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderEntry;
 import su.nightexpress.nightcore.util.random.Rnd;
 import su.nightexpress.nightcore.util.regex.TimedMatcher;
 
@@ -30,6 +31,7 @@ public class StringUtil {
     }
 
     @NotNull
+    @Deprecated
     public static String replaceEach(@NotNull String text, @NotNull List<Pair<String, Supplier<String>>> replacements) {
         if (text.isEmpty() || replacements.isEmpty()) {
             return text;
@@ -103,12 +105,86 @@ public class StringUtil {
         return buf.toString();
     }
 
+    @NotNull
+    public static <T> String replaceEach(@NotNull String text, @NotNull List<PlaceholderEntry<T>> replacements, @NotNull T source) {
+        if (text.isEmpty() || replacements.isEmpty()) {
+            return text;
+        }
+
+        final int searchLength = replacements.size();
+        // keep track of which still have matches
+        final boolean[] noMoreMatchesForReplIndex = new boolean[searchLength];
+
+        // index on index that the match was found
+        int textIndex = -1;
+        int replaceIndex = -1;
+        int tempIndex;
+
+        // index of replace array that will replace the search string found
+        for (int i = 0; i < searchLength; i++) {
+            if (noMoreMatchesForReplIndex[i]) {
+                continue;
+            }
+            tempIndex = text.indexOf(replacements.get(i).getKey());
+
+            // see if we need to keep searching for this
+            if (tempIndex == -1) {
+                noMoreMatchesForReplIndex[i] = true;
+            }
+            else if (textIndex == -1 || tempIndex < textIndex) {
+                textIndex = tempIndex;
+                replaceIndex = i;
+            }
+        }
+
+        // no search strings found, we are done
+        if (textIndex == -1) {
+            return text;
+        }
+
+        int start = 0;
+        final StringBuilder buf = new StringBuilder();
+        while (textIndex != -1) {
+            for (int i = start; i < textIndex; i++) {
+                buf.append(text.charAt(i));
+            }
+            buf.append(replacements.get(replaceIndex).get(source));
+
+            start = textIndex + replacements.get(replaceIndex).getKey().length();
+
+            textIndex = -1;
+            replaceIndex = -1;
+            // find the next earliest match
+            for (int i = 0; i < searchLength; i++) {
+                if (noMoreMatchesForReplIndex[i]) {
+                    continue;
+                }
+                tempIndex = text.indexOf(replacements.get(i).getKey(), start);
+
+                // see if we need to keep searching for this
+                if (tempIndex == -1) {
+                    noMoreMatchesForReplIndex[i] = true;
+                }
+                else if (textIndex == -1 || tempIndex < textIndex) {
+                    textIndex = tempIndex;
+                    replaceIndex = i;
+                }
+            }
+        }
+
+        final int textLength = text.length();
+        for (int i = start; i < textLength; i++) {
+            buf.append(text.charAt(i));
+        }
+        return buf.toString();
+    }
+
     public static String replacePlaceholders(@NotNull String string, @NotNull Map<String, Supplier<String>> placeholders) {
         if (string.isBlank()) return string;
 
         StringBuilder builder = new StringBuilder();
 
-        char[] chars = string.toCharArray();
+        //char[] chars = string.toCharArray();
         int length = string.length();
         //int index = 0;
         for (int index = 0; index < length; index++) {
@@ -132,29 +208,6 @@ public class StringUtil {
 
         return builder.toString();
     }
-
-    /*@Nullable
-    public static String parseQuotedContent(@NotNull String string) {
-        char quote = string.charAt(0);
-        if (quote != '\'' && quote != '"') return null;
-        if (string.length() < 3) return null;
-
-        int indexEnd = -1;
-        for (int index = 1; index < string.length(); index++) {
-            char letter = string.charAt(index);
-            if (letter == '\\') {
-                index += 2;
-                continue;
-            }
-            if (letter == quote) {
-                indexEnd = index;
-                break;
-            }
-        }
-        if (indexEnd == -1) return null;
-
-        return string.substring(1, indexEnd);
-    }*/
 
     @Nullable
     public static String parseQuotedContent(@NotNull String string) {
@@ -197,13 +250,13 @@ public class StringUtil {
     @NotNull
     public static Color getColor(@NotNull String str) {
         String[] rgb = str.split(",");
-        int red = NumberUtil.getInteger(rgb[0], 0);
+        int red = NumberUtil.getIntegerAbs(rgb[0]);
         if (red < 0) red = Rnd.get(255);
 
-        int green = rgb.length >= 2 ? NumberUtil.getInteger(rgb[1], 0) : 0;
+        int green = rgb.length >= 2 ? NumberUtil.getIntegerAbs(rgb[1]) : 0;
         if (green < 0) green = Rnd.get(255);
 
-        int blue = rgb.length >= 3 ? NumberUtil.getInteger(rgb[2], 0) : 0;
+        int blue = rgb.length >= 3 ? NumberUtil.getIntegerAbs(rgb[2]) : 0;
         if (blue < 0) blue = Rnd.get(255);
 
         return Color.fromRGB(red, green, blue);

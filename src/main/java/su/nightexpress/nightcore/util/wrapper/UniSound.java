@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.StringUtil;
 
+@Deprecated
 public class UniSound {
 
     private final String soundName;

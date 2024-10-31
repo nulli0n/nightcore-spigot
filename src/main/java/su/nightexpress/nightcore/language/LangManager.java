@@ -90,8 +90,8 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
     public String getEnum(@NotNull Enum<?> entry) {
         String path = entry.getDeclaringClass().getSimpleName() + "." + entry.name();
         String locEnum = this.config.getString(path);
-        if (locEnum == null && !this.plugin.isEngine()) {
-            return Plugins.CORE.getLangManager().getEnum(entry);
+        if (locEnum == null && Plugins.getCore() != plugin) {
+            return Plugins.getCore().getLangManager().getEnum(entry);
         }
         return locEnum == null ? StringUtil.capitalizeFully(entry.name()) : locEnum;
     }

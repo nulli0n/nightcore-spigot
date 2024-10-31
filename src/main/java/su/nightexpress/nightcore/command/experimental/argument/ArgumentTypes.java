@@ -9,30 +9,36 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.experimental.builder.ArgumentBuilder;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.util.BukkitThing;
-import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Players;
 
 public class ArgumentTypes {
 
-    public static final ArgumentParser<String>           STRING         = (string, context) -> string;
-    public static final ArgumentParser<Boolean>          BOOLEAN        = (string, context) -> Boolean.parseBoolean(string);
-    public static final ArgumentParser<Integer>          INTEGER        = (string, context) -> NumberUtil.parseInteger(string).orElse(null);
-    public static final ArgumentParser<Integer>          INTEGER_ABS    = (string, context) -> NumberUtil.parseInteger(string).map(Math::abs).orElse(null);
-    public static final ArgumentParser<Double>           DOUBLE         = (string, context) -> NumberUtil.parseDouble(string).orElse(null);
-    public static final ArgumentParser<Double>           DOUBLE_ABS     = (string, context) -> NumberUtil.parseDouble(string).map(Math::abs).orElse(null);
-    public static final ArgumentParser<Player>           PLAYER         = (string, context) -> Players.getPlayer(string);
-    public static final ArgumentParser<World>            WORLD          = (string, context) -> Bukkit.getWorld(string);
-    public static final ArgumentParser<Material>         MATERIAL       = (string, context) -> BukkitThing.getMaterial(string);
-    public static final ArgumentParser<Material>         ITEM_MATERIAL  = (string, context) -> {
+    public static final ArgumentParser<String>   STRING              = (string, context) -> string;
+    public static final ArgumentParser<Boolean>  BOOLEAN             = (string, context) -> Boolean.parseBoolean(string);
+    public static final ArgumentParser<Integer>  INTEGER             = (string, context) -> NumberUtil.parseInteger(string).orElse(null);
+    public static final ArgumentParser<Integer>  INTEGER_ABS         = (string, context) -> NumberUtil.parseInteger(string).map(Math::abs).orElse(null);
+    public static final ArgumentParser<Integer>  INTEGER_COMPACT     = (string, context) -> NumberUtil.parseIntCompact(string).orElse(null);
+    public static final ArgumentParser<Integer>  INTEGER_COMPACT_ABS = (string, context) -> NumberUtil.parseIntCompact(string).map(Math::abs).orElse(null);
+    public static final ArgumentParser<Double>   DOUBLE              = (string, context) -> NumberUtil.parseDouble(string).orElse(null);
+    public static final ArgumentParser<Double>   DOUBLE_ABS          = (string, context) -> NumberUtil.parseDouble(string).map(Math::abs).orElse(null);
+    public static final ArgumentParser<Double>   DOUBLE_COMPACT      = (string, context) -> NumberUtil.parseCompact(string).orElse(null);
+    public static final ArgumentParser<Double>   DOUBLE_COMPACT_ABS  = (string, context) -> NumberUtil.parseCompact(string).map(Math::abs).orElse(null);
+    public static final ArgumentParser<Player>   PLAYER              = (string, context) -> Players.getPlayer(string);
+    public static final ArgumentParser<World>    WORLD               = (string, context) -> Bukkit.getWorld(string);
+    public static final ArgumentParser<Material> MATERIAL            = (string, context) -> BukkitThing.getMaterial(string);
+
+    public static final ArgumentParser<Material> ITEM_MATERIAL = (string, context) -> {
         Material material = BukkitThing.getMaterial(string);
         return material == null || !material.isItem() ? null : material;
     };
-    public static final ArgumentParser<Material>         BLOCK_MATERIAL = (string, context) -> {
+
+    public static final ArgumentParser<Material> BLOCK_MATERIAL = (string, context) -> {
         Material material = BukkitThing.getMaterial(string);
         return material == null || !material.isBlock() ? null : material;
     };
-    public static final ArgumentParser<Enchantment>      ENCHANTMENT    = (string, context) -> BukkitThing.getEnchantment(string);
+
+    public static final ArgumentParser<Enchantment> ENCHANTMENT = (string, context) -> BukkitThing.getEnchantment(string);
     //public static final ArgumentParser<PotionEffectType> POTION_EFFECT  = BukkitThing::getPotionEffect;
     //public static final ArgumentParser<Attribute>        ATTRIBUTE      = BukkitThing::getAttribute;
 
@@ -48,28 +54,47 @@ public class ArgumentTypes {
 
     @NotNull
     public static ArgumentBuilder<Integer> integer(@NotNull String name) {
-        return CommandArgument.builder(name, INTEGER)
-            .localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC)
-            .customFailure(CoreLang.ERROR_COMMAND_INVALID_NUMBER_ARGUMENT);
+        return numeric(name, INTEGER);
     }
 
     @NotNull
     public static ArgumentBuilder<Integer> integerAbs(@NotNull String name) {
-        return CommandArgument.builder(name, INTEGER_ABS)
-            .localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC)
-            .customFailure(CoreLang.ERROR_COMMAND_INVALID_NUMBER_ARGUMENT);
+        return numeric(name, INTEGER_ABS);
+    }
+
+    @NotNull
+    public static ArgumentBuilder<Integer> integerCompact(@NotNull String name) {
+        return numeric(name, INTEGER_COMPACT);
+    }
+
+    @NotNull
+    public static ArgumentBuilder<Integer> integerCompactAbs(@NotNull String name) {
+        return numeric(name, INTEGER_COMPACT_ABS);
     }
 
     @NotNull
     public static ArgumentBuilder<Double> decimal(@NotNull String name) {
-        return CommandArgument.builder(name, DOUBLE)
-            .localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC)
-            .customFailure(CoreLang.ERROR_COMMAND_INVALID_NUMBER_ARGUMENT);
+        return numeric(name, DOUBLE);
     }
 
     @NotNull
     public static ArgumentBuilder<Double> decimalAbs(@NotNull String name) {
-        return CommandArgument.builder(name, DOUBLE_ABS)
+        return numeric(name, DOUBLE_ABS);
+    }
+
+    @NotNull
+    public static ArgumentBuilder<Double> decimalCompact(@NotNull String name) {
+        return numeric(name, DOUBLE_COMPACT);
+    }
+
+    @NotNull
+    public static ArgumentBuilder<Double> decimalCompactAbs(@NotNull String name) {
+        return numeric(name, DOUBLE_COMPACT_ABS);
+    }
+
+    @NotNull
+    private static <T extends Number> ArgumentBuilder<T> numeric(@NotNull String name, @NotNull ArgumentParser<T> parser) {
+        return CommandArgument.builder(name, parser)
             .localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC)
             .customFailure(CoreLang.ERROR_COMMAND_INVALID_NUMBER_ARGUMENT);
     }
@@ -94,7 +119,7 @@ public class ArgumentTypes {
         return CommandArgument.builder(name, WORLD)
             .localized(CoreLang.COMMAND_ARGUMENT_NAME_WORLD)
             .customFailure(CoreLang.ERROR_COMMAND_INVALID_WORLD_ARGUMENT)
-            .withSamples(tabContext -> Lists.worldNames());
+            .withSamples(tabContext -> BukkitThing.worldNames());
     }
 
     @NotNull

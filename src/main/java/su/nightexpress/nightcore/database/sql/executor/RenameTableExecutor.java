@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.database.AbstractConnector;
 import su.nightexpress.nightcore.database.sql.SQLExecutor;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 
+@Deprecated
 public final class RenameTableExecutor extends SQLExecutor<Void> {
 
     private final DatabaseType databaseType;

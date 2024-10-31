@@ -15,6 +15,7 @@ import java.util.Objects;
 public class LocationUtil {
 
     @Nullable
+    @Deprecated
     public static String serialize(@NotNull Location location) {
         World world = location.getWorld();
         if (world == null) return null;
@@ -23,18 +24,20 @@ public class LocationUtil {
     }
 
     @NotNull
+    @Deprecated
     public static List<String> serialize(@NotNull Collection<Location> list) {
         return new ArrayList<>(list.stream().map(LocationUtil::serialize).filter(Objects::nonNull).toList());
     }
 
     @Nullable
+    @Deprecated
     public static Location deserialize(@NotNull String raw) {
         String[] split = raw.split(",");
         if (split.length != 6) return null;
 
         World world = Bukkit.getWorld(split[5]);
         if (world == null) {
-            Plugins.CORE.error("Invalid/Unloaded world for: '" + raw + "' location!");
+            Plugins.getCore().error("Invalid/Unloaded world for: '" + raw + "' location!");
             return null;
         }
 
@@ -48,6 +51,7 @@ public class LocationUtil {
     }
 
     @NotNull
+    @Deprecated
     public static List<Location> deserialize(@NotNull Collection<String> list) {
         return new ArrayList<>(list.stream().map(LocationUtil::deserialize).filter(Objects::nonNull).toList());
     }

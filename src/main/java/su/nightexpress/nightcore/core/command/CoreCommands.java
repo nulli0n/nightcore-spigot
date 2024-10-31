@@ -6,31 +6,41 @@ import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ArgumentTypes;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
+import su.nightexpress.nightcore.command.experimental.impl.ReloadCommand;
 import su.nightexpress.nightcore.command.experimental.node.ChainedNode;
 import su.nightexpress.nightcore.command.experimental.node.DirectNode;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.core.CorePerms;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.util.Colorizer;
+import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
+import static su.nightexpress.nightcore.util.Placeholders.TAG_LINE_BREAK;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
-import static su.nightexpress.nightcore.util.Placeholders.*;
 
-public class CheckPermCommand {
+public class CoreCommands {
+
+    private static final String CMD_CHECKPERM = "checkperm";
 
     private static final String ARG_PLAYER = "player";
 
-    public static void inject(@NotNull NightCore plugin, @NotNull ChainedNode node) {
-        node.addChildren(DirectNode.builder(plugin, "checkperm")
-            .permission(CorePerms.COMMAND_CHECK_PERM)
-            .description(CoreLang.COMMAND_CHECKPERM_DESC)
-            .withArgument(ArgumentTypes.player(ARG_PLAYER).required())
-            .executes(CheckPermCommand::execute)
-        );
+    public static void load(@NotNull NightCore core) {
+        ChainedNode root = core.getRootNode();
+
+        if (Plugins.hasVault()) {
+            root.addChildren(DirectNode.builder(core, CMD_CHECKPERM)
+                .permission(CorePerms.COMMAND_CHECK_PERM)
+                .description(CoreLang.COMMAND_CHECKPERM_DESC)
+                .withArgument(ArgumentTypes.player(ARG_PLAYER).required())
+                .executes(CoreCommands::checkPermissions)
+            );
+        }
+
+        root.addChildren(ReloadCommand.builder(core, CorePerms.COMMAND_RELOAD));
     }
 
-    public static boolean execute(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+    private static boolean checkPermissions(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         Player player = arguments.getPlayerArgument(ARG_PLAYER);
         String builder =
             BOLD.enclose(LIGHT_YELLOW.enclose("Permissions report for ") + LIGHT_ORANGE.enclose(player.getName() + ":")) +

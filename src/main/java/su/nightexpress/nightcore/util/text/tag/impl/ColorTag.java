@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.SimpleTag;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 
@@ -17,7 +18,7 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
     }
 
     public ColorTag(@NotNull String name, @NotNull String[] aliases, @NotNull String hex) {
-        this(name, aliases, Color.decode(hex));
+        this(name, aliases, TagUtils.colorFromHexString(hex));
     }
 
     public ColorTag(@NotNull Color color) {
@@ -25,7 +26,7 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
     }
 
     public ColorTag(@NotNull Color color, @NotNull String[] aliases) {
-        this(Integer.toHexString(color.getRGB()).substring(2), aliases, color);
+        this(TagUtils.colorToHexString(color).substring(1), aliases, color);
     }
 
     public ColorTag(@NotNull String name, @NotNull Color color) {
@@ -45,5 +46,10 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
     @Override
     public void decorate(@NotNull BaseComponent component) {
         component.setColor(ChatColor.of(this.getColor()));
+    }
+
+    @NotNull
+    public String toHexString() {
+        return TagUtils.colorToHexString(this.color);
     }
 }

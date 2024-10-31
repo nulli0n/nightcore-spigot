@@ -9,7 +9,6 @@ import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLQueries;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 import su.nightexpress.nightcore.database.sql.column.ColumnType;
-import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
 import su.nightexpress.nightcore.util.Lists;
@@ -21,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 
+@Deprecated
 public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U extends DataUser> extends AbstractDataHandler<P> {
 
     protected static final SQLColumn COLUMN_USER_ID           = SQLColumn.of("uuid", ColumnType.STRING);
@@ -83,8 +83,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
     }
 
     public boolean isNameIdCacheEnabled() {
-        // TODO NOT WORKING FOR MYSQL DUE TO LOCAL CACHE, OTHER SERVERS THINK THAT PLAYER NOT EXISTS
-        return CoreConfig.USER_CACHE_NAME_AND_UUID.get() && this.getDatabaseType() == DatabaseType.SQLITE;
+        return false;//CoreConfig.USER_CACHE_NAME_AND_UUID.get() && this.getDatabaseType() == DatabaseType.SQLITE;
     }
 
     public void cacheNamesAndIds() {

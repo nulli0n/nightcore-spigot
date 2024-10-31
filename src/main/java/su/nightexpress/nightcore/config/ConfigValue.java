@@ -3,15 +3,15 @@ package su.nightexpress.nightcore.config;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.TriFunction;
+import su.nightexpress.nightcore.util.bukkit.NightSound;
 import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 import su.nightexpress.nightcore.util.wrapper.UniParticle;
 import su.nightexpress.nightcore.util.wrapper.UniSound;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 public class ConfigValue<T> {
@@ -117,9 +117,18 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    @Deprecated
     public static ConfigValue<UniSound> create(@NotNull String path, @NotNull UniSound defaultValue, @Nullable String... description) {
         Reader<UniSound> reader = (cfg, path1, def) -> UniSound.read(cfg, path1);
         Writer<UniSound> writer = (cfg, path1, obj) -> obj.write(cfg, path1);
+
+        return create(path, reader, writer, defaultValue, description);
+    }
+
+    @NotNull
+    public static ConfigValue<NightSound> create(@NotNull String path, @NotNull NightSound defaultValue, @Nullable String... description) {
+        Reader<NightSound> reader = (cfg, readPath, def) -> NightSound.read(cfg, readPath);
+        Writer<NightSound> writer = (cfg, writePath, sound) -> sound.write(cfg, writePath);
 
         return create(path, reader, writer, defaultValue, description);
     }
@@ -170,6 +179,7 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    @Deprecated
     public static <K, V> ConfigValue<Map<K, V>> forMap(@NotNull String path,
                                                        @NotNull Function<String, K> keyFun,
                                                        @NotNull TriFunction<FileConfig, String, String, V> valFun,
@@ -180,6 +190,7 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    @Deprecated
     public static <K, V> ConfigValue<Map<K, V>> forMap(@NotNull String path,
                                                        @NotNull Function<String, K> keyFun,
                                                        @NotNull TriFunction<FileConfig, String, String, V> valFun,
@@ -190,6 +201,7 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    @Deprecated
     public static <K, V> ConfigValue<TreeMap<K, V>> forTreeMap(@NotNull String path,
                                                                @NotNull Function<String, K> keyFun,
                                                                @NotNull TriFunction<FileConfig, String, String, V> valFun,
@@ -199,6 +211,7 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    @Deprecated
     public static <K, V> ConfigValue<TreeMap<K, V>> forTreeMap(@NotNull String path,
                                                                @NotNull Function<String, K> keyFun,
                                                                @NotNull TriFunction<FileConfig, String, String, V> valFun,
@@ -208,6 +221,7 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    @Deprecated
     public static <K, V, M extends Map<K, V>> ConfigValue<M> forMap(@NotNull String path,
                                                                     @NotNull Function<String, K> keyFun,
                                                                     @NotNull TriFunction<FileConfig, String, String, V> valFun,
@@ -230,6 +244,68 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    public static <K, V extends Writeable> ConfigValue<Map<K, V>> forMap(@NotNull String path,
+                                                                         @NotNull Function<String, K> keyReadFun,
+                                                                         @NotNull Function<K, String> keyWriteFun,
+                                                                         @NotNull BiFunction<FileConfig, String, V> valReadFun,
+                                                                         //@NotNull Supplier<Map<K, V>> mapSupplier,
+                                                                         @NotNull Consumer<Map<K, V>> defaultValue,
+                                                                         @Nullable String... description) {
+        Reader<Map<K, V>> reader = (cfg, readPath, def) -> {
+            var map = new HashMap<K, V>();//mapSupplier.get();
+            for (String keyRaw : cfg.getSection(readPath)) {
+                K key = keyReadFun.apply(keyRaw);
+                V val = valReadFun.apply(cfg, readPath + "." + keyRaw);
+                if (key == null || val == null) continue;
+
+                map.put(key, val);
+            }
+            return map;
+        };
+
+        Writer<Map<K, V>> writer = (cfg, writePath, map) -> {
+            map.forEach((key, value) -> {
+                String keyRaw = keyWriteFun.apply(key);
+                value.write(cfg, writePath + "." + keyRaw);
+            });
+        };
+
+        // Linked map used only to preserve the order of default values when writing it in the config.
+        Map<K, V> defaultMap = new LinkedHashMap<>();
+        defaultValue.accept(defaultMap);
+
+        return create(path, reader, writer, defaultMap, description);
+    }
+
+//    @NotNull
+//    public static <K, V extends Writeable> ConfigValue<HashMap<K, V>> forHashMap(@NotNull String path,
+//                                                                                 @NotNull Function<String, K> keyReadFun,
+//                                                                                 @NotNull Function<K, String> keyWriteFun,
+//                                                                                 @NotNull BiFunction<FileConfig, String, V> valReadFun,
+//                                                                                 @NotNull Consumer<HashMap<K, V>> defaultValue,
+//                                                                                 @Nullable String... description) {
+//        return forMap(path, keyReadFun, keyWriteFun, valReadFun, HashMap::new, defaultValue, description);
+//    }
+
+    @NotNull
+    public static <V extends Writeable> ConfigValue<Map<String, V>> forMapById(@NotNull String path,
+                                                                               @NotNull BiFunction<FileConfig, String, V> valReadFun,
+                                                                               @NotNull Consumer<Map<String, V>> defaultValue,
+                                                                               @Nullable String... description) {
+        return forMap(path, String::toLowerCase, key -> key, valReadFun, defaultValue, description);
+    }
+
+    @NotNull
+    public static <E extends Enum<E>, V extends Writeable> ConfigValue<Map<E, V>> forMapByEnum(@NotNull String path,
+                                                                                               @NotNull Class<E> clazz,
+                                                                                               @NotNull BiFunction<FileConfig, String, V> valReadFun,
+                                                                                               @NotNull Consumer<Map<E, V>> defaultValue,
+                                                                                               @Nullable String... description) {
+        return forMap(path, str -> StringUtil.getEnum(str, clazz).orElse(null), Enum::name, valReadFun, defaultValue, description);
+    }
+
+    @NotNull
+    @Deprecated
     public static <V> ConfigValue<Map<String, V>> forMap(@NotNull String path,
                                                          @NotNull TriFunction<FileConfig, String, String, V> function,
                                                          @NotNull Writer<Map<String, V>> writer,
@@ -239,6 +315,7 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    @Deprecated
     public static <V> ConfigValue<Map<String, V>> forMap(@NotNull String path,
                                                          @NotNull TriFunction<FileConfig, String, String, V> function,
                                                          @NotNull Writer<Map<String, V>> writer,

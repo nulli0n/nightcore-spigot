@@ -17,6 +17,7 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
     protected final CommandExecutor executor;
     protected final TabCompleter    tabCompleter;
 
+    @Deprecated
     public WrappedCommand(@NotNull Plugin plugin, @NotNull NightPluginCommand command) {
         this(plugin, command, command, command.getAliases(), command.getDescription(), command.getUsage(), command.getPermission());
         //this.setPermission(command.getPermission());

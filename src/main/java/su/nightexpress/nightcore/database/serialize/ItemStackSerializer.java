@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.util.ItemNbt;
 
 import java.lang.reflect.Type;
 
+@Deprecated
 public class ItemStackSerializer implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
 
     @Override

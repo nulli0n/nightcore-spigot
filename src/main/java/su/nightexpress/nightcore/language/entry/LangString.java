@@ -6,7 +6,7 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
-public class LangString extends LangEntry<String> {
+public class LangString extends LangEntry {
 
     private String   string;
     private TextRoot message;
@@ -31,15 +31,14 @@ public class LangString extends LangEntry<String> {
     }
 
     @Override
-    @NotNull
-    public String load(@NotNull NightCorePlugin plugin) {
+    public void load(@NotNull NightCorePlugin plugin) {
         FileConfig config = plugin.getLang();
 
         this.write(config);
         String text = config.getString(this.getPath(), this.getPath());
         this.setString(text);
 
-        return this.getString();
+        //return this.getString();
     }
 
     @NotNull

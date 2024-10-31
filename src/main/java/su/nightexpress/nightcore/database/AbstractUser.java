@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.NightCorePlugin;
 
 import java.util.UUID;
 
+@Deprecated
 public abstract class AbstractUser<P extends NightCorePlugin> implements DataUser {
 
     protected final P plugin;

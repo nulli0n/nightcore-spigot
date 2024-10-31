@@ -150,7 +150,10 @@ public class FileConfig extends YamlConfiguration {
 
     @Override
     public void set(@NotNull String path, @Nullable Object value) {
-        if (value instanceof String str) {
+        if (value instanceof Writeable writeable) {
+            writeable.write(this, path);
+        }
+        else if (value instanceof String str) {
             value = Colorizer.plain(str);
         }
         else if (value instanceof Collection<?> collection) {
@@ -222,6 +225,7 @@ public class FileConfig extends YamlConfiguration {
 
     @Override
     @Nullable
+    @Deprecated
     public Location getLocation(@NotNull String path) {
         String raw = this.getString(path);
         return raw == null ? null : LocationUtil.deserialize(raw);
@@ -408,9 +412,6 @@ public class FileConfig extends YamlConfiguration {
         this.set(path + "Material", material.name());
         this.set(path + "Amount", item.getAmount() <= 1 ? null : item.getAmount());
         this.set(path + "SkinURL", ItemUtil.getHeadSkin(item));
-//        if (!this.contains(path + "SkinURL")) {
-//            this.set(path + "Head_Texture", ItemUtil.getSkullTexture(item));
-//        }
 
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;

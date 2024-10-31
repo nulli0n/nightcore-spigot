@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,12 +17,22 @@ import java.util.stream.StreamSupport;
 
 public class BukkitThing {
 
+    @NotNull
+    public static List<String> worldNames() {
+        return Bukkit.getServer().getWorlds().stream().map(WorldInfo::getName).toList();
+    }
+
     @Nullable
     public static <T extends Keyed> T fromRegistry(@NotNull Registry<T> registry, @NotNull String key) {
-        key = StringUtil.lowerCaseUnderscoreStrict(key);
+        key = StringUtil.lowerCaseUnderscore(key);
 
-        NamespacedKey namespacedKey = NamespacedKey.minecraft(key);
-        return registry.get(namespacedKey);
+        try {
+            NamespacedKey namespacedKey = NamespacedKey.minecraft(key);
+            return registry.get(namespacedKey);
+        }
+        catch (IllegalArgumentException exception) {
+            return null;
+        }
     }
 
     @NotNull
@@ -70,9 +81,6 @@ public class BukkitThing {
 
     @Nullable
     public static Enchantment getEnchantment(@NotNull String name) {
-        if (Version.isBehind(Version.V1_19_R3)) {
-            return Enchantment.getByKey(NamespacedKey.minecraft(StringUtil.lowerCaseUnderscoreStrict(name)));
-        }
         return fromRegistry(Registry.ENCHANTMENT, name);
     }
 

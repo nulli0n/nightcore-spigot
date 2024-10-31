@@ -5,6 +5,7 @@ import su.nightexpress.nightcore.database.AbstractUserDataHandler;
 import su.nightexpress.nightcore.database.AbstractUserManager;
 import su.nightexpress.nightcore.database.DataUser;
 
+@Deprecated
 public abstract class NightDataPlugin<U extends DataUser> extends NightPlugin {
 
     @Override

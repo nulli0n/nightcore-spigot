@@ -166,9 +166,10 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
                 if (clickType == null) continue;
 
                 List<String> commands = cfg.getStringList(path + ".Click_Commands." + sType);
+                if (commands.isEmpty()) continue;
+
                 commandMap.put(clickType, commands);
             }
-            commandMap.values().removeIf(List::isEmpty);
 
             ClickAction clickCommands = (viewer, event) -> {
                 List<String> commands = commandMap.getOrDefault(ClickType.from(event), Collections.emptyList());

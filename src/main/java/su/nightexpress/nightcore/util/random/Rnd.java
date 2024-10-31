@@ -1,7 +1,6 @@
 package su.nightexpress.nightcore.util.random;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.Pair;
 
 import java.util.*;
 
@@ -52,19 +51,36 @@ public class Rnd {
 
     @NotNull
     public static <T> T getByWeight(@NotNull Map<T, Double> itemsMap) {
-        List<Pair<T, Double>> items = itemsMap.entrySet().stream()
-            .filter(entry -> entry.getValue() > 0D)
-            .map(entry -> Pair.of(entry.getKey(), entry.getValue()))
-            .sorted(Comparator.comparing(Pair::getSecond))
-            .toList();
-        double totalWeight = items.stream().mapToDouble(Pair::getSecond).sum();
+//        List<Pair<T, Double>> items = itemsMap.entrySet().stream()
+//            .filter(entry -> entry.getValue() > 0D)
+//            .map(entry -> Pair.of(entry.getKey(), entry.getValue()))
+//            .sorted(Comparator.comparing(Pair::getSecond))
+//            .toList();
+//        double totalWeight = items.stream().mapToDouble(Pair::getSecond).sum();
+//
+//        int index = 0;
+//        for (double roll = nextDouble() * totalWeight; index < items.size() - 1; ++index) {
+//            roll -= items.get(index).getSecond();
+//            if (roll <= 0D) break;
+//        }
+//        return items.get(index).getFirst();
+        List<WeightedItem<T>> items = new ArrayList<>();
+        itemsMap.forEach((item, weight) -> items.add(WeightedItem.of(item, weight)));
+        return getByWeight(items);
+    }
+
+    @NotNull
+    public static <T> T getByWeight(@NotNull List<WeightedItem<T>> items) {
+        items.sort(Comparator.comparing(WeightedItem::getWeight));
+        double totalWeight = items.stream().mapToDouble(WeightedItem::getWeight).sum();
 
         int index = 0;
         for (double roll = nextDouble() * totalWeight; index < items.size() - 1; ++index) {
-            roll -= items.get(index).getSecond();
+            roll -= items.get(index).getWeight();
             if (roll <= 0D) break;
         }
-        return items.get(index).getFirst();
+
+        return items.get(index).getItem();
     }
 
     public static boolean chance(int chance) {

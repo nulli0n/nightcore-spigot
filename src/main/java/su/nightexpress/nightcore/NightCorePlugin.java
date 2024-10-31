@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 public interface NightCorePlugin extends Plugin {
 
-    boolean isEngine();
+    //boolean isEngine();
 
     void enable();
 
@@ -24,6 +24,7 @@ public interface NightCorePlugin extends Plugin {
 
     void reload();
 
+    @Deprecated
     NightPluginCommand getBaseCommand();
 
     @Override
@@ -112,11 +113,13 @@ public interface NightCorePlugin extends Plugin {
     }
 
     @NotNull
+    @Deprecated
     default UniTask createTask(@NotNull Runnable runnable) {
         return new UniTask(this, runnable);
     }
 
     @NotNull
+    @Deprecated
     default UniTask createAsyncTask(@NotNull Runnable runnable) {
         return this.createTask(runnable).setAsync();
     }

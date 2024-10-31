@@ -9,6 +9,8 @@ import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.menu.MenuListener;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 
+import java.util.HashSet;
+
 public class CoreManager extends AbstractManager<NightCore> {
 
     public CoreManager(@NotNull NightCore plugin) {
@@ -21,21 +23,25 @@ public class CoreManager extends AbstractManager<NightCore> {
         this.addListener(new DialogListener(this.plugin));
         this.addListener(new MenuListener(this.plugin));
 
-        this.addTask(this.plugin.createTask(() -> {
-            AbstractMenu.PLAYER_MENUS.values().forEach(menu -> {
-                if (menu.getOptions().isReadyToRefresh()) {
-                    menu.flush();
-                    menu.getOptions().setLastAutoRefresh(System.currentTimeMillis());
-                }
-            });
-
-            Dialog.checkTimeOut();
-
-        }).setSecondsInterval(1));
+        this.addAsyncTask(this::tickDialogs, 1);
+        this.addTask(this::tickMenus, 1);
     }
 
     @Override
     protected void onShutdown() {
 
+    }
+
+    private void tickDialogs() {
+        Dialog.checkTimeOut();
+    }
+
+    private void tickMenus() {
+        new HashSet<>(AbstractMenu.PLAYER_MENUS.values()).forEach(menu -> {
+            if (menu.getOptions().isReadyToRefresh()) {
+                menu.flush();
+                menu.getOptions().setLastAutoRefresh(System.currentTimeMillis());
+            }
+        });
     }
 }

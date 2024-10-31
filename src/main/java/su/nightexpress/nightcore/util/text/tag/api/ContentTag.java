@@ -6,6 +6,5 @@ import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 
 public interface ContentTag {
 
-    @Nullable
-    Decorator parse(@NotNull String str);
+    @Nullable Decorator parse(@NotNull String str);
 }

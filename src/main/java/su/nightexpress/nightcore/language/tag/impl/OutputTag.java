@@ -40,9 +40,9 @@ public class OutputTag extends MessageTag {
         if (outputType == OutputType.TITLES) {
             int[] titleTimes = new int[3];
             if (split.length >= 4) {
-                titleTimes[0] = NumberUtil.getInteger(split[1]);
+                titleTimes[0] = NumberUtil.getIntegerAbs(split[1]);
                 titleTimes[1] = NumberUtil.getAnyInteger(split[2], -1);
-                titleTimes[2] = NumberUtil.getInteger(split[3]);
+                titleTimes[2] = NumberUtil.getIntegerAbs(split[3]);
             }
 
             if (titleTimes[1] < 0) titleTimes[1] = Short.MAX_VALUE;

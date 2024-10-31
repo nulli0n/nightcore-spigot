@@ -30,7 +30,7 @@ public class WrappedInput {
     }
 
     public int asInt(int def) {
-        return NumberUtil.getInteger(this.getTextRaw(), def);
+        return NumberUtil.getIntegerAbs(this.getTextRaw(), def);
     }
 
     public int asAnyInt(int def) {
@@ -42,7 +42,7 @@ public class WrappedInput {
     }
 
     public double asDouble(double def) {
-        return NumberUtil.getDouble(this.getTextRaw(), def);
+        return NumberUtil.getDoubleAbs(this.getTextRaw(), def);
     }
 
     @NotNull
@@ -53,7 +53,7 @@ public class WrappedInput {
     @NotNull
     public UniDouble asUniDouble(double min, double max) {
         String[] split = this.getTextRaw().split(" ");
-        return UniDouble.of(NumberUtil.getDouble(split[0], min), NumberUtil.getDouble(split.length >= 2 ? split[1] : split[0], max));
+        return UniDouble.of(NumberUtil.getDoubleAbs(split[0], min), NumberUtil.getDoubleAbs(split.length >= 2 ? split[1] : split[0], max));
     }
 
     @NotNull

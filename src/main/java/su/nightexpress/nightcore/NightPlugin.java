@@ -13,55 +13,40 @@ import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin {
+
+    protected List<Runnable> postLoaders;
 
     protected LangManager    langManager;
     protected CommandManager commandManager;
 
     protected FileConfig    config;
     protected PluginDetails details;
-    private   boolean       isEngine;
 
-    public final boolean isEngine() {
-        return this.isEngine;
+//    public final boolean isEngine() {
+//        return this == Plugins.getCore();
+//    }
+
+    private boolean isCore() {
+        return this instanceof NightCore;
     }
 
     @Override
     public void onEnable() {
-        long loadTook = System.currentTimeMillis();
-        this.isEngine = this instanceof NightCore;
-
-        if (!this.isEngine()) {
-            Plugins.CORE.addChildren(this);
-        }
-
-        Version version = Version.getCurrent();
-        if (version == Version.UNKNOWN) {
-            this.warn("=".repeat(35));
-            this.warn("WARNING: The plugin is not yet compatible with your server version!");
-            this.warn("Expect bugs and broken features.");
-            this.warn("ABSOLUTELY NO DISCORD SUPPORT WILL BE PROVIDED!");
-            this.warn("=".repeat(35));
-        }
-        else if (version.isDeprecated()) {
-            this.warn("=".repeat(35));
-            this.warn("WARNING: You're running an outdated server version (" + Version.getCurrent().getLocalized() + ")!");
-            this.warn("This version will no longer be supported in future relases.");
-            this.warn("Please upgrade your server to " + Lists.next(Version.getCurrent(), (Version::isSupported)).getLocalized() + ".");
-            this.warn("NO DISCORD SUPPORT WILL BE PROVIDED!");
-            this.warn("=".repeat(35));
-        }
-        else if (version.isDropped()) {
-            this.error("=".repeat(35));
-            this.error("ERROR: You're running an unsupported server version (" + Version.getCurrent().getLocalized() + ")!");
-            this.error("Please upgrade your server to " + Lists.next(Version.getCurrent(), (Version::isSupported)).getLocalized() + ".");
-            this.error("ABSOLUTELY NO DISCORD SUPPORT WILL BE PROVIDED!");
-            this.error("=".repeat(35));
+        Version.printCaution(this);
+        if (Version.getCurrent().isDropped()) {
             this.getPluginManager().disablePlugin(this);
             return;
         }
 
+        if (!this.isCore()) {
+            Plugins.getCore().addChildren(this);
+        }
+
+        long loadTook = System.currentTimeMillis();
         this.loadManagers();
         this.info("Plugin loaded in " + (System.currentTimeMillis() - loadTook) + " ms!");
     }
@@ -72,7 +57,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     public final void reload() {
-        if (this.isEngine()) {
+        if (this.isCore()) {
             this.setupConfig();
             this.setupLanguage();
             return;
@@ -80,17 +65,6 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.unloadManagers();
         this.loadManagers();
     }
-
-    /*@Override
-    public final void reloadConfig() {
-        this.getConfig().reload();
-        this.loadConfig();
-    }
-
-    public final void reloadLang() {
-        this.getLang().reload();
-        this.loadLang();
-    }*/
 
     @Override
     @NotNull
@@ -100,7 +74,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
     @NotNull
     public final FileConfig getLang() {
-        return this.getLangManager().getConfig();
+        return this.langManager.getConfig();
     }
 
     @NotNull
@@ -124,8 +98,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.config = FileConfig.loadOrExtract(this, "config.yml");
         this.details = PluginDetails.read(this);
 
-        if (this.getDetails().getConfigClass() != null) {
-            this.getConfig().initializeOptions(this.getDetails().getConfigClass());
+        if (this.details.getConfigClass() != null) {
+            this.config.initializeOptions(this.details.getConfigClass());
         }
     }
 
@@ -133,13 +107,13 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.langManager = new LangManager(this);
         this.langManager.setup();
 
-        if (this.getDetails().getLangClass() != null) {
-            this.getLangManager().loadEntries(this.getDetails().getLangClass());
+        if (this.details.getLangClass() != null) {
+            this.langManager.loadEntries(this.details.getLangClass());
         }
     }
 
     protected void setupPermissions() {
-        Class<?> clazz = this.getDetails().getPermissionsClass();
+        Class<?> clazz = this.details.getPermissionsClass();
         if (clazz == null) return;
 
         this.registerPermissions(clazz);
@@ -151,6 +125,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     protected void loadManagers() {
+        this.postLoaders = new ArrayList<>(); // Initialize a list for post-loading code.
+
         this.setupConfig();         // Load configuration.
         this.setupLanguage();       // Load language.
         this.setupPermissions();    // Register plugin permissions.
@@ -158,24 +134,41 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         this.enable();              // Load the plugin.
 
+        this.postLoad();            // Load some stuff that needs to be injected after the rest managers.
+
         this.getConfig().saveChanges();
         this.getLang().saveChanges();
     }
 
     protected void unloadManagers() {
-        this.getScheduler().cancelTasks(this); // Stop all plugin tasks.
+        this.getScheduler().cancelTasks(this);  // Stop all plugin tasks.
 
         this.disable();
 
-        AbstractMenu.clearAll(this); // Close all GUIs.
-        HandlerList.unregisterAll(this); // Unregister all plugin listeners.
+        AbstractMenu.clearAll(this);            // Close all GUIs.
+        HandlerList.unregisterAll(this);        // Unregister all plugin listeners.
 
-        this.getCommandManager().shutdown();
-        this.getLangManager().shutdown();
-        this.details = null; // Reset so it will use default ones on config read.
+        this.commandManager.shutdown();
+        this.langManager.shutdown();
+        this.details = null;                           // Reset so it will use default ones on config read.
+    }
+
+    protected void postLoad() {
+        this.debug("Inject post-loading code...");
+        this.postLoaders.forEach(Runnable::run);
+        this.postLoaders.clear();
+        this.postLoaders = null; // Prevent from adding post-load code during runtime.
+    }
+
+    public void onPostLoad(@NotNull Runnable runnable) {
+        if (this.postLoaders == null) {
+            throw new IllegalStateException("Can't inject post loading code during runtime.");
+        }
+        this.postLoaders.add(runnable);
     }
 
     @NotNull
+    @Deprecated
     public final NightPluginCommand getBaseCommand() {
         return this.getCommandManager().getMainCommand();
     }

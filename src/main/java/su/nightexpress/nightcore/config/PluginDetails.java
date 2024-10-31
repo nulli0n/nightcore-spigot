@@ -17,6 +17,7 @@ public class PluginDetails {
     private final String[] commandAliases;
     private final String   language;
 
+    @Deprecated
     private DatabaseConfig databaseConfig;
 
     private Class<?> configClass;
@@ -102,11 +103,13 @@ public class PluginDetails {
     }
 
     @Nullable
+    @Deprecated
     public DatabaseConfig getDatabaseConfig() {
         return databaseConfig;
     }
 
     @NotNull
+    @Deprecated
     public PluginDetails setDatabaseConfig(@Nullable DatabaseConfig databaseConfig) {
         this.databaseConfig = databaseConfig;
         return this;

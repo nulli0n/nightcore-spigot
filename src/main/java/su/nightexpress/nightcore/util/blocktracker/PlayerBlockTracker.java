@@ -25,7 +25,7 @@ public final class PlayerBlockTracker {
     public static void initialize() {
         if (listener == null) {
             initCurrentlyLoadedWorlds();
-            (listener = new TrackListener<>(Plugins.CORE)).registerListeners();
+            (listener = new TrackListener<>(Plugins.getCore())).registerListeners();
         }
     }
 

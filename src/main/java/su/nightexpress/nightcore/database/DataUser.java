@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+@Deprecated
 public interface DataUser {
 
     void onLoad();

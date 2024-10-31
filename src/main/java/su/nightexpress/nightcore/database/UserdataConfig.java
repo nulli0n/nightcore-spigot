@@ -5,23 +5,37 @@ import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 
+@Deprecated
 public class UserdataConfig {
 
-    private final long scheduledSaveInterval;
-    private final double scheduledSaveDelay;
-    private final int scheduledSaveSyncPause;
+    private final long cacheLifetime;
 
-    public UserdataConfig(long scheduledSaveInterval, double scheduledSaveDelay, int scheduledSaveSyncPause) {
-        this.scheduledSaveInterval = scheduledSaveInterval;
-        this.scheduledSaveDelay = scheduledSaveDelay;
-        this.scheduledSaveSyncPause = scheduledSaveSyncPause;
+    private final long   saveInterval;
+    private final double saveDelay;
+    private final int    saveSyncPause;
+
+    public UserdataConfig(long cacheLifetime, long saveInterval, double saveDelay, int saveSyncPause) {
+        this.cacheLifetime = cacheLifetime;
+        this.saveInterval = saveInterval;
+        this.saveDelay = saveDelay;
+        this.saveSyncPause = saveSyncPause;
     }
 
     @NotNull
     public static UserdataConfig read(@NotNull NightPlugin plugin) {
         FileConfig config = plugin.getConfig();
 
-        long scheduledSaveInterval = ConfigValue.create("Database.UserData.Scheduled_Save_Interval",
+        long cacheLifetime = ConfigValue.create("Database.UserData.Cache_LifeTime",
+            300L,
+            "Sets cache lifetime for player's data.",
+            "Data loaded for offline players and data of previously online players will be cached in the memory for that time.",
+            "When cache is expired, data have to be loaded from the database again.",
+            "[*] Set to 0 to disable data cache for offline players.",
+            "[*] Set to -1 for permanent data cache for offline players.",
+            "[Default is 300 (5 minutes)]"
+        ).read(config);
+
+        long saveInterval = ConfigValue.create("Database.UserData.Scheduled_Save_Interval",
             20L,
             "Sets how often (in ticks) plugin will attempt to save data of users marked to be saved.",
             "This will save only users that are 'ready' to save (see 'Scheduled_Save_Delay').",
@@ -30,7 +44,7 @@ public class UserdataConfig {
             "[Default is 20]"
         ).read(config);
 
-        double scheduledSaveDelay = ConfigValue.create("Database.UserData.Scheduled_Save_Delay",
+        double saveDelay = ConfigValue.create("Database.UserData.Scheduled_Save_Delay",
             1D,
             "Sets scheduled save delay (in seconds) for a user when marked to be saved.",
             "This means that a user will be saved X seconds later after being marked.",
@@ -46,7 +60,7 @@ public class UserdataConfig {
             "[Default is 1]"
         ).read(config);
 
-        int scheduledSaveSynchronizationPause = ConfigValue.create("Database.UserData.Scheduled_Save_Sync_Pause",
+        int saveSyncPause = ConfigValue.create("Database.UserData.Scheduled_Save_Sync_Pause",
             3,
             "Sets synchronization delay (in seconds) before the plugin can continue syncing data for a user after its scheduled save.",
             "When a user marked for saving has been saved, their synchronization will be unlocked but delayed for this value.",
@@ -55,27 +69,31 @@ public class UserdataConfig {
         ).read(config);
 
 
-        return new UserdataConfig(scheduledSaveInterval, scheduledSaveDelay, scheduledSaveSynchronizationPause);
+        return new UserdataConfig(cacheLifetime, saveInterval, saveDelay, saveSyncPause);
     }
 
-    public long getScheduledSaveInterval() {
-        return scheduledSaveInterval;
+    public long getCacheLifetime() {
+        return this.cacheLifetime;
     }
 
-    public double getScheduledSaveDelay() {
-        return scheduledSaveDelay;
+    public long getSaveInterval() {
+        return this.saveInterval;
     }
 
-    public int getScheduledSaveSyncPause() {
-        return scheduledSaveSyncPause;
+    public double getSaveDelay() {
+        return this.saveDelay;
+    }
+
+    public int getSaveSyncPause() {
+        return this.saveSyncPause;
     }
 
     @Override
     public String toString() {
         return "UserdataConfig{" +
-            "scheduledSaveInterval=" + scheduledSaveInterval +
-            ", scheduledSaveDelay=" + scheduledSaveDelay +
-            ", scheduledSaveSyncPause=" + scheduledSaveSyncPause +
+            "scheduledSaveInterval=" + saveInterval +
+            ", scheduledSaveDelay=" + saveDelay +
+            ", scheduledSaveSyncPause=" + saveSyncPause +
             '}';
     }
 }

@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.database.sql.column;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.database.DatabaseType;
 
+@Deprecated
 public interface ColumnFormer {
 
     ColumnFormer STRING = (storageType, length) -> {

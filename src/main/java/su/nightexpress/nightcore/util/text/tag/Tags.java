@@ -2,14 +2,20 @@ package su.nightexpress.nightcore.util.text.tag;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.NightCore;
+import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.impl.*;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Tags {
+
+    public static final String FILE_NAME = "colors.yml";
+    private static final String COLORS_PATH = "Colors";
 
     private static final Map<String, Tag> REGISTRY = new HashMap<>();
 
@@ -67,6 +73,30 @@ public class Tags {
 
         registerTags(Tags.GRADIENT, Tags.LINE_BREAK, Tags.FONT, Tags.HOVER, Tags.CLICK,
             Tags.RESET, Tags.HEX_COLOR, Tags.HEX_COLOR_SHORT, Tags.TRANSLATE);
+    }
+
+    public static void loadColorsFromFile(@NotNull NightCore core) {
+        FileConfig config = FileConfig.loadOrExtract(core, FILE_NAME);
+
+        if (config.getSection(COLORS_PATH).isEmpty()) {
+            getTags().forEach(tag -> {
+                if (!(tag instanceof ColorTag colorTag)) return;
+
+                for (String alias : colorTag.getAliases()) {
+                    config.set(COLORS_PATH + "." + alias, colorTag.toHexString());
+                }
+            });
+        }
+
+        config.getSection(COLORS_PATH).forEach(name -> {
+            String hex = config.getString(COLORS_PATH + "." + name);
+            if (hex == null) return;
+
+            Color color = TagUtils.colorFromHexString(hex);
+            registerTag(new ColorTag(name, color));
+        });
+
+        config.saveChanges();
     }
 
     @NotNull

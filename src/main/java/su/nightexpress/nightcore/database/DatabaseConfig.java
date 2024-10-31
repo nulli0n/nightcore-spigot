@@ -8,9 +8,10 @@ import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.stream.Stream;
 
+@Deprecated
 public class DatabaseConfig {
 
-    private final int          saveInterval;
+    @Deprecated private final int          saveInterval;
     private final int          syncInterval;
     private final DatabaseType databaseType;
     private final String       tablePrefix;
@@ -152,6 +153,7 @@ public class DatabaseConfig {
         return tablePrefix;
     }
 
+    @Deprecated
     public int getSaveInterval() {
         return saveInterval;
     }
