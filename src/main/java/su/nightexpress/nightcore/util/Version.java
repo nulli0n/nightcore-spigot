@@ -20,7 +20,8 @@ public enum Version {
     MC_1_20_6("1.20.6", Status.OUTDATED),
     MC_1_21_0("1.21", Status.OUTDATED),
     MC_1_21("1.21.1"),
-    MC_1_21_2("1.21.2"),
+    MC_1_21_2("1.21.2", Status.OUTDATED),
+    MC_1_21_3("1.21.3"),
     UNKNOWN("Unknown"),
     ;
 
