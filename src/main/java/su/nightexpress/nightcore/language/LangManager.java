@@ -3,8 +3,7 @@ package su.nightexpress.nightcore.language;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
-import su.nightexpress.nightcore.language.entry.LangEntry;
-import su.nightexpress.nightcore.language.entry.LangEnum;
+import su.nightexpress.nightcore.language.entry.LangElement;
 import su.nightexpress.nightcore.manager.SimpleManager;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Reflex;
@@ -67,12 +66,15 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
     }
 
     public void loadEntries(@NotNull Class<?> clazz) {
-        Reflex.getFields(clazz, LangEntry.class).forEach(entry -> {
+        Reflex.getFields(clazz, LangElement.class).forEach(entry -> {
             entry.load(this.plugin);
         });
-        Reflex.getFields(clazz, LangEnum.class).forEach(langEnum -> {
-            langEnum.load(this.plugin);
-        });
+//        Reflex.getFields(clazz, LangEntry.class).forEach(entry -> {
+//            entry.load(this.plugin);
+//        });
+//        Reflex.getFields(clazz, LangEnum.class).forEach(langEnum -> {
+//            langEnum.load(this.plugin);
+//        });
     }
 
     @Deprecated

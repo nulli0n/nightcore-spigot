@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class LangEnum<E extends Enum<E>> {
+public class LangEnum<E extends Enum<E>> implements LangElement {
 
     private final String path;
     private final Class<E> clazz;
@@ -25,6 +25,11 @@ public class LangEnum<E extends Enum<E>> {
     @NotNull
     public static <E extends Enum<E>> LangEnum<E> of(@NotNull String path, @NotNull Class<E> clazz) {
         return new LangEnum<>(path, clazz);
+    }
+
+    @Override
+    public void write(@NotNull FileConfig config) {
+
     }
 
     public void load(@NotNull NightCorePlugin plugin) {

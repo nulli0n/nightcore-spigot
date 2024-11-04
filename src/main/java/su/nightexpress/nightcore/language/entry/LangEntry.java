@@ -1,10 +1,8 @@
 package su.nightexpress.nightcore.language.entry;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.NightCorePlugin;
-import su.nightexpress.nightcore.config.FileConfig;
 
-public abstract class LangEntry/*<T>*/ {
+public abstract class LangEntry implements LangElement {
 
     protected final String path;
     protected final String defaultText;
@@ -14,18 +12,13 @@ public abstract class LangEntry/*<T>*/ {
         this.defaultText = defaultText;
     }
 
-    public abstract boolean write(@NotNull FileConfig config);
-
-    //@NotNull
-    public abstract /*T*/ void load(@NotNull NightCorePlugin plugin);
-
     @NotNull
     public String getPath() {
-        return path;
+        return this.path;
     }
 
     @NotNull
     public String getDefaultText() {
-        return defaultText;
+        return this.defaultText;
     }
 }

@@ -29,40 +29,35 @@ public class LangText extends LangEntry {
     }
 
     @Override
-    public boolean write(@NotNull FileConfig config) {
-        if (!config.contains(this.getPath())) {
-            String textDefault = this.getDefaultText();
-            String[] textSplit = textDefault.split("\n");
-            config.set(this.getPath(), textSplit.length > 1 ? Arrays.asList(textSplit) : textDefault);
-            return true;
-        }
-        return false;
+    public void write(@NotNull FileConfig config) {
+        String[] textSplit = this.defaultText.split("\n");
+        config.set(this.path, textSplit.length > 1 ? Arrays.asList(textSplit) : this.defaultText);
     }
 
     @Override
     public void load(@NotNull NightCorePlugin plugin) {
         FileConfig config = plugin.getLang();
 
-        this.write(config);
+        if (!config.contains(this.path)) {
+            this.write(config);
+        }
 
-        List<String> text = new ArrayList<>(config.getStringList(this.getPath()));
+        List<String> text = new ArrayList<>(config.getStringList(this.path));
         if (text.isEmpty()) {
-            text.add(config.getString(this.getPath(), this.getPath()));
+            text.add(config.getString(this.path, this.path));
         }
 
         this.setMessage(LangMessage.parse(plugin, String.join(Placeholders.TAG_LINE_BREAK, text)));
-
-        //return this.getMessage();
     }
 
     @NotNull
     public LangMessage getMessage() {
-        return message;
+        return this.message;
     }
 
     @NotNull
     public LangMessage getMessage(@NotNull NightCorePlugin plugin) {
-        return message.setPrefix(plugin.getPrefix());
+        return this.message.setPrefix(plugin.getPrefix());
     }
 
     public void setMessage(@NotNull LangMessage message) {
