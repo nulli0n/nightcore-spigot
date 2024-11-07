@@ -44,7 +44,9 @@ public class ShowItemDecorator implements Decorator {
 
         String key = BukkitThing.toString(itemStack.getType());
         ItemMeta meta = itemStack.getItemMeta();
-        Item item = new Item(key, itemStack.getAmount(), ItemTag.ofNbt(meta == null ? null : meta.getAsString()));
+        String nbt = meta == null ? "{}" : meta.getAsString();
+
+        Item item = new Item(key, itemStack.getAmount(), ItemTag.ofNbt(nbt));
 
         return new HoverEvent(HoverEvent.Action.SHOW_ITEM, item);
     }

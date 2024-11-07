@@ -48,6 +48,14 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
         this.loadedByNameMap.clear();
     }
 
+    protected void onLoad(@NotNull U user) {
+
+    }
+
+    protected void onUnload(@NotNull U user) {
+
+    }
+
     public void loadOnline() {
         //plugin.debug("Load data for online players");
         Players.getOnline().forEach(player -> {
@@ -115,10 +123,12 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
     private void load(@NotNull U user) {
         user.onLoad();
         this.cacheTemporary(user);
+        this.onLoad(user);
     }
 
     private void unload(@NotNull U user) {
         user.onUnload();
+        this.onUnload(user);
 
         this.loadedByIdMap.remove(user.getId());
         this.loadedByNameMap.remove(user.getName().toLowerCase());

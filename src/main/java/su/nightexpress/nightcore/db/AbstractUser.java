@@ -30,9 +30,15 @@ public abstract class AbstractUser {
         this.disableAutoSave();
     }
 
-    public abstract void onLoad();
+    @Deprecated
+    public void onLoad() {
 
-    public abstract void onUnload();
+    }
+
+    @Deprecated
+    public void onUnload() {
+
+    }
 
 
     public boolean isCacheExpired() {

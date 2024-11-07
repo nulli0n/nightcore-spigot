@@ -24,11 +24,11 @@ import java.util.Objects;
 
 public class ItemNbt {
 
-    private static final Class<?> ITEM_STACK_CLASS   = Reflex.getClass("net.minecraft.world.item", "ItemStack");
-    private static final Class<?> COMPOUND_TAG_CLASS = Reflex.getClass("net.minecraft.nbt", "NBTTagCompound");
-    private static final Class<?> NBT_IO_CLASS       = Reflex.getClass("net.minecraft.nbt", "NBTCompressedStreamTools");
+    private static final Class<?> ITEM_STACK_CLASS   = Reflex.getNMSClass("net.minecraft.world.item", "ItemStack");
+    private static final Class<?> COMPOUND_TAG_CLASS = Reflex.getNMSClass("net.minecraft.nbt", "CompoundTag", "NBTTagCompound");
+    private static final Class<?> NBT_IO_CLASS       = Reflex.getNMSClass("net.minecraft.nbt", "NbtIo", "NBTCompressedStreamTools");
 
-    private static final Class<?> CRAFT_ITEM_STACK_CLASS = Reflex.getClass(Version.CRAFTBUKKIT_PACKAGE + ".inventory", "CraftItemStack");
+    private static final Class<?> CRAFT_ITEM_STACK_CLASS = Reflex.getNMSClass(Version.CRAFTBUKKIT_PACKAGE + ".inventory", "CraftItemStack");
 
     private static final Method CRAFT_ITEM_STACK_AS_NMS_COPY    = Reflex.getMethod(CRAFT_ITEM_STACK_CLASS, "asNMSCopy", ItemStack.class);
     private static final Method CRAFT_ITEM_STACK_AS_BUKKIT_COPY = Reflex.getMethod(CRAFT_ITEM_STACK_CLASS, "asBukkitCopy", ITEM_STACK_CLASS);
@@ -36,10 +36,13 @@ public class ItemNbt {
     private static final Method NBT_IO_WRITE = Reflex.getMethod(NBT_IO_CLASS, "a", COMPOUND_TAG_CLASS, DataOutput.class);
     private static final Method NBT_IO_READ  = Reflex.getMethod(NBT_IO_CLASS, "a", DataInput.class);
 
-    private static final Class<?> DATA_FIXERS_CLASS = Reflex.getClass("net.minecraft.util.datafix", "DataConverterRegistry"); // DataFixers
-    private static final Method GET_DATA_FIXER = Reflex.getMethod(DATA_FIXERS_CLASS, "a");
-    private static final Class<?> NBT_OPS_CLASS = Reflex.getClass("net.minecraft.nbt", "DynamicOpsNBT"); // NbtOps
-    private static final Class<?> REFERENCES_CLASS = Reflex.getClass("net.minecraft.util.datafix.fixes", "DataConverterTypes"); // References
+    private static final Class<?> TAG_PARSER_CLASS = Reflex.getNMSClass("net.minecraft.nbt", "TagParser", "MojangsonParser");
+    private static final Method   PARSE_TAG        = TAG_PARSER_CLASS == null ? null : Reflex.getMethod(TAG_PARSER_CLASS, "a", String.class);
+
+    private static final Class<?> DATA_FIXERS_CLASS = Reflex.getNMSClass("net.minecraft.util.datafix", "DataFixers", "DataConverterRegistry"); // DataFixers
+    private static final Method   GET_DATA_FIXER    = Reflex.getMethod(DATA_FIXERS_CLASS, "a");
+    private static final Class<?> NBT_OPS_CLASS     = Reflex.getNMSClass("net.minecraft.nbt", "NbtOps", "DynamicOpsNBT"); // NbtOps
+    private static final Class<?> REFERENCES_CLASS  = Reflex.getNMSClass("net.minecraft.util.datafix.fixes", "References", "DataConverterTypes"); // References
 
     private static final int DATA_FIXER_SOURCE_VERSION = 3700; // 1.20.4
     private static final int DATA_FXIER_TARGET_VERSION = 3953; // 1.21
@@ -70,8 +73,8 @@ public class ItemNbt {
         }
 
         if (Version.isAtLeast(Version.MC_1_20_6)) {
-            Class<?> minecraftServerClass = Reflex.getClass("net.minecraft.server", "MinecraftServer");
-            Class<?> holderLookupProviderClass = Reflex.getInnerClass("net.minecraft.core.HolderLookup", "a"); // Provider
+            Class<?> minecraftServerClass = Reflex.getNMSClass("net.minecraft.server", "MinecraftServer");
+            Class<?> holderLookupProviderClass = Reflex.getNMSClass("net.minecraft.core", "HolderLookup$a"); // Provider
 
             String registryAccessName = "bc";
             if (Version.isAtLeast(Version.MC_1_21_3)) registryAccessName = "ba";
@@ -95,7 +98,7 @@ public class ItemNbt {
 
         useRegistry = true;
 
-        Class<?> craftServerClass = Reflex.getClass(Version.CRAFTBUKKIT_PACKAGE, "CraftServer");
+        Class<?> craftServerClass = Reflex.getNMSClass(Version.CRAFTBUKKIT_PACKAGE, "CraftServer");
         if (craftServerClass == null) {
             core.error("Could not find 'CraftServer' class in craftbukkit package: '" + Version.CRAFTBUKKIT_PACKAGE + "'.");
             return false;
@@ -184,6 +187,65 @@ public class ItemNbt {
                 Dynamic<?> dynamic = new Dynamic<>((DynamicOps) NBT_OPS_INSTANCE, compoundTag);
                 compoundTag = DATA_FIXER.update((DSL.TypeReference) REFERENCE_ITEM_STACK, dynamic, DATA_FIXER_SOURCE_VERSION, DATA_FXIER_TARGET_VERSION).getValue();
             }
+
+            if (useRegistry) {
+                if (ITEM_STACK_PARSE_OPTIONAL == null) return null;
+
+                itemStack = ITEM_STACK_PARSE_OPTIONAL.invoke(null, registryAccess, compoundTag);
+            }
+            else {
+                if (NMS_ITEM_OF == null) return null;
+
+                itemStack = NMS_ITEM_OF.invoke(null, compoundTag);
+            }
+
+            return (ItemStack) CRAFT_ITEM_STACK_AS_BUKKIT_COPY.invoke(null, itemStack);
+        }
+        catch (ReflectiveOperationException exception) {
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
+    @Nullable
+    public static String getTagString(@NotNull ItemStack item) {
+        if (CRAFT_ITEM_STACK_AS_NMS_COPY == null) {
+            throw new UnsupportedOperationException("Unsupported server version!");
+        }
+
+        try {
+            Object compoundTag;
+            Object itemStack = CRAFT_ITEM_STACK_AS_NMS_COPY.invoke(null, item);
+
+            if (useRegistry) {
+                if (ITEM_STACK_SAVE_OPTIONAL == null) return null;
+
+                compoundTag = ITEM_STACK_SAVE_OPTIONAL.invoke(itemStack, registryAccess);
+            }
+            else {
+                if (NBT_TAG_COMPOUND_NEW == null || NMS_SAVE == null) return null;
+
+                compoundTag = NBT_TAG_COMPOUND_NEW.newInstance();
+                NMS_SAVE.invoke(itemStack, compoundTag);
+            }
+
+            return compoundTag.toString();
+        }
+        catch (ReflectiveOperationException exception) {
+            exception.printStackTrace();
+            return null;
+        }
+    }
+
+    @Nullable
+    public static ItemStack fromTagString(@NotNull String tagString) {
+        if (TAG_PARSER_CLASS == null || PARSE_TAG == null || CRAFT_ITEM_STACK_AS_BUKKIT_COPY == null) {
+            throw new UnsupportedOperationException("Unsupported server version!");
+        }
+
+        try {
+            Object compoundTag = Reflex.invokeMethod(PARSE_TAG, null, tagString);
+            Object itemStack;
 
             if (useRegistry) {
                 if (ITEM_STACK_PARSE_OPTIONAL == null) return null;

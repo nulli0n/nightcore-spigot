@@ -16,7 +16,7 @@ public class CompactNumber {
 
     @NotNull
     public String format() {
-        String num = String.valueOf(NumberUtil.round(this.value, 1));
+        String num = NumberUtil.format(NumberUtil.round(this.value, 1));
         if (this.shortcut != null) num += this.shortcut.getSymbol();
 
         return num;
