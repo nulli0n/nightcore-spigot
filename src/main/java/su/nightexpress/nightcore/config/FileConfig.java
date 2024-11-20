@@ -153,6 +153,8 @@ public class FileConfig extends YamlConfiguration {
     public void set(@NotNull String path, @Nullable Object value) {
         if (value instanceof Writeable writeable) {
             writeable.write(this, path);
+            this.changed = true;
+            return;
         }
         else if (value instanceof String str) {
             value = Colorizer.plain(str);
