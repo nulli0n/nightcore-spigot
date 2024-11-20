@@ -47,9 +47,10 @@ public class LangMessage {
 
     @NotNull
     public LangMessage setPrefix(@Nullable String prefix) {
+        boolean init = this.message == null;
         this.message = NightMessage.from(prefix == null || !options.hasPrefix() ? defaultText : prefix + defaultText);
 
-        if (this.options.getOutputType() != OutputType.TITLES) {
+        if (init && this.options.getOutputType() != OutputType.TITLES) {
             this.message.compile();
         }
         return this;
