@@ -6,16 +6,16 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.*;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.core.CoreLogger;
-import su.nightexpress.nightcore.util.BukkitThing;
-import su.nightexpress.nightcore.util.ItemUtil;
-import su.nightexpress.nightcore.util.StringUtil;
-import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
@@ -258,7 +258,7 @@ public class NightItem implements Writeable {
             List<String> replacedLore = replacer == null || this.lore == null ? this.lore : replacer.apply(this.lore);
 
             meta.setDisplayName(replacedDisplayName == null ? null : (legacy ? NightMessage.asLegacy(replacedDisplayName) : replacedDisplayName));
-            meta.setLore(replacedLore == null ? null : (legacy ? NightMessage.asLegacy(replacedLore) : replacedLore));
+            meta.setLore(replacedLore == null ? null : (legacy ? NightMessage.asLegacy(this.addEmptyLines(replacedLore)) : this.addEmptyLines(replacedLore)));
             meta.setCustomModelData(this.modelData);
             meta.setUnbreakable(this.unbreakable);
 
@@ -286,6 +286,35 @@ public class NightItem implements Writeable {
         });
 
         return itemStack;
+    }
+
+    @NotNull
+    private List<String> addEmptyLines(@NotNull List<String> lore) {
+        for (int index = 0; index < lore.size(); index++) {
+            String line = lore.get(index);
+            if (line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE)) {
+                if (index == 0 || this.isEmpty(lore.get(index - 1))) {
+                    lore.remove(index);
+                }
+                else lore.set(index, "");
+
+                return addEmptyLines(lore);
+            }
+            else if (line.equalsIgnoreCase(Placeholders.EMPTY_IF_BELOW)) {
+                if (index == lore.size() - 1 || this.isEmpty(lore.get(index + 1))) {
+                    lore.remove(index);
+                }
+                else lore.set(index, "");
+
+                return addEmptyLines(lore);
+            }
+        }
+
+        return lore;
+    }
+
+    private boolean isEmpty(@NotNull String line) {
+        return line.isBlank() || line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE) || line.equalsIgnoreCase(Placeholders.EMPTY_IF_BELOW);
     }
 
     @NotNull

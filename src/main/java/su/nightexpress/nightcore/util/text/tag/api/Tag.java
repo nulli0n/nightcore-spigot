@@ -33,11 +33,20 @@ public class Tag {
         return OPEN_BRACKET + str + CLOSE_BRACKET;
     }
 
+    @NotNull
+    public static String closedBrackets(@NotNull String str) {
+        return brackets(CLOSE_SLASH + str);
+    }
+
     /*@NotNull
     @Deprecated
     public String enclose(@NotNull String text) {
         return this.getBracketsName() + text + this.getClosingName();
     }*/
+
+    public final boolean isNamed(@NotNull String name) {
+        return this.name.equalsIgnoreCase(name) || this.aliases.contains(name.toLowerCase());
+    }
 
     @NotNull
     @Deprecated
@@ -47,11 +56,7 @@ public class Tag {
 
     @NotNull
     public final String getClosingName() {
-        return brackets(CLOSE_SLASH + this.getName());
-    }
-
-    public final boolean isNamed(@NotNull String name) {
-        return this.name.equalsIgnoreCase(name) || this.aliases.contains(name.toLowerCase());
+        return closedBrackets(this.getName());
     }
 
     @NotNull

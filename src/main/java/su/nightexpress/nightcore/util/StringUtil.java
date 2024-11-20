@@ -263,6 +263,11 @@ public class StringUtil {
     }
 
     @NotNull
+    public static String transformForID(@NotNull String str) {
+        return transformForID(str, -1);
+    }
+
+    @NotNull
     public static String transformForID(@NotNull String str, int length) {
         char[] chars = str.toCharArray();
 

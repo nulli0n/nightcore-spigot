@@ -43,6 +43,13 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
         return color;
     }
 
+    @NotNull
+    public String encloseHex(@NotNull String text) {
+        String hex = this.toHexString();
+
+        return brackets(hex) + text + closedBrackets(hex);
+    }
+
     @Override
     public void decorate(@NotNull BaseComponent component) {
         component.setColor(ChatColor.of(this.getColor()));

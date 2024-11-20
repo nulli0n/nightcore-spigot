@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -89,9 +90,16 @@ public class Replacer {
 
     @NotNull
     public List<String> apply(@NotNull List<String> list) {
-        List<String> replaced = new ArrayList<>();
-        list.forEach(line -> replaced.add(this.apply(line)));
-        return replaced;
+//        List<String> replaced = new ArrayList<>();
+//        list.forEach(line -> replaced.add(this.apply(line)));
+//        return replaced;
+
+        List<String> result = new ArrayList<>(list);
+        for (UnaryOperator<String> operator : this.getReplacers()) {
+            result = replaceList(result, operator);
+        }
+
+        return result;
     }
 
     @NotNull
@@ -113,6 +121,21 @@ public class Replacer {
         }
 
         return meta;
+    }
+
+    @NotNull
+    private static List<String> replaceList(@NotNull List<String> lore, @NotNull UnaryOperator<String> operator) {
+        List<String> replaced = new ArrayList<>();
+        for (String line : lore) {
+            if (!line.isBlank()) {
+                line = operator.apply(line);
+                if (line.isBlank()) continue;
+
+                replaced.addAll(Arrays.asList(line.split("\n")));
+            }
+            else replaced.add(line);
+        }
+        return replaced;
     }
 
     @NotNull
