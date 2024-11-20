@@ -55,10 +55,10 @@ public class MessageOptions {
 
     @Nullable
     public Sound getSound() {
-        return sound;
+        return this.sound;
     }
 
-    public void setSound(Sound sound) {
+    public void setSound(@Nullable Sound sound) {
         this.sound = sound;
     }
 

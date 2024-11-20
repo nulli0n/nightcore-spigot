@@ -63,6 +63,7 @@ public class ItemHandler {
             (viewer, event) -> {
                 if (viewer.getPage() < viewer.getPages()) {
                     viewer.setPage(viewer.getPage() + 1);
+                    viewer.setUpdateTitle(true);
                     menu.open(viewer.getPlayer());
                 }
             },
@@ -75,6 +76,7 @@ public class ItemHandler {
             (viewer, event) -> {
                 if (viewer.getPage() > 1) {
                     viewer.setPage(viewer.getPage() - 1);
+                    viewer.setUpdateTitle(true);
                     menu.open(viewer.getPlayer());
                 }
             },

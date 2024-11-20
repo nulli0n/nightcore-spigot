@@ -48,8 +48,8 @@ public class LangKeyed<E extends Keyed> implements LangElement {
 
     @NotNull
     public String getLocalized(@NotNull E keyed) {
-        String namespace = BukkitThing.toString(keyed);
+        String key = BukkitThing.toString(keyed);
 
-        return this.localeMap.getOrDefault(namespace, namespace);
+        return this.localeMap.getOrDefault(key, key);
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,10 +25,8 @@ public class BukkitThing {
 
     @Nullable
     public static <T extends Keyed> T fromRegistry(@NotNull Registry<T> registry, @NotNull String key) {
-        key = StringUtil.lowerCaseUnderscore(key);
-
         try {
-            NamespacedKey namespacedKey = NamespacedKey.minecraft(key);
+            NamespacedKey namespacedKey = NamespacedKey.minecraft(key.toLowerCase());
             return registry.get(namespacedKey);
         }
         catch (IllegalArgumentException exception) {
@@ -100,7 +99,20 @@ public class BukkitThing {
     }
 
     @Nullable
+    public static PotionType getPotionType(@NotNull String name) {
+        return fromRegistry(Registry.POTION, name);
+    }
+
+    @Nullable
     public static Sound getSound(@NotNull String name) {
+//        if (Version.isBehind(Version.MC_1_21_3)) {
+//            return Sound.valueOf(name.toUpperCase());
+//        }
         return fromRegistry(Registry.SOUNDS, name);
+    }
+
+    @Nullable
+    public static Particle getParticle(@NotNull String name) {
+        return fromRegistry(Registry.PARTICLE_TYPE, name);
     }
 }

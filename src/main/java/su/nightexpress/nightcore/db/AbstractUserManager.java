@@ -275,16 +275,32 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
         this.manageUserSynchronized(() -> this.getLoaded(playerId), () -> this.getUserDataAsync(playerId), consumer);
     }
 
+    private void manageUserSynchronized(@NotNull Supplier<U> loadedSupplier, @NotNull Supplier<CompletableFuture<U>> fetchSupplier, @NotNull Consumer<U> consumer) {
+        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(task -> consumer.accept(user)));
+    }
+
+    public void manageUser(@NotNull Player player, Consumer<U> consumer) {
+        this.manageUser(player, consumer, false);
+    }
+
+    public void manageUserWithSave(@NotNull Player player, Consumer<U> consumer) {
+        this.manageUser(player, consumer, true);
+    }
+
+    private void manageUser(@NotNull Player player, Consumer<U> consumer, boolean save) {
+        U user = this.getLoaded(player);
+        if (user == null) return;
+
+        consumer.accept(user);
+        if (save) this.save(user);
+    }
+
     private void manageUser(@NotNull Supplier<U> loadedSupplier, @NotNull Supplier<CompletableFuture<U>> fetchSupplier, @NotNull Consumer<U> consumer) {
         U user = loadedSupplier.get();
         if (user != null) {
             consumer.accept(user);
         }
         else fetchSupplier.get().thenAccept(consumer);
-    }
-
-    private void manageUserSynchronized(@NotNull Supplier<U> loadedSupplier, @NotNull Supplier<CompletableFuture<U>> fetchSupplier, @NotNull Consumer<U> consumer) {
-        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(task -> consumer.accept(user)));
     }
 
     /**

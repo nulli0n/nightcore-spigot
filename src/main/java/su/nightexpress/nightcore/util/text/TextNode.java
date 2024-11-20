@@ -46,7 +46,6 @@ public class TextNode implements ComponentBuildable {
     public int textLength() {
         int legnth = 0;
         if (this.translation != null) return 1;
-        //if (this.textBuilder.toString().equals("\n")) return legnth; // Do not count length for line breaks.
 
         for (int index = 0; index < this.textBuilder.length(); index++) {
             char letter = this.textBuilder.charAt(index);

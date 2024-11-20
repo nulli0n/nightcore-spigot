@@ -118,8 +118,23 @@ public final class PlayerBlockTracker {
     }
 
     public static void shift(@NotNull BlockFace direction, @NotNull List<Block> blocks) {
-        unTrack(blocks);
-        track(blocks.stream().map(block -> block.getRelative(direction)).toList());
+        //unTrack(blocks);
+        //track(blocks.stream().map(block -> block.getRelative(direction)).toList());
+
+        Set<Block> toTrack = new HashSet<>();
+        Set<Block> toUntrack = new HashSet<>();
+
+        blocks.forEach(block -> {
+            if (isTracked(block)) {
+                toTrack.add(block.getRelative(direction));
+            }
+            else {
+                toUntrack.add(block.getRelative(direction));
+            }
+        });
+
+        toTrack.forEach(PlayerBlockTracker::track);
+        toUntrack.forEach(PlayerBlockTracker::unTrack);
     }
 
     public static void move(@NotNull Block from, @NotNull Block to) {

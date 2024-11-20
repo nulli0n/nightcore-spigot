@@ -18,6 +18,7 @@ public class CoreConfig {
         "IMPORTANT NOTE: You need to use this setting only once! Enable it, reboot the server and re-save all configurations that stores compressed item data: shops, crates, etc."
     );
 
+    @Deprecated
     public static final ConfigValue<Boolean> MODERN_TEXT_PRECOMPILE_LANG = ConfigValue.create("ModernTextFormation.Precompile_Language",
         true,
         "When enabled, parses (deserializes) language messages to Spigot TextComponent(s) on plugin load.",

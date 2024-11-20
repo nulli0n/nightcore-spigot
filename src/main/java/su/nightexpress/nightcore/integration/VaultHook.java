@@ -51,6 +51,7 @@ public class VaultHook {
         }
     }
 
+    @Deprecated
     private static void setEconomy() {
         economy = getProvider(Economy.class);
         if (economy != null) {
@@ -97,16 +98,19 @@ public class VaultHook {
         return chat;
     }
 
+    @Deprecated
     public static boolean hasEconomy() {
         return economy != null;
     }
 
     @Nullable
+    @Deprecated
     public static Economy getEconomy() {
         return economy;
     }
 
     @NotNull
+    @Deprecated
     public static String getEconomyName() {
         return hasEconomy() ? economy.getName() : "null";
     }
@@ -139,10 +143,12 @@ public class VaultHook {
         return hasChat() ? chat.getPlayerSuffix(player) : "";
     }
 
+    @Deprecated
     public static double getBalance(@NotNull Player player) {
         return getBalance((OfflinePlayer) player);
     }
 
+    @Deprecated
     public static double getBalance(@NotNull OfflinePlayer player) {
         return economy.getBalance(player);
     }
@@ -157,10 +163,12 @@ public class VaultHook {
         return deposit(player, amount);
     }
 
+    @Deprecated
     public static boolean deposit(@NotNull Player player, double amount) {
         return deposit((OfflinePlayer) player, amount);
     }
 
+    @Deprecated
     public static boolean deposit(@NotNull OfflinePlayer player, double amount) {
         return economy.depositPlayer(player, Math.abs(amount)).transactionSuccess();
     }
@@ -175,10 +183,12 @@ public class VaultHook {
         return withdraw(player, Math.abs(amount));
     }
 
+    @Deprecated
     public static boolean withdraw(@NotNull Player player, double amount) {
         return withdraw((OfflinePlayer) player, amount);
     }
 
+    @Deprecated
     public static boolean withdraw(@NotNull OfflinePlayer player, double amount) {
         return economy.withdrawPlayer(player, Math.abs(amount)).transactionSuccess();
     }

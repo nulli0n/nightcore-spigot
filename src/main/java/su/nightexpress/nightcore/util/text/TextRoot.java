@@ -44,18 +44,6 @@ public class TextRoot {
             string = Colorizer.tagPlainHex(Colorizer.plain(string));
         }
 
-        /*if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
-            TimedMatcher timedMatcher = TimedMatcher.create(Colorizer.PATTERN_HEX_LEGACY, string);
-            Set<String> rawCodes = new HashSet<>();
-            while (timedMatcher.find()) {
-                String hex = timedMatcher.getMatcher().group(1);
-                rawCodes.add(hex);
-            }
-            for (String hex : rawCodes) {
-                string = string.replace(hex, Tag.brackets(hex));
-            }
-        }*/
-
         this.string = string;
         this.component = null;
     }
@@ -169,64 +157,6 @@ public class TextRoot {
 
         this.doJob(Mode.PARSE, letter -> this.currentNode().append(letter));
 
-        /*int length = string.length();
-        for (int index = 0; index < length; index++) {
-            char letter = string.charAt(index);
-
-            Tag:
-            if (letter == Tag.OPEN_BRACKET && index != (length - 1)) {
-                int indexEnd = indexOfIgnoreEscaped(string, Tag.CLOSE_BRACKET, index);//string.indexOf(Tag.CLOSE_BRACKET, index);
-                //System.out.println("indexEnd = " + indexEnd);
-                if (indexEnd == -1) break Tag;
-
-                char next = string.charAt(index + 1);
-                if (next == Tag.CLOSE_BRACKET) break Tag;
-
-                boolean closeTag = false;
-                if (next == Tag.CLOSE_SLASH) {
-                    closeTag = true;
-                    index++;
-                }
-
-                String bracketsContent = string.substring(index + 1, indexEnd);
-                //System.out.println("bracketsContent = " + bracketsContent);
-
-                String tagName = bracketsContent;
-                String tagContent = null;
-
-                // Check for content tags
-                int semicolonIndex = bracketsContent.indexOf(':');
-                if (semicolonIndex >= 0) {
-                    tagName = bracketsContent.substring(0, semicolonIndex);
-                    tagContent = bracketsContent.substring(semicolonIndex + 1);
-                    //System.out.println("tagName = " + tagName);
-                    //System.out.println("tagContent = " + tagContent);
-                }
-                else if (tagName.startsWith(ShortHexColorTag.NAME)) {
-                    tagName = ShortHexColorTag.NAME;
-                    tagContent = bracketsContent;
-                }
-
-                Tag tag = Tags.getTag(tagName);
-                //System.out.println("found tag = " + tag);
-
-                if (tag != null) {
-                    if (tagPool.isGoodTag(tag)) {
-                        this.proceedTag(tag, closeTag, tagContent);
-                    }
-                    index = indexEnd;
-                    continue;
-                }
-
-                // Move cursor back to '/' of invalid closing tag.
-                if (closeTag) {
-                    index--;
-                }
-            }
-
-            this.currentNode().append(letter);
-        }*/
-
         this.component = this.rootGroup.toComponent();
 
         // Clean memory
@@ -242,53 +172,6 @@ public class TextRoot {
         StringBuilder builder = new StringBuilder();
 
         this.doJob(Mode.STRIP, builder::append);
-
-        /*int length = string.length();
-        for (int index = 0; index < length; index++) {
-            char letter = string.charAt(index);
-
-            Tag:
-            if (letter == Tag.OPEN_BRACKET && index != (length - 1)) {
-                int indexEnd = indexOfIgnoreEscaped(string, Tag.CLOSE_BRACKET, index);
-                if (indexEnd == -1) break Tag;
-
-                char next = string.charAt(index + 1);
-                if (next == Tag.CLOSE_BRACKET) break Tag;
-
-                boolean closeTag = false;
-                if (next == Tag.CLOSE_SLASH) {
-                    closeTag = true;
-                    index++;
-                }
-
-                String bracketsContent = string.substring(index + 1, indexEnd);
-                String tagName = bracketsContent;
-
-                // Check for content tags
-                int semicolonIndex = bracketsContent.indexOf(':');
-                if (semicolonIndex >= 0) {
-                    tagName = bracketsContent.substring(0, semicolonIndex);
-                }
-                else if (tagName.startsWith(ShortHexColorTag.NAME)) {
-                    tagName = ShortHexColorTag.NAME;
-                }
-
-                Tag tag = Tags.getTag(tagName);
-                if (tag != null) {
-                    if (!tagPool.isGoodTag(tag)) {
-                        index = indexEnd;
-                        continue;
-                    }
-                }
-
-                // Move cursor back to '/' of invalid closing tag.
-                if (closeTag) {
-                    index--;
-                }
-            }
-
-            builder.append(letter);
-        }*/
 
         return builder.toString();
     }
@@ -376,7 +259,8 @@ public class TextRoot {
             return;
         }
 
-        this.currentNode = null; // Reset current node because of current group change below.
+        // Reset current node to create a new one inside for a group jumped/created below.
+        this.currentNode = null;
 
         if (closeTag) {
             this.toParentGroup(tag.getName()); // Jump to the first parent group of closed tag (or root group if there is no parent for this tag).
@@ -384,7 +268,7 @@ public class TextRoot {
         }
 
         if (tag instanceof ResetTag) {
-            this.currentGroup = this.rootGroup; // Jump to the parent group for 'Reset' tag, so it will create new children groups without decorators on further parsing.
+            this.currentGroup = this.rootGroup; // Jump to the root group for 'Reset' tag, so it will create new children groups without decorators on further parsing.
             return;
         }
 

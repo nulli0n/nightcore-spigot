@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.language.LangAssets;
 
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -32,11 +33,24 @@ public class ItemUtil {
     }
 
     public static void editMeta(@NotNull ItemStack item, @NotNull Consumer<ItemMeta> function) {
+//        ItemMeta meta = item.getItemMeta();
+//        if (meta == null) return;
+//
+//        function.accept(meta);
+//        item.setItemMeta(meta);
+
+        editMeta(item, ItemMeta.class, function);
+    }
+
+    public static <T extends ItemMeta> void editMeta(@NotNull ItemStack item, @NotNull Class<T> clazz, @NotNull Consumer<T> function) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
+        if (!clazz.isAssignableFrom(meta.getClass())) return;
 
-        function.accept(meta);
-        item.setItemMeta(meta);
+        T specific = clazz.cast(meta);
+
+        function.accept(specific);
+        item.setItemMeta(specific);
     }
 
     public static void hideAttributes(@NotNull ItemStack itemStack) {
@@ -94,7 +108,7 @@ public class ItemUtil {
             // sometimes swtiching to "new" spigot api is a pain.
             // why the hell i have to dig into nms to learn that...
             PlayerProfile profile = Bukkit.createPlayerProfile(uuid, name);
-            URL url = new URL(urlData);
+            URL url = URI.create(urlData).toURL();//new URL(urlData);
             PlayerTextures textures = profile.getTextures();
 
             textures.setSkin(url);

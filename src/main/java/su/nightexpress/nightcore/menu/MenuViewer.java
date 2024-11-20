@@ -15,6 +15,7 @@ public class MenuViewer {
     private int           page;
     private int           pages;
     private long          lastClickTime;
+    private boolean updateTitle;
 
     public MenuViewer(@NotNull Player player) {
         this.player = player;
@@ -29,7 +30,10 @@ public class MenuViewer {
 
     public void flushInventory(@NotNull MenuOptions options) {
         this.inventory.clear();
-        //this.view.setTitle(options.getTitleFormatted());
+        if (this.isUpdateTitle()) {
+            this.view.setTitle(options.getTitleFormatted());
+            this.setUpdateTitle(false);
+        }
     }
 
     public boolean hasInventory() {
@@ -77,5 +81,13 @@ public class MenuViewer {
 
     public void setLastClickTime(long lastClickTime) {
         this.lastClickTime = lastClickTime;
+    }
+
+    public boolean isUpdateTitle() {
+        return updateTitle;
+    }
+
+    public void setUpdateTitle(boolean updateTitle) {
+        this.updateTitle = updateTitle;
     }
 }

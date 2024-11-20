@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.io.File;
@@ -308,12 +309,24 @@ public class FileConfig extends YamlConfiguration {
     }*/
 
     @NotNull
+    public NightItem getCosmeticItem(@NotNull String path, @NotNull NightItem def) {
+        return this.contains(path) ? this.getCosmeticItem(path) : def;
+    }
+
+    @NotNull
+    public NightItem getCosmeticItem(@NotNull String path) {
+        return NightItem.read(this, path);
+    }
+
+    @NotNull
+    @Deprecated
     public ItemStack getItem(@NotNull String path, @Nullable ItemStack def) {
         ItemStack item = this.getItem(path);
         return item.getType().isAir() && def != null ? def : item;
     }
 
     @NotNull
+    @Deprecated
     public ItemStack getItem(@NotNull String path) {
         if (!path.isEmpty() && !path.endsWith(".")) path = path + ".";
 
@@ -399,6 +412,7 @@ public class FileConfig extends YamlConfiguration {
         return item;
     }
 
+    @Deprecated
     public void setItem(@NotNull String path, @Nullable ItemStack item) {
         if (item == null) {
             this.set(path, null);

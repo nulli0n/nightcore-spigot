@@ -263,6 +263,31 @@ public class StringUtil {
     }
 
     @NotNull
+    public static String transformForID(@NotNull String str, int length) {
+        char[] chars = str.toCharArray();
+
+        StringBuilder builder = new StringBuilder();
+        for (int index = 0; index < chars.length; index++) {
+            if (length > 0 && index >= length) break;
+
+            char letter = chars[index];
+            if (Character.isWhitespace(letter)) {
+                builder.append("_");
+                continue;
+            }
+            if (!isValidIDChar(letter)) {
+                continue;
+            }
+            builder.append(Character.toLowerCase(letter));
+        }
+        return builder.toString();
+    }
+
+    private static boolean isValidIDChar(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_' || c == '-';
+    }
+
+    @NotNull
     public static String lowerCaseUnderscore(@NotNull String str) {
         return lowerCaseUnderscore(str, -1);
     }

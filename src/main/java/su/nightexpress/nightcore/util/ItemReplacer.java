@@ -82,25 +82,13 @@ public class ItemReplacer {
     public void writeMeta() {
         if (!this.hasMeta()) return;
 
-        //List<UnaryOperator<String>> operators = new ArrayList<>(this.operatorCache);
-        //operators.add(this.placeholderCache.replacer());
-
-        //boolean hasDisplayName = this.displayName != null;
-        //boolean hasLore = this.lore != null;
-
-//        operators.forEach(operator -> {
-//            if (hasDisplayName) this.setDisplayName(operator.apply(this.displayName));
-//            this.replaceLore(operator);
-//            //if (hasLore) this.setLore(operator.apply(this.lore));
-//        });
-
         if (this.displayName != null) {
-            this.meta.setDisplayName(this.replacer.getReplaced(this.displayName).toLegacy());
+            this.meta.setDisplayName(NightMessage.asLegacy(this.replacer.apply(this.displayName)));
         }
-        this.replacer.getReplacers().forEach(this::replaceLore);
-
-        //this.meta.setDisplayName(this.getDisplayName() == null ? null : NightMessage.asLegacy(this.getDisplayName()));
-        this.meta.setLore(this.packTrimmedLore());
+        if (this.lore != null) {
+            this.replacer.getReplacers().forEach(this::replaceLore);
+            this.meta.setLore(this.packTrimmedLore());
+        }
 
         if (this.isHideFlags()) {
             ItemUtil.hideAttributes(this.meta, this.item.getType());
@@ -110,8 +98,6 @@ public class ItemReplacer {
             this.item.setItemMeta(this.meta);
         }
 
-        //this.placeholderCache.clear();
-        //this.operatorCache.clear();
         this.replacer.clear();
     }
 
@@ -327,8 +313,6 @@ public class ItemReplacer {
     }
 
     private void replaceLore(@NotNull UnaryOperator<String> operator) {
-        if (this.lore == null) return;
-
         List<String> replaced = new ArrayList<>();
         for (String line : this.lore) {
             if (!line.isBlank()) {

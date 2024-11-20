@@ -206,8 +206,8 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
 
     @Nullable
     public <T> T selectFirst(@NotNull String table, @NotNull SelectQuery<T> query) {
-        List<T> list = this.select(table, query);
-        return list.isEmpty() ? null : list.get(0);
+        List<T> list = this.select(table, query.limit(1));
+        return list.isEmpty() ? null : list.getFirst();
     }
 
     @NotNull

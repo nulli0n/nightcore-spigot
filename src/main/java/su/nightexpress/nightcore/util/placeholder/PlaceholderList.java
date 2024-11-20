@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -25,13 +26,23 @@ public class PlaceholderList<T> {
     }
 
     @NotNull
+    public static <T> PlaceholderList<T> create(@NotNull Consumer<PlaceholderList<T>> consumer) {
+        PlaceholderList<T> placeholderList = new PlaceholderList<>();
+        consumer.accept(placeholderList);
+        return placeholderList;
+    }
+
+    @NotNull
     public List<PlaceholderEntry<T>> getEntries() {
         return this.entries;
     }
 
     @NotNull
-    public PlaceholderList<T> add(@NotNull PlaceholderList<T> other) {
-        this.entries.addAll(other.getEntries());
+    public PlaceholderList<T> add(@NotNull PlaceholderList<? super T> other) {
+        other.getEntries().forEach(entry -> {
+            this.add(entry.getKey(), entry::get);
+        });
+        //this.entries.addAll(other.getEntries());
         return this;
     }
 
