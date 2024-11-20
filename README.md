@@ -1,7 +1,7 @@
 <div align="center">
     <h1>nightcore</h1>
 <p>
-✅ Minimal server version: <b>1.18.2</b><br>
+✅ Minimal server version: <b>1.20.1</b><br>
 ✅ Supported software: <b>Spigot</b>, <b>Paper</b>, <b>Pufferfish</b>, <b>Purpur</b>.<br>
 ❌ Not available for <b>Aternos</b> and <b>modded</b> servers.<br>
 <br>
