@@ -19,7 +19,7 @@ public class UniSound {
     private final float pitch;
 
     public UniSound(@NotNull String soundName, @Nullable Sound soundType, float volume, float pitch) {
-        this.soundName = soundName;
+        this.soundName = soundName.toLowerCase();
         this.soundType = soundType;
         this.volume = volume;
         this.pitch = pitch;
