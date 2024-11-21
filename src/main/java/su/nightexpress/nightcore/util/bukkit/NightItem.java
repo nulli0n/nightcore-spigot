@@ -248,7 +248,7 @@ public class NightItem implements Writeable {
 
     @NotNull
     private ItemStack build(boolean legacy, @Nullable Replacer replacer) {
-        ItemStack itemStack = new ItemStack(this.material);
+        ItemStack itemStack = new ItemStack(this.material, this.amount);
 
         if (this.skinURL != null) ItemUtil.setHeadSkin(itemStack, this.skinURL);
 
