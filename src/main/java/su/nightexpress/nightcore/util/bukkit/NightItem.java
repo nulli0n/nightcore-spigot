@@ -318,7 +318,19 @@ public class NightItem implements Writeable {
     }
 
     @NotNull
+    @Deprecated
     public NightItem removeNameAndLore() {
+        return this.ignoreNameAndLore();
+    }
+
+    @NotNull
+    @Deprecated
+    public NightItem singleAmount() {
+        return this.ignoreAmount();
+    }
+
+    @NotNull
+    public NightItem ignoreNameAndLore() {
         this.setItemName(null);
         this.setDisplayName(null);
         this.setLore(null);
@@ -326,7 +338,7 @@ public class NightItem implements Writeable {
     }
 
     @NotNull
-    public NightItem singleAmount() {
+    public NightItem ignoreAmount() {
         this.setAmount(1);
         return this;
     }
