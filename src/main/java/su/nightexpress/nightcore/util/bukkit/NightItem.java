@@ -325,6 +325,12 @@ public class NightItem implements Writeable {
         return this;
     }
 
+    @NotNull
+    public NightItem singleAmount() {
+        this.setAmount(1);
+        return this;
+    }
+
     public Material getMaterial() {
         return material;
     }
