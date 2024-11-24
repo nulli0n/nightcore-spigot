@@ -132,9 +132,8 @@ public class NightItem implements Writeable {
         }
 
         if (config.contains(path + ".Name")) {
-            String oldName = config.getString(path + ".Name", "null");
+            String oldName = config.getString(path + ".Name");
             config.set(path + ".Display_Name", oldName);
-            config.remove(path + ".Name");
         }
 
         if (config.contains(path + ".Enchants")) {
