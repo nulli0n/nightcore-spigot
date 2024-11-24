@@ -9,6 +9,8 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 public class MenuItem {
 
     protected NightItem item;
+    protected ItemStack itemStack;
+
     protected int       priority;
     protected int[]     slots;
 
@@ -90,16 +92,16 @@ public class MenuItem {
     @NotNull
     @Deprecated
     public ItemStack getItemStack() {
-        return this.item.getTranslated();
+        return this.itemStack == null ? this.item.getTranslated() : new ItemStack(this.itemStack);
         //return new ItemStack(this.itemStack);
     }
 
     @NotNull
     @Deprecated
     public MenuItem setItemStack(@NotNull ItemStack itemStack) {
-        return this.setItem(NightItem.fromItemStack(itemStack));
-        //this.itemStack = new ItemStack(itemStack);
-        //return this;
+        //return this.setItem(NightItem.fromItemStack(itemStack));
+        this.itemStack = new ItemStack(itemStack);
+        return this;
     }
 
     public int getPriority() {
