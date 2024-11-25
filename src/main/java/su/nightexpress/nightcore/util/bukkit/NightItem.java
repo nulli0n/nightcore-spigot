@@ -15,11 +15,13 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.core.CoreLogger;
+import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -57,6 +59,24 @@ public class NightItem implements Writeable {
     public NightItem(@NotNull Material material, int amount) {
         this.setMaterial(material);
         this.setAmount(amount);
+    }
+
+    @NotNull
+    public NightItem copy() {
+        return new NightItem(this.material, this.amount)
+            .setDamage(this.damage)
+            .setUnbreakable(this.unbreakable)
+            .setItemName(this.itemName)
+            .setDisplayName(this.displayName)
+            .setLore(this.lore == null ? null : new ArrayList<>(this.lore))
+            .setSkinURL(this.skinURL)
+            .setColor(this.color)
+            .setModelData(this.modelData)
+            .setModelPath(this.modelPath)
+            .setTooltipStyle(this.tooltipStyle)
+            .setEnchantGlint(this.enchantGlint)
+            .setHideComponents(this.hideComponents)
+            .setHideTooltip(this.hideTooltip);
     }
 
     @NotNull
@@ -326,6 +346,12 @@ public class NightItem implements Writeable {
     @Deprecated
     public NightItem singleAmount() {
         return this.ignoreAmount();
+    }
+
+    @NotNull
+    public NightItem localized(@NotNull LangItem langItem) {
+        langItem.apply(this);
+        return this;
     }
 
     @NotNull

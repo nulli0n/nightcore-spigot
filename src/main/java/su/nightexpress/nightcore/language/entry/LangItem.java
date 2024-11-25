@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
@@ -58,6 +59,11 @@ public class LangItem extends LangEntry {
             meta.setDisplayName(this.wrappedName.toLegacy());
             meta.setLore(this.wrappedLore.stream().map(TextRoot::toLegacy).toList());
         });
+    }
+
+    public void apply(@NotNull NightItem item) {
+        item.setDisplayName(this.localizedName);
+        item.setLore(this.localizedLore);
     }
 
     @NotNull
