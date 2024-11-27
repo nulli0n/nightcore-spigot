@@ -5,6 +5,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.Version;
 
 public class MenuViewer {
 
@@ -30,7 +31,7 @@ public class MenuViewer {
 
     public void flushInventory(@NotNull MenuOptions options) {
         this.inventory.clear();
-        if (this.isUpdateTitle()) {
+        if (this.isUpdateTitle() && Version.isAtLeast(Version.MC_1_21_3)) {
             this.view.setTitle(options.getTitleFormatted());
             this.setUpdateTitle(false);
         }

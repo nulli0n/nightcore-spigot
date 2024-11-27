@@ -52,6 +52,7 @@ public class CoreLang {
 
     public static final LangString COMMAND_HELP_DESC      = LangString.of("Command.Help.Desc", "Show help page.");
     public static final LangString COMMAND_CHECKPERM_DESC = LangString.of("Command.CheckPerm.Desc", "Print player permission info.");
+    public static final LangString COMMAND_DUMPITEM_DESC  = LangString.of("Command.DumpItem.Desc", "Print item components info.");
     public static final LangString COMMAND_RELOAD_DESC    = LangString.of("Command.Reload.Desc", "Reload the plugin.");
 
     public static final LangText COMMAND_RELOAD_DONE = LangText.of("Command.Reload.Done",
@@ -159,12 +160,6 @@ public class CoreLang {
     public static final LangItem EDITOR_ITEM_RETURN        = LangItem.of("Editor.Generic.Return", LIGHT_GRAY.enclose(BOLD.enclose("Return")));
     public static final LangItem EDITOR_ITEM_NEXT_PAGE     = LangItem.of("Editor.Generic.NextPage", LIGHT_GRAY.enclose("Next Page →"));
     public static final LangItem EDITOR_ITEM_PREVIOUS_PAGE = LangItem.of("Editor.Generic.PreviousPage", LIGHT_GRAY.enclose("← Previous Page"));
-
-//    public static final LangString NUMBER_SHORT_THOUSAND    = LangString.of("Number.Thousand", "k");
-//    public static final LangString NUMBER_SHORT_MILLION     = LangString.of("Number.Million", "m");
-//    public static final LangString NUMBER_SHORT_BILLION     = LangString.of("Number.Billion", "b");
-//    public static final LangString NUMBER_SHORT_TRILLION    = LangString.of("Number.Trillion", "t");
-//    public static final LangString NUMBER_SHORT_QUADRILLION = LangString.of("Number.Quadrillion", "q");
 
     @NotNull
     public static String getYesOrNo(boolean value) {

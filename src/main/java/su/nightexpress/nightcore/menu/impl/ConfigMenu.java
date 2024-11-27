@@ -196,7 +196,7 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
 
     protected void writeItem(@NotNull MenuItem menuItem, @NotNull String path) {
         this.cfg.set(path + ".Priority", menuItem.getPriority());
-        this.cfg.set(path + ".Item", menuItem.getItem());
+        this.cfg.setItem(path + ".Item", menuItem.getItemStack());
         this.cfg.setIntArray(path + ".Slots", menuItem.getSlots());
         this.cfg.set(path + ".Type", menuItem.getHandler().getName());
     }

@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.core.command;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
@@ -13,6 +14,7 @@ import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.core.CorePerms;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.util.Colorizer;
+import su.nightexpress.nightcore.util.ItemNbt;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
@@ -37,6 +39,13 @@ public class CoreCommands {
             );
         }
 
+        root.addChildren(DirectNode.builder(core, "dumpitem")
+            .playerOnly()
+            .permission(CorePerms.COMMAND_DUMP_ITEM)
+            .description(CoreLang.COMMAND_DUMPITEM_DESC)
+            .executes(CoreCommands::dumpItem)
+        );
+
         root.addChildren(ReloadCommand.builder(core, CorePerms.COMMAND_RELOAD));
     }
 
@@ -53,6 +62,15 @@ public class CoreCommands {
                 TAG_LINE_BREAK +
                 LIGHT_ORANGE.enclose("▪ " + LIGHT_YELLOW.enclose("Suffix: ") + VaultHook.getSuffix(player));
         NightMessage.create(builder).send(context.getSender());
+        return true;
+    }
+
+    private static boolean dumpItem(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+        Player player = context.getPlayerOrThrow();
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        player.sendMessage("=".repeat(10) + " DUMP ITEM " + "=".repeat(10));
+        player.sendMessage(String.valueOf(ItemNbt.getTagString(itemStack)));
+
         return true;
     }
 }
