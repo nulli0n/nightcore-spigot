@@ -28,6 +28,7 @@ public class Placeholders {
     public static final String GENERIC_VALUE  = "%value%";
     public static final String GENERIC_AMOUNT = "%amount%";
     public static final String GENERIC_ENTRY =  "%entry%";
+    public static final String GENERIC_TIME = "%time%";
 
     public static final String TAG_NO_PREFIX  = MessageTags.NO_PREFIX.getBracketsName();
     public static final String TAG_LINE_BREAK = Tags.LINE_BREAK.getBracketsName();

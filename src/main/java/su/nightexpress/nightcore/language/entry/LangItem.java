@@ -5,9 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.ItemUtil;
-import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,6 +61,7 @@ public class LangItem extends LangEntry {
         });
     }
 
+    @Deprecated
     public void apply(@NotNull NightItem item) {
         item.setDisplayName(this.localizedName);
         item.setLore(this.localizedLore);

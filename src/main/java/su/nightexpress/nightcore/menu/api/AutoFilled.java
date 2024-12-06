@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.menu.item.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public interface AutoFilled<I> extends Menu {
 
     default boolean open(@NotNull Player player, int page) {

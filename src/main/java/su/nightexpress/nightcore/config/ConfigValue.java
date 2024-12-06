@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.TriFunction;
-import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.bukkit.NightSound;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 import su.nightexpress.nightcore.util.wrapper.UniParticle;
 import su.nightexpress.nightcore.util.wrapper.UniSound;
@@ -113,6 +113,7 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    @Deprecated
     public static ConfigValue<ItemStack> create(@NotNull String path, @NotNull ItemStack defaultValue, @Nullable String... description) {
         return create(path, FileConfig::getItem, FileConfig::setItem, defaultValue, description);
     }

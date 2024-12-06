@@ -24,6 +24,7 @@ import su.nightexpress.nightcore.util.Lists;
 
 import java.util.*;
 
+@Deprecated
 public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     public static final Map<UUID, Menu> PLAYER_MENUS = new HashMap<>();

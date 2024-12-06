@@ -17,6 +17,7 @@ import su.nightexpress.nightcore.manager.AbstractListener;
 import su.nightexpress.nightcore.menu.click.ClickResult;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 
+@Deprecated
 public class MenuListener extends AbstractListener<NightCore> {
 
     public MenuListener(@NotNull NightCore core) {

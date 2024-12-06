@@ -23,6 +23,7 @@ import su.nightexpress.nightcore.util.text.TextRoot;
 
 import java.util.function.Consumer;
 
+@Deprecated
 public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractMenu<P> implements Linked<T> {
 
     protected final ViewLink<T> link;

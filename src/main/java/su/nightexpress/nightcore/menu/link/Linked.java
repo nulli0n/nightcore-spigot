@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.menu.MenuViewer;
 import su.nightexpress.nightcore.menu.api.Menu;
 
+@Deprecated
 public interface Linked<T> extends Menu {
 
     @NotNull ViewLink<T> getLink();

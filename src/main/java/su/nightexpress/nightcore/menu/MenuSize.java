@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore.menu;
 
+@Deprecated
 public enum MenuSize {
 
     CHEST_9(9),

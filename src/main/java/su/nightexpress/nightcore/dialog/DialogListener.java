@@ -13,6 +13,7 @@ import su.nightexpress.nightcore.util.NumberUtil;
 
 import java.util.HashSet;
 
+@Deprecated
 public class DialogListener extends AbstractListener<NightCore> {
 
     public DialogListener(@NotNull NightCore plugin) {

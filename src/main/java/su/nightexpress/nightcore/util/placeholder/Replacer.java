@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Plugins;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
@@ -26,6 +27,11 @@ public class Replacer {
     public Replacer() {
         this.placeholders = new PlaceholderList<>();
         this.replacers = new ArrayList<>();
+    }
+
+    public Replacer(@NotNull Replacer other) {
+        this.placeholders = new PlaceholderList<>(other.placeholders);
+        this.replacers = new ArrayList<>(other.replacers);
     }
 
     @NotNull
@@ -90,10 +96,6 @@ public class Replacer {
 
     @NotNull
     public List<String> apply(@NotNull List<String> list) {
-//        List<String> replaced = new ArrayList<>();
-//        list.forEach(line -> replaced.add(this.apply(line)));
-//        return replaced;
-
         List<String> result = new ArrayList<>(list);
         for (UnaryOperator<String> operator : this.getReplacers()) {
             result = replaceList(result, operator);
@@ -110,11 +112,13 @@ public class Replacer {
 
     @NotNull
     public ItemMeta apply(@NotNull ItemMeta meta) {
-        String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
         List<String> lore = meta.getLore();
 
-        if (displayName != null) {
-            meta.setDisplayName(this.apply(displayName));
+        if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
+            meta.setItemName(this.apply(meta.getItemName()));
+        }
+        if (meta.hasDisplayName()) {
+            meta.setDisplayName(this.apply(meta.getDisplayName()));
         }
         if (lore != null) {
             meta.setLore(this.apply(lore));

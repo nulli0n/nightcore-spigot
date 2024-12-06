@@ -5,6 +5,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.generator.WorldInfo;
+import org.bukkit.inventory.MenuType;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
@@ -114,5 +115,11 @@ public class BukkitThing {
     @Nullable
     public static Particle getParticle(@NotNull String name) {
         return fromRegistry(Registry.PARTICLE_TYPE, name);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Nullable
+    public static MenuType getMenuType(@NotNull String name) {
+        return fromRegistry(Registry.MENU, name);
     }
 }

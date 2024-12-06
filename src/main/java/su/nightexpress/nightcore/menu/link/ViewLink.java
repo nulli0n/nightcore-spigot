@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.menu.MenuViewer;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+@Deprecated
 public class ViewLink<T> {
 
     private final Map<Player, T> map;

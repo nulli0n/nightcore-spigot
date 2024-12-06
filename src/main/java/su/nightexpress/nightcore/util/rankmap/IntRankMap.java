@@ -16,6 +16,13 @@ public class IntRankMap extends RankMap<Integer> {
         super(mode, permissionPrefix, defaultValue, values);
     }
 
+    @Override
+    @NotNull
+    public IntRankMap addValue(@NotNull String key, @NotNull Integer value) {
+        super.addValue(key, value);
+        return this;
+    }
+
     @NotNull
     public static IntRankMap ranked(int defaultValue) {
         return ranked(CREATOR, defaultValue);

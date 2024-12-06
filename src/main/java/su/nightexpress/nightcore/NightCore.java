@@ -8,7 +8,6 @@ import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.core.CoreManager;
 import su.nightexpress.nightcore.core.CorePerms;
 import su.nightexpress.nightcore.core.command.CoreCommands;
-import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.language.LangAssets;
 import su.nightexpress.nightcore.util.Plugins;
@@ -55,7 +54,6 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
     public void disable() {
         this.coreManager.shutdown();
 
-        Dialog.shutdown();
         if (Plugins.hasVault()) {
             VaultHook.shutdown();
         }

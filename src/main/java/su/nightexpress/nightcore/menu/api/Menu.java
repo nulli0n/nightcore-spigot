@@ -15,6 +15,7 @@ import su.nightexpress.nightcore.menu.item.MenuItem;
 
 import java.util.*;
 
+@Deprecated
 public interface Menu {
 
     void clear();

@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangString;
 import su.nightexpress.nightcore.language.entry.LangText;
+import su.nightexpress.nightcore.ui.dialog.DialogManager;
 
 import static su.nightexpress.nightcore.util.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
@@ -140,6 +141,7 @@ public class CoreLang {
         " "
     );
 
+    @Deprecated
     public static final LangText EDITOR_ACTION_EXIT = LangText.of("Editor.Action.Exit",
         TAG_NO_PREFIX,
         "",
@@ -151,9 +153,30 @@ public class CoreLang {
             + " to leave input mode."),
         "");
 
+    public static final LangString DIALOG_HEADER = LangString.of("Dialog.Header",
+        LIGHT_YELLOW.enclose(GENERIC_TIME));
+
+    public static final LangString DIALOG_DEFAULT_PROMPT = LangString.of("Dialog.DefaultPrompt",
+        LIGHT_GRAY.enclose("Enter " + LIGHT_GREEN.enclose("[Value]")));
+
+    public static final LangText DIALOG_INFO_EXIT = LangText.of("Dialog.Info.Exit",
+        TAG_NO_PREFIX,
+        "",
+        GRAY.enclose("Click " +
+            CLICK.encloseRun(
+                HOVER.encloseHint(GREEN.enclose("[Here]"), GRAY.enclose("Click to cancel.")),
+                "/" + DialogManager.EXIT
+            )
+            + " to leave input mode."),
+        "");
+
+    @Deprecated
     public static final LangString EDITOR_INPUT_HEADER_MAIN       = LangString.of("Editor.Input.Header.Main", GREEN.enclose(BOLD.enclose("Input Mode")));
+    @Deprecated
     public static final LangString EDITOR_INPUT_HEADER_ERROR      = LangString.of("Editor.Input.Header.Error", RED.enclose(BOLD.enclose("ERROR")));
+    @Deprecated
     public static final LangString EDITOR_INPUT_ERROR_NOT_INTEGER = LangString.of("Editor.Input.Error.NotInteger", GRAY.enclose("Expecting " + RED.enclose("whole") + " number!"));
+    @Deprecated
     public static final LangString EDITOR_INPUT_ERROR_GENERIC     = LangString.of("Editor.Input.Error.Generic", GRAY.enclose("Invalid value!"));
 
     public static final LangItem EDITOR_ITEM_CLOSE         = LangItem.of("Editor.Generic.Close", LIGHT_RED.enclose(BOLD.enclose("Exit")));

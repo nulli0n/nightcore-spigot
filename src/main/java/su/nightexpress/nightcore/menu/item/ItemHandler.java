@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+@Deprecated
 public class ItemHandler {
 
     public static final String RETURN        = "return";

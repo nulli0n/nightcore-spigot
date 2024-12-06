@@ -33,12 +33,6 @@ public class ItemUtil {
     }
 
     public static void editMeta(@NotNull ItemStack item, @NotNull Consumer<ItemMeta> function) {
-//        ItemMeta meta = item.getItemMeta();
-//        if (meta == null) return;
-//
-//        function.accept(meta);
-//        item.setItemMeta(meta);
-
         editMeta(item, ItemMeta.class, function);
     }
 
@@ -91,10 +85,9 @@ public class ItemUtil {
         return item;
     }
 
-    public static void setHeadSkin(@NotNull ItemStack item, @NotNull String urlData) {
-        if (urlData.isBlank()) return;
-        if (item.getType() != Material.PLAYER_HEAD) return;
-        if (!(item.getItemMeta() instanceof SkullMeta meta)) return;
+    @Nullable
+    public static PlayerProfile createSkinProfile(@NotNull String urlData) {
+        if (urlData.isBlank()) return null;
 
         String name = urlData.substring(0, 16);
 
@@ -113,12 +106,45 @@ public class ItemUtil {
 
             textures.setSkin(url);
             profile.setTextures(textures);
-            meta.setOwnerProfile(profile);
-            item.setItemMeta(meta);
+            return profile;
         }
         catch (Exception exception) {
             exception.printStackTrace();
+            return null;
         }
+    }
+
+    public static void setHeadSkin(@NotNull ItemStack item, @NotNull String urlData) {
+        editMeta(item, SkullMeta.class, meta -> {
+            meta.setOwnerProfile(createSkinProfile(urlData));
+        });
+//        if (urlData.isBlank()) return;
+//        if (item.getType() != Material.PLAYER_HEAD) return;
+//        if (!(item.getItemMeta() instanceof SkullMeta meta)) return;
+//
+//        String name = urlData.substring(0, 16);
+//
+//        if (!urlData.startsWith(TEXTURES_HOST)) {
+//            urlData = TEXTURES_HOST + urlData;
+//        }
+//
+//        try {
+//            UUID uuid = UUID.nameUUIDFromBytes(urlData.getBytes());
+//            // If no name, then meta#getOwnerProfile will return 'null' (wtf?)
+//            // sometimes swtiching to "new" spigot api is a pain.
+//            // why the hell i have to dig into nms to learn that...
+//            PlayerProfile profile = Bukkit.createPlayerProfile(uuid, name);
+//            URL url = URI.create(urlData).toURL();//new URL(urlData);
+//            PlayerTextures textures = profile.getTextures();
+//
+//            textures.setSkin(url);
+//            profile.setTextures(textures);
+//            meta.setOwnerProfile(profile);
+//            item.setItemMeta(meta);
+//        }
+//        catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
     }
 
     @Nullable

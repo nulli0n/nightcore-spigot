@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.Version;
 
+@Deprecated
 public class MenuViewer {
 
     private final Player player;
@@ -16,7 +17,7 @@ public class MenuViewer {
     private int           page;
     private int           pages;
     private long          lastClickTime;
-    private boolean updateTitle;
+    private boolean       updateTitle;
 
     public MenuViewer(@NotNull Player player) {
         this.player = player;
@@ -47,7 +48,7 @@ public class MenuViewer {
 
     @NotNull
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     @Nullable

@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.util.function.UnaryOperator;
 
+@Deprecated
 public class MenuOptions {
 
     private String        title;

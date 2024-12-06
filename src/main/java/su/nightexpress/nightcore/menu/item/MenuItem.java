@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.menu.MenuViewer;
 import su.nightexpress.nightcore.menu.click.ClickAction;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
+@Deprecated
 public class MenuItem {
 
     protected NightItem item;
@@ -92,7 +93,7 @@ public class MenuItem {
     @NotNull
     @Deprecated
     public ItemStack getItemStack() {
-        return this.itemStack == null ? this.item.getTranslated() : new ItemStack(this.itemStack);
+        return this.itemStack == null ? this.item.getItemStack() : new ItemStack(this.itemStack);
         //return new ItemStack(this.itemStack);
     }
 

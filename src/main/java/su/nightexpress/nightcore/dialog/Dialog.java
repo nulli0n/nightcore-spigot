@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
+@Deprecated
 public class Dialog {
 
     private static final Map<UUID, Dialog> DIALOG_MAP = new ConcurrentHashMap<>();

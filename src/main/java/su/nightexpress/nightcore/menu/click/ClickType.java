@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.menu.click;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public enum ClickType {
 
     LEFT, RIGHT, SHIFT_LEFT, SHIFT_RIGHT,

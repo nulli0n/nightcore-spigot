@@ -13,12 +13,13 @@ import su.nightexpress.nightcore.menu.click.ClickType;
 import su.nightexpress.nightcore.menu.item.ItemHandler;
 import su.nightexpress.nightcore.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.*;
-import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Deprecated
 public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu<P> {
 
     protected static final String DEFAULT_ITEM_SECTION = "Content";

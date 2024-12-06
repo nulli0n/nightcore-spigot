@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.wrapper.UniDouble;
 import su.nightexpress.nightcore.util.wrapper.UniInt;
 
+@Deprecated
 public class WrappedInput {
 
     private final String text;

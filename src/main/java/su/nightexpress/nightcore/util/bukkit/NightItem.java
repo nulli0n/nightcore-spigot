@@ -1,29 +1,25 @@
 package su.nightexpress.nightcore.util.bukkit;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.core.CoreLogger;
 import su.nightexpress.nightcore.language.entry.LangItem;
-import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.ui.menu.item.MenuItem;
+import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
-import su.nightexpress.nightcore.util.text.NightMessage;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Utility class to create <b>cosmetic</b> items only.<br>
@@ -31,326 +27,138 @@ import java.util.List;
  */
 public class NightItem implements Writeable {
 
-    private Material material;
-    private int      amount;
-
-    private int     damage;
-    private boolean unbreakable;
-
-    private String itemName;
-    private String       displayName;
-    private List<String> lore;
-
-    private String  skinURL;
-    private Color   color;
-
-    private Integer       modelData;
-    private NamespacedKey modelPath;
-    private NamespacedKey tooltipStyle;
-
-    private boolean enchantGlint;
-    private boolean hideComponents;
-    private boolean hideTooltip;
+    private final ItemStack itemStack;
+    private final NightMeta meta;
 
     public NightItem(@NotNull Material material) {
         this(material, 1);
     }
 
     public NightItem(@NotNull Material material, int amount) {
-        this.setMaterial(material);
-        this.setAmount(amount);
+        this(new ItemStack(material, amount));
+    }
+
+    public NightItem(@NotNull ItemStack itemStack) {
+        this(itemStack, NightMeta.fromItemStack(itemStack));
+    }
+
+    private NightItem(@NotNull ItemStack itemStack, @NotNull NightMeta meta) {
+        this.itemStack = new ItemStack(itemStack);
+        this.meta = meta;
     }
 
     @NotNull
-    public NightItem copy() {
-        return new NightItem(this.material, this.amount)
-            .setDamage(this.damage)
-            .setUnbreakable(this.unbreakable)
-            .setItemName(this.itemName)
-            .setDisplayName(this.displayName)
-            .setLore(this.lore == null ? null : new ArrayList<>(this.lore))
-            .setSkinURL(this.skinURL)
-            .setColor(this.color)
-            .setModelData(this.modelData)
-            .setModelPath(this.modelPath)
-            .setTooltipStyle(this.tooltipStyle)
-            .setEnchantGlint(this.enchantGlint)
-            .setHideComponents(this.hideComponents)
-            .setHideTooltip(this.hideTooltip);
+    public static NightItem fromType(@NotNull Material material) {
+        return new NightItem(material);
     }
 
+    /**
+     * Wraps ItemStack as NightItem for further modifications. Retains its original ItemMeta, modifications will override specific components only.
+     * @param itemStack ItemStack to wrap.
+     * @return NighItem wrapper backed by the provided ItemStack.
+     */
     @NotNull
     public static NightItem fromItemStack(@NotNull ItemStack itemStack) {
-        NightItem nightItem = new NightItem(itemStack.getType());
+        return new NightItem(itemStack);
+    }
 
-        nightItem.setAmount(itemStack.getAmount());
-
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) return nightItem;
-
-        if (meta instanceof Damageable damageable) {
-            nightItem.setDamage(damageable.getDamage());
-        }
-
-        nightItem.setDisplayName(meta.getDisplayName());
-        nightItem.setLore(meta.getLore());
-        nightItem.setUnbreakable(meta.isUnbreakable());
-        nightItem.setSkinURL(ItemUtil.getHeadSkin(itemStack));
-        nightItem.setModelData(meta.hasCustomModelData() ? meta.getCustomModelData() : null);
-        if (Version.isAtLeast(Version.MC_1_21)) {
-            nightItem.setItemName(meta.getItemName());
-            nightItem.setEnchantGlint((meta.hasEnchantmentGlintOverride() && meta.getEnchantmentGlintOverride()) || meta.hasEnchants());
-            nightItem.setHideTooltip(meta.isHideTooltip());
-        }
-        if (Version.isAtLeast(Version.MC_1_21_3)) {
-            nightItem.setModelPath(meta.getItemModel());
-            nightItem.setTooltipStyle(meta.getTooltipStyle());
-        }
-        nightItem.setHideComponents(!meta.getItemFlags().isEmpty());
-
-        if (meta instanceof LeatherArmorMeta armorMeta) {
-            nightItem.setColor(armorMeta.getColor());
-        }
-        else if (meta instanceof PotionMeta potionMeta) {
-            nightItem.setColor(potionMeta.getColor());
-        }
-
-        return nightItem;
+    /**
+     * Creates a new NightItem wrapper for the PLAYER_HEAD ItemStack with provided texture.
+     * @param skinURL Skin texture URL.
+     * @return NightItem wrapper backed by the PLAYER_HEAD with custom texture.
+     */
+    @NotNull
+    public static NightItem asCustomHead(@NotNull String skinURL) {
+        return new NightItem(Material.PLAYER_HEAD).setSkinURL(skinURL);
     }
 
     @NotNull
     public static NightItem read(@NotNull FileConfig config, @NotNull String path) {
-        // -------- UPDATE OLD FIELDS - START --------
-        String headTexture = config.getString(path + ".Head_Texture");
-        if (headTexture != null && !headTexture.isEmpty()) {
-            try {
-                byte[] decoded = Base64.getDecoder().decode(headTexture);
-                String decodedStr = new String(decoded, StandardCharsets.UTF_8);
-                JsonElement element = JsonParser.parseString(decodedStr);
-
-                String url = element.getAsJsonObject().getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
-                url = url.substring(ItemUtil.TEXTURES_HOST.length());
-
-                config.set(path + ".SkinURL", url);
-                config.remove(path + ".Head_Texture");
-            }
-            catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        }
-
-        if (config.contains(path + ".Durability")) {
-            int oldDurability = config.getInt(path + ".Durability");
-            config.set(path + ".Durabilities.Damage", oldDurability);
-            config.remove(path + ".Durability");
-        }
-
-        if (config.contains(path + ".Unbreakable")) {
-            boolean oldUnbreakable = config.getBoolean(path + ".Unbreakable");
-            config.set(path + ".Durabilities.Unbreakable", oldUnbreakable);
-            config.remove(path + ".Unbreakable");
-        }
-
-        if (config.contains(path + ".Name")) {
-            String oldName = config.getString(path + ".Name");
-            config.set(path + ".Display_Name", oldName);
-        }
-
-        if (config.contains(path + ".Enchants")) {
-            config.set(path + ".Enchant_Glint", true);
-            config.remove(path + ".Enchants");
-        }
-
-        if (config.contains(path + ".Item_Flags")) {
-            config.set(path + ".Hide_Components", true);
-            config.remove(path + ".Item_Flags");
-        }
-
-        if (config.contains(path + ".Custom_Model_Data")) {
-            int oldModel = config.getInt(path + ".Custom_Model_Data");
-            config.set(path + ".Model.Data", oldModel);
-            config.remove(path + ".Custom_Model_Data");
-        }
-        // -------- UPDATE OLD FIELDS - END --------
-
         String materialName = config.getString(path + ".Material");
+        int amount = config.getInt(path + ".Amount", 1);
 
         Material material = BukkitThing.getMaterial(String.valueOf(materialName));
         if (material == null) {
             CoreLogger.error("Invalid material '" + materialName + "'. Caused by '" + config.getFile().getAbsolutePath() + "'.");
             material = Material.AIR;
         }
-        NightItem nightItem = new NightItem(material);
 
-        nightItem.setAmount(config.getInt(path + ".Amount", 1));
-        nightItem.setItemName(config.getString(path + ".Item_Name"));
-        nightItem.setDisplayName(config.getString(path + ".Display_Name"));
-        nightItem.setLore(config.getStringList(path + ".Lore"));
+        ItemStack itemStack = new ItemStack(material, amount);
+        NightMeta displayMeta = NightMeta.read(config, path);
 
-        if (material == Material.PLAYER_HEAD) {
-            nightItem.setSkinURL(config.getString(path + ".SkinURL"));
-        }
-        if (config.contains(path + ".Model.Data")) {
-            nightItem.setModelData(config.getInt(path + ".Model.Data"));
-        }
-        if (config.contains(path + ".Model.Path")) {
-            String packPath = config.getString(path + ".Model.Path");
-            NamespacedKey key = packPath == null ? null : NamespacedKey.minecraft(packPath);
-            nightItem.setModelPath(key);
-        }
-        if (config.contains(path + ".Tooltip.Style")) {
-            String packPath = config.getString(path + ".Tooltip.Style");
-            NamespacedKey key = packPath == null ? null : NamespacedKey.minecraft(packPath);
-            nightItem.setTooltipStyle(key);
-        }
-
-        nightItem.setDamage(config.getInt(path + ".Durabilities.Damage", 0));
-        nightItem.setUnbreakable(config.getBoolean(path + ".Durabilities.Unbreakable", false));
-
-        nightItem.setEnchantGlint(config.getBoolean(path + ".Enchant_Glint", false));
-        nightItem.setHideComponents(config.getBoolean(path + ".Hide_Components", false));
-        nightItem.setHideTooltip(config.getBoolean(path + ".Hide_Tooltip", false));
-
-        String rawColor = config.getString(path + ".Color");
-        Color color = rawColor == null ? null : StringUtil.getColor(rawColor);
-        nightItem.setColor(color);
-
-        return nightItem;
+        return new NightItem(itemStack, displayMeta);
     }
 
     @Override
     public void write(@NotNull FileConfig config, @NotNull String path) {
-        config.set(path + ".Material", BukkitThing.toString(this.material));
-        config.set(path + ".Amount", this.amount == 1 ? null : this.amount);
-        config.set(path + ".Item_Name", this.itemName);
-        config.set(path + ".Display_Name", this.displayName);
-        config.set(path + ".Lore", this.lore);
-        config.set(path + ".SkinURL", this.skinURL);
-        config.set(path + ".Model.Data", this.modelData);
-        config.set(path + ".Model.Path", this.modelPath == null ? null : this.modelPath.getKey());
-        config.set(path + ".Tooltip.Style", this.tooltipStyle == null ? null : this.tooltipStyle.getKey());
-        config.set(path + ".Durabilities.Damage", this.damage == 0 ? null : this.damage);
-        config.set(path + ".Durabilities.Unbreakable", this.unbreakable ? true : null);
-        config.set(path + ".Enchant_Glint", this.enchantGlint ? true : null);
-        config.set(path + ".Hide_Components", this.hideComponents ? true : null);
-        config.set(path + ".Hide_Tooltip", this.hideTooltip ? true : null);
-        config.set(path + ".Color", this.color == null ? null : color.getRed() + "," + color.getBlue() + "," + color.getGreen());
+        config.set(path + ".Material", BukkitThing.toString(this.itemStack.getType()));
+        config.set(path + ".Amount", this.itemStack.getAmount() == 1 ? null : this.itemStack.getAmount());
+        this.meta.write(config, path);
     }
 
     @NotNull
-    public ItemStack getPlain() {
-        return this.getPlain(null);
+    public NightItem copy() {
+        return new NightItem(this.itemStack, this.meta.copy());
     }
 
     @NotNull
-    public ItemStack getPlain(@Nullable Replacer replacer) {
-        return this.build(false, replacer);
+    public NightItem inherit(@NotNull NightItem other) {
+        this.itemStack.setType(other.getMaterial());
+        this.itemStack.setAmount(other.getAmount());
+        this.meta.inherit(other.meta);
+
+        return this;
+    }
+
+    /**
+     * Quickly wraps NightItem as MenuItem builder.
+     * @return MenuItem builder.
+     */
+    @NotNull
+    public MenuItem.Builder toMenuItem() {
+        return MenuItem.builder(this);
+    }
+
+    /**
+     * Builds new ItemStack instance.
+     * @return New ItemStack instance.
+     */
+    @NotNull
+    public ItemStack getItemStack() {
+        ItemStack stack = new ItemStack(this.itemStack);
+        this.meta.apply(stack, true);
+        return stack;
     }
 
     @NotNull
-    public ItemStack getTranslated() {
-        return this.getTranslated(null);
+    public NightMeta getMeta() {
+        return this.meta;
     }
 
     @NotNull
-    public ItemStack getTranslated(@Nullable Replacer replacer) {
-        return this.build(true, replacer);
-    }
-
-//    @NotNull
-//    private ItemStack build(boolean legacy, @NotNull Consumer<Replacer> consumer) {
-//        Replacer replacer = new Replacer();
-//        consumer.accept(replacer);
-//
-//        return this.build(legacy, replacer);
-//    }
-
-    @NotNull
-    private ItemStack build(boolean legacy, @Nullable Replacer replacer) {
-        ItemStack itemStack = new ItemStack(this.material, this.amount);
-
-        if (this.skinURL != null) ItemUtil.setHeadSkin(itemStack, this.skinURL);
-
-        ItemUtil.editMeta(itemStack, meta -> {
-            String replacedItemName = replacer == null || this.itemName == null ? this.itemName : replacer.apply(this.itemName);
-            String replacedDisplayName = replacer == null || this.displayName == null ? this.displayName : replacer.apply(this.displayName);
-            List<String> replacedLore = replacer == null || this.lore == null ? this.lore : replacer.apply(this.lore);
-
-            meta.setDisplayName(replacedDisplayName == null ? null : (legacy ? NightMessage.asLegacy(replacedDisplayName) : replacedDisplayName));
-            meta.setLore(replacedLore == null ? null : (legacy ? NightMessage.asLegacy(this.addEmptyLines(replacedLore)) : this.addEmptyLines(replacedLore)));
-            meta.setCustomModelData(this.modelData);
-            meta.setUnbreakable(this.unbreakable);
-
-            if (this.hideComponents) ItemUtil.hideAttributes(meta, this.material);
-
-            if (Version.isAtLeast(Version.MC_1_21)) {
-                meta.setItemName(replacedItemName == null ? null : (legacy ? NightMessage.asLegacy(replacedItemName) : replacedItemName));
-                if (this.enchantGlint) meta.setEnchantmentGlintOverride(true);
-                meta.setHideTooltip(this.hideTooltip);
-            }
-            if (Version.isAtLeast(Version.MC_1_21_3)) {
-                meta.setItemModel(this.modelPath);
-                meta.setTooltipStyle(this.tooltipStyle);
-            }
-
-            if (meta instanceof Damageable damageable) {
-                damageable.setDamage(this.damage);
-            }
-
-            switch (meta) {
-                case LeatherArmorMeta armorMeta -> armorMeta.setColor(this.color);
-                case PotionMeta potionMeta -> potionMeta.setColor(this.color);
-                default -> {}
-            }
-        });
-
-        return itemStack;
+    public Material getMaterial() {
+        return this.itemStack.getType();
     }
 
     @NotNull
-    private List<String> addEmptyLines(@NotNull List<String> lore) {
-        for (int index = 0; index < lore.size(); index++) {
-            String line = lore.get(index);
-            if (line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE)) {
-                if (index == 0 || this.isEmpty(lore.get(index - 1))) {
-                    lore.remove(index);
-                }
-                else lore.set(index, "");
-
-                return addEmptyLines(lore);
-            }
-            else if (line.equalsIgnoreCase(Placeholders.EMPTY_IF_BELOW)) {
-                if (index == lore.size() - 1 || this.isEmpty(lore.get(index + 1))) {
-                    lore.remove(index);
-                }
-                else lore.set(index, "");
-
-                return addEmptyLines(lore);
-            }
-        }
-
-        return lore;
+    public NightItem setMaterial(@NotNull Material material) {
+        this.itemStack.setType(material);
+        return this;
     }
 
-    private boolean isEmpty(@NotNull String line) {
-        return line.isBlank() || line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE) || line.equalsIgnoreCase(Placeholders.EMPTY_IF_BELOW);
+    public int getAmount() {
+        return this.itemStack.getAmount();
     }
 
     @NotNull
-    @Deprecated
-    public NightItem removeNameAndLore() {
-        return this.ignoreNameAndLore();
+    public NightItem setAmount(int amount) {
+        this.itemStack.setAmount(amount);
+        return this;
     }
 
     @NotNull
-    @Deprecated
-    public NightItem singleAmount() {
-        return this.ignoreAmount();
-    }
-
-    @NotNull
-    public NightItem localized(@NotNull LangItem langItem) {
-        langItem.apply(this);
+    public NightItem replacement(@NotNull Consumer<Replacer> consumer) {
+        this.meta.replacement(consumer);
         return this;
     }
 
@@ -368,144 +176,125 @@ public class NightItem implements Writeable {
         return this;
     }
 
-    public Material getMaterial() {
-        return material;
-    }
-
-    public NightItem setMaterial(Material material) {
-        this.material = material;
-        return this;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public NightItem setAmount(int amount) {
-        this.amount = Math.max(1, Math.min(64, amount));
-        return this;
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public NightItem setDamage(int damage) {
-        this.damage = damage;
+    @NotNull
+    public NightItem localized(@NotNull LangItem langItem) {
+        this.setDisplayName(langItem.getLocalizedName());
+        this.setLore(langItem.getLocalizedLore());
         return this;
     }
 
     @Nullable
     public String getItemName() {
-        return this.itemName;
+        return this.meta.getItemName();
     }
 
+    @NotNull
     public NightItem setItemName(@Nullable String itemName) {
-        this.itemName = itemName;
+        this.meta.setItemName(itemName);
         return this;
     }
 
     @Nullable
     public String getDisplayName() {
-        return this.displayName;
+        return this.meta.getDisplayName();
     }
 
+    @NotNull
     public NightItem setDisplayName(@Nullable String displayName) {
-        this.displayName = displayName;
+        this.meta.setDisplayName(displayName);
         return this;
     }
 
     @Nullable
     public List<String> getLore() {
-        return this.lore;
+        return this.meta.getLore();
     }
 
+    @NotNull
     public NightItem setLore(@Nullable List<String> lore) {
-        this.lore = lore;
+        this.meta.setLore(lore);
         return this;
     }
 
-    public String getSkinURL() {
-        return skinURL;
+    @NotNull
+    public NightItem setDamage(int damage) {
+        this.meta.setDamage(damage);
+        return this;
     }
 
+    @NotNull
+    public NightItem setEnchants(@NotNull Map<Enchantment, Integer> enchants) {
+        this.meta.setEnchants(enchants);
+        return this;
+    }
+
+    @NotNull
     public NightItem setSkinURL(@Nullable String skinURL) {
-        this.skinURL = skinURL;
+        this.meta.setSkinURL(skinURL);
         return this;
     }
 
     @Nullable
-    public Integer getModelData() {
-        return this.modelData;
+    public PlayerProfile getSkullOwner() {
+        return this.meta.getSkullOwner();
     }
 
+    @NotNull
+    public NightItem setSkullOwner(@Nullable OfflinePlayer owner) {
+        return this.setSkullOwner(owner == null ? null : owner.getPlayerProfile());
+    }
+
+    @NotNull
+    public NightItem setSkullOwner(@Nullable PlayerProfile skullOwner) {
+        this.meta.setSkullOwner(skullOwner);
+        return this;
+    }
+
+    @NotNull
     public NightItem setModelData(@Nullable Integer modelData) {
-        this.modelData = modelData;
+        this.meta.setModelData(modelData);
         return this;
     }
 
-    @Nullable
-    public NamespacedKey getModelPath() {
-        return this.modelPath;
-    }
-
+    @NotNull
     public NightItem setModelPath(@Nullable NamespacedKey modelPath) {
-        this.modelPath = modelPath;
+        this.meta.setModelPath(modelPath);
         return this;
     }
 
-    @Nullable
-    public NamespacedKey getTooltipStyle() {
-        return this.tooltipStyle;
-    }
-
+    @NotNull
     public NightItem setTooltipStyle(@Nullable NamespacedKey tooltipStyle) {
-        this.tooltipStyle = tooltipStyle;
+        this.meta.setTooltipStyle(tooltipStyle);
         return this;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public NightItem setColor(Color color) {
-        this.color = color;
+    @NotNull
+    public NightItem setColor(@NotNull Color color) {
+        this.meta.setColor(color);
         return this;
     }
 
-    public boolean isUnbreakable() {
-        return unbreakable;
-    }
-
+    @NotNull
     public NightItem setUnbreakable(boolean unbreakable) {
-        this.unbreakable = unbreakable;
+        this.meta.setUnbreakable(unbreakable);
         return this;
     }
 
-    public boolean isEnchantGlint() {
-        return enchantGlint;
-    }
-
+    @NotNull
     public NightItem setEnchantGlint(boolean enchantGlint) {
-        this.enchantGlint = enchantGlint;
+        this.meta.setEnchantGlint(enchantGlint);
         return this;
     }
 
-    public boolean isHideComponents() {
-        return hideComponents;
-    }
-
+    @NotNull
     public NightItem setHideComponents(boolean hideComponents) {
-        this.hideComponents = hideComponents;
+        this.meta.setHideComponents(hideComponents);
         return this;
     }
 
-    public boolean isHideTooltip() {
-        return this.hideTooltip;
-    }
-
+    @NotNull
     public NightItem setHideTooltip(boolean hideTooltip) {
-        this.hideTooltip = hideTooltip;
+        this.meta.setHideTooltip(hideTooltip);
         return this;
     }
 }
