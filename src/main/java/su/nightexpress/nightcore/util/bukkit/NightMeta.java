@@ -250,8 +250,6 @@ public class NightMeta implements Writeable {
     }
 
     public void apply(@NotNull ItemStack itemStack, boolean legacy) {
-        if (this.skinURL != null) ItemUtil.setHeadSkin(itemStack, this.skinURL);
-
         ItemUtil.editMeta(itemStack, meta -> {
             if (this.displayName != null) {
                 String name = this.replacer == null ? this.displayName : this.replacer.apply(this.displayName);

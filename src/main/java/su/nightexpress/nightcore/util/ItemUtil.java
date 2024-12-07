@@ -52,7 +52,7 @@ public class ItemUtil {
     }
 
     public static void hideAttributes(@NotNull ItemMeta meta, @NotNull Material material) {
-        if (Version.isAtLeast(Version.MC_1_20_6)) {
+        if (Version.isAtLeast(Version.MC_1_20_6) && material.isItem()) {
             EquipmentSlot slot = material.getEquipmentSlot();
             material.getDefaultAttributeModifiers(slot).forEach((attribute, modifier) -> {
                 if (meta.getAttributeModifiers(attribute) == null) {

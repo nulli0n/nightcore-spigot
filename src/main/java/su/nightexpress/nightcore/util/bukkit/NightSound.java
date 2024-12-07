@@ -25,7 +25,7 @@ public class NightSound implements Writeable {
     private final float  pitch;
 
     public NightSound(@NotNull String name, @Nullable Sound bukkit, float volume, float pitch) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.bukkit = bukkit;
 
         this.volume = NumberUtil.clamp(volume, MIN_VOLUME, MAX_VOLUME);
