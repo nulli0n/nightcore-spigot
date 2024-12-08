@@ -1,0 +1,111 @@
+Command:
+  Help:
+    List:
+      - <noprefix>
+      - "&b%name% &8- &7Comandos:"
+      - " "
+      - "&c<> &8- &7Obrigatório &8| &a[] &8- &7Opcional"
+      - " "
+      - "%entry%"
+      - " "
+    Entry: "  &d/%command_label% %command_usage% &8- &7%command_description%"
+    Desc: Exibir página de ajuda
+  CheckPerm:
+    Desc: Exibir informações de permissões de jogador
+    Usage: <jogador>
+  Reload:
+    Desc: Recarregar o plugin
+    Done: "&7Plugin &afoi recarregado!"
+  Argument:
+    Type:
+      Required: "&c<%name%>"
+      Optional: "&e[%name%]"
+    Name:
+      Generic: Valor
+      Type: Tipo
+      Name: Nome
+      Player: Jogador
+      World: Mundo
+      Amount: Quantidade
+      Material: Material
+      ItemMaterial: Tipo de Item
+      BlockMaterial: Tipo de Bloco
+      Enchantment: Encantamento
+  Flag:
+    Format: "&7[%name%]"
+Time:
+  Day: "%amount% dias"
+  Hour: "%amount% horas"
+  Min: "%amount% minutos"
+  Sec: "%amount% segundos"
+  Delimiter: " "
+Other:
+  "Yes": "&aSim"
+  "No": "&cNão"
+  Enabled: "&aHabilitado"
+  Disabled: "&cDesabilitado"
+  Any: Qualquer
+  None: Nenhum
+  Never: Nunca
+  OneTimed: Único
+  Unlimited: Ilimitado
+  Infinity: ∞
+Error:
+  Invalid_Player: "&cJogador não encontrado"
+  Invalid_World: "&cMundo inválido"
+  Invalid_Number: "&e%value% &cnão é um número válido"
+  NoPermission: "&cVocê não tem permissão para fazer isso!"
+  Command:
+    NotYourself: "&cEste comando não pode ser usado em você mesmo."
+    PlayerOnly: "&cEste comando é apenas para jogadores."
+    Usage:
+      - <noprefix>
+      - "&cErro: &7Argumentos incorretos!"
+      - "&cUso: &d/%command_label% %command_usage%"
+      - " "
+    ParseFlag: "&cValor inválido &e%value% &7para a flag &d%name%"
+    ParseArgument: "&cValor inválido &e%value% &7para o argumento &d%name%"
+    Argument:
+      InvalidPlayer: "&cJogador não encontrado: &a%value%!"
+      InvalidWorld: "&cMundo não encontrado: &b%value%!"
+      InvalidNumber: "&e%value% &cnão é um número válido!"
+      InvalidMaterial: "&b%value% &cnão é um material válido!"
+      InvalidEnchantment: "&b%value% &cnão é um encantamento válido!"
+  InvalidMaterial: "&cMaterial inválido!"
+  InvalidEnchantment: "&cEncantamento inválido!"
+Editor:
+  Action:
+    Exit:
+      - <noprefix>
+      - "&7Clique <click:run_command:'/#exit'><hover:show_text:'&7Clique para cancelar'>&a[aqui]</hover></click> &7para sair do modo de entrada"
+      - " "
+  Input:
+    Header:
+      Main: "&aModo de Entrada"
+      Error: "&cErro"
+    Error:
+      NotInteger: "&7Esperado &cum número inteiro!"
+      Generic: "&7Valor inválido!"
+  Generic:
+    Close:
+      Name: "&cSair"
+      Lore: []
+    Return:
+      Name: "&7Voltar"
+      Lore: []
+    NextPage:
+      Name: "&7Próxima Página"
+      Lore: []
+    PreviousPage:
+      Name: "&7Página Anterior"
+      Lore: []
+Number:
+  Thousand: Mil
+  Million: Milhão
+  Billion: Bilhão
+  Trillion: Trilhões
+  Quadrillion: Quadrilhão
+Entry:
+  Good: "&a✔ &7%entry%"
+  Bad: "&c✘ &7%entry%"
+  Warn: "&7[&6!&7] &7%entry%"
