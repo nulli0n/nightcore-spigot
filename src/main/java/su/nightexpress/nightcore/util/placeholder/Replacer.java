@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
+import su.nightexpress.nightcore.util.text.tag.Tags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,7 +136,7 @@ public class Replacer {
                 line = operator.apply(line);
                 if (line.isBlank()) continue;
 
-                replaced.addAll(Arrays.asList(line.split("\n")));
+                replaced.addAll(Arrays.asList(Tags.LINE_BREAK.split(line)));
             }
             else replaced.add(line);
         }
