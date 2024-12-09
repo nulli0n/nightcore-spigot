@@ -29,7 +29,7 @@ public class NightMeta implements Writeable {
     private List<String>              lore;
     private Map<Enchantment, Integer> enchants;
 
-    private int    damage;
+    private Integer    damage;
     private String skinURL;
     private PlayerProfile skullOwner;
     private Color  color;
@@ -98,7 +98,7 @@ public class NightMeta implements Writeable {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return displayMeta;
 
-        if (meta instanceof Damageable damageable) {
+        if (meta instanceof Damageable damageable && damageable.getDamage() != 0) {
             displayMeta.setDamage(damageable.getDamage());
         }
         if (meta instanceof SkullMeta skullMeta) {
@@ -213,7 +213,9 @@ public class NightMeta implements Writeable {
             displayMeta.setTooltipStyle(key);
         }
 
-        displayMeta.setDamage(config.getInt(path + ".Durabilities.Damage", 0));
+        if (config.contains(path + ".Durabilities.Damage")) {
+            displayMeta.setDamage(config.getInt(path + ".Durabilities.Damage", 0));
+        }
         displayMeta.setUnbreakable(config.getBoolean(path + ".Durabilities.Unbreakable", false));
 
         displayMeta.setEnchantGlint(config.getBoolean(path + ".Enchant_Glint", false));
@@ -241,7 +243,7 @@ public class NightMeta implements Writeable {
         config.set(path + ".Model.Data", this.modelData);
         config.set(path + ".Model.Path", this.modelPath == null ? null : this.modelPath.getKey());
         config.set(path + ".Tooltip.Style", this.tooltipStyle == null ? null : this.tooltipStyle.getKey());
-        config.set(path + ".Durabilities.Damage", this.damage == 0 ? null : this.damage);
+        config.set(path + ".Durabilities.Damage", this.damage);
         config.set(path + ".Durabilities.Unbreakable", this.unbreakable ? true : null);
         config.set(path + ".Enchant_Glint", this.enchantGlint ? true : null);
         config.set(path + ".Hide_Components", this.hideComponents ? true : null);
@@ -286,7 +288,7 @@ public class NightMeta implements Writeable {
                 if (this.tooltipStyle != null) meta.setTooltipStyle(this.tooltipStyle);
             }
 
-            if (meta instanceof Damageable damageable) {
+            if (this.damage != null && meta instanceof Damageable damageable) {
                 damageable.setDamage(this.damage);
             }
             if (meta instanceof SkullMeta skullMeta) {
@@ -348,11 +350,12 @@ public class NightMeta implements Writeable {
         return this;
     }
 
-    public int getDamage() {
-        return damage;
+    @Nullable
+    public Integer getDamage() {
+        return this.damage;
     }
 
-    public NightMeta setDamage(int damage) {
+    public NightMeta setDamage(@Nullable Integer damage) {
         this.damage = damage;
         return this;
     }

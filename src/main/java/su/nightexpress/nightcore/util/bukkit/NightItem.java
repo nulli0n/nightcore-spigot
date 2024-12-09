@@ -217,7 +217,7 @@ public class NightItem implements Writeable {
     }
 
     @NotNull
-    public NightItem setDamage(int damage) {
+    public NightItem setDamage(@Nullable Integer damage) {
         this.meta.setDamage(damage);
         return this;
     }
