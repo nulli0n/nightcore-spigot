@@ -7,6 +7,8 @@ public class CorePerms {
     public static final UniPermission COMMAND_RELOAD     = new UniPermission("nightcore.command.reload");
     public static final UniPermission COMMAND_CHECK_PERM = new UniPermission("nightcore.command.checkperm");
     public static final UniPermission COMMAND_DUMP_ITEM  = new UniPermission("nightcore.command.dumpitem");
+
+    @Deprecated
     public static final UniPermission COMMAND_FLAGS      = new UniPermission("nightcore.command.flags");
 
 }

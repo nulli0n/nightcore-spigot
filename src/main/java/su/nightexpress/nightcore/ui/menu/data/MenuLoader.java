@@ -149,7 +149,7 @@ public class MenuLoader {
             "=".repeat(20) + " [SECTION] CONTENT " + "=".repeat(20),
             "You can freely edit items in this section as you wish (add, remove, modify items).",
             "> [Item] : Section | Item to display.",
-            "    [*] Navigate to " + Placeholders.WIKI_ITEMS_URL + " for a list of available options.",
+            "    [*] Navigate to " + Placeholders.URL_WIKI_ITEMS + " for a list of available options.",
             "> [Priority] : Integer | Item priority. Higher values will override other item(s) in the same slot(s).",
             "> [Slots] : Int Array | Item slots, starts from 0. Split with commas.",
             "    Slots: '0,4,9,10'",

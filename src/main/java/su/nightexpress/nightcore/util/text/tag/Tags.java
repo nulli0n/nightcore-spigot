@@ -29,11 +29,11 @@ public class Tags {
     public static final ShortHexColorTag HEX_COLOR_SHORT = new ShortHexColorTag();
     public static final TranslationTag   TRANSLATE       = new TranslationTag();
 
-    public static final FontStyleTag BOLD          = new FontStyleTag("b", FontStyleTag.Style.BOLD);
-    public static final FontStyleTag ITALIC        = new FontStyleTag("i", FontStyleTag.Style.ITALIC);
-    public static final FontStyleTag OBFUSCATED    = new FontStyleTag("o", FontStyleTag.Style.OBFUSCATED);
-    public static final FontStyleTag STRIKETHROUGH = new FontStyleTag("s", FontStyleTag.Style.STRIKETHROUGH);
-    public static final FontStyleTag UNDERLINED    = new FontStyleTag("u", FontStyleTag.Style.UNDERLINED);
+    public static final FontStyleTag BOLD          = new FontStyleTag("b", new String[]{"bold"}, FontStyleTag.Style.BOLD);
+    public static final FontStyleTag ITALIC        = new FontStyleTag("i", new String[]{"em", "italic"}, FontStyleTag.Style.ITALIC);
+    public static final FontStyleTag OBFUSCATED    = new FontStyleTag("o", new String[]{"obfuscated", "obf"}, FontStyleTag.Style.OBFUSCATED);
+    public static final FontStyleTag STRIKETHROUGH = new FontStyleTag("s", new String[]{"strikethrough", "st"}, FontStyleTag.Style.STRIKETHROUGH);
+    public static final FontStyleTag UNDERLINED    = new FontStyleTag("u", new String[]{"underlined"}, FontStyleTag.Style.UNDERLINED);
 
     public static final ColorTag BLACK  = new ColorTag("black", "#000000");
     public static final ColorTag WHITE  = new ColorTag("white", "#ffffff");

@@ -7,6 +7,6 @@ public class TranslationTag extends Tag {
     public static final String NAME = "translation";
 
     public TranslationTag() {
-        super(NAME, new String[]{"tr", "lang"});
+        super(NAME, new String[]{"tr", "lang", "translate"});
     }
 }

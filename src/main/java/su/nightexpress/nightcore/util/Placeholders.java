@@ -14,10 +14,21 @@ import java.util.function.UnaryOperator;
 public class Placeholders {
 
     public static final String GITHUB_URL     = "https://github.com/nulli0n/nightcore-spigot";
-    public static final String WIKI_MAIN_URL     = GITHUB_URL + "/wiki/";
-    public static final String WIKI_ITEMS_URL    = WIKI_MAIN_URL + "ItemStack-Options";
-    public static final String WIKI_TEXT_URL     = WIKI_MAIN_URL + "Text-Formation";
-    public static final String WIKI_LANG_URL     = WIKI_MAIN_URL + "Language-Formation";
+
+    public static final String URL_WIKI        = "http://nightexpressdev.com/nightcore/";
+    public static final String URL_WIKI_ITEMS  = URL_WIKI + "configuration/item-formation/";
+    public static final String URL_WIKI_TEXT   = URL_WIKI + "configuration/text-formation/";
+    public static final String URL_WIKI_LANG   = URL_WIKI + "configuration/language/";
+    public static final String URL_WIKI_NUMBER = URL_WIKI + "configuration/number-formation/";
+
+    @Deprecated
+    public static final String WIKI_MAIN_URL     = URL_WIKI;
+    @Deprecated
+    public static final String WIKI_ITEMS_URL    = URL_WIKI_ITEMS;
+    @Deprecated
+    public static final String WIKI_TEXT_URL     = URL_WIKI_TEXT;
+    @Deprecated
+    public static final String WIKI_LANG_URL     = URL_WIKI_LANG;
 
     public static final String DEFAULT     = "default";
     public static final String NONE        = "none";

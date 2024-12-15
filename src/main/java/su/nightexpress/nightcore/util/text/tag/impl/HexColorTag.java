@@ -14,7 +14,7 @@ public class HexColorTag extends Tag implements ContentTag {
     public static final String NAME = "color";
 
     public HexColorTag() {
-        super(NAME, new String[]{"c"});
+        super(NAME, new String[]{"colour", "c"});
     }
 
     @Override

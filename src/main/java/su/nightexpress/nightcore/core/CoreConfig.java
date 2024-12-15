@@ -58,7 +58,7 @@ public class CoreConfig {
         "Allows to use legacy color codes (such as '&7', '&l', etc.) in plugin configurations.",
         "This setting exist for backwards compatibility only! There are NO GUARANTEES that it will persist for future updates!",
         "You should NOT use it unless you need to add support for your custom language configurations & translations with legacy codes.",
-        "You should migrate to new text format as soon as possible: " + Placeholders.WIKI_TEXT_URL
+        "You should migrate to new text format as soon as possible: " + Placeholders.URL_WIKI_TEXT
     );
 
 //    public static final ConfigValue<Boolean> RESPECT_PLAYER_DISPLAYNAME = ConfigValue.create("Engine.Respect_Player_DisplayName",

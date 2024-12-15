@@ -14,18 +14,22 @@ public class FontStyleTag extends SimpleTag implements Decorator {
     private final Style style;
 
     public FontStyleTag(@NotNull String name, @NotNull Style style) {
-        super(name);
+        this(name, new String[0], style);
+    }
+
+    public FontStyleTag(@NotNull String name, String[] aliases, @NotNull Style style) {
+        super(name, aliases);
         this.style = style;
     }
 
     @NotNull
     public Style getStyle() {
-        return style;
+        return this.style;
     }
 
     @Override
     public void decorate(@NotNull BaseComponent component) {
-        switch (this.getStyle()) {
+        switch (this.style) {
             case BOLD -> component.setBold(true);
             case ITALIC -> component.setItalic(true);
             case OBFUSCATED -> component.setObfuscated(true);
