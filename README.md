@@ -5,7 +5,8 @@ All nightcore based plugins are clean and lightweight. There is no metrics, upda
 
 ### Downloads & Documentation
 - [Github Releases](https://github.com/nulli0n/nightcore-spigot/releases)
-- [Documentation](http://nightexpressdev.com/nightcore/)
+- [Modrinth](https://modrinth.com/plugin/nightcore)
+- [Documentation](https://nightexpressdev.com/nightcore/)
 
 ## Donate
 If you like my work or enjoy using my plugins, feel free to [Buy me a coffee](https://ko-fi.com/nightexpress) :) Thank you! 🧡
