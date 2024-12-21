@@ -8,7 +8,7 @@ All nightcore based plugins are clean and lightweight. There is no metrics, upda
 ### Downloads & Documentation
 - [Github Releases](https://github.com/nulli0n/nightcore-spigot/releases)
 - [Modrinth](https://modrinth.com/plugin/nightcore)
-- Hangar *(coming soon)*
+- [Hangar](https://hangar.papermc.io/NightExpress/nightcore)
 - [Documentation](https://nightexpressdev.com/nightcore/)
 - [Developer API](https://nightexpressdev.com/nightcore/developer-api/)
 
