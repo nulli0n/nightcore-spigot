@@ -1,0 +1,116 @@
+Command:
+  Argument:
+    Type:
+      Required: <lred><%name%></lred>
+      Optional: <lyellow>[%name%]</lyellow>
+    Name:
+      Generic: значение
+      Type: тип
+      Name: имя
+      Player: игрок
+      World: мир
+      Amount: количество
+      Material: материал
+      ItemMaterial: тип предмета
+      BlockMaterial: тип блока
+      Enchantment: зачарование
+  Flag:
+    Format: <lgray>[%name%]</lgray>
+  Help:
+    List:
+    - <noprefix>
+    - ' '
+    - '  <yellow><b>%name%</b></yellow><gray> - </gray><yellow><b>Команды:</b></yellow>'
+    - ' '
+    - <gray>  <red><b><></b></red> - Необходимо, <green><b>[]</b></green> - Необязательно.</gray>
+    - ' '
+    - '%entry%'
+    - ' '
+    Entry: '  <yellow>/%command_label%</yellow> <orange>%command_usage%</orange><gray> - %command_description%</gray>'
+    Desc: Показать страницу справки.
+  CheckPerm:
+    Desc: Показать информацию о разрешениях игрока.
+  DumpItem:
+    Desc: Показать информацию о компонентах товара.
+  Reload:
+    Desc: Перезагрузите плагин..
+    Done: <light_gray>Плагин <light_green>презагружен</light_green>!</light_gray>
+Time:
+  Day: '%amount%d.'
+  Hour: '%amount%h.'
+  Min: '%amount%min.'
+  Sec: '%amount%sec.'
+  Delimiter: ' '
+Other:
+  'Yes': <green>Да</green>
+  'No': <red>Нет</red>
+  Enabled: <green>Включено</green>
+  Disabled: <red>Выключено</red>
+  Any: Любой
+  None: Ничего
+  Never: Никогда
+  OneTimed: Разовый
+  Unlimited: Неограниченный
+  Infinity: ∞
+Entry:
+  Good: <green>✔</green> <gray>%entry%</gray>
+  Bad: <red>✘</red> <gray>%entry%</gray>
+  Warn: <orange>[❗]</orange> <gray>%entry%</gray>
+Error:
+  Invalid_Player: <red>Игрок не найден.</red>
+  Invalid_World: <red>Неверный мир.</red>
+  Invalid_Number: <red>%value% недопустимый номер.</red>
+  InvalidMaterial: <red>Недопустимый материал!</red>
+  InvalidEnchantment: <red>Недопустимое зачарование!</red>
+  NoPermission: <red>У вас нет на это разрешения!</red>
+  Command:
+    ParseFlag: <lgray>Недопустимое значение <lred>%value%</lred> для флага <lred>%name%</lred>.</lgray>
+    ParseArgument: <lgray>Недопустимое значение <lred>%value%</lred> для аргумента <lred>%name%</lred>.</lgray>
+    Argument:
+      InvalidPlayer: <lgray><lred>Не удалось найти игрока %value%</lred>!</lgray>
+      InvalidWorld: <lgray><lred>Невозможно найти мир %value%</lred>!</lgray>
+      InvalidNumber: <lgray><lred>%value%</lred> недопустимый номер!</lgray>
+      InvalidMaterial: <lgray><lred>%value%</lred> не является допустимым материалом!</lgray>
+      InvalidEnchantment: <lgray><lred>%value%</lred> это недействительное зачарование!</lgray>
+    NotYourself: <red>Эту команду нельзя применить к себе.</red>
+    PlayerOnly: <red>Эта команда предназначена только для игроков.</red>
+    Usage:
+    - <noprefix>
+    - ' '
+    - '<red>Ошибка: </red><gray>Неправильные аргументы!</gray>'
+    - '<red>Пишите: </red><yellow>/%command_label%</yellow> <orange>%command_usage%</orange>'
+    - ' '
+Editor:
+  Action:
+    Exit:
+    - <noprefix>
+    - ''
+    - <gray>Нажмите <click:run_command:'/#exit'><hover:show_text:'<gray>Нажмите для отмены</gray>'><green>[Здесь]</green></hover></click>, чтобы выйти из режима ввода.</gray>
+  Input:
+    Header:
+      Main: <green><b>Режим ввода</b></green>
+      Error: <red><b>ОШИБКА</b></red>
+    Error:
+      NotInteger: <gray>Ожидается <red>целое</red> число!</gray>
+      Generic: <gray>Недопустимое значение!</gray>
+  Generic:
+    Close:
+      Name: <red>(✕) Выход</red>
+      Lore: []
+    Return:
+      Name: <gray>(↓) </gray><white>Назад</white>
+      Lore: []
+    NextPage:
+      Name: <white>Следующая страница</white><gray> (→)</gray>
+      Lore: []
+    PreviousPage:
+      Name: <gray>(←) </gray><white>Предыдущая страница</white>
+      Lore: []
+Dialog:
+  Header: <lyellow>%time%</lyellow>
+  DefaultPrompt: <lgray>Введите <lgreen>[Value]</lgreen></lgray>
+  Info:
+    Exit:
+    - <noprefix>
+    - ''
+    - <gray>Нажмите <click:run_command:"/#exit"><hover:show_text:'<gray>Нажмите, чтобы отменить.</gray>'><green>[Здесь]</green></hover></click> чтобы выйти из режима ввода.</gray>
