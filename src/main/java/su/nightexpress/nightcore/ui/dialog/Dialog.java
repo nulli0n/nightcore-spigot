@@ -7,7 +7,6 @@ import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.language.entry.LangString;
 import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
-import su.nightexpress.nightcore.util.TimeUtil;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
 import java.util.ArrayList;
@@ -24,27 +23,31 @@ public class Dialog {
     private final DialogHandler handler;
     private final List<String>  suggestions;
     private final boolean       suggestionAutoRun;
-    private final long          timeoutDate;
 
     private Menu lastMenu;
     private int lastPage;
+    private int lifetime;
 
     public Dialog(@NotNull Player player,
                   @NotNull String prompt,
                   @NotNull DialogHandler handler,
                   @Nullable List<String> suggestions,
                   boolean suggestionAutoRun,
-                  long timeoutDate) {
+                  int lifetime) {
         this.player = player;
         this.prompt = prompt;
         this.handler = handler;
         this.suggestions = suggestions == null ? null : suggestions.stream().sorted(String::compareTo).collect(Collectors.toCollection(ArrayList::new));
         this.suggestionAutoRun = suggestionAutoRun;
-        this.timeoutDate = timeoutDate;
+        this.lifetime = lifetime;
+    }
+
+    public void tick() {
+        this.lifetime--;
     }
 
     public boolean isExpired() {
-        return TimeUtil.isPassed(this.timeoutDate);
+        return this.lifetime <= 0;
     }
 
     @NotNull
@@ -91,8 +94,17 @@ public class Dialog {
         return this.suggestionAutoRun;
     }
 
+    @Deprecated
     public long getTimeoutDate() {
-        return this.timeoutDate;
+        return this.lifetime;
+    }
+
+    public int getLifetime() {
+        return this.lifetime;
+    }
+
+    public long getLifetimeMillis() {
+        return this.getLifetime() * 1000L;
     }
 
     @NotNull
@@ -139,7 +151,7 @@ public class Dialog {
 
         @NotNull
         public Dialog build() {
-            return new Dialog(this.player, this.prompt, this.handler, this.suggestions, this.suggestionAutoRun, TimeUtil.createFutureTimestamp(this.timeout));
+            return new Dialog(this.player, this.prompt, this.handler, this.suggestions, this.suggestionAutoRun, this.timeout);
         }
 
         public void initialize() {

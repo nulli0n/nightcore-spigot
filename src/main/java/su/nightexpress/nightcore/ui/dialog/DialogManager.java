@@ -44,11 +44,12 @@ public class DialogManager {
         }
 
         displayPrompt(dialog, 0);
+        dialog.tick();
     }
 
     private static void displayPrompt(@NotNull Dialog dialog, int fade) {
         Player player = dialog.getPlayer();
-        String title = NightMessage.asLegacy(CoreLang.DIALOG_HEADER.getString().replace(Placeholders.GENERIC_TIME, TimeUtil.formatDuration(dialog.getTimeoutDate())));
+        String title = NightMessage.asLegacy(CoreLang.DIALOG_HEADER.getString().replace(Placeholders.GENERIC_TIME, TimeUtil.formatTime(dialog.getLifetimeMillis())));
         String sub = NightMessage.asLegacy(dialog.getPrompt());
 
         player.sendTitle(title, sub, fade, 40, 20);
