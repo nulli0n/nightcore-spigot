@@ -147,7 +147,7 @@ public class Replacer {
     public Replacer replacePlaceholderAPI(@NotNull Player player) {
         if (!Plugins.hasPlaceholderAPI()) return this;
 
-        return this.replace(line -> PlaceholderAPI.setPlaceholders(player, line));
+        return this.replaceOperator(line -> PlaceholderAPI.setPlaceholders(player, line));
     }
 
     @NotNull
@@ -160,28 +160,43 @@ public class Replacer {
 
     @NotNull
     public Replacer replace(@NotNull String key, @NotNull List<String> replacer) {
-        return this.replace(key, () -> String.join(Placeholders.TAG_LINE_BREAK, replacer));
+        return this.replacePlaceholder(key, () -> String.join(Placeholders.TAG_LINE_BREAK, replacer));
     }
 
     @NotNull
     public <T> Replacer replace(@NotNull T source, @NotNull PlaceholderList<T> placeholders) {
-        return this.replace(placeholders.replacer(source));
+        return this.replaceOperator(placeholders.replacer(source));
     }
 
     @NotNull
     public Replacer replace(@NotNull String key, @NotNull Supplier<String> value) {
+        return this.replacePlaceholder(key, value);
+    }
+
+    @NotNull
+    public Replacer replace(@NotNull String key, @NotNull Object value) {
+        return this.replacePlaceholder(key, value);
+    }
+
+    @NotNull
+    public Replacer replace(@NotNull UnaryOperator<String> replacer) {
+        return this.replaceOperator(replacer);
+    }
+
+    @NotNull
+    private Replacer replacePlaceholder(@NotNull String key, @NotNull Supplier<String> value) {
         this.placeholders.add(key, value);
         return this;
     }
 
     @NotNull
-    public Replacer replace(@NotNull String key, @NotNull Object value) {
+    private Replacer replacePlaceholder(@NotNull String key, @NotNull Object value) {
         this.placeholders.add(key, String.valueOf(value));
         return this;
     }
 
     @NotNull
-    public Replacer replace(@NotNull UnaryOperator<String> replacer) {
+    private Replacer replaceOperator(@NotNull UnaryOperator<String> replacer) {
         this.replacers.add(replacer);
         return this;
     }

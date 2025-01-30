@@ -68,7 +68,7 @@ public class ItemHandler {
             (viewer, event) -> {
                 if (viewer.getPage() < viewer.getPages()) {
                     viewer.setPage(viewer.getPage() + 1);
-                    viewer.setUpdateTitle(true);
+                    viewer.setRebuildMenu(true);
                     menu.flush(viewer.getPlayer());
                 }
             },
@@ -82,7 +82,7 @@ public class ItemHandler {
             (viewer, event) -> {
                 if (viewer.getPage() > 1) {
                     viewer.setPage(viewer.getPage() - 1);
-                    viewer.setUpdateTitle(true);
+                    viewer.setRebuildMenu(true);
                     menu.flush(viewer.getPlayer());
                 }
             },
@@ -112,7 +112,7 @@ public class ItemHandler {
 
     @NotNull
     public static <T> ItemHandler forLink(@NotNull Linked<T> menu, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
-        return new ItemHandler(randomName(), (viewer, event) -> menu.manageLink(handler), options);
+        return new ItemHandler(randomName(), menu.manageLink(handler), options);
     }
 
     @NotNull

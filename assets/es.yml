@@ -1,12 +1,18 @@
 EntityType:
+  acacia_boat: Barca de acacia
+  acacia_chest_boat: Barca de acacia con cofre
   allay: Allay
   area_effect_cloud: Nube de efecto persistente
   armadillo: Armadillo
   armor_stand: Soporte para armadura
   arrow: Flecha
   axolotl: Ajolote
+  bamboo_chest_raft: Balsa de bambú con cofre
+  bamboo_raft: Balsa de bambú
   bat: Murciélago
   bee: Abeja
+  birch_boat: Barca de abedul
+  birch_chest_boat: Barca de abedul con cofre
   blaze: Blaze
   block_display: Bloque holográfico
   boat: Barca
@@ -16,13 +22,19 @@ EntityType:
   camel: Camello
   cat: Gato
   cave_spider: Araña de cueva
+  cherry_boat: Barca de cerezo
+  cherry_chest_boat: Barca de cerezo con cofre
   chest_boat: Barca con cofre
   chest_minecart: Vagoneta con cofre
   chicken: Pollo
   cod: Bacalao
   command_block_minecart: Vagoneta con bloque de comandos
   cow: Vaca
+  creaking: Crepitante
+  creaking_transient: Crepitante
   creeper: Creeper
+  dark_oak_boat: Barca de roble oscuro
+  dark_oak_chest_boat: Barca de roble oscuro con cofre
   dolphin: Delfín
   donkey: Burro
   dragon_fireball: Bola de fuego de dragón
@@ -63,19 +75,27 @@ EntityType:
   item: Objeto
   item_display: Objeto holográfico
   item_frame: Marco
+  jungle_boat: Barca de jungla
+  jungle_chest_boat: Barca de jungla con cofre
   killer_bunny: El conejo asesino
   leash_knot: Nudo de rienda
   lightning_bolt: Rayo
   llama: Llama
   llama_spit: Escupitajo de llama
   magma_cube: Cubo de magma
+  mangrove_boat: Barca de mangle
+  mangrove_chest_boat: Barca de mangle con cofre
   marker: Marcador
   minecart: Vagoneta
   mooshroom: Mooshroom
   mule: Mula
+  oak_boat: Barca de roble
+  oak_chest_boat: Barca de roble con cofre
   ocelot: Ocelote
   ominous_item_spawner: Generador de objetos ominoso
   painting: Cuadro
+  pale_oak_boat: Barca de roble pálido
+  pale_oak_chest_boat: Barca de roble pálido con cofre
   panda: Panda
   parrot: Loro
   phantom: Fantasma
@@ -104,6 +124,8 @@ EntityType:
   spawner_minecart: Vagoneta con generador de criaturas
   spectral_arrow: Flecha espectral
   spider: Araña
+  spruce_boat: Barca de abeto
+  spruce_chest_boat: Barca de abeto con cofre
   squid: Calamar
   stray: Errante
   strider: Lavagante
@@ -359,6 +381,7 @@ Material:
   chiseled_polished_blackstone: Piedra negra pulida cincelada
   chiseled_quartz_block: Cuarzo cincelado
   chiseled_red_sandstone: Arenisca roja cincelada
+  chiseled_resin_bricks: Ladrillos de resina cincelados
   chiseled_sandstone: Arenisca cincelada
   chiseled_stone_bricks: Ladrillos de piedra cincelados
   chiseled_tuff: Toba cincelada
@@ -366,6 +389,7 @@ Material:
   chorus_flower: Flor chorus
   chorus_plant: Planta chorus
   clay: Bloque de arcilla
+  closed_eyeblossom: Miraflor cerrada
   coal_block: Bloque de carbón
   coal_ore: Mena de carbón
   coarse_dirt: Tierra estéril
@@ -397,6 +421,7 @@ Material:
   cracked_stone_bricks: Ladrillos de piedra agrietados
   crafter: Fabricador
   crafting_table: Mesa de trabajo
+  creaking_heart: Corazón de crepitante
   creeper_head: Cabeza de creeper
   creeper_wall_head: Cabeza de creeper en pared
   crimson_button: Botón carmesí
@@ -785,6 +810,7 @@ Material:
   obsidian: Obsidiana
   ochre_froglight: Ranaluz ocre
   ominous_banner: Estandarte ominoso
+  open_eyeblossom: Miraflor abierta
   orange_banner: Estandarte naranja
   orange_bed: Cama naranja
   orange_candle: Vela naranja
@@ -811,6 +837,26 @@ Material:
   oxidized_cut_copper_stairs: Escaleras de cobre cortado oxidado
   packed_ice: Hielo compacto
   packed_mud: Adobe
+  pale_hanging_moss: Musgo pálido colgante
+  pale_moss_block: Bloque de musgo pálido
+  pale_moss_carpet: Capa de musgo pálido
+  pale_oak_button: Botón de roble pálido
+  pale_oak_door: Puerta de roble pálido
+  pale_oak_fence: Valla de roble pálido
+  pale_oak_fence_gate: Puerta de valla de roble pálido
+  pale_oak_hanging_sign: Cartel colgante de roble pálido
+  pale_oak_leaves: Hojas de roble pálido
+  pale_oak_log: Tronco de roble pálido
+  pale_oak_planks: Tablones de roble pálido
+  pale_oak_pressure_plate: Placa de presión de roble pálido
+  pale_oak_sapling: Brote de roble pálido
+  pale_oak_sign: Cartel de roble pálido
+  pale_oak_slab: Losa de roble pálido
+  pale_oak_stairs: Escaleras de roble pálido
+  pale_oak_trapdoor: Trampilla de roble pálido
+  pale_oak_wall_hanging_sign: Cartel colgante de roble pálido en pared
+  pale_oak_wall_sign: Cartel de roble pálido en pared
+  pale_oak_wood: Leño de roble pálido
   pearlescent_froglight: Ranaluz nacarada
   peony: Peonía
   petrified_oak_slab: Losa de roble petrificada
@@ -879,6 +925,7 @@ Material:
   potted_brown_mushroom: Maceta con champiñón marrón
   potted_cactus: Maceta con cactus
   potted_cherry_sapling: Maceta con brote de cerezo
+  potted_closed_eyeblossom: Maceta con miraflor cerrada
   potted_cornflower: Maceta con aciano
   potted_crimson_fungus: Maceta con hongo carmesí
   potted_crimson_roots: Maceta con raíces carmesí
@@ -891,8 +938,10 @@ Material:
   potted_lily_of_the_valley: Maceta con convalaria
   potted_mangrove_propagule: Maceta con propágulo de mangle
   potted_oak_sapling: Maceta con brote de roble
+  potted_open_eyeblossom: Maceta con miraflor abierta
   potted_orange_tulip: Maceta con tulipán naranja
   potted_oxeye_daisy: Maceta con margarita
+  potted_pale_oak_sapling: Maceta con brote de roble pálido
   potted_pink_tulip: Maceta con tulipán rosa
   potted_poppy: Maceta con amapola
   potted_red_mushroom: Maceta con champiñón rojo
@@ -975,6 +1024,12 @@ Material:
   reinforced_deepslate: Pizarra profunda reforzada
   repeater: Repetidor de redstone
   repeating_command_block: Bloque de comando de repetición
+  resin_block: Bloque de resina
+  resin_brick_slab: Losa de ladrillos de resina
+  resin_brick_stairs: Escaleras de ladrillos de resina
+  resin_brick_wall: Muro de ladrillos de resina
+  resin_bricks: Ladrillos de resina
+  resin_clump: Grumo de resina
   respawn_anchor: Nexo de reaparición
   rooted_dirt: Tierra enraizada
   rose_bush: Rosal
@@ -1073,6 +1128,8 @@ Material:
   stripped_mangrove_wood: Leño de mangle sin corteza
   stripped_oak_log: Tronco de roble sin corteza
   stripped_oak_wood: Leño de roble sin corteza
+  stripped_pale_oak_log: Tronco de roble pálido sin corteza
+  stripped_pale_oak_wood: Leño de roble pálido sin corteza
   stripped_spruce_log: Tronco de abeto sin corteza
   stripped_spruce_wood: Leño de abeto sin corteza
   stripped_warped_hyphae: Hifas distorsionadas peladas
@@ -1247,12 +1304,14 @@ Material:
   beetroot_soup: Estofado de remolacha
   birch_boat: Barca de abedul
   birch_chest_boat: Barca de abedul con cofre
+  black_bundle: Saco negro
   black_dye: Tinte negro
   blade_pottery_shard: Fragmento de cerámica de espada
   blade_pottery_sherd: Fragmento de cerámica de espada
   blaze_powder: Polvo de blaze
   blaze_rod: Vara de blaze
   blaze_spawn_egg: Generar blaze
+  blue_bundle: Saco azul
   blue_dye: Tinte azul
   bogged_spawn_egg: Generar ciénago
   bolt_armor_trim_smithing_template: Molde de herrería
@@ -1268,6 +1327,7 @@ Material:
   brewer_pottery_shard: Fragmento de cerámica de poción
   brewer_pottery_sherd: Fragmento de cerámica de poción
   brick: Ladrillo
+  brown_bundle: Saco marrón
   brown_dye: Tinte marrón
   brush: Pincel
   bucket: Cubo
@@ -1310,9 +1370,11 @@ Material:
   cookie: Galleta
   copper_ingot: Lingote de cobre
   cow_spawn_egg: Generar vaca
+  creaking_spawn_egg: Generar crepitante
   creeper_banner_pattern: Diseño de estandarte
   creeper_spawn_egg: Generar creeper
   crossbow: Ballesta
+  cyan_bundle: Saco cian
   cyan_dye: Tinte cian
   danger_pottery_shard: Fragmento de cerámica de creeper
   danger_pottery_sherd: Fragmento de cerámica de creeper
@@ -1400,7 +1462,9 @@ Material:
   golden_pickaxe: Pico de oro
   golden_shovel: Pala de oro
   golden_sword: Espada de oro
+  gray_bundle: Saco gris
   gray_dye: Tinte gris
+  green_bundle: Saco verde
   green_dye: Tinte verde
   guardian_spawn_egg: Generar guardián
   gunpowder: Pólvora
@@ -1447,13 +1511,17 @@ Material:
   leather_helmet: Sombrero de cuero
   leather_horse_armor: Armadura de cuero para caballo
   leather_leggings: Pantalones de cuero
+  light_blue_bundle: Saco azul claro
   light_blue_dye: Tinte azul claro
+  light_gray_bundle: Saco gris claro
   light_gray_dye: Tinte gris claro
+  lime_bundle: Saco verde lima
   lime_dye: Tinte verde lima
   lingering_potion: Poción persistente
   llama_spawn_egg: Generar llama
   lodestone_compass: Brújula imantada
   mace: Maza
+  magenta_bundle: Saco magenta
   magenta_dye: Tinte magenta
   magma_cream: Crema de magma
   magma_cube_spawn_egg: Generar cubo de magma
@@ -1513,8 +1581,11 @@ Material:
   ocelot_spawn_egg: Generar ocelote
   ominous_bottle: Frasco ominoso
   ominous_trial_key: Llave de desafío ominosa
+  orange_bundle: Saco naranja
   orange_dye: Tinte naranja
   painting: Cuadro
+  pale_oak_boat: Barca de roble pálido
+  pale_oak_chest_boat: Barca de roble pálido con cofre
   panda_spawn_egg: Generar panda
   paper: Papel
   parrot_spawn_egg: Generar loro
@@ -1525,6 +1596,7 @@ Material:
   piglin_brute_spawn_egg: Generar piglin bruto
   piglin_spawn_egg: Generar piglin
   pillager_spawn_egg: Generar saqueador
+  pink_bundle: Saco rosa
   pink_dye: Tinte rosa
   pitcher_pod: Vaina de planta odre
   plenty_pottery_shard: Fragmento de cerámica de cofre
@@ -1549,6 +1621,7 @@ Material:
   pufferfish_spawn_egg: Generar pez globo
   pumpkin_pie: Tarta de calabaza
   pumpkin_seeds: Semillas de calabaza
+  purple_bundle: Saco morado
   purple_dye: Tinte morado
   quartz: Cuarzo del Nether
   rabbit: Conejo crudo
@@ -1562,8 +1635,10 @@ Material:
   raw_gold: Oro en bruto
   raw_iron: Hierro en bruto
   recovery_compass: Brújula de recuperación
+  red_bundle: Saco rojo
   red_dye: Tinte rojo
   redstone: Polvo de redstone
+  resin_brick: Ladrillo de resina
   rib_armor_trim_smithing_template: Molde de herrería
   rotten_flesh: Carne podrida
   saddle: Montura
@@ -1648,6 +1723,7 @@ Material:
   water_bucket: Cubo con agua
   wayfinder_armor_trim_smithing_template: Molde de herrería
   wheat_seeds: Semillas de trigo
+  white_bundle: Saco blanco
   white_dye: Tinte blanco
   wild_armor_trim_smithing_template: Molde de herrería
   wind_charge: Carga de viento
@@ -1663,6 +1739,7 @@ Material:
   wooden_sword: Espada de madera
   writable_book: Libro y pluma
   written_book: Libro escrito
+  yellow_bundle: Saco amarillo
   yellow_dye: Tinte amarillo
   zoglin_spawn_egg: Generar zoglin
   zombie_horse_spawn_egg: Generar caballo zombi

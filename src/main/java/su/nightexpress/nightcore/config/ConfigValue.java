@@ -247,6 +247,9 @@ public class ConfigValue<T> {
             return map;
         };
 
+        forMap("a", s -> s, s -> s, (cfg, path2) -> null, map -> {});
+        forMap("a", s -> s, s -> s, (cfg, path2, id) -> null, map -> {});
+
         return create(path, reader, writer, defaultValue, description);
     }
 
@@ -254,15 +257,14 @@ public class ConfigValue<T> {
     public static <K, V extends Writeable> ConfigValue<Map<K, V>> forMap(@NotNull String path,
                                                                          @NotNull Function<String, K> keyReadFun,
                                                                          @NotNull Function<K, String> keyWriteFun,
-                                                                         @NotNull BiFunction<FileConfig, String, V> valReadFun,
-                                                                         //@NotNull Supplier<Map<K, V>> mapSupplier,
+                                                                         @NotNull ReadFunction<V> valReadFun,
                                                                          @NotNull Consumer<Map<K, V>> defaultValue,
                                                                          @Nullable String... description) {
         Reader<Map<K, V>> reader = (cfg, readPath, def) -> {
-            var map = new HashMap<K, V>();//mapSupplier.get();
+            var map = new HashMap<K, V>();
             for (String keyRaw : cfg.getSection(readPath)) {
                 K key = keyReadFun.apply(keyRaw);
-                V val = valReadFun.apply(cfg, readPath + "." + keyRaw);
+                V val = valReadFun.read(cfg, readPath + "." + keyRaw, keyRaw);
                 if (key == null || val == null) continue;
 
                 map.put(key, val);
@@ -284,6 +286,42 @@ public class ConfigValue<T> {
         return create(path, reader, writer, defaultMap, description);
     }
 
+    @NotNull
+    public static <K, V extends Writeable> ConfigValue<Map<K, V>> forMap(@NotNull String path,
+                                                                         @NotNull Function<String, K> keyReadFun,
+                                                                         @NotNull Function<K, String> keyWriteFun,
+                                                                         @NotNull BiFunction<FileConfig, String, V> valReadFun,
+                                                                         //@NotNull Supplier<Map<K, V>> mapSupplier,
+                                                                         @NotNull Consumer<Map<K, V>> defaultValue,
+                                                                         @Nullable String... description) {
+        return forMap(path,keyReadFun, keyWriteFun, (cfg, path2, id) -> valReadFun.apply(cfg, path2), defaultValue, description);
+
+//        Reader<Map<K, V>> reader = (cfg, readPath, def) -> {
+//            var map = new HashMap<K, V>();//mapSupplier.get();
+//            for (String keyRaw : cfg.getSection(readPath)) {
+//                K key = keyReadFun.apply(keyRaw);
+//                V val = valReadFun.apply(cfg, readPath + "." + keyRaw);
+//                if (key == null || val == null) continue;
+//
+//                map.put(key, val);
+//            }
+//            return map;
+//        };
+//
+//        Writer<Map<K, V>> writer = (cfg, writePath, map) -> {
+//            map.forEach((key, value) -> {
+//                String keyRaw = keyWriteFun.apply(key);
+//                value.write(cfg, writePath + "." + keyRaw);
+//            });
+//        };
+//
+//        // Linked map used only to preserve the order of default values when writing it in the config.
+//        Map<K, V> defaultMap = new LinkedHashMap<>();
+//        defaultValue.accept(defaultMap);
+//
+//        return create(path, reader, writer, defaultMap, description);
+    }
+
 //    @NotNull
 //    public static <K, V extends Writeable> ConfigValue<HashMap<K, V>> forHashMap(@NotNull String path,
 //                                                                                 @NotNull Function<String, K> keyReadFun,
@@ -299,6 +337,15 @@ public class ConfigValue<T> {
                                                                                @NotNull BiFunction<FileConfig, String, V> valReadFun,
                                                                                @NotNull Consumer<Map<String, V>> defaultValue,
                                                                                @Nullable String... description) {
+        //return forMap(path, String::toLowerCase, key -> key, valReadFun, defaultValue, description);
+        return forMapById(path, (cfg, path2, id) -> valReadFun.apply(cfg, path2), defaultValue, description);
+    }
+
+    @NotNull
+    public static <V extends Writeable> ConfigValue<Map<String, V>> forMapById(@NotNull String path,
+                                                                               @NotNull ReadFunction<V> valReadFun,
+                                                                               @NotNull Consumer<Map<String, V>> defaultValue,
+                                                                               @Nullable String... description) {
         return forMap(path, String::toLowerCase, key -> key, valReadFun, defaultValue, description);
     }
 
@@ -306,6 +353,17 @@ public class ConfigValue<T> {
     public static <E extends Enum<E>, V extends Writeable> ConfigValue<Map<E, V>> forMapByEnum(@NotNull String path,
                                                                                                @NotNull Class<E> clazz,
                                                                                                @NotNull BiFunction<FileConfig, String, V> valReadFun,
+                                                                                               @NotNull Consumer<Map<E, V>> defaultValue,
+                                                                                               @Nullable String... description) {
+        //return forMap(path, str -> StringUtil.getEnum(str, clazz).orElse(null), Enum::name, valReadFun, defaultValue, description);
+
+        return forMapByEnum(path, clazz, (cfg, path2, id) -> valReadFun.apply(cfg, path2), defaultValue, description);
+    }
+
+    @NotNull
+    public static <E extends Enum<E>, V extends Writeable> ConfigValue<Map<E, V>> forMapByEnum(@NotNull String path,
+                                                                                               @NotNull Class<E> clazz,
+                                                                                               @NotNull ReadFunction<V> valReadFun,
                                                                                                @NotNull Consumer<Map<E, V>> defaultValue,
                                                                                                @Nullable String... description) {
         return forMap(path, str -> StringUtil.getEnum(str, clazz).orElse(null), Enum::name, valReadFun, defaultValue, description);
@@ -334,6 +392,15 @@ public class ConfigValue<T> {
     @NotNull
     public ConfigValue<T> onRead(@NotNull UnaryOperator<T> onRead) {
         this.onRead = onRead;
+        return this;
+    }
+
+    @NotNull
+    public ConfigValue<T> whenRead(@NotNull Consumer<T> onRead) {
+        this.onRead(object -> {
+            onRead.accept(object);
+            return object;
+        });
         return this;
     }
 

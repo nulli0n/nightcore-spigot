@@ -1,12 +1,18 @@
 EntityType:
+  acacia_boat: Acacia Boat
+  acacia_chest_boat: Acacia Boat with Chest
   allay: Allay
   area_effect_cloud: Area Effect Cloud
   armadillo: Armadillo
   armor_stand: Armour Stand
   arrow: Arrow
   axolotl: Axolotl
+  bamboo_chest_raft: Bamboo Raft with Chest
+  bamboo_raft: Bamboo Raft
   bat: Bat
   bee: Bee
+  birch_boat: Birch Boat
+  birch_chest_boat: Birch Boat with Chest
   blaze: Blaze
   block_display: Block Display
   boat: Boat
@@ -16,13 +22,19 @@ EntityType:
   camel: Camel
   cat: Cat
   cave_spider: Cave Spider
+  cherry_boat: Cherry Boat
+  cherry_chest_boat: Cherry Boat with Chest
   chest_boat: Boat with Chest
   chest_minecart: Minecart with Chest
   chicken: Chicken
   cod: Cod
   command_block_minecart: Minecart with Command Block
   cow: Cow
+  creaking: Creaking
+  creaking_transient: Creaking
   creeper: Creeper
+  dark_oak_boat: Dark Oak Boat
+  dark_oak_chest_boat: Dark Oak Boat with Chest
   dolphin: Dolphin
   donkey: Donkey
   dragon_fireball: Dragon Fireball
@@ -63,19 +75,27 @@ EntityType:
   item: Item
   item_display: Item Display
   item_frame: Item Frame
+  jungle_boat: Jungle Boat
+  jungle_chest_boat: Jungle Boat with Chest
   killer_bunny: The Killer Bunny
   leash_knot: Leash Knot
   lightning_bolt: Lightning Bolt
   llama: Llama
   llama_spit: Llama Spit
   magma_cube: Magma Cube
+  mangrove_boat: Mangrove Boat
+  mangrove_chest_boat: Mangrove Boat with Chest
   marker: Marker
   minecart: Minecart
   mooshroom: Mooshroom
   mule: Mule
+  oak_boat: Oak Boat
+  oak_chest_boat: Oak Boat with Chest
   ocelot: Ocelot
   ominous_item_spawner: Ominous Item Spawner
   painting: Painting
+  pale_oak_boat: Pale Oak Boat
+  pale_oak_chest_boat: Pale Oak Boat with Chest
   panda: Panda
   parrot: Parrot
   phantom: Phantom
@@ -104,6 +124,8 @@ EntityType:
   spawner_minecart: Minecart with Monster Spawner
   spectral_arrow: Spectral Arrow
   spider: Spider
+  spruce_boat: Spruce Boat
+  spruce_chest_boat: Spruce Boat with Chest
   squid: Squid
   stray: Stray
   strider: Strider
@@ -359,6 +381,7 @@ Material:
   chiseled_polished_blackstone: Chiselled Polished Blackstone
   chiseled_quartz_block: Chiselled Quartz Block
   chiseled_red_sandstone: Chiselled Red Sandstone
+  chiseled_resin_bricks: Chiselled Resin Bricks
   chiseled_sandstone: Chiselled Sandstone
   chiseled_stone_bricks: Chiselled Stone Bricks
   chiseled_tuff: Chiselled Tuff
@@ -366,6 +389,7 @@ Material:
   chorus_flower: Chorus Flower
   chorus_plant: Chorus Plant
   clay: Clay
+  closed_eyeblossom: Closed Eyeblossom
   coal_block: Block of Coal
   coal_ore: Coal Ore
   coarse_dirt: Coarse Dirt
@@ -397,6 +421,7 @@ Material:
   cracked_stone_bricks: Cracked Stone Bricks
   crafter: Crafter
   crafting_table: Crafting Table
+  creaking_heart: Creaking Heart
   creeper_head: Creeper Head
   creeper_wall_head: Creeper Wall Head
   crimson_button: Crimson Button
@@ -785,6 +810,7 @@ Material:
   obsidian: Obsidian
   ochre_froglight: Ochre Froglight
   ominous_banner: Ominous Banner
+  open_eyeblossom: Open Eyeblossom
   orange_banner: Orange Banner
   orange_bed: Orange Bed
   orange_candle: Orange Candle
@@ -811,6 +837,26 @@ Material:
   oxidized_cut_copper_stairs: Oxidised Cut Copper Stairs
   packed_ice: Compressed Ice
   packed_mud: Packed Mud
+  pale_hanging_moss: Pale Hanging Moss
+  pale_moss_block: Pale Moss Block
+  pale_moss_carpet: Pale Moss Carpet
+  pale_oak_button: Pale Oak Button
+  pale_oak_door: Pale Oak Door
+  pale_oak_fence: Pale Oak Fence
+  pale_oak_fence_gate: Pale Oak Fence Gate
+  pale_oak_hanging_sign: Pale Oak Hanging Sign
+  pale_oak_leaves: Pale Oak Leaves
+  pale_oak_log: Pale Oak Log
+  pale_oak_planks: Pale Oak Planks
+  pale_oak_pressure_plate: Pale Oak Pressure Plate
+  pale_oak_sapling: Pale Oak Sapling
+  pale_oak_sign: Pale Oak Sign
+  pale_oak_slab: Pale Oak Slab
+  pale_oak_stairs: Pale Oak Stairs
+  pale_oak_trapdoor: Pale Oak Trapdoor
+  pale_oak_wall_hanging_sign: Pale Oak Wall Hanging Sign
+  pale_oak_wall_sign: Pale Oak Wall Sign
+  pale_oak_wood: Pale Oak Wood
   pearlescent_froglight: Pearlescent Froglight
   peony: Peony
   petrified_oak_slab: Petrified Oak Slab
@@ -879,6 +925,7 @@ Material:
   potted_brown_mushroom: Potted Brown Mushroom
   potted_cactus: Potted Cactus
   potted_cherry_sapling: Potted Cherry Sapling
+  potted_closed_eyeblossom: Potted Closed Eyeblossom
   potted_cornflower: Potted Cornflower
   potted_crimson_fungus: Potted Crimson Fungus
   potted_crimson_roots: Potted Crimson Roots
@@ -891,8 +938,10 @@ Material:
   potted_lily_of_the_valley: Potted Lily of the Valley
   potted_mangrove_propagule: Potted Mangrove Propagule
   potted_oak_sapling: Potted Oak Sapling
+  potted_open_eyeblossom: Potted Open Eyeblossom
   potted_orange_tulip: Potted Orange Tulip
   potted_oxeye_daisy: Potted Oxeye Daisy
+  potted_pale_oak_sapling: Potted Pale Oak Sapling
   potted_pink_tulip: Potted Pink Tulip
   potted_poppy: Potted Poppy
   potted_red_mushroom: Potted Red Mushroom
@@ -975,6 +1024,12 @@ Material:
   reinforced_deepslate: Reinforced Deepslate
   repeater: Redstone Repeater
   repeating_command_block: Repeating Command Block
+  resin_block: Block of Resin
+  resin_brick_slab: Resin Brick Slab
+  resin_brick_stairs: Resin Brick Stairs
+  resin_brick_wall: Resin Brick Wall
+  resin_bricks: Resin Bricks
+  resin_clump: Resin Clump
   respawn_anchor: Respawn Anchor
   rooted_dirt: Rooted Dirt
   rose_bush: Rose Bush
@@ -1073,6 +1128,8 @@ Material:
   stripped_mangrove_wood: Stripped Mangrove Wood
   stripped_oak_log: Stripped Oak Log
   stripped_oak_wood: Stripped Oak Wood
+  stripped_pale_oak_log: Stripped Pale Oak Log
+  stripped_pale_oak_wood: Stripped Pale Oak Wood
   stripped_spruce_log: Stripped Spruce Log
   stripped_spruce_wood: Stripped Spruce Wood
   stripped_warped_hyphae: Stripped Warped Hyphae
@@ -1247,12 +1304,14 @@ Material:
   beetroot_soup: Beetroot Soup
   birch_boat: Birch Boat
   birch_chest_boat: Birch Boat with Chest
+  black_bundle: Black Bundle
   black_dye: Black Dye
   blade_pottery_shard: Blade Pottery Shard
   blade_pottery_sherd: Blade Pottery Sherd
   blaze_powder: Blaze Powder
   blaze_rod: Blaze Rod
   blaze_spawn_egg: Blaze Spawn Egg
+  blue_bundle: Blue Bundle
   blue_dye: Blue Dye
   bogged_spawn_egg: Bogged Spawn Egg
   bolt_armor_trim_smithing_template: Smithing Template
@@ -1268,6 +1327,7 @@ Material:
   brewer_pottery_shard: Brewer Pottery Shard
   brewer_pottery_sherd: Brewer Pottery Sherd
   brick: Brick
+  brown_bundle: Brown Bundle
   brown_dye: Brown Dye
   brush: Brush
   bucket: Bucket
@@ -1310,9 +1370,11 @@ Material:
   cookie: Biscuit
   copper_ingot: Copper Ingot
   cow_spawn_egg: Cow Spawn Egg
+  creaking_spawn_egg: Creaking Spawn Egg
   creeper_banner_pattern: Banner Pattern
   creeper_spawn_egg: Creeper Spawn Egg
   crossbow: Crossbow
+  cyan_bundle: Cyan Bundle
   cyan_dye: Cyan Dye
   danger_pottery_shard: Danger Pottery Shard
   danger_pottery_sherd: Danger Pottery Sherd
@@ -1400,7 +1462,9 @@ Material:
   golden_pickaxe: Golden Pickaxe
   golden_shovel: Golden Shovel
   golden_sword: Golden Sword
+  gray_bundle: Grey Bundle
   gray_dye: Grey Dye
+  green_bundle: Green Bundle
   green_dye: Green Dye
   guardian_spawn_egg: Guardian Spawn Egg
   gunpowder: Gunpowder
@@ -1447,13 +1511,17 @@ Material:
   leather_helmet: Leather Hat
   leather_horse_armor: Leather Horse Armour
   leather_leggings: Leather Trousers
+  light_blue_bundle: Light Blue Bundle
   light_blue_dye: Light Blue Dye
+  light_gray_bundle: Light Grey Bundle
   light_gray_dye: Light Grey Dye
+  lime_bundle: Lime Bundle
   lime_dye: Lime Dye
   lingering_potion: Lingering Potion
   llama_spawn_egg: Llama Spawn Egg
   lodestone_compass: Lodestone Compass
   mace: Mace
+  magenta_bundle: Magenta Bundle
   magenta_dye: Magenta Dye
   magma_cream: Magma Cream
   magma_cube_spawn_egg: Magma Cube Spawn Egg
@@ -1513,8 +1581,11 @@ Material:
   ocelot_spawn_egg: Ocelot Spawn Egg
   ominous_bottle: Ominous Bottle
   ominous_trial_key: Ominous Trial Key
+  orange_bundle: Orange Bundle
   orange_dye: Orange Dye
   painting: Painting
+  pale_oak_boat: Pale Oak Boat
+  pale_oak_chest_boat: Pale Oak Boat with Chest
   panda_spawn_egg: Panda Spawn Egg
   paper: Paper
   parrot_spawn_egg: Parrot Spawn Egg
@@ -1525,6 +1596,7 @@ Material:
   piglin_brute_spawn_egg: Piglin Brute Spawn Egg
   piglin_spawn_egg: Piglin Spawn Egg
   pillager_spawn_egg: Pillager Spawn Egg
+  pink_bundle: Pink Bundle
   pink_dye: Pink Dye
   pitcher_pod: Pitcher Pod
   plenty_pottery_shard: Plenty Pottery Shard
@@ -1549,6 +1621,7 @@ Material:
   pufferfish_spawn_egg: Pufferfish Spawn Egg
   pumpkin_pie: Pumpkin Pie
   pumpkin_seeds: Pumpkin Seeds
+  purple_bundle: Purple Bundle
   purple_dye: Purple Dye
   quartz: Nether Quartz
   rabbit: Raw Rabbit
@@ -1562,8 +1635,10 @@ Material:
   raw_gold: Raw Gold
   raw_iron: Raw Iron
   recovery_compass: Recovery Compass
+  red_bundle: Red Bundle
   red_dye: Red Dye
   redstone: Redstone Dust
+  resin_brick: Resin Brick
   rib_armor_trim_smithing_template: Smithing Template
   rotten_flesh: Rotten Flesh
   saddle: Saddle
@@ -1648,6 +1723,7 @@ Material:
   water_bucket: Water Bucket
   wayfinder_armor_trim_smithing_template: Smithing Template
   wheat_seeds: Wheat Seeds
+  white_bundle: White Bundle
   white_dye: White Dye
   wild_armor_trim_smithing_template: Smithing Template
   wind_charge: Wind Charge
@@ -1663,6 +1739,7 @@ Material:
   wooden_sword: Wooden Sword
   writable_book: Book and Quill
   written_book: Written Book
+  yellow_bundle: Yellow Bundle
   yellow_dye: Yellow Dye
   zoglin_spawn_egg: Zoglin Spawn Egg
   zombie_horse_spawn_egg: Zombie Horse Spawn Egg

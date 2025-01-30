@@ -29,7 +29,18 @@ public class ItemUtil {
     @NotNull
     public static String getItemName(@NotNull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
-        return (meta == null || !meta.hasDisplayName()) ? LangAssets.get(item.getType()) : meta.getDisplayName();
+        if (meta != null) {
+            if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
+                // MiniMessage.miniMessage().serialize(meta.itemName()));
+                return meta.getItemName();
+            }
+            else if (meta.hasDisplayName()) {
+                // MiniMessage.miniMessage().serialize(meta.displayName()));
+                return meta.getDisplayName();
+            }
+        }
+
+        return LangAssets.get(item.getType());
     }
 
     public static void editMeta(@NotNull ItemStack item, @NotNull Consumer<ItemMeta> function) {

@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
+import org.bukkit.inventory.view.builder.LocationInventoryViewBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
@@ -18,10 +19,12 @@ import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.ui.menu.click.ClickResult;
+import su.nightexpress.nightcore.ui.menu.data.Linked;
 import su.nightexpress.nightcore.ui.menu.item.ItemHandler;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.Lists;
-import su.nightexpress.nightcore.util.TimeUtil;
+import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.bridge.ServerBridge;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
@@ -41,7 +44,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
     protected String   title;
     protected boolean  persistent;
     protected int     autoRefreshInterval;
-    protected long    autoRefreshDate;
+    protected long    autoRefreshIn;
     protected boolean applyPlaceholderAPI;
 
     public AbstractMenu(@NotNull P plugin, @NotNull MenuType menuType, @NotNull String title) {
@@ -53,6 +56,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
         this.setPersistent(true);
         this.setApplyPlaceholderAPI(false);
         this.setAutoRefreshInterval(-1);
+        this.setAutoRefreshIn(-1);
     }
 
     @Override
@@ -77,6 +81,20 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
     protected void closeFully(@NotNull MenuViewer viewer) {
         viewer.getPlayer().closeInventory();
         this.onClose(viewer);
+    }
+
+    @Override
+    public void tick() {
+        if (this.autoRefreshInterval > 0) {
+            if (this.isReadyToRefresh()) {
+                this.flush();
+                this.setAutoRefreshIn(this.autoRefreshInterval);
+            }
+
+            if (this.autoRefreshIn > 0) {
+                this.autoRefreshIn--;
+            }
+        }
     }
 
     @Override
@@ -124,17 +142,33 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
         viewer.removeItems();
         onViewSet.accept(viewer);
 
-        String title = NightMessage.asLegacy(this.getTitle(viewer));
+        //String title = NightMessage.asLegacy(this.getTitle(viewer));
 
         InventoryView view = viewer.getView();
-        if (view == null) {
-            view = this.menuType.typed().create(player, title);
+        if (view == null || viewer.isRebuildMenu()) {
+
+            // Save cache so its not wiped by .openInventory call due to internal InventoryCloseEvent.
+            if (view != null && this instanceof Linked<?> linked) {
+                linked.getCache().addAnchor(player);
+            }
+
+            if (Version.isAtLeast(Version.MC_1_21_3)) {
+                var builder = this.menuType.typed().builder();
+                // Stupid hack to bypass 9X3 (and probably other container-based) menu types to be bound to real container(s) at player's location.
+                if (builder instanceof LocationInventoryViewBuilder<?> locationBuilder) {
+                    locationBuilder.location(player.getEyeLocation());
+                }
+                view = ServerBridge.createView(builder, this.getTitle(viewer), player);
+            }
+            else {
+                view = this.menuType.typed().create(player, NightMessage.asLegacy(this.getTitle(viewer)));
+            }
             viewer.assignInventory(view);
             player.openInventory(view);
         }
         else {
             view.getTopInventory().clear();
-            if (viewer.isUpdateTitle()) view.setTitle(title);
+            //if (viewer.isUpdateTitle()) view.setTitle(NightMessage.asLegacy(this.getTitle(viewer)));
         }
 
         this.onPrepare(viewer, view);
@@ -153,6 +187,8 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
                 handler.getOptions().modifyDisplay(viewer, item);
             }
 
+            this.onItemPrepare(viewer, menuItem, item);
+
             ItemStack itemStack = item.getItemStack();
 
             for (int slot : menuItem.getSlots()) {
@@ -170,6 +206,10 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
     protected abstract void onPrepare(@NotNull MenuViewer viewer, @NotNull InventoryView view);
 
     protected abstract void onReady(@NotNull MenuViewer viewer, @NotNull Inventory inventory);
+
+    protected void onItemPrepare(@NotNull MenuViewer viewer, @NotNull MenuItem menuItem, @NotNull NightItem item) {
+
+    }
 
     @Override
     public void onClick(@NotNull MenuViewer viewer, @NotNull ClickResult result, @NotNull InventoryClickEvent event) {
@@ -334,21 +374,22 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
     @Override
     public void setAutoRefreshInterval(int autoRefreshInterval) {
         this.autoRefreshInterval = autoRefreshInterval;
+        this.setAutoRefreshIn(autoRefreshInterval);
     }
 
     @Override
-    public long getAutoRefreshDate() {
-        return this.autoRefreshDate;
+    public long getAutoRefreshIn() {
+        return this.autoRefreshIn;
     }
 
     @Override
-    public void setAutoRefreshDate(long autoRefreshDate) {
-        this.autoRefreshDate = autoRefreshDate;
+    public void setAutoRefreshIn(long autoRefreshIn) {
+        this.autoRefreshIn = autoRefreshIn;
     }
 
     @Override
     public boolean isReadyToRefresh() {
-        return this.autoRefreshInterval > 0 && TimeUtil.isPassed(this.autoRefreshDate);
+        return /*this.autoRefreshInterval > 0 && */this.autoRefreshIn == 0L;//TimeUtil.isPassed(this.autoRefreshIn);
     }
 
     @Override

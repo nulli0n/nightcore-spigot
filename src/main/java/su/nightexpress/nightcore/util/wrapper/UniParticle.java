@@ -89,6 +89,9 @@ public class UniParticle {
             double size = config.getDouble(path + ".Size", 1D);
             data = new Particle.DustOptions(color, (float) size);
         }
+        else if (dataType == Color.class) {
+            data = StringUtil.getColor(config.getString(path + ".Color", ""));
+        }
         else if (dataType == Particle.DustTransition.class) {
             Color colorStart = StringUtil.getColor(config.getString(path + ".Color_From", ""));
             Color colorEnd = StringUtil.getColor(config.getString(path + ".Color_To", ""));
@@ -129,6 +132,9 @@ public class UniParticle {
             config.set(path + ".Color", color.getRed() + "," + color.getGreen() + "," + color.getBlue());
             config.set(path + ".Size", dustOptions.getSize());
         }
+        else if (data instanceof Color color) {
+            config.set(path + ".Color", color.getRed() + "," + color.getGreen() + "," + color.getBlue());
+        }
         else if (data instanceof ItemStack item) {
             config.setItem(path + ".Item", item);
         }
@@ -164,6 +170,9 @@ public class UniParticle {
         }
         else if (dataType == Particle.DustOptions.class) {
             this.data = new Particle.DustOptions(Color.WHITE, 1F);
+        }
+        else if (dataType == Color.class) {
+            this.data = Color.WHITE;
         }
         else if (dataType == Particle.DustTransition.class) {
             this.data = new Particle.DustTransition(Color.BLACK, Color.WHITE, 1F);

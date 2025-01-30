@@ -10,9 +10,9 @@ import su.nightexpress.nightcore.menu.MenuListener;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.ui.UIListener;
 import su.nightexpress.nightcore.ui.dialog.DialogManager;
+import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
-import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.util.HashSet;
 
@@ -52,11 +52,10 @@ public class CoreManager extends AbstractManager<NightCore> {
             }
         });
 
-        MenuRegistry.getViewers().stream().map(MenuViewer::getMenu).distinct().forEach(menu -> {
-            if (menu.isReadyToRefresh()) {
-                menu.flush();
-                menu.setAutoRefreshDate(TimeUtil.createFutureTimestamp(menu.getAutoRefreshInterval()));
-            }
-        });
+        //            if (menu.isReadyToRefresh()) {
+        //                menu.flush();
+        //                menu.setAutoRefreshIn(TimeUtil.createFutureTimestamp(menu.getAutoRefreshInterval()));
+        //            }
+        MenuRegistry.getViewers().stream().map(MenuViewer::getMenu).distinct().forEach(Menu::tick);
     }
 }

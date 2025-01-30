@@ -29,11 +29,17 @@ public class Tags {
     public static final ShortHexColorTag HEX_COLOR_SHORT = new ShortHexColorTag();
     public static final TranslationTag   TRANSLATE       = new TranslationTag();
 
-    public static final FontStyleTag BOLD          = new FontStyleTag("b", new String[]{"bold"}, FontStyleTag.Style.BOLD);
-    public static final FontStyleTag ITALIC        = new FontStyleTag("i", new String[]{"em", "italic"}, FontStyleTag.Style.ITALIC);
-    public static final FontStyleTag OBFUSCATED    = new FontStyleTag("o", new String[]{"obfuscated", "obf"}, FontStyleTag.Style.OBFUSCATED);
-    public static final FontStyleTag STRIKETHROUGH = new FontStyleTag("s", new String[]{"strikethrough", "st"}, FontStyleTag.Style.STRIKETHROUGH);
-    public static final FontStyleTag UNDERLINED    = new FontStyleTag("u", new String[]{"underlined"}, FontStyleTag.Style.UNDERLINED);
+    public static final FontStyleTag BOLD          = new FontStyleTag("b", new String[]{"bold"}, FontStyleTag.Style.BOLD, false);
+    public static final FontStyleTag ITALIC        = new FontStyleTag("i", new String[]{"em", "italic"}, FontStyleTag.Style.ITALIC, false);
+    public static final FontStyleTag OBFUSCATED    = new FontStyleTag("o", new String[]{"obfuscated", "obf"}, FontStyleTag.Style.OBFUSCATED, false);
+    public static final FontStyleTag STRIKETHROUGH = new FontStyleTag("s", new String[]{"strikethrough", "st"}, FontStyleTag.Style.STRIKETHROUGH, false);
+    public static final FontStyleTag UNDERLINED    = new FontStyleTag("u", new String[]{"underlined"}, FontStyleTag.Style.UNDERLINED, false);
+
+    public static final FontStyleTag UNBOLD          = BOLD.inverted();
+    public static final FontStyleTag UNITALIC        = ITALIC.inverted();
+    public static final FontStyleTag UNOBFUSCATED    = OBFUSCATED.inverted();
+    public static final FontStyleTag UNSTRIKETHROUGH = STRIKETHROUGH.inverted();
+    public static final FontStyleTag UNUNDERLINED    = UNDERLINED.inverted();
 
     public static final ColorTag BLACK  = new ColorTag("black", "#000000");
     public static final ColorTag WHITE  = new ColorTag("white", "#ffffff");
@@ -69,7 +75,10 @@ public class Tags {
             Tags.LIGHT_BLUE, Tags.LIGHT_CYAN, Tags.LIGHT_PURPLE, Tags.LIGHT_PINK
         );
 
-        registerTags(Tags.BOLD, Tags.ITALIC, Tags.OBFUSCATED, Tags.STRIKETHROUGH, Tags.UNDERLINED);
+        registerTags(
+            Tags.BOLD, Tags.ITALIC, Tags.OBFUSCATED, Tags.STRIKETHROUGH, Tags.UNDERLINED,
+            Tags.UNBOLD, Tags.UNITALIC, Tags.UNOBFUSCATED, Tags.UNSTRIKETHROUGH, Tags.UNUNDERLINED
+        );
 
         registerTags(Tags.GRADIENT, Tags.LINE_BREAK, Tags.FONT, Tags.HOVER, Tags.CLICK,
             Tags.RESET, Tags.HEX_COLOR, Tags.HEX_COLOR_SHORT, Tags.TRANSLATE);

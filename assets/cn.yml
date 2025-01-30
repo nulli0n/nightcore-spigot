@@ -1,12 +1,18 @@
 EntityType:
+  acacia_boat: 金合欢木船
+  acacia_chest_boat: 金合欢木运输船
   allay: 悦灵
   area_effect_cloud: 区域效果云
   armadillo: 犰狳
   armor_stand: 盔甲架
   arrow: 箭
   axolotl: 美西螈
+  bamboo_chest_raft: 运输竹筏
+  bamboo_raft: 竹筏
   bat: 蝙蝠
   bee: 蜜蜂
+  birch_boat: 白桦木船
+  birch_chest_boat: 白桦木运输船
   blaze: 烈焰人
   block_display: 方块展示实体
   boat: 船
@@ -16,13 +22,19 @@ EntityType:
   camel: 骆驼
   cat: 猫
   cave_spider: 洞穴蜘蛛
+  cherry_boat: 樱花木船
+  cherry_chest_boat: 樱花木运输船
   chest_boat: 运输船
   chest_minecart: 运输矿车
   chicken: 鸡
   cod: 鳕鱼
   command_block_minecart: 命令方块矿车
   cow: 牛
+  creaking: 嘎枝
+  creaking_transient: 嘎枝
   creeper: 苦力怕
+  dark_oak_boat: 深色橡木船
+  dark_oak_chest_boat: 深色橡木运输船
   dolphin: 海豚
   donkey: 驴
   dragon_fireball: 末影龙火球
@@ -63,19 +75,27 @@ EntityType:
   item: 物品
   item_display: 物品展示实体
   item_frame: 物品展示框
+  jungle_boat: 丛林木船
+  jungle_chest_boat: 丛林木运输船
   killer_bunny: 杀手兔
   leash_knot: 拴绳结
   lightning_bolt: 闪电束
   llama: 羊驼
   llama_spit: 羊驼唾沫
   magma_cube: 岩浆怪
+  mangrove_boat: 红树木船
+  mangrove_chest_boat: 红树木运输船
   marker: 标记
   minecart: 矿车
   mooshroom: 哞菇
   mule: 骡
+  oak_boat: 橡木船
+  oak_chest_boat: 橡木运输船
   ocelot: 豹猫
   ominous_item_spawner: 不祥之物生成器
   painting: 画
+  pale_oak_boat: 苍白橡木船
+  pale_oak_chest_boat: 苍白橡木运输船
   panda: 熊猫
   parrot: 鹦鹉
   phantom: 幻翼
@@ -104,6 +124,8 @@ EntityType:
   spawner_minecart: 刷怪笼矿车
   spectral_arrow: 光灵箭
   spider: 蜘蛛
+  spruce_boat: 云杉木船
+  spruce_chest_boat: 云杉木运输船
   squid: 鱿鱼
   stray: 流浪者
   strider: 炽足兽
@@ -359,6 +381,7 @@ Material:
   chiseled_polished_blackstone: 雕纹磨制黑石
   chiseled_quartz_block: 雕纹石英块
   chiseled_red_sandstone: 雕纹红砂岩
+  chiseled_resin_bricks: 雕纹树脂砖块
   chiseled_sandstone: 雕纹砂岩
   chiseled_stone_bricks: 雕纹石砖
   chiseled_tuff: 雕纹凝灰岩
@@ -366,6 +389,7 @@ Material:
   chorus_flower: 紫颂花
   chorus_plant: 紫颂植株
   clay: 黏土
+  closed_eyeblossom: 闭合的眼眸花
   coal_block: 煤炭块
   coal_ore: 煤矿石
   coarse_dirt: 砂土
@@ -397,6 +421,7 @@ Material:
   cracked_stone_bricks: 裂纹石砖
   crafter: 合成器
   crafting_table: 工作台
+  creaking_heart: 嘎枝之心
   creeper_head: 苦力怕的头
   creeper_wall_head: 墙上的苦力怕的头
   crimson_button: 绯红木按钮
@@ -785,6 +810,7 @@ Material:
   obsidian: 黑曜石
   ochre_froglight: 赭黄蛙明灯
   ominous_banner: 不祥旗帜
+  open_eyeblossom: 张开的眼眸花
   orange_banner: 橙色旗帜
   orange_bed: 橙色床
   orange_candle: 橙色蜡烛
@@ -811,6 +837,26 @@ Material:
   oxidized_cut_copper_stairs: 氧化的切制铜楼梯
   packed_ice: 浮冰
   packed_mud: 泥坯
+  pale_hanging_moss: 苍白垂须
+  pale_moss_block: 苍白苔藓块
+  pale_moss_carpet: 苍白覆地苔藓
+  pale_oak_button: 苍白橡木按钮
+  pale_oak_door: 苍白橡木门
+  pale_oak_fence: 苍白橡木栅栏
+  pale_oak_fence_gate: 苍白橡木栅栏门
+  pale_oak_hanging_sign: 悬挂式苍白橡木告示牌
+  pale_oak_leaves: 苍白橡树树叶
+  pale_oak_log: 苍白橡木原木
+  pale_oak_planks: 苍白橡木木板
+  pale_oak_pressure_plate: 苍白橡木压力板
+  pale_oak_sapling: 苍白橡树树苗
+  pale_oak_sign: 苍白橡木告示牌
+  pale_oak_slab: 苍白橡木台阶
+  pale_oak_stairs: 苍白橡木楼梯
+  pale_oak_trapdoor: 苍白橡木活板门
+  pale_oak_wall_hanging_sign: 墙上的悬挂式苍白橡木告示牌
+  pale_oak_wall_sign: 墙上的苍白橡木告示牌
+  pale_oak_wood: 苍白橡木
   pearlescent_froglight: 珠光蛙明灯
   peony: 牡丹
   petrified_oak_slab: 石化橡木台阶
@@ -879,6 +925,7 @@ Material:
   potted_brown_mushroom: 棕色蘑菇盆栽
   potted_cactus: 仙人掌盆栽
   potted_cherry_sapling: 樱花树苗盆栽
+  potted_closed_eyeblossom: 闭合的眼眸花盆栽
   potted_cornflower: 矢车菊盆栽
   potted_crimson_fungus: 绯红菌盆栽
   potted_crimson_roots: 绯红菌索盆栽
@@ -891,8 +938,10 @@ Material:
   potted_lily_of_the_valley: 铃兰盆栽
   potted_mangrove_propagule: 红树胎生苗盆栽
   potted_oak_sapling: 橡树树苗盆栽
+  potted_open_eyeblossom: 张开的眼眸花盆栽
   potted_orange_tulip: 橙色郁金香盆栽
   potted_oxeye_daisy: 滨菊盆栽
+  potted_pale_oak_sapling: 苍白橡树树苗盆栽
   potted_pink_tulip: 粉红色郁金香盆栽
   potted_poppy: 虞美人盆栽
   potted_red_mushroom: 红色蘑菇盆栽
@@ -975,6 +1024,12 @@ Material:
   reinforced_deepslate: 强化深板岩
   repeater: 红石中继器
   repeating_command_block: 循环型命令方块
+  resin_block: 树脂块
+  resin_brick_slab: 树脂砖台阶
+  resin_brick_stairs: 树脂砖楼梯
+  resin_brick_wall: 树脂砖墙
+  resin_bricks: 树脂砖块
+  resin_clump: 树脂团
   respawn_anchor: 重生锚
   rooted_dirt: 缠根泥土
   rose_bush: 玫瑰丛
@@ -1073,6 +1128,8 @@ Material:
   stripped_mangrove_wood: 去皮红树木
   stripped_oak_log: 去皮橡木原木
   stripped_oak_wood: 去皮橡木
+  stripped_pale_oak_log: 去皮苍白橡木原木
+  stripped_pale_oak_wood: 去皮苍白橡木
   stripped_spruce_log: 去皮云杉原木
   stripped_spruce_wood: 去皮云杉木
   stripped_warped_hyphae: 去皮诡异菌核
@@ -1247,12 +1304,14 @@ Material:
   beetroot_soup: 甜菜汤
   birch_boat: 白桦木船
   birch_chest_boat: 白桦木运输船
+  black_bundle: 黑色收纳袋
   black_dye: 黑色染料
   blade_pottery_shard: 利刃纹样陶片
   blade_pottery_sherd: 利刃纹样陶片
   blaze_powder: 烈焰粉
   blaze_rod: 烈焰棒
   blaze_spawn_egg: 烈焰人刷怪蛋
+  blue_bundle: 蓝色收纳袋
   blue_dye: 蓝色染料
   bogged_spawn_egg: 沼骸刷怪蛋
   bolt_armor_trim_smithing_template: 锻造模板
@@ -1268,6 +1327,7 @@ Material:
   brewer_pottery_shard: 佳酿纹样陶片
   brewer_pottery_sherd: 佳酿纹样陶片
   brick: 红砖
+  brown_bundle: 棕色收纳袋
   brown_dye: 棕色染料
   brush: 刷子
   bucket: 铁桶
@@ -1310,9 +1370,11 @@ Material:
   cookie: 曲奇
   copper_ingot: 铜锭
   cow_spawn_egg: 牛刷怪蛋
+  creaking_spawn_egg: 嘎枝刷怪蛋
   creeper_banner_pattern: 旗帜图案
   creeper_spawn_egg: 苦力怕刷怪蛋
   crossbow: 弩
+  cyan_bundle: 青色收纳袋
   cyan_dye: 青色染料
   danger_pottery_shard: 危机纹样陶片
   danger_pottery_sherd: 危机纹样陶片
@@ -1400,7 +1462,9 @@ Material:
   golden_pickaxe: 金镐
   golden_shovel: 金锹
   golden_sword: 金剑
+  gray_bundle: 灰色收纳袋
   gray_dye: 灰色染料
+  green_bundle: 绿色收纳袋
   green_dye: 绿色染料
   guardian_spawn_egg: 守卫者刷怪蛋
   gunpowder: 火药
@@ -1447,13 +1511,17 @@ Material:
   leather_helmet: 皮革帽子
   leather_horse_armor: 皮革马铠
   leather_leggings: 皮革裤子
+  light_blue_bundle: 淡蓝色收纳袋
   light_blue_dye: 淡蓝色染料
+  light_gray_bundle: 淡灰色收纳袋
   light_gray_dye: 淡灰色染料
+  lime_bundle: 黄绿色收纳袋
   lime_dye: 黄绿色染料
   lingering_potion: 滞留药水
   llama_spawn_egg: 羊驼刷怪蛋
   lodestone_compass: 磁石指针
   mace: 重锤
+  magenta_bundle: 品红色收纳袋
   magenta_dye: 品红色染料
   magma_cream: 岩浆膏
   magma_cube_spawn_egg: 岩浆怪刷怪蛋
@@ -1513,8 +1581,11 @@ Material:
   ocelot_spawn_egg: 豹猫刷怪蛋
   ominous_bottle: 不祥之瓶
   ominous_trial_key: 不祥试炼钥匙
+  orange_bundle: 橙色收纳袋
   orange_dye: 橙色染料
   painting: 画
+  pale_oak_boat: 苍白橡木船
+  pale_oak_chest_boat: 苍白橡木运输船
   panda_spawn_egg: 熊猫刷怪蛋
   paper: 纸
   parrot_spawn_egg: 鹦鹉刷怪蛋
@@ -1525,6 +1596,7 @@ Material:
   piglin_brute_spawn_egg: 猪灵蛮兵刷怪蛋
   piglin_spawn_egg: 猪灵刷怪蛋
   pillager_spawn_egg: 掠夺者刷怪蛋
+  pink_bundle: 粉红色收纳袋
   pink_dye: 粉红色染料
   pitcher_pod: 瓶子草荚果
   plenty_pottery_shard: 富饶纹样陶片
@@ -1549,6 +1621,7 @@ Material:
   pufferfish_spawn_egg: 河豚刷怪蛋
   pumpkin_pie: 南瓜派
   pumpkin_seeds: 南瓜种子
+  purple_bundle: 紫色收纳袋
   purple_dye: 紫色染料
   quartz: 下界石英
   rabbit: 生兔肉
@@ -1562,8 +1635,10 @@ Material:
   raw_gold: 粗金
   raw_iron: 粗铁
   recovery_compass: 追溯指针
+  red_bundle: 红色收纳袋
   red_dye: 红色染料
   redstone: 红石粉
+  resin_brick: 树脂砖
   rib_armor_trim_smithing_template: 锻造模板
   rotten_flesh: 腐肉
   saddle: 鞍
@@ -1648,6 +1723,7 @@ Material:
   water_bucket: 水桶
   wayfinder_armor_trim_smithing_template: 锻造模板
   wheat_seeds: 小麦种子
+  white_bundle: 白色收纳袋
   white_dye: 白色染料
   wild_armor_trim_smithing_template: 锻造模板
   wind_charge: 风弹
@@ -1663,6 +1739,7 @@ Material:
   wooden_sword: 木剑
   writable_book: 书与笔
   written_book: 成书
+  yellow_bundle: 黄色收纳袋
   yellow_dye: 黄色染料
   zoglin_spawn_egg: 僵尸疣猪兽刷怪蛋
   zombie_horse_spawn_egg: 僵尸马刷怪蛋

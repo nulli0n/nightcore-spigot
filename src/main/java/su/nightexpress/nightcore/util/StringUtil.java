@@ -269,7 +269,7 @@ public class StringUtil {
 
     @NotNull
     public static String transformForID(@NotNull String str, int length) {
-        char[] chars = str.toCharArray();
+        char[] chars = str.toLowerCase().toCharArray();
 
         StringBuilder builder = new StringBuilder();
         for (int index = 0; index < chars.length; index++) {

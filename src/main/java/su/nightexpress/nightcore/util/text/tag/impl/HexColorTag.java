@@ -17,6 +17,11 @@ public class HexColorTag extends Tag implements ContentTag {
         super(NAME, new String[]{"colour", "c"});
     }
 
+    @NotNull
+    public String enclose(@NotNull String text, @NotNull String hex) {
+        return brackets(this.name + ":" + hex) + text + closedBrackets(this.name);
+    }
+
     @Override
     @Nullable
     public BaseColorDecorator parse(@NotNull String tagContent) {

@@ -1,12 +1,18 @@
 EntityType:
+  acacia_boat: Akazienholzboot
+  acacia_chest_boat: Akazienholztruhenboot
   allay: Hilfsgeist
   area_effect_cloud: Partikelwolke
   armadillo: Gürteltier
   armor_stand: Rüstungsständer
   arrow: Pfeil
   axolotl: Axolotl
+  bamboo_chest_raft: Bambus-Truhenfloß
+  bamboo_raft: Bambusfloß
   bat: Fledermaus
   bee: Biene
+  birch_boat: Birkenholzboot
+  birch_chest_boat: Birkenholztruhenboot
   blaze: Lohe
   block_display: Blockdarsteller
   boat: Boot
@@ -16,13 +22,19 @@ EntityType:
   camel: Dromedar
   cat: Katze
   cave_spider: Höhlenspinne
+  cherry_boat: Kirschholzboot
+  cherry_chest_boat: Kirschholztruhenboot
   chest_boat: Truhenboot
   chest_minecart: Güterlore
   chicken: Huhn
   cod: Kabeljau
   command_block_minecart: Befehlsblocklore
   cow: Kuh
+  creaking: Knarz
+  creaking_transient: Knarz
   creeper: Creeper
+  dark_oak_boat: Schwarzeichenholzboot
+  dark_oak_chest_boat: Schwarzeichenholztruhenboot
   dolphin: Delfin
   donkey: Esel
   dragon_fireball: Drachen-Feuerkugel
@@ -63,19 +75,27 @@ EntityType:
   item: Gegenstand
   item_display: Gegenstandsdarsteller
   item_frame: Rahmen
+  jungle_boat: Tropenholzboot
+  jungle_chest_boat: Tropenholztruhenboot
   killer_bunny: Das Killer-Kaninchen
   leash_knot: Leinenknoten
   lightning_bolt: Blitz
   llama: Lama
   llama_spit: Lamaspucke
   magma_cube: Magmawürfel
+  mangrove_boat: Mangrovenholzboot
+  mangrove_chest_boat: Mangrovenholztruhenboot
   marker: Marker
   minecart: Lore
   mooshroom: Mooshroom
   mule: Maultier
+  oak_boat: Eichenholzboot
+  oak_chest_boat: Eichenholztruhenboot
   ocelot: Ozelot
   ominous_item_spawner: Unheilvoller Gegenstands-Spawner
   painting: Gemälde
+  pale_oak_boat: Blasseichenholzboot
+  pale_oak_chest_boat: Blasseichenholztruhenboot
   panda: Panda
   parrot: Papagei
   phantom: Phantom
@@ -104,6 +124,8 @@ EntityType:
   spawner_minecart: Spawner-Lore
   spectral_arrow: Spektralpfeil
   spider: Spinne
+  spruce_boat: Fichtenholzboot
+  spruce_chest_boat: Fichtenholztruhenboot
   squid: Tintenfisch
   stray: Eiswanderer
   strider: Schreiter
@@ -359,6 +381,7 @@ Material:
   chiseled_polished_blackstone: Gemeißelter polierter Schwarzstein
   chiseled_quartz_block: Gemeißelter Quarzblock
   chiseled_red_sandstone: Gemeißelter roter Sandstein
+  chiseled_resin_bricks: Gemeißelte Harzziegel
   chiseled_sandstone: Gemeißelter Sandstein
   chiseled_stone_bricks: Gemeißelte Steinziegel
   chiseled_tuff: Gemeißelter Tuffstein
@@ -366,6 +389,7 @@ Material:
   chorus_flower: Chorusblüte
   chorus_plant: Choruspflanze
   clay: Ton
+  closed_eyeblossom: Geschlossene Augenblüte
   coal_block: Kohleblock
   coal_ore: Steinkohle
   coarse_dirt: Grobe Erde
@@ -397,6 +421,7 @@ Material:
   cracked_stone_bricks: Rissige Steinziegel
   crafter: Werker
   crafting_table: Werkbank
+  creaking_heart: Knarzherz
   creeper_head: Creeperkopf
   creeper_wall_head: Creeper-Wandkopf
   crimson_button: Karmesinknopf
@@ -785,6 +810,7 @@ Material:
   obsidian: Obsidian
   ochre_froglight: Ockernes Froschlicht
   ominous_banner: Unheilvolles Banner
+  open_eyeblossom: Geöffnete Augenblüte
   orange_banner: Oranges Banner
   orange_bed: Oranges Bett
   orange_candle: Orange Kerze
@@ -811,6 +837,26 @@ Material:
   oxidized_cut_copper_stairs: Oxidierte geschnittene Kupfertreppe
   packed_ice: Packeis
   packed_mud: Fester Schlamm
+  pale_hanging_moss: Hängendes Blassmoos
+  pale_moss_block: Blassmoosblock
+  pale_moss_carpet: Blassmoosteppich
+  pale_oak_button: Blasseichenholzknopf
+  pale_oak_door: Blasseichenholztür
+  pale_oak_fence: Blasseichenholzzaun
+  pale_oak_fence_gate: Blasseichenholzzauntor
+  pale_oak_hanging_sign: Blasseichenholzhängeschild
+  pale_oak_leaves: Blasseichenlaub
+  pale_oak_log: Blasseichenstamm
+  pale_oak_planks: Blasseichenholzbretter
+  pale_oak_pressure_plate: Blasseichenholzdruckplatte
+  pale_oak_sapling: Blasseichensetzling
+  pale_oak_sign: Blasseichenholzschild
+  pale_oak_slab: Blasseichenholzstufe
+  pale_oak_stairs: Blasseichenholztreppe
+  pale_oak_trapdoor: Blasseichenholzfalltür
+  pale_oak_wall_hanging_sign: Blasseichenholzwandhängeschild
+  pale_oak_wall_sign: Blasseichenholzwandschild
+  pale_oak_wood: Blasseichenholz
   pearlescent_froglight: Perlmutternes Froschlicht
   peony: Pfingstrose
   petrified_oak_slab: Versteinerte Eichenholzstufe
@@ -879,6 +925,7 @@ Material:
   potted_brown_mushroom: Eingetopfter brauner Pilz
   potted_cactus: Eingetopfter Kaktus
   potted_cherry_sapling: Eingetopfter Kirschsetzling
+  potted_closed_eyeblossom: Eingetopfte geschlossene Augenblüte
   potted_cornflower: Eingetopfte Kornblume
   potted_crimson_fungus: Eingetopfter Karmesinpilz
   potted_crimson_roots: Eingetopfte Karmesinwurzeln
@@ -891,8 +938,10 @@ Material:
   potted_lily_of_the_valley: Eingetopftes Maiglöckchen
   potted_mangrove_propagule: Eingetopfter Mangroven-Keimling
   potted_oak_sapling: Eingetopfter Eichensetzling
+  potted_open_eyeblossom: Eingetopfte geöffnete Augenblüte
   potted_orange_tulip: Eingetopfte orange Tulpe
   potted_oxeye_daisy: Eingetopfte Margerite
+  potted_pale_oak_sapling: Eingetopfter Blasseichensetzling
   potted_pink_tulip: Eingetopfte rosa Tulpe
   potted_poppy: Eingetopfter Mohn
   potted_red_mushroom: Eingetopfter roter Pilz
@@ -975,6 +1024,12 @@ Material:
   reinforced_deepslate: Verstärkter Tiefenschiefer
   repeater: Redstone-Verstärker
   repeating_command_block: Wiederhol-Befehlsblock
+  resin_block: Harzblock
+  resin_brick_slab: Harzziegelstufe
+  resin_brick_stairs: Harzziegeltreppe
+  resin_brick_wall: Harzziegelmauer
+  resin_bricks: Harzziegel
+  resin_clump: Harzklumpen
   respawn_anchor: Seelenanker
   rooted_dirt: Wurzelerde
   rose_bush: Rosenstrauch
@@ -1073,6 +1128,8 @@ Material:
   stripped_mangrove_wood: Entrindetes Mangrovenholz
   stripped_oak_log: Entrindeter Eichenstamm
   stripped_oak_wood: Entrindetes Eichenholz
+  stripped_pale_oak_log: Entrindeter Blasseichenstamm
+  stripped_pale_oak_wood: Entrindetes Blasseichenholz
   stripped_spruce_log: Entrindeter Fichtenstamm
   stripped_spruce_wood: Entrindetes Fichtenholz
   stripped_warped_hyphae: Geschälte Wirrhyphen
@@ -1247,12 +1304,14 @@ Material:
   beetroot_soup: Borschtsch
   birch_boat: Birkenholzboot
   birch_chest_boat: Birkenholztruhenboot
+  black_bundle: Schwarzes Bündel
   black_dye: Schwarzer Farbstoff
   blade_pottery_shard: Klingen-Töpferscherbe
   blade_pottery_sherd: Klingen-Töpferscherbe
   blaze_powder: Lohenstaub
   blaze_rod: Lohenrute
   blaze_spawn_egg: Lohen-Spawn-Ei
+  blue_bundle: Blaues Bündel
   blue_dye: Blauer Farbstoff
   bogged_spawn_egg: Sumpfskelett-Spawn-Ei
   bolt_armor_trim_smithing_template: Schmiedevorlage
@@ -1268,6 +1327,7 @@ Material:
   brewer_pottery_shard: Brauer-Töpferscherbe
   brewer_pottery_sherd: Brauer-Töpferscherbe
   brick: Ziegel
+  brown_bundle: Braunes Bündel
   brown_dye: Brauner Farbstoff
   brush: Pinsel
   bucket: Eimer
@@ -1310,9 +1370,11 @@ Material:
   cookie: Keks
   copper_ingot: Kupferbarren
   cow_spawn_egg: Kuh-Spawn-Ei
+  creaking_spawn_egg: Knarz-Spawn-Ei
   creeper_banner_pattern: Bannervorlage
   creeper_spawn_egg: Creeper-Spawn-Ei
   crossbow: Armbrust
+  cyan_bundle: Türkises Bündel
   cyan_dye: Türkiser Farbstoff
   danger_pottery_shard: Gefahren-Töpferscherbe
   danger_pottery_sherd: Gefahren-Töpferscherbe
@@ -1400,7 +1462,9 @@ Material:
   golden_pickaxe: Goldspitzhacke
   golden_shovel: Goldschaufel
   golden_sword: Goldschwert
+  gray_bundle: Graues Bündel
   gray_dye: Grauer Farbstoff
+  green_bundle: Grünes Bündel
   green_dye: Grüner Farbstoff
   guardian_spawn_egg: Wächter-Spawn-Ei
   gunpowder: Schwarzpulver
@@ -1447,13 +1511,17 @@ Material:
   leather_helmet: Lederkappe
   leather_horse_armor: Lederner Rossharnisch
   leather_leggings: Lederhose
+  light_blue_bundle: Hellblaues Bündel
   light_blue_dye: Hellblauer Farbstoff
+  light_gray_bundle: Hellgraues Bündel
   light_gray_dye: Hellgrauer Farbstoff
+  lime_bundle: Hellgrünes Bündel
   lime_dye: Hellgrüner Farbstoff
   lingering_potion: Verweiltrank
   llama_spawn_egg: Lama-Spawn-Ei
   lodestone_compass: Leitstein-Kompass
   mace: Streitkolben
+  magenta_bundle: Magenta Bündel
   magenta_dye: Magenta Farbstoff
   magma_cream: Magmacreme
   magma_cube_spawn_egg: Magmawürfel-Spawn-Ei
@@ -1513,8 +1581,11 @@ Material:
   ocelot_spawn_egg: Ozelot-Spawn-Ei
   ominous_bottle: Unheilvolle Flasche
   ominous_trial_key: Unheilvoller Prüfungsschlüssel
+  orange_bundle: Oranges Bündel
   orange_dye: Oranger Farbstoff
   painting: Gemälde
+  pale_oak_boat: Blasseichenholzboot
+  pale_oak_chest_boat: Blasseichenholztruhenboot
   panda_spawn_egg: Panda-Spawn-Ei
   paper: Papier
   parrot_spawn_egg: Papageien-Spawn-Ei
@@ -1525,6 +1596,7 @@ Material:
   piglin_brute_spawn_egg: Piglin-Barbaren-Spawn-Ei
   piglin_spawn_egg: Piglin-Spawn-Ei
   pillager_spawn_egg: Plünderer-Spawn-Ei
+  pink_bundle: Rosa Bündel
   pink_dye: Rosa Farbstoff
   pitcher_pod: Kannenpflanzenkapsel
   plenty_pottery_shard: Reichtums-Töpferscherbe
@@ -1549,6 +1621,7 @@ Material:
   pufferfish_spawn_egg: Kugelfisch-Spawn-Ei
   pumpkin_pie: Kürbiskuchen
   pumpkin_seeds: Kürbiskerne
+  purple_bundle: Violettes Bündel
   purple_dye: Violetter Farbstoff
   quartz: Netherquarz
   rabbit: Rohes Kaninchen
@@ -1562,8 +1635,10 @@ Material:
   raw_gold: Rohgold
   raw_iron: Roheisen
   recovery_compass: Bergungskompass
+  red_bundle: Rotes Bündel
   red_dye: Roter Farbstoff
   redstone: Redstone-Staub
+  resin_brick: Harzziegel
   rib_armor_trim_smithing_template: Schmiedevorlage
   rotten_flesh: Verrottetes Fleisch
   saddle: Sattel
@@ -1648,6 +1723,7 @@ Material:
   water_bucket: Wassereimer
   wayfinder_armor_trim_smithing_template: Schmiedevorlage
   wheat_seeds: Weizenkörner
+  white_bundle: Weißes Bündel
   white_dye: Weißer Farbstoff
   wild_armor_trim_smithing_template: Schmiedevorlage
   wind_charge: Windkugel
@@ -1663,6 +1739,7 @@ Material:
   wooden_sword: Holzschwert
   writable_book: Buch und Feder
   written_book: Beschriebenes Buch
+  yellow_bundle: Gelbes Bündel
   yellow_dye: Gelber Farbstoff
   zoglin_spawn_egg: Zoglin-Spawn-Ei
   zombie_horse_spawn_egg: Zombiepferde-Spawn-Ei

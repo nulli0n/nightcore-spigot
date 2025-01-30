@@ -19,6 +19,8 @@ import su.nightexpress.nightcore.ui.menu.item.ItemOptions;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
+import java.util.function.Consumer;
+
 @SuppressWarnings("UnstableApiUsage")
 public abstract class LinkedMenu<P extends NightPlugin, T> extends AbstractMenu<P> implements Linked<T> {
 
@@ -61,8 +63,14 @@ public abstract class LinkedMenu<P extends NightPlugin, T> extends AbstractMenu<
 
     @Override
     public boolean open(@NotNull Player player, @NotNull T obj) {
+        return this.open(player, obj, viewer -> {});
+    }
+
+    @Override
+    public boolean open(@NotNull Player player, @NotNull T obj, @NotNull Consumer<MenuViewer> onViewSet) {
         return this.open(player, viewer -> {
             this.cache.set(player, obj);
+            onViewSet.accept(viewer);
         });
     }
 
@@ -100,6 +108,16 @@ public abstract class LinkedMenu<P extends NightPlugin, T> extends AbstractMenu<
     @Override
     public void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
         this.addItem(new NightItem(itemStack).localized(locale), slot, handler, options);
+    }
+
+    @Override
+    public void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler) {
+        this.addItem(item, locale, slot, handler, null);
+    }
+
+    @Override
+    public void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
+        this.addItem(item.localized(locale), slot, handler, options);
     }
 
     @Override

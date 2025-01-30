@@ -157,6 +157,12 @@ public class NightItem implements Writeable {
     }
 
     @NotNull
+    public NightItem setReplacer(@Nullable Replacer replacer) {
+        this.meta.setReplacer(replacer);
+        return this;
+    }
+
+    @NotNull
     public NightItem replacement(@NotNull Consumer<Replacer> consumer) {
         this.meta.replacement(consumer);
         return this;

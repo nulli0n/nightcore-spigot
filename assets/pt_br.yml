@@ -1,12 +1,18 @@
 EntityType:
+  acacia_boat: Bote de acácia
+  acacia_chest_boat: Bote de acácia com baú
   allay: Allay
   area_effect_cloud: Nuvem de efeito de área
   armadillo: Tatu
   armor_stand: Suporte de armaduras
   arrow: Flecha
   axolotl: Axolote
+  bamboo_chest_raft: Jangada de bambu com baú
+  bamboo_raft: Jangada de bambu
   bat: Morcego
   bee: Abelha
+  birch_boat: Bote de bétula
+  birch_chest_boat: Bote de bétula com baú
   blaze: Blaze
   block_display: Entidade-bloco
   boat: Bote
@@ -16,13 +22,19 @@ EntityType:
   camel: Camelo
   cat: Gato
   cave_spider: Aranha das cavernas
+  cherry_boat: Bote de cerejeira
+  cherry_chest_boat: Bote de cerejeira com baú
   chest_boat: Bote com baú
   chest_minecart: Carrinho de mina com baú
   chicken: Galinha
   cod: Bacalhau
   command_block_minecart: Carrinho de mina com bloco de comando
   cow: Vaca
+  creaking: Rangente
+  creaking_transient: Rangente
   creeper: Creeper
+  dark_oak_boat: Bote de carvalho escuro
+  dark_oak_chest_boat: Bote de carvalho escuro com baú
   dolphin: Golfinho
   donkey: Burro
   dragon_fireball: Bola de fogo do dragão
@@ -63,19 +75,27 @@ EntityType:
   item: Item
   item_display: Entidade-item
   item_frame: Moldura
+  jungle_boat: Bote da selva
+  jungle_chest_boat: Bote da selva com baú
   killer_bunny: Coelho assassino
   leash_knot: Nó de laço
   lightning_bolt: Relâmpago
   llama: Lhama
   llama_spit: Cuspe de lhama
   magma_cube: Cubo de magma
+  mangrove_boat: Bote de mangue
+  mangrove_chest_boat: Bote de mangue com baú
   marker: Marcador
   minecart: Carrinho de mina
   mooshroom: Mooshroom
   mule: Mula
+  oak_boat: Bote de carvalho
+  oak_chest_boat: Bote de carvalho com baú
   ocelot: Jaguatirica
   ominous_item_spawner: Gerador de item sombrio
   painting: Quadro
+  pale_oak_boat: Bote de carvalho pálido
+  pale_oak_chest_boat: Bote de carvalho pálido com baú
   panda: Panda
   parrot: Papagaio
   phantom: Phantom
@@ -104,6 +124,8 @@ EntityType:
   spawner_minecart: Carrinho de mina com gerador de criaturas
   spectral_arrow: Flecha espectral
   spider: Aranha
+  spruce_boat: Bote de pinheiro
+  spruce_chest_boat: Bote de pinheiro com baú
   squid: Lula
   stray: Errante
   strider: Lavagante
@@ -354,11 +376,12 @@ Material:
   chipped_anvil: Bigorna rachada
   chiseled_bookshelf: Porta-livros
   chiseled_copper: Cobre talhado
-  chiseled_deepslate: Ardósia talhada
+  chiseled_deepslate: Ardosiabissal talhada
   chiseled_nether_bricks: Tijolos do Nether talhados
   chiseled_polished_blackstone: Pedra-negra polida talhada
   chiseled_quartz_block: Bloco de quartzo talhado
   chiseled_red_sandstone: Arenito vermelho talhado
+  chiseled_resin_bricks: Tijolos de resina talhados
   chiseled_sandstone: Arenito talhado
   chiseled_stone_bricks: Tijolos de pedra talhados
   chiseled_tuff: Tufo talhado
@@ -366,13 +389,14 @@ Material:
   chorus_flower: Flor do coro
   chorus_plant: Planta do coro
   clay: Argila
+  closed_eyeblossom: Olhoquídea fechada
   coal_block: Bloco de carvão
   coal_ore: Minério de carvão
   coarse_dirt: Terra infértil
-  cobbled_deepslate: Pedregulho de ardósia
-  cobbled_deepslate_slab: Laje de pedregulho de ardósia
-  cobbled_deepslate_stairs: Escadas de pedregulho de ardósia
-  cobbled_deepslate_wall: Muro de pedregulho de ardósia
+  cobbled_deepslate: Pedregulho de ardosiabissal
+  cobbled_deepslate_slab: Laje de pedregulho de ardosiabissal
+  cobbled_deepslate_stairs: Escadas de pedregulho de ardosiabissal
+  cobbled_deepslate_wall: Muro de pedregulho de ardosiabissal
   cobblestone: Pedregulho
   cobblestone_slab: Laje de pedregulho
   cobblestone_stairs: Escadas de pedregulho
@@ -390,13 +414,14 @@ Material:
   copper_ore: Minério de cobre
   copper_trapdoor: Alçapão de cobre
   cornflower: Centáurea
-  cracked_deepslate_bricks: Tijolos de ardósia rachados
-  cracked_deepslate_tiles: Ladrilhos de ardósia rachados
+  cracked_deepslate_bricks: Tijolos de ardosiabissal rachados
+  cracked_deepslate_tiles: Ladrilhos de ardosiabissal rachados
   cracked_nether_bricks: Tijolos do Nether rachados
   cracked_polished_blackstone_bricks: Tijolos de pedra-negra polida rachados
   cracked_stone_bricks: Tijolos de pedra rachados
   crafter: Bancada automática
   crafting_table: Bancada de trabalho
+  creaking_heart: Coração de rangente
   creeper_head: Cabeça de creeper
   creeper_wall_head: Cabeça de creeper de parede
   crimson_button: Botão carmesim
@@ -483,23 +508,23 @@ Material:
   dead_tube_coral_fan: Gorgônia-de-tubo morta
   dead_tube_coral_wall_fan: Gorgônia-de-tubo morta de parede
   decorated_pot: Vaso decorado
-  deepslate: Ardósia
-  deepslate_brick_slab: Laje de tijolos de ardósia
-  deepslate_brick_stairs: Escadas de tijolos de ardósia
-  deepslate_brick_wall: Muro de tijolos de ardósia
-  deepslate_bricks: Tijolos de ardósia
-  deepslate_coal_ore: Minério de carvão de ardósia
-  deepslate_copper_ore: Minério de cobre de ardósia
-  deepslate_diamond_ore: Minério de diamante de ardósia
-  deepslate_emerald_ore: Minério de esmeralda de ardósia
-  deepslate_gold_ore: Minério de ouro de ardósia
-  deepslate_iron_ore: Minério de ferro de ardósia
-  deepslate_lapis_ore: Minério de lápis-lazúli de ardósia
-  deepslate_redstone_ore: Minério de redstone de ardósia
-  deepslate_tile_slab: Laje de ladrilhos de ardósia
-  deepslate_tile_stairs: Escadas de ladrilhos de ardósia
-  deepslate_tile_wall: Muro de ladrilhos de ardósia
-  deepslate_tiles: Ladrilhos de ardósia
+  deepslate: Ardosiabissal
+  deepslate_brick_slab: Laje de tijolos de ardosiabissal
+  deepslate_brick_stairs: Escadas de tijolos de ardosiabissal
+  deepslate_brick_wall: Muro de tijolos de ardosiabissal
+  deepslate_bricks: Tijolos de ardosiabissal
+  deepslate_coal_ore: Minério de carvão de ardosiabissal
+  deepslate_copper_ore: Minério de cobre de ardosiabissal
+  deepslate_diamond_ore: Minério de diamante de ardosiabissal
+  deepslate_emerald_ore: Minério de esmeralda de ardosiabissal
+  deepslate_gold_ore: Minério de ouro de ardosiabissal
+  deepslate_iron_ore: Minério de ferro de ardosiabissal
+  deepslate_lapis_ore: Minério de lápis-lazúli de ardosiabissal
+  deepslate_redstone_ore: Minério de redstone de ardosiabissal
+  deepslate_tile_slab: Laje de ladrilhos de ardosiabissal
+  deepslate_tile_stairs: Escadas de ladrilhos de ardosiabissal
+  deepslate_tile_wall: Muro de ladrilhos de ardosiabissal
+  deepslate_tiles: Ladrilhos de ardosiabissal
   detector_rail: Trilho detector
   diamond_block: Bloco de diamante
   diamond_ore: Minério de diamante
@@ -608,7 +633,7 @@ Material:
   infested_chiseled_stone_bricks: Tijolos de pedra talhados infestados
   infested_cobblestone: Pedregulho infestado
   infested_cracked_stone_bricks: Tijolos de pedra rachados infestados
-  infested_deepslate: Ardósia infestada
+  infested_deepslate: Ardosiabissal infestada
   infested_mossy_stone_bricks: Tijolos de pedra musgosos infestados
   infested_stone: Pedra infestada
   infested_stone_bricks: Tijolos de pedra infestados
@@ -785,6 +810,7 @@ Material:
   obsidian: Obsidiana
   ochre_froglight: Anfibrilho ocre
   ominous_banner: Estandarte ameaçador
+  open_eyeblossom: Olhoquídea aberta
   orange_banner: Estandarte laranja
   orange_bed: Cama laranja
   orange_candle: Vela laranja
@@ -811,6 +837,26 @@ Material:
   oxidized_cut_copper_stairs: Escadas de cobre lapidado oxidado
   packed_ice: Gelo compactado
   packed_mud: Barro seco
+  pale_hanging_moss: Musgo pálido suspenso
+  pale_moss_block: Bloco de musgo pálido
+  pale_moss_carpet: Tapete de musgo pálido
+  pale_oak_button: Botão de carvalho pálido
+  pale_oak_door: Porta de carvalho pálido
+  pale_oak_fence: Cerca de carvalho pálido
+  pale_oak_fence_gate: Portão de carvalho pálido
+  pale_oak_hanging_sign: Placa suspensa de carvalho pálido
+  pale_oak_leaves: Folhas de carvalho pálido
+  pale_oak_log: Tronco de carvalho pálido
+  pale_oak_planks: Tábuas de carvalho pálido
+  pale_oak_pressure_plate: Placa de pressão de carvalho pálido
+  pale_oak_sapling: Muda de carvalho pálido
+  pale_oak_sign: Placa de carvalho pálido
+  pale_oak_slab: Laje de carvalho pálido
+  pale_oak_stairs: Escadas de carvalho pálido
+  pale_oak_trapdoor: Alçapão de carvalho pálido
+  pale_oak_wall_hanging_sign: Placa suspensa de carvalho pálido de parede
+  pale_oak_wall_sign: Placa de carvalho pálido de parede
+  pale_oak_wood: Madeira de carvalho pálido
   pearlescent_froglight: Anfibrilho perolado
   peony: Peônia
   petrified_oak_slab: Laje de carvalho petrificado
@@ -853,10 +899,10 @@ Material:
   polished_blackstone_slab: Laje de pedra-negra polida
   polished_blackstone_stairs: Escadas de pedra-negra polida
   polished_blackstone_wall: Muro de pedra-negra polida
-  polished_deepslate: Ardósia polida
-  polished_deepslate_slab: Laje de ardósia polida
-  polished_deepslate_stairs: Escadas de ardósia polida
-  polished_deepslate_wall: Muro de ardósia polida
+  polished_deepslate: Ardosiabissal polida
+  polished_deepslate_slab: Laje de ardosiabissal polida
+  polished_deepslate_stairs: Escadas de ardosiabissal polida
+  polished_deepslate_wall: Muro de ardosiabissal polida
   polished_diorite: Diorito polido
   polished_diorite_slab: Laje de diorito polido
   polished_diorite_stairs: Escadas de diorito polido
@@ -879,6 +925,7 @@ Material:
   potted_brown_mushroom: Cogumelo marrom envasado
   potted_cactus: Cacto envasado
   potted_cherry_sapling: Muda de cerejeira envasada
+  potted_closed_eyeblossom: Olhoquídea fechada envasada
   potted_cornflower: Centáurea envasada
   potted_crimson_fungus: Fungo carmesim envasado
   potted_crimson_roots: Raízes carmesins envasadas
@@ -891,8 +938,10 @@ Material:
   potted_lily_of_the_valley: Lírio-do-vale envasado
   potted_mangrove_propagule: Propágulo de mangue envasado
   potted_oak_sapling: Muda de carvalho envasada
+  potted_open_eyeblossom: Olhoquídea aberta envasada
   potted_orange_tulip: Tulipa laranja envasada
   potted_oxeye_daisy: Margarida envasada
+  potted_pale_oak_sapling: Muda de carvalho pálido envasada
   potted_pink_tulip: Tulipa rosa envasada
   potted_poppy: Papoula envasada
   potted_red_mushroom: Cogumelo vermelho envasado
@@ -972,9 +1021,15 @@ Material:
   redstone_torch: Tocha de redstone
   redstone_wall_torch: Tocha de redstone de parede
   redstone_wire: Cabo de redstone
-  reinforced_deepslate: Ardósia reforçada
+  reinforced_deepslate: Ardosiabissal reforçada
   repeater: Repetidor de redstone
   repeating_command_block: Bloco de comando em repetição
+  resin_block: Bloco de resina
+  resin_brick_slab: Laje de tijolos de resina
+  resin_brick_stairs: Escadas de tijolos de resina
+  resin_brick_wall: Muro de tijolos de resina
+  resin_bricks: Tijolos de resina
+  resin_clump: Agregado de resina
   respawn_anchor: Âncora de renascimento
   rooted_dirt: Terra enraizada
   rose_bush: Roseira
@@ -1073,6 +1128,8 @@ Material:
   stripped_mangrove_wood: Madeira de mangue descascada
   stripped_oak_log: Tronco de carvalho descascado
   stripped_oak_wood: Madeira de carvalho descascada
+  stripped_pale_oak_log: Tronco de carvalho pálido descascado
+  stripped_pale_oak_wood: Madeira de carvalho pálido descascada
   stripped_spruce_log: Tronco de pinheiro descascado
   stripped_spruce_wood: Madeira de pinheiro descascada
   stripped_warped_hyphae: Hifas distorcidas descascadas
@@ -1247,12 +1304,14 @@ Material:
   beetroot_soup: Ensopado de beterraba
   birch_boat: Bote de bétula
   birch_chest_boat: Bote de bétula com baú
+  black_bundle: Trouxa preta
   black_dye: Corante preto
   blade_pottery_shard: Óstraco de espada
   blade_pottery_sherd: Óstraco de espada
   blaze_powder: Pó de blaze
   blaze_rod: Vara de blaze
   blaze_spawn_egg: Ovo gerador de blaze
+  blue_bundle: Trouxa azul
   blue_dye: Corante azul
   bogged_spawn_egg: Ovo gerador de pantanoso
   bolt_armor_trim_smithing_template: Molde de ferraria
@@ -1268,6 +1327,7 @@ Material:
   brewer_pottery_shard: Óstraco de poção
   brewer_pottery_sherd: Óstraco de poção
   brick: Tijolo
+  brown_bundle: Trouxa marrom
   brown_dye: Corante marrom
   brush: Pincel
   bucket: Balde
@@ -1310,9 +1370,11 @@ Material:
   cookie: Biscoito
   copper_ingot: Barra de cobre
   cow_spawn_egg: Ovo gerador de vaca
+  creaking_spawn_egg: Ovo gerador de rangente
   creeper_banner_pattern: Figura para estandarte
   creeper_spawn_egg: Ovo gerador de creeper
   crossbow: Besta
+  cyan_bundle: Trouxa ciano
   cyan_dye: Corante ciano
   danger_pottery_shard: Óstraco de creeper
   danger_pottery_sherd: Óstraco de creeper
@@ -1400,7 +1462,9 @@ Material:
   golden_pickaxe: Picareta de ouro
   golden_shovel: Pá de ouro
   golden_sword: Espada de ouro
+  gray_bundle: Trouxa cinza
   gray_dye: Corante cinza
+  green_bundle: Trouxa verde
   green_dye: Corante verde
   guardian_spawn_egg: Ovo gerador de guardião
   gunpowder: Pólvora
@@ -1447,13 +1511,17 @@ Material:
   leather_helmet: Capuz de couro
   leather_horse_armor: Armadura de couro para cavalo
   leather_leggings: Calças de couro
+  light_blue_bundle: Trouxa azul-clara
   light_blue_dye: Corante azul-claro
+  light_gray_bundle: Trouxa cinza-clara
   light_gray_dye: Corante cinza-claro
+  lime_bundle: Trouxa verde-limão
   lime_dye: Corante verde-limão
   lingering_potion: Poção prolongada
   llama_spawn_egg: Ovo gerador de lhama
   lodestone_compass: Bússola magnetizada
   mace: Clava
+  magenta_bundle: Trouxa magenta
   magenta_dye: Corante magenta
   magma_cream: Creme de magma
   magma_cube_spawn_egg: Ovo gerador de cubo de magma
@@ -1513,8 +1581,11 @@ Material:
   ocelot_spawn_egg: Ovo gerador de jaguatirica
   ominous_bottle: Frasco sombrio
   ominous_trial_key: Chave sombria do desafio
+  orange_bundle: Trouxa laranja
   orange_dye: Corante laranja
   painting: Quadro
+  pale_oak_boat: Bote de carvalho pálido
+  pale_oak_chest_boat: Bote de carvalho pálido com baú
   panda_spawn_egg: Ovo gerador de panda
   paper: Papel
   parrot_spawn_egg: Ovo gerador de papagaio
@@ -1525,6 +1596,7 @@ Material:
   piglin_brute_spawn_egg: Ovo gerador de piglin bárbaro
   piglin_spawn_egg: Ovo gerador de piglin
   pillager_spawn_egg: Ovo gerador de saqueador
+  pink_bundle: Trouxa rosa
   pink_dye: Corante rosa
   pitcher_pod: Vagem de planta ancestral
   plenty_pottery_shard: Óstraco de baú
@@ -1549,6 +1621,7 @@ Material:
   pufferfish_spawn_egg: Ovo gerador de baiacu
   pumpkin_pie: Torta de abóbora
   pumpkin_seeds: Sementes de abóbora
+  purple_bundle: Trouxa roxa
   purple_dye: Corante roxo
   quartz: Quartzo do Nether
   rabbit: Coelho cru
@@ -1562,8 +1635,10 @@ Material:
   raw_gold: Ouro bruto
   raw_iron: Ferro bruto
   recovery_compass: Bússola de retomada
+  red_bundle: Trouxa vermelha
   red_dye: Corante vermelho
   redstone: Pó de redstone
+  resin_brick: Tijolo de resina
   rib_armor_trim_smithing_template: Molde de ferraria
   rotten_flesh: Carne podre
   saddle: Sela
@@ -1648,6 +1723,7 @@ Material:
   water_bucket: Balde de água
   wayfinder_armor_trim_smithing_template: Molde de ferraria
   wheat_seeds: Sementes de trigo
+  white_bundle: Trouxa branca
   white_dye: Corante branco
   wild_armor_trim_smithing_template: Molde de ferraria
   wind_charge: Projétil de vento
@@ -1663,6 +1739,7 @@ Material:
   wooden_sword: Espada de madeira
   writable_book: Livro e pena
   written_book: Livro escrito
+  yellow_bundle: Trouxa amarela
   yellow_dye: Corante amarelo
   zoglin_spawn_egg: Ovo gerador de zoglin
   zombie_horse_spawn_egg: Ovo gerador de cavalo-zumbi

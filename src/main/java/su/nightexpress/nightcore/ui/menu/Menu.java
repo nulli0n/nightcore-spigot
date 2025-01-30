@@ -18,6 +18,8 @@ import java.util.function.Consumer;
 @SuppressWarnings("UnstableApiUsage")
 public interface Menu {
 
+    void tick();
+
     void clear();
 
     void flush();
@@ -86,9 +88,9 @@ public interface Menu {
 
     boolean isReadyToRefresh();
 
-    long getAutoRefreshDate();
+    long getAutoRefreshIn();
 
-    void setAutoRefreshDate(long autoRefreshDate);
+    void setAutoRefreshIn(long autoRefreshIn);
 
     boolean isApplyPlaceholderAPI();
 

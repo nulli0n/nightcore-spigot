@@ -20,7 +20,8 @@ public class MenuViewer {
     private int           page;
     private int           pages;
     private long          lastClickTime;
-    private boolean       updateTitle;
+
+    private boolean rebuildMenu;
 
     public MenuViewer(@NotNull Menu menu, @NotNull Player player) {
         this.menu = menu;
@@ -48,6 +49,10 @@ public class MenuViewer {
 
     public void removeItem(@NotNull MenuItem menuItem) {
         this.items.remove(menuItem);
+    }
+
+    public boolean hasItem(@NotNull MenuItem menuItem) {
+        return this.items.contains(menuItem);
     }
 
     public void removeItems() {
@@ -103,11 +108,11 @@ public class MenuViewer {
         this.lastClickTime = lastClickTime;
     }
 
-    public boolean isUpdateTitle() {
-        return this.updateTitle;
+    public boolean isRebuildMenu() {
+        return this.rebuildMenu;
     }
 
-    public void setUpdateTitle(boolean updateTitle) {
-        this.updateTitle = updateTitle;
+    public void setRebuildMenu(boolean rebuildMenu) {
+        this.rebuildMenu = rebuildMenu;
     }
 }

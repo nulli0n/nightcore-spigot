@@ -12,9 +12,13 @@ import su.nightexpress.nightcore.ui.menu.item.ItemClick;
 import su.nightexpress.nightcore.ui.menu.item.ItemOptions;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
+import java.util.function.Consumer;
+
 public interface Linked<T> extends Menu {
 
     boolean open(@NotNull Player player, @NotNull T obj);
+
+    boolean open(@NotNull Player player, @NotNull T obj, @NotNull Consumer<MenuViewer> onViewSet);
 
     @NotNull LinkCache<T> getCache();
 
@@ -31,6 +35,10 @@ public interface Linked<T> extends Menu {
     void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler);
 
     void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+
+    void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler);
+
+    void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
 
     void addItem(@NotNull NightItem item, int slot, @NotNull LinkHandler<T> handler);
 

@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
+import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
@@ -146,6 +147,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.disable();
 
         AbstractMenu.clearAll(this);            // Close all GUIs.
+        MenuRegistry.closeAll();
         HandlerList.unregisterAll(this);        // Unregister all plugin listeners.
 
         this.commandManager.shutdown();
@@ -154,7 +156,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     protected void postLoad() {
-        this.debug("Inject post-loading code...");
+        //this.debug("Inject post-loading code...");
         this.postLoaders.forEach(Runnable::run);
         this.postLoaders.clear();
         this.postLoaders = null; // Prevent from adding post-load code during runtime.

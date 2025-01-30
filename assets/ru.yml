@@ -1,12 +1,18 @@
 EntityType:
+  acacia_boat: Акациевая лодка
+  acacia_chest_boat: Акациевая грузовая лодка
   allay: Тихоня
   area_effect_cloud: Облако эффекта
   armadillo: Броненосец
   armor_stand: Стойка для брони
   arrow: Стрела
   axolotl: Аксолотль
+  bamboo_chest_raft: Грузовой бамбуковый плот
+  bamboo_raft: Бамбуковый плот
   bat: Летучая мышь
   bee: Пчела
+  birch_boat: Берёзовая лодка
+  birch_chest_boat: Берёзовая грузовая лодка
   blaze: Всполох
   block_display: Визуализатор блока
   boat: Лодка
@@ -16,13 +22,19 @@ EntityType:
   camel: Верблюд
   cat: Кошка
   cave_spider: Пещерный паук
+  cherry_boat: Вишнёвая лодка
+  cherry_chest_boat: Вишнёвая грузовая лодка
   chest_boat: Грузовая лодка
   chest_minecart: Грузовая вагонетка
   chicken: Курица
   cod: Треска
   command_block_minecart: Вагонетка с командным блоком
   cow: Корова
+  creaking: Скрипун
+  creaking_transient: Скрипун
   creeper: Крипер
+  dark_oak_boat: Лодка из тёмного дуба
+  dark_oak_chest_boat: Грузовая лодка из тёмного дуба
   dolphin: Дельфин
   donkey: Осёл
   dragon_fireball: Файербол дракона
@@ -63,19 +75,27 @@ EntityType:
   item: Предмет
   item_display: Визуализатор предмета
   item_frame: Рамка
+  jungle_boat: Лодка из тропического дерева
+  jungle_chest_boat: Грузовая лодка из тропического дерева
   killer_bunny: Кролик-убийца
   leash_knot: Узел поводка
   lightning_bolt: Молния
   llama: Лама
   llama_spit: Плевок ламы
   magma_cube: Магмовый куб
+  mangrove_boat: Мангровая лодка
+  mangrove_chest_boat: Мангровая грузовая лодка
   marker: Метка
   minecart: Вагонетка
   mooshroom: Муушрум
   mule: Мул
+  oak_boat: Дубовая лодка
+  oak_chest_boat: Дубовая грузовая лодка
   ocelot: Оцелот
   ominous_item_spawner: Зловещий рассадник предметов
   painting: Картина
+  pale_oak_boat: Лодка из бледного дуба
+  pale_oak_chest_boat: Грузовая лодка из бледного дуба
   panda: Панда
   parrot: Попугай
   phantom: Фантом
@@ -104,6 +124,8 @@ EntityType:
   spawner_minecart: Вагонетка с рассадником монстров
   spectral_arrow: Спектральная стрела
   spider: Паук
+  spruce_boat: Еловая лодка
+  spruce_chest_boat: Еловая грузовая лодка
   squid: Спрут
   stray: Зимогор
   strider: Лавомерка
@@ -359,6 +381,7 @@ Material:
   chiseled_polished_blackstone: Резной полированный чернит
   chiseled_quartz_block: Резной кварцевый блок
   chiseled_red_sandstone: Резной красный песчаник
+  chiseled_resin_bricks: Резные смоляные кирпичи
   chiseled_sandstone: Резной песчаник
   chiseled_stone_bricks: Резные каменные кирпичи
   chiseled_tuff: Резной туф
@@ -366,6 +389,7 @@ Material:
   chorus_flower: Цветок хоруса
   chorus_plant: Хорус
   clay: Глина
+  closed_eyeblossom: Закрытая глазалия
   coal_block: Угольный блок
   coal_ore: Угольная руда
   coarse_dirt: Каменистая земля
@@ -397,6 +421,7 @@ Material:
   cracked_stone_bricks: Потрескавшиеся каменные кирпичи
   crafter: Сборщик
   crafting_table: Верстак
+  creaking_heart: Скрипцевина
   creeper_head: Голова крипера
   creeper_wall_head: Настенная голова крипера
   crimson_button: Багровая кнопка
@@ -785,6 +810,7 @@ Material:
   obsidian: Обсидиан
   ochre_froglight: Охристая квампа
   ominous_banner: Зловещий флаг
+  open_eyeblossom: Раскрытая глазалия
   orange_banner: Оранжевый флаг
   orange_bed: Оранжевая кровать
   orange_candle: Оранжевая свеча
@@ -811,6 +837,26 @@ Material:
   oxidized_cut_copper_stairs: Окисленные резные медные ступеньки
   packed_ice: Плотный лёд
   packed_mud: Плотная грязь
+  pale_hanging_moss: Свисающий бледный мох
+  pale_moss_block: Блок бледного мха
+  pale_moss_carpet: Бледный моховой ковёр
+  pale_oak_button: Кнопка из бледного дуба
+  pale_oak_door: Дверь из бледного дуба
+  pale_oak_fence: Забор из бледного дуба
+  pale_oak_fence_gate: Калитка из бледного дуба
+  pale_oak_hanging_sign: Подвесная табличка из бледного дуба
+  pale_oak_leaves: Листья бледного дуба
+  pale_oak_log: Бревно бледного дуба
+  pale_oak_planks: Доски из бледного дуба
+  pale_oak_pressure_plate: Нажимная плита из бледного дуба
+  pale_oak_sapling: Саженец бледного дуба
+  pale_oak_sign: Табличка из бледного дуба
+  pale_oak_slab: Плита из бледного дуба
+  pale_oak_stairs: Ступеньки из бледного дуба
+  pale_oak_trapdoor: Люк из бледного дуба
+  pale_oak_wall_hanging_sign: Настенная подвесная табличка из бледного дуба
+  pale_oak_wall_sign: Настенная табличка из бледного дуба
+  pale_oak_wood: Бледный дуб
   pearlescent_froglight: Перламутровая квампа
   peony: Пион
   petrified_oak_slab: Окаменевшая дубовая плита
@@ -879,6 +925,7 @@ Material:
   potted_brown_mushroom: Коричневый гриб в горшке
   potted_cactus: Кактус в горшке
   potted_cherry_sapling: Саженец вишни в горшке
+  potted_closed_eyeblossom: Закрытая глазалия в горшке
   potted_cornflower: Синий василёк в горшке
   potted_crimson_fungus: Багровый гриб в горшке
   potted_crimson_roots: Багровые корни в горшке
@@ -891,8 +938,10 @@ Material:
   potted_lily_of_the_valley: Ландыш в горшке
   potted_mangrove_propagule: Мангровый отросток в горшке
   potted_oak_sapling: Саженец дуба в горшке
+  potted_open_eyeblossom: Раскрытая глазалия в горшке
   potted_orange_tulip: Оранжевый тюльпан в горшке
   potted_oxeye_daisy: Ромашка в горшке
+  potted_pale_oak_sapling: Саженец бледного дуба в горшке
   potted_pink_tulip: Розовый тюльпан в горшке
   potted_poppy: Мак в горшке
   potted_red_mushroom: Красный гриб в горшке
@@ -975,6 +1024,12 @@ Material:
   reinforced_deepslate: Укреплённый глубинный сланец
   repeater: Редстоуновый повторитель
   repeating_command_block: Повторяющий командный блок
+  resin_block: Смоляной блок
+  resin_brick_slab: Плита из смоляного кирпича
+  resin_brick_stairs: Ступеньки из смоляного кирпича
+  resin_brick_wall: Ограда из смоляного кирпича
+  resin_bricks: Смоляные кирпичи
+  resin_clump: Сгусток смолы
   respawn_anchor: Якорь возрождения
   rooted_dirt: Корнистая земля
   rose_bush: Розовый куст
@@ -1073,6 +1128,8 @@ Material:
   stripped_mangrove_wood: Обтёсанная мангровая древесина
   stripped_oak_log: Обтёсанное дубовое бревно
   stripped_oak_wood: Обтёсанная дубовая древесина
+  stripped_pale_oak_log: Обтёсанное бревно бледного дуба
+  stripped_pale_oak_wood: Обтёсанная древесина бледного дуба
   stripped_spruce_log: Обтёсанное еловое бревно
   stripped_spruce_wood: Обтёсанная еловая древесина
   stripped_warped_hyphae: Очищенные искажённые гифы
@@ -1247,12 +1304,14 @@ Material:
   beetroot_soup: Свекольный суп
   birch_boat: Берёзовая лодка
   birch_chest_boat: Берёзовая грузовая лодка
+  black_bundle: Чёрный мешок
   black_dye: Чёрный краситель
   blade_pottery_shard: Глиняный черепок «Клинок»
   blade_pottery_sherd: Глиняный черепок «Клинок»
   blaze_powder: Огненный порошок
   blaze_rod: Огненный стержень
   blaze_spawn_egg: Яйцо призыва всполоха
+  blue_bundle: Синий мешок
   blue_dye: Синий краситель
   bogged_spawn_egg: Яйцо призыва болотника
   bolt_armor_trim_smithing_template: Кузнечный шаблон
@@ -1268,6 +1327,7 @@ Material:
   brewer_pottery_shard: Глиняный черепок «Зельевар»
   brewer_pottery_sherd: Глиняный черепок «Зельевар»
   brick: Кирпич
+  brown_bundle: Коричневый мешок
   brown_dye: Коричневый краситель
   brush: Кисть
   bucket: Ведро
@@ -1310,9 +1370,11 @@ Material:
   cookie: Печенье
   copper_ingot: Медный слиток
   cow_spawn_egg: Яйцо призыва коровы
+  creaking_spawn_egg: Яйцо призыва скрипуна
   creeper_banner_pattern: Узор флага
   creeper_spawn_egg: Яйцо призыва крипера
   crossbow: Арбалет
+  cyan_bundle: Бирюзовый мешок
   cyan_dye: Бирюзовый краситель
   danger_pottery_shard: Глиняный черепок «Угроза»
   danger_pottery_sherd: Глиняный черепок «Угроза»
@@ -1400,7 +1462,9 @@ Material:
   golden_pickaxe: Золотая кирка
   golden_shovel: Золотая лопата
   golden_sword: Золотой меч
+  gray_bundle: Серый мешок
   gray_dye: Серый краситель
+  green_bundle: Зелёный мешок
   green_dye: Зелёный краситель
   guardian_spawn_egg: Яйцо призыва стража
   gunpowder: Порох
@@ -1447,13 +1511,17 @@ Material:
   leather_helmet: Кожаный шлем
   leather_horse_armor: Кожаная конская броня
   leather_leggings: Кожаные штаны
+  light_blue_bundle: Голубой мешок
   light_blue_dye: Голубой краситель
+  light_gray_bundle: Светло-серый мешок
   light_gray_dye: Светло-серый краситель
+  lime_bundle: Лаймовый мешок
   lime_dye: Лаймовый краситель
   lingering_potion: Туманное зелье
   llama_spawn_egg: Яйцо призыва ламы
   lodestone_compass: Намагниченный компас
   mace: Булава
+  magenta_bundle: Пурпурный мешок
   magenta_dye: Пурпурный краситель
   magma_cream: Сгусток магмы
   magma_cube_spawn_egg: Яйцо призыва магмового куба
@@ -1513,8 +1581,11 @@ Material:
   ocelot_spawn_egg: Яйцо призыва оцелота
   ominous_bottle: Зловещая бутылочка
   ominous_trial_key: Зловещий ключ испытаний
+  orange_bundle: Оранжевый мешок
   orange_dye: Оранжевый краситель
   painting: Картина
+  pale_oak_boat: Лодка из бледного дуба
+  pale_oak_chest_boat: Грузовая лодка из бледного дуба
   panda_spawn_egg: Яйцо призыва панды
   paper: Бумага
   parrot_spawn_egg: Яйцо призыва попугая
@@ -1525,6 +1596,7 @@ Material:
   piglin_brute_spawn_egg: Яйцо призыва брутального пиглина
   piglin_spawn_egg: Яйцо призыва пиглина
   pillager_spawn_egg: Яйцо призыва разбойника
+  pink_bundle: Розовый мешок
   pink_dye: Розовый краситель
   pitcher_pod: Стручок кувшинницы
   plenty_pottery_shard: Глиняный черепок «Изобилие»
@@ -1549,6 +1621,7 @@ Material:
   pufferfish_spawn_egg: Яйцо призыва иглобрюха
   pumpkin_pie: Тыквенный пирог
   pumpkin_seeds: Семена тыквы
+  purple_bundle: Фиолетовый мешок
   purple_dye: Фиолетовый краситель
   quartz: Незер-кварц
   rabbit: Сырая крольчатина
@@ -1562,8 +1635,10 @@ Material:
   raw_gold: Рудное золото
   raw_iron: Рудное железо
   recovery_compass: Возвратный компас
+  red_bundle: Красный мешок
   red_dye: Красный краситель
   redstone: Редстоуновая пыль
+  resin_brick: Смоляной кирпич
   rib_armor_trim_smithing_template: Кузнечный шаблон
   rotten_flesh: Гнилая плоть
   saddle: Седло
@@ -1648,6 +1723,7 @@ Material:
   water_bucket: Ведро воды
   wayfinder_armor_trim_smithing_template: Кузнечный шаблон
   wheat_seeds: Семена пшеницы
+  white_bundle: Белый мешок
   white_dye: Белый краситель
   wild_armor_trim_smithing_template: Кузнечный шаблон
   wind_charge: Заряд ветра
@@ -1663,6 +1739,7 @@ Material:
   wooden_sword: Деревянный меч
   writable_book: Книга и перо
   written_book: Завершённая книга
+  yellow_bundle: Жёлтый мешок
   yellow_dye: Жёлтый краситель
   zoglin_spawn_egg: Яйцо призыва зоглина
   zombie_horse_spawn_egg: Яйцо призыва лошади-зомби
