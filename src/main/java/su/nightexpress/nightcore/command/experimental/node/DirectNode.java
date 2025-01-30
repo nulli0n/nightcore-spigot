@@ -104,7 +104,8 @@ public class DirectNode extends CommandNode implements DirectExecutor {
         if (parsedArguments.getArgumentMap().size() < this.requiredArguments) {
             return context.sendFailure(CoreLang.ERROR_COMMAND_USAGE.getMessage(this.plugin)
                 .replace(Placeholders.COMMAND_LABEL, this.getNameWithParents())
-                .replace(Placeholders.COMMAND_USAGE, this.getUsage()));
+                .replace(Placeholders.COMMAND_USAGE, this.getUsage())
+                .replace(Placeholders.COMMAND_DESCRIPTION, this.getDescription()));
         }
 
         if (!this.flags.isEmpty() && index < args.length) {
