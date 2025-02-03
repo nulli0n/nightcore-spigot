@@ -2,6 +2,8 @@ package su.nightexpress.nightcore.util;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -43,6 +45,39 @@ public class ItemUtil {
         return LangAssets.get(item.getType());
     }
 
+    @NotNull
+    public static String getSerializedName(@NotNull ItemStack item) {
+        if (Version.isSpigot()) return getItemName(item);
+        if (!item.hasItemMeta()) return LangAssets.get(item.getType());
+
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
+                return MiniMessage.miniMessage().serialize(meta.itemName());
+            }
+            else if (meta.hasCustomName()) {
+                var customName = meta.customName();
+                if (customName != null) {
+                    return MiniMessage.miniMessage().serialize(customName);
+                }
+            }
+        }
+
+        return LangAssets.get(item.getType());
+    }
+
+    @NotNull
+    public static List<String> getSerializedLore(@NotNull ItemStack item) {
+        if (Version.isSpigot()) return getLore(item);
+        if (!item.hasItemMeta()) return new ArrayList<>();
+
+        ItemMeta meta = item.getItemMeta();
+        List<Component> lore = meta == null ? null : meta.lore();
+        if (lore == null) return new ArrayList<>();
+
+        return lore.stream().map(MiniMessage.miniMessage()::serialize).toList();
+    }
+
     public static void editMeta(@NotNull ItemStack item, @NotNull Consumer<ItemMeta> function) {
         editMeta(item, ItemMeta.class, function);
     }
@@ -66,7 +101,10 @@ public class ItemUtil {
         if (Version.isAtLeast(Version.MC_1_20_6) && material.isItem()) {
             EquipmentSlot slot = material.getEquipmentSlot();
             material.getDefaultAttributeModifiers(slot).forEach((attribute, modifier) -> {
-                if (!meta.hasAttributeModifiers() || meta.getAttributeModifiers(attribute) == null) {
+                if (meta.hasAttributeModifiers()) return;
+
+                var modifiers = meta.getAttributeModifiers(attribute);
+                if (modifiers == null || modifiers.isEmpty()) {
                     meta.addAttributeModifier(attribute, modifier);
                 }
             });
