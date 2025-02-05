@@ -4,6 +4,9 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.NightCorePlugin;
+import su.nightexpress.nightcore.util.bridge.PaperBridge;
+import su.nightexpress.nightcore.util.bridge.Software;
+import su.nightexpress.nightcore.util.bridge.SpigotBridge;
 import su.nightexpress.nightcore.util.version.VersionComponent;
 
 import java.util.Comparator;
@@ -30,7 +33,8 @@ public enum Version {
     private static final Set<VersionComponent> LOADED_COMPONENTS   = new HashSet<>();
 
     private static Version current;
-    private static boolean spigot;
+    //private static boolean spigot;
+    private static Software software;
 
     private final Status status;
     private final String localized;
@@ -60,9 +64,11 @@ public enum Version {
         String bukkitVersion = core.getServer().getBukkitVersion();
         String bukkitName = core.getServer().getName();
         String exact = bukkitVersion.split("-")[0];
+        boolean isSpigot = bukkitName.equalsIgnoreCase("Spigot");
 
         current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
-        spigot = bukkitName.equalsIgnoreCase("Spigot");
+        software = isSpigot ? new SpigotBridge() : new PaperBridge();
+        //spigot = bukkitName.equalsIgnoreCase("Spigot");
         core.info("Server version detected as " + bukkitName + " " + current.getLocalized() + ".");
 
         loadComponents(core);
@@ -112,12 +118,17 @@ public enum Version {
     }
 
     @NotNull
+    public static Software software() {
+        return software;
+    }
+
+    @NotNull
     public static Version getCurrent() {
         return current;
     }
 
     public static boolean isSpigot() {
-        return spigot;
+        return software.isSpigot();
     }
 
     public static boolean hasComponent(@NotNull VersionComponent component) {

@@ -2,7 +2,6 @@ package su.nightexpress.nightcore.util.bridge;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.view.builder.InventoryViewBuilder;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.Version;

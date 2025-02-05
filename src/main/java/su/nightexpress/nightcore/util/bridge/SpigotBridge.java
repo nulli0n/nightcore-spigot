@@ -8,7 +8,17 @@ import su.nightexpress.nightcore.util.Reflex;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
 @SuppressWarnings("UnstableApiUsage")
-public class SpigotBridge {
+public class SpigotBridge implements Software {
+
+    @Override
+    public boolean isSpigot() {
+        return true;
+    }
+
+    @Override
+    public boolean isPaper() {
+        return false;
+    }
 
     public static InventoryView create(@NotNull InventoryViewBuilder<?> builder, @NotNull String title, @NotNull Player player) {
         Reflex.setFieldValue(builder, "title", NightMessage.asLegacy(title));

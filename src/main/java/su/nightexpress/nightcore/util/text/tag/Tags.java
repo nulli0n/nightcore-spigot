@@ -82,6 +82,14 @@ public class Tags {
 
         registerTags(Tags.GRADIENT, Tags.LINE_BREAK, Tags.FONT, Tags.HOVER, Tags.CLICK,
             Tags.RESET, Tags.HEX_COLOR, Tags.HEX_COLOR_SHORT, Tags.TRANSLATE);
+
+        registerTag(new ColorTag("dark_blue", "#0000AA"));
+        registerTag(new ColorTag("dark_green", "#00AA00"));
+        registerTag(new ColorTag("dark_aqua", "#00AAAA"));
+        registerTag(new ColorTag("dark_red", "#AA0000"));
+        registerTag(new ColorTag("dark_purple", "#AA00AA"));
+        registerTag(new ColorTag("gold", "#FFAA00"));
+        registerTag(new ColorTag("aqua", "#55FFFF"));
     }
 
     public static void loadColorsFromFile(@NotNull NightCore core) {

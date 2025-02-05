@@ -9,7 +9,17 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
 @SuppressWarnings("UnstableApiUsage")
-public class PaperBridge {
+public class PaperBridge implements Software {
+
+    @Override
+    public boolean isSpigot() {
+        return false;
+    }
+
+    @Override
+    public boolean isPaper() {
+        return true;
+    }
 
     public static InventoryView create(@NotNull InventoryViewBuilder<?> builder, @NotNull String title, @NotNull Player player) {
         Component component = JSONComponentSerializer.json().deserialize(NightMessage.asJson(title)); // TODO Direct NightMessage to component
