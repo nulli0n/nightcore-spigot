@@ -55,10 +55,16 @@ public class ItemUtil {
             if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
                 return MiniMessage.miniMessage().serialize(meta.itemName());
             }
-            else if (meta.hasCustomName()) {
+            else if (Version.isAtLeast(Version.MC_1_21_4) && meta.hasCustomName()) {
                 var customName = meta.customName();
                 if (customName != null) {
                     return MiniMessage.miniMessage().serialize(customName);
+                }
+            }
+            else if (meta.hasDisplayName()) {
+                var displayName = meta.displayName();
+                if (displayName != null) {
+                    return MiniMessage.miniMessage().serialize(displayName);
                 }
             }
         }
