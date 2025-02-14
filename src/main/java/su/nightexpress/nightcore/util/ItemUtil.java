@@ -107,9 +107,7 @@ public class ItemUtil {
         if (Version.isAtLeast(Version.MC_1_20_6) && material.isItem()) {
             EquipmentSlot slot = material.getEquipmentSlot();
             material.getDefaultAttributeModifiers(slot).forEach((attribute, modifier) -> {
-                if (meta.hasAttributeModifiers()) return;
-
-                var modifiers = meta.getAttributeModifiers(attribute);
+                var modifiers = meta.getAttributeModifiers() == null ? null : meta.getAttributeModifiers(attribute);
                 if (modifiers == null || modifiers.isEmpty()) {
                     meta.addAttributeModifier(attribute, modifier);
                 }

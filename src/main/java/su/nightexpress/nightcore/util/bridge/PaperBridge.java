@@ -12,6 +12,12 @@ import su.nightexpress.nightcore.util.text.NightMessage;
 public class PaperBridge implements Software {
 
     @Override
+    @NotNull
+    public String getName() {
+        return "paper-bridge";
+    }
+
+    @Override
     public boolean isSpigot() {
         return false;
     }

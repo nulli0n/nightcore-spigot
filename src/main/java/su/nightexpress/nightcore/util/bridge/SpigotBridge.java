@@ -11,6 +11,12 @@ import su.nightexpress.nightcore.util.text.NightMessage;
 public class SpigotBridge implements Software {
 
     @Override
+    @NotNull
+    public String getName() {
+        return "spigot-bridge";
+    }
+
+    @Override
     public boolean isSpigot() {
         return true;
     }

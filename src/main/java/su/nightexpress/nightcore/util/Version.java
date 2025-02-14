@@ -64,12 +64,11 @@ public enum Version {
         String bukkitVersion = core.getServer().getBukkitVersion();
         String bukkitName = core.getServer().getName();
         String exact = bukkitVersion.split("-")[0];
-        boolean isSpigot = bukkitName.equalsIgnoreCase("Spigot");
+        boolean isSpigot = bukkitName.equalsIgnoreCase("Spigot") || bukkitName.equalsIgnoreCase("CraftBukkit");
 
         current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
         software = isSpigot ? new SpigotBridge() : new PaperBridge();
-        //spigot = bukkitName.equalsIgnoreCase("Spigot");
-        core.info("Server version detected as " + bukkitName + " " + current.getLocalized() + ".");
+        core.info("Server version detected as " + bukkitName + " " + current.getLocalized() + ". Using " + software().getName() + ".");
 
         loadComponents(core);
     }
