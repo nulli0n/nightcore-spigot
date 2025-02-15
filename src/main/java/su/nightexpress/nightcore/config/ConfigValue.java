@@ -157,6 +157,14 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    public static ConfigValue<Locale> create(@NotNull String path, @NotNull Locale defaultValue, @Nullable String... description) {
+        Reader<Locale> reader = (cfg, path1, def) -> Objects.requireNonNullElse(Locale.forLanguageTag(cfg.getString(path1, def.toLanguageTag())), def);
+        Writer<Locale> writer = (cfg, path1, obj) -> cfg.set(path1, obj.toLanguageTag());
+
+        return create(path, reader, writer, defaultValue, description);
+    }
+
+    @NotNull
     public static <E extends Enum<E>> ConfigValue<E> create(@NotNull String path, @NotNull Class<E> clazz, @NotNull E defaultValue, @Nullable String... description) {
         Reader<E> reader = (cfg, path1, def) -> cfg.getEnum(path1, clazz, def);
         Writer<E> writer = (cfg, path1, obj) -> cfg.set(path1, obj.name());

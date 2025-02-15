@@ -15,30 +15,33 @@ public class UniFormatter {
 
     private final String format;
     private final RoundingMode rounding;
+    private final Locale locale;
 
-    private UniFormatter(@NotNull String format, @NotNull RoundingMode rounding) {
+    private UniFormatter(@NotNull String format, @NotNull RoundingMode rounding, @NotNull Locale locale) {
         this.format = format;
         this.rounding = rounding;
-        this.formatter = new DecimalFormat(format, new DecimalFormatSymbols(Locale.US));
+        this.locale = locale;
+        this.formatter = new DecimalFormat(format, new DecimalFormatSymbols(locale));
         this.formatter.setRoundingMode(rounding);
     }
 
     @NotNull
-    public static UniFormatter of(@NotNull String format, @NotNull RoundingMode rounding) {
-        return new UniFormatter(format, rounding);
+    public static UniFormatter of(@NotNull String format, @NotNull RoundingMode rounding, @NotNull Locale locale) {
+        return new UniFormatter(format, rounding, locale);
     }
 
     @NotNull
     public static UniFormatter read(@NotNull FileConfig config, @NotNull String path) {
         String format = ConfigValue.create(path + ".Format", "#,###.##").read(config);
         RoundingMode rounding = ConfigValue.create(path + ".Rounding", RoundingMode.class, RoundingMode.HALF_EVEN).read(config);
-
-        return of(format, rounding);
+        Locale locale = ConfigValue.create(path + ".Locale", Locale.US).read(config);
+        return of(format, rounding, locale);
     }
 
     public void write(@NotNull FileConfig config, @NotNull String path) {
         config.set(path + ".Format", this.getFormat());
         config.set(path + ".Rounding", this.getRounding().name().toLowerCase());
+        config.set(path + ".Locale", this.locale.toLanguageTag());
     }
 
     public String getFormat() {
