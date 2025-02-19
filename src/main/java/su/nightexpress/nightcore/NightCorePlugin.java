@@ -1,6 +1,10 @@
 package su.nightexpress.nightcore;
 
 import com.github.Anon8281.universalScheduler.foliaScheduler.FoliaScheduler;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
@@ -89,6 +93,34 @@ public interface NightCorePlugin extends Plugin {
         this.getScheduler().runTask(this, consumer);
     }
 
+    default void runTask(Entity entity, @NotNull Runnable consumer) {
+        if (!isFolia()) {
+            this.runTask(consumer);
+            return;
+        }
+
+        this.getScheduler().execute(entity, consumer);
+    }
+
+    default void runTask(Location location, @NotNull Runnable consumer) {
+        if (!isFolia()) {
+            this.runTask(consumer);
+            return;
+        }
+
+        this.getScheduler().execute(location, consumer);
+    }
+
+    default void runTask(Chunk chunk, @NotNull Runnable consumer) {
+        if (!isFolia()) {
+            this.runTask(consumer);
+            return;
+        }
+
+        Bukkit.getServer().getRegionScheduler().execute(this, chunk.getWorld(), chunk.getX(), chunk.getZ(),
+                consumer);
+    }
+
     default void runTaskAsync(@NotNull Runnable consumer) {
         this.getScheduler().runTaskAsynchronously(this, consumer);
     }
@@ -107,6 +139,15 @@ public interface NightCorePlugin extends Plugin {
 
     default void runTaskTimerAsync(@NotNull Runnable consumer, long delay, long interval) {
         this.getScheduler().runTaskTimerAsynchronously(this, consumer, delay, interval);
+    }
+
+    default boolean isFolia() {
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @NotNull

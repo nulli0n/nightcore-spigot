@@ -138,68 +138,70 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
             return false;
         }
 
-        MenuViewer viewer = this.getViewerOrCreate(player);
-        viewer.removeItems();
-        onViewSet.accept(viewer);
+        plugin.getScheduler().execute(player.getLocation(), () -> {
+            MenuViewer viewer = this.getViewerOrCreate(player);
+            viewer.removeItems();
+            onViewSet.accept(viewer);
 
-        //String title = NightMessage.asLegacy(this.getTitle(viewer));
+            //String title = NightMessage.asLegacy(this.getTitle(viewer));
 
-        InventoryView view = viewer.getView();
-        if (view == null || viewer.isRebuildMenu()) {
+            InventoryView view = viewer.getView();
+            if (view == null || viewer.isRebuildMenu()) {
 
-            // Save cache so its not wiped by .openInventory call due to internal InventoryCloseEvent.
-            if (view != null && this instanceof Linked<?> linked) {
-                linked.getCache().addAnchor(player);
-            }
-
-            if (Version.isAtLeast(Version.MC_1_21_4)) {
-                var builder = this.menuType.typed().builder();
-                // Stupid hack to bypass 9X3 (and probably other container-based) menu types to be bound to real container(s) at player's location.
-                if (builder instanceof LocationInventoryViewBuilder<?> locationBuilder) {
-                    locationBuilder.location(player.getEyeLocation());
+                // Save cache so its not wiped by .openInventory call due to internal InventoryCloseEvent.
+                if (view != null && this instanceof Linked<?> linked) {
+                    linked.getCache().addAnchor(player);
                 }
-                view = ServerBridge.createView(builder, this.getTitle(viewer), player);
+
+                if (Version.isAtLeast(Version.MC_1_21_4)) {
+                    var builder = this.menuType.typed().builder();
+                    // Stupid hack to bypass 9X3 (and probably other container-based) menu types to be bound to real container(s) at player's location.
+                    if (builder instanceof LocationInventoryViewBuilder<?> locationBuilder) {
+                        locationBuilder.location(player.getEyeLocation());
+                    }
+                    view = ServerBridge.createView(builder, this.getTitle(viewer), player);
+                }
+                else {
+                    view = this.menuType.typed().create(player, NightMessage.asLegacy(this.getTitle(viewer)));
+                }
+                viewer.assignInventory(view);
+                player.openInventory(view);
             }
             else {
-                view = this.menuType.typed().create(player, NightMessage.asLegacy(this.getTitle(viewer)));
-            }
-            viewer.assignInventory(view);
-            player.openInventory(view);
-        }
-        else {
-            view.getTopInventory().clear();
-            //if (viewer.isUpdateTitle()) view.setTitle(NightMessage.asLegacy(this.getTitle(viewer)));
-        }
-
-        this.onPrepare(viewer, view);
-
-        Inventory inventory = view.getTopInventory();
-
-        this.getItems(viewer).forEach(menuItem -> {
-            NightItem item = menuItem.getItem().copy();
-            ItemHandler handler = menuItem.getHandler();
-
-            if (this.isApplyPlaceholderAPI()) {
-                item.replacement(replacer -> replacer.replacePlaceholderAPI(player));
+                view.getTopInventory().clear();
+                //if (viewer.isUpdateTitle()) view.setTitle(NightMessage.asLegacy(this.getTitle(viewer)));
             }
 
-            if (handler != null && handler.getOptions() != null) {
-                handler.getOptions().modifyDisplay(viewer, item);
-            }
+            this.onPrepare(viewer, view);
 
-            this.onItemPrepare(viewer, menuItem, item);
+            Inventory inventory = view.getTopInventory();
 
-            ItemStack itemStack = item.getItemStack();
+            this.getItems(viewer).forEach(menuItem -> {
+                NightItem item = menuItem.getItem().copy();
+                ItemHandler handler = menuItem.getHandler();
 
-            for (int slot : menuItem.getSlots()) {
-                if (slot < 0 || slot >= inventory.getSize()) continue;
-                inventory.setItem(slot, itemStack);
-            }
+                if (this.isApplyPlaceholderAPI()) {
+                    item.replacement(replacer -> replacer.replacePlaceholderAPI(player));
+                }
+
+                if (handler != null && handler.getOptions() != null) {
+                    handler.getOptions().modifyDisplay(viewer, item);
+                }
+
+                this.onItemPrepare(viewer, menuItem, item);
+
+                ItemStack itemStack = item.getItemStack();
+
+                for (int slot : menuItem.getSlots()) {
+                    if (slot < 0 || slot >= inventory.getSize()) continue;
+                    inventory.setItem(slot, itemStack);
+                }
+            });
+
+            this.onReady(viewer, inventory);
+
+            MenuRegistry.assign(viewer);
         });
-
-        this.onReady(viewer, inventory);
-
-        MenuRegistry.assign(viewer);
         return true;
     }
 
