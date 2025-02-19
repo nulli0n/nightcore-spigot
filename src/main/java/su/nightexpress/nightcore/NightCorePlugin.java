@@ -1,9 +1,8 @@
 package su.nightexpress.nightcore;
 
+import com.github.Anon8281.universalScheduler.foliaScheduler.FoliaScheduler;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.CommandManager;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
@@ -11,8 +10,6 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.util.wrapper.UniTask;
-
-import java.util.function.Consumer;
 
 public interface NightCorePlugin extends Plugin {
 
@@ -79,8 +76,8 @@ public interface NightCorePlugin extends Plugin {
     @NotNull CommandManager getCommandManager();
 
     @NotNull
-    default BukkitScheduler getScheduler() {
-        return this.getServer().getScheduler();
+    default FoliaScheduler getScheduler() {
+        return new FoliaScheduler(this);
     }
 
     @NotNull
@@ -88,27 +85,27 @@ public interface NightCorePlugin extends Plugin {
         return this.getServer().getPluginManager();
     }
 
-    default void runTask(@NotNull Consumer<BukkitTask> consumer) {
+    default void runTask(@NotNull Runnable consumer) {
         this.getScheduler().runTask(this, consumer);
     }
 
-    default void runTaskAsync(@NotNull Consumer<BukkitTask> consumer) {
+    default void runTaskAsync(@NotNull Runnable consumer) {
         this.getScheduler().runTaskAsynchronously(this, consumer);
     }
 
-    default void runTaskLater(@NotNull Consumer<BukkitTask> consumer, long delay) {
+    default void runTaskLater(@NotNull Runnable consumer, long delay) {
         this.getScheduler().runTaskLater(this, consumer, delay);
     }
 
-    default void runTaskLaterAsync(@NotNull Consumer<BukkitTask> consumer, long delay) {
+    default void runTaskLaterAsync(@NotNull Runnable consumer, long delay) {
         this.getScheduler().runTaskLaterAsynchronously(this, consumer, delay);
     }
 
-    default void runTaskTimer(@NotNull Consumer<BukkitTask> consumer, long delay, long interval) {
+    default void runTaskTimer(@NotNull Runnable consumer, long delay, long interval) {
         this.getScheduler().runTaskTimer(this, consumer, delay, interval);
     }
 
-    default void runTaskTimerAsync(@NotNull Consumer<BukkitTask> consumer, long delay, long interval) {
+    default void runTaskTimerAsync(@NotNull Runnable consumer, long delay, long interval) {
         this.getScheduler().runTaskTimerAsynchronously(this, consumer, delay, interval);
     }
 

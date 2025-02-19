@@ -99,7 +99,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
 
     @Override
     public void runNextTick(@NotNull Runnable runnable) {
-        this.plugin.runTask(task -> runnable.run());
+        this.plugin.runTask(runnable);
     }
 
     public void flush() {
