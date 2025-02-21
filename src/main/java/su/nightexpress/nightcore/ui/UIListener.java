@@ -31,7 +31,7 @@ public class UIListener extends AbstractListener<NightCore> {
 
     private void handleDialogInput(@NotNull Player player, @NotNull Dialog dialog, @NotNull DialogInput input) {
         // Jump back to the main thread from async chat thread.
-        this.plugin.runTask(task -> {
+        this.plugin.runTask(() -> {
             if (input.getTextRaw().equalsIgnoreCase(DialogManager.EXIT) || dialog.getHandler().handle(input)) {
                 DialogManager.stopDialog(player);
             }
