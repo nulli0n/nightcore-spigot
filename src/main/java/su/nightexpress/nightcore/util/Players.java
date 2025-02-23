@@ -11,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.NightCore;
+import su.nightexpress.nightcore.NightCorePlugin;
+import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
@@ -156,18 +159,27 @@ public class Players {
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {
-        for (String command : commands) {
-            dispatchCommand(player, command);
-        }
+        Bukkit.getGlobalRegionScheduler().execute(NightCore.getPlugin(NightCore.class), () -> {
+            for (String command : commands) {
+                dispatchCommand(player, command);
+            }
+        });
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull List<String> commands) {
-        for (String command : commands) {
-            dispatchCommand(player, command);
-        }
+        Bukkit.getGlobalRegionScheduler().execute(NightCore.getPlugin(NightCore.class), () -> {
+            for (String command : commands) {
+                dispatchCommand(player, command);
+            }
+        });
     }
 
     public static void dispatchCommand(@NotNull Player player, @NotNull String command) {
+        Bukkit.getGlobalRegionScheduler().execute(NightCore.getPlugin(NightCore.class),
+                () -> dispatchCommand0(player,command));
+    }
+
+    private static void dispatchCommand0(@NotNull Player player, @NotNull String command) {
         CommandSender sender = Bukkit.getConsoleSender();
         if (command.startsWith(PLAYER_COMMAND_PREFIX)) {
             command = command.substring(PLAYER_COMMAND_PREFIX.length());
