@@ -143,8 +143,6 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
             viewer.removeItems();
             onViewSet.accept(viewer);
 
-            //String title = NightMessage.asLegacy(this.getTitle(viewer));
-
             InventoryView view = viewer.getView();
             if (view == null || viewer.isRebuildMenu()) {
 
@@ -169,7 +167,6 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
             }
             else {
                 view.getTopInventory().clear();
-                //if (viewer.isUpdateTitle()) view.setTitle(NightMessage.asLegacy(this.getTitle(viewer)));
             }
 
             this.onPrepare(viewer, view);
