@@ -4,7 +4,6 @@ version: '${project.version}'
 description: Plugin core
 author: NightExpress
 api-version: 1.19
-folia-supported: true
 load: STARTUP
 libraries:
   - com.zaxxer:HikariCP:6.0.0

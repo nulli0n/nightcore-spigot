@@ -24,7 +24,6 @@ import su.nightexpress.nightcore.ui.menu.item.ItemHandler;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Version;
-import su.nightexpress.nightcore.util.bridge.ServerBridge;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
@@ -157,7 +156,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
                     if (builder instanceof LocationInventoryViewBuilder<?> locationBuilder) {
                         locationBuilder.location(player.getEyeLocation());
                     }
-                    view = ServerBridge.createView(builder, this.getTitle(viewer), player);
+                    view = Version.software().createView(builder, this.getTitle(viewer), player);
                 }
                 else {
                     view = this.menuType.typed().create(player, NightMessage.asLegacy(this.getTitle(viewer)));

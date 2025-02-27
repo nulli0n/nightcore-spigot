@@ -58,12 +58,13 @@ public class NightTask {
         return this.scheduledTask != null;
     }
 
+    @Deprecated
     public boolean isRunning() {
-        return this.scheduledTask != null && !this.scheduledTask.isCancelled();
+        return this.isValid();
     }
 
     public boolean stop() {
-        if (!this.isRunning() || this.scheduledTask == null) return false;
+        if (this.scheduledTask == null) return false;
 
         this.scheduledTask.cancel();
         return true;
