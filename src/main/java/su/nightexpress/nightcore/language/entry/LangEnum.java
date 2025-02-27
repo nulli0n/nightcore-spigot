@@ -8,23 +8,35 @@ import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class LangEnum<E extends Enum<E>> implements LangElement {
 
     private final String path;
     private final Class<E> clazz;
+
+    private final Map<E, String> defaultsMap;
     private final Map<E, String> localeMap;
 
-    public LangEnum(@NotNull String path, @NotNull Class<E> clazz) {
+    public LangEnum(@NotNull String path, @NotNull Class<E> clazz, @NotNull Map<E, String> defaultsMap) {
         this.path = path;
         this.clazz = clazz;
+        this.defaultsMap = defaultsMap;
         this.localeMap = new HashMap<>();
     }
 
     @NotNull
     public static <E extends Enum<E>> LangEnum<E> of(@NotNull String path, @NotNull Class<E> clazz) {
-        return new LangEnum<>(path, clazz);
+        return of(path, clazz, map -> {});
+    }
+
+    @NotNull
+    public static <E extends Enum<E>> LangEnum<E> of(@NotNull String path, @NotNull Class<E> clazz, @NotNull Consumer<Map<E, String>> consumer) {
+        Map<E, String> defaults = new HashMap<>();
+        consumer.accept(defaults);
+
+        return new LangEnum<>(path, clazz, defaults);
     }
 
     @Override
@@ -36,7 +48,8 @@ public class LangEnum<E extends Enum<E>> implements LangElement {
         FileConfig config = plugin.getLang();
 
         Stream.of(this.clazz.getEnumConstants()).forEach(con -> {
-            String text = ConfigValue.create(this.path + "." + con.name(), StringUtil.capitalizeUnderscored(con.name())).read(config);
+            String def = this.defaultsMap.getOrDefault(con, StringUtil.capitalizeUnderscored(con.name()));
+            String text = ConfigValue.create(this.path + "." + con.name(), def).read(config);
             this.localeMap.put(con, text);
         });
     }

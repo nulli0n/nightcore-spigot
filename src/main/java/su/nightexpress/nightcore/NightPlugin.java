@@ -19,17 +19,17 @@ import java.util.List;
 
 public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin {
 
+    public static final String CONFIG_FILE = "config.yml";
+    public static final String ENGINE_FILE = "engine.yml";
+
     protected List<Runnable> postLoaders;
 
     protected LangManager    langManager;
     protected CommandManager commandManager;
 
+    protected FileConfig    engineConf;
     protected FileConfig    config;
     protected PluginDetails details;
-
-//    public final boolean isEngine() {
-//        return this == Plugins.getCore();
-//    }
 
     private boolean isCore() {
         return this instanceof NightCore;
@@ -74,6 +74,11 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     @NotNull
+    public FileConfig getEngineConfig() {
+        return this.engineConf;
+    }
+
+    @NotNull
     public final FileConfig getLang() {
         return this.langManager.getConfig();
     }
@@ -81,7 +86,10 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     @NotNull
     @Override
     public PluginDetails getDetails() {
-        return this.details == null ? this.getDefaultDetails() : this.details;
+        if (this.details == null) throw new IllegalStateException("Plugin is not yet initialized!");
+
+        return this.details;
+        //return this.details == null ? this.getDefaultDetails() : this.details;
     }
 
     @NotNull
@@ -96,8 +104,18 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     protected void setupConfig() {
-        this.config = FileConfig.loadOrExtract(this, "config.yml");
-        this.details = PluginDetails.read(this);
+        this.engineConf = FileConfig.loadOrExtract(this, ENGINE_FILE);
+        this.config = FileConfig.loadOrExtract(this, CONFIG_FILE);
+
+        // ---------- MIGRATION - START ----------
+        if (this.config.contains("Plugin")) {
+            PluginDetails details = PluginDetails.read(this, this.config, this.getDefaultDetails());
+            details.write(this.engineConf, "");
+            this.config.remove("Plugin");
+        }
+        // ---------- MIGRATION - END ----------
+
+        this.details = PluginDetails.read(this, this.engineConf, this.getDefaultDetails());
 
         if (this.details.getConfigClass() != null) {
             this.config.initializeOptions(this.details.getConfigClass());
@@ -137,8 +155,9 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         this.postLoad();            // Load some stuff that needs to be injected after the rest managers.
 
-        this.getConfig().saveChanges();
+        this.config.saveChanges();
         this.getLang().saveChanges();
+        this.engineConf.saveChanges();
     }
 
     protected void unloadManagers() {

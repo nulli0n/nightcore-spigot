@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.core.command.CoreCommands;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.language.LangAssets;
 import su.nightexpress.nightcore.util.Plugins;
+import su.nightexpress.nightcore.util.TimeUtil;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 import su.nightexpress.nightcore.util.text.tag.Tags;
@@ -46,6 +47,7 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
         LangAssets.load(this);
         this.loadIntegrations();
         this.loadCommands();
+        this.info("Time zone set as " + TimeUtil.getTimeZone().getID());
 
         this.coreManager.setup();
     }

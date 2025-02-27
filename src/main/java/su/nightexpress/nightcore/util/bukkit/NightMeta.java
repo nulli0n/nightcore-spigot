@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
+import su.nightexpress.nightcore.core.CoreLang;
+import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
@@ -336,9 +338,39 @@ public class NightMeta implements Writeable {
     }
 
     @NotNull
+    @Deprecated
     public NightMeta localized(@NotNull LangItem langItem) {
         this.setDisplayName(langItem.getLocalizedName());
         this.setLore(langItem.getLocalizedLore());
+        return this;
+    }
+
+    @NotNull
+    public NightMeta localized(@NotNull LangUIButton locale) {
+        String name = CoreLang.EDITOR_BUTTON_NAME.getString().replace(Placeholders.GENERIC_NAME, locale.getName());
+        List<String> lore = new ArrayList<>();
+
+        locale.getCurrentInfo().forEach((title, value) -> {
+            lore.add(CoreLang.EDITOR_BUTTON_CURRENT_INFO.getString()
+                .replace(Placeholders.GENERIC_NAME, title)
+                .replace(Placeholders.GENERIC_VALUE, value));
+        });
+        lore.add(Placeholders.EMPTY_IF_ABOVE);
+
+        for (String entry : locale.getDescription()) {
+            lore.add(CoreLang.EDITOR_BUTTON_DESCRIPTION.getString().replace(Placeholders.GENERIC_ENTRY, entry));
+        }
+        lore.add(Placeholders.EMPTY_IF_BELOW);
+
+        locale.getClickActions().forEach((key, action) -> {
+            lore.add(CoreLang.EDITOR_BUTTON_CLICK_KEY.getString()
+                .replace(Placeholders.GENERIC_NAME, CoreLang.CLICK_KEY.getLocalized(key))
+                .replace(Placeholders.GENERIC_VALUE, action)
+            );
+        });
+
+        this.setDisplayName(name);
+        this.setLore(lore);
         return this;
     }
 

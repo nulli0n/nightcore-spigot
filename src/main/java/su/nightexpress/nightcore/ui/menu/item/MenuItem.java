@@ -32,21 +32,21 @@ public class MenuItem {
 
     @NotNull
     public static Builder buildNextPage(@NotNull Menu menu, int slot) {
-        return builder(NightItem.asCustomHead(Placeholders.SKIN_ARROW_RIGHT).localized(CoreLang.EDITOR_ITEM_NEXT_PAGE))
+        return builder(NightItem.asCustomHead(Placeholders.SKIN_ARROW_RIGHT).localized(CoreLang.EDITOR_ITEM_NEXT))
             .setHandler(ItemHandler.forNextPage(menu))
             .setSlots(slot);
     }
 
     @NotNull
     public static Builder buildPreviousPage(@NotNull Menu menu, int slot) {
-        return builder(NightItem.asCustomHead(Placeholders.SKIN_ARROW_LEFT).localized(CoreLang.EDITOR_ITEM_PREVIOUS_PAGE))
+        return builder(NightItem.asCustomHead(Placeholders.SKIN_ARROW_LEFT).localized(CoreLang.EDITOR_ITEM_PREVIOUS))
             .setHandler(ItemHandler.forPreviousPage(menu))
             .setSlots(slot);
     }
 
     @NotNull
     public static Builder buildExit(@NotNull Menu menu, int slot) {
-        return builder(NightItem.asCustomHead(Placeholders.SKIN_WRONG_MARK).localized(CoreLang.EDITOR_ITEM_CLOSE))
+        return builder(NightItem.asCustomHead(Placeholders.SKIN_WRONG_MARK).localized(CoreLang.EDITOR_ITEM_EXIT))
             .setHandler(ItemHandler.forClose(menu))
             .setSlots(slot);
     }
@@ -58,7 +58,7 @@ public class MenuItem {
 
     @NotNull
     public static Builder buildReturn(@NotNull Menu menu, int slot, @NotNull ItemClick click, @Nullable ItemOptions options) {
-        return builder(NightItem.asCustomHead(Placeholders.SKIN_ARROW_DOWN).localized(CoreLang.EDITOR_ITEM_RETURN))
+        return builder(NightItem.asCustomHead(Placeholders.SKIN_ARROW_DOWN).localized(CoreLang.EDITOR_ITEM_BACK))
             .setHandler(ItemHandler.forReturn(menu, click, options))
             .setSlots(slot);
     }

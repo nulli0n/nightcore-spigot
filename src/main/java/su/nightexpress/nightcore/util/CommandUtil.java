@@ -1,6 +1,5 @@
 package su.nightexpress.nightcore.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
@@ -11,30 +10,27 @@ import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
 import su.nightexpress.nightcore.command.impl.WrappedCommand;
+import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.util.*;
 
 public class CommandUtil {
 
-    private static final String FIELD_COMMAND_MAP = "commandMap";
-    private static final String FIELD_KNOWN_COMMANDS = "knownCommands";
-
-    private static final SimpleCommandMap COMMAND_MAP = getCommandMap();
-
+    @NotNull
     private static SimpleCommandMap getCommandMap() {
-        return (SimpleCommandMap) Reflex.getFieldValue(Bukkit.getServer(), FIELD_COMMAND_MAP);
+        return Version.software().getCommandMap();
     }
 
     @Deprecated
     public static void register(@NotNull Plugin plugin, @NotNull NightPluginCommand command) {
         WrappedCommand wrappedCommand = new WrappedCommand(plugin, command);
-        if (COMMAND_MAP.register(plugin.getName(), wrappedCommand)) {
+        if (getCommandMap().register(plugin.getName(), wrappedCommand)) {
             command.setBackend(wrappedCommand);
         }
     }
 
     public static boolean register(@NotNull Plugin plugin, @NotNull WrappedCommand wrappedCommand) {
-        return COMMAND_MAP.register(plugin.getName(), wrappedCommand);
+        return getCommandMap().register(plugin.getName(), wrappedCommand);
     }
 
     /*public static void syncCommands() {
@@ -46,14 +42,14 @@ public class CommandUtil {
         Reflex.invokeMethod(method, server);
     }*/
 
-    @SuppressWarnings("unchecked")
     public static boolean unregister(@NotNull String name) {
         Command command = getCommand(name).orElse(null);
         if (command == null) return false;
 
-        Map<String, Command> knownCommands = (HashMap<String, Command>) Reflex.getFieldValue(COMMAND_MAP, FIELD_KNOWN_COMMANDS);
-        if (knownCommands == null) return false;
-        if (!command.unregister(COMMAND_MAP)) return false;
+        SimpleCommandMap commandMap = getCommandMap();
+
+        Map<String, Command> knownCommands = Version.software().getKnownCommands(commandMap);
+        if (!command.unregister(commandMap)) return false;
 
         return knownCommands.keySet().removeIf(key -> key.equalsIgnoreCase(command.getName()) || command.getAliases().contains(key));
     }
@@ -75,14 +71,14 @@ public class CommandUtil {
 
     @NotNull
     public static Optional<Command> getCommand(@NotNull String name) {
-        return COMMAND_MAP.getCommands().stream()
+        return getCommandMap().getCommands().stream()
             .filter(command -> command.getName().equalsIgnoreCase(name) || command.getLabel().equalsIgnoreCase(name) || command.getAliases().contains(name))
             .findFirst();
     }
 
     @NotNull
     public static String getCommandName(@NotNull String str) {
-        String name = Colorizer.strip(str).split(" ")[0].substring(1);
+        String name = NightMessage.stripAll(str).split(" ")[0].substring(1);
 
         String[] pluginPrefix = name.split(":");
         if (pluginPrefix.length == 2) {

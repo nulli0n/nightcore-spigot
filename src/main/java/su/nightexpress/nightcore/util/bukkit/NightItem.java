@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.core.CoreLogger;
+import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.BukkitThing;
@@ -183,9 +184,17 @@ public class NightItem implements Writeable {
     }
 
     @NotNull
+    @Deprecated
     public NightItem localized(@NotNull LangItem langItem) {
-        this.setDisplayName(langItem.getLocalizedName());
-        this.setLore(langItem.getLocalizedLore());
+//        this.setDisplayName(langItem.getLocalizedName());
+//        this.setLore(langItem.getLocalizedLore());
+        this.meta.localized(langItem);
+        return this;
+    }
+
+    @NotNull
+    public NightItem localized(@NotNull LangUIButton langUIButton) {
+        this.meta.localized(langUIButton);
         return this;
     }
 

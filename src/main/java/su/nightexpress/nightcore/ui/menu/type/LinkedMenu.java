@@ -7,6 +7,7 @@ import org.bukkit.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
+import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.ui.dialog.Dialog;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
@@ -91,34 +92,73 @@ public abstract class LinkedMenu<P extends NightPlugin, T> extends AbstractMenu<
     }
 
     @Override
+    @Deprecated
     public void addItem(@NotNull Material material, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler) {
         this.addItem(material, locale, slot, handler, null);
     }
 
     @Override
+    @Deprecated
     public void addItem(@NotNull Material material, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
         this.addItem(new NightItem(material).localized(locale), slot, handler, options);
     }
 
     @Override
+    @Deprecated
     public void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler) {
         this.addItem(itemStack, locale, slot, handler, null);
     }
 
     @Override
+    @Deprecated
     public void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
         this.addItem(new NightItem(itemStack).localized(locale), slot, handler, options);
     }
 
     @Override
+    @Deprecated
     public void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler) {
         this.addItem(item, locale, slot, handler, null);
     }
 
     @Override
+    @Deprecated
     public void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
         this.addItem(item.localized(locale), slot, handler, options);
     }
+
+
+    @Override
+    public void addItem(@NotNull Material material, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler) {
+        this.addItem(material, locale, slot, handler, null);
+    }
+
+    @Override
+    public void addItem(@NotNull Material material, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
+        this.addItem(new NightItem(material).localized(locale), slot, handler, options);
+    }
+
+    @Override
+    public void addItem(@NotNull ItemStack itemStack, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler) {
+        this.addItem(itemStack, locale, slot, handler, null);
+    }
+
+    @Override
+    public void addItem(@NotNull ItemStack itemStack, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
+        this.addItem(new NightItem(itemStack).localized(locale), slot, handler, options);
+    }
+
+    @Override
+    public void addItem(@NotNull NightItem item, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler) {
+        this.addItem(item, locale, slot, handler, null);
+    }
+
+    @Override
+    public void addItem(@NotNull NightItem item, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options) {
+        this.addItem(item.localized(locale), slot, handler, options);
+    }
+
+
 
     @Override
     public void addItem(@NotNull NightItem item, int slot, @NotNull LinkHandler<T> handler) {

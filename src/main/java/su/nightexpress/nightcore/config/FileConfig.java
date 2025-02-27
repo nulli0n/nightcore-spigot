@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.bukkit.NightSound;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
@@ -252,6 +253,11 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @NotNull
+    public String[] getStringArray(@NotNull String path) {
+        return this.getStringArray(path, new String[0]);
+    }
+
+    @NotNull
     public String[] getStringArray(@NotNull String path, @NotNull String[] def) {
         String str = this.getString(path);
         return str == null ? def : str.split(",");
@@ -318,6 +324,15 @@ public class FileConfig extends YamlConfiguration {
     @NotNull
     public NightItem getCosmeticItem(@NotNull String path) {
         return NightItem.read(this, path);
+    }
+
+    @NotNull
+    public NightSound getSound(@NotNull String path) {
+        return NightSound.deserialize(this.getString(path, "null"));
+    }
+
+    public void setSound(@NotNull String path, @NotNull NightSound sound) {
+        this.set(path, sound.serialize());
     }
 
     @NotNull

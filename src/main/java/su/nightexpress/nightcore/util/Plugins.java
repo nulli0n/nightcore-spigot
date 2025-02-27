@@ -9,10 +9,12 @@ public class Plugins {
     public static final String VAULT           = "Vault";
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
     public static final String FLOODGATE       = "floodgate";
+    public static final String ECONOMY_BRIDGE = "EconomyBridge";
 
     private static boolean hasPlaceholderAPI;
     private static boolean hasVault;
     private static boolean hasFloodgate;
+    private static boolean hasEconomyBridge;
 
     private static NightCore core;
 
@@ -24,6 +26,7 @@ public class Plugins {
         hasPlaceholderAPI = isInstalled(PLACEHOLDER_API);
         hasVault = isInstalled(VAULT);
         hasFloodgate = isInstalled(FLOODGATE);
+        hasEconomyBridge = isInstalled(ECONOMY_BRIDGE);
     }
 
     @NotNull
@@ -56,5 +59,9 @@ public class Plugins {
 
     public static boolean hasFloodgate() {
         return hasFloodgate;
+    }
+
+    public static boolean hasEconomyBridge() {
+        return hasEconomyBridge;
     }
 }

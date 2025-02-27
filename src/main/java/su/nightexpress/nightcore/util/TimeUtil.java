@@ -1,55 +1,35 @@
 package su.nightexpress.nightcore.util;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.core.CoreLang;
+import su.nightexpress.nightcore.util.time.TimeFormatType;
+import su.nightexpress.nightcore.util.time.TimeFormats;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class TimeUtil {
 
+    private static TimeZone timeZone;
+
+    public static void setTimeZone(@NotNull String name) {
+        timeZone = TimeZone.getTimeZone(name);
+    }
+
     @NotNull
+    public static TimeZone getTimeZone() {
+        return timeZone;
+    }
+
+    @NotNull
+    public static ZoneId getZoneId() {
+        return timeZone.toZoneId();
+    }
+
+    @NotNull
+    @Deprecated
     public static String formatTime(long time) {
-        long days = TimeUnit.MILLISECONDS.toDays(time);
-        long hours = TimeUnit.MILLISECONDS.toHours(time) % 24;
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(time) % 60;
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(time) % 60;
-        String delimiter = CoreLang.TIME_DELIMITER.getString();
-
-        StringBuilder str = new StringBuilder();
-        if (days > 0) {
-            if (!str.isEmpty()) {
-                str.append(delimiter);
-            }
-            str.append(CoreLang.TIME_DAY.getString().replace(Placeholders.GENERIC_AMOUNT, String.valueOf(days)));
-        }
-        if (hours > 0) {
-            if (!str.isEmpty()) {
-                str.append(delimiter);
-            }
-            str.append(CoreLang.TIME_HOUR.getString().replace(Placeholders.GENERIC_AMOUNT, String.valueOf(hours)));
-        }
-        if (minutes > 0) {
-            if (!str.isEmpty()) {
-                str.append(delimiter);
-            }
-            str.append(CoreLang.TIME_MINUTE.getString().replace(Placeholders.GENERIC_AMOUNT, String.valueOf(minutes)));
-        }
-        if (str.isEmpty() || seconds > 0) {
-            if (!str.isEmpty()) {
-                str.append(delimiter);
-            }
-
-            boolean doDecimal = seconds != 0 && seconds < 5 && str.isEmpty();
-            String secondsStr = doDecimal ? NumberUtil.format((double) time / 1000D) : String.valueOf(seconds);
-
-            str.append(CoreLang.TIME_SECOND.getString().replace(Placeholders.GENERIC_AMOUNT, secondsStr));
-        }
-
-        return str.toString();
+        return TimeFormats.toLiteral(time);
     }
 
     public static boolean isPassed(long timestamp) {
@@ -77,14 +57,18 @@ public class TimeUtil {
     }
 
     @NotNull
+    @Deprecated
     public static String formatDuration(long from, long to) {
         long time = to - from;
-        return formatTime(time);
+        //return formatTime(time);
+        return TimeFormats.toLiteral(time);
     }
 
     @NotNull
+    @Deprecated
     public static String formatDuration(long until) {
-        return formatTime(until - System.currentTimeMillis());
+        return TimeFormats.formatDuration(until, TimeFormatType.LITERAL);
+        //return formatTime(until - System.currentTimeMillis());
     }
 
     @NotNull
@@ -97,12 +81,27 @@ public class TimeUtil {
     }
 
     @NotNull
+    public static LocalDateTime getCurrentDateTime() {
+        return LocalDateTime.now(getZoneId());
+    }
+
+    @NotNull
+    public static LocalDate getCurrentDate() {
+        return LocalDate.now(getZoneId());
+    }
+
+    @NotNull
+    public static LocalTime getCurrentTime() {
+        return LocalTime.now(getZoneId());
+    }
+
+    @NotNull
     public static LocalDateTime getLocalDateTimeOf(long ms) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(ms), TimeZone.getDefault().toZoneId());
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(ms), getZoneId());
     }
 
     public static long toEpochMillis(@NotNull LocalDateTime dateTime) {
-        Instant instant = dateTime.atZone(TimeZone.getDefault().toZoneId()).toInstant();
+        Instant instant = dateTime.atZone(getZoneId()).toInstant();
         return instant.toEpochMilli();
     }
 }
