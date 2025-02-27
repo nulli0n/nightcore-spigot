@@ -1,15 +1,15 @@
 package su.nightexpress.nightcore.language.message;
 
-import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.bukkit.NightSound;
 
 public class MessageOptions {
 
     private OutputType outputType;
     private boolean    hasPrefix;
     private boolean    usePlaceholderAPI;
-    private Sound      sound;
+    private NightSound sound;
     private int[]      titleTimes;
 
     public MessageOptions() {
@@ -54,11 +54,11 @@ public class MessageOptions {
     }
 
     @Nullable
-    public Sound getSound() {
+    public NightSound getSound() {
         return this.sound;
     }
 
-    public void setSound(@Nullable Sound sound) {
+    public void setSound(@Nullable NightSound sound) {
         this.sound = sound;
     }
 

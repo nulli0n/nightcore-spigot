@@ -1,0 +1,21 @@
+main: su.nightexpress.nightcore.NightCore
+bootstrapper: su.nightexpress.nightcore.NightCoreBootstrap
+loader: su.nightexpress.nightcore.NightCoreLoader
+name: nightcore
+version: '${project.version}'
+description: Plugin engine
+load: STARTUP
+authors:
+  - NightExpress
+api-version: '1.19'
+dependencies:
+  server:
+    Vault:
+      required: false
+      join-classpath: true
+    PlaceholderAPI:
+      required: false
+      join-classpath: true
+    floodgate:
+      required: false
+      join-classpath: true

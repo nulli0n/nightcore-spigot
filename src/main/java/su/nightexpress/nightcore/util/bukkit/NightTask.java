@@ -54,12 +54,13 @@ public class NightTask {
         return this.bukkitTask != null;
     }
 
+    @Deprecated
     public boolean isRunning() {
-        return this.bukkitTask != null && this.plugin.getScheduler().isCurrentlyRunning(this.bukkitTask.getTaskId());
+        return this.isValid();//this.bukkitTask != null && this.plugin.getScheduler().isCurrentlyRunning(this.bukkitTask.getTaskId());
     }
 
     public boolean stop() {
-        if (!this.isRunning() || this.bukkitTask == null) return false;
+        if (this.bukkitTask == null) return false;
 
         this.plugin.getScheduler().cancelTask(this.bukkitTask.getTaskId());
         return true;

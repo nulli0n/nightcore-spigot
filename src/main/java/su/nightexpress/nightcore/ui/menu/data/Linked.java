@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
@@ -28,17 +29,37 @@ public interface Linked<T> extends Menu {
 
     ItemClick manageLink(@NotNull LinkHandler<T> handler);
 
+    @Deprecated
     void addItem(@NotNull Material material, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler);
 
+    @Deprecated
     void addItem(@NotNull Material material, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
 
+    @Deprecated
     void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler);
 
+    @Deprecated
     void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
 
+    @Deprecated
     void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler);
 
+    @Deprecated
     void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+
+
+    void addItem(@NotNull Material material, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler);
+
+    void addItem(@NotNull Material material, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+
+    void addItem(@NotNull ItemStack itemStack, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler);
+
+    void addItem(@NotNull ItemStack itemStack, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+
+    void addItem(@NotNull NightItem item, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler);
+
+    void addItem(@NotNull NightItem item, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+
 
     void addItem(@NotNull NightItem item, int slot, @NotNull LinkHandler<T> handler);
 

@@ -51,7 +51,7 @@ public abstract class RankMap<T extends Number> {
                                                                                            @NotNull Creator<T, R> creator,
                                                                                            @NotNull Function<Double, T> converter,
                                                                                            @NotNull String... description) {
-        ConfigValue.Reader<R> reader = (config, path2, def) -> read(config, path2, creator, converter);
+        ConfigValue.Loader<R> reader = (config, path2) -> read(config, path2, creator, converter);
         ConfigValue.Writer<R> writer = (config, path2, obj) -> obj.write(config, path2);
 
         return ConfigValue.create(path, reader, writer, () -> defaultValue, description);

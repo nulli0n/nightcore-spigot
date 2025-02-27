@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class Colorizer {
 
     @Deprecated public static final Pattern PATTERN_HEX      = Pattern.compile("#([A-Fa-f0-9]{6})");

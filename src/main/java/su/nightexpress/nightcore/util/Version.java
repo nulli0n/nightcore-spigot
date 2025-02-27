@@ -7,19 +7,16 @@ import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.util.bridge.PaperBridge;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.SpigotBridge;
-import su.nightexpress.nightcore.util.version.VersionComponent;
 
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
 public enum Version {
 
-    V1_19_R3("1.19.4"),
+    V1_19_R3("1.19.4", Status.OUTDATED),
     V1_20_R1("1.20.1", Status.OUTDATED),
     V1_20_R2("1.20.2", Status.OUTDATED),
-    V1_20_R3("1.20.4"),
+    V1_20_R3("1.20.4", Status.OUTDATED),
     MC_1_20_6("1.20.6", Status.OUTDATED),
     MC_1_21_0("1.21", Status.OUTDATED),
     MC_1_21("1.21.1"),
@@ -29,11 +26,9 @@ public enum Version {
     UNKNOWN("Unknown"),
     ;
 
-    public static final  String                CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
-    private static final Set<VersionComponent> LOADED_COMPONENTS   = new HashSet<>();
+    public static final String CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
 
     private static Version current;
-    //private static boolean spigot;
     private static Software software;
 
     private final Status status;
@@ -46,12 +41,6 @@ public enum Version {
     Version(@NotNull String localized, @NotNull Status status) {
         this.localized = localized;
         this.status = status;
-    }
-
-    @NotNull
-    @Deprecated
-    public static String getProtocol() {
-        return Bukkit.getServer().getBukkitVersion();
     }
 
     public enum Status {
@@ -68,28 +57,22 @@ public enum Version {
 
         current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
         software = isSpigot ? new SpigotBridge() : new PaperBridge();
+        software.initialize(core);
         core.info("Server version detected as " + bukkitName + " " + current.getLocalized() + ". Using " + software().getName() + ".");
 
         loadComponents(core);
     }
 
     private static void loadComponents(@NotNull NightCore core) {
-        LOADED_COMPONENTS.clear();
-
-        loadComponent(core, VersionComponent.ENTITY_ID_GENERATOR, EntityUtil.loadEntityCounter(core));
-        loadComponent(core, VersionComponent.ITEM_NBT_COMPRESSOR, ItemNbt.load(core));
-
-        if (hasComponent(VersionComponent.ITEM_NBT_COMPRESSOR) && !ItemNbt.test()) {
-            core.error(VersionComponent.ITEM_NBT_COMPRESSOR.name() + ": Test failed.");
+        boolean nbtLoad = ItemNbt.load(core);
+        if (!nbtLoad) {
+            core.error("Could not load Item NBT Compressor.");
+            return;
         }
-    }
 
-    private static void loadComponent(@NotNull NightCore core, @NotNull VersionComponent component, boolean state) {
-        if (state) {
-            LOADED_COMPONENTS.add(component);
-            core.info("[Core Components] " + component.name() + ": Loaded");
+        if (!ItemNbt.test()) {
+            core.error("Failed test of Item NBT Compressor.");
         }
-        else core.error("[Core Components] " + component.name() + ": Error");
     }
 
     public static void printCaution(@NotNull NightCorePlugin plugin) {
@@ -130,8 +113,8 @@ public enum Version {
         return software.isSpigot();
     }
 
-    public static boolean hasComponent(@NotNull VersionComponent component) {
-        return LOADED_COMPONENTS.contains(component);
+    public static boolean isPaper() {
+        return software.isPaper();
     }
 
     public boolean isDeprecated() {
@@ -148,12 +131,12 @@ public enum Version {
 
     @NotNull
     public Status getStatus() {
-        return status;
+        return this.status;
     }
 
     @NotNull
     public String getLocalized() {
-        return localized;
+        return this.localized;
     }
 
     public boolean isLower(@NotNull Version version) {

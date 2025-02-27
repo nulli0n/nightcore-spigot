@@ -4,15 +4,24 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.dialog.Dialog;
-import su.nightexpress.nightcore.language.entry.LangItem;
-import su.nightexpress.nightcore.language.entry.LangString;
-import su.nightexpress.nightcore.language.entry.LangText;
+import su.nightexpress.nightcore.language.entry.*;
 import su.nightexpress.nightcore.ui.dialog.DialogManager;
+import su.nightexpress.nightcore.ui.menu.click.ClickKey;
 
 import static su.nightexpress.nightcore.util.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
 public class CoreLang {
+
+    public static final LangEnum<ClickKey> CLICK_KEY = LangEnum.of("ClickKey", ClickKey.class, map -> {
+        map.put(ClickKey.LEFT, "L-Click");
+        map.put(ClickKey.RIGHT, "R-Click");
+        map.put(ClickKey.SHIFT_LEFT, "Shift + L-Click");
+        map.put(ClickKey.SHIFT_RIGHT, "Shift + R-Click");
+        map.put(ClickKey.DROP_KEY, "Drop [Q]");
+        map.put(ClickKey.SWAP_KEY, "Swap [F]");
+        map.put(ClickKey.DRAG_N_DROP, "Drag & Drop");
+    });
 
     public static final LangString COMMAND_ARGUMENT_FORMAT_REQUIRED = LangString.of("Command.Argument.Type.Required",
         LIGHT_RED.enclose("<" + GENERIC_NAME + ">"));
@@ -179,10 +188,41 @@ public class CoreLang {
     @Deprecated
     public static final LangString EDITOR_INPUT_ERROR_GENERIC     = LangString.of("Editor.Input.Error.Generic", GRAY.enclose("Invalid value!"));
 
+
+    public static final LangString EDITOR_BUTTON_NAME = LangString.of("Editor.Button.Name",
+        LIGHT_YELLOW.enclose(BOLD.enclose(GENERIC_NAME))
+    );
+
+    public static final LangString EDITOR_BUTTON_DESCRIPTION = LangString.of("Editor.Button.Description",
+        GRAY.enclose(GENERIC_ENTRY)
+    );
+
+    public static final LangString EDITOR_BUTTON_CURRENT_DEFAULT_NAME = LangString.of("Editor.Button.Current.DefaultName",
+        "Current"
+    );
+
+    public static final LangString EDITOR_BUTTON_CURRENT_INFO = LangString.of("Editor.Button.Current.Info",
+        LIGHT_YELLOW.enclose("● " + LIGHT_GRAY.enclose(GENERIC_NAME + ": ") + GENERIC_VALUE)
+    );
+
+    public static final LangString EDITOR_BUTTON_CLICK_KEY = LangString.of("Editor.Button.ClickKey",
+        LIGHT_YELLOW.enclose("[▶]") + " " + LIGHT_GRAY.enclose(GENERIC_NAME + " to " + LIGHT_YELLOW.enclose(GENERIC_VALUE) + ".")
+    );
+
+
+    @Deprecated
     public static final LangItem EDITOR_ITEM_CLOSE         = LangItem.of("Editor.Generic.Close", LIGHT_RED.enclose(BOLD.enclose("Exit")));
+    @Deprecated
     public static final LangItem EDITOR_ITEM_RETURN        = LangItem.of("Editor.Generic.Return", LIGHT_GRAY.enclose(BOLD.enclose("Return")));
+    @Deprecated
     public static final LangItem EDITOR_ITEM_NEXT_PAGE     = LangItem.of("Editor.Generic.NextPage", LIGHT_GRAY.enclose("Next Page →"));
+    @Deprecated
     public static final LangItem EDITOR_ITEM_PREVIOUS_PAGE = LangItem.of("Editor.Generic.PreviousPage", LIGHT_GRAY.enclose("← Previous Page"));
+
+    public static final LangUIButton EDITOR_ITEM_EXIT     = LangUIButton.builder("Editor.Item.Exit", LIGHT_RED.enclose(BOLD.enclose("Exit"))).build();
+    public static final LangUIButton EDITOR_ITEM_BACK     = LangUIButton.builder("Editor.Item.Return", LIGHT_GRAY.enclose(BOLD.enclose("Return"))).build();
+    public static final LangUIButton EDITOR_ITEM_NEXT     = LangUIButton.builder("Editor.Item.NextPage", LIGHT_GRAY.enclose(UNBOLD.enclose("Next Page →"))).build();
+    public static final LangUIButton EDITOR_ITEM_PREVIOUS = LangUIButton.builder("Editor.Item.PreviousPage", LIGHT_GRAY.enclose(UNBOLD.enclose("← Previous Page"))).build();
 
     @NotNull
     public static String getYesOrNo(boolean value) {

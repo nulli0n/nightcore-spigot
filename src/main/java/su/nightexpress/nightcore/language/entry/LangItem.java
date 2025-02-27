@@ -16,6 +16,7 @@ import java.util.List;
 
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
+@Deprecated
 public class LangItem extends LangEntry {
 
     private final List<String> defaultLore;

@@ -105,7 +105,7 @@ public class LangMessage {
                     }
                 }
                 else if (type.equalsIgnoreCase("sound")) {
-                    options.setSound(BukkitThing.getSound(typeContent));
+                    options.setSound(NightSound.deserialize(typeContent));
                 }
                 else if (type.equalsIgnoreCase("prefix")) {
                     boolean b = Boolean.parseBoolean(typeContent);
@@ -284,7 +284,7 @@ public class LangMessage {
         if (this.isDisabled()) return;
 
         if (this.options.getSound() != null && sender instanceof Player player) {
-            NightSound.of(this.options.getSound()).play(player);
+            this.options.getSound().play(player);
         }
 
         Replacer replacer = new Replacer();

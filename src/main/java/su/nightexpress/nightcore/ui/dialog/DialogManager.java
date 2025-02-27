@@ -10,8 +10,8 @@ import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Players;
-import su.nightexpress.nightcore.util.TimeUtil;
 import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.time.TimeFormats;
 
 import java.util.*;
 
@@ -49,7 +49,7 @@ public class DialogManager {
 
     private static void displayPrompt(@NotNull Dialog dialog, int fade) {
         Player player = dialog.getPlayer();
-        String title = NightMessage.asLegacy(CoreLang.DIALOG_HEADER.getString().replace(Placeholders.GENERIC_TIME, TimeUtil.formatTime(dialog.getLifetimeMillis())));
+        String title = NightMessage.asLegacy(CoreLang.DIALOG_HEADER.getString().replace(Placeholders.GENERIC_TIME, TimeFormats.toLiteral(dialog.getLifetimeMillis())));
         String sub = NightMessage.asLegacy(dialog.getPrompt());
 
         player.sendTitle(title, sub, fade, 40, 20);

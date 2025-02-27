@@ -44,13 +44,6 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
 
     @NotNull
     protected static DatabaseConfig getDataConfig(@NotNull NightPlugin plugin) {
-//        DbConfig dataConfig = plugin.getDetails().getDatabaseConfig();
-//        if (dataConfig == null) {
-//            plugin.warn("The plugin didn't have database configuration. Fixing it now...");
-//            dataConfig = DbConfig.read(plugin);
-//        }
-//        return dataConfig;
-//
         return DatabaseConfig.read(plugin);
     }
 

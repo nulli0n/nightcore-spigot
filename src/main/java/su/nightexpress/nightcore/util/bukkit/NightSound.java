@@ -6,13 +6,14 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.NumberUtil;
 
 public class NightSound implements Writeable {
+
+    private static final String DELIMITER = ":";
 
     private static final float MIN_PITCH  = 0.5f;
     private static final float MAX_PITCH  = 2.0f;
@@ -48,34 +49,53 @@ public class NightSound implements Writeable {
     }
 
     @NotNull
-    public static NightSound read(@NotNull FileConfig config, @NotNull String path) {
-        String name = ConfigValue.create(path + ".Name", "null",
-            "Sound name. Use vanilla sound names or custom ones from your resource pack(s).",
-            "All vanilla sound names: https://minecraft.wiki/w/Sounds.json#Sound_events -> 'Java Edition values' -> 'Sound Event' column."
-        ).read(config);
-
-        float volume = ConfigValue.create(path + ".Volume", MAX_VOLUME,
-            "Sound volume. [" + MIN_VOLUME + " to " + MAX_VOLUME + "]"
-        ).read(config).floatValue();
-
-        float pitch = ConfigValue.create(path + ".Pitch", 1D,
-            "Sound speed. [" + MIN_PITCH + " to " + MAX_PITCH + "]"
-        ).read(config).floatValue();
-
+    public static NightSound of(@NotNull String name, float volume, float pitch) {
         Sound bukkit = BukkitThing.getSound(name);
 
         return new NightSound(name, bukkit, volume, pitch);
     }
 
+    @NotNull
+    public static NightSound deserialize(@NotNull String from) {
+        String[] split = from.split(DELIMITER);
+
+        String name = split[0];
+        float volume = split.length >= 2 ? (float) NumberUtil.getDoubleAbs(split[1], MAX_VOLUME) : MAX_VOLUME;
+        float pitch = split.length >= 3 ? (float) NumberUtil.getDoubleAbs(split[2], 1f) : 1f;
+
+        return of(name, volume, pitch);
+    }
+
+    @NotNull
+    public String serialize() {
+        return this.name + DELIMITER + this.volume + DELIMITER + this.pitch;
+    }
+
+    @NotNull
+    @Deprecated
+    public static NightSound read(@NotNull FileConfig config, @NotNull String path) {
+
+        if (config.contains(path + ".Name")) {
+            String oldName = config.getString(path + ".Name", "null");
+            float volume = (float) config.getDouble(path + ".Volume");
+            float pitch = (float) config.getDouble(path + ".Putch");
+
+            NightSound old = of(oldName, volume, pitch);
+            config.remove(path);
+            config.set(path, old.serialize());
+        }
+
+        return deserialize(config.getString(path, "null"));
+    }
+
     @Override
+    @Deprecated
     public void write(@NotNull FileConfig config, @NotNull String path) {
-        config.set(path + ".Name", this.name);
-        config.set(path + ".Volume", this.volume);
-        config.set(path + ".Pitch", this.pitch);
+        config.set(path, this.serialize());
     }
 
     public boolean isEmpty() {
-        return this.volume <= 0F || this.name.isEmpty();
+        return this.volume <= 0F || this.name.isBlank();
     }
 
     public void play(@NotNull Player player) {
