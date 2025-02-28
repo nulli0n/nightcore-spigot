@@ -328,6 +328,9 @@ public class FileConfig extends YamlConfiguration {
 
     @NotNull
     public NightSound getSound(@NotNull String path) {
+        if (this.contains(path + ".Name")) {
+            return NightSound.read(this, path); // Update
+        }
         return NightSound.deserialize(this.getString(path, "null"));
     }
 
