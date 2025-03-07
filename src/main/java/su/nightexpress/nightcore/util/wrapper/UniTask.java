@@ -74,9 +74,9 @@ public class UniTask {
         if (this.taskIdHashMap.isEmpty() || this.interval <= 0L) return this;
 
         if (this.async) {
-            this.taskIdHashMap.put(taskIdHashMap.size() + 1, plugin.getScheduler().runTaskTimerAsynchronously(plugin, runnable, 0L, interval));
+            this.taskIdHashMap.put(taskIdHashMap.size() + 1, plugin.getFoliaScheduler().runTaskTimerAsynchronously(plugin, runnable, 0L, interval));
         } else {
-            this.taskIdHashMap.put(taskIdHashMap.size() + 1, plugin.getScheduler().runTaskTimer(plugin, runnable, 0L, interval));
+            this.taskIdHashMap.put(taskIdHashMap.size() + 1, plugin.getFoliaScheduler().runTaskTimer(plugin, runnable, 0L, interval));
         }
         return this;
     }

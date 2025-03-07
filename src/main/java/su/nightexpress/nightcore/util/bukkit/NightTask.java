@@ -26,7 +26,7 @@ public class NightTask {
 
     @NotNull
     public static NightTask create(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval) {
-        return createTask(plugin, () -> interval <= 0 ? null : plugin.getScheduler().runTaskTimer(plugin, runnable, 0L, interval));
+        return createTask(plugin, () -> interval <= 0 ? null : plugin.getFoliaScheduler().runTaskTimer(plugin, runnable, 0L, interval));
     }
 
     @NotNull
@@ -39,7 +39,7 @@ public class NightTask {
         return createTask(plugin, () -> {
             if (interval <= 0) return null;
 
-            return plugin.getScheduler().runTaskTimer(plugin, () -> CompletableFuture.runAsync(runnable), 0L, interval);
+            return plugin.getFoliaScheduler().runTaskTimer(plugin, () -> CompletableFuture.runAsync(runnable), 0L, interval);
         });
     }
 

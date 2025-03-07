@@ -137,7 +137,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
             return false;
         }
 
-        plugin.getScheduler().execute(player.getLocation(), () -> {
+        plugin.getFoliaScheduler().execute(player.getLocation(), () -> {
             MenuViewer viewer = this.getViewerOrCreate(player);
             viewer.removeItems();
             onViewSet.accept(viewer);
