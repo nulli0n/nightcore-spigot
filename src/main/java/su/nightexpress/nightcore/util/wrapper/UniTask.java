@@ -3,7 +3,6 @@ package su.nightexpress.nightcore.util.wrapper;
 import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
-
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
