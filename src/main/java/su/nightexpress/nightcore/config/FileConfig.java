@@ -213,6 +213,7 @@ public class FileConfig extends YamlConfiguration {
     public String getString(@NotNull String path) {
         String str = super.getString(path);
         return str == null || str.isEmpty() ? null : str;
+//        return super.getString(path);
     }
 
     @Override

@@ -27,6 +27,7 @@ public class ReloadCommand {
 
     public static boolean execute(@NotNull NightCorePlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         plugin.reload();
-        return context.sendSuccess(CoreLang.COMMAND_RELOAD_DONE.getMessage(plugin));
+        context.send(CoreLang.COMMAND_RELOAD_DONE.getMessage(plugin));
+        return true;
     }
 }

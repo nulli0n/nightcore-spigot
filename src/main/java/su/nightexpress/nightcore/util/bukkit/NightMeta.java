@@ -14,11 +14,10 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.core.CoreLang;
-import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.language.entry.LangItem;
+import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
-import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -107,14 +106,14 @@ public class NightMeta implements Writeable {
             displayMeta.setSkullOwner(skullMeta.getOwnerProfile());
         }
 
-        displayMeta.setDisplayName(meta.hasDisplayName() ? meta.getDisplayName() : null);
-        displayMeta.setLore(meta.getLore());
+        displayMeta.setDisplayName(meta.hasDisplayName() ? ItemUtil.getSerializedDisplayName(meta)/*meta.getDisplayName()*/ : null);
+        displayMeta.setLore(ItemUtil.getSerializedLore(meta));
         displayMeta.setEnchants(meta.getEnchants());
         displayMeta.setUnbreakable(meta.isUnbreakable());
         displayMeta.setSkinURL(ItemUtil.getHeadSkin(itemStack));
         displayMeta.setModelData(meta.hasCustomModelData() ? meta.getCustomModelData() : null);
         if (Version.isAtLeast(Version.MC_1_21)) {
-            displayMeta.setItemName(meta.hasItemName() ? meta.getItemName() : null);
+            displayMeta.setItemName(meta.hasItemName() ? ItemUtil.getSerializedItemName(meta)/*meta.getItemName()*/ : null);
             displayMeta.setEnchantGlint((meta.hasEnchantmentGlintOverride() && meta.getEnchantmentGlintOverride())/* || meta.hasEnchants()*/);
             displayMeta.setHideTooltip(meta.isHideTooltip());
         }
@@ -253,19 +252,22 @@ public class NightMeta implements Writeable {
         config.set(path + ".Color", this.color == null ? null : color.getRed() + "," + color.getBlue() + "," + color.getGreen());
     }
 
-    public void apply(@NotNull ItemStack itemStack, boolean legacy) {
+    public void apply(@NotNull ItemStack itemStack/*, boolean legacy*/) {
         ItemUtil.editMeta(itemStack, meta -> {
             if (this.displayName != null) {
                 String name = this.replacer == null ? this.displayName : this.replacer.apply(this.displayName);
-                meta.setDisplayName(legacy ? NightMessage.asLegacy(name) : name);
+                ItemUtil.setDisplayName(meta, name);
+                //meta.setDisplayName(legacy ? NightMessage.asLegacy(name) : name);
             }
             if (this.itemName != null && Version.isAtLeast(Version.MC_1_21)) {
                 String name = this.replacer == null ? this.itemName : this.replacer.apply(this.itemName);
-                meta.setItemName(name == null ? null : (legacy ? NightMessage.asLegacy(name) : name));
+                ItemUtil.setItemName(meta, name);
+                //meta.setItemName(name == null ? null : (legacy ? NightMessage.asLegacy(name) : name));
             }
             if (this.lore != null) {
                 List<String> lore = this.replacer == null ? this.lore : this.replacer.apply(this.lore);
-                meta.setLore(legacy ? NightMessage.asLegacy(this.addEmptyLines(lore)) : this.addEmptyLines(lore));
+                ItemUtil.setLore(meta, this.addEmptyLines(lore));
+                //meta.setLore(legacy ? NightMessage.asLegacy(this.addEmptyLines(lore)) : this.addEmptyLines(lore));
             }
             if (this.modelData != null) {
                 meta.setCustomModelData(this.modelData);
@@ -277,9 +279,9 @@ public class NightMeta implements Writeable {
 
             meta.setUnbreakable(this.unbreakable);
 
-            if (this.hideComponents) {
-                ItemUtil.hideAttributes(meta, itemStack.getType());
-            }
+//            if (this.hideComponents) {
+//                ItemUtil.hideAttributes(meta, itemStack.getType());
+//            }
 
             if (Version.isAtLeast(Version.MC_1_21)) {
                 if (this.enchantGlint) meta.setEnchantmentGlintOverride(true);
@@ -306,6 +308,10 @@ public class NightMeta implements Writeable {
                 }
             }
         });
+
+        if (this.hideComponents && !this.hideTooltip) {
+            ItemUtil.hideAttributes(itemStack);
+        }
     }
 
     @NotNull
@@ -360,7 +366,7 @@ public class NightMeta implements Writeable {
         for (String entry : locale.getDescription()) {
             lore.add(CoreLang.EDITOR_BUTTON_DESCRIPTION.getString().replace(Placeholders.GENERIC_ENTRY, entry));
         }
-        lore.add(Placeholders.EMPTY_IF_BELOW);
+        lore.add(Placeholders.EMPTY_IF_ABOVE);
 
         locale.getClickActions().forEach((key, action) -> {
             lore.add(CoreLang.EDITOR_BUTTON_CLICK_KEY.getString()

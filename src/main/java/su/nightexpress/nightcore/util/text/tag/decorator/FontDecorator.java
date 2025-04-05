@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.decorator;
 
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 public class FontDecorator implements Decorator {
 
@@ -12,7 +12,7 @@ public class FontDecorator implements Decorator {
     }
 
     @Override
-    public void decorate(@NotNull BaseComponent component) {
+    public void decorate(@NotNull NightComponent component) {
         component.setFont(this.font);
     }
 }

@@ -1,12 +1,12 @@
 package su.nightexpress.nightcore.core;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.language.entry.*;
 import su.nightexpress.nightcore.ui.dialog.DialogManager;
 import su.nightexpress.nightcore.ui.menu.click.ClickKey;
+import su.nightexpress.nightcore.util.bridge.wrapper.ClickEventType;
+import su.nightexpress.nightcore.util.bridge.wrapper.HoverEventType;
 
 import static su.nightexpress.nightcore.util.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
@@ -156,8 +156,8 @@ public class CoreLang {
         "",
         GRAY.enclose("Click " +
             CLICK.enclose(
-                HOVER.enclose(GREEN.enclose("[Here]"), HoverEvent.Action.SHOW_TEXT, GRAY.enclose("Click to cancel")),
-                ClickEvent.Action.RUN_COMMAND, "/" + Dialog.EXIT
+                HOVER.enclose(GREEN.enclose("[Here]"), HoverEventType.SHOW_TEXT, GRAY.enclose("Click to cancel")),
+                ClickEventType.RUN_COMMAND, "/" + Dialog.EXIT
             )
             + " to leave input mode."),
         "");
@@ -172,8 +172,8 @@ public class CoreLang {
         TAG_NO_PREFIX,
         "",
         GRAY.enclose("Click " +
-            CLICK.encloseRun(
-                HOVER.encloseHint(GREEN.enclose("[Here]"), GRAY.enclose("Click to cancel.")),
+            CLICK.wrapRunCommand(
+                HOVER.wrapShowText(GREEN.enclose("[Here]"), GRAY.enclose("Click to cancel.")),
                 "/" + DialogManager.EXIT
             )
             + " to leave input mode."),

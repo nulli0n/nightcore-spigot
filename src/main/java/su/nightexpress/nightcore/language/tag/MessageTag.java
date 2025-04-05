@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.language.tag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.language.message.MessageOptions;
+import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 
 public abstract class MessageTag extends Tag {
@@ -16,8 +17,14 @@ public abstract class MessageTag extends Tag {
     }
 
     @NotNull
+    @Deprecated
     public String enclose(@NotNull String content) {
-        return brackets(this.getName() + ":\"" + content + "\"");
+        return this.wrap(content);//brackets(this.getName() + ":\"" + content + "\"");
+    }
+
+    @NotNull
+    public String wrap(@NotNull String content) {
+        return TagUtils.brackets(this.getName() + TagUtils.SEMICOLON + TagUtils.quoted(content));// ":\"" + content + "\"");
     }
 
     public abstract void apply(@NotNull MessageOptions options, @Nullable String tagContent);

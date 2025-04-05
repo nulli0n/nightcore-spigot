@@ -18,17 +18,27 @@ public class GradientTag extends Tag implements ContentTag {
     }
 
     @NotNull
+    @Deprecated
     public String enclose(@NotNull String hexStart, @NotNull String hexEnd, @NotNull String text) {
-        String tagOpen = brackets(this.getName() + ":" + hexStart + ":" + hexEnd);
+//        String tagOpen = brackets(this.getName() + ":" + hexStart + ":" + hexEnd);
+//        String tagClose = this.getClosingName();
+//
+//        return tagOpen + text + tagClose;
+        return this.wrap(text, hexStart, hexEnd);
+    }
+
+    @NotNull
+    public String wrap(@NotNull String string, @NotNull String fromHex, @NotNull String toHex) {
+        String tagOpen = TagUtils.brackets(this.getName() + TagUtils.SEMICOLON + fromHex + TagUtils.SEMICOLON + toHex);
         String tagClose = this.getClosingName();
 
-        return tagOpen + text + tagClose;
+        return tagOpen + string + tagClose;
     }
 
     @Override
     @Nullable
     public GradientColorDecorator parse(@NotNull String content) {
-        String[] split = content.split(":");
+        String[] split = content.split(String.valueOf(TagUtils.SEMICOLON));
         if (split.length < 2) return null;
 
         String code1 = split[0];

@@ -127,7 +127,7 @@ public class NightItem implements Writeable {
     @NotNull
     public ItemStack getItemStack() {
         ItemStack stack = new ItemStack(this.itemStack);
-        this.meta.apply(stack, true);
+        this.meta.apply(stack/*, true*/);
         return stack;
     }
 

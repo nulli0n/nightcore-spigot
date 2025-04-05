@@ -1,4 +1,4 @@
-package su.nightexpress.nightcore.util.geodata;
+package su.nightexpress.nightcore.util.geodata.pos;
 
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
@@ -7,18 +7,49 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.geodata.GeoUtils;
 
 import java.util.Objects;
 
-public class ChunkPos {
+public class ChunkPos implements Writeable {
 
-    private final int x,z;
+    private final int x;
+    private final int z;
 
     public ChunkPos(int x, int z) {
         this.x = x;
         this.z = z;
     }
+
+    @NotNull
+    public static ChunkPos read(@NotNull FileConfig config, @NotNull String path) {
+        return deserialize(String.valueOf(config.getString(path)));
+    }
+
+    @Override
+    public void write(@NotNull FileConfig config, @NotNull String path) {
+        config.set(path, this.serialize());
+    }
+
+    @NotNull
+    public String serialize() {
+        return this.x + "," + this.z;
+    }
+
+    @NotNull
+    public static ChunkPos deserialize(@NotNull String str) {
+        String[] split = str.split(",");
+        if (split.length < 2) return empty();
+
+        int x = NumberUtil.getAnyInteger(split[0], 0);
+        int z = NumberUtil.getAnyInteger(split[1], 0);
+
+        return new ChunkPos(x, z);
+    }
+
+
 
     @NotNull
     public static ChunkPos empty() {
@@ -41,11 +72,8 @@ public class ChunkPos {
     }
 
     @NotNull
-    public static ChunkPos from(int x, int z) {
-        int chunkX = x >> 4;
-        int chunkZ = z >> 4;
-
-        return new ChunkPos(chunkX, chunkZ);
+    public static ChunkPos from(@NotNull ExactPos blockPos) {
+        return from((int) blockPos.getX(), (int) blockPos.getZ());
     }
 
     @NotNull
@@ -59,25 +87,14 @@ public class ChunkPos {
     }
 
     @NotNull
-    public static ChunkPos read(@NotNull FileConfig config, @NotNull String path) {
-        String str = config.getString(path, "");
-        return deserialize(str);
+    public static ChunkPos from(int x, int z) {
+        int chunkX = GeoUtils.shiftToChunk(x);
+        int chunkZ = GeoUtils.shiftToChunk(z);
+
+        return new ChunkPos(chunkX, chunkZ);
     }
 
-    public void write(@NotNull FileConfig config, @NotNull String path) {
-        config.set(path, this.serialize());
-    }
 
-    @NotNull
-    public static ChunkPos deserialize(@NotNull String str) {
-        String[] split = str.split(",");
-        if (split.length < 2) return empty();
-
-        int x = NumberUtil.getAnyInteger(split[0], 0);
-        int z = NumberUtil.getAnyInteger(split[1], 0);
-
-        return new ChunkPos(x, z);
-    }
 
     public boolean isLoaded(@NotNull World world) {
         return world.isChunkLoaded(this.x, this.z);
@@ -88,10 +105,6 @@ public class ChunkPos {
         return world.getChunkAt(this.x, this.z, false);
     }
 
-    @NotNull
-    public String serialize() {
-        return this.x + "," + this.z;
-    }
 
     @NotNull
     public ChunkPos copy() {
@@ -99,11 +112,11 @@ public class ChunkPos {
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getZ() {
-        return z;
+        return this.z;
     }
 
     @Override

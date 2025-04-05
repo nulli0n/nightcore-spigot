@@ -13,6 +13,8 @@ import java.util.TimeZone;
 
 public class CoreConfig {
 
+    public static final String DIR_UI = "/ui/";
+
     @Deprecated
     public static final ConfigValue<Boolean> DATA_FIXER_ENABLED = ConfigValue.create("DataFixer.Enabled",
         false,

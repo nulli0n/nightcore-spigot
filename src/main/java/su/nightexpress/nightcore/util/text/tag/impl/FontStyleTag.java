@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.api.SimpleTag;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 
@@ -39,7 +39,7 @@ public class FontStyleTag extends SimpleTag implements Decorator {
     }
 
     @Override
-    public void decorate(@NotNull BaseComponent component) {
+    public void decorate(@NotNull NightComponent component) {
         switch (this.style) {
             case BOLD -> component.setBold(!this.inverted);
             case ITALIC -> component.setItalic(!this.inverted);

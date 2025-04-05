@@ -7,11 +7,12 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.Version;
 
-public class UniParticle {
+public class UniParticle implements Writeable {
 
     private final Particle particle;
     private Object   data;
@@ -113,6 +114,7 @@ public class UniParticle {
         return UniParticle.of(particle, data);
     }
 
+    @Override
     public void write(@NotNull FileConfig config, @NotNull String path) {
         config.set(path + ".Name", this.isEmpty() ? "null" : this.getParticle().name());
 

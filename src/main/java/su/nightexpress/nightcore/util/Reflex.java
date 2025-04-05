@@ -12,18 +12,22 @@ import java.util.List;
 
 public class Reflex {
 
+    @Nullable
     public static Class<?> getClass(@NotNull String path, @NotNull String name) {
         return getClass(path + "." + name);
     }
 
+    @Nullable
     public static Class<?> getInnerClass(@NotNull String path, @NotNull String name) {
         return getClass(path + "$" + name);
     }
 
+    @Nullable
     public static Class<?> getNMSClass(@NotNull String path, @NotNull String realName) {
         return getNMSClass(path, realName, null);
     }
 
+    @Nullable
     public static Class<?> getNMSClass(@NotNull String path, @NotNull String realName, @Nullable String obfName) {
         Class<?> byRealName = getClass(path + "." + realName, false);
         if (byRealName != null) {

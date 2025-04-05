@@ -11,114 +11,151 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCore;
-import su.nightexpress.nightcore.core.CoreConfig;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ItemNbt {
 
-    private static final Class<?> ITEM_STACK_CLASS   = Reflex.getNMSClass("net.minecraft.world.item", "ItemStack");
-    private static final Class<?> COMPOUND_TAG_CLASS = Reflex.getNMSClass("net.minecraft.nbt", "CompoundTag", "NBTTagCompound");
-    private static final Class<?> NBT_IO_CLASS       = Reflex.getNMSClass("net.minecraft.nbt", "NbtIo", "NBTCompressedStreamTools");
+    private static final Class<?> CLS_MINECRAFT_ITEM_STACK = Reflex.getNMSClass("net.minecraft.world.item", "ItemStack");
 
-    private static final Class<?> CRAFT_ITEM_STACK_CLASS = Reflex.getNMSClass(Version.CRAFTBUKKIT_PACKAGE + ".inventory", "CraftItemStack");
+    private static final Class<?> CLS_CRAFT_ITEM_STACK = Reflex.getNMSClass(Version.CRAFTBUKKIT_PACKAGE + ".inventory", "CraftItemStack");
 
-    private static final Method CRAFT_ITEM_STACK_AS_NMS_COPY    = Reflex.getMethod(CRAFT_ITEM_STACK_CLASS, "asNMSCopy", ItemStack.class);
-    private static final Method CRAFT_ITEM_STACK_AS_BUKKIT_COPY = Reflex.getMethod(CRAFT_ITEM_STACK_CLASS, "asBukkitCopy", ITEM_STACK_CLASS);
+    private static final Class<?> CLS_TAG          = Reflex.getNMSClass("net.minecraft.nbt", "Tag", "NBTBase");
+    private static final Class<?> CLS_COMPOUND_TAG = Reflex.getNMSClass("net.minecraft.nbt", "CompoundTag", "NBTTagCompound");
+    private static final Class<?> CLS_NBT_IO       = Reflex.getNMSClass("net.minecraft.nbt", "NbtIo", "NBTCompressedStreamTools");
+    private static final Class<?> CLS_TAG_PARSER   = Reflex.getNMSClass("net.minecraft.nbt", "TagParser", "MojangsonParser");
+    private static final Class<?> CLS_NBT_OPS      = Reflex.getNMSClass("net.minecraft.nbt", "NbtOps", "DynamicOpsNBT");
 
-    private static final Method NBT_IO_WRITE = Reflex.getMethod(NBT_IO_CLASS, "a", COMPOUND_TAG_CLASS, DataOutput.class);
-    private static final Method NBT_IO_READ  = Reflex.getMethod(NBT_IO_CLASS, "a", DataInput.class);
+    private static final Class<?> CLS_DATA_FIXERS = Reflex.getNMSClass("net.minecraft.util.datafix", "DataFixers", "DataConverterRegistry");
+    private static final Class<?> CLS_REFERENCES  = Reflex.getNMSClass("net.minecraft.util.datafix.fixes", "References", "DataConverterTypes");
 
-    private static final Class<?> TAG_PARSER_CLASS = Reflex.getNMSClass("net.minecraft.nbt", "TagParser", "MojangsonParser");
-    private static final Method   PARSE_TAG        = TAG_PARSER_CLASS == null ? null : Reflex.getMethod(TAG_PARSER_CLASS, "a", String.class);
+    private static Method mCraftItemStackAsNmsCopy;
+    private static Method mCraftItemStackAsBukkitCopy;
 
-    private static final Class<?> DATA_FIXERS_CLASS = Reflex.getNMSClass("net.minecraft.util.datafix", "DataFixers", "DataConverterRegistry"); // DataFixers
-    private static final Method   GET_DATA_FIXER    = Reflex.getMethod(DATA_FIXERS_CLASS, "a");
-    private static final Class<?> NBT_OPS_CLASS     = Reflex.getNMSClass("net.minecraft.nbt", "NbtOps", "DynamicOpsNBT"); // NbtOps
-    private static final Class<?> REFERENCES_CLASS  = Reflex.getNMSClass("net.minecraft.util.datafix.fixes", "References", "DataConverterTypes"); // References
+    private static Method mNbtIoWrite;
+    private static Method mNbtIoRead;
+    private static Method mTagParserParseTag;
 
-    private static final int DATA_FIXER_SOURCE_VERSION = 3700; // 1.20.4
-    private static final int DATA_FXIER_TARGET_VERSION = 3953; // 1.21
-
-    private static DataFixer DATA_FIXER;
-    private static Object NBT_OPS_INSTANCE;
-    private static Object REFERENCE_ITEM_STACK;
+    private static int       DATA_FIXER_SOURCE_VERSION;
+    private static int       DATA_FXIER_TARGET_VERSION;
+    private static DataFixer dataFixer;
+    private static Object nbtOps;
+    private static Object itemStackReference;
 
     // For 1.20.6+
-    private static Method MINECRAFT_SERVER_REGISTRY_ACCESS;
-    private static Method ITEM_STACK_PARSE_OPTIONAL;
-    private static Method ITEM_STACK_SAVE_OPTIONAL;
+    private static Method mItemStackParse;
+    private static Method mItemStackSave;
 
     // For 1.20.4 and below.
-    private static Constructor<?> NBT_TAG_COMPOUND_NEW;
-    private static Method         NMS_ITEM_OF;
-    private static Method         NMS_SAVE;
+    private static Constructor<?> conNewCompoundTag;
+    private static Method mMinecraftItemStackOf;
+    private static Method mMinecraftItemStackSave;
 
-    static {
-        if (GET_DATA_FIXER != null) {
-            DATA_FIXER = (DataFixer) Reflex.invokeMethod(GET_DATA_FIXER, DATA_FIXERS_CLASS);
-        }
-        if (NBT_OPS_CLASS != null) {
-            NBT_OPS_INSTANCE = Reflex.getFieldValue(NBT_OPS_CLASS, "a");
-        }
-        if (REFERENCES_CLASS != null) {
-            REFERENCE_ITEM_STACK = Reflex.getFieldValue(REFERENCES_CLASS, "t");
-        }
-
-        if (Version.isAtLeast(Version.MC_1_20_6)) {
-            Class<?> minecraftServerClass = Reflex.getNMSClass("net.minecraft.server", "MinecraftServer");
-            Class<?> holderLookupProviderClass = Reflex.getNMSClass("net.minecraft.core", "HolderLookup$a"); // Provider
-
-            String registryAccessName = "bc";
-            if (Version.isAtLeast(Version.MC_1_21_3)) registryAccessName = "ba";
-
-            MINECRAFT_SERVER_REGISTRY_ACCESS = Reflex.getMethod(minecraftServerClass, registryAccessName);
-            ITEM_STACK_PARSE_OPTIONAL = Reflex.getMethod(ITEM_STACK_CLASS, "a", holderLookupProviderClass, COMPOUND_TAG_CLASS);
-            ITEM_STACK_SAVE_OPTIONAL  = Reflex.getMethod(ITEM_STACK_CLASS, "b", holderLookupProviderClass);
-        }
-        else {
-            NBT_TAG_COMPOUND_NEW = Reflex.getConstructor(COMPOUND_TAG_CLASS);
-            NMS_ITEM_OF          = Reflex.getMethod(ITEM_STACK_CLASS, "a", COMPOUND_TAG_CLASS);
-            NMS_SAVE             = Reflex.getMethod(ITEM_STACK_CLASS, "b", COMPOUND_TAG_CLASS);
-        }
-    }
+    // Base
 
     private static boolean useRegistry;
     private static Object registryAccess;
+    private static boolean loaded;
 
-    public static boolean load(@NotNull NightCore core) {
-        if (Version.isBehind(Version.MC_1_20_6)) return true;
+    public static void load(@NotNull NightCore core) {
+        if (CLS_CRAFT_ITEM_STACK == null) return;
+        if (CLS_MINECRAFT_ITEM_STACK == null) return;
+        if (CLS_NBT_IO == null) return;
+        if (CLS_NBT_OPS == null) return;
+        if (CLS_TAG_PARSER == null) return;
+        if (CLS_TAG == null) return;
+        if (CLS_COMPOUND_TAG == null) return;
+        if (CLS_DATA_FIXERS == null) return;
+        if (CLS_REFERENCES == null) return;
 
-        useRegistry = true;
+        // Load vital components for all versions.
+        mCraftItemStackAsNmsCopy    = Reflex.getMethod(CLS_CRAFT_ITEM_STACK, "asNMSCopy", ItemStack.class);
+        mCraftItemStackAsBukkitCopy = Reflex.getMethod(CLS_CRAFT_ITEM_STACK, "asBukkitCopy", CLS_MINECRAFT_ITEM_STACK);
 
-        Class<?> craftServerClass = Reflex.getNMSClass(Version.CRAFTBUKKIT_PACKAGE, "CraftServer");
-        if (craftServerClass == null) {
-            core.error("Could not find 'CraftServer' class in craftbukkit package: '" + Version.CRAFTBUKKIT_PACKAGE + "'.");
-            return false;
+        if (mCraftItemStackAsNmsCopy == null || mCraftItemStackAsBukkitCopy == null) {
+            core.error("[Item NBT] Could not find CraftItemStack methods: #asNMSCopy, #asBukkitCopy.");
+            return;
         }
 
-        Method getServer = Reflex.getMethod(craftServerClass, "getServer");
-        if (getServer == null || MINECRAFT_SERVER_REGISTRY_ACCESS == null) {
-            core.error("Could not find proper class(es) for ItemStack compression util.");
-            return false;
+        mNbtIoWrite = Reflex.getMethod(CLS_NBT_IO, "a", CLS_COMPOUND_TAG, DataOutput.class);
+        mNbtIoRead = Reflex.getMethod(CLS_NBT_IO, "a", DataInput.class);
+        mTagParserParseTag = Reflex.getMethod(CLS_TAG_PARSER, "a", String.class);
+
+        if (mNbtIoWrite == null || mNbtIoRead == null || mTagParserParseTag == null) {
+            core.error("[Item NBT] Could not find NbtIo or TagParser methods.");
+            return;
         }
 
-        try {
-            Object craftServer = craftServerClass.cast(Bukkit.getServer());
-            Object minecraftServer = getServer.invoke(craftServer);
-            registryAccess = MINECRAFT_SERVER_REGISTRY_ACCESS.invoke(minecraftServer);
-            return true;
+        // Load DataFixer components.
+        DATA_FIXER_SOURCE_VERSION = 3700; // 1.20.4
+        DATA_FXIER_TARGET_VERSION = 4325; // 1.21.5
+
+        Method mGetDataFixer = Reflex.getMethod(CLS_DATA_FIXERS, "a");
+        if (mGetDataFixer == null) {
+            core.error("[Item NBT] Could not load DataFixer components.");
+            return;
         }
-        catch (ReflectiveOperationException exception) {
-            exception.printStackTrace();
-            return false;
+
+        dataFixer = (DataFixer) Reflex.invokeMethod(mGetDataFixer, CLS_DATA_FIXERS);
+        nbtOps = Reflex.getFieldValue(CLS_NBT_OPS, "a");
+        itemStackReference = Reflex.getFieldValue(CLS_REFERENCES, "t");
+
+        // Load version specific item parsers.
+        if (Version.isAtLeast(Version.MC_1_20_6)) {
+            useRegistry = true;
+
+            Class<?> clsCraftRegistry = Reflex.getNMSClass(Version.CRAFTBUKKIT_PACKAGE, "CraftRegistry");
+            if (clsCraftRegistry == null) {
+                core.error("[Item NBT] Could not find CraftRegistry.");
+                return;
+            }
+
+            Method mGetMinecraftRegistry = Reflex.getMethod(clsCraftRegistry, "getMinecraftRegistry");
+            if (mGetMinecraftRegistry == null) {
+                core.error("[Item NBT] Could not find CraftRegistry#getMinecraftRegistry.");
+                return;
+            }
+
+            registryAccess = Reflex.invokeMethod(mGetMinecraftRegistry, null);
+            if (registryAccess == null) {
+                core.error("[Item NBT] Registry Access is null.");
+                return;
+            }
+
+            Class<?> clsHolderLookupProvider = Reflex.getNMSClass("net.minecraft.core", "HolderLookup$a"); // HolderLookup.Provider
+            if (clsHolderLookupProvider == null) {
+                core.error("[Item NBT] Could not find MinecraftServer or HolderLookup#Provider.");
+                return;
+            }
+
+            mItemStackParse = Reflex.getMethod(CLS_MINECRAFT_ITEM_STACK, "a", clsHolderLookupProvider, CLS_TAG);
+            mItemStackSave = Reflex.getMethod(CLS_MINECRAFT_ITEM_STACK, "a", clsHolderLookupProvider);
+
+            if (mItemStackParse == null || mItemStackSave == null) {
+                core.error("[Item NBT] Could not find ItemStack#parse or ItemStack#save methods.");
+                return;
+            }
+        }
+        else {
+            conNewCompoundTag = Reflex.getConstructor(CLS_COMPOUND_TAG);
+            mMinecraftItemStackOf = Reflex.getMethod(CLS_MINECRAFT_ITEM_STACK, "a", CLS_COMPOUND_TAG);
+            mMinecraftItemStackSave = Reflex.getMethod(CLS_MINECRAFT_ITEM_STACK, "b", CLS_COMPOUND_TAG);
+
+            if (conNewCompoundTag == null || mMinecraftItemStackOf == null || mMinecraftItemStackSave == null) {
+                core.error("[Item NBT] Could not find new CompoundTag() or ItemStack#of or ItemStack#save.");
+                return;
+            }
+        }
+
+        loaded = true;
+
+        if (!test()) {
+            core.error("[Item NBT] Compression test failed.");
+            loaded = false;
         }
     }
 
@@ -139,131 +176,40 @@ public class ItemNbt {
 
     @Nullable
     public static String compress(@NotNull ItemStack item) {
-        if (CRAFT_ITEM_STACK_AS_NMS_COPY == null || NBT_IO_WRITE == null) {
-            return null;
-        }
+        Object compoundTag = toCompoundTag(item);
+        if (compoundTag == null) return null;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutput = new DataOutputStream(outputStream);
-        try {
-            Object compoundTag;
-            Object itemStack = CRAFT_ITEM_STACK_AS_NMS_COPY.invoke(null, item);
-
-            if (useRegistry) {
-                if (ITEM_STACK_SAVE_OPTIONAL == null) return null;
-
-                compoundTag = ITEM_STACK_SAVE_OPTIONAL.invoke(itemStack, registryAccess);
-            }
-            else {
-                if (NBT_TAG_COMPOUND_NEW == null || NMS_SAVE == null) return null;
-
-                compoundTag = NBT_TAG_COMPOUND_NEW.newInstance();
-                NMS_SAVE.invoke(itemStack, compoundTag);
-            }
-
-            NBT_IO_WRITE.invoke(null, compoundTag, dataOutput);
-
-            return new BigInteger(1, outputStream.toByteArray()).toString(32);
-        }
-        catch (ReflectiveOperationException exception) {
-            exception.printStackTrace();
-            return null;
-        }
+        Reflex.invokeMethod(mNbtIoWrite, null, compoundTag, dataOutput);
+        return new BigInteger(1, outputStream.toByteArray()).toString(32);
     }
 
     @Nullable
     public static ItemStack decompress(@NotNull String compressed) {
-        if (NBT_IO_READ == null || CRAFT_ITEM_STACK_AS_BUKKIT_COPY == null) {
-            throw new UnsupportedOperationException("Unsupported server version!");
-        }
+        if (compressed.isBlank()) return null;
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(compressed, 32).toByteArray());
-        try {
-            Object compoundTag = NBT_IO_READ.invoke(null, new DataInputStream(inputStream));
-            Object itemStack;
+        DataInputStream dataInput = new DataInputStream(inputStream);
 
-            if (Version.isAtLeast(Version.MC_1_20_6) && CoreConfig.DATA_FIXER_ENABLED.get()) {
-                @SuppressWarnings({"rawtypes", "unchecked"})
-                Dynamic<?> dynamic = new Dynamic<>((DynamicOps) NBT_OPS_INSTANCE, compoundTag);
-                compoundTag = DATA_FIXER.update((DSL.TypeReference) REFERENCE_ITEM_STACK, dynamic, DATA_FIXER_SOURCE_VERSION, DATA_FXIER_TARGET_VERSION).getValue();
-            }
-
-            if (useRegistry) {
-                if (ITEM_STACK_PARSE_OPTIONAL == null) return null;
-
-                itemStack = ITEM_STACK_PARSE_OPTIONAL.invoke(null, registryAccess, compoundTag);
-            }
-            else {
-                if (NMS_ITEM_OF == null) return null;
-
-                itemStack = NMS_ITEM_OF.invoke(null, compoundTag);
-            }
-
-            return (ItemStack) CRAFT_ITEM_STACK_AS_BUKKIT_COPY.invoke(null, itemStack);
-        }
-        catch (ReflectiveOperationException exception) {
-            exception.printStackTrace();
-            return null;
-        }
+        Object compoundTag = Reflex.invokeMethod(mNbtIoRead, null, dataInput);
+        return compoundTag == null ? null : fromCompoundTag(compoundTag);
     }
 
     @Nullable
     public static String getTagString(@NotNull ItemStack item) {
-        if (CRAFT_ITEM_STACK_AS_NMS_COPY == null) {
-            throw new UnsupportedOperationException("Unsupported server version!");
-        }
+        Object compoundTag = toCompoundTag(item);
+        if (compoundTag == null) return null;
 
-        try {
-            Object compoundTag;
-            Object itemStack = CRAFT_ITEM_STACK_AS_NMS_COPY.invoke(null, item);
-
-            if (useRegistry) {
-                if (ITEM_STACK_SAVE_OPTIONAL == null) return null;
-
-                compoundTag = ITEM_STACK_SAVE_OPTIONAL.invoke(itemStack, registryAccess);
-            }
-            else {
-                if (NBT_TAG_COMPOUND_NEW == null || NMS_SAVE == null) return null;
-
-                compoundTag = NBT_TAG_COMPOUND_NEW.newInstance();
-                NMS_SAVE.invoke(itemStack, compoundTag);
-            }
-
-            return compoundTag.toString();
-        }
-        catch (ReflectiveOperationException exception) {
-            exception.printStackTrace();
-            return null;
-        }
+        return compoundTag.toString();
     }
 
     @Nullable
     public static ItemStack fromTagString(@NotNull String tagString) {
-        if (TAG_PARSER_CLASS == null || PARSE_TAG == null || CRAFT_ITEM_STACK_AS_BUKKIT_COPY == null) {
-            throw new UnsupportedOperationException("Unsupported server version!");
-        }
+        if (tagString.isBlank() || tagString.equalsIgnoreCase("{}")) return null;
 
-        try {
-            Object compoundTag = Reflex.invokeMethod(PARSE_TAG, null, tagString);
-            Object itemStack;
-
-            if (useRegistry) {
-                if (ITEM_STACK_PARSE_OPTIONAL == null) return null;
-
-                itemStack = ITEM_STACK_PARSE_OPTIONAL.invoke(null, registryAccess, compoundTag);
-            }
-            else {
-                if (NMS_ITEM_OF == null) return null;
-
-                itemStack = NMS_ITEM_OF.invoke(null, compoundTag);
-            }
-
-            return (ItemStack) CRAFT_ITEM_STACK_AS_BUKKIT_COPY.invoke(null, itemStack);
-        }
-        catch (ReflectiveOperationException exception) {
-            exception.printStackTrace();
-            return null;
-        }
+        Object compoundTag = Reflex.invokeMethod(mTagParserParseTag, null, tagString);
+        return compoundTag == null ? null : fromCompoundTag(compoundTag);
     }
 
     @NotNull
@@ -279,5 +225,64 @@ public class ItemNbt {
     public static ItemStack[] decompress(@NotNull List<String> list) {
         List<ItemStack> items = list.stream().map(ItemNbt::decompress).filter(Objects::nonNull).toList();
         return items.toArray(new ItemStack[list.size()]);
+    }
+
+    @NotNull
+    public static ItemStack getHoverEventItem(@NotNull String value) {
+        ItemStack itemStack = null;
+
+        try {
+            itemStack = Bukkit.getItemFactory().createItemStack(value);
+        }
+        catch (IllegalArgumentException exception) {
+            try {
+                itemStack = ItemNbt.decompress(value);
+            }
+            catch (NumberFormatException ignored) {
+
+            }
+        }
+        if (itemStack == null) itemStack = new ItemStack(Material.AIR);
+
+        return itemStack;
+    }
+
+    @Nullable
+    private static Object toCompoundTag(@NotNull ItemStack bukkitStack) {
+        if (!loaded) return null;
+        if (bukkitStack.getType().isAir() || bukkitStack.getAmount() <= 0) return null;
+
+        Object nmsStack = Reflex.invokeMethod(mCraftItemStackAsNmsCopy, null, bukkitStack);
+        if (useRegistry) {
+            return Reflex.invokeMethod(mItemStackSave, nmsStack, registryAccess);
+        }
+
+        Object compoundTag = Reflex.invokeConstructor(conNewCompoundTag);
+        Reflex.invokeMethod(mMinecraftItemStackSave, nmsStack, compoundTag);
+        return compoundTag;
+    }
+
+    @Nullable
+    private static ItemStack fromCompoundTag(@NotNull Object tag) {
+        if (!loaded) return null;
+
+        Object itemStack;
+        Object compoundTag = ItemNbt.applyDataFixer(tag);
+
+        if (useRegistry) {
+            Optional<?> optional = (Optional<?>) Reflex.invokeMethod(mItemStackParse, null, registryAccess, compoundTag);
+            itemStack = Objects.requireNonNull(optional).orElse(null);
+        }
+        else {
+            itemStack = Reflex.invokeMethod(mMinecraftItemStackOf, null, compoundTag);
+        }
+
+        return itemStack == null ? null : (ItemStack) Reflex.invokeMethod(mCraftItemStackAsBukkitCopy, null, itemStack);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static Object applyDataFixer(@NotNull Object compoundTag) {
+        Dynamic<?> dynamic = new Dynamic<>((DynamicOps) nbtOps, compoundTag);
+        return dataFixer.update((DSL.TypeReference) itemStackReference, dynamic, DATA_FIXER_SOURCE_VERSION, DATA_FXIER_TARGET_VERSION).getValue();
     }
 }

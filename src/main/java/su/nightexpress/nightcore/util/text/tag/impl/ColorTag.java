@@ -1,8 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.SimpleTag;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
@@ -11,7 +10,7 @@ import java.awt.*;
 
 public class ColorTag extends SimpleTag implements ColorDecorator {
 
-    protected final Color color;
+    private final Color color;
 
     public ColorTag(@NotNull String name, @NotNull String hex) {
         this(name, new String[0], hex);
@@ -21,10 +20,12 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
         this(name, aliases, TagUtils.colorFromHexString(hex));
     }
 
+    @Deprecated
     public ColorTag(@NotNull Color color) {
         this(color, new String[0]);
     }
 
+    @Deprecated
     public ColorTag(@NotNull Color color, @NotNull String[] aliases) {
         this(TagUtils.colorToHexString(color).substring(1), aliases, color);
     }
@@ -40,23 +41,36 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
 
     @NotNull
     public Color getColor() {
-        return color;
+        return this.color;
     }
 
     @NotNull
-    public String encloseHex(@NotNull String text) {
-        String hex = this.toHexString();
+    public String getHex() {
+        return TagUtils.colorToHexString(this.color);
+    }
 
-        return brackets(hex) + text + closedBrackets(hex);
+    @NotNull
+    @Deprecated
+    public String wrapHex(@NotNull String string) {
+        String hex = this.getHex();
+
+        return TagUtils.brackets(hex) + string + TagUtils.closedBrackets(hex);
     }
 
     @Override
-    public void decorate(@NotNull BaseComponent component) {
-        component.setColor(ChatColor.of(this.getColor()));
+    public void decorate(@NotNull NightComponent component) {
+        component.setColor(this.color);
     }
 
     @NotNull
+    @Deprecated
+    public String encloseHex(@NotNull String string) {
+        return this.wrapHex(string);
+    }
+
+    @NotNull
+    @Deprecated
     public String toHexString() {
-        return TagUtils.colorToHexString(this.color);
+        return this.getHex();//TagUtils.colorToHexString(this.color);
     }
 }

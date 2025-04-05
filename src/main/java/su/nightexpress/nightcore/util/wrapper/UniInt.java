@@ -2,9 +2,10 @@ package su.nightexpress.nightcore.util.wrapper;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.random.Rnd;
 
-public final class UniInt {
+public final class UniInt implements Writeable {
 
     private final int minInclusive;
     private final int maxInclusive;
@@ -26,6 +27,7 @@ public final class UniInt {
         return of(min, max);
     }
 
+    @Override
     public void write(@NotNull FileConfig config, @NotNull String path) {
         config.set(path + ".Min", this.getMinValue());
         config.set(path + ".Max", this.getMaxValue());

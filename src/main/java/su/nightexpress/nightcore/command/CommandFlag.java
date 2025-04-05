@@ -3,7 +3,6 @@ package su.nightexpress.nightcore.command;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.Colorizer;
 import su.nightexpress.nightcore.util.NumberUtil;
 
 import java.util.function.Function;
@@ -33,7 +32,7 @@ public class CommandFlag<T> {
 
     @NotNull
     public static CommandFlag<String> textFlag(@NotNull String name) {
-        return new CommandFlag<>(name, Colorizer::apply);
+        return new CommandFlag<>(name, s -> s);
     }
 
     @NotNull

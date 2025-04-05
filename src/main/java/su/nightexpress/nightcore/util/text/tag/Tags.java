@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
+import su.nightexpress.nightcore.util.text.tag.color.MinecraftColors;
 import su.nightexpress.nightcore.util.text.tag.impl.*;
 
 import java.awt.*;
@@ -83,13 +84,13 @@ public class Tags {
         registerTags(Tags.GRADIENT, Tags.LINE_BREAK, Tags.FONT, Tags.HOVER, Tags.CLICK,
             Tags.RESET, Tags.HEX_COLOR, Tags.HEX_COLOR_SHORT, Tags.TRANSLATE);
 
-        registerTag(new ColorTag("dark_blue", "#0000AA"));
-        registerTag(new ColorTag("dark_green", "#00AA00"));
-        registerTag(new ColorTag("dark_aqua", "#00AAAA"));
-        registerTag(new ColorTag("dark_red", "#AA0000"));
-        registerTag(new ColorTag("dark_purple", "#AA00AA"));
-        registerTag(new ColorTag("gold", "#FFAA00"));
-        registerTag(new ColorTag("aqua", "#55FFFF"));
+        registerTag(MinecraftColors.DARK_BLUE);
+        registerTag(MinecraftColors.DARK_GREEN);
+        registerTag(MinecraftColors.DARK_AQUA);
+        registerTag(MinecraftColors.DARK_RED);
+        registerTag(MinecraftColors.DARK_PURPLE);
+        registerTag(MinecraftColors.GOLD);
+        registerTag(MinecraftColors.AQUA);
     }
 
     public static void loadColorsFromFile(@NotNull NightCore core) {
@@ -100,7 +101,7 @@ public class Tags {
                 if (!(tag instanceof ColorTag colorTag)) return;
 
                 for (String alias : colorTag.getAliases()) {
-                    config.set(COLORS_PATH + "." + alias, colorTag.toHexString());
+                    config.set(COLORS_PATH + "." + alias, colorTag.getHex());
                 }
             });
         }

@@ -91,12 +91,16 @@ public class ItemReplacer {
             this.meta.setLore(this.packTrimmedLore());
         }
 
-        if (this.isHideFlags()) {
-            ItemUtil.hideAttributes(this.meta, this.item.getType());
-        }
+//        if (this.isHideFlags()) {
+//            ItemUtil.hideAttributes(this.meta, this.item.getType());
+//        }
 
         if (this.hasItem()) {
             this.item.setItemMeta(this.meta);
+        }
+
+        if (this.isHideFlags()) {
+            ItemUtil.hideAttributes(this.item);
         }
 
         this.replacer.clear();

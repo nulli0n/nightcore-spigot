@@ -1,6 +1,5 @@
 package su.nightexpress.nightcore.dialog;
 
-import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,6 +8,7 @@ import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Players;
+import su.nightexpress.nightcore.util.bridge.wrapper.ClickEventType;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
@@ -100,7 +100,7 @@ public class Dialog {
         boolean isLastPage = page == pages;
         boolean isFirstPage = page == 1;
         List<String> items = values.stream().skip(skip).limit(perPage).toList();
-        ClickEvent.Action action = autoRun ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND;
+        ClickEventType action = autoRun ? ClickEventType.RUN_COMMAND : ClickEventType.SUGGEST_COMMAND;
 
         StringBuilder builder = new StringBuilder()
             .append(ORANGE.enclose("=".repeat(8) + "[ " + YELLOW.enclose("Value Helper") + " ]" + "=".repeat(8)))
@@ -110,7 +110,7 @@ public class Dialog {
             String hoverHint = GRAY.enclose("Click me to select " + CYAN.enclose(element) + ".");
             String clickCommand = element.charAt(0) == '/' ? element : '/' + element;
 
-            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.encloseHint(CLICK.enclose(element, action, clickCommand), hoverHint)));
+            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.wrapShowText(CLICK.enclose(element, action, clickCommand), hoverHint)));
             builder.append(Placeholders.TAG_LINE_BREAK);
         });
 
@@ -120,7 +120,7 @@ public class Dialog {
             builder.append(GRAY.enclose("[<]"));
         }
         else {
-            builder.append(LIGHT_RED.enclose(HOVER.encloseHint(CLICK.encloseRun("[<]", "/" + VALUES + " " + (page - 1) + " " + autoRun), GRAY.enclose("Previous Page"))));
+            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[<]", "/" + VALUES + " " + (page - 1) + " " + autoRun), GRAY.enclose("Previous Page"))));
         }
 
         builder.append(YELLOW.enclose(" " + page));
@@ -131,7 +131,7 @@ public class Dialog {
             builder.append(GRAY.enclose("[>]"));
         }
         else {
-            builder.append(LIGHT_RED.enclose(HOVER.encloseHint(CLICK.encloseRun("[>]", "/" + VALUES + " " + (page + 1) + " " + autoRun), GRAY.enclose("Next Page"))));
+            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[>]", "/" + VALUES + " " + (page + 1) + " " + autoRun), GRAY.enclose("Next Page"))));
 
         }
 

@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.command.experimental.argument;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.TabContext;
 import su.nightexpress.nightcore.command.experimental.builder.ArgumentBuilder;
@@ -47,7 +48,6 @@ public class CommandArgument<T> {
     @NotNull
     @Deprecated
     public static <T> ArgumentBuilder<T> builder(@NotNull String name, @NotNull Function<String, T> parser) {
-//        return new ArgumentBuilder<>(name, parser);
         return builder(name, (string, context) -> parser.apply(string));
     }
 
@@ -83,26 +83,32 @@ public class CommandArgument<T> {
     }
 
     @NotNull
+    @Deprecated
     public LangMessage getFailureMessage() {
         return this.failureMessage == null ? CoreLang.ERROR_COMMAND_PARSE_ARGUMENT.getMessage() : this.failureMessage;
     }
 
     @NotNull
+    public LangMessage getFailureMessage(@NotNull NightCorePlugin plugin) {
+        return this.failureMessage == null ? CoreLang.ERROR_COMMAND_PARSE_ARGUMENT.getMessage(plugin) : this.failureMessage.setPrefix(plugin);
+    }
+
+    @NotNull
     public String getName() {
-        return name;
+        return this.name;
     }
 
     @NotNull
     public ArgumentParser<T> getParser() {
-        return parser;
+        return this.parser;
     }
 
     public boolean isRequired() {
-        return required;
+        return this.required;
     }
 
     public boolean isComplex() {
-        return complex;
+        return this.complex;
     }
 
     @NotNull
@@ -112,11 +118,11 @@ public class CommandArgument<T> {
 
     @Nullable
     public String getPermission() {
-        return permission;
+        return this.permission;
     }
 
     @NotNull
     public Function<TabContext, List<String>> getSamples() {
-        return samples;
+        return this.samples;
     }
 }

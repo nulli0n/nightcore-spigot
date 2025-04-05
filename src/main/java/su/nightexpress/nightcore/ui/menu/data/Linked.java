@@ -23,6 +23,8 @@ public interface Linked<T> extends Menu {
 
     @NotNull LinkCache<T> getCache();
 
+    boolean isCached(@NotNull Player player);
+
     T getLink(@NotNull MenuViewer viewer);
 
     T getLink(@NotNull Player player);

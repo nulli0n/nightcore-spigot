@@ -341,7 +341,11 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
 
     @Nullable
     public U getLoaded(@NotNull String name) {
-        return this.loadedByNameMap.get(name.toLowerCase());
+        U byName = this.loadedByNameMap.get(name.toLowerCase());
+        if (byName != null) return byName;
+
+        Player player = Players.getPlayer(name);
+        return player == null ? null : this.getLoaded(player.getUniqueId());
     }
 
     public boolean isLoaded(@NotNull Player player) {
@@ -353,6 +357,6 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
     }
 
     public boolean isLoaded(@NotNull String name) {
-        return this.loadedByNameMap.containsKey(name.toLowerCase());
+        return this.getLoaded(name) != null;//this.loadedByNameMap.containsKey(name.toLowerCase());
     }
 }
