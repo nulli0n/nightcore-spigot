@@ -8,7 +8,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
-import org.bukkit.inventory.view.builder.LocationInventoryViewBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
@@ -25,7 +24,6 @@ import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
-import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -144,23 +142,13 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
 
             InventoryView view = viewer.getView();
             if (view == null || viewer.isRebuildMenu()) {
-
                 // Save cache so its not wiped by .openInventory call due to internal InventoryCloseEvent.
                 if (view != null && this instanceof Linked<?> linked) {
                     linked.getCache().addAnchor(player);
                 }
 
-                if (Version.isAtLeast(Version.MC_1_21_4)) {
-                    var builder = this.menuType.typed().builder();
-                    // Stupid hack to bypass 9X3 (and probably other container-based) menu types to be bound to real container(s) at player's location.
-                    if (builder instanceof LocationInventoryViewBuilder<?> locationBuilder) {
-                        locationBuilder.location(player.getEyeLocation());
-                    }
-                    view = Version.software().createView(builder, this.getTitle(viewer), player);
-                }
-                else {
-                    view = this.menuType.typed().create(player, NightMessage.asLegacy(this.getTitle(viewer)));
-                }
+                String title = this.getTitle(viewer);
+                view = Version.software().createView(this.menuType, title, player);
                 viewer.assignInventory(view);
                 player.openInventory(view);
             }
