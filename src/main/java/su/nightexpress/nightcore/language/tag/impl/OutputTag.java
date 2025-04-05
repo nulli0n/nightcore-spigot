@@ -15,18 +15,35 @@ public class OutputTag extends MessageTag {
     }
 
     @NotNull
+    @Deprecated
     public String enclose(@NotNull OutputType type) {
-        String prefix = type.name().toLowerCase();
+        //String prefix = type.name().toLowerCase();
 
-        return this.enclose(prefix);
+        return this.wrap(type);//this.enclose(prefix);
     }
 
     @NotNull
+    @Deprecated
     public String enclose(int fade, int stay) {
+//        String prefix = OutputType.TITLES.name().toLowerCase();
+//        String content = prefix + ":" + fade + ":" + stay + ":" + fade;
+
+        return this.wrap(fade, stay);//this.enclose(content);
+    }
+
+    @NotNull
+    public String wrap(@NotNull OutputType type) {
+        String prefix = type.name().toLowerCase();
+
+        return this.wrap(prefix);
+    }
+
+    @NotNull
+    public String wrap(int fade, int stay) {
         String prefix = OutputType.TITLES.name().toLowerCase();
         String content = prefix + ":" + fade + ":" + stay + ":" + fade;
 
-        return this.enclose(content);
+        return this.wrap(content);
     }
 
     @Override

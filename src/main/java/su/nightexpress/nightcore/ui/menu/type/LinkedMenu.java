@@ -46,6 +46,11 @@ public abstract class LinkedMenu<P extends NightPlugin, T> extends AbstractMenu<
     }
 
     @Override
+    public boolean isCached(@NotNull Player player) {
+        return this.cache.contains(player);
+    }
+
+    @Override
     public T getLink(@NotNull MenuViewer viewer) {
         return this.getLink(viewer.getPlayer());
     }
@@ -60,6 +65,16 @@ public abstract class LinkedMenu<P extends NightPlugin, T> extends AbstractMenu<
         return (viewer, event) -> {
             handler.handle(viewer, event, this.getLink(viewer));
         };
+    }
+
+    @Override
+    public void flush(@NotNull Player player, @NotNull Consumer<MenuViewer> consumer) {
+        if (!this.isCached(player)) {
+            this.plugin.warn("Null link reference in menu: " + player.getName() + " / " + this);
+            this.close(player);
+            return;
+        }
+        super.flush(player, consumer);
     }
 
     @Override

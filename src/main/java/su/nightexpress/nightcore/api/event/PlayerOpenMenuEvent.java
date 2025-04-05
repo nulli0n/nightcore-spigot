@@ -7,6 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.menu.api.Menu;
 
+@Deprecated
 public class PlayerOpenMenuEvent extends Event implements Cancellable {
 
     public static final HandlerList HANDLER_LIST = new HandlerList();

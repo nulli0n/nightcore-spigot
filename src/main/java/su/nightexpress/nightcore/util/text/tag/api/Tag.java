@@ -1,15 +1,16 @@
 package su.nightexpress.nightcore.util.text.tag.api;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.util.text.tag.TagUtils;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class Tag {
 
-    public static final char OPEN_BRACKET  = '<';
-    public static final char CLOSE_BRACKET = '>';
-    public static final char CLOSE_SLASH   = '/';
+    @Deprecated public static final char OPEN_BRACKET  = '<';
+    @Deprecated public static final char CLOSE_BRACKET = '>';
+    @Deprecated public static final char CLOSE_SLASH   = '/';
 
     protected final String      name;
     protected final Set<String> aliases;
@@ -28,14 +29,21 @@ public class Tag {
         this.aliases.add(this.name);
     }
 
-    @NotNull
-    public static String brackets(@NotNull String str) {
-        return OPEN_BRACKET + str + CLOSE_BRACKET;
+    public boolean isCloseable() {
+        return true;
     }
 
     @NotNull
+    @Deprecated
+    public static String brackets(@NotNull String str) {
+        return TagUtils.brackets(str);
+        //return OPEN_BRACKET + str + CLOSE_BRACKET;
+    }
+
+    @NotNull
+    @Deprecated
     public static String closedBrackets(@NotNull String str) {
-        return brackets(CLOSE_SLASH + str);
+        return TagUtils.closedBrackets(str);//brackets(CLOSE_SLASH + str);
     }
 
     /*@NotNull

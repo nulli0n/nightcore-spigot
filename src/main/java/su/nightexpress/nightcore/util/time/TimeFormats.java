@@ -12,7 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeFormats {
 
-    private static final DateTimeFormatter DIGITAL_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private static final DateTimeFormatter DIGITAL_FULL_FORMATTER  = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private static final DateTimeFormatter DIGITAL_SHORT_FORMATTER = DateTimeFormatter.ofPattern("mm:ss");
 
     @NotNull
     public static String formatDuration(long until, @NotNull TimeFormatType formatType) {
@@ -35,7 +36,12 @@ public class TimeFormats {
 
     @NotNull
     public static String toDigital(long millis) {
-        return TimeUtil.getLocalTimeOf(millis).format(DIGITAL_FORMATTER);
+        return toFormat(millis, DIGITAL_FULL_FORMATTER);
+    }
+
+    @NotNull
+    public static String toDigitalShort(long millis) {
+        return toFormat(millis, DIGITAL_SHORT_FORMATTER);
     }
 
     @NotNull
@@ -43,6 +49,11 @@ public class TimeFormats {
         long whole = TimeUnit.MILLISECONDS.toSeconds(millis);
 
         return whole > 0 ? String.valueOf(whole) : NumberUtil.format(millis / 1000D);
+    }
+
+    @NotNull
+    public static String toFormat(long millis, @NotNull DateTimeFormatter formatter) {
+        return TimeUtil.getLocalTimeOf(millis).format(formatter);
     }
 
     @NotNull
@@ -61,7 +72,7 @@ public class TimeFormats {
             long converted = unit.convert(millis, TimeUnit.MILLISECONDS);
             long result = scale != 0 ? converted % scale : converted;
 
-            if (result > 0) {
+            if (result > 0 || (millis <= 1000L && unit == TimeUnit.SECONDS)) {
                 if (!str.isEmpty()) {
                     str.append(delimiter);
                 }

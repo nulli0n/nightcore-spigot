@@ -8,13 +8,16 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.language.tag.MessageTag;
 import su.nightexpress.nightcore.language.tag.MessageTags;
-import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.Players;
+import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.bukkit.NightSound;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
+import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.Tags;
-import su.nightexpress.nightcore.util.text.tag.api.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,11 @@ public class LangMessage {
 //        if (CoreConfig.MODERN_TEXT_PRECOMPILE_LANG.get() && options.getOutputType() != OutputType.TITLES) {
 //            this.message.compile();
 //        }
+    }
+
+    @NotNull
+    public LangMessage setPrefix(@NotNull NightCorePlugin plugin) {
+        return this.setPrefix(plugin.getPrefix());
     }
 
     @NotNull
@@ -124,12 +132,12 @@ public class LangMessage {
             char letter = string.charAt(index);
 
             Tag:
-            if (letter == Tag.OPEN_BRACKET && index != (length - 1)) {
-                int indexEnd = TextRoot.indexOfIgnoreEscaped(string, Tag.CLOSE_BRACKET, index);
+            if (letter == TagUtils.OPEN_BRACKET && index != (length - 1)) {
+                int indexEnd = TextRoot.indexOfIgnoreEscaped(string, TagUtils.CLOSE_BRACKET, index);
                 if (indexEnd == -1) break Tag;
 
                 char next = string.charAt(index + 1);
-                if (next == Tag.CLOSE_BRACKET) break Tag;
+                if (next == TagUtils.CLOSE_BRACKET) break Tag;
 
                 String bracketsContent = string.substring(index + 1, indexEnd);
 
@@ -140,7 +148,7 @@ public class LangMessage {
                 int semicolonIndex = bracketsContent.indexOf(':');
                 if (semicolonIndex >= 0) {
                     tagName = bracketsContent.substring(0, semicolonIndex);
-                    tagContent = TextRoot.stripQuotesSlash(bracketsContent.substring(semicolonIndex + 1));
+                    tagContent = TagUtils.unquoted(bracketsContent.substring(semicolonIndex + 1));
                 }
 
                 MessageTag tag = MessageTags.getTag(tagName);
@@ -236,15 +244,10 @@ public class LangMessage {
     }
 
     public void broadcast() {
-//        if (this.isDisabled()) return;
-//
-//        this.plugin.getServer().getOnlinePlayers().forEach(this::send);
-//        this.send(this.plugin.getServer().getConsoleSender());
-//
-        this.broadcast(replacer -> {});
+        this.broadcast(null);
     }
 
-    public void broadcast(@NotNull Consumer<Replacer> consumer) {
+    public void broadcast(@Nullable Consumer<Replacer> consumer) {
         if (this.isDisabled()) return;
 
         Players.getOnline().forEach(player -> this.send(player, consumer));
@@ -253,34 +256,9 @@ public class LangMessage {
 
     public void send(@NotNull CommandSender sender) {
         this.send(sender, replacer -> {});
-//
-//        if (this.isDisabled()) return;
-//
-//        if (this.options.getSound() != null && sender instanceof Player player) {
-//            UniSound.of(this.options.getSound()).play(player);
-//        }
-//
-//        if (this.options.getOutputType() == OutputType.CHAT) {
-//            this.getMessage(sender).send(sender);
-//            return;
-//        }
-//
-//        if (sender instanceof Player player) {
-//            if (this.options.getOutputType() == OutputType.ACTION_BAR) {
-//                Players.sendActionBar(player, this.getMessage(player));
-//            }
-//            else if (this.options.getOutputType() == OutputType.TITLES) {
-//                String[] split = Tags.LINE_BREAK.split(this.getMessage(sender).getString());
-//
-//                String title = NightMessage.asLegacy(split[0]);
-//                String subtitle = split.length >= 2 ? NightMessage.asLegacy(split[1]) : "";
-//
-//                player.sendTitle(title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
-//            }
-//        }
     }
 
-    public void send(@NotNull CommandSender sender, @NotNull Consumer<Replacer> consumer) {
+    public void send(@NotNull CommandSender sender, @Nullable Consumer<Replacer> consumer) {
         if (this.isDisabled()) return;
 
         if (this.options.getSound() != null && sender instanceof Player player) {
@@ -288,7 +266,7 @@ public class LangMessage {
         }
 
         Replacer replacer = new Replacer();
-        consumer.accept(replacer);
+        if (consumer != null) consumer.accept(replacer);
         if (this.options.usePlaceholderAPI() && sender instanceof Player player) {
             replacer.replacePlaceholderAPI(player);
         }
@@ -307,10 +285,11 @@ public class LangMessage {
             else if (this.options.getOutputType() == OutputType.TITLES) {
                 String[] split = Tags.LINE_BREAK.split(message.getString());
 
-                String title = NightMessage.asLegacy(split[0]);
-                String subtitle = split.length >= 2 ? NightMessage.asLegacy(split[1]) : "";
+                String title = split[0];//NightMessage.asLegacy(split[0]);
+                String subtitle = split.length >= 2 ? split[1]/*NightMessage.asLegacy(split[1])*/ : "";
 
-                player.sendTitle(title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
+                //player.sendTitle(title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
+                Players.sendTitle(player, title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
             }
         }
     }

@@ -1,6 +1,5 @@
 package su.nightexpress.nightcore.util;
 
-import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,7 +14,10 @@ import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -55,17 +57,6 @@ public class Players {
     @Deprecated
     public static List<String> playerNames(@Nullable Player viewer, boolean includeCustom) {
         return playerNames(viewer);
-//
-//        Set<String> names = new HashSet<>();
-//        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-//            if (viewer != null && !viewer.canSee(player)) continue;
-//
-//            names.add(player.getName());
-//            if (includeCustom && CoreConfig.RESPECT_PLAYER_DISPLAYNAME.get()) {
-//                names.add(Colorizer.strip(player.getDisplayName()));
-//            }
-//        }
-//        return names.stream().sorted(String::compareTo).toList();
     }
 
     @NotNull
@@ -76,43 +67,6 @@ public class Players {
     @Nullable
     public static Player getPlayer(@NotNull String name) {
         return Bukkit.getServer().getPlayer(name);
-//
-//        if (!CoreConfig.RESPECT_PLAYER_DISPLAYNAME.get()) {
-//            return Bukkit.getServer().getPlayer(nameOrNick);
-//        }
-//
-//        Player found = Bukkit.getServer().getPlayerExact(nameOrNick);
-//        if (found != null) {
-//            return found;
-//        }
-//
-//        String lowerName = nameOrNick.toLowerCase();
-//        int lowerLength = lowerName.length();
-//        int delta = Integer.MAX_VALUE;
-//
-//        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-//            String nameReal = player.getName().toLowerCase(Locale.ENGLISH);
-//            String nameCustom = player.getDisplayName().toLowerCase();
-//
-//            int length;
-//            if (nameReal.startsWith(lowerName)) {
-//                length = player.getName().length();
-//            }
-//            else if (nameCustom.startsWith(lowerName)) {
-//                length = player.getDisplayName().length();
-//            }
-//            else continue;
-//
-//            int curDelta = Math.abs(length - lowerLength);
-//            if (curDelta < delta) {
-//                found = player;
-//                delta = curDelta;
-//            }
-//
-//            if (curDelta == 0) break;
-//        }
-//
-//        return found;
     }
 
     public static boolean isBedrock(@NotNull Player player) {
@@ -130,7 +84,7 @@ public class Players {
 
     @NotNull
     public static Set<String> getPermissionGroups(@NotNull Player player) {
-        return Plugins.hasVault() && VaultHook.hasPermissions() ? VaultHook.getPermissionGroups(player) : Set.of(Placeholders.DEFAULT);
+        return Plugins.hasVault() && VaultHook.hasPermissions() ? VaultHook.getPermissionGroups(player) : Lists.newSet(Placeholders.DEFAULT);
     }
 
     @NotNull
@@ -152,7 +106,12 @@ public class Players {
     }
 
     public static void sendActionBar(@NotNull Player player, @NotNull TextRoot message) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message.parseIfAbsent());
+        message.parseIfAbsent().sendActionBar(player);
+        //player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message.parseIfAbsent());
+    }
+
+    public static void sendTitle(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+        Version.software().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {
@@ -176,9 +135,6 @@ public class Players {
 
         command = Placeholders.forPlayerWithPAPI(player).apply(command).trim();
 
-//        if (Plugins.hasPlaceholderAPI()) {
-//            command = PlaceholderAPI.setPlaceholders(player, command);
-//        }
         Bukkit.dispatchCommand(sender, command);
     }
 

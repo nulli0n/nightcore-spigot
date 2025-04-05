@@ -1,11 +1,12 @@
 package su.nightexpress.nightcore.util.text.tag.decorator;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GradientColorDecorator implements ColorDecorator {
 
@@ -66,30 +67,31 @@ public class GradientColorDecorator implements ColorDecorator {
     }
 
     @Override
-    public void decorate(@NotNull BaseComponent component) {
-        if (component instanceof TextComponent textComponent) {
+    public void decorate(@NotNull NightComponent component) {
+        if (component.isText()) {
             int length = 0;
 
-            //if (textComponent.getText().equals("\n")) return; // Do not 'spend' colors on line breaks.
+            List<NightComponent> childrens = new ArrayList<>();
 
-            for (char letter : textComponent.getText().toCharArray()) {
+            for (char letter : component.getText().toCharArray()) {
                 if (!Character.isWhitespace(letter)) length++;
 
-                textComponent.addExtra(new TextComponent(String.valueOf(letter)));
+                childrens.add(Version.software().textComponent(String.valueOf(letter)));
             }
 
             if (!this.isCreated()) {
                 this.createGradient(length);
             }
 
-            textComponent.setText("");
-            textComponent.getExtra().forEach(extra -> {
-                if (extra instanceof TextComponent extraText && extraText.getText().isBlank()) return;
+            component.setText("");
+            childrens.forEach(extra -> {
+                if (extra.isText() && extra.getText().isBlank()) return;
 
                 if (this.hasNextColor()) {
-                    extra.setColor(ChatColor.of(this.nextColor()));
+                    extra.setColor(this.nextColor());
                 }
             });
+            component.setChildrens(childrens);
 
             return;
         }
@@ -97,7 +99,7 @@ public class GradientColorDecorator implements ColorDecorator {
         if (!this.isCreated()) this.createGradient(1);
 
         if (this.hasNextColor()) {
-            component.setColor(ChatColor.of(this.nextColor()));
+            component.setColor(this.nextColor());
         }
     }
 }

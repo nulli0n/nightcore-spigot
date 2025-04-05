@@ -18,7 +18,8 @@ public class ChainedNode extends CommandNode {
 
     private final String                   localized;
     private final Map<String, CommandNode> commandMap;
-    private NodeExecutor             fallback;
+
+    private NodeExecutor fallback;
 
     public ChainedNode(@NotNull NightCorePlugin plugin,
                        @NotNull String name,
@@ -50,21 +51,16 @@ public class ChainedNode extends CommandNode {
 
     @Override
     protected boolean onRun(@NotNull CommandContext context) {
-        //System.out.println("context.getArgs() = " + Arrays.toString(context.getArgs()));
-        if (context.getArgs().length == 0 || context.getArgumentIndex() >= context.getArgs().length) {
+        if (context.length() == 0 || context.getArgumentIndex() >= context.length()) {
             return this.onFallback(context);
         }
 
         String node = context.getArgs()[context.getArgumentIndex()];
-        //System.out.println("node = " + node);
-        CommandNode children = this.getCommandMap().get(node);
-        //System.out.println("children = " + children);
-        //System.out.println("this.commandMap = " + this.commandMap);
+        CommandNode children = this.commandMap.get(node);
         if (children == null) {
             return this.onFallback(context);
         }
 
-        //System.out.println("children run");
         context.setArgumentIndex(context.getArgumentIndex() + 1);
         return children.run(context);
     }
@@ -83,8 +79,8 @@ public class ChainedNode extends CommandNode {
     private boolean sendCommandList(@NotNull CommandContext context) {
         CommandSender sender = context.getSender();
 
-        return context.sendSuccess(CoreLang.COMMAND_HELP_LIST.getMessage()
-            .replace(Placeholders.GENERIC_NAME, this.getLocalized())
+        context.send(CoreLang.COMMAND_HELP_LIST.getMessage(), replacer -> replacer
+            .replace(Placeholders.GENERIC_NAME, this.localized)
             .replace(Placeholders.GENERIC_ENTRY, list -> {
                 this.getChildrens().stream().sorted(Comparator.comparing(CommandNode::getName)).forEach(children -> {
                     if (!children.hasPermission(sender)) return;
@@ -96,28 +92,27 @@ public class ChainedNode extends CommandNode {
                     );
                 });
             }));
+
+        return true;
     }
 
     @Override
     @NotNull
     public List<String> getTab(@NotNull TabContext context) {
-        //System.out.println("context.getArgs() = " + Arrays.toString(context.getArgs()));
-        //System.out.println("context.getIndex() = " + context.getIndex());
-        if (context.getIndex() == context.getArgs().length - 1) {
+        int index = context.getLastCommandIndex();
+
+        if (index == context.length() - 1) {
             return this.getChildrens().stream().filter(node -> node.hasPermission(context.getSender())).map(CommandNode::getName).toList();
-            //return new ArrayList<>(this.commandMap.keySet());
         }
-        if (context.getIndex() >= context.getArgs().length) {
+        if (index >= context.length()) {
             return Collections.emptyList();
         }
 
-        String node = context.getAtIndex();
-        CommandNode children = this.getCommandMap().get(node);
-        if (children == null) {
-            return Collections.emptyList();
-        }
+        String node = context.getArg(index);
+        CommandNode children = this.commandMap.get(node);
+        if (children == null) return Collections.emptyList();
 
-        context.setIndex(context.getIndex() + 1);
+        context.setLastCommandIndex(index + 1);
 
         return children.getTab(context);
     }
@@ -152,11 +147,11 @@ public class ChainedNode extends CommandNode {
 
     @NotNull
     public String getLocalized() {
-        return localized;
+        return this.localized;
     }
 
     @NotNull
     public Map<String, CommandNode> getCommandMap() {
-        return commandMap;
+        return this.commandMap;
     }
 }

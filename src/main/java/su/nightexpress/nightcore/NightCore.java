@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.core.CorePerms;
 import su.nightexpress.nightcore.core.command.CoreCommands;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.language.LangAssets;
+import su.nightexpress.nightcore.ui.UIUtils;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.TimeUtil;
 import su.nightexpress.nightcore.util.Version;
@@ -45,6 +46,7 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
     public void enable() {
         Tags.loadColorsFromFile(this);
         LangAssets.load(this);
+        UIUtils.load(this);
         this.loadIntegrations();
         this.loadCommands();
         this.info("Time zone set as " + TimeUtil.getTimeZone().getID());
@@ -59,6 +61,7 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
         if (Plugins.hasVault()) {
             VaultHook.shutdown();
         }
+        UIUtils.clear();
         PlayerBlockTracker.shutdown();
         LangAssets.shutdown();
     }

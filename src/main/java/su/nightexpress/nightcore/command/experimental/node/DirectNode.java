@@ -13,6 +13,7 @@ import su.nightexpress.nightcore.command.experimental.builder.DirectNodeBuilder;
 import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
 import su.nightexpress.nightcore.command.experimental.flag.ContentFlag;
 import su.nightexpress.nightcore.core.CoreLang;
+import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Placeholders;
 
 import java.util.*;
@@ -73,17 +74,7 @@ public class DirectNode extends CommandNode implements DirectExecutor {
             String arg;
             // must be last.
             if (argument.isComplex()) {
-                /*StringBuilder builder = new StringBuilder();
-                for (int textIndex = index; textIndex < args.length; textIndex++) {
-                    String text = args[textIndex];
-                    if (text.charAt(0) == CommandFlag.PREFIX) break;
-
-                    if (!builder.isEmpty()) builder.append(" ");
-                    builder.append(text);
-
-                    index++;
-                }*/
-                arg = /*builder.toString();*/Stream.of(args).skip(index).collect(Collectors.joining(" "));
+                arg = Stream.of(args).skip(index).collect(Collectors.joining(" "));
             }
             else {
                 arg = args[index++];
@@ -92,20 +83,22 @@ public class DirectNode extends CommandNode implements DirectExecutor {
             //String
             ParsedArgument<?> parsedArgument = argument.parse(arg, context);
             if (parsedArgument == null) {
-                return context.sendFailure(argument.getFailureMessage()
+                context.send(argument.getFailureMessage(this.plugin), replacer -> replacer
                     .replace(Placeholders.GENERIC_VALUE, arg)
                     .replace(Placeholders.GENERIC_NAME, argument.getLocalized())
                 );
+                return false;
             }
 
             parsedArguments.add(argument, parsedArgument);
         }
 
         if (parsedArguments.getArgumentMap().size() < this.requiredArguments) {
-            return context.sendFailure(CoreLang.ERROR_COMMAND_USAGE.getMessage(this.plugin)
+            context.send(CoreLang.ERROR_COMMAND_USAGE.getMessage(this.plugin), replacer -> replacer
                 .replace(Placeholders.COMMAND_LABEL, this.getNameWithParents())
                 .replace(Placeholders.COMMAND_USAGE, this.getUsage())
                 .replace(Placeholders.COMMAND_DESCRIPTION, this.getDescription()));
+            return false;
         }
 
         if (!this.flags.isEmpty() && index < args.length) {
@@ -128,7 +121,7 @@ public class DirectNode extends CommandNode implements DirectExecutor {
 
                     ParsedArgument<?> parsed = contentFlag.parse(content, context);
                     if (parsed == null) {
-                        context.send(CoreLang.ERROR_COMMAND_PARSE_FLAG.getMessage()
+                        context.send(CoreLang.ERROR_COMMAND_PARSE_FLAG.getMessage(this.plugin), replacer -> replacer
                             .replace(Placeholders.GENERIC_VALUE, content)
                             .replace(Placeholders.GENERIC_NAME, flag.getName())
                         );
@@ -151,32 +144,84 @@ public class DirectNode extends CommandNode implements DirectExecutor {
     public List<String> getTab(@NotNull TabContext context) {
         if (this.isPlayerOnly() && context.getPlayer() == null) return Collections.emptyList();
 
-        int index = context.getArgs().length - (context.getIndex() + 1);
-        //System.out.println("index = " + index);
-        //System.out.println("arguments.size() = " + arguments.size());
-        if (index >= this.arguments.size()) {
-            if (!this.arguments.isEmpty()) {
-                CommandArgument<?> latestArgument = this.arguments.get(this.arguments.size() - 1);
-                if (latestArgument.isComplex()) return this.getArgumentSamples(latestArgument, context);
+        int firstArgIndex = context.getLastCommandIndex();
+        int tabLength = context.length();
+        int argIndex = 0;
+        List<String> samples = new ArrayList<>();
+
+        //System.out.println("firstArgIndex = " + firstArgIndex);
+        //System.out.println("context.getArgs() = " + Arrays.toString(context.getArgs()));
+
+        for (int tabIndex = firstArgIndex; tabIndex < tabLength; tabIndex++) {
+            String tabValue = context.getArg(tabIndex);
+            boolean lastIndex = tabIndex == tabLength - 1;
+
+            if (argIndex >= this.arguments.size()) {
+                if (!this.arguments.isEmpty()) {
+                    CommandArgument<?> lastArgument = this.arguments.getLast();
+                    if (lastArgument.isComplex()) {
+                        if (lastIndex) samples = this.getArgumentSamples(lastArgument, context);
+                        context.appendArgumentCache(lastArgument, tabValue);
+                    }
+                }
+
+                for (CommandFlag commandFlag : this.getFlags()) {
+                    if (context.hasCachedFlag(commandFlag)) continue;
+                    if (!commandFlag.hasPermission(context.getSender())) continue;
+
+                    if (lastIndex) {
+                        if (commandFlag instanceof ContentFlag<?> contentFlag) {
+                            samples = Lists.newList(contentFlag.getSampled());
+                        }
+                        else {
+                            samples = Lists.newList(commandFlag.getPrefixed());
+                        }
+                    }
+                    context.cacheFlag(commandFlag, tabValue);
+                }
             }
+            else {
+                CommandArgument<?> argument = this.arguments.get(argIndex++);
 
-            List<String> samples = new ArrayList<>();
+                context.cacheArgument(argument, tabValue);
 
-            this.getFlags().forEach(commandFlag -> {
-                if (!commandFlag.hasPermission(context.getSender())) return;
-                if (commandFlag instanceof ContentFlag<?> contentFlag) {
-                    samples.add(contentFlag.getSampled());
+                if (lastIndex) {
+                    samples = this.getArgumentSamples(argument, context);
                 }
-                else {
-                    samples.add(commandFlag.getPrefixed());
-                }
-            });
-
-            return samples;
+            }
         }
 
-        CommandArgument<?> argument = this.arguments.get(index);
-        return this.getArgumentSamples(argument, context);
+        //System.out.println("context.getArgumentData() = " + context.getArgumentData());
+        //System.out.println("context.getFlagData() = " + context.getFlagData());
+
+        return samples;
+
+//        int index = context.getArgs().length - (context.getIndex() + 1);
+//        //System.out.println("index = " + index);
+//        //System.out.println("arguments.size() = " + arguments.size());
+//        if (index >= this.arguments.size()) {
+//            if (!this.arguments.isEmpty()) {
+//                CommandArgument<?> lastArgument = this.arguments.getLast();
+//                if (lastArgument.isComplex()) return this.getArgumentSamples(lastArgument, context);
+//            }
+//
+//            List<String> samples = new ArrayList<>();
+//
+//            this.getFlags().forEach(commandFlag -> {
+//                if (!commandFlag.hasPermission(context.getSender())) return;
+//                if (commandFlag instanceof ContentFlag<?> contentFlag) {
+//                    samples.add(contentFlag.getSampled());
+//                }
+//                else {
+//                    samples.add(commandFlag.getPrefixed());
+//                }
+//            });
+//
+//            return samples;
+//        }
+//
+//        CommandArgument<?> argument = this.arguments.get(index);
+//        return this.getArgumentSamples(argument, context);
     }
 
     private List<String> getArgumentSamples(@NotNull CommandArgument<?> argument, @NotNull TabContext context) {

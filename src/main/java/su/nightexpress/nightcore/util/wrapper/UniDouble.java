@@ -2,9 +2,10 @@ package su.nightexpress.nightcore.util.wrapper;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.random.Rnd;
 
-public final class UniDouble {
+public final class UniDouble implements Writeable {
 
     private final double minInclusive;
     private final double maxInclusive;
@@ -26,9 +27,10 @@ public final class UniDouble {
         return of(min, max);
     }
 
-    public void write(@NotNull FileConfig cfg, @NotNull String path) {
-        cfg.set(path + ".Min", this.getMinValue());
-        cfg.set(path + ".Max", this.getMaxValue());
+    @Override
+    public void write(@NotNull FileConfig config, @NotNull String path) {
+        config.set(path + ".Min", this.getMinValue());
+        config.set(path + ".Max", this.getMaxValue());
     }
 
     @NotNull

@@ -7,7 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.core.CoreLang;
+import su.nightexpress.nightcore.language.entry.LangText;
 import su.nightexpress.nightcore.language.message.LangMessage;
+import su.nightexpress.nightcore.util.placeholder.Replacer;
+
+import java.util.function.Consumer;
 
 public class CommandContext {
 
@@ -32,25 +36,45 @@ public class CommandContext {
         this.sender.sendMessage(string);
     }
 
+    @Deprecated
     public boolean sendSuccess(@NotNull String string) {
         this.send(string);
         return true;
     }
 
+    @Deprecated
     public boolean sendFailure(@NotNull String string) {
         this.send(string);
         return false;
     }
 
-    public void send(@NotNull LangMessage message) {
-        message.send(this.sender);
+    public void send(@NotNull LangText text) {
+        this.send(text, null);
     }
 
+    public void send(@NotNull LangText text, @Nullable Consumer<Replacer> consumer) {
+        this.send(text.getMessage(), consumer);
+    }
+
+    public void send(@NotNull LangMessage message) {
+        this.send(message, null);
+    }
+
+    public void send(@NotNull LangMessage message, @Nullable Consumer<Replacer> consumer) {
+        message.send(this.sender, consumer);
+    }
+
+//    public void send(@NotNull LangMessage message) {
+//        message.send(this.sender);
+//    }
+
+    @Deprecated
     public boolean sendSuccess(@NotNull LangMessage message) {
         this.send(message);
         return true;
     }
 
+    @Deprecated
     public boolean sendFailure(@NotNull LangMessage message) {
         this.send(message);
         return false;
@@ -69,7 +93,7 @@ public class CommandContext {
     }
 
     public int getArgumentIndex() {
-        return argumentIndex;
+        return this.argumentIndex;
     }
 
     public void setArgumentIndex(int argumentIndex) {
@@ -78,12 +102,12 @@ public class CommandContext {
 
     @NotNull
     public CommandSender getSender() {
-        return sender;
+        return this.sender;
     }
 
     @Nullable
     public Player getExecutor() {
-        return executor;
+        return this.executor;
     }
 
     @NotNull
@@ -99,11 +123,11 @@ public class CommandContext {
 
     @NotNull
     public String getLabel() {
-        return label;
+        return this.label;
     }
 
     public String[] getArgs() {
-        return args;
+        return this.args;
     }
 
     public void errorPermission() {

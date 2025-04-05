@@ -36,6 +36,10 @@ public class LinkCache<T> {
         this.map.put(player.getUniqueId(), object);
     }
 
+    public boolean contains(@NotNull Player player) {
+        return this.map.containsKey(player.getUniqueId());
+    }
+
     public T get(@NotNull MenuViewer viewer) {
         return this.get(viewer.getPlayer());
     }

@@ -1,16 +1,18 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import net.md_5.bungee.api.chat.HoverEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.text.TextRoot;
-import su.nightexpress.nightcore.util.text.tag.api.ComplexTag;
+import su.nightexpress.nightcore.util.ItemNbt;
+import su.nightexpress.nightcore.util.bridge.wrapper.HoverEventType;
+import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
+import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.ShowItemDecorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.ShowTextDecorator;
 
-public class HoverTag extends ComplexTag implements ContentTag {
+public class HoverTag extends Tag implements ContentTag {
 
     public static final String NAME = "hover";
 
@@ -26,26 +28,44 @@ public class HoverTag extends ComplexTag implements ContentTag {
 
     @NotNull
     @Deprecated
-    public String enclose(@NotNull HoverEvent.Action action, @NotNull String text, @NotNull String content) {
+    public String enclose(@NotNull HoverEventType action, @NotNull String text, @NotNull String content) {
         return this.enclose(text, action, content);
     }
 
     @NotNull
+    @Deprecated
     public String encloseHint(@NotNull String text, @NotNull String hint) {
-        return this.enclose(text, HoverEvent.Action.SHOW_TEXT, hint);
+        return this.wrap(text, HoverEventType.SHOW_TEXT, hint);
     }
 
     @NotNull
-    public String enclose(@NotNull String text, @NotNull HoverEvent.Action action, @NotNull String content) {
-        String data = action.name().toLowerCase() + ":'" + this.escapeQuotes(content) + "'";
-        return this.encloseContent(text, data);
+    @Deprecated
+    public String enclose(@NotNull String text, @NotNull HoverEventType action, @NotNull String content) {
+        //String data = action.name().toLowerCase() + TagUtils.SEMICOLON + TagUtils.quoted(content);
+        return this.wrap(text, action, content);//TagUtils.wrapContent(this, text, data);
+    }
+
+    @NotNull
+    public String wrapShowText(@NotNull String string, @NotNull String text) {
+        return this.enclose(string, HoverEventType.SHOW_TEXT, text);
+    }
+
+    @NotNull
+    public String wrapShowItem(@NotNull String string, @NotNull ItemStack itemStack) {
+        return this.enclose(string, HoverEventType.SHOW_ITEM, String.valueOf(ItemNbt.compress(itemStack)));
+    }
+
+    @NotNull
+    public String wrap(@NotNull String string, @NotNull HoverEventType type, @NotNull String content) {
+        String data = type.name().toLowerCase() + TagUtils.SEMICOLON + TagUtils.quoted(content);
+        return TagUtils.wrapContent(this, string, data);
     }
 
     @Override
     @Nullable
     public Decorator parse(@NotNull String tagContent) {
-        HoverEvent.Action action = null;
-        for (HoverEvent.Action global : HoverEvent.Action.values()) {
+        HoverEventType action = null;
+        for (HoverEventType global : HoverEventType.values()) {
             if (tagContent.startsWith(global.name().toLowerCase())) {
                 action = global;
                 break;
@@ -56,12 +76,12 @@ public class HoverTag extends ComplexTag implements ContentTag {
         int prefixSize = action.name().toLowerCase().length() + 1; // 1 for ':', like "show_text:"
         tagContent = tagContent.substring(prefixSize);
 
-        String value = TextRoot.stripQuotesSlash(tagContent);
+        String value = TagUtils.unquoted(tagContent);
 
-        if (action == HoverEvent.Action.SHOW_TEXT) {
+        if (action == HoverEventType.SHOW_TEXT) {
             return new ShowTextDecorator(value);
         }
-        else if (action == HoverEvent.Action.SHOW_ITEM) {
+        else if (action == HoverEventType.SHOW_ITEM) {
             return new ShowItemDecorator(value);
         }
         return null;

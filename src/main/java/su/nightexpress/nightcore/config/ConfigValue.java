@@ -387,38 +387,38 @@ public class ConfigValue<T> {
 
     @NotNull
     public static <V> ConfigValue<Map<String, V>> forMapById(@NotNull String path,
-                                                                               @NotNull BiFunction<FileConfig, String, V> valReadFun,
-                                                                               @NotNull Consumer<Map<String, V>> defaultValue,
-                                                                               @Nullable String... description) {
+                                                             @NotNull BiFunction<FileConfig, String, V> valReadFun,
+                                                             @NotNull Consumer<Map<String, V>> defaultValue,
+                                                             @Nullable String... description) {
         //return forMap(path, String::toLowerCase, key -> key, valReadFun, defaultValue, description);
         return forMapById(path, (cfg, path2, id) -> valReadFun.apply(cfg, path2), defaultValue, description);
     }
 
     @NotNull
     public static <V> ConfigValue<Map<String, V>> forMapById(@NotNull String path,
-                                                                               @NotNull ReadFunction<V> valReadFun,
-                                                                               @NotNull Consumer<Map<String, V>> defaultValue,
-                                                                               @Nullable String... description) {
+                                                             @NotNull ReadFunction<V> valReadFun,
+                                                             @NotNull Consumer<Map<String, V>> defaultValue,
+                                                             @Nullable String... description) {
         return forMap(path, String::toLowerCase, key -> key, valReadFun, defaultValue, description);
     }
 
     @NotNull
-    public static <E extends Enum<E>, V extends Writeable> ConfigValue<Map<E, V>> forMapByEnum(@NotNull String path,
-                                                                                               @NotNull Class<E> clazz,
-                                                                                               @NotNull BiFunction<FileConfig, String, V> valReadFun,
-                                                                                               @NotNull Consumer<Map<E, V>> defaultValue,
-                                                                                               @Nullable String... description) {
+    public static <E extends Enum<E>, V> ConfigValue<Map<E, V>> forMapByEnum(@NotNull String path,
+                                                                             @NotNull Class<E> clazz,
+                                                                             @NotNull BiFunction<FileConfig, String, V> valReadFun,
+                                                                             @NotNull Consumer<Map<E, V>> defaultValue,
+                                                                             @Nullable String... description) {
         //return forMap(path, str -> StringUtil.getEnum(str, clazz).orElse(null), Enum::name, valReadFun, defaultValue, description);
 
         return forMapByEnum(path, clazz, (cfg, path2, id) -> valReadFun.apply(cfg, path2), defaultValue, description);
     }
 
     @NotNull
-    public static <E extends Enum<E>, V extends Writeable> ConfigValue<Map<E, V>> forMapByEnum(@NotNull String path,
-                                                                                               @NotNull Class<E> clazz,
-                                                                                               @NotNull ReadFunction<V> valReadFun,
-                                                                                               @NotNull Consumer<Map<E, V>> defaultValue,
-                                                                                               @Nullable String... description) {
+    public static <E extends Enum<E>, V> ConfigValue<Map<E, V>> forMapByEnum(@NotNull String path,
+                                                                             @NotNull Class<E> clazz,
+                                                                             @NotNull ReadFunction<V> valReadFun,
+                                                                             @NotNull Consumer<Map<E, V>> defaultValue,
+                                                                             @Nullable String... description) {
         return forMap(path, str -> StringUtil.getEnum(str, clazz).orElse(null), Enum::name, valReadFun, defaultValue, description);
     }
 

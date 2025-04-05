@@ -81,11 +81,9 @@ public class RootCommand<P extends NightCorePlugin, S extends CommandNode> imple
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 0) return Collections.emptyList();
 
-        //int index = 0;//args.length - 1;
-        //String input = args[index];
         TabContext context = new TabContext(sender, label, args, 0);
         List<String> samples = this.node.getTab(context);
 

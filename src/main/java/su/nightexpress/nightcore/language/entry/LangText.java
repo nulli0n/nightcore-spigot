@@ -57,7 +57,7 @@ public class LangText extends LangEntry {
 
     @NotNull
     public LangMessage getMessage(@NotNull NightCorePlugin plugin) {
-        return this.message.setPrefix(plugin.getPrefix());
+        return this.message.setPrefix(plugin);
     }
 
     public void setMessage(@NotNull LangMessage message) {

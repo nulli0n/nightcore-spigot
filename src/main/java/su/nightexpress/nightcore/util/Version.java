@@ -4,9 +4,9 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.NightCorePlugin;
-import su.nightexpress.nightcore.util.bridge.PaperBridge;
+import su.nightexpress.nightcore.util.bridge.paper.PaperBridge;
 import su.nightexpress.nightcore.util.bridge.Software;
-import su.nightexpress.nightcore.util.bridge.SpigotBridge;
+import su.nightexpress.nightcore.util.bridge.spigot.SpigotBridge;
 
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -23,6 +23,7 @@ public enum Version {
     MC_1_21_2("1.21.2", Status.OUTDATED),
     MC_1_21_3("1.21.3"),
     MC_1_21_4("1.21.4"),
+    MC_1_21_5("1.21.5"),
     UNKNOWN("Unknown"),
     ;
 
@@ -60,19 +61,7 @@ public enum Version {
         software.initialize(core);
         core.info("Server version detected as " + bukkitName + " " + current.getLocalized() + ". Using " + software().getName() + ".");
 
-        loadComponents(core);
-    }
-
-    private static void loadComponents(@NotNull NightCore core) {
-        boolean nbtLoad = ItemNbt.load(core);
-        if (!nbtLoad) {
-            core.error("Could not load Item NBT Compressor.");
-            return;
-        }
-
-        if (!ItemNbt.test()) {
-            core.error("Failed test of Item NBT Compressor.");
-        }
+        ItemNbt.load(core);
     }
 
     public static void printCaution(@NotNull NightCorePlugin plugin) {

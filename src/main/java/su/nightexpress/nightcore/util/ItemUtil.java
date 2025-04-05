@@ -32,17 +32,23 @@ public class ItemUtil {
     public static String getItemName(@NotNull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
-                // MiniMessage.miniMessage().serialize(meta.itemName()));
-                return meta.getItemName();
-            }
-            else if (meta.hasDisplayName()) {
-                // MiniMessage.miniMessage().serialize(meta.displayName()));
-                return meta.getDisplayName();
-            }
+            String name = getItemName(meta);
+            if (name != null) return name;
         }
 
         return LangAssets.get(item.getType());
+    }
+
+    @Nullable
+    public static String getItemName(@NotNull ItemMeta meta) {
+        if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
+            return meta.getItemName();
+        }
+        if (meta.hasDisplayName()) {
+            return meta.getDisplayName();
+        }
+
+        return null;
     }
 
     @NotNull
@@ -52,36 +58,73 @@ public class ItemUtil {
 
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
-                return MiniMessage.miniMessage().serialize(meta.itemName());
-            }
-            else if (Version.isAtLeast(Version.MC_1_21_4) && meta.hasCustomName()) {
-                var customName = meta.customName();
-                if (customName != null) {
-                    return MiniMessage.miniMessage().serialize(customName);
-                }
-            }
-            else if (meta.hasDisplayName()) {
-                var displayName = meta.displayName();
-                if (displayName != null) {
-                    return MiniMessage.miniMessage().serialize(displayName);
-                }
-            }
+            String name = getSerializedName(meta);
+            if (name != null) return name;
         }
 
         return LangAssets.get(item.getType());
     }
 
+    @Nullable
+    public static String getSerializedName(@NotNull ItemMeta meta) {
+        if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
+            return getSerializedItemName(meta);
+        }
+
+        if (meta.hasDisplayName()) {
+            return getSerializedDisplayName(meta);
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static String getSerializedDisplayName(@NotNull ItemMeta meta) {
+        if (Version.isSpigot()) return getItemName(meta);
+
+        var displayName = meta.hasDisplayName() ? meta.displayName() : null;
+        return displayName == null ? null : MiniMessage.miniMessage().serialize(displayName);
+    }
+
+    @Nullable
+    public static String getSerializedItemName(@NotNull ItemMeta meta) {
+        if (Version.isSpigot()) return getItemName(meta);
+        if (Version.isBehind(Version.MC_1_21)) return null;
+
+        return meta.hasItemName() ? MiniMessage.miniMessage().serialize(meta.itemName()) : null;
+    }
+
     @NotNull
     public static List<String> getSerializedLore(@NotNull ItemStack item) {
-        if (Version.isSpigot()) return getLore(item);
         if (!item.hasItemMeta()) return new ArrayList<>();
 
         ItemMeta meta = item.getItemMeta();
-        List<Component> lore = meta == null ? null : meta.lore();
-        if (lore == null) return new ArrayList<>();
 
-        return lore.stream().map(MiniMessage.miniMessage()::serialize).toList();
+        return meta == null ? new ArrayList<>() : getSerializedLore(meta);
+    }
+
+    @NotNull
+    public static List<String> getSerializedLore(@NotNull ItemMeta meta) {
+        if (Version.isSpigot()) {
+            List<String> lore = meta.getLore();
+            return lore == null ? new ArrayList<>() : lore;
+        }
+
+        List<Component> lore = meta.lore();
+
+        return lore == null ? new ArrayList<>() : lore.stream().map(MiniMessage.miniMessage()::serialize).toList();
+    }
+
+    public static void setDisplayName(@NotNull ItemMeta meta, @NotNull String name) {
+        Version.software().setDisplayName(meta, name);
+    }
+
+    public static void setItemName(@NotNull ItemMeta meta, @NotNull String name) {
+        Version.software().setItemName(meta, name);
+    }
+
+    public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {
+        Version.software().setLore(meta, lore);
     }
 
     public static void editMeta(@NotNull ItemStack item, @NotNull Consumer<ItemMeta> function) {
@@ -100,18 +143,25 @@ public class ItemUtil {
     }
 
     public static void hideAttributes(@NotNull ItemStack itemStack) {
+        if (Version.isAtLeast(Version.MC_1_21_5)) {
+            Version.software().hideComponents(itemStack);
+            return;
+        }
+
         editMeta(itemStack, meta -> hideAttributes(meta, itemStack.getType()));
     }
 
-    public static void hideAttributes(@NotNull ItemMeta meta, @NotNull Material material) {
-        if (Version.isAtLeast(Version.MC_1_20_6) && material.isItem()) {
-            EquipmentSlot slot = material.getEquipmentSlot();
-            material.getDefaultAttributeModifiers(slot).forEach((attribute, modifier) -> {
-                var modifiers = meta.getAttributeModifiers() == null ? null : meta.getAttributeModifiers(attribute);
-                if (modifiers == null || modifiers.isEmpty()) {
-                    meta.addAttributeModifier(attribute, modifier);
-                }
-            });
+    private static void hideAttributes(@NotNull ItemMeta meta, @NotNull Material material) {
+        if (Version.isBehind(Version.MC_1_21_5) && Version.isAtLeast(Version.MC_1_20_6)) {
+            if (material.isItem()) {
+                EquipmentSlot slot = material.getEquipmentSlot();
+                material.getDefaultAttributeModifiers(slot).forEach((attribute, modifier) -> {
+                    var modifiers = meta.getAttributeModifiers() == null ? null : meta.getAttributeModifiers(attribute);
+                    if (modifiers == null || modifiers.isEmpty()) {
+                        meta.addAttributeModifier(attribute, modifier);
+                    }
+                });
+            }
         }
 
         meta.addItemFlags(ItemFlag.values());
@@ -171,33 +221,6 @@ public class ItemUtil {
         editMeta(item, SkullMeta.class, meta -> {
             meta.setOwnerProfile(createSkinProfile(urlData));
         });
-//        if (urlData.isBlank()) return;
-//        if (item.getType() != Material.PLAYER_HEAD) return;
-//        if (!(item.getItemMeta() instanceof SkullMeta meta)) return;
-//
-//        String name = urlData.substring(0, 16);
-//
-//        if (!urlData.startsWith(TEXTURES_HOST)) {
-//            urlData = TEXTURES_HOST + urlData;
-//        }
-//
-//        try {
-//            UUID uuid = UUID.nameUUIDFromBytes(urlData.getBytes());
-//            // If no name, then meta#getOwnerProfile will return 'null' (wtf?)
-//            // sometimes swtiching to "new" spigot api is a pain.
-//            // why the hell i have to dig into nms to learn that...
-//            PlayerProfile profile = Bukkit.createPlayerProfile(uuid, name);
-//            URL url = URI.create(urlData).toURL();//new URL(urlData);
-//            PlayerTextures textures = profile.getTextures();
-//
-//            textures.setSkin(url);
-//            profile.setTextures(textures);
-//            meta.setOwnerProfile(profile);
-//            item.setItemMeta(meta);
-//        }
-//        catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
     }
 
     @Nullable

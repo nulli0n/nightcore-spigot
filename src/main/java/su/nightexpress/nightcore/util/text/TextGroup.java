@@ -1,16 +1,17 @@
 package su.nightexpress.nightcore.util.text;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TextGroup implements ComponentBuildable {
@@ -61,8 +62,8 @@ public class TextGroup implements ComponentBuildable {
 
     @Override
     @NotNull
-    public BaseComponent toComponent() {
-        ComponentBuilder builder = new ComponentBuilder();
+    public NightComponent toComponent() {
+        //ComponentBuilder builder = new ComponentBuilder();
 
         // Gradient colors must be predefined based on text length.
         // Text length is calculated from group's childrens that are TextNodes.
@@ -73,29 +74,31 @@ public class TextGroup implements ComponentBuildable {
             gradientDecorator.createGradient(length.get()); // This will create and store Color[] array.
         }
 
-        this.childrens.forEach(child -> {
-            BaseComponent childComponent = child.toComponent();
-            //if (!TextRoot.isEmpty(childComponent)) {
-                builder.append(childComponent);
-            //}
-        });
+        return Version.software().buildComponent(this.childrens);
 
-        return this.build(builder);
+//        this.childrens.forEach(child -> {
+//            BaseComponent childComponent = child.toComponent();
+//            //if (!TextRoot.isEmpty(childComponent)) {
+//                builder.append(childComponent);
+//            //}
+//        });
+//
+//        return this.build(builder);
     }
 
-    private BaseComponent build(@NotNull ComponentBuilder builder) {
-        if (Version.isAtLeast(Version.MC_1_20_6)) {
-            return builder.build();
-        }
-
-        TextComponent base = new TextComponent();
-        if (!builder.getParts().isEmpty()) {
-            List<BaseComponent> cloned = new ArrayList<>(builder.getParts());
-            cloned.replaceAll(BaseComponent::duplicate);
-            base.setExtra(cloned);
-        }
-        return base;
-    }
+//    private BaseComponent build(@NotNull ComponentBuilder builder) {
+//        if (Version.isAtLeast(Version.MC_1_20_6)) {
+//            return builder.build();
+//        }
+//
+//        TextComponent base = new TextComponent();
+//        if (!builder.getParts().isEmpty()) {
+//            List<BaseComponent> cloned = new ArrayList<>(builder.getParts());
+//            cloned.replaceAll(BaseComponent::duplicate);
+//            base.setExtra(cloned);
+//        }
+//        return base;
+//    }
 
     private void countLength(@NotNull TextGroup parent, @NotNull AtomicInteger length) {
         for (ComponentBuildable buildable : parent.getChildrens()) {

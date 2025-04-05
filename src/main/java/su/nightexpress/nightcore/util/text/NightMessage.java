@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.util.text;
 
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.Colorizer;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.TagPool;
 import su.nightexpress.nightcore.util.text.tag.Tags;
 
@@ -39,23 +39,25 @@ public class NightMessage {
 
 
     @NotNull
-    public static BaseComponent parse(@NotNull String string) {
+    public static NightComponent parse(@NotNull String string) {
         return parse(string, TagPool.ALL);
     }
 
     @NotNull
-    public static BaseComponent parse(@NotNull String string, @NotNull TagPool tagPool) {
+    public static NightComponent parse(@NotNull String string, @NotNull TagPool tagPool) {
         return from(string, tagPool).parseIfAbsent();
     }
 
 
 
     @NotNull
+    @Deprecated
     public static String clean(@NotNull String string) {
         return create(string, TagPool.NONE).toLegacy();
     }
 
     @NotNull
+    @Deprecated
     public static String stripAll(@NotNull String string) {
         return Colorizer.strip(clean(string));
     }
@@ -92,7 +94,7 @@ public class NightMessage {
     }
 
     @Deprecated
-    public static BaseComponent asComponent(@NotNull String string) {
+    public static NightComponent asComponent(@NotNull String string) {
         return create(string).toComponent();
     }
 
@@ -106,6 +108,4 @@ public class NightMessage {
         }
         return list;
     }
-
-
 }

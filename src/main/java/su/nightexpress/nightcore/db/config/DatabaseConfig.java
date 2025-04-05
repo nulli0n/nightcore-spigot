@@ -66,12 +66,12 @@ public class DatabaseConfig implements Writeable {
         FileConfig engineConf = plugin.getEngineConfig();
 
         // ---------- MIGRATION - START ----------
-        if (config.contains(DEF_PATH)) {
+        if (config.contains("Database")) {
             DatabaseConfig old = read(config, defPrefix);
-            old.write(engineConf, DEF_PATH);
+            old.write(engineConf, "Database");
             //config.remove(DEF_PATH);
-            if (!config.contains(DEF_PATH + "UserData")) {
-                config.remove(DEF_PATH);
+            if (!config.contains("Database.UserData")) {
+                config.remove("Database");
             }
         }
         // ---------- MIGRATION - END ----------

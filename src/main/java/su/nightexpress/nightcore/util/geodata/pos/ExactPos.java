@@ -1,4 +1,4 @@
-package su.nightexpress.nightcore.util.geodata;
+package su.nightexpress.nightcore.util.geodata.pos;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -6,11 +6,12 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.NumberUtil;
 
 import java.util.Objects;
 
-public class ExactPos {
+public class ExactPos implements Writeable {
 
     private final double x,y,z;
     private final float yaw, pitch;
@@ -23,8 +24,39 @@ public class ExactPos {
         this.pitch = pitch;
     }
 
+    @NotNull
+    public static ExactPos read(@NotNull FileConfig config, @NotNull String path) {
+        return deserialize(String.valueOf(config.getString(path)));
+    }
+
+    @Override
+    public void write(@NotNull FileConfig config, @NotNull String path) {
+        config.set(path, this.serialize());
+    }
+
+    @NotNull
+    public String serialize() {
+        return this.x + "," + this.y + "," + this.z + "," + this.pitch + "," + this.yaw;
+    }
+
+    @NotNull
+    public static ExactPos deserialize(@NotNull String str) {
+        String[] split = str.split(",");
+        if (split.length < 3) return empty();
+
+        double x = NumberUtil.getAnyDouble(split[0], 0);
+        double y = NumberUtil.getAnyDouble(split[1], 0);
+        double z = NumberUtil.getAnyDouble(split[2], 0);
+        float pitch = (float) NumberUtil.getAnyDouble(split[3], 0);
+        float yaw = (float) NumberUtil.getAnyDouble(split[4], 0);
+
+        return new ExactPos(x, y, z, yaw, pitch);
+    }
+
+
+
     public boolean isEmpty() {
-        return this.x == 0 && this.y == 0 && this.z == 0 && this.yaw == 0 && this.pitch == 0;
+        return this.x == 0 && this.y == 0 && this.z == 0 && this.pitch == 0 && this.yaw == 0;
     }
 
     @NotNull
@@ -34,7 +66,7 @@ public class ExactPos {
 
     @NotNull
     public static ExactPos from(@NotNull Block block) {
-        return from(BlockPos.from(block));
+        return new ExactPos(block.getX(), block.getY(), block.getZ(), 0F, 0F);
     }
 
     @NotNull
@@ -47,48 +79,11 @@ public class ExactPos {
         return new ExactPos(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getYaw(), location.getPitch());
     }
 
-    @NotNull
-    public static ExactPos read(@NotNull FileConfig cfg, @NotNull String path) {
-        String str = cfg.getString(path, "");
-        return deserialize(str);
-    }
 
-    public void write(@NotNull FileConfig config, @NotNull String path) {
-        config.set(path, this.serialize());
-    }
 
     @NotNull
-    public static ExactPos deserialize(@NotNull String str) {
-        String[] split = str.split(",");
-        if (split.length < 3) return empty();
-
-        int x = (int) NumberUtil.getAnyDouble(split[0], 0);
-        int y = (int) NumberUtil.getAnyDouble(split[1], 0);
-        int z = (int) NumberUtil.getAnyDouble(split[2], 0);
-        float pitch = (float) NumberUtil.getAnyDouble(split[3], 0);
-        float yaw = (float) NumberUtil.getAnyDouble(split[4], 0);
-
-        return new ExactPos(x, y, z, yaw, pitch);
-    }
-
-    @NotNull
-    public String serialize() {
-        return this.x + "," + this.y + "," + this.z + "," + this.pitch + "," + this.yaw;
-    }
-
-    @NotNull
-    public Chunk toChunk(@NotNull World world) {
-        int chunkX = (int) this.x >> 4;
-        int chunkZ = (int) this.z >> 4;
-
-        return world.getChunkAt(chunkX, chunkZ);
-    }
-
-    public boolean isChunkLoaded(@NotNull World world) {
-        int chunkX = (int) this.x >> 4;
-        int chunkZ = (int) this.z >> 4;
-
-        return world.isChunkLoaded(chunkX, chunkZ);
+    public Block toBlock(@NotNull World world) {
+        return this.toBlockPos().toBlock(world);
     }
 
     @NotNull
@@ -100,14 +95,25 @@ public class ExactPos {
     }
 
     @NotNull
-    public ExactPos copy() {
-        return new ExactPos(this.x, this.y, this.z, this.yaw, this.pitch);
-    }
-
-    @NotNull
     public BlockPos toBlockPos() {
         return new BlockPos((int) this.x, (int) this.y, (int) this.z);
     }
+
+    @NotNull
+    public ChunkPos toChunkPos() {
+        return ChunkPos.from(this);
+    }
+
+    @NotNull
+    public Chunk toChunk(@NotNull World world) {
+        return this.toChunkPos().getChunk(world);
+    }
+
+    public boolean isChunkLoaded(@NotNull World world) {
+        return this.toChunkPos().isLoaded(world);
+    }
+
+
 
     public double getX() {
         return this.x;
@@ -127,6 +133,11 @@ public class ExactPos {
 
     public float getPitch() {
         return this.pitch;
+    }
+
+    @NotNull
+    public ExactPos copy() {
+        return new ExactPos(this.x, this.y, this.z, this.yaw, this.pitch);
     }
 
     @Override
