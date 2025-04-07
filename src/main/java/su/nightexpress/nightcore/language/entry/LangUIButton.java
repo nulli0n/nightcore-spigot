@@ -27,12 +27,13 @@ public class LangUIButton implements LangElement {
         return new Builder(path, name);
     }
 
-    protected record Details(String name, List<String> description, Map<String, String> currentInfo, Map<ClickKey, String> clickActions){}
+    protected record Details(String name, List<String> description, boolean formatted, Map<String, String> currentInfo, Map<ClickKey, String> clickActions){}
 
     @Override
     public void write(@NotNull FileConfig config) {
         config.set(this.path + ".Name", this.defaults.name);
         config.set(this.path + ".Description", this.defaults.description);
+        config.set(this.path + ".Formatted", this.defaults.formatted);
 
         config.remove(this.path + ".CurrentInfo");
         this.defaults.currentInfo.forEach((name, value) -> config.set(this.path + ".CurrentInfo." + name, value));
@@ -45,12 +46,13 @@ public class LangUIButton implements LangElement {
     public void load(@NotNull NightCorePlugin plugin) {
         FileConfig config = plugin.getLang();
 
-        if (!config.contains(this.path) || !config.contains(this.path + ".ClickActions")) {
+        if (!config.contains(this.path) || (!config.contains(this.path + ".ClickActions") && !this.defaults.clickActions.isEmpty())) {
             this.write(config);
         }
 
         String name = ConfigValue.create(this.path + ".Name", this.defaults.name).read(config);
         List<String> description = ConfigValue.create(this.path + ".Description", this.defaults.description).read(config);
+        boolean formatted = ConfigValue.create(this.path + ".Formatted", this.defaults.formatted).read(config);
 
         Map<String, String> currentInfo = new LinkedHashMap<>();
         config.getSection(this.path + ".CurrentInfo").forEach(sId -> {
@@ -71,7 +73,7 @@ public class LangUIButton implements LangElement {
             clickActions.put(key, action);
         });
 
-        this.details = new Details(name, description, currentInfo, clickActions);
+        this.details = new Details(name, description, formatted, currentInfo, clickActions);
     }
 
     @NotNull
@@ -82,6 +84,10 @@ public class LangUIButton implements LangElement {
     @NotNull
     public List<String> getDescription() {
         return this.details.description;
+    }
+
+    public boolean isFormatted() {
+        return this.details.formatted;
     }
 
     @NotNull
@@ -103,10 +109,12 @@ public class LangUIButton implements LangElement {
         private final Map<ClickKey, String> clickActions;
 
         private String name;
+        private boolean formatted;
 
         public Builder(@NotNull String path, @NotNull String name) {
             this.path = path;
             this.name = name;
+            this.formatted = true;
             this.description = new ArrayList<>();
             this.currentInfo = new LinkedHashMap<>();
             this.clickActions = new LinkedHashMap<>();
@@ -114,7 +122,7 @@ public class LangUIButton implements LangElement {
 
         @NotNull
         public LangUIButton build() {
-            return new LangUIButton(this.path, new Details(this.name, new ArrayList<>(this.description), this.currentInfo, new HashMap<>(this.clickActions)));
+            return new LangUIButton(this.path, new Details(this.name, new ArrayList<>(this.description), this.formatted, this.currentInfo, new HashMap<>(this.clickActions)));
         }
 
         @NotNull
@@ -126,6 +134,12 @@ public class LangUIButton implements LangElement {
         @NotNull
         public Builder description(@NotNull String... text) {
             this.description.addAll(Arrays.asList(text));
+            return this;
+        }
+
+        @NotNull
+        public Builder formatted(boolean formatted) {
+            this.formatted = formatted;
             return this;
         }
 
