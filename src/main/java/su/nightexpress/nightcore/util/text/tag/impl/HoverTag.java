@@ -47,12 +47,17 @@ public class HoverTag extends Tag implements ContentTag {
 
     @NotNull
     public String wrapShowText(@NotNull String string, @NotNull String text) {
-        return this.enclose(string, HoverEventType.SHOW_TEXT, text);
+        return this.wrap(string, HoverEventType.SHOW_TEXT, text);
     }
 
     @NotNull
     public String wrapShowItem(@NotNull String string, @NotNull ItemStack itemStack) {
-        return this.enclose(string, HoverEventType.SHOW_ITEM, String.valueOf(ItemNbt.compress(itemStack)));
+        return this.wrapShowItem(string, String.valueOf(ItemNbt.compress(itemStack)));
+    }
+
+    @NotNull
+    public String wrapShowItem(@NotNull String string, @NotNull String compressed) {
+        return this.wrap(string, HoverEventType.SHOW_ITEM, compressed);
     }
 
     @NotNull

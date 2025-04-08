@@ -353,7 +353,9 @@ public class NightMeta implements Writeable {
 
     @NotNull
     public NightMeta localized(@NotNull LangUIButton locale) {
-        String name = CoreLang.EDITOR_BUTTON_NAME.getString().replace(Placeholders.GENERIC_NAME, locale.getName());
+        boolean formatted = locale.isFormatted();
+
+        String name = formatted ? CoreLang.EDITOR_BUTTON_NAME.getString().replace(Placeholders.GENERIC_NAME, locale.getName()) : locale.getName();
         List<String> lore = new ArrayList<>();
 
         locale.getCurrentInfo().forEach((title, value) -> {
@@ -364,9 +366,9 @@ public class NightMeta implements Writeable {
         lore.add(Placeholders.EMPTY_IF_ABOVE);
 
         for (String entry : locale.getDescription()) {
-            lore.add(CoreLang.EDITOR_BUTTON_DESCRIPTION.getString().replace(Placeholders.GENERIC_ENTRY, entry));
+            lore.add(formatted ? CoreLang.EDITOR_BUTTON_DESCRIPTION.getString().replace(Placeholders.GENERIC_ENTRY, entry) : entry);
         }
-        lore.add(Placeholders.EMPTY_IF_ABOVE);
+        lore.add(Placeholders.EMPTY_IF_BELOW);
 
         locale.getClickActions().forEach((key, action) -> {
             lore.add(CoreLang.EDITOR_BUTTON_CLICK_KEY.getString()
