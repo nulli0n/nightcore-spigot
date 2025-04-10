@@ -13,18 +13,18 @@ import java.util.stream.Stream;
 
 public enum Version {
 
-    V1_19_R3("1.19.4", Status.OUTDATED),
-    V1_20_R1("1.20.1", Status.OUTDATED),
-    V1_20_R2("1.20.2", Status.OUTDATED),
-    V1_20_R3("1.20.4", Status.OUTDATED),
-    MC_1_20_6("1.20.6", Status.OUTDATED),
-    MC_1_21_0("1.21", Status.OUTDATED),
-    MC_1_21("1.21.1"),
-    MC_1_21_2("1.21.2", Status.OUTDATED),
-    MC_1_21_3("1.21.3"),
-    MC_1_21_4("1.21.4"),
-    MC_1_21_5("1.21.5"),
-    UNKNOWN("Unknown"),
+    V1_19_R3("1.19.4", 3337, Status.OUTDATED),
+    V1_20_R1("1.20.1", 3465, Status.OUTDATED),
+    V1_20_R2("1.20.2", 3578, Status.OUTDATED),
+    V1_20_R3("1.20.4", 3700, Status.OUTDATED),
+    MC_1_20_6("1.20.6", 3839, Status.OUTDATED),
+    MC_1_21_0("1.21", 3953, Status.OUTDATED),
+    MC_1_21("1.21.1", 3955),
+    MC_1_21_2("1.21.2", 4080, Status.OUTDATED),
+    MC_1_21_3("1.21.3", 4082),
+    MC_1_21_4("1.21.4", 4189),
+    MC_1_21_5("1.21.5", 4325),
+    UNKNOWN("Unknown", 0),
     ;
 
     public static final String CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
@@ -33,14 +33,16 @@ public enum Version {
     private static Software software;
 
     private final Status status;
+    private final int dataVersion;
     private final String localized;
 
-    Version(@NotNull String localized) {
-        this(localized, Status.SUPPORTED);
+    Version(@NotNull String localized, int dataVersion) {
+        this(localized, dataVersion, Status.SUPPORTED);
     }
 
-    Version(@NotNull String localized, @NotNull Status status) {
+    Version(@NotNull String localized, int dataVersion, @NotNull Status status) {
         this.localized = localized;
+        this.dataVersion = dataVersion;
         this.status = status;
     }
 
@@ -121,6 +123,10 @@ public enum Version {
     @NotNull
     public Status getStatus() {
         return this.status;
+    }
+
+    public int getDataVersion() {
+        return this.dataVersion;
     }
 
     @NotNull

@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCore;
+import su.nightexpress.nightcore.core.CoreConfig;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -40,8 +41,8 @@ public class ItemNbt {
     private static Method mNbtIoRead;
     private static Method mTagParserParseTag;
 
-    private static int       DATA_FIXER_SOURCE_VERSION;
-    private static int       DATA_FXIER_TARGET_VERSION;
+    //private static int       DATA_FIXER_SOURCE_VERSION;
+    //private static int       DATA_FIXER_TARGET_VERSION;
     private static DataFixer dataFixer;
     private static Object nbtOps;
     private static Object itemStackReference;
@@ -91,8 +92,8 @@ public class ItemNbt {
         }
 
         // Load DataFixer components.
-        DATA_FIXER_SOURCE_VERSION = 3700; // 1.20.4
-        DATA_FXIER_TARGET_VERSION = 4325; // 1.21.5
+        //DATA_FIXER_SOURCE_VERSION = 4189;//3700; // 1.20.4
+        //DATA_FIXER_TARGET_VERSION = 4325; // 1.21.5 or 1.21.4
 
         Method mGetDataFixer = Reflex.getMethod(CLS_DATA_FIXERS, "a");
         if (mGetDataFixer == null) {
@@ -165,16 +166,36 @@ public class ItemNbt {
             meta.setDisplayName("Test Item");
             meta.setLore(Lists.newList("Test Lore 1", "Test Lore 2", "Test Lore 3"));
             meta.addEnchant(Enchantment.FIRE_ASPECT, 10, true);
+            meta.setCustomModelData(100500);
         });
 
-        String nbt = ItemNbt.compress(testItem);
-        if (nbt == null) return false;
+        ItemTag tag = getTag(testItem);
+        if (tag == null) return false;
 
-        ItemStack decompressed = ItemNbt.decompress(nbt);
-        return decompressed != null && decompressed.isSimilar(testItem);
+        ItemStack parsed = fromTag(tag);
+        return parsed != null && parsed.isSimilar(testItem);
+
+//        String nbt = ItemNbt.compress(testItem);
+//        if (nbt == null) return false;
+//
+//        ItemStack decompressed = ItemNbt.decompress(nbt);
+//        return decompressed != null && decompressed.isSimilar(testItem);
+    }
+
+    @NotNull
+    @Deprecated
+    public static List<String> compress(@NotNull ItemStack[] items) {
+        return compress(Arrays.asList(items));
+    }
+
+    @NotNull
+    @Deprecated
+    public static List<String> compress(@NotNull List<ItemStack> items) {
+        return new ArrayList<>(items.stream().map(ItemNbt::compress).filter(Objects::nonNull).toList());
     }
 
     @Nullable
+    @Deprecated
     public static String compress(@NotNull ItemStack item) {
         Object compoundTag = toCompoundTag(item);
         if (compoundTag == null) return null;
@@ -186,6 +207,7 @@ public class ItemNbt {
     }
 
     @Nullable
+    @Deprecated
     public static ItemStack decompress(@NotNull String compressed) {
         if (compressed.isBlank()) return null;
 
@@ -193,10 +215,17 @@ public class ItemNbt {
         DataInputStream dataInput = new DataInputStream(inputStream);
 
         Object compoundTag = Reflex.invokeMethod(mNbtIoRead, null, dataInput);
-        return compoundTag == null ? null : fromCompoundTag(compoundTag);
+        return compoundTag == null ? null : fromCompoundTag(compoundTag, CoreConfig.DATA_FIXER_MISSING_VERSION.get());
+    }
+
+    @Deprecated
+    public static ItemStack[] decompress(@NotNull List<String> list) {
+        List<ItemStack> items = list.stream().map(ItemNbt::decompress).filter(Objects::nonNull).toList();
+        return items.toArray(new ItemStack[list.size()]);
     }
 
     @Nullable
+    @Deprecated
     public static String getTagString(@NotNull ItemStack item) {
         Object compoundTag = toCompoundTag(item);
         if (compoundTag == null) return null;
@@ -205,27 +234,38 @@ public class ItemNbt {
     }
 
     @Nullable
+    @Deprecated
     public static ItemStack fromTagString(@NotNull String tagString) {
-        if (tagString.isBlank() || tagString.equalsIgnoreCase("{}")) return null;
+//        if (tagString.isBlank() || tagString.equalsIgnoreCase("{}")) return null;
+//
+//        Object compoundTag = Reflex.invokeMethod(mTagParserParseTag, null, tagString);
+//        if (compoundTag != null) System.out.println("fromCompoundTag(compoundTag) = " + fromCompoundTag(compoundTag));
+//        return compoundTag == null ? null : fromCompoundTag(compoundTag);
 
-        Object compoundTag = Reflex.invokeMethod(mTagParserParseTag, null, tagString);
-        return compoundTag == null ? null : fromCompoundTag(compoundTag);
+        return fromTag(new ItemTag(tagString, CoreConfig.DATA_FIXER_MISSING_VERSION.get()));
     }
 
-    @NotNull
-    public static List<String> compress(@NotNull ItemStack[] items) {
-        return compress(Arrays.asList(items));
+    @Nullable
+    public static ItemStack fromTag(@NotNull ItemTag itemTag) {
+        if (!loaded) return null;
+        if (itemTag.isEmpty()) return null;
+
+        String tagString = itemTag.getTag();
+        int sourceVersion = itemTag.getDataVersion();
+
+        Object tag = Reflex.invokeMethod(mTagParserParseTag, null, tagString);
+        return tag == null ? null : fromCompoundTag(tag, sourceVersion);
     }
 
-    @NotNull
-    public static List<String> compress(@NotNull List<ItemStack> items) {
-        return new ArrayList<>(items.stream().map(ItemNbt::compress).filter(Objects::nonNull).toList());
+    @Nullable
+    public static ItemTag getTag(@NotNull ItemStack item) {
+        Object compoundTag = toCompoundTag(item);
+        if (compoundTag == null) return null;
+
+        return new ItemTag(compoundTag.toString(), Version.getCurrent().getDataVersion());
     }
 
-    public static ItemStack[] decompress(@NotNull List<String> list) {
-        List<ItemStack> items = list.stream().map(ItemNbt::decompress).filter(Objects::nonNull).toList();
-        return items.toArray(new ItemStack[list.size()]);
-    }
+
 
     @NotNull
     public static ItemStack getHoverEventItem(@NotNull String value) {
@@ -263,11 +303,11 @@ public class ItemNbt {
     }
 
     @Nullable
-    private static ItemStack fromCompoundTag(@NotNull Object tag) {
+    private static ItemStack fromCompoundTag(@NotNull Object tag, int sourceVersion) {
         if (!loaded) return null;
 
         Object itemStack;
-        Object compoundTag = ItemNbt.applyDataFixer(tag);
+        Object compoundTag = ItemNbt.applyDataFixer(tag, sourceVersion);
 
         if (useRegistry) {
             Optional<?> optional = (Optional<?>) Reflex.invokeMethod(mItemStackParse, null, registryAccess, compoundTag);
@@ -280,9 +320,19 @@ public class ItemNbt {
         return itemStack == null ? null : (ItemStack) Reflex.invokeMethod(mCraftItemStackAsBukkitCopy, null, itemStack);
     }
 
+//    @SuppressWarnings({"rawtypes", "unchecked"})
+//    private static Object applyDataFixer(@NotNull Object compoundTag) {
+//        Dynamic<?> dynamic = new Dynamic<>((DynamicOps) nbtOps, compoundTag);
+//        return dataFixer.update((DSL.TypeReference) itemStackReference, dynamic, DATA_FIXER_SOURCE_VERSION, DATA_FIXER_TARGET_VERSION).getValue();
+//    }
+
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static Object applyDataFixer(@NotNull Object compoundTag) {
+    private static Object applyDataFixer(@NotNull Object compoundTag, int sourceVersion) {
+        int targetVersion = Version.getCurrent() == Version.UNKNOWN ? CoreConfig.DATA_FIXER_UNKNOWN_VERSION.get() : Version.getCurrent().getDataVersion();
+        if (targetVersion <= 0) return compoundTag;
+        if (sourceVersion > targetVersion || sourceVersion <= 0) return compoundTag;
+
         Dynamic<?> dynamic = new Dynamic<>((DynamicOps) nbtOps, compoundTag);
-        return dataFixer.update((DSL.TypeReference) itemStackReference, dynamic, DATA_FIXER_SOURCE_VERSION, DATA_FXIER_TARGET_VERSION).getValue();
+        return dataFixer.update((DSL.TypeReference) itemStackReference, dynamic, sourceVersion, targetVersion).getValue();
     }
 }
