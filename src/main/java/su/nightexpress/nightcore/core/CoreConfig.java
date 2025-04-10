@@ -4,6 +4,7 @@ import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.TimeUtil;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.number.NumberShortcut;
 import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 
@@ -15,11 +16,12 @@ public class CoreConfig {
 
     public static final String DIR_UI = "/ui/";
 
-    @Deprecated
-    public static final ConfigValue<Boolean> DATA_FIXER_ENABLED = ConfigValue.create("DataFixer.Enabled",
-        false,
-        "When enabled, uses Mojang's DataFixer util to update ItemStacks from <= 1.20.4 NBT format to 1.20.5+ NBT format.",
-        "IMPORTANT NOTE: You need to use this setting only once! Enable it, reboot the server and re-save all configurations that stores compressed item data: shops, crates, etc."
+    public static final ConfigValue<Integer> DATA_FIXER_MISSING_VERSION = ConfigValue.create("DataFixer.MissingVersion",
+        Version.MC_1_21_4.getDataVersion()
+    );
+
+    public static final ConfigValue<Integer> DATA_FIXER_UNKNOWN_VERSION = ConfigValue.create("DataFixer.UnknownVersion",
+        10000
     );
 
     public static final ConfigValue<Long> MENU_CLICK_COOLDOWN = ConfigValue.create("Menu.Click_Cooldown",
