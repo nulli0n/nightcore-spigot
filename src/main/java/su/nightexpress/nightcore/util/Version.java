@@ -154,6 +154,10 @@ public enum Version {
         return getCurrent().isLower(version);
     }
 
+    public static boolean isBehindOrEqual(@NotNull Version version){
+        return getCurrent().isLower(version) || getCurrent() == version;
+    }
+
     public boolean isCurrent() {
         return this == Version.getCurrent();
     }
