@@ -177,7 +177,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.github.Anon8281.universalScheduler</pattern>
-                                    <shadedPattern>su.nightexpress.nightcore.universalscheduler</shadedPattern> <!-- Replace this -->
+                                    <shadedPattern>su.nightexpress.nightcore.universalscheduler</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
