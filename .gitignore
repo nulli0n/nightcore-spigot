@@ -1,3 +1,13 @@
 /.idea/
 /pom.xml.versionsBackup
 /target/
+/utils/target/
+/utils/pom.xml.versionsBackup
+/spigot/target/
+/spigot/pom.xml.versionsBackup
+/paper/target/
+/paper/pom.xml.versionsBackup
+/main/target/
+/main/pom.xml.versionsBackup
+/bridge/pom.xml.versionsBackup
+/bridge/target/
