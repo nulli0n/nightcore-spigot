@@ -8,6 +8,7 @@ load: STARTUP
 authors:
   - NightExpress
 api-version: '1.19'
+folia-supported: true
 dependencies:
   server:
     Vault:

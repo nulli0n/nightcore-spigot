@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.util.blocktracker;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.ints.IntSets;
 import org.bukkit.block.Block;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -14,10 +15,10 @@ public class TrackedChunk {
     protected TrackedChunk(@NotNull PersistentDataContainer container) {
         final int[] data = container.get(PlayerBlockTracker.TRACKED_DATA_KEY, PersistentDataType.INTEGER_ARRAY);
         if (data == null) {
-            this.trackedBlockPositions = new IntOpenHashSet();
+            this.trackedBlockPositions = IntSets.synchronize(new IntOpenHashSet());
         }
         else {
-            this.trackedBlockPositions = new IntOpenHashSet(data);
+            this.trackedBlockPositions = IntSets.synchronize(new IntOpenHashSet(data));
         }
     }
 
