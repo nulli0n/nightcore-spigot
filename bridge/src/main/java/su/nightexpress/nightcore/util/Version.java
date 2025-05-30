@@ -1,0 +1,135 @@
+package su.nightexpress.nightcore.util;
+
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+public enum Version {
+
+    V1_19_R3("1.19.4", 3337, Status.DROPPED),
+    V1_20_R1("1.20.1", 3465, Status.OUTDATED),
+    V1_20_R2("1.20.2", 3578, Status.OUTDATED),
+    V1_20_R3("1.20.4", 3700, Status.OUTDATED),
+    MC_1_20_6("1.20.6", 3839, Status.OUTDATED),
+    MC_1_21_0("1.21", 3953, Status.OUTDATED),
+    MC_1_21("1.21.1", 3955),
+    MC_1_21_2("1.21.2", 4080, Status.OUTDATED),
+    MC_1_21_3("1.21.3", 4082),
+    MC_1_21_4("1.21.4", 4189),
+    MC_1_21_5("1.21.5", 4325),
+    UNKNOWN("Unknown", 0),
+    ;
+
+    private static Version current;
+    private static boolean isPaper;
+
+    private final Status status;
+    private final int    dataVersion;
+    private final String localized;
+
+    Version(@NotNull String localized, int dataVersion) {
+        this(localized, dataVersion, Status.SUPPORTED);
+    }
+
+    Version(@NotNull String localized, int dataVersion, @NotNull Status status) {
+        this.localized = localized;
+        this.dataVersion = dataVersion;
+        this.status = status;
+    }
+
+    public enum Status {
+        SUPPORTED,
+        OUTDATED,
+        DROPPED
+    }
+
+    @NotNull
+    public static Version detect() {
+        String bukkitVersion = Bukkit.getServer().getBukkitVersion();
+        String exact = bukkitVersion.split("-")[0];
+
+        current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
+        isPaper = checkPaper();
+
+        return current;
+    }
+
+    @NotNull
+    public static Version getCurrent() {
+        return current;
+    }
+
+    public static boolean isSpigot() {
+        return !isPaper;
+    }
+
+    public static boolean isPaper() {
+        return isPaper;
+    }
+
+    public boolean isDeprecated() {
+        return this.status == Status.OUTDATED;
+    }
+
+    public boolean isDropped() {
+        return this.status == Status.DROPPED;
+    }
+
+    public boolean isSupported() {
+        return this.status == Status.SUPPORTED;
+    }
+
+    @NotNull
+    public Status getStatus() {
+        return this.status;
+    }
+
+    public int getDataVersion() {
+        return this.dataVersion;
+    }
+
+    @NotNull
+    public String getLocalized() {
+        return this.localized;
+    }
+
+    public boolean isLower(@NotNull Version version) {
+        return this.ordinal() < version.ordinal();
+    }
+
+    public boolean isHigher(@NotNull Version version) {
+        return this.ordinal() > version.ordinal();
+    }
+
+    public static boolean isAtLeast(@NotNull Version version) {
+        return version.isCurrent() || getCurrent().isHigher(version);
+    }
+
+    public static boolean isAbove(@NotNull Version version) {
+        return getCurrent().isHigher(version);
+    }
+
+    public static boolean isBehind(@NotNull Version version) {
+        return getCurrent().isLower(version);
+    }
+
+    public static boolean isBehindOrEqual(@NotNull Version version){
+        return getCurrent().isLower(version) || getCurrent() == version;
+    }
+
+    public boolean isCurrent() {
+        return this == Version.getCurrent();
+    }
+
+    public static boolean checkPaper() {
+        try {
+            Class.forName("com.destroystokyo.paper.ParticleBuilder");
+            return true;
+        }
+        catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+}
