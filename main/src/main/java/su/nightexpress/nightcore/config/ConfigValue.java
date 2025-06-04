@@ -246,7 +246,7 @@ public class ConfigValue<T> {
                                                        @NotNull Writer<Map<K, V>> writer,
                                                        @NotNull Map<K, V> defaultValue,
                                                        @Nullable String... description) {
-        return forMap(path, keyFun, valFun, HashMap::new, writer, defaultValue, description);
+        return forMap(path, keyFun, valFun, LinkedHashMap::new, writer, defaultValue, description);
     }
 
     @NotNull
@@ -300,7 +300,7 @@ public class ConfigValue<T> {
                                                                          @NotNull Consumer<Map<K, V>> defaultValue,
                                                                          @Nullable String... description) {
         Loader<Map<K, V>> reader = (config, readPath) -> {
-            var map = new HashMap<K, V>();
+            var map = new LinkedHashMap<K, V>(); // Preserve config order
             for (String keyRaw : config.getSection(readPath)) {
                 K key = keyReadFun.apply(keyRaw);
                 V val = valReadFun.read(config, readPath + "." + keyRaw, keyRaw);

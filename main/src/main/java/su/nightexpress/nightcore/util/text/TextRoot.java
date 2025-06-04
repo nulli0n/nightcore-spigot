@@ -181,6 +181,12 @@ public class TextRoot {
         for (int index = 0; index < length; index++) {
             char letter = string.charAt(index);
 
+            if (letter == '\\' && index != (length - 1) && string.charAt(index + 1) == TagUtils.OPEN_BRACKET) {
+                index++;
+                consumer.accept(TagUtils.OPEN_BRACKET);
+                continue;
+            }
+
             Tag:
             if (letter == TagUtils.OPEN_BRACKET && index != (length - 1)) {
                 int indexEnd = indexOfIgnoreEscaped(string, TagUtils.CLOSE_BRACKET, index);//string.indexOf(Tag.CLOSE_BRACKET, index);
