@@ -157,7 +157,7 @@ public class BukkitThing {
     public static <T extends Keyed> List<NamespacedKey> getKeys(@NotNull RegistryType<T> registryType) {
         var registry = registryType.getRegistry();
 
-        return Version.isPaper() ? registry.keyStream().toList() : registry.stream().map(Keyed::getKey).toList();
+        return Version.isPaper() && Version.isAtLeast(Version.MC_1_21_5) ? registry.keyStream().toList() : registry.stream().map(Keyed::getKey).toList();
     }
 
     @NotNull

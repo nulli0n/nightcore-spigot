@@ -318,7 +318,12 @@ public class PaperBridge implements Software {
     }
 
     public static void hidePaperComponents(@NotNull ItemStack itemStack, @NotNull Set<DataComponentType> componentTypes) {
-        TooltipDisplay tooltipDisplay = TooltipDisplay.tooltipDisplay().hiddenComponents(componentTypes).build();
-        itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, tooltipDisplay);
+        try {
+            TooltipDisplay tooltipDisplay = TooltipDisplay.tooltipDisplay().hiddenComponents(componentTypes).build();
+            itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, tooltipDisplay);
+        }
+        catch (NoSuchElementException exception) {
+            exception.printStackTrace();
+        }
     }
 }
