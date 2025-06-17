@@ -259,6 +259,8 @@ public class TextRoot {
         }
         if (tag instanceof TranslationTag) {
             if (tagContent != null) {
+                if (tagContent.endsWith("/")) tagContent = tagContent.substring(0, tagContent.length() - 1); // MiniMessage#serialize fix.
+
                 int index = indexOfIgnoreEscaped(tagContent, TagUtils.SEMICOLON, 0);
                 String key = index < 0 ? tagContent : tagContent.substring(0, index);
                 String fallback = index < 0 || index >= tagContent.length() ? null : TagUtils.unquoted(tagContent.substring(index + 1));
