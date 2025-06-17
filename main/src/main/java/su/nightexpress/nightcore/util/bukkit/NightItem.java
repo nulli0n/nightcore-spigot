@@ -21,6 +21,7 @@ import su.nightexpress.nightcore.util.placeholder.Replacer;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
@@ -143,6 +144,21 @@ public class NightItem implements Writeable {
 
         this.meta.apply(stack);
         return stack;
+    }
+
+    /**
+     * Updates ItemStack's properties that are potentially to block the server's main thread, such as PlayerProfile in PLAYER_HEAD items.
+     * @return a completable future that gets completed with the updated ItemStack properties once it is available.
+     */
+    @NotNull
+    public CompletableFuture<ItemStack> getItemStackUpdated() {
+        NightProfile profile = this.getPlayerProfile();
+        if (profile == null) return CompletableFuture.supplyAsync(this::getItemStack);
+
+        return profile.update().thenCompose(updated -> {
+            this.meta.setPlayerProfile(updated);
+            return CompletableFuture.supplyAsync(this::getItemStack);
+        });
     }
 
     @NotNull

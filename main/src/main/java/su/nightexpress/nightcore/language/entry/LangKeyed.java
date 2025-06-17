@@ -36,8 +36,11 @@ public class LangKeyed<E extends Keyed> implements LangElement {
     }
 
     public void load(@NotNull NightCorePlugin plugin) {
-        FileConfig config = plugin.getLang();
+        this.load(plugin.getLang());
+    }
 
+    @Override
+    public void load(@NotNull FileConfig config) {
         BukkitThing.allFromRegistry(this.registry).forEach(keyed -> {
             String namespace = BukkitThing.toString(keyed);
             String localized = StringUtil.capitalizeUnderscored(namespace);

@@ -35,8 +35,11 @@ public class LangRegistry<E extends Keyed> implements LangElement {
     }
 
     public void load(@NotNull NightCorePlugin plugin) {
-        FileConfig config = plugin.getLang();
+        this.load(plugin.getLang());
+    }
 
+    @Override
+    public void load(@NotNull FileConfig config) {
         BukkitThing.getAll(this.registry).forEach(keyed -> {
             String value = BukkitThing.getValue(keyed);
             String localized = StringUtil.capitalizeUnderscored(value);

@@ -19,6 +19,7 @@ public enum Version {
     MC_1_21_3("1.21.3", 4082),
     MC_1_21_4("1.21.4", 4189),
     MC_1_21_5("1.21.5", 4325),
+    MC_1_21_6("1.21.6", 4435),
     UNKNOWN("Unknown", 0),
     ;
 
@@ -58,6 +59,8 @@ public enum Version {
 
     @NotNull
     public static Version getCurrent() {
+        if (current == null) throw new IllegalStateException("Version is not initialized!");
+
         return current;
     }
 

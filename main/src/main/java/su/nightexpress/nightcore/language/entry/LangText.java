@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.language.entry;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.language.message.LangMessage;
@@ -36,8 +37,15 @@ public class LangText extends LangEntry {
 
     @Override
     public void load(@NotNull NightCorePlugin plugin) {
-        FileConfig config = plugin.getLang();
+        this.load(plugin.getLang(), plugin.getPrefix());
+    }
 
+    @Override
+    public void load(@NotNull FileConfig config) {
+        this.load(config, null);
+    }
+
+    public void load(@NotNull FileConfig config, @Nullable String defaultPrefix) {
         if (!config.contains(this.path)) {
             this.write(config);
         }
@@ -47,7 +55,7 @@ public class LangText extends LangEntry {
             text.add(config.getString(this.path, this.path));
         }
 
-        this.setMessage(LangMessage.parse(plugin, String.join(Placeholders.TAG_LINE_BREAK, text)));
+        this.setMessage(LangMessage.parse(String.join(Placeholders.TAG_LINE_BREAK, text), defaultPrefix));
     }
 
     @NotNull
