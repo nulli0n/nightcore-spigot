@@ -330,7 +330,7 @@ public class ItemNbt {
 
         if (useCodec) {
             Object context = createSerializationContext();
-            DataResult<?> decoded = (DataResult<?>) Reflex.invokeMethod(mParse, itemStackCodec, context, tag);
+            DataResult<?> decoded = (DataResult<?>) Reflex.invokeMethod(mParse, itemStackCodec, context, compoundTag);
             if (decoded == null) return null;
 
             itemStack = decoded.resultOrPartial(itemId -> Engine.core().error("Could not decode ItemStack from tag: " + itemId)).orElse(null);
@@ -351,6 +351,19 @@ public class ItemNbt {
         int targetVersion = Version.getCurrent() == Version.UNKNOWN ? CoreConfig.DATA_FIXER_UNKNOWN_VERSION.get() : Version.getCurrent().getDataVersion();
         if (targetVersion <= 0) return compoundTag;
         if (sourceVersion > targetVersion || sourceVersion <= 0) return compoundTag;
+
+        // Probably not necessary, but they used it for a reason probably.
+//        if (Version.isPaper()) {
+//            Class<?> mcDataTypeClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCDataType");
+//            Class<?> mcDataConvertedClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft", "MCDataConverter");
+//            Class<?> mcTypeRegistryClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCTypeRegistry");
+//
+//            Object itemStackRegistry = Reflex.getFieldValue(mcTypeRegistryClass, "ITEM_STACK");
+//
+//            Method convert = Reflex.getMethod(mcDataConvertedClass, "convertTag", mcDataTypeClass, CLS_COMPOUND_TAG, Integer.TYPE, Integer.TYPE);
+//
+//            return Reflex.invokeMethod(convert, null, itemStackRegistry, compoundTag, sourceVersion, targetVersion);
+//        }
 
         Dynamic<?> dynamic = new Dynamic<>((DynamicOps) nbtOps, compoundTag);
         return dataFixer.update((DSL.TypeReference) itemStackReference, dynamic, sourceVersion, targetVersion).getValue();
