@@ -127,6 +127,11 @@ public class Reflex {
         }
     }
 
+    public static Object getFieldValue(@NotNull Object source, @NotNull String realName, @NotNull String obfName) {
+        Object byName = getFieldValue(source, realName);
+        return byName == null ? getFieldValue(source, obfName) : byName;
+    }
+
     public static Object getFieldValue(@NotNull Object source, @NotNull String name) {
         try {
             Class<?> clazz = source instanceof Class<?> ? (Class<?>) source : source.getClass();
@@ -158,6 +163,11 @@ public class Reflex {
             exception.printStackTrace();
         }
         return false;
+    }
+
+    public static Method getMethod(@NotNull Class<?> source, @NotNull String realName, @NotNull String obfName, @NotNull Class<?>... params) {
+        Method byName = getMethod(source, realName, params);
+        return byName == null ? getMethod(source, obfName, params) : byName;
     }
 
     public static Method getMethod(@NotNull Class<?> source, @NotNull String name, @NotNull Class<?>... params) {

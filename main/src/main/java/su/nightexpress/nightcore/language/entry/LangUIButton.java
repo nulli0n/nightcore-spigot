@@ -44,8 +44,11 @@ public class LangUIButton implements LangElement {
 
     @Override
     public void load(@NotNull NightCorePlugin plugin) {
-        FileConfig config = plugin.getLang();
+        this.load(plugin.getLang());
+    }
 
+    @Override
+    public void load(@NotNull FileConfig config) {
         if (!config.contains(this.path) || (!config.contains(this.path + ".ClickActions") && !this.defaults.clickActions.isEmpty())) {
             this.write(config);
         }

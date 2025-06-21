@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.util.bukkit;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
@@ -134,11 +135,16 @@ public class NightMeta implements Writeable {
         }
         //displayMeta.setHideComponents(!meta.getItemFlags().isEmpty());
 
-        if (meta instanceof LeatherArmorMeta armorMeta) {
-            displayMeta.setColor(armorMeta.getColor());
-        }
-        else if (meta instanceof PotionMeta potionMeta) {
-            displayMeta.setColor(potionMeta.getColor());
+        switch (meta) {
+            case LeatherArmorMeta armorMeta -> displayMeta.setColor(armorMeta.getColor());
+            case PotionMeta potionMeta -> displayMeta.setColor(potionMeta.getColor());
+            case FireworkEffectMeta effectMeta -> {
+                FireworkEffect effect = effectMeta.getEffect();
+                if (effect != null && !effect.getColors().isEmpty()) {
+                    displayMeta.setColor(effect.getColors().getFirst());
+                }
+            }
+            default -> {}
         }
 
         return displayMeta;
@@ -267,7 +273,7 @@ public class NightMeta implements Writeable {
         config.set(path + ".Enchant_Glint", this.enchantGlint ? true : null);
         config.set(path + ".Hide_Components", this.hiddenComponents != null && !this.hiddenComponents.isEmpty() ? true : null);
         config.set(path + ".Hide_Tooltip", this.hideTooltip ? true : null);
-        config.set(path + ".Color", this.color == null ? null : color.getRed() + "," + color.getBlue() + "," + color.getGreen());
+        config.set(path + ".Color", this.color == null ? null : color.getRed() + "," + color.getGreen() + "," + color.getBlue());
     }
 
     public void apply(@NotNull ItemStack itemStack) {
@@ -315,6 +321,7 @@ public class NightMeta implements Writeable {
                 switch (meta) {
                     case LeatherArmorMeta armorMeta -> armorMeta.setColor(this.color);
                     case PotionMeta potionMeta -> potionMeta.setColor(this.color);
+                    case FireworkEffectMeta effectMeta -> effectMeta.setEffect(FireworkEffect.builder().withColor(this.color).build());
                     default -> {}
                 }
             }

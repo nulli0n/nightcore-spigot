@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.language.message;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -8,10 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.language.tag.MessageTag;
 import su.nightexpress.nightcore.language.tag.MessageTags;
-import su.nightexpress.nightcore.util.NumberUtil;
-import su.nightexpress.nightcore.util.Placeholders;
-import su.nightexpress.nightcore.util.Players;
-import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bukkit.NightSound;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.text.NightMessage;
@@ -26,18 +24,28 @@ import java.util.function.UnaryOperator;
 
 public class LangMessage {
 
-    private final NightCorePlugin plugin;
+    //private final NightCorePlugin plugin;
     private final String          defaultText;
     private final MessageOptions  options;
 
     private TextRoot message;
 
+    @Deprecated
     public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options) {
-        this(plugin, defaultText, options, null);
+        this(defaultText, options);
     }
 
+    @Deprecated
     public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options, @Nullable String prefix) {
-        this.plugin = plugin;
+        this(defaultText, options, prefix);
+    }
+
+    public LangMessage(@NotNull String defaultText, @NotNull MessageOptions options) {
+        this(defaultText, options, null);
+    }
+
+    public LangMessage(@NotNull String defaultText, @NotNull MessageOptions options, @Nullable String prefix) {
+        //this.plugin = plugin;
         this.defaultText = defaultText;
         this.options = options;
 
@@ -55,10 +63,13 @@ public class LangMessage {
 
     @NotNull
     public LangMessage setPrefix(@Nullable String prefix) {
-        boolean init = this.message == null;
-        this.message = NightMessage.from(prefix == null || !options.hasPrefix() ? defaultText : prefix + defaultText);
+        OutputType type = this.options.getOutputType();
+        if (type != OutputType.CHAT) prefix = null;
 
-        if (init && this.options.getOutputType() != OutputType.TITLES) {
+        boolean notCompiled = this.message == null;
+        this.message = NightMessage.from(prefix == null || !this.options.hasPrefix() ? this.defaultText : prefix + this.defaultText);
+
+        if (notCompiled && type != OutputType.TITLES) {
             this.message.compile();
         }
         return this;
@@ -66,14 +77,20 @@ public class LangMessage {
 
     @Deprecated
     private LangMessage(@NotNull LangMessage from) {
-        this.plugin = from.plugin;
+        //this.plugin = from.plugin;
         this.defaultText = from.defaultText;
         this.options = from.options.copy();
         this.message = from.message.copy();
     }
 
     @NotNull
+    @Deprecated
     public static LangMessage parse(@NotNull NightCorePlugin plugin, @NotNull String string) {
+        return parse(string, plugin.getPrefix());
+    }
+
+    @NotNull
+    public static LangMessage parse(@NotNull String string, @Nullable String defPrefix) {
         MessageOptions options = new MessageOptions();
         StringBuilder builder = new StringBuilder();
 
@@ -163,7 +180,7 @@ public class LangMessage {
         }
 
         String text = builder.toString();
-        String prefix = options.getOutputType() == OutputType.CHAT && options.hasPrefix() ? plugin.getPrefix() : null;
+        String prefix = options.getOutputType() == OutputType.CHAT && options.hasPrefix() ? defPrefix : null;
 
         // Remove completely empty lines.
         // Especially useful for message tags lines without extra text.
@@ -176,7 +193,7 @@ public class LangMessage {
         }
         String strippedText = stripper.toString();
 
-        return new LangMessage(plugin, strippedText, options, prefix);
+        return new LangMessage(strippedText, options, prefix);
     }
 
 //    @NotNull
@@ -251,7 +268,7 @@ public class LangMessage {
         if (this.isDisabled()) return;
 
         Players.getOnline().forEach(player -> this.send(player, consumer));
-        this.send(plugin.getServer().getConsoleSender(), consumer);
+        this.send(Bukkit.getServer().getConsoleSender(), consumer);
     }
 
     public void send(@NotNull CommandSender sender) {

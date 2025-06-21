@@ -45,8 +45,11 @@ public class LangItem extends LangEntry {
 
     @Override
     public void load(@NotNull NightCorePlugin plugin) {
-        FileConfig config = plugin.getLang();
+        this.load(plugin.getLang());
+    }
 
+    @Override
+    public void load(@NotNull FileConfig config) {
         if (!config.contains(this.path)) {
             this.write(config);
         }

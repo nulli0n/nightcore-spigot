@@ -2,14 +2,14 @@ package su.nightexpress.nightcore.util;
 
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.core.CoreConfig;
 
@@ -36,6 +36,8 @@ public class ItemNbt {
     private static final Class<?> CLS_DATA_FIXERS = Reflex.getNMSClass("net.minecraft.util.datafix", "DataFixers", "DataConverterRegistry");
     private static final Class<?> CLS_REFERENCES  = Reflex.getNMSClass("net.minecraft.util.datafix.fixes", "References", "DataConverterTypes");
 
+    private static final Class<?> CLS_HOLDER_LOOKUP_PROVIDER = Reflex.getNMSClass("net.minecraft.core", "HolderLookup$Provider", "HolderLookup$a");
+
     private static Method mCraftItemStackAsNmsCopy;
     private static Method mCraftItemStackAsBukkitCopy;
 
@@ -56,9 +58,15 @@ public class ItemNbt {
     private static Method mMinecraftItemStackOf;
     private static Method mMinecraftItemStackSave;
 
-    // Base
+    // For 1.21.6+
+    private static Codec<?> itemStackCodec;
+    private static Method   mCreateSerializationContext;
+    private static Method mEncodeStart;
+    private static Method mParse;
 
+    // Base
     private static boolean useRegistry;
+    private static boolean useCodec;
     private static Object registryAccess;
     private static boolean loaded;
 
@@ -82,9 +90,9 @@ public class ItemNbt {
             return;
         }
 
-        mNbtIoWrite = Reflex.getMethod(CLS_NBT_IO, "a", CLS_COMPOUND_TAG, DataOutput.class);
-        mNbtIoRead = Reflex.getMethod(CLS_NBT_IO, "a", DataInput.class);
-        mTagParserParseTag = Reflex.getMethod(CLS_TAG_PARSER, "a", String.class);
+        mNbtIoWrite = Reflex.getMethod(CLS_NBT_IO, "write", "a", CLS_COMPOUND_TAG, DataOutput.class);
+        mNbtIoRead = Reflex.getMethod(CLS_NBT_IO, "read", "a", DataInput.class);
+        mTagParserParseTag = Reflex.getMethod(CLS_TAG_PARSER, "parseCompoundFully", "a", String.class);
 
         if (mNbtIoWrite == null || mNbtIoRead == null || mTagParserParseTag == null) {
             core.error("[Item NBT] Could not find NbtIo or TagParser methods.");
@@ -92,15 +100,15 @@ public class ItemNbt {
         }
 
         // Load DataFixer components.
-        Method mGetDataFixer = Reflex.getMethod(CLS_DATA_FIXERS, "a");
+        Method mGetDataFixer = Reflex.getMethod(CLS_DATA_FIXERS, "getDataFixer", "a");
         if (mGetDataFixer == null) {
             core.error("[Item NBT] Could not load DataFixer components.");
             return;
         }
 
         dataFixer = (DataFixer) Reflex.invokeMethod(mGetDataFixer, CLS_DATA_FIXERS);
-        nbtOps = Reflex.getFieldValue(CLS_NBT_OPS, "a");
-        itemStackReference = Reflex.getFieldValue(CLS_REFERENCES, "t");
+        nbtOps = Reflex.getFieldValue(CLS_NBT_OPS, "INSTANCE", "a");
+        itemStackReference = Reflex.getFieldValue(CLS_REFERENCES, "ITEM_STACK", Version.isAtLeast(Version.MC_1_21_6) ? "u" : "t");
 
         // Load version specific item parsers.
         if (Version.isAtLeast(Version.MC_1_20_6)) {
@@ -124,18 +132,34 @@ public class ItemNbt {
                 return;
             }
 
-            Class<?> clsHolderLookupProvider = Reflex.getNMSClass("net.minecraft.core", "HolderLookup$a"); // HolderLookup.Provider
+            Class<?> clsHolderLookupProvider = Reflex.getNMSClass("net.minecraft.core", "HolderLookup$Provider", "HolderLookup$a");
             if (clsHolderLookupProvider == null) {
                 core.error("[Item NBT] Could not find MinecraftServer or HolderLookup#Provider.");
                 return;
             }
 
-            mItemStackParse = Reflex.getMethod(CLS_MINECRAFT_ITEM_STACK, "a", clsHolderLookupProvider, CLS_TAG);
-            mItemStackSave = Reflex.getMethod(CLS_MINECRAFT_ITEM_STACK, "a", clsHolderLookupProvider);
+            if (Version.isAtLeast(Version.MC_1_21_6)) {
+                useCodec = true;
 
-            if (mItemStackParse == null || mItemStackSave == null) {
-                core.error("[Item NBT] Could not find ItemStack#parse or ItemStack#save methods.");
-                return;
+                if (CLS_HOLDER_LOOKUP_PROVIDER == null) {
+                    core.error("Class not found: HoolderLookup.Provider");
+                    return;
+                }
+
+                itemStackCodec = (Codec<?>) Reflex.getFieldValue(CLS_MINECRAFT_ITEM_STACK, "CODEC", "b");
+                mCreateSerializationContext = Reflex.getMethod(CLS_HOLDER_LOOKUP_PROVIDER, "createSerializationContext", "a", DynamicOps.class);
+
+                mEncodeStart = Reflex.getMethod(Encoder.class, "encodeStart", DynamicOps.class, Object.class);
+                mParse = Reflex.getMethod(Decoder.class, "parse", DynamicOps.class, Object.class);
+            }
+            else {
+                mItemStackParse = Reflex.getMethod(CLS_MINECRAFT_ITEM_STACK, "parse", "a", clsHolderLookupProvider, CLS_TAG);
+                mItemStackSave = Reflex.getMethod(CLS_MINECRAFT_ITEM_STACK, "save", "a", clsHolderLookupProvider);
+
+                if (mItemStackParse == null || mItemStackSave == null) {
+                    core.error("[Item NBT] Could not find ItemStack#parse or ItemStack#save methods.");
+                    return;
+                }
             }
         }
         else {
@@ -152,9 +176,10 @@ public class ItemNbt {
         loaded = true;
 
         if (!test()) {
-            core.error("[Item NBT] Compression test failed.");
+            core.error("[Item NBT] Test failed.");
             loaded = false;
         }
+        else core.info("[Item NBT] Test successful.");
     }
 
     public static boolean test() {
@@ -227,12 +252,6 @@ public class ItemNbt {
     @Nullable
     @Deprecated
     public static ItemStack fromTagString(@NotNull String tagString) {
-//        if (tagString.isBlank() || tagString.equalsIgnoreCase("{}")) return null;
-//
-//        Object compoundTag = Reflex.invokeMethod(mTagParserParseTag, null, tagString);
-//        if (compoundTag != null) System.out.println("fromCompoundTag(compoundTag) = " + fromCompoundTag(compoundTag));
-//        return compoundTag == null ? null : fromCompoundTag(compoundTag);
-
         return fromTag(new ItemTag(tagString, CoreConfig.DATA_FIXER_MISSING_VERSION.get()));
     }
 
@@ -284,6 +303,15 @@ public class ItemNbt {
         if (bukkitStack.getType().isAir() || bukkitStack.getAmount() <= 0) return null;
 
         Object nmsStack = Reflex.invokeMethod(mCraftItemStackAsNmsCopy, null, bukkitStack);
+
+        if (useCodec) {
+            Object context = createSerializationContext();
+            DataResult.Success<?> result = (DataResult.Success<?>) Reflex.invokeMethod(mEncodeStart, itemStackCodec, context, nmsStack);
+            if (result == null) return null;
+
+            return result.getOrThrow();
+        }
+
         if (useRegistry) {
             return Reflex.invokeMethod(mItemStackSave, nmsStack, registryAccess);
         }
@@ -300,7 +328,14 @@ public class ItemNbt {
         Object itemStack;
         Object compoundTag = ItemNbt.applyDataFixer(tag, sourceVersion);
 
-        if (useRegistry) {
+        if (useCodec) {
+            Object context = createSerializationContext();
+            DataResult<?> decoded = (DataResult<?>) Reflex.invokeMethod(mParse, itemStackCodec, context, compoundTag);
+            if (decoded == null) return null;
+
+            itemStack = decoded.resultOrPartial(itemId -> Engine.core().error("Could not decode ItemStack from tag: " + itemId)).orElse(null);
+        }
+        else if (useRegistry) {
             Optional<?> optional = (Optional<?>) Reflex.invokeMethod(mItemStackParse, null, registryAccess, compoundTag);
             itemStack = Objects.requireNonNull(optional).orElse(null);
         }
@@ -317,7 +352,24 @@ public class ItemNbt {
         if (targetVersion <= 0) return compoundTag;
         if (sourceVersion > targetVersion || sourceVersion <= 0) return compoundTag;
 
+        // Probably not necessary, but they used it for a reason probably.
+//        if (Version.isPaper()) {
+//            Class<?> mcDataTypeClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCDataType");
+//            Class<?> mcDataConvertedClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft", "MCDataConverter");
+//            Class<?> mcTypeRegistryClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCTypeRegistry");
+//
+//            Object itemStackRegistry = Reflex.getFieldValue(mcTypeRegistryClass, "ITEM_STACK");
+//
+//            Method convert = Reflex.getMethod(mcDataConvertedClass, "convertTag", mcDataTypeClass, CLS_COMPOUND_TAG, Integer.TYPE, Integer.TYPE);
+//
+//            return Reflex.invokeMethod(convert, null, itemStackRegistry, compoundTag, sourceVersion, targetVersion);
+//        }
+
         Dynamic<?> dynamic = new Dynamic<>((DynamicOps) nbtOps, compoundTag);
         return dataFixer.update((DSL.TypeReference) itemStackReference, dynamic, sourceVersion, targetVersion).getValue();
+    }
+
+    private static Object createSerializationContext() {
+        return Reflex.invokeMethod(mCreateSerializationContext, registryAccess, nbtOps);
     }
 }

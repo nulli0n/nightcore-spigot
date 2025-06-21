@@ -45,8 +45,11 @@ public class LangEnum<E extends Enum<E>> implements LangElement {
     }
 
     public void load(@NotNull NightCorePlugin plugin) {
-        FileConfig config = plugin.getLang();
+        this.load(plugin.getLang());
+    }
 
+    @Override
+    public void load(@NotNull FileConfig config) {
         Stream.of(this.clazz.getEnumConstants()).forEach(con -> {
             String def = this.defaultsMap.getOrDefault(con, StringUtil.capitalizeUnderscored(con.name()));
             String text = ConfigValue.create(this.path + "." + con.name(), def).read(config);

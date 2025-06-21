@@ -9,4 +9,6 @@ public interface LangElement {
     void write(@NotNull FileConfig config);
 
     void load(@NotNull NightCorePlugin plugin);
+
+    void load(@NotNull FileConfig config);
 }
