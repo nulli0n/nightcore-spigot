@@ -11,7 +11,7 @@ import java.util.function.UnaryOperator;
 
 public class PlaceholderList<T> {
 
-    private final List<PlaceholderEntry<T>> entries;
+    private final Map<String, PlaceholderEntry<T>> entries;
 
     public PlaceholderList() {
         this(new ArrayList<>());
@@ -22,7 +22,12 @@ public class PlaceholderList<T> {
     }
 
     public PlaceholderList(@NotNull List<PlaceholderEntry<T>> entries) {
-        this.entries = new ArrayList<>(entries);
+        //this.entries = new ArrayList<>(entries);
+        this(fromList(entries));
+    }
+
+    public PlaceholderList(@NotNull Map<String, PlaceholderEntry<T>> entries) {
+        this.entries = new LinkedHashMap<>(entries);
     }
 
     @NotNull
@@ -33,8 +38,17 @@ public class PlaceholderList<T> {
     }
 
     @NotNull
+    private static <T> Map<String, PlaceholderEntry<T>> fromList(@NotNull List<PlaceholderEntry<T>> entries) {
+        Map<String, PlaceholderEntry<T>> map = new HashMap<>();
+
+        entries.forEach(entry -> map.put(entry.getKey().toLowerCase(), entry));
+
+        return map;
+    }
+
+    @NotNull
     public List<PlaceholderEntry<T>> getEntries() {
-        return this.entries;
+        return new ArrayList<>(this.entries.values());
     }
 
     @NotNull
@@ -60,8 +74,12 @@ public class PlaceholderList<T> {
 
     @NotNull
     public PlaceholderList<T> add(@NotNull String key, @NotNull Function<T, String> replacer) {
-        this.entries.add(new PlaceholderEntry<>(key, replacer));
+        this.entries.put(key.toLowerCase(), new PlaceholderEntry<>(key, replacer));
         return this;
+    }
+
+    public boolean remove(@NotNull String key) {
+        return this.entries.remove(key.toLowerCase()) != null;
     }
 
     public void clear() {
@@ -70,7 +88,7 @@ public class PlaceholderList<T> {
 
     @NotNull
     public UnaryOperator<String> replacer(@NotNull T source) {
-        return str -> StringUtil.replaceEach(str, this.entries, source);
+        return str -> StringUtil.replaceEach(str, this.getEntries(), source);
     }
 
     @NotNull
