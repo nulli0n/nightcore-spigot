@@ -202,11 +202,11 @@ public class CoreLang {
     );
 
     public static final LangString EDITOR_BUTTON_CURRENT_INFO = LangString.of("Editor.Button.Current.Info",
-        LIGHT_YELLOW.wrap("● " + LIGHT_GRAY.wrap(GENERIC_NAME + ": ") + GENERIC_VALUE)
+        LIGHT_YELLOW.wrap("➥ " + GRAY.wrap(GENERIC_NAME + ": ") + GENERIC_VALUE)
     );
 
     public static final LangString EDITOR_BUTTON_CLICK_KEY = LangString.of("Editor.Button.ClickKey",
-        LIGHT_YELLOW.wrap("[▶]") + " " + LIGHT_GRAY.wrap(GENERIC_NAME + " to " + LIGHT_YELLOW.wrap(GENERIC_VALUE) + ".")
+        LIGHT_YELLOW.wrap("→ " + UNDERLINED.wrap(GENERIC_NAME + " to " + GENERIC_VALUE))
     );
 
 
