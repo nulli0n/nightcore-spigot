@@ -31,6 +31,8 @@ public class Players {
     public static final String TEXTURES_HOST         = "http://textures.minecraft.net/texture/";
     public static final String PLAYER_COMMAND_PREFIX = "player:";
 
+    private static final NightCore plugin = NightCore.getPlugin(NightCore.class);
+
     @NotNull
     public static Set<Player> getOnline() {
         return new HashSet<>(Bukkit.getServer().getOnlinePlayers());
@@ -375,13 +377,15 @@ public class Players {
     public static void addItem(@NotNull Player player, @NotNull ItemStack itemStack, int amount) {
         if (amount <= 0 || itemStack.getType().isAir()) return;
 
-        World world = player.getWorld();
         ItemStack split = new ItemStack(itemStack);
 
         int realAmount = Math.min(split.getMaxStackSize(), amount);
         split.setAmount(realAmount);
-        player.getInventory().addItem(split).values().forEach(left -> {
-            world.dropItem(player.getLocation(), left);
+
+        final ItemStack copy = split.clone();
+        plugin.getFoliaScheduler().execute(player, () -> {
+            World world = player.getWorld();
+            player.getInventory().addItem(copy).values().forEach(left -> world.dropItem(player.getLocation(), left));
         });
 
         amount -= realAmount;
