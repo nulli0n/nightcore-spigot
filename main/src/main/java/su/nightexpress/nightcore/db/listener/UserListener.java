@@ -39,7 +39,7 @@ public class UserListener<P extends NightPlugin, U extends AbstractUser> extends
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onUserQuit(PlayerJoinEvent event) {
+    public void onUserJoin(PlayerJoinEvent event) {
         this.manager.handleJoin(event.getPlayer()); // Get loaded and cache permanent.
     }
 
