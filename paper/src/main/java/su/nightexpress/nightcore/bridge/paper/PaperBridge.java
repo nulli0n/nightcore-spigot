@@ -16,6 +16,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
@@ -206,6 +207,20 @@ public class PaperBridge implements Software {
     @NotNull
     public static String getTranslation(@NotNull Translatable translatable) {
         return translatable.translationKey();
+    }
+
+
+
+    @Override
+    public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {
+        entity.customName(fromNightComponent(component));
+    }
+
+    @Override
+    @Nullable
+    public String getEntityName(@NotNull Entity entity) {
+        Component component = entity.customName();
+        return component == null ? null : serializeComponent(component);
     }
 
 

@@ -180,6 +180,11 @@ public class ConfigValue<T> {
     }
 
     @NotNull
+    public static ConfigValue<su.nightexpress.nightcore.bridge.wrap.NightSound> create(@NotNull String path, @NotNull su.nightexpress.nightcore.bridge.wrap.NightSound defaultValue, @Nullable String... description) {
+        return create(path, (config, path2) -> config.readSound(path2), FileConfig::set, defaultValue, description);
+    }
+
+    @NotNull
     public static ConfigValue<UniParticle> create(@NotNull String path, @NotNull UniParticle defaultValue, @Nullable String... description) {
         Loader<UniParticle> reader = UniParticle::read;
         Writer<UniParticle> writer = (cfg, path1, obj) -> obj.write(cfg, path1);

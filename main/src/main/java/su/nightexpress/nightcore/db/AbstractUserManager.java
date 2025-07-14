@@ -87,12 +87,19 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
         user.setName(player.getName());
         user.setLastOnline(System.currentTimeMillis());
 
-        this.plugin.runTaskAsync(task -> this.saveInDatabase(user));
+        // Force save data on quit + disable auto-save and delay synchronization.
+        this.plugin.runTaskAsync(task -> this.saveScheduled(Collections.singletonList(user)));
+        //this.plugin.runTaskAsync(task -> this.saveInDatabase(user));
+
         this.cacheTemporary(user);
     }
 
     public void saveScheduled() {
         Set<U> users = this.getLoaded().stream().filter(AbstractUser::isAutoSaveReady).collect(Collectors.toCollection(HashSet::new));
+        this.saveScheduled(users);
+    }
+
+    private void saveScheduled(@NotNull Collection<U> users) {
         if (users.isEmpty()) return;
 
         this.dataManager.saveUsers(users);

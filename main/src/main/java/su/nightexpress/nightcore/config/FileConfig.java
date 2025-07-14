@@ -21,6 +21,7 @@ import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.bukkit.NightSound;
+import su.nightexpress.nightcore.util.sound.AbstractSound;
 import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.io.File;
@@ -333,12 +334,20 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @NotNull
+    @Deprecated
     public NightSound getSound(@NotNull String path) {
         return NightSound.read(this, path); // Update
-//        if (this.contains(path + ".Name")) {
-//            return NightSound.read(this, path); // Update
-//        }
-//        return NightSound.deserialize(this.getString(path, "null"));
+    }
+
+    @Nullable
+    public su.nightexpress.nightcore.bridge.wrap.NightSound readSound(@NotNull String path) {
+        return AbstractSound.read(this, path);
+    }
+
+    @Nullable
+    public su.nightexpress.nightcore.bridge.wrap.NightSound readSound(@NotNull String path, @NotNull su.nightexpress.nightcore.bridge.wrap.NightSound def) {
+        su.nightexpress.nightcore.bridge.wrap.NightSound sound = this.readSound(path);
+        return sound == null ? def : sound;
     }
 
     @Deprecated

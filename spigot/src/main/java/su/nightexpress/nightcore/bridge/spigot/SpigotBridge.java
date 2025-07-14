@@ -8,6 +8,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
@@ -216,6 +217,20 @@ public class SpigotBridge implements Software {
     @NotNull
     public static String getTranslation(@NotNull Translatable translatable) {
         return translatable.getTranslationKey();
+    }
+
+
+
+    @Override
+    public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {
+        entity.setCustomName(component.toLegacy());
+    }
+
+    @Override
+    @Nullable
+    public String getEntityName(@NotNull Entity entity) {
+        String name = entity.getCustomName();
+        return name == null ? null : LegacyColors.plainColors(name);
     }
 
 

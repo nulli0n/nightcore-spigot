@@ -1,11 +1,13 @@
 package su.nightexpress.nightcore.util.text;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.TagPool;
 import su.nightexpress.nightcore.util.text.tag.Tags;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NightMessage {
@@ -45,6 +47,22 @@ public class NightMessage {
     @NotNull
     public static NightComponent parse(@NotNull String string, @NotNull TagPool tagPool) {
         return from(string, tagPool).parseIfAbsent();
+    }
+
+    @NotNull
+    public static List<String> splitLineTag(@NotNull String string) {
+        return splitLineTag(Lists.newList(string));
+    }
+
+    @NotNull
+    public static List<String> splitLineTag(@NotNull List<String> list) {
+        List<String> segmented = new ArrayList<>();
+
+        list.forEach(line -> {
+            Collections.addAll(segmented, Tags.LINE_BREAK.split(line));
+        });
+
+        return segmented;
     }
 
 
