@@ -6,6 +6,6 @@ author: NightExpress
 api-version: 1.20
 load: STARTUP
 libraries:
-  - org.xerial:sqlite-jdbc:3.50.2.0
+  - org.xerial:sqlite-jdbc:3.49.1.0
   - com.zaxxer:HikariCP:6.3.0
   - it.unimi.dsi:fastutil-core:8.5.16
