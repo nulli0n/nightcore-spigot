@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
+import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +27,21 @@ public class EntityUtil {
     public static int nextEntityId() {
         return Engine.software().nextEntityId();
     }
+
+
+    public static void setCustomName(@NotNull Entity entity, @NotNull String name) {
+        Engine.software().setCustomName(entity, NightMessage.parse(name));
+    }
+
+    @NotNull
+    public static String getNameSerialized(@NotNull Entity entity) {
+        String customName = Engine.software().getEntityName(entity);
+        if (customName != null) return customName;
+
+        return LangUtil.getSerializedName(entity.getType());
+    }
+
+
 
     public static double getAttribute(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
         AttributeInstance instance = entity.getAttribute(attribute);

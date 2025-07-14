@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.StringUtil;
 
+@Deprecated
 public class NightSound implements Writeable {
 
     private static final String DELIMITER = ";";

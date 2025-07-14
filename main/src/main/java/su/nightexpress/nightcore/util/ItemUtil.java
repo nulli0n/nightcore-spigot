@@ -173,7 +173,8 @@ public class ItemUtil {
     }
 
     public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {
-        Engine.software().setLore(meta, Lists.modify(lore, NightMessage::parse));
+        // It seems that direct '\n' usage is not supported for item meta anymore since ~1.21.7.
+        Engine.software().setLore(meta, Lists.modify(NightMessage.splitLineTag(lore), NightMessage::parse));
     }
 
 

@@ -72,8 +72,8 @@ public interface RegistryType<T extends Keyed> {
     class Paper {
 
         public static final RegistryType<DataComponentType> DATA_COMPONENT_TYPE = type(isSpigot -> forPaper(RegistryKey.DATA_COMPONENT_TYPE));
-        public static final RegistryType<Wolf.SoundVariant> WOLF_SOUND_VARIANT  = type(isSpigot -> forPaper(RegistryKey.WOLF_SOUND_VARIANT));
         public static final RegistryType<MemoryKey<?>>      MEMORY_MODULE_TYPE  = type(isSpigot -> forPaper(RegistryKey.MEMORY_MODULE_TYPE));
+        public static final RegistryType<Wolf.SoundVariant> WOLF_SOUND_VARIANT  = type(isSpigot -> forPaper(RegistryKey.WOLF_SOUND_VARIANT));
     }
 
     @NotNull Registry<@NotNull T> getRegistry();

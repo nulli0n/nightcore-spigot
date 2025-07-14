@@ -6,6 +6,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
@@ -76,6 +77,11 @@ public interface Software {
     @NotNull String getTranslationKey(@NotNull EntityType entityType);
 
     @NotNull String getTranslationKey(@NotNull PotionEffectType effectType);
+
+
+    void setCustomName(@NotNull Entity entity, @NotNull NightComponent component);
+
+    @Nullable String getEntityName(@NotNull Entity entity);
 
 
     @NotNull ItemStack setType(@NotNull ItemStack itemStack, @NotNull Material material);
