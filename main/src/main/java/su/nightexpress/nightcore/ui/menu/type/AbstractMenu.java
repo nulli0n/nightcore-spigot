@@ -189,7 +189,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
                 if (item.getPlayerProfile() != null) {
                     item.getPlayerProfile().update().thenAccept(updated -> {
                         MenuItem overlap = this.getItem(viewer, slot);
-                        if (overlap != null && overlap.getPriority() >= menuItem.getPriority()) return;
+                        if (overlap != null && overlap != menuItem && overlap.getPriority() >= menuItem.getPriority()) return;
 
                         ItemUtil.editMeta(itemStack, SkullMeta.class, updated::apply);
                         inventory.setItem(slot, itemStack);
