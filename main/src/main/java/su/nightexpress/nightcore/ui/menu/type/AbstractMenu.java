@@ -99,7 +99,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
 
     @Override
     public void runNextTick(@NotNull Runnable runnable) {
-        this.plugin.runTask(task -> runnable.run());
+        this.plugin.runTask(runnable);
     }
 
     public void flush() {
@@ -138,69 +138,72 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
             return false;
         }
 
-        MenuViewer viewer = this.getViewerOrCreate(player);
-        viewer.removeItems();
-        onViewSet.accept(viewer);
+        plugin.getFoliaScheduler().execute(player.getLocation(), () -> {
+            MenuViewer viewer = this.getViewerOrCreate(player);
+            viewer.removeItems();
+            onViewSet.accept(viewer);
 
-        InventoryView view = viewer.getView();
-        if (view == null || viewer.isRebuildMenu()) {
-            // Save cache so its not wiped by .openInventory call due to internal InventoryCloseEvent.
-            if (view != null && this instanceof Linked<?> linked) {
-                linked.getCache().addAnchor(player);
-            }
-
-            String title = this.getTitle(viewer);
-            if (this.isApplyPlaceholderAPI()) {
-                title = Placeholders.forPlayerWithPAPI(player).apply(title);
-            }
-            view = Engine.software().createView(this.menuType, NightMessage.parse(title), player);
-            viewer.assignInventory(view);
-            player.openInventory(view);
-        }
-        else {
-            view.getTopInventory().clear();
-        }
-
-        this.onPrepare(viewer, view);
-
-        Inventory inventory = view.getTopInventory();
-
-        this.getItems(viewer).forEach(menuItem -> {
-            NightItem item = menuItem.getItem().copy();
-            ItemHandler handler = menuItem.getHandler();
-
-            if (this.isApplyPlaceholderAPI()) {
-                item.replacement(replacer -> replacer.replacePlaceholderAPI(player));
-            }
-
-            if (handler != null && handler.getOptions() != null) {
-                handler.getOptions().modifyDisplay(viewer, item);
-            }
-
-            this.onItemPrepare(viewer, menuItem, item);
-
-            ItemStack itemStack = item.getItemStack();
-
-            for (int slot : menuItem.getSlots()) {
-                if (slot < 0 || slot >= inventory.getSize()) continue;
-                inventory.setItem(slot, itemStack);
-
-                // Do not yet use new NightItem#getItemStackUpdated method here, until we ensure there are no inventory content relies in #onReady.
-                if (item.getPlayerProfile() != null) {
-                    item.getPlayerProfile().update().thenAccept(updated -> {
-                        MenuItem overlap = this.getItem(viewer, slot);
-                        if (overlap != null && overlap != menuItem && overlap.getPriority() >= menuItem.getPriority()) return;
-
-                        ItemUtil.editMeta(itemStack, SkullMeta.class, updated::apply);
-                        inventory.setItem(slot, itemStack);
-                    });
+            InventoryView view = viewer.getView();
+            if (view == null || viewer.isRebuildMenu()) {
+                // Save cache so its not wiped by .openInventory call due to internal InventoryCloseEvent.
+                if (view != null && this instanceof Linked<?> linked) {
+                    linked.getCache().addAnchor(player);
                 }
+
+                String title = this.getTitle(viewer);
+                if (this.isApplyPlaceholderAPI()) {
+                    title = Placeholders.forPlayerWithPAPI(player).apply(title);
+                }
+                view = Engine.software().createView(this.menuType, NightMessage.parse(title), player);
+                viewer.assignInventory(view);
+                player.openInventory(view);
+            } else {
+                view.getTopInventory().clear();
             }
+
+            this.onPrepare(viewer, view);
+
+            Inventory inventory = view.getTopInventory();
+
+            this.getItems(viewer).forEach(menuItem -> {
+                NightItem item = menuItem.getItem().copy();
+                ItemHandler handler = menuItem.getHandler();
+
+                if (this.isApplyPlaceholderAPI()) {
+                    item.replacement(replacer -> replacer.replacePlaceholderAPI(player));
+                }
+
+                if (handler != null && handler.getOptions() != null) {
+                    handler.getOptions().modifyDisplay(viewer, item);
+                }
+
+                this.onItemPrepare(viewer, menuItem, item);
+
+                ItemStack itemStack = item.getItemStack();
+
+                for (int slot : menuItem.getSlots()) {
+                    if (slot < 0 || slot >= inventory.getSize()) continue;
+                    inventory.setItem(slot, itemStack);
+
+                    // Do not yet use new NightItem#getItemStackUpdated method here, until we ensure there are no inventory content relies in #onReady.
+                    if (item.getPlayerProfile() != null) {
+                        item.getPlayerProfile().update().thenAccept(updated -> {
+                        MenuItem overlap = this.getItem(viewer, slot);
+                        if (overlap != null && overlap != menuItem && overlap.getPriority() >= menuItem.getPriority()) {
+                            return;
+                        }
+
+                            ItemUtil.editMeta(itemStack, SkullMeta.class, updated::apply);
+                            inventory.setItem(slot, itemStack);
+                        });
+                    }
+                }
+            });
+
+            this.onReady(viewer, inventory);
+
+            MenuRegistry.assign(viewer);
         });
-
-        this.onReady(viewer, inventory);
-
-        MenuRegistry.assign(viewer);
         return true;
     }
 

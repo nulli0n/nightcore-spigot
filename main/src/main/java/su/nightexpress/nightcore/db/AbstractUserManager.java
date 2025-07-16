@@ -88,9 +88,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
         user.setLastOnline(System.currentTimeMillis());
 
         // Force save data on quit + disable auto-save and delay synchronization.
-        this.plugin.runTaskAsync(task -> this.saveScheduled(Collections.singletonList(user)));
-        //this.plugin.runTaskAsync(task -> this.saveInDatabase(user));
-
+        this.plugin.runTaskAsync(() -> this.saveScheduled(Collections.singletonList(user)));
         this.cacheTemporary(user);
     }
 
@@ -283,7 +281,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
     }
 
     private void manageUserSynchronized(@NotNull Supplier<U> loadedSupplier, @NotNull Supplier<CompletableFuture<U>> fetchSupplier, @NotNull Consumer<U> consumer) {
-        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(task -> consumer.accept(user)));
+        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(() -> consumer.accept(user)));
     }
 
     public void manageUser(@NotNull Player player, Consumer<U> consumer) {

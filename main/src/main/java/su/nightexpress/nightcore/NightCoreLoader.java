@@ -22,8 +22,8 @@ public class NightCoreLoader implements PluginLoader {
         }
 
         resolver.addDependency(new Dependency(new DefaultArtifact("org.xerial:sqlite-jdbc:3.49.1.0"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:6.0.0"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("it.unimi.dsi:fastutil-core:8.5.13"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:6.3.0"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("it.unimi.dsi:fastutil-core:8.5.16"), null));
 
         classpathBuilder.addLibrary(resolver);
     }
