@@ -2,6 +2,8 @@ package su.nightexpress.nightcore;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.paper.PaperBridge;
+import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
 import su.nightexpress.nightcore.integration.permission.impl.LuckPermissionProvider;
@@ -11,8 +13,6 @@ import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.Software;
-import su.nightexpress.nightcore.bridge.paper.PaperBridge;
-import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 import su.nightexpress.nightcore.util.bukkit.NightTask;
 
 import java.util.HashSet;
@@ -23,7 +23,6 @@ public class Engine {
     private static final Set<NightPlugin> CHILDRENS = new HashSet<>();
 
     private static NightCore          core;
-    private static Software           software;
     private static PermissionProvider permissions;
 
     @NotNull
@@ -40,9 +39,7 @@ public class Engine {
 
     @NotNull
     public static Software software() {
-        if (software == null) throw new IllegalStateException("Software is not initialized!");
-
-        return software;
+        return Software.INSTANCE.get();
     }
 
     @Nullable
@@ -70,9 +67,8 @@ public class Engine {
         Version version = Version.detect();
         if (version.isDropped()) return;
 
-        software = Version.isPaper() ? new PaperBridge() : new SpigotBridge();
-        software.initialize();
-        core.info("Server version detected as " + version.getLocalized() + ". Using " + software.getName() + ".");
+        Software.INSTANCE.load(Version.isPaper() ? new PaperBridge() : new SpigotBridge());
+        core.info("Server version detected as " + version.getLocalized() + ". Using " + software().getName() + ".");
 
         ItemNbt.load(core);
         loadPermissionsProvider();
