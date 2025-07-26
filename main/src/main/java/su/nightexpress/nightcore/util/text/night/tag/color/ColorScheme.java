@@ -120,7 +120,29 @@ public class ColorScheme implements Writeable {
             new ColorCode(TagShortNames.DARK_PURPLE, new Color(75, 50, 150)),
 
             new ColorCode(TagShortNames.PINK, new Color(230, 50, 120)),
-            new ColorCode(TagShortNames.SOFT_PINK, new Color(230, 90, 150))
+            new ColorCode(TagShortNames.SOFT_PINK, new Color(230, 90, 150)),
+
+            new ColorCode("cyan", ParserUtils.colorFromHexString("#31eace")),
+            new ColorCode("dgray", ParserUtils.colorFromHexString("#6c6c62")),
+            new ColorCode("dark_gray", ParserUtils.colorFromHexString("#6c6c62")),
+            new ColorCode("lgray", ParserUtils.colorFromHexString("#d4d9d8")),
+            new ColorCode("light_gray", ParserUtils.colorFromHexString("#d4d9d8")),
+            new ColorCode("lgreen", ParserUtils.colorFromHexString("#91f251")),
+            new ColorCode("light_green", ParserUtils.colorFromHexString("#91f251")),
+            new ColorCode("lyellow", ParserUtils.colorFromHexString("#ffeea2")),
+            new ColorCode("light_yellow", ParserUtils.colorFromHexString("#ffeea2")),
+            new ColorCode("lorange", ParserUtils.colorFromHexString("#fdba5e")),
+            new ColorCode("light_orange", ParserUtils.colorFromHexString("#fdba5e")),
+            new ColorCode("lred", ParserUtils.colorFromHexString("#fd5e5e")),
+            new ColorCode("light_red", ParserUtils.colorFromHexString("#fd5e5e")),
+            new ColorCode("lblue", ParserUtils.colorFromHexString("#5e9dfd")),
+            new ColorCode("light_blue", ParserUtils.colorFromHexString("#5e9dfd")),
+            new ColorCode("lcyan", ParserUtils.colorFromHexString("#5edefd")),
+            new ColorCode("light_cyan", ParserUtils.colorFromHexString("#5edefd")),
+            new ColorCode("lpurple", ParserUtils.colorFromHexString("#e39fff")),
+            new ColorCode("light_purple", ParserUtils.colorFromHexString("#e39fff")),
+            new ColorCode("lpink", ParserUtils.colorFromHexString("#fd8ddb")),
+            new ColorCode("light_pink", ParserUtils.colorFromHexString("#fd8ddb"))
         ));
 
         return Lists.newList(vanilla, custom);
