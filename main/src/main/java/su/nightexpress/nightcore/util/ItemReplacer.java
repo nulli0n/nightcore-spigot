@@ -10,7 +10,7 @@ import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderList;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -340,7 +340,9 @@ public class ItemReplacer {
 
         List<String> fixed = addEmptyLines(lore);
 
-        return NightMessage.asLegacy(fixed);
+        return Lists.modify(fixed, NightMessage::asLegacy);
+
+        //return su.nightexpress.nightcore.util.text.NightMessage.asLegacy(fixed);
     }
 
     @NotNull

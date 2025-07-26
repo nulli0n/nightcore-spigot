@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public class Tag {
 
     @Deprecated public static final char OPEN_BRACKET  = '<';

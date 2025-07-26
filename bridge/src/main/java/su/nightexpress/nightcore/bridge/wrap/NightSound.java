@@ -12,6 +12,8 @@ public interface NightSound {
 
     void play(@NotNull Location location);
 
+    @NotNull String serialize();
+
     @NotNull String getName();
 
     float getVolume();

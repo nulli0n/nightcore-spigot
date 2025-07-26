@@ -2,11 +2,12 @@ package su.nightexpress.nightcore.util.text.tag.decorator;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.ItemNbt;
-import su.nightexpress.nightcore.util.bridge.wrapper.HoverEventType;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
+@Deprecated
 public class ShowItemDecorator implements Decorator {
 
     private final String itemData;
@@ -47,11 +48,16 @@ public class ShowItemDecorator implements Decorator {
 //    }
 
     @Override
-    public void decorate(@NotNull NightComponent component) {
+    @NotNull
+    public NightComponent decorate(@NotNull NightComponent component) {
         ItemStack itemStack = ItemNbt.getHoverEventItem(this.itemData);
-        if (itemStack == null) return;
+        if (itemStack == null) return component;
 
-        component.setHoverEvent(itemStack);
+        //System.out.println("itemStack = " + itemStack);
+
+        return component.hoverEvent(NightHoverEvent.showItem(itemStack));
+        //component.setHoverEvent(itemStack);
+
         //component.setHoverEvent(HoverEventType.SHOW_ITEM, this.itemData);
         //component.setHoverEvent(this.createEvent());
     }

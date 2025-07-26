@@ -1,6 +1,8 @@
 package su.nightexpress.nightcore.util.text.tag.decorator;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.text.NightAbstractComponent;
+import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
@@ -8,6 +10,7 @@ import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.util.List;
 
+@Deprecated
 public class ShowTextDecorator implements Decorator {
 
     private final List<String> text;
@@ -37,8 +40,15 @@ public class ShowTextDecorator implements Decorator {
 //    }
 
     @Override
-    public void decorate(@NotNull NightComponent component) {
-        component.setHoverEvent(NightMessage.parse(String.join(Placeholders.TAG_LINE_BREAK, this.text)));
+    @NotNull
+    public NightComponent decorate(@NotNull NightComponent component) {
+        String oneLined = String.join(Placeholders.TAG_LINE_BREAK, this.text);
+        NightComponent nightComponent = NightMessage.parse(oneLined);
+
+        return component.hoverEvent(NightHoverEvent.showText((NightAbstractComponent) nightComponent));
+
+        //component.setHoverEvent(NightMessage.parse(String.join(Placeholders.TAG_LINE_BREAK, this.text)));
+
         //component.setHoverEvent(HoverEventType.SHOW_TEXT, String.join(Placeholders.TAG_LINE_BREAK, this.text));
         //component.setHoverEvent(this.createEvent());
     }

@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public class LegacyColors {
 
     private static final char   COLOR_CHAR     = '§';
-    private static final char   ALT_COLOR_CHAR = '&';
+    public static final char   ALT_COLOR_CHAR = '&';
     private static final String ALL_CODES      = "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx";
 
     @NotNull

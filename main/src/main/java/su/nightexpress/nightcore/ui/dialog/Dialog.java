@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class Dialog {
 
     private static final int DEFAULT_TIMEOUT = 30;

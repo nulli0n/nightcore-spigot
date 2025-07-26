@@ -6,15 +6,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.ItemUtil;
-import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
-import su.nightexpress.nightcore.util.text.tag.Tags;
+import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -69,6 +67,7 @@ public class Replacer {
     }
 
     @NotNull
+    @Deprecated
     public TextRoot apply(@NotNull TextRoot source) {
         TextRoot root = source.copy();
         this.getReplacers().forEach(root::replace);
@@ -106,12 +105,14 @@ public class Replacer {
     }
 
     @NotNull
+    @Deprecated
     public ItemStack apply(@NotNull ItemStack itemStack) {
         ItemUtil.editMeta(itemStack, this::apply);
         return itemStack;
     }
 
     @NotNull
+    @Deprecated
     public ItemMeta apply(@NotNull ItemMeta meta) {
         List<String> lore = meta.getLore();
 
@@ -136,7 +137,8 @@ public class Replacer {
                 line = operator.apply(line);
                 if (line.isBlank()) continue;
 
-                replaced.addAll(Arrays.asList(Tags.LINE_BREAK.split(line)));
+                replaced.add(line);
+                //replaced.addAll(Arrays.asList(Tags.LINE_BREAK.split(line)));
             }
             else replaced.add(line);
         }
@@ -160,7 +162,7 @@ public class Replacer {
 
     @NotNull
     public Replacer replace(@NotNull String key, @NotNull List<String> replacer) {
-        return this.replacePlaceholder(key, () -> String.join(Placeholders.TAG_LINE_BREAK, replacer));
+        return this.replacePlaceholder(key, () -> String.join(TagWrappers.BR, replacer));
     }
 
     @NotNull

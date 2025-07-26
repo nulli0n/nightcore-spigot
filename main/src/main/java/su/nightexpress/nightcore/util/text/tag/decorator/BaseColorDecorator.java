@@ -5,6 +5,7 @@ import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.awt.*;
 
+@Deprecated
 public class BaseColorDecorator implements ColorDecorator {
 
     private final Color color;
@@ -14,8 +15,8 @@ public class BaseColorDecorator implements ColorDecorator {
     }
 
     @Override
-    public void decorate(@NotNull NightComponent component) {
-        component.setColor(this.color);
-        //component.setColor(ChatColor.of(this.color));
+    @NotNull
+    public NightComponent decorate(@NotNull NightComponent component) {
+        return component.color(this.color);
     }
 }

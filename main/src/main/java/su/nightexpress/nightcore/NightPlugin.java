@@ -39,6 +39,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         }
 
         long loadTook = System.currentTimeMillis();
+        this.onStartup();
         this.loadManagers();
         this.info("Plugin loaded in " + (System.currentTimeMillis() - loadTook) + " ms!");
     }
@@ -46,6 +47,15 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     @Override
     public void onDisable() {
         this.unloadManagers();
+        this.onShutdown();
+    }
+
+    protected void onStartup() {
+
+    }
+
+    protected void onShutdown() {
+
     }
 
     public void reload() {

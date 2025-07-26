@@ -11,7 +11,7 @@ import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.language.message.LangMessage;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Placeholders;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.List;
 import java.util.function.Function;
@@ -68,7 +68,7 @@ public class CommandArgument<T> {
 
     @NotNull
     public List<String> getSamples(@NotNull TabContext context) {
-        return this.samples == null ? Lists.newList(NightMessage.stripAll(this.getLocalized())) : this.samples.apply(context);
+        return this.samples == null ? Lists.newList(NightMessage.stripTags(this.getLocalized())) : this.samples.apply(context);
     }
 
     @NotNull

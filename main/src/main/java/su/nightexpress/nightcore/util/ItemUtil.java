@@ -17,7 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
 
 import java.net.URI;
 import java.net.URL;
@@ -128,6 +130,10 @@ public class ItemUtil {
         Engine.software().setCustomName(meta, NightMessage.parse(name));
     }
 
+    public static void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name) {
+        Engine.software().setCustomName(meta, name);
+    }
+
 
 
     @Nullable
@@ -174,7 +180,11 @@ public class ItemUtil {
 
     public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {
         // It seems that direct '\n' usage is not supported for item meta anymore since ~1.21.7.
-        Engine.software().setLore(meta, Lists.modify(NightMessage.splitLineTag(lore), NightMessage::parse));
+        setItemLore(meta, Lists.modify(ParserUtils.breakDownLineSplitters(lore), NightMessage::parse));
+    }
+
+    public static void setItemLore(@NotNull ItemMeta meta, @NotNull List<NightComponent> lore) {
+        Engine.software().setLore(meta, lore);
     }
 
 

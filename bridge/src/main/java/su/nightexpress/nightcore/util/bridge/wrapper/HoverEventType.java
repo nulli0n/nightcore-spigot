@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore.util.bridge.wrapper;
 
+@Deprecated
 public enum HoverEventType {
 
     SHOW_TEXT,

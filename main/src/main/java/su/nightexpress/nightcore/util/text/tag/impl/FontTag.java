@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.decorator.FontDecorator;
 
+@Deprecated
 public class FontTag extends Tag implements ContentTag {
 
     public FontTag() {

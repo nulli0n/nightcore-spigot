@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore.util.bridge.wrapper;
 
+@Deprecated
 public enum ClickEventType {
 
     OPEN_URL,

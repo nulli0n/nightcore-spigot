@@ -34,13 +34,14 @@ public abstract class AbstractSound implements NightSound, Writeable {
         String[] split = from.split(DELIMITER);
 
         String name = split[0];
-        float volume = split.length >= 2 ? (float) NumberUtil.getDoubleAbs(split[1], MAX_VOLUME) : MAX_VOLUME;
-        float pitch = split.length >= 3 ? (float) NumberUtil.getDoubleAbs(split[2], 1f) : 1f;
+        float volume = split.length >= 2 ? (float) NumberUtil.getDoubleAbs(split[1], MAX_VOLUME) : DEFAULT_VOLUME;
+        float pitch = split.length >= 3 ? (float) NumberUtil.getDoubleAbs(split[2], DEFAULT_PITCH) : DEFAULT_PITCH;
 
         Sound bukkit = BukkitThing.getSound(name);
         return bukkit == null ? CustomSound.of(name, volume, pitch) : VanillaSound.of(bukkit, volume, pitch);
     }
 
+    @Override
     @NotNull
     public String serialize() {
         return this.getName() + DELIMITER + this.volume + DELIMITER + this.pitch;
@@ -72,5 +73,10 @@ public abstract class AbstractSound implements NightSound, Writeable {
     @Override
     public float getPitch() {
         return this.pitch;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractSound{" + "name=" + this.getName() + ", volume=" + volume + ", pitch=" + pitch + '}';
     }
 }

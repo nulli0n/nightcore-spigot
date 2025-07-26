@@ -2,12 +2,14 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.SimpleTag;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 
 import java.awt.*;
 
+@Deprecated
 public class ColorTag extends SimpleTag implements ColorDecorator {
 
     private final Color color;
@@ -17,7 +19,7 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
     }
 
     public ColorTag(@NotNull String name, @NotNull String[] aliases, @NotNull String hex) {
-        this(name, aliases, TagUtils.colorFromHexString(hex));
+        this(name, aliases, ParserUtils.colorFromHexString(hex));
     }
 
     @Deprecated
@@ -27,7 +29,7 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
 
     @Deprecated
     public ColorTag(@NotNull Color color, @NotNull String[] aliases) {
-        this(TagUtils.colorToHexString(color).substring(1), aliases, color);
+        this(ParserUtils.colorToHexString(color).substring(1), aliases, color);
     }
 
     public ColorTag(@NotNull String name, @NotNull Color color) {
@@ -46,7 +48,7 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
 
     @NotNull
     public String getHex() {
-        return TagUtils.colorToHexString(this.color);
+        return ParserUtils.colorToHexString(this.color);
     }
 
     @NotNull
@@ -58,8 +60,9 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
     }
 
     @Override
-    public void decorate(@NotNull NightComponent component) {
-        component.setColor(this.color);
+    @NotNull
+    public NightComponent decorate(@NotNull NightComponent component) {
+        return component.color(this.color);
     }
 
     @NotNull

@@ -5,7 +5,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
                           @NotNull String description,
                           @NotNull String usage,
                           @Nullable String permission) {
-        super(name, NightMessage.clean(description), NightMessage.clean(usage), Arrays.asList(aliases));
+        super(name, NightMessage.stripTags(description), NightMessage.stripTags(usage), Arrays.asList(aliases));
         this.plugin = plugin;
         this.executor = executor;
         this.tabCompleter = tabCompleter;
