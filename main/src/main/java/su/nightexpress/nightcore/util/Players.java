@@ -16,9 +16,10 @@ import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
+import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
-import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.net.URI;
 import java.net.URL;
@@ -77,12 +78,17 @@ public class Players {
         return Bukkit.getServer().getPlayer(name);
     }
 
+    @Nullable
+    public static Player getPlayer(@NotNull UUID uuid) {
+        return Bukkit.getServer().getPlayer(uuid);
+    }
+
     public static boolean isBedrock(@NotNull Player player) {
         return Plugins.hasFloodgate() && FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId());
     }
 
     public static boolean isReal(@NotNull Player player) {
-        return Bukkit.getServer().getPlayer(player.getUniqueId()) != null;
+        return getPlayer(player.getUniqueId()) != null;
     }
 
     @NotNull
@@ -234,25 +240,60 @@ public class Players {
         return suffix == null ? fallback : suffix;
     }
 
+    @Deprecated
     public static void sendModernMessage(@NotNull CommandSender sender, @NotNull String message) {
-        NightMessage.create(message).send(sender);
+        //NightMessage.create(message).send(sender);
+        sendMessage(sender, message);
     }
 
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull String message) {
+        sendMessage(sender, NightMessage.parse(message));
+    }
+
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull NightComponent component) {
+        Software.instance().getTextComponentAdapter().send(sender, component);
+    }
+
+    @Deprecated
     public static void sendActionBarText(@NotNull Player player, @NotNull String message) {
-        sendActionBar(player, NightMessage.create(message));
+        sendActionBar(player, message);
     }
 
+    @Deprecated
     public static void sendActionBar(@NotNull Player player, @NotNull TextRoot message) {
-        message.parseIfAbsent().sendActionBar(player);
-        //player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message.parseIfAbsent());
+        //message.parseIfAbsent().sendActionBar(player);
+        sendActionBar(player, message.getString());
     }
 
+    public static void sendActionBar(@NotNull Player player, @NotNull String message) {
+        sendActionBar(player, NightMessage.parse(message));
+    }
+
+    public static void sendActionBar(@NotNull Player player, @NotNull NightComponent component) {
+        Software.instance().getTextComponentAdapter().sendActionBar(player, component);
+    }
+
+    @Deprecated
     public static void sendTitle(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
-        NightComponent titleC = NightMessage.parse(title);
-        NightComponent subtitleC = NightMessage.parse(subtitle);
-
-        Engine.software().sendTitles(player, titleC, subtitleC, fadeIn, stay, fadeOut);
+        sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
+
+    public static void sendTitles(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+        sendTitles(player, NightMessage.parse(title), NightMessage.parse(subtitle), fadeIn, stay, fadeOut);
+    }
+
+    public static void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
+        Engine.software().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
+    }
+
+    // TODO Custom clickable handler + in component builder
+/*    JsonObject object = new JsonObject();
+        object.addProperty("p1", 1);
+        object.addProperty("p2", "asd");
+
+    WrappedPayload.Custom custom = WrappedPayload.custom(new NamespacedKey("ncore", "chatc"), NightNbtHolder.fromJson(object));
+
+        player.sendMessage(Component.text("Test Message").clickEvent(this.textComponentAdapter.adaptClickEvent(new NightClickEvent(NightClickEvent.Action.CUSTOM, custom))));*/
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {
         Bukkit.getGlobalRegionScheduler().execute(NightCore.getPlugin(NightCore.class), () -> {

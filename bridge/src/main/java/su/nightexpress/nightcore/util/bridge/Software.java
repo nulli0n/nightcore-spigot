@@ -9,6 +9,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
@@ -16,8 +17,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
+import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
-import su.nightexpress.nightcore.util.bridge.wrapper.ComponentBuildable;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.util.List;
@@ -28,6 +31,32 @@ import java.util.function.Consumer;
 
 public interface Software {
 
+    Holder INSTANCE = new Holder();
+
+    final class Holder {
+
+        private Software software;
+
+        public void load(@NotNull Software software) {
+            if (this.software != null) throw new IllegalStateException("Software is already initialized!");
+
+            this.software = software;
+            this.software.initialize();
+        }
+
+        @NotNull
+        public Software get() {
+            if (this.software == null) throw new IllegalStateException("Software is not yet initialized!");
+
+            return this.software;
+        }
+    }
+
+    @NotNull
+    static Software instance() {
+        return INSTANCE.get();
+    }
+
     boolean initialize();
 
     @NotNull String getName();
@@ -36,17 +65,15 @@ public interface Software {
 
     int nextEntityId();
 
+    @NotNull Listener createDialogListener(@NotNull DialogClickHandler handler);
+
+    void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog);
+
+    @NotNull TextComponentAdapter<?> getTextComponentAdapter();
+
     @NotNull SimpleCommandMap getCommandMap();
 
     @NotNull Map<String, Command> getKnownCommands(@NotNull SimpleCommandMap commandMap);
-
-    @NotNull NightComponent textComponent(@NotNull String text);
-
-    @NotNull NightComponent translateComponent(@NotNull String key);
-
-    @NotNull NightComponent translateComponent(@NotNull String key, @Nullable String fallback);
-
-    @NotNull NightComponent buildComponent(@NotNull List<ComponentBuildable> childrens);
 
     @NotNull InventoryView createView(@NotNull MenuType menuType, @NotNull NightComponent title, @NotNull Player player);
 
@@ -92,7 +119,7 @@ public interface Software {
 
     @Nullable String getCustomName(@NotNull ItemMeta meta);
 
-    void setCustomName(@NotNull ItemMeta meta, @NotNull NightComponent name);
+    void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name);
 
     @Nullable String getItemName(@NotNull ItemMeta meta);
 
@@ -100,11 +127,9 @@ public interface Software {
 
     @Nullable List<String> getLore(@NotNull ItemMeta meta);
 
-    void setLore(@NotNull ItemMeta meta, @NotNull List<NightComponent> lore);
+    void setLore(@NotNull ItemMeta meta, @Nullable List<NightComponent> lore);
 
     @Nullable NightProfile getOwnerProfile(@NotNull ItemStack itemStack);
-
-    //void setOwnerProfile(@NotNull SkullMeta meta, @NotNull NightProfile profile);
 
     void hideComponents(@NotNull ItemStack itemStack);
 

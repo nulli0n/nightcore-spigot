@@ -195,6 +195,18 @@ public class NumberUtil {
         return parseDouble(input).orElse(defaultValue);
     }
 
+    public static float getFloatAbs(@NotNull String input) {
+        return getFloatAbs(input, 0f);
+    }
+
+    public static float getFloatAbs(@NotNull String input, float defaultValue) {
+        return Math.abs(getFloat(input, defaultValue));
+    }
+
+    public static float getFloat(@NotNull String input, float defaultValue) {
+        return parseFloat(input).orElse(defaultValue);
+    }
+
     @Deprecated
     public static int getInteger(@NotNull String input) {
         return getIntegerAbs(input);
@@ -232,6 +244,20 @@ public class NumberUtil {
         try {
             double amount = Double.parseDouble(input);
             if (!Double.isNaN(amount) && !Double.isInfinite(amount)) {
+                return Optional.of(amount);
+            }
+            return Optional.empty();
+        }
+        catch (NumberFormatException exception) {
+            return Optional.empty();
+        }
+    }
+
+    @NotNull
+    public static Optional<Float> parseFloat(@NotNull String input) {
+        try {
+            float amount = Float.parseFloat(input);
+            if (!Float.isNaN(amount) && !Float.isInfinite(amount)) {
                 return Optional.of(amount);
             }
             return Optional.empty();

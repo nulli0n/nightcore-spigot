@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderEntry;
 import su.nightexpress.nightcore.util.random.Rnd;
 import su.nightexpress.nightcore.util.regex.TimedMatcher;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -282,34 +282,38 @@ public class StringUtil {
     }
 
     @NotNull
+    @Deprecated
     public static String transformForID(@NotNull String str) {
         return transformForID(str, -1);
     }
 
     @NotNull
+    @Deprecated
     public static String transformForID(@NotNull String str, int length) {
-        char[] chars = str.toLowerCase().toCharArray();
-
-        StringBuilder builder = new StringBuilder();
-        for (int index = 0; index < chars.length; index++) {
-            if (length > 0 && index >= length) break;
-
-            char letter = chars[index];
-            if (Character.isWhitespace(letter)) {
-                builder.append("_");
-                continue;
-            }
-            if (!isValidIDChar(letter)) {
-                continue;
-            }
-            builder.append(Character.toLowerCase(letter));
-        }
-        return builder.toString();
+        return Strings.filterForVariable(str, length);
+//        char[] chars = str.toLowerCase().toCharArray();
+//
+//        StringBuilder builder = new StringBuilder();
+//        for (int index = 0; index < chars.length; index++) {
+//            if (length > 0 && index >= length) break;
+//
+//            char letter = chars[index];
+//            if (Character.isWhitespace(letter)) {
+//                builder.append("_");
+//                continue;
+//            }
+//            if (!isValidIDChar(letter)) {
+//                continue;
+//            }
+//            builder.append(Character.toLowerCase(letter));
+//        }
+//        return builder.toString();
     }
 
-    private static boolean isValidIDChar(char c) {
-        return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_' || c == '-';
-    }
+//    private static boolean isValidIDChar(char c) {
+//        return Character.isLetterOrDigit(c) || c == '_' || c == '-';
+//        //return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_' || c == '-';
+//    }
 
     @NotNull
     public static String lowerCaseUnderscore(@NotNull String str) {
@@ -338,7 +342,7 @@ public class StringUtil {
     @NotNull
     @Deprecated
     private static String lowerCaseAndClean(@NotNull String str, @NotNull Pattern pattern, int length) {
-        String clean = NightMessage.stripAll(str).toLowerCase().replace(" ", "_");
+        String clean = NightMessage.stripTags(str).toLowerCase().replace(" ", "_");
         if (length > 0 && clean.length() > length) {
             clean = clean.substring(0, length);
         }

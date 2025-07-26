@@ -255,6 +255,16 @@ public class ItemNbt {
         return fromTag(new ItemTag(tagString, CoreConfig.DATA_FIXER_MISSING_VERSION.get()));
     }
 
+//    @Nullable
+//    public static Object getCompound(@NotNull ItemTag itemTag) {
+//        if (!loaded) return null;
+//        if (itemTag.isEmpty()) return null;
+//
+//        String tagString = itemTag.getTag();
+//
+//        return Reflex.invokeMethod(mTagParserParseTag, null, tagString);
+//    }
+
     @Nullable
     public static ItemStack fromTag(@NotNull ItemTag itemTag) {
         if (!loaded) return null;
@@ -278,6 +288,7 @@ public class ItemNbt {
 
 
     @Nullable
+    @Deprecated
     public static ItemStack getHoverEventItem(@NotNull String value) {
         ItemStack itemStack = null;
 

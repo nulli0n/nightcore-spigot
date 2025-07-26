@@ -1,10 +1,11 @@
 package su.nightexpress.nightcore.util.text;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
+import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 
+@Deprecated
 public class TextNode extends TextChildren {
 
     private final StringBuilder textBuilder;
@@ -43,18 +44,17 @@ public class TextNode extends TextChildren {
     @Override
     @NotNull
     public NightComponent toComponent() {
-        String text = this.textBuilder.toString();
         ColorDecorator colorDecorator = this.parent.getColor();
-        NightComponent textComponent = Engine.software().textComponent(text);
+        NightComponent component = NightComponent.text(this.textBuilder.toString());
 
-        if (colorDecorator != null) {
-            colorDecorator.decorate(textComponent);
+        for (Decorator decorator : this.parent.getDecorators()) {
+            component = decorator.decorate(component);
         }
 
-        this.parent.getDecorators().forEach(decorator -> {
-            decorator.decorate(textComponent);
-        });
+        if (colorDecorator != null) {
+            component = colorDecorator.decorate(component);
+        }
 
-        return textComponent;
+        return component;
     }
 }

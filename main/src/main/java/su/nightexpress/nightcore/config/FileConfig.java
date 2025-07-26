@@ -22,7 +22,7 @@ import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.bukkit.NightSound;
 import su.nightexpress.nightcore.util.sound.AbstractSound;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -408,8 +408,10 @@ public class FileConfig extends YamlConfiguration {
         }
 
         String name = this.getString(path + "Name");
-        meta.setDisplayName(name != null ? NightMessage.asLegacy(name) : null);
-        meta.setLore(NightMessage.asLegacy(this.getStringList(path + "Lore")));
+/*        meta.setDisplayName(name != null ? NightMessage.asLegacy(name) : null);
+        meta.setLore(NightMessage.asLegacy(this.getStringList(path + "Lore")));*/
+        ItemUtil.setCustomName(meta, name == null ? null : NightMessage.parse(name));
+        ItemUtil.setLore(meta, this.getStringList(path + "Lore"));
 
         for (String sKey : this.getSection(path + "Enchants")) {
             Enchantment enchantment = BukkitThing.getEnchantment(sKey);

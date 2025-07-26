@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.util.text;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.Engine;
+import su.nightexpress.nightcore.bridge.text.NightAbstractComponent;
 import su.nightexpress.nightcore.util.bridge.wrapper.ComponentBuildable;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Deprecated
 public class TextGroup implements ComponentBuildable {
 
     private final String                   name;
@@ -80,7 +81,12 @@ public class TextGroup implements ComponentBuildable {
             gradientDecorator.createGradient(length.get()); // This will create and store Color[] array.
         }
 
-        return Engine.software().buildComponent(this.childrens);
+        List<NightAbstractComponent> children = new ArrayList<>();
+        this.childrens.forEach(buildable -> {
+            children.add((NightAbstractComponent) buildable.toComponent());
+        });
+
+        return NightComponent.empty().children(children);
     }
 
     private void countLength(@NotNull TextGroup parent, @NotNull AtomicInteger length) {

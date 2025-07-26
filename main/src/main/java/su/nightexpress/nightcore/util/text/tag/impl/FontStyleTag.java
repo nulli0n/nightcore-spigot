@@ -1,10 +1,12 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.text.NightTextDecoration;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.api.SimpleTag;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 
+@Deprecated
 public class FontStyleTag extends SimpleTag implements Decorator {
 
     private static final String INVERT_SIGN = "!";
@@ -39,13 +41,14 @@ public class FontStyleTag extends SimpleTag implements Decorator {
     }
 
     @Override
-    public void decorate(@NotNull NightComponent component) {
-        switch (this.style) {
-            case BOLD -> component.setBold(!this.inverted);
-            case ITALIC -> component.setItalic(!this.inverted);
-            case OBFUSCATED -> component.setObfuscated(!this.inverted);
-            case UNDERLINED -> component.setUnderlined(!this.inverted);
-            case STRIKETHROUGH -> component.setStrikethrough(!this.inverted);
-        }
+    @NotNull
+    public NightComponent decorate(@NotNull NightComponent component) {
+        return switch (this.style) {
+            case BOLD -> component.decoration(NightTextDecoration.BOLD, !this.inverted);
+            case ITALIC -> component.decoration(NightTextDecoration.ITALIC, !this.inverted);
+            case OBFUSCATED -> component.decoration(NightTextDecoration.OBFUSCATED, !this.inverted);
+            case UNDERLINED -> component.decoration(NightTextDecoration.UNDERLINED, !this.inverted);
+            case STRIKETHROUGH -> component.decoration(NightTextDecoration.STRIKETHROUGH, !this.inverted);
+        };
     }
 }

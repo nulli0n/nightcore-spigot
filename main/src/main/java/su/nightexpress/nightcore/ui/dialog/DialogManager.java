@@ -16,6 +16,7 @@ import java.util.*;
 
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
+@Deprecated
 public class DialogManager {
 
     private static final Map<UUID, Dialog> DIALOG_MAP = new HashMap<>();
@@ -52,7 +53,7 @@ public class DialogManager {
         String sub = /*NightMessage.asLegacy(*/dialog.getPrompt();
 
         //player.sendTitle(title, sub, fade, 40, 20);
-        Players.sendTitle(player, title, sub, fade, 40, 20);
+        Players.sendTitles(player, title, sub, fade, 40, 20);
     }
 
     public static boolean isInDialog(@NotNull Player player) {

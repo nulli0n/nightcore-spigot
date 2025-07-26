@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.api;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 
 @Deprecated
@@ -16,7 +17,7 @@ public class ComplexTag extends Tag {
 
     @NotNull
     protected String escapeQuotes(@NotNull String content) {
-        return TagUtils.escapeQuotes(content);
+        return ParserUtils.escapeQuotes(content);
         //return content.replace("'", "\\'").replace("\"", "\\\"");
     }
 

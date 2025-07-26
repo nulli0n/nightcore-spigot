@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.util.text.tag.impl.ShortHexColorTag;
 
 import java.util.function.Predicate;
 
+@Deprecated
 public class TagPool {
 
     public static final TagPool ALL  = new TagPool(tag -> true);

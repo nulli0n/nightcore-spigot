@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.util.LegacyColors;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagPool;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.Tags;
@@ -20,6 +21,7 @@ import su.nightexpress.nightcore.util.text.tag.impl.TranslationTag;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
+@Deprecated
 public class TextRoot {
 
     public static final String ROOT_NAME = "root";
@@ -41,7 +43,7 @@ public class TextRoot {
     public void setString(@NotNull String string) {
         if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
             string = LegacyColors.plainColors(string); // Translate legacy colors to plain values: '§a' -> '&a', '§x§f§f§f§f§f§f' -> '#ffffff'.
-            string = TagUtils.tagPlainHex(string); // Wrap HEX colors in tags: '#ffffff' -> '<#ffffff>'.
+            string = ParserUtils.wrapHexCodesAsTags(string); // Wrap HEX colors in tags: '#ffffff' -> '<#ffffff>'.
             string = TagUtils.replaceLegacyColors(string); // Replace legacy colors with named tags: '&c' -> '<red>'.
         }
 
@@ -51,11 +53,7 @@ public class TextRoot {
 
     @NotNull
     public TextRoot copy() {
-        TextRoot copy = new TextRoot(this.string, this.tagPool);
-        if (this.component != null) {
-            copy.component = this.component.duplicate();
-        }
-        return copy;
+        return new TextRoot(this.string, this.tagPool);
     }
 
     @NotNull
@@ -181,23 +179,23 @@ public class TextRoot {
         for (int index = 0; index < length; index++) {
             char letter = string.charAt(index);
 
-            if (letter == '\\' && index != (length - 1) && string.charAt(index + 1) == TagUtils.OPEN_BRACKET) {
+            if (letter == '\\' && index != (length - 1) && string.charAt(index + 1) == ParserUtils.OPEN_BRACKET) {
                 index++;
-                consumer.accept(TagUtils.OPEN_BRACKET);
+                consumer.accept(ParserUtils.OPEN_BRACKET);
                 continue;
             }
 
             Tag:
-            if (letter == TagUtils.OPEN_BRACKET && index != (length - 1)) {
-                int indexEnd = indexOfIgnoreEscaped(string, TagUtils.CLOSE_BRACKET, index);//string.indexOf(Tag.CLOSE_BRACKET, index);
+            if (letter == ParserUtils.OPEN_BRACKET && index != (length - 1)) {
+                int indexEnd = ParserUtils.findUnescapedUnquotedChar(string, ParserUtils.CLOSE_BRACKET, index);//string.indexOf(Tag.CLOSE_BRACKET, index);
                 //System.out.println("indexEnd = " + indexEnd);
                 if (indexEnd == -1) break Tag;
 
                 char next = string.charAt(index + 1);
-                if (next == TagUtils.CLOSE_BRACKET) break Tag;
+                if (next == ParserUtils.CLOSE_BRACKET) break Tag;
 
                 boolean closeTag = false;
-                if (next == TagUtils.CLOSE_SLASH) {
+                if (next == ParserUtils.CLOSE_SLASH) {
                     closeTag = true;
                     index++;
                 }
@@ -209,7 +207,7 @@ public class TextRoot {
                 String tagContent = null;
 
                 // Check for content tags
-                int semicolonIndex = bracketsContent.indexOf(TagUtils.SEMICOLON);
+                int semicolonIndex = bracketsContent.indexOf(ParserUtils.DELIMITER);
                 if (semicolonIndex >= 0) {
                     tagName = bracketsContent.substring(0, semicolonIndex);
                     tagContent = bracketsContent.substring(semicolonIndex + 1);
@@ -261,12 +259,12 @@ public class TextRoot {
             if (tagContent != null) {
                 if (tagContent.endsWith("/")) tagContent = tagContent.substring(0, tagContent.length() - 1); // MiniMessage#serialize fix.
 
-                int index = indexOfIgnoreEscaped(tagContent, TagUtils.SEMICOLON, 0);
+                int index = ParserUtils.findUnescapedUnquotedChar(tagContent, ParserUtils.DELIMITER, 0);
                 String key = index < 0 ? tagContent : tagContent.substring(0, index);
-                String fallback = index < 0 || index >= tagContent.length() ? null : TagUtils.unquoted(tagContent.substring(index + 1));
+                String fallback = index < 0 || index >= tagContent.length() ? null : ParserUtils.unquoted(tagContent.substring(index + 1));
 
                 // Create a new node exclusively for translation text.
-                this.currentGroup.createLangNode(TagUtils.unquoted(key), fallback);
+                this.currentGroup.createLangNode(ParserUtils.unquoted(key), fallback);
                 this.currentNode = null; // Reset current node so parser will create a new one after this one with translation.
             }
             return;
@@ -317,7 +315,7 @@ public class TextRoot {
 //        return component instanceof TextComponent textComponent && textComponent.getText().isBlank() && textComponent.getExtra() == null;
 //    }
 
-    public static int indexOfIgnoreEscaped(@NotNull String string, char what, int from) {
+/*    public static int indexOfIgnoreEscaped(@NotNull String string, char what, int from) {
         int length = string.length();
         if (from >= length) return -1;
 
@@ -348,7 +346,7 @@ public class TextRoot {
         }
 
         return -1;
-    }
+    }*/
 
     /*@NotNull
     public static String substringOfQuotes(@NotNull String string) {
