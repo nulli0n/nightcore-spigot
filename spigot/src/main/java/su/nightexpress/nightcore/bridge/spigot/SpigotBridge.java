@@ -30,6 +30,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogAdapter;
@@ -54,7 +55,7 @@ public class SpigotBridge implements Software {
     private static AtomicInteger entityCounter;
 
     private SpigotTextComponentAdapter textComponentAdapter;
-    private SpigotDialogAdapter dialogAdapter;
+    private DialogAdapter<?>              dialogAdapter;
 
     private Set<ItemFlag>      commonFlagsToHide;
 
@@ -109,7 +110,7 @@ public class SpigotBridge implements Software {
 
     @Override
     public void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {
-        player.showDialog(this.dialogAdapter.adaptDialog(dialog));
+        player.showDialog((Dialog) this.dialogAdapter.adaptDialog(dialog));
     }
 
     @Deprecated
@@ -152,7 +153,7 @@ public class SpigotBridge implements Software {
     }
 
     @NotNull
-    public SpigotDialogAdapter getDialogAdapter() {
+    public DialogAdapter<?> getDialogAdapter() {
         return this.dialogAdapter;
     }
 

@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore.bridge.paper.text;
 
+import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.*;
@@ -84,7 +85,7 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
             case OPEN_FILE -> ClickEvent.openFile(((WrappedPayload.Text)payload).value());
             case CHANGE_PAGE -> ClickEvent.changePage(((WrappedPayload.Int)payload).integer());
             case RUN_COMMAND -> ClickEvent.runCommand(((WrappedPayload.Text)payload).value());
-            case SHOW_DIALOG -> ClickEvent.showDialog(this.bridge.getDialogAdapter().adaptDialog(((WrappedPayload.Dialog)payload).dialog()));
+            case SHOW_DIALOG -> ClickEvent.showDialog((DialogLike) this.bridge.getDialogAdapter().adaptDialog(((WrappedPayload.Dialog)payload).dialog()));
             case SUGGEST_COMMAND -> ClickEvent.suggestCommand(((WrappedPayload.Text)payload).value());
             case COPY_TO_CLIPBOARD -> ClickEvent.copyToClipboard(((WrappedPayload.Text)payload).value());
         };
