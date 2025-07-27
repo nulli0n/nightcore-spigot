@@ -1,13 +1,6 @@
 package su.nightexpress.nightcore.bridge.spigot;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.dialog.Dialog;
-import net.md_5.bungee.api.dialog.DialogBase;
-import net.md_5.bungee.api.dialog.NoticeDialog;
-import net.md_5.bungee.api.dialog.action.ActionButton;
-import net.md_5.bungee.api.dialog.action.CustomClickAction;
-import net.md_5.bungee.api.dialog.input.TextInput;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -111,23 +104,6 @@ public class SpigotBridge implements Software {
     @Override
     public void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {
         player.showDialog((Dialog) this.dialogAdapter.adaptDialog(dialog));
-    }
-
-    @Deprecated
-    public void testDialog(@NotNull Player player) {
-        Dialog dialog = new NoticeDialog(
-            new DialogBase(new ComponentBuilder("Hello").color(ChatColor.RED).build())
-                .inputs(
-                    Arrays.asList(
-                        new TextInput("first", new ComponentBuilder("First").build()),
-                        new TextInput("second", new ComponentBuilder("Second").build())
-                    )
-                ))
-            .action(
-                new ActionButton(new ComponentBuilder("Submit Button").build(), new CustomClickAction("spigot_custom_click"))
-            );
-
-        player.showDialog(dialog);
     }
 
     @Override
