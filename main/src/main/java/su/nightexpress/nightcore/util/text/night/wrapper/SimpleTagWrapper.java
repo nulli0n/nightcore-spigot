@@ -31,7 +31,7 @@ public class SimpleTagWrapper implements TagWrapper {
 
     @NotNull
     public String closing() {
-        return ParserUtils.OPEN_BRACKET + ParserUtils.CLOSE_SLASH + this.tag + ParserUtils.CLOSE_BRACKET;
+        return String.valueOf(ParserUtils.OPEN_BRACKET) + ParserUtils.CLOSE_SLASH + this.tag + ParserUtils.CLOSE_BRACKET;
     }
 
     @Override
