@@ -10,9 +10,11 @@ import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -137,8 +139,7 @@ public class Replacer {
                 line = operator.apply(line);
                 if (line.isBlank()) continue;
 
-                replaced.add(line);
-                //replaced.addAll(Arrays.asList(Tags.LINE_BREAK.split(line)));
+                replaced.addAll(Arrays.asList(ParserUtils.breakDownLineSplitters(line)));
             }
             else replaced.add(line);
         }
