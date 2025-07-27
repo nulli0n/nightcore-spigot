@@ -27,6 +27,7 @@ public abstract class AbstractConnector {
         this.config.addDataSourceProperty("cachePrepStmts", "true");
         this.config.addDataSourceProperty("prepStmtCacheSize", "250");
         this.config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        this.config.setPoolName(plugin.getName() + "Pool");
         this.dataSource = new HikariDataSource(this.config);
     }
 
