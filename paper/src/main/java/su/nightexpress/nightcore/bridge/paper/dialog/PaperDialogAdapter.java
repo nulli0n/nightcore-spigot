@@ -46,6 +46,7 @@ import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import java.util.List;
 
 public class PaperDialogAdapter implements
+    DialogAdapter<Dialog>,
     DialogActionAdapter<DialogAction>,
     DialogBaseAdapter<DialogBase>,
     DialogBodyAdapter<DialogBody>,
@@ -64,6 +65,7 @@ public class PaperDialogAdapter implements
         return this.bridge.getTextComponentAdapter().adaptComponent(component);
     }
 
+    @Override
     @NotNull
     public Dialog adaptDialog(@NotNull WrappedDialog wrappedDialog) {
         WrappedDialogBase wrappedBase = wrappedDialog.base();

@@ -37,6 +37,7 @@ import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import java.util.List;
 
 public class SpigotDialogAdapter implements
+    DialogAdapter<Dialog>,
     DialogActionAdapter<Action>,
     DialogBaseAdapter<DialogBase>,
     DialogBodyAdapter<DialogBody>,
@@ -57,6 +58,7 @@ public class SpigotDialogAdapter implements
         return this.bridge.getTextComponentAdapter().adaptComponent(component);
     }
 
+    @Override
     @NotNull
     public Dialog adaptDialog(@NotNull WrappedDialog wrappedDialog) {
         WrappedDialogBase wrappedBase = wrappedDialog.base();

@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
+import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -28,6 +29,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogAdapter;
@@ -47,7 +49,7 @@ import java.util.stream.Collectors;
 
 public class PaperBridge implements Software {
 
-    private PaperDialogAdapter dialogAdapter;
+    private DialogAdapter<?>             dialogAdapter;
     private PaperTextComponentAdapter textComponentAdapter;
 
     private Set<DataComponentType> commonComponentsToHide;
@@ -93,7 +95,7 @@ public class PaperBridge implements Software {
 
     @Override
     public void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {
-        player.showDialog(this.dialogAdapter.adaptDialog(dialog));
+        player.showDialog((DialogLike) this.dialogAdapter.adaptDialog(dialog));
     }
 
     @SuppressWarnings("deprecation")
@@ -103,7 +105,7 @@ public class PaperBridge implements Software {
     }
 
     @NotNull
-    public PaperDialogAdapter getDialogAdapter() {
+    public DialogAdapter<?> getDialogAdapter() {
         return this.dialogAdapter;
     }
 

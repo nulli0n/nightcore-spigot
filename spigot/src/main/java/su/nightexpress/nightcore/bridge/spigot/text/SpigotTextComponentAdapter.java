@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Item;
 import net.md_5.bungee.api.chat.hover.content.Text;
+import net.md_5.bungee.api.dialog.Dialog;
 import net.md_5.bungee.api.dialog.chat.ShowDialogClickEvent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.NamespacedKey;
@@ -88,7 +89,7 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
 
         return switch (payload) {
             case WrappedPayload.Custom(@NotNull NamespacedKey key, @NotNull NightNbtHolder nbt) -> new ClickEventCustom(key.getKey(), nbt.asString());
-            case WrappedPayload.Dialog dialog -> new ShowDialogClickEvent(this.bridge.getDialogAdapter().adaptDialog(dialog.dialog()));
+            case WrappedPayload.Dialog dialog -> new ShowDialogClickEvent((Dialog) this.bridge.getDialogAdapter().adaptDialog(dialog.dialog()));
             case WrappedPayload.Int(int integer) -> new ClickEvent(ClickEvent.Action.CHANGE_PAGE, String.valueOf(integer));
             case WrappedPayload.Text(@NotNull String value) -> {
                 ClickEvent.Action action = switch (event.action()) {
