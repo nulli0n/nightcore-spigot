@@ -8,7 +8,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
@@ -23,7 +22,6 @@ import su.nightexpress.nightcore.ui.menu.click.ClickResult;
 import su.nightexpress.nightcore.ui.menu.data.Linked;
 import su.nightexpress.nightcore.ui.menu.item.ItemHandler;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
-import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
@@ -184,19 +182,6 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
                 for (int slot : menuItem.getSlots()) {
                     if (slot < 0 || slot >= inventory.getSize()) continue;
                     inventory.setItem(slot, itemStack);
-
-                    // Do not yet use new NightItem#getItemStackUpdated method here, until we ensure there are no inventory content relies in #onReady.
-                    if (item.getPlayerProfile() != null) {
-                        item.getPlayerProfile().update().thenAccept(updated -> {
-                        MenuItem overlap = this.getItem(viewer, slot);
-                        if (overlap != null && overlap != menuItem && overlap.getPriority() >= menuItem.getPriority()) {
-                            return;
-                        }
-
-                            ItemUtil.editMeta(itemStack, SkullMeta.class, updated::apply);
-                            inventory.setItem(slot, itemStack);
-                        });
-                    }
                 }
             });
 
