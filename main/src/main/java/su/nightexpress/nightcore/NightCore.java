@@ -14,6 +14,7 @@ import su.nightexpress.nightcore.ui.dialog.DialogWatcher;
 import su.nightexpress.nightcore.util.TimeUtil;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
+import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import su.nightexpress.nightcore.util.text.night.tag.TagManager;
 
 import java.util.Optional;
@@ -65,6 +66,7 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
     @Override
     protected void onShutdown() {
         super.onShutdown();
+        PlayerProfiles.clear();
         PlayerBlockTracker.shutdown();
         Engine.clear();
     }

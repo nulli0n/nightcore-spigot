@@ -109,6 +109,8 @@ public class TextParser {
     }
 
     public void consumeEaten() {
+        if (this.mode == ParserMode.STRIP) return;
+
         if (!this.eater.isEmpty()) {
             this.currentGroup.appendTextEntry(this.eater.toString());
         }

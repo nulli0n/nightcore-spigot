@@ -6,10 +6,7 @@ import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Item;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import net.md_5.bungee.api.dialog.Dialog;
-import net.md_5.bungee.api.dialog.chat.ShowDialogClickEvent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,19 +14,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.common.NightKey;
-import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
+import su.nightexpress.nightcore.bridge.spigot.SpigotClickEvent;
 import su.nightexpress.nightcore.bridge.text.NightStyle;
 import su.nightexpress.nightcore.bridge.text.NightTextDecoration;
 import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
-import su.nightexpress.nightcore.bridge.text.event.WrappedPayload;
 import su.nightexpress.nightcore.bridge.text.impl.NightKeybindComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightTranslatableComponent;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.awt.*;
@@ -71,21 +68,28 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
         Color color = nightStyle.color();
         Color shadowColor = nightStyle.shadowColor();
 
-        return ComponentStyle.builder()
+        ComponentStyleBuilder builder = ComponentStyle.builder()
             .font(font == null ? null : font.toString())
             .color(color == null ? null : ChatColor.of(color))
-            .shadowColor(shadowColor)
             .bold(nightStyle.decoration(NightTextDecoration.BOLD).bool())
             .italic(nightStyle.decoration(NightTextDecoration.ITALIC).bool())
             .obfuscated(nightStyle.decoration(NightTextDecoration.OBFUSCATED).bool())
             .strikethrough(nightStyle.decoration(NightTextDecoration.STRIKETHROUGH).bool())
-            .underlined(nightStyle.decoration(NightTextDecoration.UNDERLINED).bool())
-            .build();
+            .underlined(nightStyle.decoration(NightTextDecoration.UNDERLINED).bool());
+
+        // Avoid NoDefClassError
+        if (Version.isAtLeast(Version.MC_1_21_7)) {
+            builder.shadowColor(shadowColor);
+        }
+
+        return builder.build();
     }
 
     @NotNull
     public ClickEvent adaptClickEvent(@NotNull NightClickEvent event) {
-        WrappedPayload payload = event.payload();
+        // Avoid NoDefClassError
+        return SpigotClickEvent.adaptClickEvent(event, this.bridge.getDialogAdapter());
+        /*WrappedPayload payload = event.payload();
 
         return switch (payload) {
             case WrappedPayload.Custom(@NotNull NamespacedKey key, @NotNull NightNbtHolder nbt) -> new ClickEventCustom(key.getKey(), nbt.asString());
@@ -104,7 +108,7 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
                 yield new ClickEvent(action, value);
             }
             default -> throw new IllegalStateException("Unexpected value: " + payload);
-        };
+        };*/
     }
 
     @Nullable

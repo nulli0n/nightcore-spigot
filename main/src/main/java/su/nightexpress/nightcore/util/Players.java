@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.profile.PlayerTextures;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,18 +17,19 @@ import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.profile.CachedProfile;
+import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import su.nightexpress.nightcore.util.text.TextRoot;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
-import java.net.URI;
-import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Players {
 
-    public static final String TEXTURES_HOST         = "http://textures.minecraft.net/texture/";
+    @Deprecated
+    public static final String TEXTURES_HOST         = PlayerProfiles.TEXTURES_HOST;
     public static final String PLAYER_COMMAND_PREFIX = "player:";
 
     private static final NightCore plugin = NightCore.getPlugin(NightCore.class);
@@ -92,59 +92,40 @@ public class Players {
     }
 
     @NotNull
+    @Deprecated
     public static NightProfile getProfile(@NotNull OfflinePlayer player) {
-        return Engine.software().getProfile(player);
+        return PlayerProfiles.getProfile(player).query();
     }
 
     @NotNull
+    @Deprecated
     public static NightProfile createProfile(@NotNull UUID uuid) {
-        return Engine.software().createProfile(uuid);
+        return PlayerProfiles.createProfile(uuid).query();
     }
 
     @NotNull
+    @Deprecated
     public static NightProfile createProfile(@NotNull String name) {
-        return Engine.software().createProfile(name);
+        return PlayerProfiles.createProfile(name);
     }
 
     @NotNull
-    public static NightProfile createProfile(@Nullable UUID uuid, @Nullable String name) {
-        return Engine.software().createProfile(uuid, name);
+    @Deprecated
+    public static NightProfile createProfile(@NotNull UUID uuid, @Nullable String name) {
+        return PlayerProfiles.createProfile(uuid, name).query();
     }
 
     @Nullable
+    @Deprecated
     public static NightProfile createProfileBySkinURL(@NotNull String urlData) {
-        if (urlData.isBlank()) return null;
-
-        String name = urlData.substring(0, 16);
-
-        if (!urlData.startsWith(TEXTURES_HOST)) {
-            urlData = TEXTURES_HOST + urlData;
-        }
-
-        try {
-            UUID uuid = UUID.nameUUIDFromBytes(urlData.getBytes());
-            // If no name, then meta#getOwnerProfile will return 'null'.
-            NightProfile profile = createProfile(uuid, name);
-            URL url = URI.create(urlData).toURL();
-            PlayerTextures textures = profile.getTextures();
-
-            textures.setSkin(url);
-            profile.setTextures(textures);
-            return profile;
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
-        }
+        CachedProfile profile = PlayerProfiles.createProfileBySkinURL(urlData);
+        return profile == null ? null : profile.query();
     }
 
     @Nullable
+    @Deprecated
     public static String getProfileSkinURL(@NotNull NightProfile profile) {
-        URL skin = profile.getTextures().getSkin();
-        if (skin == null) return null;
-
-        String raw = skin.toString();
-        return raw.substring(TEXTURES_HOST.length());
+        return PlayerProfiles.getProfileSkinURL(profile);
     }
 
     @NotNull
@@ -285,15 +266,6 @@ public class Players {
     public static void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
         Engine.software().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
-
-    // TODO Custom clickable handler + in component builder
-/*    JsonObject object = new JsonObject();
-        object.addProperty("p1", 1);
-        object.addProperty("p2", "asd");
-
-    WrappedPayload.Custom custom = WrappedPayload.custom(new NamespacedKey("ncore", "chatc"), NightNbtHolder.fromJson(object));
-
-        player.sendMessage(Component.text("Test Message").clickEvent(this.textComponentAdapter.adaptClickEvent(new NightClickEvent(NightClickEvent.Action.CUSTOM, custom))));*/
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {
         Bukkit.getGlobalRegionScheduler().execute(NightCore.getPlugin(NightCore.class), () -> {
