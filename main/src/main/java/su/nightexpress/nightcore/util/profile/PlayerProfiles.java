@@ -31,7 +31,7 @@ public class PlayerProfiles {
     }
 
     @NotNull
-    private static CachedProfile cacheExact(@NotNull NightProfile profile) {
+    public static CachedProfile cacheExact(@NotNull NightProfile profile) {
         return cacheProfile(profile, true, true);
     }
 

@@ -541,7 +541,7 @@ public class NightMeta implements Writeable {
     public NightMeta setPlayerProfile(@Nullable NightProfile profile) {
         CachedProfile cached = null;
         if (profile != null && profile.getId() != null) {
-            cached = PlayerProfiles.createProfile(profile.getId(), profile.getName());
+            cached = PlayerProfiles.cacheExact(profile); // Do not try to fetch properties of profiles with random UUID and custom textures set.
         }
 
         return this.setPlayerProfile(cached);

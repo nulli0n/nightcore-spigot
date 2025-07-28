@@ -32,6 +32,7 @@ import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightTranslatableComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightTranslationArgument;
 import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.awt.*;
@@ -141,10 +142,13 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
                 builder.decoration(this.adaptTextDecoration(nightDecoration), this.adaptTextDecorationState(nightState));
             });
 
+            if (Version.isAtLeast(Version.MC_1_21_6)) {
+                Compat.setShadowColor(builder, shadowColor);
+            }
+
             builder
                 .font(font == null ? null : Key.key(font.namespace(), font.value()))
                 .color(color == null ? null : TextColor.color(color.getRed(), color.getGreen(), color.getBlue()))
-                .shadowColor(shadowColor == null ? null : ShadowColor.shadowColor(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), shadowColor.getAlpha()))
                 .clickEvent(clickEvent == null ? null : this.adaptClickEvent(clickEvent))
                 .hoverEvent(hoverEvent == null ? null : this.adaptHoverEvent(hoverEvent))
                 .insertion(insertion);
@@ -212,5 +216,13 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
             .append(this.adaptComponents(component.children()))
             .keybind(component.key())
         );
+    }
+
+    // Quick fix for <1.21.4 loading.
+    static class Compat {
+
+        static void setShadowColor(@NotNull Style.Builder builder, @Nullable Color shadowColor) {
+            builder.shadowColor(shadowColor == null ? null : ShadowColor.shadowColor(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), shadowColor.getAlpha()));
+        }
     }
 }
