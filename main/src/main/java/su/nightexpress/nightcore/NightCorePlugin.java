@@ -88,6 +88,8 @@ public interface NightCorePlugin extends Plugin {
         return this.getServer().getPluginManager();
     }
 
+    void runTask(@NotNull Runnable runnable);
+
     default void runTask(@NotNull Consumer<BukkitTask> consumer) {
         this.getScheduler().runTask(this, consumer);
     }

@@ -18,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.profile.CachedProfile;
+import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 
@@ -316,14 +318,14 @@ public class ItemUtil {
         NightProfile profile = getOwnerProfile(itemStack);
         if (profile == null) return null;
 
-        return Players.getProfileSkinURL(profile);
+        return PlayerProfiles.getProfileSkinURL(profile);
     }
 
     public static void setProfileBySkinURL(@NotNull ItemStack itemStack, @NotNull String urlData) {
-        NightProfile profile = Players.createProfileBySkinURL(urlData);
+        CachedProfile profile = PlayerProfiles.createProfileBySkinURL(urlData);
         if (profile == null) return;
 
-        editMeta(itemStack, SkullMeta.class, profile::apply);
+        editMeta(itemStack, SkullMeta.class, skullMeta -> profile.query().apply(skullMeta));
     }
 
     @Deprecated

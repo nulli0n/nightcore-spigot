@@ -21,6 +21,8 @@ import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
+import su.nightexpress.nightcore.util.profile.CachedProfile;
+import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -35,9 +37,9 @@ public class NightMeta implements Writeable {
     private Map<Enchantment, Integer> enchants;
     private Set<String>               hiddenComponents;
 
-    private Integer      damage;
-    private NightProfile playerProfile;
-    private Color        color;
+    private Integer       damage;
+    private CachedProfile playerProfile;
+    private Color         color;
 
     private Float         modelData;
     private NamespacedKey modelPath;
@@ -264,7 +266,7 @@ public class NightMeta implements Writeable {
         if (this.enchants != null) {
             this.enchants.forEach((enchantment, level) -> config.set(path + ".Enchants." + BukkitThing.getAsString(enchantment), level));
         }
-        config.set(path + ".SkinURL", this.playerProfile == null ? null : Players.getProfileSkinURL(this.playerProfile));
+        config.set(path + ".SkinURL", this.playerProfile == null ? null : PlayerProfiles.getProfileSkinURL(this.playerProfile.queryNoUpdate()));
         config.set(path + ".Model.Data", this.modelData);
         config.set(path + ".Model.Path", this.modelPath == null ? null : this.modelPath.getKey());
         config.set(path + ".Tooltip.Style", this.tooltipStyle == null ? null : this.tooltipStyle.getKey());
@@ -279,7 +281,7 @@ public class NightMeta implements Writeable {
     public void apply(@NotNull ItemStack itemStack) {
         ItemUtil.editMeta(itemStack, meta -> {
             if (meta instanceof SkullMeta skullMeta) {
-                if (this.playerProfile != null) this.playerProfile.apply(skullMeta);
+                if (this.playerProfile != null) this.playerProfile.query().apply(skullMeta);
             }
 
             if (this.displayName != null) {
@@ -494,7 +496,7 @@ public class NightMeta implements Writeable {
     @Deprecated
     @Nullable
     public String getSkinURL() {
-        return this.playerProfile == null ? null : Players.getProfileSkinURL(this.playerProfile);
+        return this.playerProfile == null ? null : PlayerProfiles.getProfileSkinURL(this.playerProfile.queryNoUpdate());
     }
 
     @Deprecated
@@ -521,22 +523,32 @@ public class NightMeta implements Writeable {
     }
 
     @Nullable
-    public NightProfile getPlayerProfile() {
+    public CachedProfile getPlayerProfile() {
         return this.playerProfile;
     }
 
     @NotNull
     public NightMeta setProfileBySkinURL(@NotNull String skinURL) {
-        return this.setPlayerProfile(Players.createProfileBySkinURL(skinURL));
+        return this.setPlayerProfile(PlayerProfiles.createProfileBySkinURL(skinURL));
     }
 
     @NotNull
     public NightMeta setPlayerProfile(@NotNull OfflinePlayer player) {
-        return this.setPlayerProfile(Players.getProfile(player));
+        return this.setPlayerProfile(PlayerProfiles.getProfile(player));
     }
 
     @NotNull
     public NightMeta setPlayerProfile(@Nullable NightProfile profile) {
+        CachedProfile cached = null;
+        if (profile != null && profile.getId() != null) {
+            cached = PlayerProfiles.createProfile(profile.getId(), profile.getName());
+        }
+
+        return this.setPlayerProfile(cached);
+    }
+
+    @NotNull
+    public NightMeta setPlayerProfile(@Nullable CachedProfile profile) {
         this.playerProfile = profile;
         return this;
     }
