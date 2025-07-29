@@ -219,9 +219,4 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         FileUtil.extractResources(this.getFile(), jarPath, destination);
     }
-
-    @Override
-    public void runTask(@NotNull Runnable runnable) {
-        this.getScheduler().runTask(this, runnable);
-    }
 }
