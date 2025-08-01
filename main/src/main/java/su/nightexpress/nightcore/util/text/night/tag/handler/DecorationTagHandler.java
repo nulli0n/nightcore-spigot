@@ -29,4 +29,8 @@ public class DecorationTagHandler extends ClassicTagHandler {
     protected void onHandleClose(@NotNull EntryGroup group) {
 
     }
+
+    public boolean isInverted() {
+        return !this.state;
+    }
 }

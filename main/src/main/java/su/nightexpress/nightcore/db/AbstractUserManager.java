@@ -77,6 +77,8 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
         U user = this.getLoaded(player);
         if (user == null) return;
 
+        user.setName(player.getName()); // Update name
+
         this.cachePermanent(user);
     }
 
@@ -84,7 +86,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
         U user = this.getLoaded(player.getUniqueId());
         if (user == null) return;
 
-        user.setName(player.getName());
+        user.setName(player.getName()); // Update name
         user.setLastOnline(System.currentTimeMillis());
 
         // Force save data on quit + disable auto-save and delay synchronization.

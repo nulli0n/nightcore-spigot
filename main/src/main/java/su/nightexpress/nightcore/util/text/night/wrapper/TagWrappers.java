@@ -29,15 +29,15 @@ public class TagWrappers {
     public static final OneArgument<SimpleTagWrapper> LANG    = key -> TagWrapper.withArguments(TagShortNames.LANG, ParserUtils.quoted(key));
     public static final TwoArgument<SimpleTagWrapper> LANG_OR = (key, fallback) -> TagWrapper.withArguments(TagShortNames.LANG_OR, ParserUtils.quoted(key), ParserUtils.quoted(fallback));
 
-    public static final OneArgument<SimpleTagWrapper> SHOW_TEXT = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_TEXT.name(), text);
-    public static final OneArgument<SimpleTagWrapper> SHOW_ITEM = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_ITEM.name(), text);
+    public static final OneArgument<SimpleTagWrapper> SHOW_TEXT = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_TEXT.name(), ParserUtils.quoted(text));
+    public static final OneArgument<SimpleTagWrapper> SHOW_ITEM = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_ITEM.name(), ParserUtils.quoted(text));
 
-    public static final OneArgument<SimpleTagWrapper> SUGGEST_COMMAND   = command -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.SUGGEST_COMMAND.toString(), command);
-    public static final OneArgument<SimpleTagWrapper> RUN_COMMAND       = command -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.RUN_COMMAND.toString(), command);
-    public static final OneArgument<SimpleTagWrapper> OPEN_FILE         = filePath -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.OPEN_FILE.toString(), filePath);
-    public static final OneArgument<SimpleTagWrapper> OPEN_URL          = url -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.OPEN_URL.toString(), url);
-    public static final OneArgument<SimpleTagWrapper> CHANGE_PAGE       = page -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.CHANGE_PAGE.toString(), page);
-    public static final OneArgument<SimpleTagWrapper> COPY_TO_CLIPBOARD = text -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.COPY_TO_CLIPBOARD.toString(), text);
+    public static final OneArgument<SimpleTagWrapper> SUGGEST_COMMAND   = command -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.SUGGEST_COMMAND.toString(), ParserUtils.quoted(command));
+    public static final OneArgument<SimpleTagWrapper> RUN_COMMAND       = command -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.RUN_COMMAND.toString(), ParserUtils.quoted(command));
+    public static final OneArgument<SimpleTagWrapper> OPEN_FILE         = filePath -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.OPEN_FILE.toString(), ParserUtils.quoted(filePath));
+    public static final OneArgument<SimpleTagWrapper> OPEN_URL          = url -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.OPEN_URL.toString(), ParserUtils.quoted(url));
+    public static final OneArgument<SimpleTagWrapper> CHANGE_PAGE       = page -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.CHANGE_PAGE.toString(), ParserUtils.quoted(page));
+    public static final OneArgument<SimpleTagWrapper> COPY_TO_CLIPBOARD = text -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.COPY_TO_CLIPBOARD.toString(), ParserUtils.quoted(text));
 
     public static final SimpleTagWrapper RESET = TagWrapper.simple(TagShortNames.RESET);
 
