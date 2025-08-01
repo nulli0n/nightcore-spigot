@@ -35,4 +35,11 @@ public class TextEntry extends ChildEntry {
     public NightComponent toComponent() {
         return NightComponent.text(this.text, this.parent.style());
     }
+
+    @Override
+    public String toString() {
+        return "TextEntry{" +
+            "text='" + text + '\'' +
+            '}';
+    }
 }

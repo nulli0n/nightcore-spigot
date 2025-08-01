@@ -229,12 +229,11 @@ public class TextParser {
             if (handler == null) {
                 this.eat(TagWrapper.simple(bracketsContent).opening());
             }
-            else if (this.tagPool.isGoodTag(handler)) {
-                if (this.mode == ParserMode.STRIP) {
-                    SimpleTagWrapper wrapper = TagWrapper.simple(tagName);
-                    this.eat(isTagClosing ? wrapper.closing() : wrapper.opening());
+            else {
+                if (this.mode == ParserMode.STRIP && !this.tagPool.isGoodTag(handler)) {
+                    this.eat(isTagClosing ? TagWrapper.simple(tagName).closing() : TagWrapper.simple(bracketsContent).opening());
                 }
-                else if (this.mode == ParserMode.PARSE) {
+                else if (this.mode == ParserMode.PARSE && this.tagPool.isGoodTag(handler)) {
                     String groupName = tagName.toLowerCase();
                     if (isTagClosing) {
                         this.backTo(groupName); // Jump to the closing tag's group + Append all text comes before the closing tag.

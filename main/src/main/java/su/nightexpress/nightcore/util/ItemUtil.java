@@ -22,6 +22,7 @@ import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
+import su.nightexpress.nightcore.util.text.night.tag.TagPool;
 
 import java.net.URI;
 import java.net.URL;
@@ -125,7 +126,8 @@ public class ItemUtil {
 
     @Nullable
     public static String getCustomNameSerialized(@NotNull ItemMeta meta) {
-        return Engine.software().getCustomName(meta);
+        String name = Engine.software().getCustomName(meta);
+        return name == null ? null : NightMessage.stripTags(name, TagPool.DECORATIONS_INVERTED); // MiniMessage moment
     }
 
     public static void setCustomName(@NotNull ItemMeta meta, @NotNull String name) {
@@ -140,22 +142,17 @@ public class ItemUtil {
 
     @Nullable
     public static String getItemNameSerialized(@NotNull ItemStack itemStack) {
-        if (Version.isBehind(Version.MC_1_21)) return null;
-
         ItemMeta meta = itemStack.getItemMeta();
         return meta == null ? null : getItemNameSerialized(meta);
     }
 
     @Nullable
     public static String getItemNameSerialized(@NotNull ItemMeta meta) {
-        if (Version.isBehind(Version.MC_1_21)) return null;
-
-        return Engine.software().getItemName(meta);
+        String name = Engine.software().getItemName(meta);
+        return name == null ? null : NightMessage.stripTags(name, TagPool.DECORATIONS_INVERTED); // MiniMessage moment
     }
 
     public static void setItemName(@NotNull ItemMeta meta, @NotNull String name) {
-        if (Version.isBehind(Version.MC_1_21)) return;
-
         Engine.software().setItemName(meta, NightMessage.parse(name));
     }
 
@@ -177,7 +174,7 @@ public class ItemUtil {
     @NotNull
     public static List<String> getLoreSerialized(@NotNull ItemMeta meta) {
         List<String> lore = Engine.software().getLore(meta);
-        return lore == null ? new ArrayList<>() : lore;
+        return lore == null ? new ArrayList<>() : Lists.modify(lore, line -> NightMessage.stripTags(line, TagPool.DECORATIONS_INVERTED)); // MiniMessage moment
     }
 
     public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {
