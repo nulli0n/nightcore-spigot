@@ -13,6 +13,7 @@ import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.Software;
+import su.nightexpress.nightcore.util.bukkit.NightTask;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -89,7 +90,7 @@ public class Engine {
         else return;
 
         core.info("Found permissions provider: " + permissions.getName());
-        core.runTask(task -> permissions.setup()); // Run after the server load to setup Vault services properly.
+        NightTask.create(core, permissions::setup, 0); // Run after the server load to setup Vault services properly.
     }
 
     public static boolean handleEnable(@NotNull NightPlugin plugin) {
