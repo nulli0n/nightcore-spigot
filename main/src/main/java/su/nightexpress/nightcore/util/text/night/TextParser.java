@@ -12,9 +12,6 @@ import su.nightexpress.nightcore.util.text.night.wrapper.SimpleTagWrapper;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrapper;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
-/**
- * @author NightExpress
- */
 public class TextParser {
 
     public static final String ROOT_NAME = "root";
@@ -229,11 +226,11 @@ public class TextParser {
             if (handler == null) {
                 this.eat(TagWrapper.simple(bracketsContent).opening());
             }
-            else {
-                if (this.mode == ParserMode.STRIP && !this.tagPool.isGoodTag(handler)) {
+            else if (this.tagPool.isGoodTag(handler)) {
+                if (this.mode == ParserMode.STRIP) {
                     this.eat(isTagClosing ? TagWrapper.simple(tagName).closing() : TagWrapper.simple(bracketsContent).opening());
                 }
-                else if (this.mode == ParserMode.PARSE && this.tagPool.isGoodTag(handler)) {
+                else if (this.mode == ParserMode.PARSE) {
                     String groupName = tagName.toLowerCase();
                     if (isTagClosing) {
                         this.backTo(groupName); // Jump to the closing tag's group + Append all text comes before the closing tag.

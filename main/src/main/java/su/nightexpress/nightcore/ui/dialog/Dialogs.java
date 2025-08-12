@@ -75,45 +75,4 @@ public class Dialogs {
     public static WrappedDialog.Builder builder() {
         return new WrappedDialog.Builder();
     }
-
-    /*@Deprecated
-    public static void testDialog(@NotNull Player player) {
-        createAndShow(player, builder -> {
-            builder.base(DialogBases.builder("ARE U AGREE")
-                .afterAction(WrappedDialogAfterAction.CLOSE)
-                .body(
-                    DialogBodies.plainMessage("Test Entry 1"),
-                    DialogBodies.item(NightItem.fromType(Material.APPLE).setDisplayName(Tags.RED.wrap(Tags.BOLD.wrap("FUCK"))))
-                        .description(DialogBodies.plainMessage("This is very good apple")).build()
-                )
-                .inputs(
-                    DialogInputs.numberRange("numbertest", "Chance", 0f, 100f).initial(0f).step(1f).build()
-                )
-                .build());
-
-            NightNbtHolder nbt = NightNbtHolder.builder().put("p1", 1).put("p2", "asd").build();
-            *//*JsonObject object = new JsonObject();
-            object.addProperty("p1", 1);
-            object.addProperty("p2", "asd");*//*
-
-            builder.type(DialogTypes.confirmation(
-                DialogButtons.action("Yes", "Click for yes").action(DialogActions.customClick("yesgo")).build(),
-                DialogButtons.action("No", "Click for no").action(DialogActions.customClick("noway", nbt)).build()
-            ));
-
-            builder.handleResponse("yesgo", (player1, identifier, nbtHolder) -> {
-                if (nbtHolder == null) return;
-
-                float chance = nbtHolder.getFloat("numbertest", 0f);
-                player1.sendMessage("Chance: " + chance);
-            });
-
-            builder.handleResponse("noway", (player1, identifier, nbtHolder) -> {
-                if (nbtHolder == null) return;
-
-                Float p1 = nbtHolder.getFloat("p1");
-                player1.sendMessage("P1 = " + p1);
-            });
-        });
-    }*/
 }

@@ -29,6 +29,9 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
 
     protected final DatabaseConfig    config;
     protected final AbstractConnector connector;
+    protected final DataSynchronizer synchronizer;
+
+    @Deprecated
     protected final Gson              gson;
 
     public AbstractDataManager(@NotNull P plugin) {
@@ -39,6 +42,8 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
         super(plugin);
         this.config = config;
         this.connector = AbstractConnector.create(plugin, config);
+        this.synchronizer = new DataSynchronizer(this);
+
         this.gson = this.registerAdapters(new GsonBuilder().setPrettyPrinting()).create();
     }
 
@@ -101,6 +106,12 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
     @NotNull
     protected final Connection getConnection() throws SQLException {
         return this.getConnector().getConnection();
+    }
+
+    public void addTableSync(@NotNull String tableName, @NotNull Consumer<ResultSet> consumer) {
+        if (this.config.getSyncInterval() > 0 && this.getStorageType() == DatabaseType.MYSQL) {
+            this.synchronizer.addTable(tableName, consumer);
+        }
     }
 
     public void createTable(@NotNull String table, @NotNull List<Column> columns) {

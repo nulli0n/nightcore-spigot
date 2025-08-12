@@ -17,6 +17,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
+import su.nightexpress.nightcore.bridge.bossbar.NightBossBar;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
@@ -134,4 +138,8 @@ public interface Software {
     void hideComponents(@NotNull ItemStack itemStack);
 
     void hideComponents(@NotNull ItemStack itemStack, @NotNull Set<String> componentNames);
+
+
+
+    @NotNull NightBossBar createBossBar(@NotNull NightComponent title, @NotNull NightBarColor barColor, @NotNull NightBarOverlay barOverlay, @NotNull NightBarFlag... barFlags);
 }

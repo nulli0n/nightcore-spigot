@@ -40,7 +40,7 @@ public class DialogWatcher extends AbstractManager<NightCore> implements DialogC
     public void handleClick(@NotNull DialogClickResult result) {
         NamespacedKey identifier = result.getIdentifier();
         if (!DialogKeys.isNamespace(identifier)) {
-            this.plugin.debug("Foreign dialog identifier: '" + identifier + "'.");
+            //this.plugin.debug("Foreign dialog identifier: '" + identifier + "'.");
             return;
         }
 

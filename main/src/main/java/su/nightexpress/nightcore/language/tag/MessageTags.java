@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class MessageTags {
 
     private static final Map<String, MessageTag> REGISTRY = new HashMap<>();

@@ -13,6 +13,7 @@ import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
 public class CoreLang {
 
+    @Deprecated
     public static final LangEnum<ClickKey> CLICK_KEY = LangEnum.of("ClickKey", ClickKey.class, map -> {
         map.put(ClickKey.LEFT, "L-Click");
         map.put(ClickKey.RIGHT, "R-Click");
@@ -188,23 +189,27 @@ public class CoreLang {
     @Deprecated
     public static final LangString EDITOR_INPUT_ERROR_GENERIC     = LangString.of("Editor.Input.Error.Generic", GRAY.wrap("Invalid value!"));
 
-
+    @Deprecated
     public static final LangString EDITOR_BUTTON_NAME = LangString.of("Editor.Button.Name",
         LIGHT_YELLOW.wrap(BOLD.wrap(GENERIC_NAME))
     );
 
+    @Deprecated
     public static final LangString EDITOR_BUTTON_DESCRIPTION = LangString.of("Editor.Button.Description",
         GRAY.wrap(GENERIC_ENTRY)
     );
 
+    @Deprecated
     public static final LangString EDITOR_BUTTON_CURRENT_DEFAULT_NAME = LangString.of("Editor.Button.Current.DefaultName",
         "Current"
     );
 
+    @Deprecated
     public static final LangString EDITOR_BUTTON_CURRENT_INFO = LangString.of("Editor.Button.Current.Info",
         LIGHT_YELLOW.wrap("➥ " + GRAY.wrap(GENERIC_NAME + ": ") + GENERIC_VALUE)
     );
 
+    @Deprecated
     public static final LangString EDITOR_BUTTON_CLICK_KEY = LangString.of("Editor.Button.ClickKey",
         LIGHT_YELLOW.wrap("→ " + UNDERLINED.wrap(GENERIC_NAME + " to " + GENERIC_VALUE))
     );

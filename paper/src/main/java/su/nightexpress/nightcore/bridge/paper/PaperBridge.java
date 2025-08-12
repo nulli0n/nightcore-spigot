@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -29,9 +30,14 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.paper.bossbar.PaperBossBar;
+import su.nightexpress.nightcore.bridge.paper.bossbar.PaperBossBarAdapter;
 import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogAdapter;
 import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogListener;
 import su.nightexpress.nightcore.bridge.paper.text.PaperTextComponentAdapter;
@@ -354,5 +360,16 @@ public class PaperBridge implements Software {
         catch (NoSuchElementException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    @NotNull
+    public PaperBossBar createBossBar(@NotNull NightComponent title, @NotNull NightBarColor barColor, @NotNull NightBarOverlay barOverlay, @NotNull NightBarFlag... barFlags) {
+        Component name = this.textComponentAdapter.adaptComponent(title);
+        BossBar.Color color = PaperBossBarAdapter.adaptColor(barColor);
+        BossBar.Overlay overlay = PaperBossBarAdapter.adaptOverlay(barOverlay);
+
+        BossBar bar = BossBar.bossBar(name, 0F, color, overlay);
+        return new PaperBossBar(this, bar).addFlags(barFlags);
     }
 }

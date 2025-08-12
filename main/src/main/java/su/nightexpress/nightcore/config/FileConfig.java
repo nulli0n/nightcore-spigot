@@ -111,7 +111,7 @@ public class FileConfig extends YamlConfiguration {
     }
 
     public static void initializeOptions(@NotNull Class<?> clazz, @NotNull FileConfig config) {
-        for (ConfigValue<?> value : Reflex.getFields(clazz, ConfigValue.class)) {
+        for (ConfigValue<?> value : Reflex.getStaticFields(clazz, ConfigValue.class, false)) {
             value.read(config);
         }
     }

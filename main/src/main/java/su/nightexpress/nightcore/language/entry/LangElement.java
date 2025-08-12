@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 
+@Deprecated
 public interface LangElement {
 
     void write(@NotNull FileConfig config);

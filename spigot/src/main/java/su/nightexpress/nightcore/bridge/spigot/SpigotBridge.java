@@ -6,6 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Translatable;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
@@ -23,9 +26,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBar;
+import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBarAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogListener;
 import su.nightexpress.nightcore.bridge.spigot.text.SpigotTextComponentAdapter;
@@ -34,7 +42,9 @@ import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -374,5 +384,15 @@ public class SpigotBridge implements Software {
 
         consumer.accept(specific);
         item.setItemMeta(specific);
+    }
+
+    @Override
+    @NotNull
+    public SpigotBossBar createBossBar(@NotNull NightComponent title, @NotNull NightBarColor barColor, @NotNull NightBarOverlay barOverlay, @NotNull NightBarFlag... barFlags) {
+        BarColor color = SpigotBossBarAdapter.adaptColor(barColor);
+        BarStyle overlay = SpigotBossBarAdapter.adaptOverlay(barOverlay);
+
+        BossBar bar = Bukkit.createBossBar(title.toLegacy(), color, overlay);
+        return new SpigotBossBar(bar).addFlags(barFlags);
     }
 }
