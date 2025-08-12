@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.util.bridge.RegistryType;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class LangRegistry<E extends Keyed> implements LangElement {
 
     private final String              path;

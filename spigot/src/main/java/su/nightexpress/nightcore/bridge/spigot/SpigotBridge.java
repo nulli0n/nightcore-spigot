@@ -1,15 +1,21 @@
 package su.nightexpress.nightcore.bridge.spigot;
 
+import net.md_5.bungee.api.dialog.Dialog;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Translatable;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -20,13 +26,25 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
+import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
+import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
+import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBar;
+import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBarAdapter;
+import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogAdapter;
+import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogListener;
+import su.nightexpress.nightcore.bridge.spigot.text.SpigotTextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bridge.Software;
-import su.nightexpress.nightcore.util.bridge.wrapper.ComponentBuildable;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -39,10 +57,19 @@ public class SpigotBridge implements Software {
     private static SimpleCommandMap commandMap;
     private static AtomicInteger entityCounter;
 
-    private Set<ItemFlag> commonFlagsToHide;
+    private SpigotTextComponentAdapter textComponentAdapter;
+    private DialogAdapter<?>              dialogAdapter;
+
+    private Set<ItemFlag>      commonFlagsToHide;
 
     @Override
     public boolean initialize() {
+        this.textComponentAdapter = new SpigotTextComponentAdapter(this);
+
+        if (Version.isAtLeast(Version.MC_1_21_7)) {
+            this.dialogAdapter = new SpigotDialogAdapter(this);
+        }
+
         loadCommandMap();
         loadEntityCounter();
 
@@ -80,6 +107,17 @@ public class SpigotBridge implements Software {
 
     @Override
     @NotNull
+    public Listener createDialogListener(@NotNull DialogClickHandler handler) {
+        return new SpigotDialogListener(handler);
+    }
+
+    @Override
+    public void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {
+        player.showDialog((Dialog) this.dialogAdapter.adaptDialog(dialog));
+    }
+
+    @Override
+    @NotNull
     public String getName() {
         return "spigot-bridge";
     }
@@ -92,6 +130,17 @@ public class SpigotBridge implements Software {
     @Override
     public int nextEntityId() {
         return entityCounter.incrementAndGet();
+    }
+
+    @Override
+    @NotNull
+    public SpigotTextComponentAdapter getTextComponentAdapter() {
+        return this.textComponentAdapter;
+    }
+
+    @NotNull
+    public DialogAdapter<?> getDialogAdapter() {
+        return this.dialogAdapter;
     }
 
     @NotNull
@@ -108,30 +157,6 @@ public class SpigotBridge implements Software {
     public Map<String, Command> getKnownCommands(@NotNull SimpleCommandMap commandMap) {
         Map<String, Command> knownCommands = (Map<String, Command>) Reflex.getFieldValue(commandMap, FIELD_KNOWN_COMMANDS);
         return knownCommands == null ? Collections.emptyMap() : knownCommands;
-    }
-
-    @Override
-    @NotNull
-    public NightComponent textComponent(@NotNull String text) {
-        return SpigotComponent.text(text);
-    }
-
-    @Override
-    @NotNull
-    public NightComponent translateComponent(@NotNull String key) {
-        return SpigotComponent.translate(key);
-    }
-
-    @Override
-    @NotNull
-    public NightComponent translateComponent(@NotNull String key, @Nullable String fallback) {
-        return SpigotComponent.translate(key, fallback);
-    }
-
-    @Override
-    @NotNull
-    public NightComponent buildComponent(@NotNull List<ComponentBuildable> childrens) {
-        return SpigotComponent.builder(childrens);
     }
 
     @Override
@@ -221,6 +246,20 @@ public class SpigotBridge implements Software {
 
 
     @Override
+    public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {
+        entity.setCustomName(component.toLegacy());
+    }
+
+    @Override
+    @Nullable
+    public String getEntityName(@NotNull Entity entity) {
+        String name = entity.getCustomName();
+        return name == null ? null : LegacyColors.plainColors(name);
+    }
+
+
+
+    @Override
     @NotNull
     public ItemStack setType(@NotNull ItemStack itemStack, @NotNull Material material) {
         itemStack.setType(material);
@@ -242,9 +281,9 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    public void setCustomName(@NotNull ItemMeta meta, @NotNull NightComponent name) {
+    public void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name) {
         //meta.setDisplayName(NightMessage.asLegacy(name));
-        meta.setDisplayName(name.toLegacy());
+        meta.setDisplayName(name == null ? null : name.toLegacy());
     }
 
     @Override
@@ -267,9 +306,9 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    public void setLore(@NotNull ItemMeta meta, @NotNull List<NightComponent> lore) {
+    public void setLore(@NotNull ItemMeta meta, @Nullable List<NightComponent> lore) {
         //meta.setLore(NightMessage.asLegacy(lore));
-        meta.setLore(lore.stream().map(NightComponent::toLegacy).toList());
+        meta.setLore(lore == null ? null : lore.stream().map(NightComponent::toLegacy).toList());
     }
 
     @Override
@@ -345,5 +384,15 @@ public class SpigotBridge implements Software {
 
         consumer.accept(specific);
         item.setItemMeta(specific);
+    }
+
+    @Override
+    @NotNull
+    public SpigotBossBar createBossBar(@NotNull NightComponent title, @NotNull NightBarColor barColor, @NotNull NightBarOverlay barOverlay, @NotNull NightBarFlag... barFlags) {
+        BarColor color = SpigotBossBarAdapter.adaptColor(barColor);
+        BarStyle overlay = SpigotBossBarAdapter.adaptOverlay(barOverlay);
+
+        BossBar bar = Bukkit.createBossBar(title.toLegacy(), color, overlay);
+        return new SpigotBossBar(bar).addFlags(barFlags);
     }
 }

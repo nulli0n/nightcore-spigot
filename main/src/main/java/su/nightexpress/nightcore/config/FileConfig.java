@@ -21,7 +21,8 @@ import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.bukkit.NightSound;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.sound.AbstractSound;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,7 +111,7 @@ public class FileConfig extends YamlConfiguration {
     }
 
     public static void initializeOptions(@NotNull Class<?> clazz, @NotNull FileConfig config) {
-        for (ConfigValue<?> value : Reflex.getFields(clazz, ConfigValue.class)) {
+        for (ConfigValue<?> value : Reflex.getStaticFields(clazz, ConfigValue.class, false)) {
             value.read(config);
         }
     }
@@ -333,12 +334,20 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @NotNull
+    @Deprecated
     public NightSound getSound(@NotNull String path) {
         return NightSound.read(this, path); // Update
-//        if (this.contains(path + ".Name")) {
-//            return NightSound.read(this, path); // Update
-//        }
-//        return NightSound.deserialize(this.getString(path, "null"));
+    }
+
+    @Nullable
+    public su.nightexpress.nightcore.bridge.wrap.NightSound readSound(@NotNull String path) {
+        return AbstractSound.read(this, path);
+    }
+
+    @Nullable
+    public su.nightexpress.nightcore.bridge.wrap.NightSound readSound(@NotNull String path, @NotNull su.nightexpress.nightcore.bridge.wrap.NightSound def) {
+        su.nightexpress.nightcore.bridge.wrap.NightSound sound = this.readSound(path);
+        return sound == null ? def : sound;
     }
 
     @Deprecated
@@ -399,8 +408,10 @@ public class FileConfig extends YamlConfiguration {
         }
 
         String name = this.getString(path + "Name");
-        meta.setDisplayName(name != null ? NightMessage.asLegacy(name) : null);
-        meta.setLore(NightMessage.asLegacy(this.getStringList(path + "Lore")));
+/*        meta.setDisplayName(name != null ? NightMessage.asLegacy(name) : null);
+        meta.setLore(NightMessage.asLegacy(this.getStringList(path + "Lore")));*/
+        ItemUtil.setCustomName(meta, name == null ? null : NightMessage.parse(name));
+        ItemUtil.setLore(meta, this.getStringList(path + "Lore"));
 
         for (String sKey : this.getSection(path + "Enchants")) {
             Enchantment enchantment = BukkitThing.getEnchantment(sKey);

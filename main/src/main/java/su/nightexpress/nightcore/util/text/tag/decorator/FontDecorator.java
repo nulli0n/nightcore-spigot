@@ -1,8 +1,10 @@
 package su.nightexpress.nightcore.util.text.tag.decorator;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
+@Deprecated
 public class FontDecorator implements Decorator {
 
     private final String font;
@@ -12,7 +14,8 @@ public class FontDecorator implements Decorator {
     }
 
     @Override
-    public void decorate(@NotNull NightComponent component) {
-        component.setFont(this.font);
+    @NotNull
+    public NightComponent decorate(@NotNull NightComponent component) {
+        return component.font(NightKey.fromString(this.font));
     }
 }

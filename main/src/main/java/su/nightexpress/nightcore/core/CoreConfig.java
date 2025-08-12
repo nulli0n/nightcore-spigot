@@ -1,7 +1,10 @@
 package su.nightexpress.nightcore.core;
 
 import su.nightexpress.nightcore.config.ConfigValue;
-import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.Enums;
+import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.TimeUtil;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.number.NumberShortcut;
 import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 
@@ -71,5 +74,43 @@ public class CoreConfig {
             map.put("quadrillion", new NumberShortcut(5, "q"));
         },
         "Custom number shortcuts."
+    );
+
+    public static final ConfigValue<Integer> PROFILE_CACHE_UPDATE_TIME = ConfigValue.create("Profiles.Cache.UpdateTime",
+        360,
+        "Sets expire time (in minutes) for cached player profiles before they will make a call to the Mojang API to update their name and textures.",
+        "[*] Profiles with custom skins for heads are excluded from updates.",
+        "[*] Profile's expire time is reset on each profile query.",
+        "[*] Set -1 to never update until the server reboot.",
+        "[Default is 360 (6 hours)]"
+    );
+
+    public static final ConfigValue<Integer> PROFILE_CACHE_PURGE_TIME = ConfigValue.create("Profiles.Cache.PurgeTime",
+        1440,
+        "Sets expire time (in minutes) for cached player profiles before they will be purged from the cache and memory.",
+        "[*] Profiles with custom skins for heads are excluded from being purged.",
+        "[*] Profile's expire time is reset on each profile query.",
+        "[*] Set -1 to never purge until the server reboot.",
+        "[Default is 1440 (24 hours)]"
+    );
+
+    public static final ConfigValue<Integer> PROFILE_PURGE_INTERVAL = ConfigValue.create("Profiles.PurgeInterval",
+        600,
+        "How often (in seconds) to purge cached player profiles.",
+        "[Default is 600 (10 minutes)]"
+    );
+
+    public static final ConfigValue<Boolean> PROFILE_UPDATE_ON_JOIN = ConfigValue.create("Profiles.UpdateOnJoin",
+        true,
+        "Controls whether cached player profiles should force update when their owner joins the server.",
+        "[Default is true]"
+    );
+
+    public static final ConfigValue<Boolean> PROFILE_FETCH_CUSTOM = ConfigValue.create("Profiles.FetchCustom",
+        false,
+        "Controls whether profiles with custom textures can query Mojang API to fetch missing properties.",
+        "[*] Enable this only if you're experiencing issues with texture loading for custom heads.",
+        "[*] Enabling this setting may get you rate limited from Mojang.",
+        "[Default is false]"
     );
 }

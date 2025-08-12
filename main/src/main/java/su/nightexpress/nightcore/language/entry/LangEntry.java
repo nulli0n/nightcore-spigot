@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.language.entry;
 
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public abstract class LangEntry implements LangElement {
 
     protected final String path;

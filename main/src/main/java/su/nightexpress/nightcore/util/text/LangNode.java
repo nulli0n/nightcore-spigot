@@ -2,10 +2,11 @@ package su.nightexpress.nightcore.util.text;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
+import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 
+@Deprecated
 public class LangNode extends TextChildren {
 
     private final String key;
@@ -26,16 +27,16 @@ public class LangNode extends TextChildren {
     @NotNull
     public NightComponent toComponent() {
         ColorDecorator colorDecorator = this.parent.getColor();
-        NightComponent textComponent = Engine.software().translateComponent(this.key, this.fallback);
+        NightComponent component = NightComponent.translatable(this.key, this.fallback);
 
         if (colorDecorator != null) {
-            colorDecorator.decorate(textComponent);
+            component = colorDecorator.decorate(component);
         }
 
-        this.parent.getDecorators().forEach(decorator -> {
-            decorator.decorate(textComponent);
-        });
+        for (Decorator decorator : this.parent.getDecorators()) {
+            component = decorator.decorate(component);
+        }
 
-        return textComponent;
+        return component;
     }
 }

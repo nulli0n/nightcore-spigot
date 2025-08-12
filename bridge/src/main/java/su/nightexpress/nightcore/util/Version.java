@@ -8,19 +8,20 @@ import java.util.stream.Stream;
 
 public enum Version {
 
-    V1_19_R3("1.19.4", 3337, Status.DROPPED),
-    V1_20_R1("1.20.1", 3465, Status.OUTDATED),
-    V1_20_R2("1.20.2", 3578, Status.OUTDATED),
-    V1_20_R3("1.20.4", 3700, Status.OUTDATED),
-    MC_1_20_6("1.20.6", 3839, Status.OUTDATED),
-    MC_1_21_0("1.21", 3953, Status.OUTDATED),
-    MC_1_21("1.21.1", 3955),
+    @Deprecated V1_19_R3("1.19.4", 3337, Status.DROPPED),
+    @Deprecated V1_20_R1("1.20.1", 3465, Status.DROPPED),
+    @Deprecated V1_20_R2("1.20.2", 3578, Status.DROPPED),
+    @Deprecated V1_20_R3("1.20.4", 3700, Status.DROPPED),
+    @Deprecated MC_1_20_6("1.20.6", 3839, Status.DROPPED),
+    @Deprecated MC_1_21_0("1.21", 3953, Status.DROPPED),
+    MC_1_21("1.21.1", 3955, Status.OUTDATED),
     MC_1_21_2("1.21.2", 4080, Status.OUTDATED),
-    MC_1_21_3("1.21.3", 4082),
+    MC_1_21_3("1.21.3", 4082, Status.OUTDATED),
     MC_1_21_4("1.21.4", 4189),
-    MC_1_21_5("1.21.5", 4325),
-    MC_1_21_6("1.21.6", 4435),
-    MC_1_21_7("1.21.7", 4438),
+    MC_1_21_5("1.21.5", 4325, Status.OUTDATED),
+    MC_1_21_6("1.21.6", 4435, Status.OUTDATED),
+    MC_1_21_7("1.21.7", 4438, Status.OUTDATED),
+    MC_1_21_8("1.21.8", 4440),
     UNKNOWN("Unknown", 0),
     ;
 

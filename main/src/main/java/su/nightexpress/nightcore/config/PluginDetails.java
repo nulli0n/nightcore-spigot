@@ -21,6 +21,7 @@ public class PluginDetails implements Writeable {
     private DatabaseConfig databaseConfig;
 
     private Class<?> configClass;
+    @Deprecated
     private Class<?> langClass;
     private Class<?> permissionsClass;
 
@@ -134,10 +135,12 @@ public class PluginDetails implements Writeable {
     }
 
     @Nullable
+    @Deprecated
     public Class<?> getLangClass() {
         return langClass;
     }
 
+    @Deprecated
     public PluginDetails setLangClass(@Nullable Class<?> langClass) {
         this.langClass = langClass;
         return this;

@@ -2,13 +2,16 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
-import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
+import su.nightexpress.nightcore.util.text.tag.decorator.GradientColorDecorator;
 
 import java.awt.*;
+import java.util.stream.Stream;
 
+@Deprecated
 public class GradientTag extends Tag implements ContentTag {
 
     public static final String NAME = "gradient";
@@ -20,16 +23,24 @@ public class GradientTag extends Tag implements ContentTag {
     @NotNull
     @Deprecated
     public String enclose(@NotNull String hexStart, @NotNull String hexEnd, @NotNull String text) {
-//        String tagOpen = brackets(this.getName() + ":" + hexStart + ":" + hexEnd);
-//        String tagClose = this.getClosingName();
-//
-//        return tagOpen + text + tagClose;
         return this.wrap(text, hexStart, hexEnd);
     }
 
     @NotNull
+    @Deprecated
     public String wrap(@NotNull String string, @NotNull String fromHex, @NotNull String toHex) {
-        String tagOpen = TagUtils.brackets(this.getName() + TagUtils.SEMICOLON + fromHex + TagUtils.SEMICOLON + toHex);
+        return this.wrap(string, new String[]{fromHex, toHex});
+    }
+
+    @NotNull
+    public String wrap(@NotNull String string, @NotNull Color... colors) {
+        return this.wrap(string, Stream.of(colors).map(ParserUtils::colorToHexString).toArray(String[]::new));
+    }
+
+    @NotNull
+    public String wrap(@NotNull String string, @NotNull String... hexCodes) {
+        String joined = String.join(String.valueOf(ParserUtils.DELIMITER), hexCodes);
+        String tagOpen = TagUtils.brackets(this.getName() + ParserUtils.DELIMITER + joined);
         String tagClose = this.getClosingName();
 
         return tagOpen + string + tagClose;
@@ -38,24 +49,20 @@ public class GradientTag extends Tag implements ContentTag {
     @Override
     @Nullable
     public GradientColorDecorator parse(@NotNull String content) {
-        String[] split = content.split(String.valueOf(TagUtils.SEMICOLON));
-        if (split.length < 2) return null;
+        String[] split = content.split(String.valueOf(ParserUtils.DELIMITER));
 
-        String code1 = split[0];
-        String code2 = split[1];
+        int length = split.length;
+        if (length < 2) return null;
 
-        Color from = TagUtils.colorFromHexString(code1);
-        Color to = TagUtils.colorFromHexString(code2);
+        Color[] colors = new Color[length];
 
-        // TODO Support for named colors
-//        try {
-//            from = Color.decode(code1);
-//            to = Color.decode(code2);
-//        }
-//        catch (NumberFormatException exception) {
-//            return null;
-//        }
+        for (int index = 0; index < length; index++) {
+            Color stop = ParserUtils.colorFromSchemeOrHex(split[index]);
+            if (stop == null) continue;
 
-        return new GradientColorDecorator(from, to);
+            colors[index] = stop;
+        }
+
+        return new GradientColorDecorator(colors);
     }
 }

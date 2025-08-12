@@ -3,11 +3,13 @@ package su.nightexpress.nightcore.util.text.tag.impl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.bridge.wrapper.ClickEventType;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.decorator.ClickDecorator;
 
+@Deprecated
 public class ClickTag extends Tag implements ContentTag {
 
     public static final String NAME = "click";
@@ -55,7 +57,7 @@ public class ClickTag extends Tag implements ContentTag {
 
     @NotNull
     public String wrap(@NotNull String string, @NotNull ClickEventType type, @NotNull String content) {
-        String data = type.name().toLowerCase() + TagUtils.SEMICOLON + TagUtils.quoted(content);
+        String data = type.name().toLowerCase() + ParserUtils.DELIMITER + ParserUtils.quoted(content);
 
         return TagUtils.wrapContent(this, string, data);
     }
@@ -75,7 +77,7 @@ public class ClickTag extends Tag implements ContentTag {
         int prefixSize = action.name().toLowerCase().length() + 1; // 1 for ':', like "run_command:"
         tagContent = tagContent.substring(prefixSize);
 
-        String value = TagUtils.unquoted(tagContent);
+        String value = ParserUtils.unquoted(tagContent);
 
         return new ClickDecorator(action, value);
     }

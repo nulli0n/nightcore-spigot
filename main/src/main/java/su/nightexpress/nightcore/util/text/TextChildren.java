@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.util.text;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.bridge.wrapper.ComponentBuildable;
 
+@Deprecated
 public abstract class TextChildren implements ComponentBuildable {
 
     protected final TextGroup parent;

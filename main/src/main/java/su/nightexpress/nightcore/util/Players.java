@@ -8,26 +8,27 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.profile.PlayerTextures;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
+import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.profile.CachedProfile;
+import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import su.nightexpress.nightcore.util.text.TextRoot;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
-import java.net.URI;
-import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Players {
 
-    public static final String TEXTURES_HOST         = "http://textures.minecraft.net/texture/";
+    @Deprecated
+    public static final String TEXTURES_HOST         = PlayerProfiles.TEXTURES_HOST;
     public static final String PLAYER_COMMAND_PREFIX = "player:";
 
     @NotNull
@@ -74,68 +75,54 @@ public class Players {
         return Bukkit.getServer().getPlayer(name);
     }
 
+    @Nullable
+    public static Player getPlayer(@NotNull UUID uuid) {
+        return Bukkit.getServer().getPlayer(uuid);
+    }
+
     public static boolean isBedrock(@NotNull Player player) {
         return Plugins.hasFloodgate() && FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId());
     }
 
     public static boolean isReal(@NotNull Player player) {
-        return Bukkit.getServer().getPlayer(player.getUniqueId()) != null;
+        return getPlayer(player.getUniqueId()) != null;
     }
 
     @NotNull
+    @Deprecated
     public static NightProfile getProfile(@NotNull OfflinePlayer player) {
-        return Engine.software().getProfile(player);
+        return PlayerProfiles.getProfile(player).query();
     }
 
     @NotNull
+    @Deprecated
     public static NightProfile createProfile(@NotNull UUID uuid) {
-        return Engine.software().createProfile(uuid);
+        return PlayerProfiles.createProfile(uuid).query();
     }
 
     @NotNull
+    @Deprecated
     public static NightProfile createProfile(@NotNull String name) {
-        return Engine.software().createProfile(name);
+        return PlayerProfiles.createProfile(name);
     }
 
     @NotNull
-    public static NightProfile createProfile(@Nullable UUID uuid, @Nullable String name) {
-        return Engine.software().createProfile(uuid, name);
+    @Deprecated
+    public static NightProfile createProfile(@NotNull UUID uuid, @Nullable String name) {
+        return PlayerProfiles.createProfile(uuid, name).query();
     }
 
     @Nullable
+    @Deprecated
     public static NightProfile createProfileBySkinURL(@NotNull String urlData) {
-        if (urlData.isBlank()) return null;
-
-        String name = urlData.substring(0, 16);
-
-        if (!urlData.startsWith(TEXTURES_HOST)) {
-            urlData = TEXTURES_HOST + urlData;
-        }
-
-        try {
-            UUID uuid = UUID.nameUUIDFromBytes(urlData.getBytes());
-            // If no name, then meta#getOwnerProfile will return 'null'.
-            NightProfile profile = createProfile(uuid, name);
-            URL url = URI.create(urlData).toURL();
-            PlayerTextures textures = profile.getTextures();
-
-            textures.setSkin(url);
-            profile.setTextures(textures);
-            return profile;
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
-        }
+        CachedProfile profile = PlayerProfiles.createProfileBySkinURL(urlData);
+        return profile == null ? null : profile.query();
     }
 
     @Nullable
+    @Deprecated
     public static String getProfileSkinURL(@NotNull NightProfile profile) {
-        URL skin = profile.getTextures().getSkin();
-        if (skin == null) return null;
-
-        String raw = skin.toString();
-        return raw.substring(TEXTURES_HOST.length());
+        return PlayerProfiles.getProfileSkinURL(profile);
     }
 
     @NotNull
@@ -231,24 +218,50 @@ public class Players {
         return suffix == null ? fallback : suffix;
     }
 
+    @Deprecated
     public static void sendModernMessage(@NotNull CommandSender sender, @NotNull String message) {
-        NightMessage.create(message).send(sender);
+        //NightMessage.create(message).send(sender);
+        sendMessage(sender, message);
     }
 
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull String message) {
+        sendMessage(sender, NightMessage.parse(message));
+    }
+
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull NightComponent component) {
+        Software.instance().getTextComponentAdapter().send(sender, component);
+    }
+
+    @Deprecated
     public static void sendActionBarText(@NotNull Player player, @NotNull String message) {
-        sendActionBar(player, NightMessage.create(message));
+        sendActionBar(player, message);
     }
 
+    @Deprecated
     public static void sendActionBar(@NotNull Player player, @NotNull TextRoot message) {
-        message.parseIfAbsent().sendActionBar(player);
-        //player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message.parseIfAbsent());
+        //message.parseIfAbsent().sendActionBar(player);
+        sendActionBar(player, message.getString());
     }
 
-    public static void sendTitle(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
-        NightComponent titleC = NightMessage.parse(title);
-        NightComponent subtitleC = NightMessage.parse(subtitle);
+    public static void sendActionBar(@NotNull Player player, @NotNull String message) {
+        sendActionBar(player, NightMessage.parse(message));
+    }
 
-        Engine.software().sendTitles(player, titleC, subtitleC, fadeIn, stay, fadeOut);
+    public static void sendActionBar(@NotNull Player player, @NotNull NightComponent component) {
+        Software.instance().getTextComponentAdapter().sendActionBar(player, component);
+    }
+
+    @Deprecated
+    public static void sendTitle(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+        sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
+    }
+
+    public static void sendTitles(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+        sendTitles(player, NightMessage.parse(title), NightMessage.parse(subtitle), fadeIn, stay, fadeOut);
+    }
+
+    public static void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
+        Engine.software().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {

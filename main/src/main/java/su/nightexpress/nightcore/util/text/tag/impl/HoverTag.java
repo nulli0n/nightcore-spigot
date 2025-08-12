@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.ItemNbt;
 import su.nightexpress.nightcore.util.bridge.wrapper.HoverEventType;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
@@ -12,6 +13,7 @@ import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.ShowItemDecorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.ShowTextDecorator;
 
+@Deprecated
 public class HoverTag extends Tag implements ContentTag {
 
     public static final String NAME = "hover";
@@ -62,7 +64,7 @@ public class HoverTag extends Tag implements ContentTag {
 
     @NotNull
     public String wrap(@NotNull String string, @NotNull HoverEventType type, @NotNull String content) {
-        String data = type.name().toLowerCase() + TagUtils.SEMICOLON + TagUtils.quoted(content);
+        String data = type.name().toLowerCase() + ParserUtils.DELIMITER + ParserUtils.quoted(content);
         return TagUtils.wrapContent(this, string, data);
     }
 
@@ -81,7 +83,7 @@ public class HoverTag extends Tag implements ContentTag {
         int prefixSize = action.name().toLowerCase().length() + 1; // 1 for ':', like "show_text:"
         tagContent = tagContent.substring(prefixSize);
 
-        String value = TagUtils.unquoted(tagContent);
+        String value = ParserUtils.unquoted(tagContent);
 
         if (action == HoverEventType.SHOW_TEXT) {
             return new ShowTextDecorator(value);

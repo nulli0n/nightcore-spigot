@@ -13,7 +13,7 @@ import su.nightexpress.nightcore.menu.click.ClickType;
 import su.nightexpress.nightcore.menu.item.ItemHandler;
 import su.nightexpress.nightcore.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.*;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.*;
@@ -93,7 +93,7 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
             this.createDefaultItems().forEach(menuItem -> {
                 AtomicInteger count = new AtomicInteger();
                 String raw = ItemUtil.getItemName(menuItem.getItemStack());
-                String name = StringUtil.lowerCaseUnderscoreStrict(NightMessage.stripAll(raw));
+                String name = StringUtil.lowerCaseUnderscoreStrict(NightMessage.stripTags(raw));
                 String finalName = name;
 
                 while (this.cfg.contains(this.itemSection + "." + finalName)) {

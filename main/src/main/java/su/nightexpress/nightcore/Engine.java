@@ -2,6 +2,8 @@ package su.nightexpress.nightcore;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.paper.PaperBridge;
+import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 import su.nightexpress.nightcore.integration.VaultHook;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
 import su.nightexpress.nightcore.integration.permission.impl.LuckPermissionProvider;
@@ -11,8 +13,6 @@ import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.Software;
-import su.nightexpress.nightcore.bridge.paper.PaperBridge;
-import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +22,6 @@ public class Engine {
     private static final Set<NightPlugin> CHILDRENS = new HashSet<>();
 
     private static NightCore          core;
-    private static Software           software;
     private static PermissionProvider permissions;
 
     @NotNull
@@ -39,9 +38,7 @@ public class Engine {
 
     @NotNull
     public static Software software() {
-        if (software == null) throw new IllegalStateException("Software is not initialized!");
-
-        return software;
+        return Software.INSTANCE.get();
     }
 
     @Nullable
@@ -69,9 +66,8 @@ public class Engine {
         Version version = Version.detect();
         if (version.isDropped()) return;
 
-        software = Version.isPaper() ? new PaperBridge() : new SpigotBridge();
-        software.initialize();
-        core.info("Server version detected as " + version.getLocalized() + ". Using " + software.getName() + ".");
+        Software.INSTANCE.load(Version.isPaper() ? new PaperBridge() : new SpigotBridge());
+        core.info("Server version detected as " + version.getLocalized() + ". Using " + software().getName() + ".");
 
         ItemNbt.load(core);
         loadPermissionsProvider();
@@ -116,8 +112,8 @@ public class Engine {
 
         if (current == Version.UNKNOWN) {
             plugin.warn("WARNING: This plugin is not supposed to run on this server version!");
-            plugin.warn("If server version is newer than " + Version.values()[Version.values().length - 1] + ", then wait for an update please.");
-            plugin.warn("Otherwise this plugin will not work properly or even load.");
+            plugin.warn("If server version is newer than " + Version.values()[Version.values().length - 2] + ", then wait for an update please.");
+            plugin.warn("The plugin may not work properly.");
         }
         else if (current.isDeprecated()) {
             plugin.warn("WARNING: You're running an outdated server version (" + current.getLocalized() + ")!");

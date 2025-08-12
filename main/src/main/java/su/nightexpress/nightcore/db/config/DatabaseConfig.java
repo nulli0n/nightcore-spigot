@@ -17,6 +17,7 @@ public class DatabaseConfig implements Writeable {
     private final int          syncInterval;
     private final DatabaseType databaseType;
     private final String       tablePrefix;
+    private final long maxLifetime;
     private final boolean      purgeEnabled;
     private final int          purgePeriod;
 
@@ -32,6 +33,7 @@ public class DatabaseConfig implements Writeable {
         int syncInterval,
         @NotNull DatabaseType databaseType,
         @NotNull String tablePrefix,
+        long maxLifetime,
         boolean purgeEnabled,
         int purgePeriod,
 
@@ -46,6 +48,7 @@ public class DatabaseConfig implements Writeable {
         this.syncInterval = syncInterval;
         this.databaseType = databaseType;
         this.tablePrefix = tablePrefix;
+        this.maxLifetime = maxLifetime;
         this.purgeEnabled = purgeEnabled;
         this.purgePeriod = purgePeriod;
 
@@ -97,6 +100,14 @@ public class DatabaseConfig implements Writeable {
                 "Set to '-1' to disable.")
             .read(config);
 
+        long maxLifetime = ConfigValue.create(path + ".Max_Lifetime",
+            1800000,
+            "This property controls the maximum lifetime of a connection in the pool.",
+            "A value of 0 indicates no maximum lifetime (infinite lifetime).",
+            "[The minimum allowed value is 30000ms (30 seconds)]",
+            "[Default is 1800000 (30 minutes)]"
+        ).read(config);
+
         String tablePrefix = ConfigValue.create(path + ".Table_Prefix", defaultPrefix,
                 "Custom prefix for plugin tables in database.")
             .read(config);
@@ -139,8 +150,9 @@ public class DatabaseConfig implements Writeable {
                 "By default it's days of inactivity for the plugin users.")
             .read(config);
 
-        return new DatabaseConfig(syncInterval,
-            databaseType, tablePrefix,
+        return new DatabaseConfig(
+            syncInterval,
+            databaseType, tablePrefix, maxLifetime,
             purgeEnabled, purgePeriod,
 
             mysqlUser, mysqlPassword, mysqlHost, mysqlBase, urlOptions,
@@ -153,6 +165,7 @@ public class DatabaseConfig implements Writeable {
     public void write(@NotNull FileConfig config, @NotNull String path) {
         config.set(path + ".Type", this.databaseType.name());
         config.set(path + ".Sync_Interval", this.syncInterval);
+        config.set(path + ".Max_Lifetime", this.maxLifetime);
         config.set(path + ".Table_Prefix", this.tablePrefix);
         config.set(path + ".MySQL.Username", this.username);
         config.set(path + ".MySQL.Password", this.password);
@@ -176,6 +189,10 @@ public class DatabaseConfig implements Writeable {
 
     public int getSyncInterval() {
         return syncInterval;
+    }
+
+    public long getMaxLifetime() {
+        return this.maxLifetime;
     }
 
     public boolean isPurgeEnabled() {

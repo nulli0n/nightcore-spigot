@@ -5,6 +5,7 @@ import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.PlaceholderTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 
+@Deprecated
 public class LineBreakTag extends Tag implements PlaceholderTag {
 
     public LineBreakTag() {
@@ -22,6 +23,7 @@ public class LineBreakTag extends Tag implements PlaceholderTag {
         return "\n";
     }
 
+    @Deprecated
     public String[] split(@NotNull String string) {
         for (String alias : this.getAliases()) {
             string = string.replace(TagUtils.brackets(alias), "\n");

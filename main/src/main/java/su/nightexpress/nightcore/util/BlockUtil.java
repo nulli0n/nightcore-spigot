@@ -12,14 +12,6 @@ public class BlockUtil {
 
     private static final Set<Material> FUNCTIONAL = new HashSet<>();
 
-    public static boolean isFunctional(@NotNull Block block) {
-        return isFunctional(block.getType());
-    }
-
-    public static boolean isFunctional(@NotNull Material material) {
-        return FUNCTIONAL.contains(material);
-    }
-
     static {
         FUNCTIONAL.addAll(Tag.ANVIL.getValues());
         FUNCTIONAL.add(Material.BARREL);
@@ -41,7 +33,6 @@ public class BlockUtil {
         FUNCTIONAL.addAll(Tag.SIGNS.getValues());
         FUNCTIONAL.add(Material.SMITHING_TABLE);
         FUNCTIONAL.add(Material.STONECUTTER);
-        FUNCTIONAL.addAll(Tag.ITEMS_BANNERS.getValues());
         FUNCTIONAL.add(Material.BEEHIVE);
         FUNCTIONAL.addAll(Tag.BEDS.getValues());
         FUNCTIONAL.add(Material.BELL);
@@ -52,60 +43,68 @@ public class BlockUtil {
         FUNCTIONAL.addAll(Tag.CAULDRONS.getValues());
         FUNCTIONAL.add(Material.CHISELED_BOOKSHELF);
         FUNCTIONAL.add(Material.COMPOSTER);
-        FUNCTIONAL.add(Material.CONDUIT);
         FUNCTIONAL.add(Material.DECORATED_POT);
-        FUNCTIONAL.add(Material.END_GATEWAY);
-        FUNCTIONAL.add(Material.END_PORTAL);
         FUNCTIONAL.add(Material.END_PORTAL_FRAME);
-        FUNCTIONAL.add(Material.FARMLAND);
         FUNCTIONAL.add(Material.FLETCHING_TABLE);
         FUNCTIONAL.add(Material.FLOWER_POT);
-        FUNCTIONAL.add(Material.FROSTED_ICE);
-        FUNCTIONAL.addAll(Tag.ITEMS_SKULLS.getValues());
-        FUNCTIONAL.add(Material.HEAVY_CORE);
         FUNCTIONAL.add(Material.JUKEBOX);
-        FUNCTIONAL.add(Material.LADDER);
         FUNCTIONAL.add(Material.LODESTONE);
         FUNCTIONAL.add(Material.SPAWNER);
-        FUNCTIONAL.add(Material.NETHER_PORTAL);
         FUNCTIONAL.add(Material.RESPAWN_ANCHOR);
-        FUNCTIONAL.add(Material.SCAFFOLDING);
-        FUNCTIONAL.add(Material.SPONGE);
-        FUNCTIONAL.add(Material.WET_SPONGE);
         FUNCTIONAL.add(Material.SUSPICIOUS_GRAVEL);
         FUNCTIONAL.add(Material.SUSPICIOUS_SAND);
         FUNCTIONAL.add(Material.TNT);
         FUNCTIONAL.add(Material.TRIAL_SPAWNER);
         FUNCTIONAL.add(Material.VAULT);
         FUNCTIONAL.addAll(Tag.BUTTONS.getValues());
-        FUNCTIONAL.add(Material.COPPER_BULB);
         FUNCTIONAL.add(Material.CRAFTER);
         FUNCTIONAL.add(Material.DAYLIGHT_DETECTOR);
         FUNCTIONAL.add(Material.DISPENSER);
         FUNCTIONAL.add(Material.DROPPER);
         FUNCTIONAL.addAll(Tag.DOORS.getValues());
-        FUNCTIONAL.add(Material.HONEY_BLOCK);
         FUNCTIONAL.add(Material.HOPPER);
         FUNCTIONAL.add(Material.LEVER);
-        FUNCTIONAL.add(Material.LIGHTNING_ROD);
         FUNCTIONAL.add(Material.NOTE_BLOCK);
         FUNCTIONAL.add(Material.OBSERVER);
-        FUNCTIONAL.add(Material.PISTON);
-        FUNCTIONAL.add(Material.PISTON_HEAD);
-        FUNCTIONAL.add(Material.STICKY_PISTON);
-        FUNCTIONAL.add(Material.MOVING_PISTON);
         FUNCTIONAL.addAll(Tag.PRESSURE_PLATES.getValues());
-        FUNCTIONAL.addAll(Tag.RAILS.getValues());
-        FUNCTIONAL.add(Material.REDSTONE_LAMP);
-        FUNCTIONAL.add(Material.REDSTONE_WIRE);
         FUNCTIONAL.add(Material.COMPARATOR);
         FUNCTIONAL.add(Material.REPEATER);
-        FUNCTIONAL.add(Material.REDSTONE_TORCH);
-        FUNCTIONAL.add(Material.SLIME_BLOCK);
         FUNCTIONAL.add(Material.TARGET);
         FUNCTIONAL.addAll(Tag.TRAPDOORS.getValues());
         FUNCTIONAL.addAll(Tag.FENCE_GATES.getValues());
-        FUNCTIONAL.add(Material.TRIPWIRE);
         FUNCTIONAL.add(Material.TRIPWIRE_HOOK);
+    }
+
+    public static boolean isFunctional(@NotNull Block block) {
+        return isFunctional(block.getType());
+    }
+
+    public static boolean isFunctional(@NotNull Material material) {
+        return FUNCTIONAL.contains(material);
+    }
+
+    public static boolean isPressurePlate(@NotNull Material material) {
+        return Tag.PRESSURE_PLATES.isTagged(material);
+    }
+
+    public static boolean isButtonLever(@NotNull Material material) {
+        return Tag.BUTTONS.isTagged(material) || material == Material.LEVER;
+        //return material.createBlockData() instanceof Switch;
+    }
+
+    public static boolean isDoor(@NotNull Material material) {
+        return Tag.DOORS.isTagged(material) || Tag.TRAPDOORS.isTagged(material) || Tag.FENCE_GATES.isTagged(material);
+    }
+
+    public static boolean isTramplable(@NotNull Material material) {
+        return material == Material.TURTLE_EGG;
+    }
+
+    public static boolean isTripwire(@NotNull Material material) {
+        return material == Material.TRIPWIRE;
+    }
+
+    public static boolean isPhysicalInteractionBlock(@NotNull Material material) {
+        return isPressurePlate(material) || isTramplable(material) || isTripwire(material);
     }
 }

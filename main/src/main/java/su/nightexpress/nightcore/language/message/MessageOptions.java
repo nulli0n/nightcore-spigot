@@ -2,8 +2,9 @@ package su.nightexpress.nightcore.language.message;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.bukkit.NightSound;
+import su.nightexpress.nightcore.bridge.wrap.NightSound;
 
+@Deprecated
 public class MessageOptions {
 
     private OutputType outputType;

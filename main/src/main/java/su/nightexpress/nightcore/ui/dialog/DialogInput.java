@@ -4,8 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.StringUtil;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
+@Deprecated
 public class DialogInput {
 
     private final String text;
@@ -18,7 +19,7 @@ public class DialogInput {
 
     public DialogInput(@NotNull String text) {
         this.text = text;
-        this.textRaw = NightMessage.stripAll(text);
+        this.textRaw = NightMessage.stripTags(text);
         this.textLegacy = NightMessage.asLegacy(text);
     }
 

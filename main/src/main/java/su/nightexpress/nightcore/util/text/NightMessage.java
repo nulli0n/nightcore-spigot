@@ -6,8 +6,10 @@ import su.nightexpress.nightcore.util.text.tag.TagPool;
 import su.nightexpress.nightcore.util.text.tag.Tags;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class NightMessage {
 
     @NotNull
@@ -45,6 +47,18 @@ public class NightMessage {
     @NotNull
     public static NightComponent parse(@NotNull String string, @NotNull TagPool tagPool) {
         return from(string, tagPool).parseIfAbsent();
+    }
+
+    @NotNull
+    @Deprecated
+    public static List<String> splitLineTag(@NotNull List<String> list) {
+        List<String> segmented = new ArrayList<>();
+
+        list.forEach(line -> {
+            Collections.addAll(segmented, Tags.LINE_BREAK.split(line));
+        });
+
+        return segmented;
     }
 
 
@@ -99,6 +113,7 @@ public class NightMessage {
     }
 
     @NotNull
+    @Deprecated
     public static List<String> asLegacy(@NotNull List<String> string) {
         List<String> list = new ArrayList<>();
         for (String str : string) {

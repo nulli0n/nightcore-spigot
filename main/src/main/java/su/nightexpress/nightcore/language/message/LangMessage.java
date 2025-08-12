@@ -9,26 +9,31 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.language.tag.MessageTag;
 import su.nightexpress.nightcore.language.tag.MessageTags;
-import su.nightexpress.nightcore.util.*;
-import su.nightexpress.nightcore.util.bukkit.NightSound;
+import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.Players;
+import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.sound.AbstractSound;
 import su.nightexpress.nightcore.util.text.TextRoot;
-import su.nightexpress.nightcore.util.text.tag.TagUtils;
-import su.nightexpress.nightcore.util.text.tag.Tags;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
+import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
+@Deprecated
 public class LangMessage {
 
     //private final NightCorePlugin plugin;
     private final String          defaultText;
     private final MessageOptions  options;
 
-    private TextRoot message;
+    //private TextRoot message;
+    private String message;
 
     @Deprecated
     public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options) {
@@ -66,12 +71,12 @@ public class LangMessage {
         OutputType type = this.options.getOutputType();
         if (type != OutputType.CHAT) prefix = null;
 
-        boolean notCompiled = this.message == null;
-        this.message = NightMessage.from(prefix == null || !this.options.hasPrefix() ? this.defaultText : prefix + this.defaultText);
+        //boolean notCompiled = this.message == null;
+        this.message = /*NightMessage.from(*/prefix == null || !this.options.hasPrefix() ? this.defaultText : prefix + this.defaultText/*)*/;
 
-        if (notCompiled && type != OutputType.TITLES) {
+        /*if (notCompiled && type != OutputType.TITLES) {
             this.message.compile();
-        }
+        }*/
         return this;
     }
 
@@ -80,7 +85,7 @@ public class LangMessage {
         //this.plugin = from.plugin;
         this.defaultText = from.defaultText;
         this.options = from.options.copy();
-        this.message = from.message.copy();
+        this.message = from.message;//.copy();
     }
 
     @NotNull
@@ -130,7 +135,7 @@ public class LangMessage {
                     }
                 }
                 else if (type.equalsIgnoreCase("sound")) {
-                    options.setSound(NightSound.deserialize(typeContent));
+                    options.setSound(AbstractSound.deserialize(typeContent));
                 }
                 else if (type.equalsIgnoreCase("prefix")) {
                     boolean b = Boolean.parseBoolean(typeContent);
@@ -149,12 +154,12 @@ public class LangMessage {
             char letter = string.charAt(index);
 
             Tag:
-            if (letter == TagUtils.OPEN_BRACKET && index != (length - 1)) {
-                int indexEnd = TextRoot.indexOfIgnoreEscaped(string, TagUtils.CLOSE_BRACKET, index);
+            if (letter == ParserUtils.OPEN_BRACKET && index != (length - 1)) {
+                int indexEnd = ParserUtils.findUnescapedUnquotedChar(string, ParserUtils.CLOSE_BRACKET, index);
                 if (indexEnd == -1) break Tag;
 
                 char next = string.charAt(index + 1);
-                if (next == TagUtils.CLOSE_BRACKET) break Tag;
+                if (next == ParserUtils.CLOSE_BRACKET) break Tag;
 
                 String bracketsContent = string.substring(index + 1, indexEnd);
 
@@ -165,7 +170,7 @@ public class LangMessage {
                 int semicolonIndex = bracketsContent.indexOf(':');
                 if (semicolonIndex >= 0) {
                     tagName = bracketsContent.substring(0, semicolonIndex);
-                    tagContent = TagUtils.unquoted(bracketsContent.substring(semicolonIndex + 1));
+                    tagContent = ParserUtils.unquoted(bracketsContent.substring(semicolonIndex + 1));
                 }
 
                 MessageTag tag = MessageTags.getTag(tagName);
@@ -185,10 +190,10 @@ public class LangMessage {
         // Remove completely empty lines.
         // Especially useful for message tags lines without extra text.
         StringBuilder stripper = new StringBuilder();
-        for (String part : Tags.LINE_BREAK.split(text)) {
+        for (String part : ParserUtils.breakDownLineSplitters(text)) {
             if (part.isEmpty()) continue;
 
-            if (!stripper.isEmpty()) stripper.append(Placeholders.TAG_LINE_BREAK);
+            if (!stripper.isEmpty()) stripper.append(TagWrappers.BR);
             stripper.append(part);
         }
         String strippedText = stripper.toString();
@@ -207,8 +212,9 @@ public class LangMessage {
     }
 
     @NotNull
+    @Deprecated
     public TextRoot getMessage() {
-        return this.message;
+        return su.nightexpress.nightcore.util.text.NightMessage.from(this.message);
     }
 
     @NotNull
@@ -221,7 +227,7 @@ public class LangMessage {
     public TextRoot getMessage(@NotNull CommandSender sender) {
         if (!this.options.usePlaceholderAPI() || !(sender instanceof Player player)) return this.getMessage();
 
-        return this.message.copy().replace(line -> PlaceholderAPI.setPlaceholders(player, line));
+        return this.getMessage().copy().replace(line -> PlaceholderAPI.setPlaceholders(player, line));
     }
 
     @NotNull
@@ -251,7 +257,8 @@ public class LangMessage {
         if (this.isDisabled()) return this;
 
         LangMessage copy = new LangMessage(this);
-        copy.getMessage().replace(replacer);
+        copy.message = replacer.apply(this.message);
+        //copy.getMessage().replace(replacer);
 
         return copy;
     }
@@ -288,25 +295,22 @@ public class LangMessage {
             replacer.replacePlaceholderAPI(player);
         }
 
-        TextRoot message = replacer.apply(this.message);
-
         if (this.options.getOutputType() == OutputType.CHAT) {
-            message.send(sender);
+            Players.sendMessage(sender, NightMessage.parse(replacer.apply(this.message)));
             return;
         }
 
         if (sender instanceof Player player) {
             if (this.options.getOutputType() == OutputType.ACTION_BAR) {
-                Players.sendActionBar(player, message);
+                Players.sendActionBar(player, NightMessage.parse(replacer.apply(this.message)));
             }
             else if (this.options.getOutputType() == OutputType.TITLES) {
-                String[] split = Tags.LINE_BREAK.split(message.getString());
+                String[] split = ParserUtils.breakDownLineSplitters(replacer.apply(this.message));
 
-                String title = split[0];//NightMessage.asLegacy(split[0]);
-                String subtitle = split.length >= 2 ? split[1]/*NightMessage.asLegacy(split[1])*/ : "";
+                String title = split[0];
+                String subtitle = split.length >= 2 ? split[1] : "";
 
-                //player.sendTitle(title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
-                Players.sendTitle(player, title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
+                Players.sendTitles(player, title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
             }
         }
     }

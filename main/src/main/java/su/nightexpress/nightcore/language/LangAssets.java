@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
+@Deprecated
 public class LangAssets {
 
     private static FileConfig config;

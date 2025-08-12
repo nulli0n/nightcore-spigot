@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.core.command;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ArgumentTypes;
@@ -15,11 +16,8 @@ import su.nightexpress.nightcore.core.CorePerms;
 import su.nightexpress.nightcore.util.ItemNbt;
 import su.nightexpress.nightcore.util.ItemTag;
 import su.nightexpress.nightcore.util.Players;
-import su.nightexpress.nightcore.util.Plugins;
-import su.nightexpress.nightcore.util.text.NightMessage;
 
-import static su.nightexpress.nightcore.util.Placeholders.TAG_LINE_BREAK;
-import static su.nightexpress.nightcore.util.text.tag.Tags.*;
+import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.*;
 
 public class CoreCommands {
 
@@ -30,7 +28,7 @@ public class CoreCommands {
     public static void load(@NotNull NightCore core) {
         ChainedNode root = core.getRootNode();
 
-        if (Plugins.hasPermissionsProvider()) {
+        if (Engine.hasPermissions()) {
             root.addChildren(DirectNode.builder(core, CMD_CHECKPERM)
                 .permission(CorePerms.COMMAND_CHECK_PERM)
                 .description(CoreLang.COMMAND_CHECKPERM_DESC)
@@ -46,22 +44,39 @@ public class CoreCommands {
             .executes(CoreCommands::dumpItem)
         );
 
+        /*root.addChildren(DirectNode.builder(core, "dialog")
+            .playerOnly()
+            .executes((context, arguments) -> {
+                Dialogs.testDialog(context.getPlayerOrThrow());
+                return true;
+            })
+        );
+
+        root.addChildren(DirectNode.builder(core, "text")
+            .playerOnly()
+            .withArgument(ArgumentTypes.string("text").required().complex())
+            .executes((context, arguments) -> {
+                TextParser.parse(arguments.getStringArgument("text")).send(context.getSender());
+                return true;
+            })
+        );*/
+
         root.addChildren(ReloadCommand.builder(core, CorePerms.COMMAND_RELOAD));
     }
 
     private static boolean checkPermissions(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         Player player = arguments.getPlayerArgument(ARG_PLAYER);
         String builder =
-            BOLD.wrap(LIGHT_YELLOW.wrap("Permissions report for ") + LIGHT_ORANGE.wrap(player.getName() + ":")) +
-                TAG_LINE_BREAK +
-                LIGHT_ORANGE.wrap("▪ " + LIGHT_YELLOW.wrap("Primary Group: ") + Players.getPrimaryGroup(player)) +
-                TAG_LINE_BREAK +
-                LIGHT_ORANGE.wrap("▪ " + LIGHT_YELLOW.wrap("All Groups: ") + String.join(", ", Players.getInheritanceGroups(player))) +
-                TAG_LINE_BREAK +
-                LIGHT_ORANGE.wrap("▪ " + LIGHT_YELLOW.wrap("Prefix: ") + Players.getRawPrefix(player)) +
-                TAG_LINE_BREAK +
-                LIGHT_ORANGE.wrap("▪ " + LIGHT_YELLOW.wrap("Suffix: ") + Players.getRawSuffix(player));
-        NightMessage.create(builder).send(context.getSender());
+            BOLD.wrap(SOFT_YELLOW.wrap("Permissions report for ") + SOFT_ORANGE.wrap(player.getName() + ":")) +
+                BR +
+                SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Primary Group: ") + Players.getPrimaryGroup(player)) +
+                BR +
+                SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("All Groups: ") + String.join(", ", Players.getInheritanceGroups(player))) +
+                BR +
+                SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Prefix: ") + Players.getRawPrefix(player)) +
+                BR +
+                SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Suffix: ") + Players.getRawSuffix(player));
+        Players.sendMessage(context.getSender(), builder);
         return true;
     }
 

@@ -78,10 +78,6 @@ public abstract class AbstractUserDataManager <P extends NightPlugin, U extends 
 
     protected abstract void addUpsertQueryData(@NotNull ValuedQuery<?, U> query);
 
-    //protected abstract void addInsertQueryData(@NotNull InsertQuery<U> query);
-
-    //protected abstract void addUpdateQueryData(@NotNull UpdateQuery<U> query);
-
     protected abstract void addSelectQueryData(@NotNull SelectQuery<U> query);
 
     protected abstract void addTableColumns(@NotNull List<Column> columns);

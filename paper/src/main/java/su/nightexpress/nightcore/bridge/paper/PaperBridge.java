@@ -4,6 +4,8 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -16,8 +18,10 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
@@ -26,13 +30,23 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
+import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
+import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
+import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
+import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.paper.bossbar.PaperBossBar;
+import su.nightexpress.nightcore.bridge.paper.bossbar.PaperBossBarAdapter;
+import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogAdapter;
+import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogListener;
+import su.nightexpress.nightcore.bridge.paper.text.PaperTextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.RegistryType;
 import su.nightexpress.nightcore.util.bridge.Software;
-import su.nightexpress.nightcore.util.bridge.wrapper.ComponentBuildable;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.util.*;
@@ -40,6 +54,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class PaperBridge implements Software {
+
+    private DialogAdapter<?>             dialogAdapter;
+    private PaperTextComponentAdapter textComponentAdapter;
 
     private Set<DataComponentType> commonComponentsToHide;
 
@@ -56,6 +73,12 @@ public class PaperBridge implements Software {
 
     @Override
     public boolean initialize() {
+        this.textComponentAdapter = new PaperTextComponentAdapter(this);
+
+        if (Version.isAtLeast(Version.MC_1_21_7)) {
+            this.dialogAdapter = new PaperDialogAdapter(this);
+        }
+
         if (Version.isAtLeast(Version.MC_1_21_5)) {
             this.commonComponentsToHide = BukkitThing.getAll(RegistryType.Paper.DATA_COMPONENT_TYPE);
             this.commonComponentsToHide.remove(DataComponentTypes.LORE);
@@ -70,10 +93,32 @@ public class PaperBridge implements Software {
         return true;
     }
 
+    @Override
+    @NotNull
+    public Listener createDialogListener(@NotNull DialogClickHandler handler) {
+        return new PaperDialogListener(handler);
+    }
+
+    @Override
+    public void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {
+        player.showDialog((DialogLike) this.dialogAdapter.adaptDialog(dialog));
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public int nextEntityId() {
         return Bukkit.getUnsafe().nextEntityId();
+    }
+
+    @NotNull
+    public DialogAdapter<?> getDialogAdapter() {
+        return this.dialogAdapter;
+    }
+
+    @Override
+    @NotNull
+    public PaperTextComponentAdapter getTextComponentAdapter() {
+        return this.textComponentAdapter;
     }
 
     @Override
@@ -88,38 +133,14 @@ public class PaperBridge implements Software {
         return commandMap.getKnownCommands();
     }
 
-    @Override
-    @NotNull
-    public PaperComponent textComponent(@NotNull String text) {
-        return PaperComponent.text(text);
-    }
-
-    @Override
-    @NotNull
-    public PaperComponent translateComponent(@NotNull String key) {
-        return PaperComponent.translate(key);
-    }
-
-    @Override
-    @NotNull
-    public PaperComponent translateComponent(@NotNull String key, @Nullable String fallback) {
-        return PaperComponent.translate(key, fallback);
-    }
-
-    @Override
-    @NotNull
-    public PaperComponent buildComponent(@NotNull List<ComponentBuildable> childrens) {
-        return PaperComponent.builder(childrens);
-    }
-
-//    @NotNull
-//    private static Component fromNightComponent(@NotNull String component) {
-//        return fromNightComponent(NightMessage.parse(component));
-//    }
+/*    @NotNull
+    public NightKey namespacedKey(@NotNull String namespace, @NotNull String value) {
+        return new PaperKey(Key.key(namespace, value));
+    }*/
 
     @NotNull
-    static Component fromNightComponent(@NotNull NightComponent component) {
-        return ((PaperComponent)component).getParent();
+    private Component adaptComponent(@NotNull NightComponent component) {
+        return this.textComponentAdapter.adaptComponent(component);
     }
 
     @NotNull
@@ -153,8 +174,8 @@ public class PaperBridge implements Software {
 
     @Override
     public void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
-        Component titleComp = fromNightComponent(title);
-        Component subComp = fromNightComponent(subtitle);
+        Component titleComp = adaptComponent(title);
+        Component subComp = adaptComponent(subtitle);
 
         Title.Times times = Title.Times.times(Ticks.duration(fadeIn), Ticks.duration(stay), Ticks.duration(fadeIn));
         Title titles = Title.title(titleComp, subComp, times);
@@ -166,10 +187,10 @@ public class PaperBridge implements Software {
     @NotNull
     public InventoryView createView(@NotNull MenuType menuType, @NotNull NightComponent title, @NotNull Player player) {
         if (Version.isAtLeast(Version.MC_1_21_4)) {
-            return menuType.typed().builder().title(fromNightComponent(title)).build(player);
+            return menuType.typed().builder().title(adaptComponent(title)).build(player);
         }
         else {
-            return menuType.typed().create(player, fromNightComponent(title));
+            return menuType.typed().create(player, adaptComponent(title));
         }
     }
 
@@ -210,6 +231,20 @@ public class PaperBridge implements Software {
 
 
 
+    @Override
+    public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {
+        entity.customName(adaptComponent(component));
+    }
+
+    @Override
+    @Nullable
+    public String getEntityName(@NotNull Entity entity) {
+        Component component = entity.customName();
+        return component == null ? null : serializeComponent(component);
+    }
+
+
+
 
     @Override
     @NotNull
@@ -241,12 +276,12 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    public void setCustomName(@NotNull ItemMeta meta, @NotNull NightComponent name) {
+    public void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name) {
         if (Version.isBehind(Version.MC_1_21_4)) {
-            meta.displayName(fromNightComponent(name));
+            meta.displayName(name == null ? null : this.adaptComponent(name));
         }
         else {
-            meta.customName(fromNightComponent(name));
+            meta.customName(name == null ? null : this.adaptComponent(name));
         }
     }
 
@@ -258,7 +293,7 @@ public class PaperBridge implements Software {
 
     @Override
     public void setItemName(@NotNull ItemMeta meta, @NotNull NightComponent name) {
-        meta.itemName(fromNightComponent(name));
+        meta.itemName(adaptComponent(name));
     }
 
     @Override
@@ -269,8 +304,8 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    public void setLore(@NotNull ItemMeta meta, @NotNull List<NightComponent> lore) {
-        meta.lore(Lists.modify(lore, PaperBridge::fromNightComponent));
+    public void setLore(@NotNull ItemMeta meta, @Nullable List<NightComponent> lore) {
+        meta.lore(lore == null ? null : Lists.modify(lore, this::adaptComponent));
     }
 
     @Override
@@ -325,5 +360,16 @@ public class PaperBridge implements Software {
         catch (NoSuchElementException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    @NotNull
+    public PaperBossBar createBossBar(@NotNull NightComponent title, @NotNull NightBarColor barColor, @NotNull NightBarOverlay barOverlay, @NotNull NightBarFlag... barFlags) {
+        Component name = this.textComponentAdapter.adaptComponent(title);
+        BossBar.Color color = PaperBossBarAdapter.adaptColor(barColor);
+        BossBar.Overlay overlay = PaperBossBarAdapter.adaptOverlay(barOverlay);
+
+        BossBar bar = BossBar.bossBar(name, 0F, color, overlay);
+        return new PaperBossBar(this, bar).addFlags(barFlags);
     }
 }

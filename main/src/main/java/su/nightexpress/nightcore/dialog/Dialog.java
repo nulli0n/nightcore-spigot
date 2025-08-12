@@ -9,7 +9,7 @@ import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.bridge.wrapper.ClickEventType;
-import su.nightexpress.nightcore.util.text.NightMessage;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
 import java.util.*;

@@ -3,13 +3,14 @@ package su.nightexpress.nightcore.language.entry;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
+@Deprecated
 public class LangString extends LangEntry {
 
     private String   string;
-    private TextRoot message;
 
     public LangString(@NotNull String path, @NotNull String defaultText) {
         super(path, defaultText);
@@ -47,16 +48,22 @@ public class LangString extends LangEntry {
 
     public void setString(@NotNull String string) {
         this.string = string;
-        this.message = NightMessage.from(string);
     }
 
     @NotNull
+    public NightComponent asComponent() {
+        return su.nightexpress.nightcore.util.text.night.NightMessage.parse(this.string);
+    }
+
+    @NotNull
+    @Deprecated
     public TextRoot getMessage() {
-        return this.message;
+        return NightMessage.from(this.string);
     }
 
     @NotNull
+    @Deprecated
     public String getLegacy() {
-        return this.message.toLegacy();
+        return this.getMessage().toLegacy();
     }
 }

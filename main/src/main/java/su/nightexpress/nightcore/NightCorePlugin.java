@@ -30,6 +30,7 @@ public interface NightCorePlugin extends Plugin {
     @Override
     @NotNull FileConfig getConfig();
 
+    @Deprecated
     @NotNull FileConfig getLang();
 
     @NotNull PluginDetails getDetails();
@@ -54,6 +55,7 @@ public interface NightCorePlugin extends Plugin {
     }
 
     @NotNull
+    @Deprecated
     default String getLanguage() {
         return this.getDetails().getLanguage();
     }
@@ -87,6 +89,8 @@ public interface NightCorePlugin extends Plugin {
     default PluginManager getPluginManager() {
         return this.getServer().getPluginManager();
     }
+
+    void runTask(@NotNull Runnable runnable);
 
     default void runTask(@NotNull Consumer<BukkitTask> consumer) {
         this.getScheduler().runTask(this, consumer);

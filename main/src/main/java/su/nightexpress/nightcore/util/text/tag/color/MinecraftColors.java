@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.util.text.tag.color;
 
 import su.nightexpress.nightcore.util.text.tag.impl.ColorTag;
 
+@Deprecated
 public class MinecraftColors {
 
     public static final ColorTag BLACK        = new ColorTag("black", "#000000");
