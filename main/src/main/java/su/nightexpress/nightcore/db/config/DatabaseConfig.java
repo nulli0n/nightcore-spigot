@@ -116,7 +116,7 @@ public class DatabaseConfig implements Writeable {
                 "Database user name.")
             .read(config);
 
-        String mysqlPassword = ConfigValue.create(path + ".MySQL.Password", "root",
+        String mysqlPassword = ConfigValue.create(path + ".MySQL.Password", "",
                 "Database password.")
             .read(config);
 
