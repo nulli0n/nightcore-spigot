@@ -9,10 +9,7 @@ import su.nightexpress.nightcore.bridge.dialog.wrap.base.WrappedDialogAfterActio
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.bridge.Software;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Dialogs {
@@ -20,7 +17,7 @@ public class Dialogs {
     private static final Map<UUID, WrappedDialog> ACTIVE_DIALOGS = new HashMap<>();
 
     public static void clearDialogs() {
-        ACTIVE_DIALOGS.keySet().stream().map(Players::getPlayer).filter(Objects::nonNull).forEach(Dialogs::exitDialog);
+        new HashSet<>(ACTIVE_DIALOGS.keySet()).stream().map(Players::getPlayer).filter(Objects::nonNull).forEach(Dialogs::exitDialog);
         ACTIVE_DIALOGS.clear();
     }
 
