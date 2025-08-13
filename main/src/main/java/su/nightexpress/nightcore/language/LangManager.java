@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.util.StringUtil;
 import java.io.File;
 import java.io.InputStream;
 
+@Deprecated
 public class LangManager extends SimpleManager<NightCorePlugin> {
 
     public static final String DEFAULT_LANGUAGE = "en";
@@ -66,7 +67,7 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
     }
 
     public void loadEntries(@NotNull Class<?> clazz) {
-        Reflex.getFields(clazz, LangElement.class).forEach(entry -> {
+        Reflex.getStaticFields(clazz, LangElement.class, false).forEach(entry -> {
             entry.load(this.plugin);
         });
 //        Reflex.getFields(clazz, LangEntry.class).forEach(entry -> {

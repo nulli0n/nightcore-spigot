@@ -77,14 +77,14 @@ public class Reflex {
     }
 
     @NotNull
-    public static <T> List<T> getFields(@NotNull Class<?> source, @NotNull Class<T> type) {
+    public static <T> List<T> getStaticFields(@NotNull Class<?> source, @NotNull Class<T> type, boolean includeParent) {
         List<T> list = new ArrayList<>();
 
-        for (Field field : Reflex.getFields(source)) {
-            if (!field.getDeclaringClass().equals(source)) continue;
+        for (Field field : Reflex.getFields(source, includeParent)) {
+            //if (!field.getDeclaringClass().equals(source)) continue;
             //if (!field.canAccess(null)) continue;
             if (!Modifier.isStatic(field.getModifiers())) continue;
-            if (!Modifier.isFinal(field.getModifiers())) continue;
+            //if (!Modifier.isFinal(field.getModifiers())) continue;
             if (!type.isAssignableFrom(field.getType())) continue;
             if (!field.trySetAccessible()) continue;
 
@@ -101,17 +101,25 @@ public class Reflex {
 
     @NotNull
     public static List<Field> getFields(@NotNull Class<?> source) {
+        return getFields(source, true);
+    }
+
+    @NotNull
+    public static List<Field> getFields(@NotNull Class<?> source, boolean includeParent) {
         List<Field> result = new ArrayList<>();
 
-        Class<?> clazz = source;
-        while (clazz != null && clazz != Object.class) {
+        Class<?> lookupClass = source;
+        while (lookupClass != null && lookupClass != Object.class) {
             if (!result.isEmpty()) {
-                result.addAll(0, Arrays.asList(clazz.getDeclaredFields()));
+                result.addAll(0, Arrays.asList(lookupClass.getDeclaredFields()));
             }
             else {
-                Collections.addAll(result, clazz.getDeclaredFields());
+                Collections.addAll(result, lookupClass.getDeclaredFields());
             }
-            clazz = clazz.getSuperclass();
+            if (!includeParent) {
+                break;
+            }
+            lookupClass = lookupClass.getSuperclass();
         }
 
         return result;

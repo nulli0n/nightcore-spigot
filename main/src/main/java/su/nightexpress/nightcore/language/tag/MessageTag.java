@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 
+@Deprecated
 public abstract class MessageTag extends Tag {
 
     public MessageTag(@NotNull String name) {

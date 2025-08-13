@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.*;
 
+@Deprecated
 public class LangUIButton implements LangElement {
 
     private final String  path;

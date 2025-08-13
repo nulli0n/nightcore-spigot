@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 
+@Deprecated
 public class LangString extends LangEntry {
 
     private String   string;

@@ -8,6 +8,8 @@ import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.language.LangManager;
+import su.nightexpress.nightcore.locale.LangContainer;
+import su.nightexpress.nightcore.locale.LangRegistry;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.util.FileUtil;
@@ -25,6 +27,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
     protected List<Runnable> postLoaders;
 
+    protected LangRegistry langRegistry;
     protected LangManager    langManager;
     protected CommandManager commandManager;
 
@@ -75,6 +78,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     @NotNull
+    @Deprecated
     public final FileConfig getLang() {
         return this.langManager.getConfig();
     }
@@ -92,11 +96,24 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     protected abstract PluginDetails getDefaultDetails();
 
     public void registerPermissions(@NotNull Class<?> clazz) {
-        Reflex.getFields(clazz, UniPermission.class).forEach(permission -> {
+        Reflex.getStaticFields(clazz, UniPermission.class, false).forEach(permission -> {
             if (this.getPluginManager().getPermission(permission.getName()) == null) {
                 this.getPluginManager().addPermission(permission);
             }
         });
+    }
+
+    protected void setupRegistries() {
+        this.langRegistry = new LangRegistry(this);
+        this.langRegistry.setup();
+
+        this.addRegistries();
+
+        this.langRegistry.loadLocale();
+    }
+
+    protected void addRegistries() {
+
     }
 
     protected void setupConfig() {
@@ -119,6 +136,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     protected void setupLanguage() {
+        if (this.langRegistry.hasElements()) return; // Do not load if modern lang system present.
+
         this.langManager = new LangManager(this);
         this.langManager.setup();
 
@@ -143,7 +162,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.postLoaders = new ArrayList<>(); // Initialize a list for post-loading code.
 
         this.setupConfig();         // Load configuration.
-        this.setupLanguage();       // Load language.
+        this.setupRegistries();     // Load registries so the plugin modules can access them.
+        this.setupLanguage();       // Load legacy language.
         this.setupPermissions();    // Register plugin permissions.
         this.setupCommands();       // Register plugin commands.
 
@@ -152,7 +172,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.postLoad();            // Load some stuff that needs to be injected after the rest managers.
 
         this.config.saveChanges();
-        this.getLang().saveChanges();
+        if (this.langManager != null) this.getLang().saveChanges();
         this.engineConf.saveChanges();
     }
 
@@ -161,12 +181,14 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         this.disable();
 
+        // TODO Close dialogs?
         AbstractMenu.clearAll(this);            // Close all GUIs.
         MenuRegistry.closeAll();
         HandlerList.unregisterAll(this);        // Unregister all plugin listeners.
 
         this.commandManager.shutdown();
-        this.langManager.shutdown();
+        if (this.langRegistry != null) this.langRegistry.shutdown();
+        if (this.langManager != null) this.langManager.shutdown();
         this.details = null;                           // Reset so it will use default ones on config read.
     }
 
@@ -196,8 +218,17 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     @NotNull
+    public final LangRegistry getLangRegistry() {
+        return this.langRegistry;
+    }
+
+    @NotNull
     public final CommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    public void registerLang(@NotNull Class<? extends LangContainer> clazz) {
+        this.langRegistry.register(clazz);
     }
 
     @Override

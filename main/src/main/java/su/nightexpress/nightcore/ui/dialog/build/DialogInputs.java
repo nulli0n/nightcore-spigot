@@ -16,8 +16,18 @@ import java.util.List;
 public class DialogInputs {
 
     @NotNull
+    public static WrappedBooleanDialogInput.Builder bool(@NotNull String key, @NotNull String label) {
+        return bool(key, NightMessage.parse(label));
+    }
+
+    @NotNull
     public static WrappedBooleanDialogInput.Builder bool(@NotNull String key, @NotNull NightComponent label) {
         return new WrappedBooleanDialogInput.Builder(key, label);
+    }
+
+    @NotNull
+    public static WrappedBooleanDialogInput bool(@NotNull String key, @NotNull String label, boolean initial, @NotNull String onTrue, @NotNull String onFalse) {
+        return bool(key, NightMessage.parse(label), initial, onTrue, onFalse);
     }
 
     @NotNull
@@ -87,6 +97,11 @@ public class DialogInputs {
                                               int maxLength,
                                               @Nullable WrappedMultilineOptions multilineOptions) {
         return text(key, label).width(width).labelVisible(labelVisible).initial(initial).maxLength(maxLength).multiline(multilineOptions).build();
+    }
+
+    @NotNull
+    public static WrappedTextDialogInput.Builder text(@NotNull String key, @NotNull String label) {
+        return text(key, NightMessage.parse(label));
     }
 
     @NotNull

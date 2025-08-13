@@ -38,7 +38,7 @@ public class NightNbtHolder {
         return !this.payload.has(key) ? null : this.payload.get(key).getAsString();
     }
 
-    @Nullable
+    @NotNull
     public String getText(@NotNull String key, @NotNull String fallback) {
         return !this.payload.has(key) ? fallback : this.payload.get(key).getAsString();
     }
@@ -59,6 +59,15 @@ public class NightNbtHolder {
 
     public float getFloat(@NotNull String key, float fallback) {
         return !this.payload.has(key) ? fallback : this.payload.get(key).getAsFloat();
+    }
+
+    @Nullable
+    public Integer getInt(@NotNull String key) {
+        return !this.payload.has(key) ? null : this.payload.get(key).getAsInt();
+    }
+
+    public int getInt(@NotNull String key, int fallback) {
+        return !this.payload.has(key) ? fallback : this.payload.get(key).getAsInt();
     }
 
     public static class Builder {

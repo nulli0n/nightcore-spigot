@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+@Deprecated
 public class LangEnum<E extends Enum<E>> implements LangElement {
 
     private final String path;

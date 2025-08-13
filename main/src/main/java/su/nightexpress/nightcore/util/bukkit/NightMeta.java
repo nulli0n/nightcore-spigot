@@ -19,6 +19,7 @@ import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
+import su.nightexpress.nightcore.locale.entry.IconLocale;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
@@ -378,6 +379,7 @@ public class NightMeta implements Writeable {
     }
 
     @NotNull
+    @Deprecated
     public NightMeta localized(@NotNull LangUIButton locale) {
         boolean formatted = locale.isFormatted();
 
@@ -405,6 +407,13 @@ public class NightMeta implements Writeable {
 
         this.setDisplayName(name);
         this.setLore(lore);
+        return this;
+    }
+
+    @NotNull
+    public NightMeta localized(@NotNull IconLocale locale) {
+        this.setDisplayName(locale.getName());
+        this.setLore(locale.getLore());
         return this;
     }
 

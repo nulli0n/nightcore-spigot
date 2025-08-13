@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.language.tag.MessageTag;
 import su.nightexpress.nightcore.util.sound.AbstractSound;
 import su.nightexpress.nightcore.util.sound.VanillaSound;
 
+@Deprecated
 public class SoundTag extends MessageTag {
 
     public SoundTag() {

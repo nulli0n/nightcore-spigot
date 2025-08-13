@@ -36,6 +36,7 @@ public interface NightCorePlugin extends Plugin {
     @Override
     @NotNull FileConfig getConfig();
 
+    @Deprecated
     @NotNull FileConfig getLang();
 
     @NotNull PluginDetails getDetails();
@@ -60,6 +61,7 @@ public interface NightCorePlugin extends Plugin {
     }
 
     @NotNull
+    @Deprecated
     default String getLanguage() {
         return this.getDetails().getLanguage();
     }

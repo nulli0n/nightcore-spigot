@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.language.tag.MessageTag;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.StringUtil;
 
+@Deprecated
 public class OutputTag extends MessageTag {
 
     public OutputTag() {

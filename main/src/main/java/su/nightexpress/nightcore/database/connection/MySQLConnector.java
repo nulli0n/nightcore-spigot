@@ -24,8 +24,6 @@ public class MySQLConnector extends AbstractConnector {
     @Override
     protected void setupConfig(@NotNull DatabaseConfig config) {
         this.config.setUsername(config.getUsername());
-        if (!config.getPassword().isBlank()) {
-            this.config.setPassword(config.getPassword());
-        }
+        this.config.setPassword(config.getPassword());
     }
 }

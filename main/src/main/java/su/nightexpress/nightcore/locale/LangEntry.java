@@ -1,0 +1,158 @@
+package su.nightexpress.nightcore.locale;
+
+import org.bukkit.Keyed;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.NightPlugin;
+import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.locale.entry.*;
+import su.nightexpress.nightcore.locale.message.MessageData;
+import su.nightexpress.nightcore.util.bridge.RegistryType;
+
+import java.util.*;
+
+public class LangEntry<T extends LangValue> implements LangElement {
+
+    protected final ConfigValue.Loader<T> loader;
+
+    protected final String         path;
+    protected final T              defaultValue;
+    protected final Map<String, T> translations;
+
+    protected T value;
+
+    // TODO CommandLocale
+
+    public LangEntry(@NotNull ConfigValue.Loader<T> loader, @NotNull String path, @NotNull T defaultValue) {
+        this.loader = loader;
+        this.path = path;
+        this.defaultValue = defaultValue;
+        this.translations = new HashMap<>();
+        this.withDefault(LangRegistry.DEFAULT_LANGUAGE, defaultValue);
+    }
+
+    @NotNull
+    public LangEntry<T> withDefault(@NotNull String langCode, @NotNull T value) {
+        this.translations.put(langCode.toLowerCase(Locale.ROOT), value);
+        return this;
+    }
+
+    @Override
+    public void load(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String langCode) {
+        this.value = ConfigValue.create(this.path, this.loader, this.getDefaultValue(langCode)).read(config);
+    }
+
+    @Override
+    public boolean isSupportedLocale(@NotNull String locale) {
+        return this.translations.containsKey(locale);
+    }
+
+    @NotNull
+    public static Builder builder(@NotNull String path) {
+        return new Builder(path);
+    }
+
+    @NotNull
+    public static IconLocale.Builder iconBuilder(@NotNull String path) {
+        return new IconLocale.Builder(path);
+    }
+
+    @Override
+    @NotNull
+    public Set<String> getSupportedLocales() {
+        return Collections.unmodifiableSet(this.translations.keySet());
+    }
+
+    @Override
+    @NotNull
+    public String getPath() {
+        return this.path;
+    }
+
+    @NotNull
+    public T getDefaultValue() {
+        return this.defaultValue;
+    }
+
+    @Override
+    @NotNull
+    public T getDefaultValue(@NotNull String langCode) {
+        T translated = this.getTranslation(langCode);
+        return translated == null ? this.getDefaultValue() : translated;
+    }
+
+    @Nullable
+    public T getTranslation(@NotNull String langCode) {
+        return this.translations.get(langCode);
+    }
+
+    @NotNull
+    public T value() {
+        return this.value == null ? this.defaultValue : this.value;
+    }
+
+    public static class Builder {
+
+        private final String path;
+
+        public Builder(@NotNull String path) {
+            this.path = path;
+        }
+
+        @NotNull
+        public MessageLocale chatMessage(@NotNull String text) {
+            return MessageLocale.chat(this.path, text);
+        }
+
+        @NotNull
+        public MessageLocale chatMessage(@NotNull String text, @Nullable MessageData data) {
+            return MessageLocale.chat(this.path, text, data);
+        }
+
+        @NotNull
+        public MessageLocale titleMessage(@NotNull String text) {
+            return MessageLocale.title(this.path, text);
+        }
+
+        @NotNull
+        public MessageLocale titleMessage(@NotNull String text, @Nullable MessageData data) {
+            return MessageLocale.title(this.path, text, data);
+        }
+
+        @NotNull
+        public MessageLocale actionBarMessage(@NotNull String text) {
+            return MessageLocale.actionBar(this.path, text);
+        }
+
+        @NotNull
+        public MessageLocale actionBarMessage(@NotNull String text, @Nullable MessageData data) {
+            return MessageLocale.actionBar(this.path, text, data);
+        }
+
+        @NotNull
+        public TextLocale text(@NotNull String text) {
+            return TextLocale.create(this.path, text);
+        }
+
+        @NotNull
+        public <E extends Enum<E>> EnumLocale<E> enumeration(@NotNull Class<E> clazz) {
+            return EnumLocale.create(this.path, clazz);
+        }
+
+        @NotNull
+        public <E extends Keyed> RegistryLocale<E> registry(@NotNull RegistryType<E> type) {
+            return RegistryLocale.create(this.path, type);
+        }
+
+        @NotNull
+        public ButtonLocale button(@NotNull String label) {
+            return ButtonLocale.create(this.path, label);
+        }
+
+        @NotNull
+        public ButtonLocale button(@NotNull String label, @Nullable String tooltip) {
+            return ButtonLocale.create(this.path, label, tooltip);
+        }
+    }
+}

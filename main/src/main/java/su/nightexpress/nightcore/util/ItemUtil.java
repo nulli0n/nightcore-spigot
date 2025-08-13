@@ -127,7 +127,7 @@ public class ItemUtil {
     @Nullable
     public static String getCustomNameSerialized(@NotNull ItemMeta meta) {
         String name = Engine.software().getCustomName(meta);
-        return name == null ? null : NightMessage.stripTags(name, TagPool.DECORATIONS_INVERTED); // MiniMessage moment
+        return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
     }
 
     public static void setCustomName(@NotNull ItemMeta meta, @NotNull String name) {
@@ -149,7 +149,7 @@ public class ItemUtil {
     @Nullable
     public static String getItemNameSerialized(@NotNull ItemMeta meta) {
         String name = Engine.software().getItemName(meta);
-        return name == null ? null : NightMessage.stripTags(name, TagPool.DECORATIONS_INVERTED); // MiniMessage moment
+        return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
     }
 
     public static void setItemName(@NotNull ItemMeta meta, @NotNull String name) {
@@ -174,7 +174,7 @@ public class ItemUtil {
     @NotNull
     public static List<String> getLoreSerialized(@NotNull ItemMeta meta) {
         List<String> lore = Engine.software().getLore(meta);
-        return lore == null ? new ArrayList<>() : Lists.modify(lore, line -> NightMessage.stripTags(line, TagPool.DECORATIONS_INVERTED)); // MiniMessage moment
+        return lore == null ? new ArrayList<>() : Lists.modify(lore, line -> NightMessage.stripTags(line, TagPool.NO_INVERTED_DECORATIONS)); // MiniMessage moment
     }
 
     public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {

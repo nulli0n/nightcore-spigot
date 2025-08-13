@@ -27,6 +27,10 @@ public interface ColumnType {
         return length < 1 || type == DatabaseType.SQLITE ? "BIGINT NOT NULL" : "bigint(" + length + ") NOT NULL";
     };
 
+    ColumnType TIMESTAMP = (type, length) -> {
+        return "TIMESTAMP NOT NULL";
+    };
+
     ColumnType BOOLEAN = (type, length) -> {
         return type == DatabaseType.SQLITE ? "INTEGER NOT NULL" : "tinyint(1) NOT NULL";
     };
