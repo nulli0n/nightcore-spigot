@@ -186,8 +186,6 @@ public class ItemUtil {
         Engine.software().setLore(meta, lore);
     }
 
-
-
     @Deprecated
     public static void hideAttributes(@NotNull ItemStack itemStack) {
         if (Version.isAtLeast(Version.MC_1_21_5)) {
