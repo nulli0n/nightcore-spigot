@@ -48,10 +48,6 @@ public class ItemUtil {
         String metaName = meta == null ? null : getNameSerialized(meta);
         if (metaName != null) return metaName;
 
-//        if (Version.isSpigot()) {
-//            return LangAssets.get(itemStack.getType());
-//        }
-
         return LangUtil.getSerializedName(itemStack.getType());
     }
 
@@ -111,8 +107,6 @@ public class ItemUtil {
         return getLoreSerialized(meta);
     }
 
-
-
     @Deprecated
     public static void setDisplayName(@NotNull ItemMeta meta, @NotNull String name) {
         setCustomName(meta, name);
@@ -126,8 +120,7 @@ public class ItemUtil {
 
     @Nullable
     public static String getCustomNameSerialized(@NotNull ItemMeta meta) {
-        String name = Engine.software().getCustomName(meta);
-        return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
+        return Engine.software().getCustomName(meta);
     }
 
     public static void setCustomName(@NotNull ItemMeta meta, @NotNull String name) {
@@ -137,8 +130,6 @@ public class ItemUtil {
     public static void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name) {
         Engine.software().setCustomName(meta, name);
     }
-
-
 
     @Nullable
     public static String getItemNameSerialized(@NotNull ItemStack itemStack) {
@@ -156,8 +147,6 @@ public class ItemUtil {
         Engine.software().setItemName(meta, NightMessage.parse(name));
     }
 
-
-
     @NotNull
     @Deprecated
     public static List<String> getLore(@NotNull ItemStack item) {
@@ -173,8 +162,8 @@ public class ItemUtil {
 
     @NotNull
     public static List<String> getLoreSerialized(@NotNull ItemMeta meta) {
-        List<String> lore = Engine.software().getLore(meta);
-        return lore == null ? new ArrayList<>() : Lists.modify(lore, line -> NightMessage.stripTags(line, TagPool.NO_INVERTED_DECORATIONS)); // MiniMessage moment
+        List<String> lore = meta.getLore();
+        return lore == null ? new ArrayList<>() : new ArrayList<>(lore);
     }
 
     public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {
