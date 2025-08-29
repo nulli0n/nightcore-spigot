@@ -1,0 +1,156 @@
+#    ________  ________  ________  ________  ________ 
+#   ╱        ╲╱    ╱   ╲╱        ╲╱    ╱   ╲╱    ╱   ╲
+#  ╱         ╱         ╱       __╱_       _╱_       _╱
+# ╱       __╱         ╱        _╱         ╱         ╱ 
+# ╲______╱  ╲___╱____╱╲_______╱ ╲___╱____╱╲___╱____╱  
+#
+# Translated by phantomfighterxx
+
+ClickKey:
+  LEFT: ЛКМ
+  RIGHT: ПКМ
+  SHIFT_LEFT: Shift + ЛКМ
+  SHIFT_RIGHT: Shift + ПКМ
+  DROP_KEY: Выброс [Q]
+  SWAP_KEY: Смена руки [F]
+  DRAG_N_DROP: Переложить
+Command:
+  Argument:
+    Type:
+      Required: <%name%>
+      Optional: '[%name%]'
+    Name:
+      Generic: значение
+      Type: тип
+      Name: имя
+      Player: игрок
+      World: мир
+      Amount: количество
+      Material: материал
+      ItemMaterial: тип предмета
+      BlockMaterial: тип блока
+      Enchantment: зачарование
+  Flag:
+    Format: <lgray>[%name%]</lgray>
+  Help:
+    List:
+    - <noprefix>
+    - ' '
+    - '  <yellow><b>%name%</b></yellow><gray> - </gray><yellow><b>Команды:</b></yellow>'
+    - ' '
+    - <gray>  <red><b><></b></red> - Обязательно, <green><b>[]</b></green> - Необязательно.</gray>
+    - ' '
+    - '%entry%'
+    - ' '
+    Entry: '  <yellow>/%command_label%</yellow> <orange>%command_usage%</orange><gray> - %command_description%</gray>'
+    Desc: Показать страницу помощи.
+  CheckPerm:
+    Desc: Показать информацию о правах игрока.
+  DumpItem:
+    Desc: Показать информацию о компоненте предмета.
+  Reload:
+    Desc: Перезагрузить плагин.
+    Done: <lgray>Плагин <lgreen>перезагружен</lgreen>!</lgray>
+Time:
+  Day: '%amount%д.'
+  Hour: '%amount%ч.'
+  Min: '%amount%мин.'
+  Sec: '%amount%сек.'
+  Delimiter: ' '
+Other:
+  'Yes': <green>Да</green>
+  'No': <red>Нет</red>
+  Enabled: <green>Включено</green>
+  Disabled: <red>Выключено</red>
+  Any: Любой
+  None: Нет
+  Never: Никогда
+  OneTimed: Одноразовый
+  Unlimited: Безлимитный
+  Infinity: ∞
+Entry:
+  Good: <green>✔</green> <gray>%entry%</gray>
+  Bad: <red>✘</red> <gray>%entry%</gray>
+  Warn: <orange>[❗]</orange> <gray>%entry%</gray>
+Error:
+  Invalid_Player: <red>Неверный игрок!</red>
+  Invalid_World: <red>Неверный мир!</red>
+  Invalid_Number: <red>Неверное число!</red>
+  InvalidMaterial: <red>Неверный материал!</red>
+  InvalidEnchantment: <red>Неверное зачарование!</red>
+  NoPermission: <red>У вас нет прав для этого!</red>
+  Command:
+    ParseFlag: <lgray>Неверное значение <lred>%value%</lred> для флага <lred>%name%</lred>.</lgray>
+    ParseArgument: <lgray>Неверное значение <lred>%value%</lred> для аргумента <lred>%name%</lred>.</lgray>
+    Argument:
+      InvalidPlayer: <lgray><lred>Не удалось найти игрока %value%</lred>!</lgray>
+      InvalidWorld: <lgray><lred>Не удалось найти мир %value%</lred>!</lgray>
+      InvalidNumber: <lgray><lred>%value%</lred> не является числом!</lgray>
+      InvalidMaterial: <lgray><lred>%value%</lred> не является материалом!</lgray>
+      InvalidEnchantment: <lgray><lred>%value%</lred> не является зачарованием!</lgray>
+    NotYourself: <red>Эту команду нельзя использовать на себе.</red>
+    PlayerOnly: <red>Эта команда доступна только игрокам.</red>
+    Usage:
+    - <noprefix>
+    - ' '
+    - '<red>Ошибка: </red><gray>Неверные аргументы!</gray>'
+    - '<red>Использование: </red><yellow>/%command_label%</yellow> <orange>%command_usage%</orange>'
+    - ' '
+Editor:
+  Action:
+    Exit:
+    - <noprefix>
+    - ''
+    - <gray>Нажмите <click:run_command:"/#exit"><hover:show_text:"<gray>Нажмите, чтобы отменить</gray>"><green>[сюда]</green></hover></click>, чтобы выйти из режима ввода.</gray>
+  Input:
+    Header:
+      Main: <green><b>Режим ввода</b></green>
+      Error: <red><b>ОШИБКА</b></red>
+    Error:
+      NotInteger: <gray>Ожидается <red>целое</red> число!</gray>
+      Generic: <gray>Неверное значение!</gray>
+  Button:
+    Name: <lyellow><b>%name%</b></lyellow>
+    Description: <gray>%entry%</gray>
+    Current:
+      DefaultName: Текущее
+      Info: '<lyellow>➥ <gray>%name%: </gray>%value%</lyellow>'
+    ClickKey: <lyellow>→ <u>%name% на %value%</u></lyellow>
+  Generic:
+    Close:
+      Name: <lred><b>Выйти</b></lred>
+      Lore: []
+    Return:
+      Name: <lgray><b>Назад</b></lgray>
+      Lore: []
+    NextPage:
+      Name: <lgray>Следующая страница →</lgray>
+      Lore: []
+    PreviousPage:
+      Name: <lgray>← Предыдущая страница</lgray>
+      Lore: []
+  Item:
+    Exit:
+      Name: <lred><u>Выход</u></lred>
+      Description: []
+      Formatted: false
+    Return:
+      Name: <white><u>Назад</u></white>
+      Description: []
+      Formatted: false
+    NextPage:
+      Name: <lyellow><u>Следующая страница</u> →</lyellow>
+      Description: []
+      Formatted: false
+    PreviousPage:
+      Name: <lyellow>← <u>Предыдущая страница</u></lyellow>
+      Description: []
+      Formatted: false
+Dialog:
+  Header: <lyellow>%time%</lyellow>
+  DefaultPrompt: <lgray>Введите <lgreen>[Значение]</lgreen></lgray>
+  Info:
+    Exit:
+    - <noprefix>
+    - ''
+    - <gray>Нажмите <click:run_command:"/#exit"><hover:show_text:"<gray>Нажмите, чтобы отменить.</gray>"><green>[сюда]</green></hover></click>, чтобы выйти из режима ввода.</gray>
