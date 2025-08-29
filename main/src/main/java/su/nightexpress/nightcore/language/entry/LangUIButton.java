@@ -21,6 +21,7 @@ public class LangUIButton implements LangElement {
     protected LangUIButton(@NotNull String path, @NotNull Details defaults) {
         this.path = path;
         this.defaults = defaults;
+        this.details = defaults;
     }
 
     @NotNull

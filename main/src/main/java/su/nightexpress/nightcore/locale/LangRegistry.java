@@ -40,12 +40,23 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         this.elements.clear();
     }
 
+    @NotNull
+    public static List<LangElement> getElements(@NotNull Class<?> source) {
+        return Reflex.getStaticFields(source, LangElement.class, false);
+    }
+
+    public static void loadEntries(@NotNull Class<?> source, @NotNull NightPlugin plugin, @NotNull FileConfig config) {
+        getElements(source).forEach(element -> {
+            element.load(plugin, config, DEFAULT_LANGUAGE);
+        });
+    }
+
     public boolean hasElements() {
         return !this.elements.isEmpty();
     }
 
     public void register(@NotNull Class<? extends LangContainer> clazz) {
-        this.elements.addAll(Reflex.getStaticFields(clazz, LangElement.class, false));
+        this.elements.addAll(getElements(clazz));
     }
 
     public void loadLocale() {

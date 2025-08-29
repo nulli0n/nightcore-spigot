@@ -100,6 +100,11 @@ public class NumberUtil {
         return Math.abs(getDoubleCompact(input));
     }
 
+    @NotNull
+    public static Optional<Double> parseDecimalCompact(@NotNull String input) {
+        return parseCompact(input);
+    }
+
     public static double getIntCompact(@NotNull String input) {
         return parseIntCompact(input).orElse(0);
     }
@@ -108,6 +113,7 @@ public class NumberUtil {
         return Math.abs(getIntCompact(input));
     }
 
+    @NotNull
     public static Optional<Integer> parseIntCompact(@NotNull String input) {
         return parseCompact(input).map(Double::intValue);
     }

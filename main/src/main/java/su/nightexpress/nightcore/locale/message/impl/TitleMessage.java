@@ -3,7 +3,6 @@ package su.nightexpress.nightcore.locale.message.impl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.locale.message.LangMessage;
 import su.nightexpress.nightcore.locale.message.MessageData;
 import su.nightexpress.nightcore.util.Players;
@@ -15,11 +14,11 @@ public class TitleMessage extends LangMessage {
     private final int stay;
     private final int fadeOut;
 
-    public TitleMessage(@NotNull String text, @Nullable MessageData data) {
+    public TitleMessage(@NotNull String text, @NotNull MessageData data) {
         super(text, data);
-        this.fadeIn = data == null ? 20 : data.titleTimes().length >= 1 ? data.titleTimes()[0] : 20;
-        this.stay = data == null ? 60 : data.titleTimes().length >= 2 ? data.titleTimes()[1] : 60;
-        this.fadeOut = data == null ? 20 : data.titleTimes().length >= 3 ? data.titleTimes()[2] : 20;
+        this.fadeIn = data.titleTimes().length >= 1 ? data.titleTimes()[0] : 20;
+        this.stay = data.titleTimes().length >= 2 ? data.titleTimes()[1] : 60;
+        this.fadeOut = data.titleTimes().length >= 3 ? data.titleTimes()[2] : 20;
     }
 
     @Override

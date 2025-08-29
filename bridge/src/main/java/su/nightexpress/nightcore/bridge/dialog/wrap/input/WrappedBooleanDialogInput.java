@@ -3,10 +3,11 @@ package su.nightexpress.nightcore.bridge.dialog.wrap.input;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.util.Strings;
-import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+
+import java.util.function.UnaryOperator;
 
 public record WrappedBooleanDialogInput(@NotNull String key,
-                                        @NotNull NightComponent label,
+                                        @NotNull String label,
                                         boolean initial,
                                         @NotNull String onTrue,
                                         @NotNull String onFalse) implements WrappedDialogInput {
@@ -17,16 +18,22 @@ public record WrappedBooleanDialogInput(@NotNull String key,
         return adapter.adaptInput(this);
     }
 
+    @Override
+    @NotNull
+    public WrappedBooleanDialogInput replace(@NotNull UnaryOperator<String> operator) {
+        return new WrappedBooleanDialogInput(this.key, operator.apply(this.label), this.initial, this.onTrue, this.onFalse);
+    }
+
     public static final class Builder {
 
-        private final String         key;
-        private final NightComponent label;
+        private final String key;
+        private final String label;
 
         private boolean initial = false;
         private String  onTrue  = "true";
         private String  onFalse = "false";
 
-        public Builder(@NotNull String key, @NotNull NightComponent label) {
+        public Builder(@NotNull String key, @NotNull String label) {
             this.key = Strings.filterForVariable(key);
             this.label = label;
         }

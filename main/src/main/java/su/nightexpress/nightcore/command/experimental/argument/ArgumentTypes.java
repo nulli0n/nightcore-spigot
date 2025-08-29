@@ -14,6 +14,7 @@ import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Players;
 
+@Deprecated
 public class ArgumentTypes {
 
     public static final ArgumentParser<String>   STRING              = (string, context) -> string;

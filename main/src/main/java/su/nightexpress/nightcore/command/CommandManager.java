@@ -17,6 +17,7 @@ import su.nightexpress.nightcore.util.Lists;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public class CommandManager extends SimpleManager<NightPlugin> {
 
     private final Set<NightPluginCommand> commands;

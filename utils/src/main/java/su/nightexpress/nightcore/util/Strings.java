@@ -11,7 +11,7 @@ public class Strings {
 
     @NotNull
     public static String filterForVariable(@NotNull String str, int maxLength) {
-        char[] chars = str.toLowerCase().toCharArray();
+        char[] chars = LowerCase.INTERNAL.apply(str).toCharArray();
 
         StringBuilder builder = new StringBuilder();
         for (int index = 0; index < chars.length; index++) {

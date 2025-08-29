@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Deprecated
 public class RootCommand<P extends NightCorePlugin, S extends CommandNode> implements ServerCommand {
 
     private final P plugin;

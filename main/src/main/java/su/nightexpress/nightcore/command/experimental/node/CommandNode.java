@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.command.experimental.TabContext;
 import java.util.List;
 import java.util.stream.Stream;
 
+@Deprecated
 public abstract class CommandNode implements NodeExecutor {
 
     protected final NightCorePlugin plugin;

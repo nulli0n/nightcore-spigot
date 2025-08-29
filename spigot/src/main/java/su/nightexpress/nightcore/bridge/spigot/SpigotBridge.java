@@ -42,7 +42,6 @@ import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -185,9 +184,6 @@ public class SpigotBridge implements Software {
 
     @Override
     public void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
-        //title = NightMessage.asLegacy(title);
-        //subtitle = NightMessage.asLegacy(subtitle);
-
         player.sendTitle(title.toLegacy(), subtitle.toLegacy(), fadeIn, stay, fadeOut);
     }
 

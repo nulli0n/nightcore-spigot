@@ -16,6 +16,7 @@ import su.nightexpress.nightcore.util.text.night.NightMessage;
 import java.util.List;
 import java.util.function.Function;
 
+@Deprecated
 public class CommandArgument<T> {
 
     private final String                             name;

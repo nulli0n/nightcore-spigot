@@ -4,12 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedDialogInput;
 import su.nightexpress.nightcore.util.Strings;
-import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public record WrappedSingleOptionDialogInput(@NotNull String key,
-                                             @NotNull NightComponent label,
+                                             @NotNull String label,
                                              @NotNull List<WrappedSingleOptionEntry> entries,
                                              int width,
                                              boolean labelVisible) implements WrappedDialogInput {
@@ -20,16 +20,22 @@ public record WrappedSingleOptionDialogInput(@NotNull String key,
         return adapter.adaptInput(this);
     }
 
+    @Override
+    @NotNull
+    public WrappedSingleOptionDialogInput replace(@NotNull UnaryOperator<String> operator) {
+        return new WrappedSingleOptionDialogInput(this.key, operator.apply(this.label), List.copyOf(this.entries), this.width, this.labelVisible);
+    }
+
     public static final class Builder {
 
         private final String                         key;
         private final List<WrappedSingleOptionEntry> entries;
-        private final NightComponent                 label;
+        private final String                 label;
 
         private int     width        = 200; // TODO Config
         private boolean labelVisible = true; // TODO Config
 
-        public Builder(@NotNull String key, @NotNull NightComponent label, @NotNull List<WrappedSingleOptionEntry> entries) {
+        public Builder(@NotNull String key, @NotNull String label, @NotNull List<WrappedSingleOptionEntry> entries) {
             this.key = Strings.filterForVariable(key);
             this.entries = entries;
             this.label = label;

@@ -42,6 +42,7 @@ import su.nightexpress.nightcore.bridge.dialog.wrap.type.*;
 import su.nightexpress.nightcore.bridge.paper.PaperBridge;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.List;
 
@@ -58,6 +59,11 @@ public class PaperDialogAdapter implements
 
     public PaperDialogAdapter(@NotNull PaperBridge bridge) {
         this.bridge = bridge;
+    }
+
+    @NotNull
+    private Component adaptComponent(@NotNull String component) {
+        return this.adaptComponent(NightMessage.parse(component));
     }
 
     @NotNull

@@ -304,6 +304,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
     }
 
     @Override
+    @Deprecated
     public void handleInput(@NotNull Dialog.Builder builder) {
         Dialog dialog = builder.build();
         DialogManager.startDialog(dialog);

@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Deprecated
 public class DirectNode extends CommandNode implements DirectExecutor {
 
     private final List<CommandArgument<?>> arguments;

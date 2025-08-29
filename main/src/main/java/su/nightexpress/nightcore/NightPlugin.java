@@ -1,12 +1,15 @@
 package su.nightexpress.nightcore;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.CommandManager;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
+import su.nightexpress.nightcore.commands.command.NightCommand;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
+import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangRegistry;
@@ -25,6 +28,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     public static final String CONFIG_FILE = "config.yml";
     public static final String ENGINE_FILE = "engine.yml";
 
+    protected NightCommand   rootCommand;
     protected List<Runnable> postLoaders;
 
     protected LangRegistry langRegistry;
@@ -153,7 +157,13 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.registerPermissions(clazz);
     }
 
+    protected boolean disableCommandManager() {
+        return false;
+    }
+
     protected void setupCommands() {
+        if (this.disableCommandManager()) return;
+
         this.commandManager = new CommandManager(this);
         this.commandManager.setup();
     }
@@ -171,6 +181,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         this.postLoad();            // Load some stuff that needs to be injected after the rest managers.
 
+        if (this.rootCommand != null) this.rootCommand.register();
         this.config.saveChanges();
         if (this.langManager != null) this.getLang().saveChanges();
         this.engineConf.saveChanges();
@@ -186,7 +197,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         MenuRegistry.closeAll();
         HandlerList.unregisterAll(this);        // Unregister all plugin listeners.
 
-        this.commandManager.shutdown();
+        if (this.rootCommand != null) this.rootCommand.unregister();
+        if (this.commandManager != null) this.commandManager.shutdown();
         if (this.langRegistry != null) this.langRegistry.shutdown();
         if (this.langManager != null) this.langManager.shutdown();
         this.details = null;                           // Reset so it will use default ones on config read.
@@ -206,13 +218,19 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.postLoaders.add(runnable);
     }
 
-    @NotNull
-    @Deprecated
-    public final NightPluginCommand getBaseCommand() {
-        return this.getCommandManager().getMainCommand();
+    public void doReload(@NotNull CommandSender sender) {
+        this.reload();
+        CoreLang.PLUGIN_RELOADED.withPrefix(this).send(sender);
     }
 
     @NotNull
+    @Deprecated
+    public final NightPluginCommand getBaseCommand() {
+        return this.commandManager.getMainCommand();
+    }
+
+    @NotNull
+    @Deprecated
     public final LangManager getLangManager() {
         return this.langManager;
     }
@@ -223,6 +241,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     @NotNull
+    @Deprecated
     public final CommandManager getCommandManager() {
         return this.commandManager;
     }

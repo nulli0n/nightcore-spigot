@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore.command.experimental.argument;
 
+@Deprecated
 public class ParsedArgument<T> {
 
     private final T result;

@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.util.text.tag;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.text.night.tag.color.ColorScheme;
+import su.nightexpress.nightcore.core.tag.ColorScheme;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.impl.*;
 

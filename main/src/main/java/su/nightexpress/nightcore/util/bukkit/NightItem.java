@@ -14,6 +14,7 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
+import su.nightexpress.nightcore.locale.entry.IconLocale;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.NumberUtil;
@@ -210,8 +211,15 @@ public class NightItem implements Writeable {
     }
 
     @NotNull
+    @Deprecated
     public NightItem localized(@NotNull LangUIButton langUIButton) {
         this.meta.localized(langUIButton);
+        return this;
+    }
+
+    @NotNull
+    public NightItem localized(@NotNull IconLocale locale) {
+        this.meta.localized(locale);
         return this;
     }
 

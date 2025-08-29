@@ -32,6 +32,21 @@ public abstract class LangMessage implements LangValue {
     }
 
     @NotNull
+    public String getText() {
+        return this.text;
+    }
+
+    @NotNull
+    public static LangMessage createFromData(@NotNull String text, @NotNull MessageData data) {
+        return switch (data.type()) {
+            case CHAT -> new ChatMessage(text, data);
+            case SILENT -> new SilentMessage(text, data);
+            case TITLE -> new TitleMessage(text, data);
+            case ACTION_BAR -> new ActionBarMessage(text, data);
+        };
+    }
+
+    @NotNull
     public static LangMessage read(@NotNull FileConfig config, @NotNull String path) {
         List<String> text = new ArrayList<>(config.getStringList(path));
         if (text.isEmpty()) {
@@ -47,12 +62,7 @@ public abstract class LangMessage implements LangValue {
 
         String message = String.join(TagWrappers.BR, text);
 
-        return switch (data.type()) {
-            case CHAT -> new ChatMessage(message, data);
-            case SILENT -> new SilentMessage(message, data);
-            case TITLE -> new TitleMessage(message, data);
-            case ACTION_BAR -> new ActionBarMessage(message, data);
-        };
+        return createFromData(message, data);
     }
 
     @Override

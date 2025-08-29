@@ -44,6 +44,7 @@ public interface Menu {
 
     void onClose(@NotNull MenuViewer viewer, @NotNull InventoryCloseEvent event);
 
+    @Deprecated
     void handleInput(@NotNull Dialog.Builder builder);
 
     boolean canOpen(@NotNull Player player);

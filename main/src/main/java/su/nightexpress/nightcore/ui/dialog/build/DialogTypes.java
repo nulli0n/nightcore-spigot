@@ -6,7 +6,7 @@ import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
 import su.nightexpress.nightcore.bridge.dialog.wrap.type.*;
 import su.nightexpress.nightcore.util.Lists;
-import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class DialogTypes {
 
     @NotNull
     public static WrappedNoticeType notice() {
-        return notice(DialogButtons.action(NightComponent.translatable("gui.ok")).width(150).build()); // TODO Config
+        return notice(DialogButtons.action(TagWrappers.LANG.apply("gui.ok")).width(150).build()); // TODO Config
     }
 
     @NotNull

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.builder.SimpleFlagBuilder;
 
+@Deprecated
 public class SimpleFlag extends CommandFlag {
 
     public SimpleFlag(@NotNull String name, @Nullable String permission) {

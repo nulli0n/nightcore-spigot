@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.LangValue;
+import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 public class TextLocale extends LangEntry<TextLocale.Value> {
 
@@ -14,6 +15,11 @@ public class TextLocale extends LangEntry<TextLocale.Value> {
     @NotNull
     public static TextLocale create(@NotNull String path, @NotNull String string) {
         return new TextLocale(path, new Value(string));
+    }
+
+    @NotNull
+    public static TextLocale create(@NotNull String path, @NotNull String... text) {
+        return new TextLocale(path, new Value(String.join(TagWrappers.BR, text)));
     }
 
     @NotNull

@@ -3,7 +3,8 @@ package su.nightexpress.nightcore.bridge.common;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
+
+import java.util.Optional;
 
 public class NightNbtHolder {
 
@@ -33,41 +34,66 @@ public class NightNbtHolder {
         return this.payload.toString();
     }
 
-    @Nullable
-    public String getText(@NotNull String key) {
-        return !this.payload.has(key) ? null : this.payload.get(key).getAsString();
+    @NotNull
+    public Optional<JsonElement> get(@NotNull String key) {
+        return !this.payload.has(key) ? Optional.empty() : Optional.of(this.payload.get(key));
+    }
+
+    private static boolean asBoolean(JsonElement element) {
+        if (element == null || element.isJsonNull()) return false;
+
+        if (element.isJsonPrimitive()) {
+            var prim = element.getAsJsonPrimitive();
+            if (prim.isBoolean()) {
+                return prim.getAsBoolean();
+            }
+            else if (prim.isNumber()) {
+                return prim.getAsInt() != 0;
+            }
+            else if (prim.isString()) {
+                String s = prim.getAsString();
+                return s.equalsIgnoreCase("true") || s.equals("1");
+            }
+        }
+
+        return false;
+    }
+
+    @NotNull
+    public Optional<String> getText(@NotNull String key) {
+        return this.get(key).map(JsonElement::getAsString);
     }
 
     @NotNull
     public String getText(@NotNull String key, @NotNull String fallback) {
-        return !this.payload.has(key) ? fallback : this.payload.get(key).getAsString();
+        return this.getText(key).orElse(fallback);
     }
 
-    @Nullable
-    public Boolean getBoolean(@NotNull String key) {
-        return !this.payload.has(key) ? null : this.payload.get(key).getAsBoolean();
+    @NotNull
+    public Optional<Boolean> getBoolean(@NotNull String key) {
+        return this.get(key).map(NightNbtHolder::asBoolean);
     }
 
     public boolean getBoolean(@NotNull String key, boolean fallback) {
-        return this.payload.has(key) && this.payload.get(key).getAsBoolean();
+        return this.getBoolean(key).orElse(false);
     }
 
-    @Nullable
-    public Float getFloat(@NotNull String key) {
-        return !this.payload.has(key) ? null : this.payload.get(key).getAsFloat();
+    @NotNull
+    public Optional<Float> getFloat(@NotNull String key) {
+        return this.get(key).map(JsonElement::getAsFloat);
     }
 
     public float getFloat(@NotNull String key, float fallback) {
-        return !this.payload.has(key) ? fallback : this.payload.get(key).getAsFloat();
+        return this.getFloat(key).orElse(fallback);
     }
 
-    @Nullable
-    public Integer getInt(@NotNull String key) {
-        return !this.payload.has(key) ? null : this.payload.get(key).getAsInt();
+    @NotNull
+    public Optional<Integer> getInt(@NotNull String key) {
+        return this.get(key).map(JsonElement::getAsInt);
     }
 
     public int getInt(@NotNull String key, int fallback) {
-        return !this.payload.has(key) ? fallback : this.payload.get(key).getAsInt();
+        return this.getInt(key).orElse(fallback);
     }
 
     public static class Builder {
