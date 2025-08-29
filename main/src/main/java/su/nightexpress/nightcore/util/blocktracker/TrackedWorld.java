@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.util.blocktracker;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
@@ -13,7 +14,7 @@ public class TrackedWorld {
     private final Long2ObjectMap<TrackedChunk> chunkMap;
 
     protected TrackedWorld() {
-        this.chunkMap = new Long2ObjectOpenHashMap<>();
+        this.chunkMap = Long2ObjectMaps.synchronize(new Long2ObjectOpenHashMap<>());
     }
 
     protected boolean isTracked(@NotNull Block block) {
