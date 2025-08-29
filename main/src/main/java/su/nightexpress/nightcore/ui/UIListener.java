@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore.ui;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -122,5 +123,7 @@ public class UIListener extends AbstractListener<NightCore> {
         if (viewer == null) return;
 
         viewer.getMenu().onClose(viewer, event);
+
+        Bukkit.getScheduler().runTaskLater(plugin, player::updateInventory, 1);
     }
 }
