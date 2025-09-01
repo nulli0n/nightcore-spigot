@@ -3,6 +3,8 @@ package su.nightexpress.nightcore.bridge.common;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.Numbers;
 
 import java.util.Optional;
 
@@ -59,6 +61,42 @@ public class NightNbtHolder {
         return false;
     }
 
+    @Nullable
+    private static Integer asInt(JsonElement element) {
+        if (element == null || element.isJsonNull()) return null;
+
+        if (element.isJsonPrimitive()) {
+            var prim = element.getAsJsonPrimitive();
+            if (prim.isNumber()) {
+                return prim.getAsInt();
+            }
+            else if (prim.isString()) {
+                String s = prim.getAsString();
+                return Numbers.parseInteger(s).orElse(null);
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private static Float asFloat(JsonElement element) {
+        if (element == null || element.isJsonNull()) return null;
+
+        if (element.isJsonPrimitive()) {
+            var prim = element.getAsJsonPrimitive();
+            if (prim.isNumber()) {
+                return prim.getAsFloat();
+            }
+            else if (prim.isString()) {
+                String s = prim.getAsString();
+                return Numbers.parseFloat(s).orElse(null);
+            }
+        }
+
+        return null;
+    }
+
     @NotNull
     public Optional<String> getText(@NotNull String key) {
         return this.get(key).map(JsonElement::getAsString);
@@ -80,7 +118,7 @@ public class NightNbtHolder {
 
     @NotNull
     public Optional<Float> getFloat(@NotNull String key) {
-        return this.get(key).map(JsonElement::getAsFloat);
+        return this.get(key).map(NightNbtHolder::asFloat);
     }
 
     public float getFloat(@NotNull String key, float fallback) {
@@ -89,7 +127,7 @@ public class NightNbtHolder {
 
     @NotNull
     public Optional<Integer> getInt(@NotNull String key) {
-        return this.get(key).map(JsonElement::getAsInt);
+        return this.get(key).map(NightNbtHolder::asInt);
     }
 
     public int getInt(@NotNull String key, int fallback) {

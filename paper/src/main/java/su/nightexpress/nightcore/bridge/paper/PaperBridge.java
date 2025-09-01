@@ -100,6 +100,11 @@ public class PaperBridge implements Software {
     }
 
     @Override
+    public void closeDialog(@NotNull Player player) {
+        player.closeDialog();
+    }
+
+    @Override
     public void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {
         player.showDialog((DialogLike) this.dialogAdapter.adaptDialog(dialog));
     }

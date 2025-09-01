@@ -22,11 +22,11 @@ public class TextLocale extends LangEntry<TextLocale.Value> {
         return new TextLocale(path, new Value(String.join(TagWrappers.BR, text)));
     }
 
-    @NotNull
+    /*@NotNull
     public TextLocale withDefault(@NotNull String locale, @NotNull String text) {
         this.withDefault(locale, new Value(text));
         return this;
-    }
+    }*/
 
     @NotNull
     public String text() {

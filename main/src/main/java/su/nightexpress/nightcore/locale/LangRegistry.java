@@ -25,6 +25,8 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
 
     private final List<LangElement> elements;
 
+    private FileConfig config;
+
     public LangRegistry(@NotNull NightPlugin plugin) {
         super(plugin);
         this.elements = new ArrayList<>();
@@ -40,14 +42,25 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         this.elements.clear();
     }
 
+    public void complete() {
+        if (this.config != null) {
+            this.config.saveChanges();
+            this.config = null; // Clean up memory
+        }
+    }
+
     @NotNull
     public static List<LangElement> getElements(@NotNull Class<?> source) {
         return Reflex.getStaticFields(source, LangElement.class, false);
     }
 
     public static void loadEntries(@NotNull Class<?> source, @NotNull NightPlugin plugin, @NotNull FileConfig config) {
-        getElements(source).forEach(element -> {
-            element.load(plugin, config, DEFAULT_LANGUAGE);
+        loadEntries(getElements(source), plugin, config);
+    }
+
+    public static void loadEntries(@NotNull Collection<LangElement> elements, @NotNull NightPlugin plugin, @NotNull FileConfig config) {
+        elements.forEach(element -> {
+            element.load(plugin, config);
         });
     }
 
@@ -59,6 +72,20 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         this.elements.addAll(getElements(clazz));
     }
 
+    /**
+     * Saves and loads {@link LangElement} objects from the provided {@link LangContainer} object into the lang config file according to selected
+     * language during the "enable" plugin's phase if the same can not be achieved through {@link NightPlugin#registerLang(Class)}
+     * <br>
+     * <b>Note:</b> This can not be used outside of the {@link NightPlugin#enable()} phase.
+     * @param langContainer LangContainer object with some LangElement fields defined.
+     * @see NightPlugin#registerLang(Class)
+     */
+    public void inject(@NotNull LangContainer langContainer) {
+        if (this.config != null) {
+            loadEntries(langContainer.getClass(), this.plugin, this.config);
+        }
+    }
+
     public void loadLocale() {
         if (this.elements.isEmpty()) return; // Do not load if nothing registered.
 
@@ -67,8 +94,20 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         this.updateLegacy();
 
         String userLocale = this.plugin.getDetails().getLanguage();
-        Map<String, FileConfig> configMap = new HashMap<>();
 
+        File file = new File(this.plugin.getDataFolder() + DIRECTORY, this.getFileName(userLocale));
+        boolean isSupportedLocale = file.exists();
+        String langCode = isSupportedLocale ? userLocale : DEFAULT_LANGUAGE;
+        this.config = FileConfig.loadOrExtract(this.plugin, DIRECTORY, this.getFileName(langCode));
+
+        if (!isSupportedLocale) {
+            this.plugin.warn("Lang file for the '" + userLocale + "' locale does not exist. Will use the '" + langCode + "' one.");
+        }
+
+        loadEntries(this.elements, this.plugin, this.config);
+
+        /*
+        Map<String, FileConfig> configMap = new HashMap<>();
         this.elements.forEach(langElement -> {
             // If user locale is not supported, fallback to the default (English) one.
             String preferredLocale = langElement.isSupportedLocale(userLocale) ? userLocale : DEFAULT_LANGUAGE;
@@ -87,8 +126,7 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
                 }
             });
         });
-
-        configMap.values().forEach(FileConfig::saveChanges);
+        configMap.values().forEach(FileConfig::saveChanges);*/
     }
 
     private void updateLegacy() {
@@ -144,10 +182,13 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         });
     }
 
-    @NotNull
-    public FileConfig getConfig(@NotNull String langCode) {
-        return FileConfig.loadOrExtract(this.plugin, DIRECTORY, this.getFileName(langCode));
-    }
+    /*@NotNull
+    public FileConfig getConfig() {
+        if (this.config == null) {
+            this.config = FileConfig.loadOrExtract(this.plugin, DIRECTORY, this.getFileName(this.langCode));
+        }
+        return this.config;
+    }*/
 
     @NotNull
     public String getFileName(@NotNull String langCode) {

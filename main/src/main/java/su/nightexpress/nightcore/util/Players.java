@@ -88,6 +88,10 @@ public class Players {
         return getPlayer(player.getUniqueId()) != null;
     }
 
+    public static void closeDialog(@NotNull Player player) {
+        Software.instance().closeDialog(player);
+    }
+
     @NotNull
     @Deprecated
     public static NightProfile getProfile(@NotNull OfflinePlayer player) {

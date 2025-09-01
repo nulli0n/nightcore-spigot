@@ -111,6 +111,11 @@ public class SpigotBridge implements Software {
     }
 
     @Override
+    public void closeDialog(@NotNull Player player) {
+        player.clearDialog();
+    }
+
+    @Override
     public void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {
         player.showDialog((Dialog) this.dialogAdapter.adaptDialog(dialog));
     }

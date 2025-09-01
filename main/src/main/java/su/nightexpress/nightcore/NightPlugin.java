@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.locale.LangContainer;
+import su.nightexpress.nightcore.locale.LangElement;
 import su.nightexpress.nightcore.locale.LangRegistry;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
@@ -184,6 +185,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         if (this.rootCommand != null) this.rootCommand.register();
         this.config.saveChanges();
         if (this.langManager != null) this.getLang().saveChanges();
+        if (this.langRegistry != null) this.langRegistry.complete();
         this.engineConf.saveChanges();
     }
 
@@ -248,6 +250,18 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
     public void registerLang(@NotNull Class<? extends LangContainer> clazz) {
         this.langRegistry.register(clazz);
+    }
+
+    /**
+     * Saves and loads {@link LangElement} objects from the provided {@link LangContainer} object into the lang config file according to selected
+     * language during the "enable" plugin's phase if the same can not be achieved through {@link NightPlugin#registerLang(Class)}
+     * <br>
+     * <b>Note:</b> This can not be used outside of the {@link NightPlugin#enable()} phase.
+     * @param langContainer LangContainer object with some LangElement fields defined.
+     * @see NightPlugin#registerLang(Class)
+     */
+    public void injectLang(@NotNull LangContainer langContainer) {
+        this.langRegistry.inject(langContainer);
     }
 
     @Override

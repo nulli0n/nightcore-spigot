@@ -9,18 +9,16 @@ import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.locale.entry.*;
 import su.nightexpress.nightcore.locale.message.MessageData;
-import su.nightexpress.nightcore.util.LowerCase;
 import su.nightexpress.nightcore.util.bridge.RegistryType;
-
-import java.util.*;
 
 public class LangEntry<T extends LangValue> implements LangElement {
 
     protected final ConfigValue.Loader<T> loader;
 
-    protected final String         path;
-    protected final T              defaultValue;
-    protected final Map<String, T> translations;
+    protected final String path;
+    protected final T      defaultValue;
+
+    //protected final Map<String, T> translations;
 
     protected T value;
 
@@ -29,26 +27,26 @@ public class LangEntry<T extends LangValue> implements LangElement {
         this.path = path;
         this.defaultValue = defaultValue;
         this.value = defaultValue;
-        this.translations = new HashMap<>();
-        this.withDefault(LangRegistry.DEFAULT_LANGUAGE, defaultValue);
+        //this.translations = new HashMap<>();
+        //this.withDefault(LangRegistry.DEFAULT_LANGUAGE, defaultValue);
     }
 
-    @NotNull
+    /*@NotNull
     public LangEntry<T> withDefault(@NotNull String langCode, @NotNull T value) {
         langCode.toLowerCase();
         this.translations.put(LowerCase.INTERNAL.apply(langCode), value);
         return this;
-    }
+    }*/
 
     @Override
-    public void load(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String langCode) {
-        this.value = ConfigValue.create(this.path, this.loader, this.getDefaultValue(langCode)).read(config);
+    public void load(@NotNull NightPlugin plugin, @NotNull FileConfig config/*, @NotNull String langCode*/) {
+        this.value = ConfigValue.create(this.path, this.loader, this.getDefaultValue(/*langCode*/)).read(config);
     }
 
-    @Override
+    /*@Override
     public boolean isSupportedLocale(@NotNull String locale) {
         return this.translations.containsKey(locale);
-    }
+    }*/
 
     @NotNull
     public static Builder builder(@NotNull String path) {
@@ -60,11 +58,11 @@ public class LangEntry<T extends LangValue> implements LangElement {
         return new IconLocale.Builder(path);
     }
 
-    @Override
+    /*@Override
     @NotNull
     public Set<String> getSupportedLocales() {
         return Collections.unmodifiableSet(this.translations.keySet());
-    }
+    }*/
 
     @Override
     @NotNull
@@ -77,17 +75,17 @@ public class LangEntry<T extends LangValue> implements LangElement {
         return this.defaultValue;
     }
 
-    @Override
+    /*@Override
     @NotNull
     public T getDefaultValue(@NotNull String langCode) {
         T translated = this.getTranslation(langCode);
         return translated == null ? this.getDefaultValue() : translated;
-    }
+    }*/
 
-    @Nullable
+    /*@Nullable
     public T getTranslation(@NotNull String langCode) {
         return this.translations.get(langCode);
-    }
+    }*/
 
     @NotNull
     public T value() {

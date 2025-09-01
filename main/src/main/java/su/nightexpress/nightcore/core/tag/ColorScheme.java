@@ -103,7 +103,7 @@ public class ColorScheme implements Writeable {
             new ColorCode(TagShortNames.DARK_BLUE, new Color(50, 50, 150)),
 
             new ColorCode(TagShortNames.YELLOW, new Color(230, 230, 50)),
-            new ColorCode(TagShortNames.SOFT_YELLOW, new Color(230, 230, 120)),
+            new ColorCode(TagShortNames.SOFT_YELLOW, new Color(250, 240, 160)),
             new ColorCode(TagShortNames.DARK_YELLOW, new Color(180, 180, 50)),
 
             new ColorCode(TagShortNames.ORANGE, new Color(230, 120, 50)),

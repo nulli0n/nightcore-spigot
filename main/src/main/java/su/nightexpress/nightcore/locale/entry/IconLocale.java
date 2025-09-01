@@ -109,7 +109,7 @@ public class IconLocale extends LangEntry<IconLocale.Value> {
 
         @NotNull
         public Builder appendCurrent(@NotNull String type, @NotNull String value, @NotNull TagWrapper color) {
-            this.appendInfo(color.wrap("• ") + type + ": " + color.wrap(value));
+            this.appendInfo(color.wrap("● ") + type + ": " + color.wrap(value));
             return this;
         }
 
