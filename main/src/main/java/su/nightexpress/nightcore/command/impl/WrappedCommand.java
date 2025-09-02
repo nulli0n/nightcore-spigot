@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class WrappedCommand extends Command implements PluginIdentifiableCommand {
 
     protected final Plugin          plugin;

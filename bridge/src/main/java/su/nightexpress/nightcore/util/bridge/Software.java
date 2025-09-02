@@ -71,6 +71,8 @@ public interface Software {
 
     @NotNull Listener createDialogListener(@NotNull DialogClickHandler handler);
 
+    void closeDialog(@NotNull Player player);
+
     void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog);
 
     @NotNull TextComponentAdapter<?> getTextComponentAdapter();

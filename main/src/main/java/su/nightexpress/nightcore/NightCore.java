@@ -4,10 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.experimental.ImprovedCommands;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.core.CoreConfig;
-import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.core.CoreManager;
 import su.nightexpress.nightcore.core.CorePerms;
 import su.nightexpress.nightcore.core.command.CoreCommands;
+import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.language.LangAssets;
 import su.nightexpress.nightcore.ui.UIUtils;
 import su.nightexpress.nightcore.ui.dialog.DialogWatcher;
@@ -15,7 +15,7 @@ import su.nightexpress.nightcore.util.TimeUtil;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
-import su.nightexpress.nightcore.util.text.night.tag.TagManager;
+import su.nightexpress.nightcore.core.tag.TagManager;
 
 import java.util.Optional;
 
@@ -30,8 +30,13 @@ public class NightCore extends NightPlugin implements ImprovedCommands {
     protected PluginDetails getDefaultDetails() {
         return PluginDetails.create("nightcore", new String[]{"nightcore", "ncore"})
             .setConfigClass(CoreConfig.class)
-            .setLangClass(CoreLang.class)
+            //.setLangClass(CoreLang.class)
             .setPermissionsClass(CorePerms.class);
+    }
+
+    @Override
+    protected void addRegistries() {
+        this.registerLang(CoreLang.class);
     }
 
     @Override

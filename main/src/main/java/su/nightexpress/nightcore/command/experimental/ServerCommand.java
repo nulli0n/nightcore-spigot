@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.experimental.node.CommandNode;
 import su.nightexpress.nightcore.command.impl.WrappedCommand;
 
+@Deprecated
 public interface ServerCommand extends TabExecutor {
 
     boolean register();

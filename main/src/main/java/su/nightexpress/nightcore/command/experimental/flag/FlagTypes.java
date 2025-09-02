@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.command.experimental.argument.ArgumentTypes;
 import su.nightexpress.nightcore.command.experimental.builder.ContentFlagBuilder;
 import su.nightexpress.nightcore.command.experimental.builder.SimpleFlagBuilder;
 
+@Deprecated
 public class FlagTypes {
 
     @NotNull

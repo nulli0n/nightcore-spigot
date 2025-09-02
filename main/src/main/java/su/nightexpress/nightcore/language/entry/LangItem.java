@@ -30,6 +30,9 @@ public class LangItem extends LangEntry {
     public LangItem(@NotNull String key, @NotNull String defaultName, @NotNull List<String> defaultLore) {
         super(key, defaultName);
         this.defaultLore = defaultLore;
+
+        this.setLocalizedName(defaultName);
+        this.setLocalizedLore(defaultLore);
     }
 
     @NotNull

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+@Deprecated
 public class ChainedNodeBuilder extends NodeBuilder<ChainedNode, ChainedNodeBuilder> {
 
     private final Map<String, CommandNode> childrenMap;

@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogBodyAdapter;
 
+import java.util.function.UnaryOperator;
+
 public record WrappedItemDialogBody(@NotNull ItemStack item,
                                     @Nullable WrappedPlainMessageDialogBody description,
                                     boolean showDecorations,
@@ -16,6 +18,12 @@ public record WrappedItemDialogBody(@NotNull ItemStack item,
     @NotNull
     public <D> D adapt(@NotNull DialogBodyAdapter<D> adapter) {
         return adapter.adaptBody(this);
+    }
+
+    @Override
+    @NotNull
+    public WrappedItemDialogBody replace(@NotNull UnaryOperator<String> operator) {
+        return new WrappedItemDialogBody(new ItemStack(this.item), this.description == null ? null : this.description.replace(operator), this.showDecorations, this.showTooltip, this.width, this.height);
     }
 
     public static final class Builder {

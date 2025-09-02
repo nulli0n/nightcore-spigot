@@ -1,11 +1,13 @@
 package su.nightexpress.nightcore.locale.message;
 
+import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.wrap.NightSound;
 import su.nightexpress.nightcore.util.Enums;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.sound.AbstractSound;
+import su.nightexpress.nightcore.util.sound.VanillaSound;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,6 +18,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean replacePlaceholders, @Nullable NightSound sound, int[] titleTimes) {
+
+    public static final MessageData CHAT_DEFAULT   = chat().build();
+    public static final MessageData CHAT_NO_PREFIX = chat().usePrefix(false).build();
+    public static final MessageData ACTION_BAR     = actionBar().build();
+    public static final MessageData TITLES         = titles().build();
 
     private static final Pattern ENTRY_PATTERN = Pattern.compile("(\\w+)=\"([^\"]*)\"");
     private static final Pattern LEGACY_TAG_PATTERN = Pattern.compile("<(\\w+)(?:\\s*:\\s*\"([^\"]*)\")?>");
@@ -34,18 +41,21 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
     @NotNull
     public String serialize() {
         Map<Option, String> values = new HashMap<>();
-        values.put(Option.PREFIX, Boolean.toString(this.usePrefix));
-        values.put(Option.PLACEHOLDERS, Boolean.toString(this.replacePlaceholders));
+        if (this.type == MessageType.CHAT) {
+            if (!this.usePrefix) values.put(Option.PREFIX, Boolean.toString(false));
+            if (this.replacePlaceholders) values.put(Option.PLACEHOLDERS, Boolean.toString(true));
+        }
 
         if (this.sound != null) {
             values.put(Option.SOUND, this.sound.serialize());
         }
-        if (this.titleTimes != null && this.titleTimes.length == 3) {
+        if (this.titleTimes != null && this.titleTimes.length == 3 && this.type == MessageType.TITLE) {
             values.put(Option.TITLE_TIMES, IntStream.of(this.titleTimes).mapToObj(String::valueOf).collect(Collectors.joining(":")));
         }
         if (this.type != MessageType.CHAT) {
             values.put(Option.TYPE, this.type.name().toLowerCase());
         }
+        if (values.isEmpty()) return "";
 
         String serialized = values.entrySet().stream()
             .filter(e -> e.getValue() != null)
@@ -60,6 +70,21 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
     @NotNull
     public static Builder builder() {
         return new Builder();
+    }
+
+    @NotNull
+    public static Builder chat() {
+        return builder().type(MessageType.CHAT);
+    }
+
+    @NotNull
+    public static Builder actionBar() {
+        return builder().type(MessageType.ACTION_BAR);
+    }
+
+    @NotNull
+    public static Builder titles() {
+        return builder().type(MessageType.TITLE).titleTimes(20, 60, 20);
     }
 
     @NotNull
@@ -111,6 +136,8 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
                 if (value.startsWith("titles:")) {
                     parseOption(Option.TITLE_TIMES, value.substring("titles:".length()), builder);
                     parseOption(Option.TYPE, MessageType.TITLE.name(), builder);
+                    matcher.appendReplacement(remainderBuffer, "");
+                    continue;
                 }
                 else {
                     key = Option.TYPE.name();
@@ -136,9 +163,10 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
             case TYPE -> builder.type(Enums.parse(value, MessageType.class).orElse(MessageType.CHAT));
             case TITLE_TIMES -> {
                 String[] split = value.split(":");
-                int fadeIn = NumberUtil.getAnyInteger(split[1], 20);
-                int stay = NumberUtil.getAnyInteger(split[2], 60);
-                int fadeOut = NumberUtil.getAnyInteger(split[3], 20);
+                int length = split.length;
+                int fadeIn = NumberUtil.getAnyInteger(split[0], 20);
+                int stay = length >= 2 ? NumberUtil.getAnyInteger(split[1], 60) : 60;
+                int fadeOut = length >= 3 ? NumberUtil.getAnyInteger(split[2], 20) : fadeIn;
                 builder.titleTimes(fadeIn, stay, fadeOut);
             }
             case SOUND -> builder.sound(AbstractSound.deserialize(value));
@@ -195,6 +223,11 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
         public Builder replacePlaceholders(boolean replacePlaceholders) {
             this.replacePlaceholders = replacePlaceholders;
             return this;
+        }
+
+        @NotNull
+        public Builder sound(@Nullable Sound sound) {
+            return this.sound(sound == null ? null : VanillaSound.of(sound));
         }
 
         @NotNull

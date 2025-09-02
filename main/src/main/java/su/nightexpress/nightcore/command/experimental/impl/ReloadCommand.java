@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.command.experimental.node.DirectNode;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
+@Deprecated
 public class ReloadCommand {
 
     @Deprecated

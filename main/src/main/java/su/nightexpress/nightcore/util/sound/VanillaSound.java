@@ -2,10 +2,13 @@ package su.nightexpress.nightcore.util.sound;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.SoundGroup;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.BukkitThing;
+
+import java.util.function.Function;
 
 public class VanillaSound extends AbstractSound {
 
@@ -14,6 +17,11 @@ public class VanillaSound extends AbstractSound {
     public VanillaSound(@NotNull Sound sound, float volume, float pitch) {
         super(volume, pitch);
         this.sound = sound;
+    }
+
+    @NotNull
+    public static VanillaSound of(@NotNull SoundGroup group, @NotNull Function<SoundGroup, Sound> function) {
+        return of(function.apply(group), group.getVolume(), group.getPitch());
     }
 
     @NotNull

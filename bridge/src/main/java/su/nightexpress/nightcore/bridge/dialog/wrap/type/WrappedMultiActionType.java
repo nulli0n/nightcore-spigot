@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.bridge.dialog.adapter.DialogTypeAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
 
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public record WrappedMultiActionType(@NotNull List<WrappedActionButton> actions,
                                      @Nullable WrappedActionButton exitAction,
@@ -15,6 +16,15 @@ public record WrappedMultiActionType(@NotNull List<WrappedActionButton> actions,
     @NotNull
     public <T> T adapt(@NotNull DialogTypeAdapter<T> factory) {
         return factory.adaptType(this);
+    }
+
+    @Override
+    @NotNull
+    public WrappedMultiActionType replace(@NotNull UnaryOperator<String> operator) {
+        List<WrappedActionButton> actions = this.actions.stream().map(other -> other.replace(operator)).toList();
+        WrappedActionButton exitAction = this.exitAction == null ? null : this.exitAction.replace(operator);
+
+        return new WrappedMultiActionType(actions, exitAction, this.columns);
     }
 
     public static final class Builder {

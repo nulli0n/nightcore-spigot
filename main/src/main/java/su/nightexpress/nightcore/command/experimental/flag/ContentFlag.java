@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.command.experimental.builder.ContentFlagBuilder
 
 import java.util.function.Function;
 
+@Deprecated
 public class ContentFlag<T> extends CommandFlag {
 
     private final ArgumentParser<T> parser;

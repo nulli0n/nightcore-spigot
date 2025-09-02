@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class DirectNodeBuilder extends NodeBuilder<DirectNode, DirectNodeBuilder> {
 
     private final List<CommandArgument<?>> arguments;

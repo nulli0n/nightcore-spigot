@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.dialog.wrap.base.WrappedDialogAfterAction;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.bridge.Software;
+import su.nightexpress.nightcore.util.placeholder.Replacer;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -49,6 +50,18 @@ public class Dialogs {
     }
 
     public static void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {
+        showDialog(player, dialog, null);
+    }
+
+    /*public static void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog, @Nullable Consumer<Replacer> consumer) {
+        showDialog(player, dialog, consumer == null ? null : Replacer.create().and(consumer).chained());
+    }*/
+
+    public static void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog, @Nullable Consumer<Replacer> replacer) {
+        if (replacer != null) {
+            dialog = dialog.replace(Replacer.create().and(replacer).chained());
+        }
+
         ACTIVE_DIALOGS.put(player.getUniqueId(), dialog);
 
         Software.instance().showDialog(player, dialog);
@@ -64,8 +77,16 @@ public class Dialogs {
     }
 
     public static void createAndShow(@NotNull Player player, @NotNull Consumer<WrappedDialog.Builder> consumer) {
+        createAndShow(player, consumer, null);
+    }
+
+    /*public static void createAndShow(@NotNull Player player, @NotNull Consumer<WrappedDialog.Builder> consumer, @Nullable Consumer<Replacer> replacer) {
+        createAndShow(player, consumer, replacer == null ? null : Replacer.create().and(replacer).chained());
+    }*/
+
+    public static void createAndShow(@NotNull Player player, @NotNull Consumer<WrappedDialog.Builder> consumer, @Nullable Consumer<Replacer> replacer) {
         WrappedDialog dialog = create(consumer);
-        showDialog(player, dialog);
+        showDialog(player, dialog, replacer);
     }
 
     @NotNull

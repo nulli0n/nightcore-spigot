@@ -4,17 +4,20 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 
-import java.util.Set;
-
 public interface LangElement {
 
-    void load(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String langCode);
+    @Deprecated
+    default void load(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String langCode) {
+        this.load(plugin, config);
+    }
 
-    boolean isSupportedLocale(@NotNull String locale);
+    void load(@NotNull NightPlugin plugin, @NotNull FileConfig config/*, @NotNull String langCode*/);
+
+    //boolean isSupportedLocale(@NotNull String locale);
 
     @NotNull String getPath();
 
-    @NotNull Set<String> getSupportedLocales();
+    //@NotNull Set<String> getSupportedLocales();
 
-    @NotNull LangValue getDefaultValue(@NotNull String langCode);
+    @NotNull LangValue getDefaultValue(/*@NotNull String langCode*/);
 }

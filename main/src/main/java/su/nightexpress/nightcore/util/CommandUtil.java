@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
 import su.nightexpress.nightcore.command.impl.WrappedCommand;
+import su.nightexpress.nightcore.util.bridge.Software;
 
 import java.util.*;
 
@@ -18,7 +18,7 @@ public class CommandUtil {
 
     @NotNull
     private static SimpleCommandMap getCommandMap() {
-        return Engine.software().getCommandMap();
+        return Software.instance().getCommandMap();
     }
 
     @Deprecated
@@ -31,6 +31,10 @@ public class CommandUtil {
 
     public static boolean register(@NotNull Plugin plugin, @NotNull WrappedCommand wrappedCommand) {
         return getCommandMap().register(plugin.getName(), wrappedCommand);
+    }
+
+    public static boolean register(@NotNull Command command, @NotNull String fallbackPrefix) {
+        return getCommandMap().register(fallbackPrefix, command);
     }
 
     /*public static void syncCommands() {
@@ -46,9 +50,13 @@ public class CommandUtil {
         Command command = getCommand(name).orElse(null);
         if (command == null) return false;
 
+        return unregister(command);
+    }
+
+    public static boolean unregister(@NotNull Command command) {
         SimpleCommandMap commandMap = getCommandMap();
 
-        Map<String, Command> knownCommands = Engine.software().getKnownCommands(commandMap);
+        Map<String, Command> knownCommands = Software.instance().getKnownCommands(commandMap);
         if (!command.unregister(commandMap)) return false;
 
         return knownCommands.keySet().removeIf(key -> key.equalsIgnoreCase(command.getName()) || command.getAliases().contains(key));

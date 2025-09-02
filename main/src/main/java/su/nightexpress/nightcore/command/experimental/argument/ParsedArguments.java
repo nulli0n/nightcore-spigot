@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class ParsedArguments {
 
     private final Map<String, ParsedArgument<?>> argumentMap;

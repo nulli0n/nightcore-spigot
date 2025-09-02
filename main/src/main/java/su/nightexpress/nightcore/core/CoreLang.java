@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.util.bridge.wrapper.HoverEventType;
 import static su.nightexpress.nightcore.util.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
+@Deprecated
 public class CoreLang {
 
     @Deprecated
@@ -163,12 +164,15 @@ public class CoreLang {
             + " to leave input mode."),
         "");
 
+    @Deprecated
     public static final LangString DIALOG_HEADER = LangString.of("Dialog.Header",
         LIGHT_YELLOW.wrap(GENERIC_TIME));
 
+    @Deprecated
     public static final LangString DIALOG_DEFAULT_PROMPT = LangString.of("Dialog.DefaultPrompt",
         LIGHT_GRAY.wrap("Enter " + LIGHT_GREEN.wrap("[Value]")));
 
+    @Deprecated
     public static final LangText DIALOG_INFO_EXIT = LangText.of("Dialog.Info.Exit",
         TAG_NO_PREFIX,
         "",

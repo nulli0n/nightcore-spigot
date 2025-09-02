@@ -13,6 +13,7 @@ import su.nightexpress.nightcore.util.placeholder.Replacer;
 
 import java.util.function.Consumer;
 
+@Deprecated
 public class CommandContext {
 
     private final NightCorePlugin plugin;

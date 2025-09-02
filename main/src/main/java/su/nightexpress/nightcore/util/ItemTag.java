@@ -8,8 +8,6 @@ import su.nightexpress.nightcore.core.CoreConfig;
 
 public class ItemTag implements Writeable {
 
-    private static final String DELIMITER = "\\$\\!\\~";
-
     private static final String EMPTY = "{}";
 
     private final String tag;
@@ -32,20 +30,6 @@ public class ItemTag implements Writeable {
     public void write(@NotNull FileConfig config, @NotNull String path) {
         config.set(path + ".Value", this.tag);
         config.set(path + ".DataVersion", this.dataVersion);
-    }
-
-    @NotNull
-    public static ItemTag deserialize(@NotNull String string) {
-        String[] split = string.split(DELIMITER);
-        String tag = split[0];
-        int dataVersion = split.length >= 2 ? NumberUtil.getIntegerAbs(split[1]) : CoreConfig.DATA_FIXER_MISSING_VERSION.get();
-
-        return new ItemTag(tag, dataVersion);
-    }
-
-    @NotNull
-    public String serialize() {
-        return this.tag + DELIMITER + this.dataVersion;
     }
 
     public boolean isEmpty() {

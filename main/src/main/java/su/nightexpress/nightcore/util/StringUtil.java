@@ -317,7 +317,7 @@ public class StringUtil {
 
     @NotNull
     public static String lowerCaseUnderscore(@NotNull String str) {
-        return str.toLowerCase().replace(' ', '_');
+        return LowerCase.INTERNAL.apply(str).replace(' ', '_');
         //return lowerCaseUnderscore(str, -1);
     }
 
@@ -342,7 +342,7 @@ public class StringUtil {
     @NotNull
     @Deprecated
     private static String lowerCaseAndClean(@NotNull String str, @NotNull Pattern pattern, int length) {
-        String clean = NightMessage.stripTags(str).toLowerCase().replace(" ", "_");
+        String clean = LowerCase.INTERNAL.apply(NightMessage.stripTags(str)).replace(" ", "_");
         if (length > 0 && clean.length() > length) {
             clean = clean.substring(0, length);
         }
@@ -359,7 +359,7 @@ public class StringUtil {
 
     @NotNull
     public static String capitalizeFully(@NotNull String str) {
-        return capitalize(str.toLowerCase());
+        return capitalize(LowerCase.USER_LOCALE.apply(str));
     }
 
     @NotNull

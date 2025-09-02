@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.language.entry;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.language.message.LangMessage;
@@ -18,6 +19,7 @@ public class LangText extends LangEntry {
 
     public LangText(@NotNull String path, @NotNull String... defaultText) {
         super(path, String.join("\n", defaultText));
+        this.setMessage(LangMessage.parse(String.join(Placeholders.TAG_LINE_BREAK, this.getDefaultText()), Engine.core().getPrefix()));
     }
 
     @NotNull

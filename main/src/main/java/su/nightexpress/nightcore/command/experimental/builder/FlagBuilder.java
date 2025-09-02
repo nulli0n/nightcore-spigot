@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
+@Deprecated
 public abstract class FlagBuilder<F extends CommandFlag, B extends FlagBuilder<F, B>> {
 
     protected final String name;

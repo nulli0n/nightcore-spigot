@@ -40,7 +40,11 @@ public class Placeholders {
     public static final String GENERIC_AMOUNT = "%amount%";
     public static final String GENERIC_ENTRY =  "%entry%";
     public static final String GENERIC_TIME = "%time%";
+    public static final String GENERIC_INPUT = "%input%";
+    public static final String GENERIC_COMMAND = "%command%";
+    public static final String GENERIC_DESCRIPTION = "%description%";
 
+    @Deprecated
     public static final String TAG_NO_PREFIX  = MessageTags.NO_PREFIX.getBracketsName();
     @Deprecated
     public static final String TAG_LINE_BREAK = Tags.LINE_BREAK.getBracketsName();
@@ -65,8 +69,11 @@ public class Placeholders {
     public static final String EMPTY_IF_BELOW = "%empty-if-below%";
     public static final String EMPTY_IF_BOTH  = "%empty-if-both%";
 
+    @Deprecated
     public static final String COMMAND_USAGE       = "%command_usage%";
+    @Deprecated
     public static final String COMMAND_DESCRIPTION = "%command_description%";
+    @Deprecated
     public static final String COMMAND_LABEL       = "%command_label%";
 
     public static final PlaceholderList<Player> PLAYER = new PlaceholderList<Player>()
@@ -87,22 +94,11 @@ public class Placeholders {
     @NotNull
     public static UnaryOperator<String> forLocation(@NotNull Location location) {
         return LOCATION.replacer(location);
-//
-//        return new PlaceholderMap()
-//            .add(LOCATION_X, () -> String.valueOf(location.getBlockX()))
-//            .add(LOCATION_Y, () -> String.valueOf(location.getBlockY()))
-//            .add(LOCATION_Z, () -> String.valueOf(location.getBlockZ()))
-//            .add(LOCATION_WORLD, () -> LocationUtil.getWorldName(location))
-//            .replacer();
     }
 
     @NotNull
     public static UnaryOperator<String> forPlayer(@NotNull Player player) {
         return PLAYER.replacer(player);
-//        return new PlaceholderMap()
-//            .add(PLAYER_NAME, player::getName)
-//            .add(PLAYER_DISPLAY_NAME, player::getDisplayName)
-//            .replacer();
     }
 
     @NotNull
@@ -115,11 +111,6 @@ public class Placeholders {
         if (sender instanceof Player player) return forPlayer(player);
 
         return SENDER.replacer(sender);
-//
-//        return new PlaceholderMap()
-//            .add(PLAYER_NAME, sender::getName)
-//            .add(PLAYER_DISPLAY_NAME, sender::getName)
-//            .replacer();
     }
 
     @NotNull

@@ -1,14 +1,15 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input.text;
 
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedDialogInput;
 import su.nightexpress.nightcore.util.Strings;
-import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+
+import java.util.function.UnaryOperator;
 
 public record WrappedTextDialogInput(@NotNull String key,
-                                     @NotNull NightComponent label,
+                                     @NotNull String label,
                                      @NotNull String initial,
                                      boolean labelVisible,
                                      int width,
@@ -21,10 +22,16 @@ public record WrappedTextDialogInput(@NotNull String key,
         return adapter.adaptInput(this);
     }
 
+    @Override
+    @NotNull
+    public WrappedTextDialogInput replace(@NotNull UnaryOperator<String> operator) {
+        return new WrappedTextDialogInput(this.key, operator.apply(this.label), operator.apply(this.initial), this.labelVisible, this.width, this.maxLength, this.multiline);
+    }
+
     public static final class Builder {
 
         private final String    key;
-        private final NightComponent label;
+        private final String label;
 
         private boolean                 labelVisible = true;
         private String                  initial      = "";
@@ -32,7 +39,7 @@ public record WrappedTextDialogInput(@NotNull String key,
         private int                     maxLength    = 32;
         private WrappedMultilineOptions multiline    = null;
 
-        public Builder(@NotNull String key, @NotNull NightComponent label) {
+        public Builder(@NotNull String key, @NotNull String label) {
             this.key = Strings.filterForVariable(key);
             this.label = label;
         }

@@ -1,19 +1,29 @@
 package su.nightexpress.nightcore.util.time;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.core.CoreLang;
-import su.nightexpress.nightcore.language.entry.LangString;
+import su.nightexpress.nightcore.core.config.CoreLang;
+import su.nightexpress.nightcore.locale.entry.TextLocale;
 import su.nightexpress.nightcore.util.NumberUtil;
-import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class TimeFormats {
 
     private static final DateTimeFormatter DIGITAL_FULL_FORMATTER  = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static final DateTimeFormatter DIGITAL_SHORT_FORMATTER = DateTimeFormatter.ofPattern("mm:ss");
+
+    private static final Map<TimeUnit, TextLocale> LITERAL_TIME_UNITS = new LinkedHashMap<>();
+
+    static {
+        LITERAL_TIME_UNITS.put(TimeUnit.DAYS, CoreLang.TIME_LABEL_DAY);
+        LITERAL_TIME_UNITS.put(TimeUnit.HOURS, CoreLang.TIME_LABEL_HOUR);
+        LITERAL_TIME_UNITS.put(TimeUnit.MINUTES, CoreLang.TIME_LABEL_MINUTE);
+        LITERAL_TIME_UNITS.put(TimeUnit.SECONDS, CoreLang.TIME_LABEL_SECOND);
+    }
 
     @NotNull
     public static String formatDuration(long until, @NotNull TimeFormatType formatType) {
@@ -56,7 +66,7 @@ public class TimeFormats {
         return TimeUtil.getLocalTimeOf(millis).format(formatter);
     }
 
-    @NotNull
+    /*@NotNull
     public static String toLiteral(long millis) {
         TimeUnit[] units = {TimeUnit.DAYS, TimeUnit.HOURS, TimeUnit.MINUTES, TimeUnit.SECONDS};
         long[] scales = {0, 24, 60, 60};
@@ -81,5 +91,28 @@ public class TimeFormats {
         }
 
         return str.toString();
+    }*/
+
+    @NotNull
+    public static String toLiteral(long millis) {
+        StringBuilder str = new StringBuilder();
+        String delimiter = CoreLang.TIME_DELIMITER.text();
+
+        long remaining = millis;
+        for (Map.Entry<TimeUnit, TextLocale> entry : LITERAL_TIME_UNITS.entrySet()) {
+            TimeUnit unit = entry.getKey();
+            String label = entry.getValue().text();
+
+            long value = unit.convert(remaining, TimeUnit.MILLISECONDS);
+            if (value > 0 || (millis <= 1000L && unit == TimeUnit.SECONDS)) {
+                if (!str.isEmpty()) {
+                    str.append(delimiter);
+                }
+                str.append(label.formatted(String.valueOf(value)));
+                remaining -= unit.toMillis(value);
+            }
+        }
+
+        return str.toString().trim();
     }
 }

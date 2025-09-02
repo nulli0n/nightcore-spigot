@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.experimental.argument.ArgumentParser;
 import su.nightexpress.nightcore.command.experimental.flag.ContentFlag;
 
+@Deprecated
 public class ContentFlagBuilder<T> extends FlagBuilder<ContentFlag<T>, ContentFlagBuilder<T>> {
 
     private final ArgumentParser<T> parser;
