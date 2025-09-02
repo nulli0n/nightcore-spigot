@@ -3,14 +3,13 @@ package su.nightexpress.nightcore.locale.message.impl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.locale.message.LangMessage;
 import su.nightexpress.nightcore.locale.message.MessageData;
 import su.nightexpress.nightcore.util.Players;
 
 public class ActionBarMessage extends LangMessage {
 
-    public ActionBarMessage(@NotNull String text, @Nullable MessageData data) {
+    public ActionBarMessage(@NotNull String text, @NotNull MessageData data) {
         super(text, data);
     }
 

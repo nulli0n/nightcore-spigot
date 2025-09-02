@@ -4,10 +4,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogButtonAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogAction;
-import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
-public record WrappedActionButton(@NotNull NightComponent label,
-                                  @Nullable NightComponent tooltip,
+import java.util.function.UnaryOperator;
+
+public record WrappedActionButton(@NotNull String label,
+                                  @Nullable String tooltip,
                                   int width,
                                   @Nullable WrappedDialogAction action) {
 
@@ -16,25 +17,30 @@ public record WrappedActionButton(@NotNull NightComponent label,
         return adapter.adaptButton(this);
     }
 
+    @NotNull
+    public WrappedActionButton replace(@NotNull UnaryOperator<String> operator) {
+        return new WrappedActionButton(operator.apply(this.label), this.tooltip == null ? null : operator.apply(this.tooltip), this.width, this.action);
+    }
+
     public static final class Builder {
 
-        private final NightComponent label;
+        private final String label;
 
-        private NightComponent      tooltip;
+        private String      tooltip;
         private int                 width = 150; // TODO Config
         private WrappedDialogAction action;
 
-        public Builder(@NotNull NightComponent label) {
+        public Builder(@NotNull String label) {
             this(label, null);
         }
 
-        public Builder(@NotNull NightComponent label, @Nullable NightComponent tooltip) {
+        public Builder(@NotNull String label, @Nullable String tooltip) {
             this.label = label;
             this.tooltip(tooltip);
         }
 
         @NotNull
-        public Builder tooltip(@Nullable NightComponent tooltip) {
+        public Builder tooltip(@Nullable String tooltip) {
             this.tooltip = tooltip;
             return this;
         }

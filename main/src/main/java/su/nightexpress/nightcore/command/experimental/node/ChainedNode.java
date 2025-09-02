@@ -14,6 +14,7 @@ import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.*;
 
+@Deprecated
 public class ChainedNode extends CommandNode {
 
     private final String                   localized;

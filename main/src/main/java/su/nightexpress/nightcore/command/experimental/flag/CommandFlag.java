@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.util.Placeholders;
 
+@Deprecated
 public abstract class CommandFlag {
 
     public static final char PREFIX    = '-';

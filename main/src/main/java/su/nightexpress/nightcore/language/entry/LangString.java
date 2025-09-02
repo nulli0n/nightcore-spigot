@@ -14,6 +14,7 @@ public class LangString extends LangEntry {
 
     public LangString(@NotNull String path, @NotNull String defaultText) {
         super(path, defaultText);
+        this.string = defaultText;
     }
 
     @NotNull

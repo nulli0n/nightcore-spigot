@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class TabContext {
 
     private final CommandSender sender;

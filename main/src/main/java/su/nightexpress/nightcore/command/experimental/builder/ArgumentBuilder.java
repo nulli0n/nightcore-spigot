@@ -13,6 +13,7 @@ import su.nightexpress.nightcore.util.wrapper.UniPermission;
 import java.util.List;
 import java.util.function.Function;
 
+@Deprecated
 public class ArgumentBuilder<T> {
 
     protected final String         name;

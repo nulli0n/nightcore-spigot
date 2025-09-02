@@ -1,13 +1,14 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input;
 
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.util.Strings;
-import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+
+import java.util.function.UnaryOperator;
 
 public record WrappedNumberRangeDialogInput(@NotNull String key,
-                                            @NotNull NightComponent label,
+                                            @NotNull String label,
                                             @NotNull String labelFormat,
                                             int width,
                                             float start, float end,
@@ -20,10 +21,16 @@ public record WrappedNumberRangeDialogInput(@NotNull String key,
         return adapter.adaptInput(this);
     }
 
+    @Override
+    @NotNull
+    public WrappedNumberRangeDialogInput replace(@NotNull UnaryOperator<String> operator) {
+        return new WrappedNumberRangeDialogInput(this.key, operator.apply(this.label), this.labelFormat,  this.width, this.start, this.end, this.initial, this.step);
+    }
+
     public static final class Builder {
 
         private final String    key;
-        private final NightComponent label;
+        private final String label;
         private final float     start;
         private final float     end;
 
@@ -32,7 +39,7 @@ public record WrappedNumberRangeDialogInput(@NotNull String key,
         private Float  initial     = null;
         private Float  step        = null;
 
-        public Builder(@NotNull String key, @NotNull NightComponent label, float start, float end) {
+        public Builder(@NotNull String key, @NotNull String label, float start, float end) {
             this.key = Strings.filterForVariable(key);
             this.label = label;
             this.start = start;

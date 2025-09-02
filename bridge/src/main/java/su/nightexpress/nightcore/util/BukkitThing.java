@@ -40,7 +40,7 @@ public class BukkitThing {
 
     @NotNull
     private static String validateNamespaceOrValue(@NotNull String str, @NotNull Predicate<Character> predicate) {
-        char[] chars = str.toLowerCase().toCharArray();
+        char[] chars = LowerCase.INTERNAL.apply(str).toCharArray();
 
         StringBuilder builder = new StringBuilder();
         for (char letter : chars) {

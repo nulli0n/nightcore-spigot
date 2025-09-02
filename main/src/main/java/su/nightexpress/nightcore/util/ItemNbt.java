@@ -255,16 +255,6 @@ public class ItemNbt {
         return fromTag(new ItemTag(tagString, CoreConfig.DATA_FIXER_MISSING_VERSION.get()));
     }
 
-//    @Nullable
-//    public static Object getCompound(@NotNull ItemTag itemTag) {
-//        if (!loaded) return null;
-//        if (itemTag.isEmpty()) return null;
-//
-//        String tagString = itemTag.getTag();
-//
-//        return Reflex.invokeMethod(mTagParserParseTag, null, tagString);
-//    }
-
     @Nullable
     public static ItemStack fromTag(@NotNull ItemTag itemTag) {
         if (!loaded) return null;
@@ -364,17 +354,17 @@ public class ItemNbt {
         if (sourceVersion > targetVersion || sourceVersion <= 0) return compoundTag;
 
         // Probably not necessary, but they used it for a reason probably.
-//        if (Version.isPaper()) {
-//            Class<?> mcDataTypeClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCDataType");
-//            Class<?> mcDataConvertedClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft", "MCDataConverter");
-//            Class<?> mcTypeRegistryClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCTypeRegistry");
-//
-//            Object itemStackRegistry = Reflex.getFieldValue(mcTypeRegistryClass, "ITEM_STACK");
-//
-//            Method convert = Reflex.getMethod(mcDataConvertedClass, "convertTag", mcDataTypeClass, CLS_COMPOUND_TAG, Integer.TYPE, Integer.TYPE);
-//
-//            return Reflex.invokeMethod(convert, null, itemStackRegistry, compoundTag, sourceVersion, targetVersion);
-//        }
+        /*if (Version.isPaper()) {
+            Class<?> mcDataTypeClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCDataType");
+            Class<?> mcDataConvertedClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft", "MCDataConverter");
+            Class<?> mcTypeRegistryClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCTypeRegistry");
+
+            Object itemStackRegistry = Reflex.getFieldValue(mcTypeRegistryClass, "ITEM_STACK");
+
+            Method convert = Reflex.getMethod(mcDataConvertedClass, "convertTag", mcDataTypeClass, CLS_COMPOUND_TAG, Integer.TYPE, Integer.TYPE);
+
+            return Reflex.invokeMethod(convert, null, itemStackRegistry, compoundTag, sourceVersion, targetVersion);
+        }*/
 
         Dynamic<?> dynamic = new Dynamic<>((DynamicOps) nbtOps, compoundTag);
         return dataFixer.update((DSL.TypeReference) itemStackReference, dynamic, sourceVersion, targetVersion).getValue();

@@ -1,12 +1,13 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.type;
 
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogTypeAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
 
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public record WrappedDialogListType(@NotNull List<WrappedDialog> dialogs,
                                     @Nullable WrappedActionButton exitAction,
@@ -17,6 +18,12 @@ public record WrappedDialogListType(@NotNull List<WrappedDialog> dialogs,
     @NotNull
     public <T> T adapt(@NotNull DialogTypeAdapter<T> factory) {
         return factory.adaptType(this);
+    }
+
+    @Override
+    @NotNull
+    public WrappedDialogListType replace(@NotNull UnaryOperator<String> operator) {
+        return new WrappedDialogListType(List.copyOf(this.dialogs), this.exitAction == null ? null : this.exitAction.replace(operator), this.columns, this.buttonWidth);
     }
 
     public static final class Builder {

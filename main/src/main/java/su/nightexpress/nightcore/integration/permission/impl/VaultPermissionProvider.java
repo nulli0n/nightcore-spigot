@@ -8,6 +8,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
+import su.nightexpress.nightcore.util.LowerCase;
 import su.nightexpress.nightcore.util.Plugins;
 
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class VaultPermissionProvider implements PermissionProvider {
         if (this.permission == null || !this.permission.hasGroupSupport()) return null;
 
         String group = this.permission.getPrimaryGroup(player);
-        return group == null ? null : group.toLowerCase();
+        return group == null ? null : LowerCase.USER_LOCALE.apply(group);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class VaultPermissionProvider implements PermissionProvider {
         String[] groups = this.permission.getPlayerGroups(player);
         if (groups == null) groups = new String[] {this.getPrimaryGroup(player)};
 
-        return Stream.of(groups).map(String::toLowerCase).collect(Collectors.toSet());
+        return Stream.of(groups).map(LowerCase.USER_LOCALE::apply).collect(Collectors.toSet());
     }
 
     @Override

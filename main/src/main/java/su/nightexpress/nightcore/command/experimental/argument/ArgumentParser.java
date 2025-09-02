@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 
+@Deprecated
 public interface ArgumentParser<T> {
 
     @Nullable T parse(@NotNull String string, @NotNull CommandContext context);

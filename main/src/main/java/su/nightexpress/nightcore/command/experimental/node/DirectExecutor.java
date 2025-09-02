@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
 
+@Deprecated
 public interface DirectExecutor {
 
     boolean execute(@NotNull CommandContext context, @NotNull ParsedArguments arguments);

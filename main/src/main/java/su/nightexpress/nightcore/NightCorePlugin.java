@@ -82,8 +82,10 @@ public interface NightCorePlugin extends Plugin {
         this.info("[DEBUG] " + msg);
     }
 
+    @Deprecated
     @NotNull LangManager getLangManager();
 
+    @Deprecated
     @NotNull CommandManager getCommandManager();
 
     @Deprecated

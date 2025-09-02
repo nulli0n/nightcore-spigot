@@ -9,9 +9,11 @@ import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogResponseHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.base.WrappedDialogBase;
 import su.nightexpress.nightcore.bridge.dialog.wrap.type.WrappedDialogType;
+import su.nightexpress.nightcore.util.LowerCase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 public record WrappedDialog(@NotNull WrappedDialogBase base, @NotNull WrappedDialogType type, @NotNull Map<String, DialogResponseHandler> responseHandlers) {
 
@@ -24,6 +26,11 @@ public record WrappedDialog(@NotNull WrappedDialogBase base, @NotNull WrappedDia
         if (handler == null) return;
 
         handler.handle(player, identifier, nbtHolder);
+    }
+
+    @NotNull
+    public WrappedDialog replace(@NotNull UnaryOperator<String> operator) {
+        return new WrappedDialog(this.base.replace(operator), this.type.replace(operator), Map.copyOf(this.responseHandlers));
     }
 
     public static class Builder {
@@ -51,7 +58,7 @@ public record WrappedDialog(@NotNull WrappedDialogBase base, @NotNull WrappedDia
 
         @NotNull
         public Builder handleResponse(@NotNull String identifier, @NotNull DialogResponseHandler handler) {
-            this.responseHandlers.put(identifier.toLowerCase(), handler);
+            this.responseHandlers.put(LowerCase.INTERNAL.apply(identifier), handler);
             return this;
         }
 

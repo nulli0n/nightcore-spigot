@@ -54,6 +54,17 @@ public class Replacer {
     }
 
     @NotNull
+    public UnaryOperator<String> chained() {
+        return this.getReplacers().stream().reduce((l, r) -> (string) -> l.andThen(r).apply(string)).orElseGet(UnaryOperator::identity);
+    }
+
+    @NotNull
+    public Replacer and(@NotNull Consumer<Replacer> consumer) {
+        consumer.accept(this);
+        return this;
+    }
+
+    @NotNull
     @Deprecated
     public TextRoot getReplaced(@NotNull String source) {
         return this.getReplaced(NightMessage.from(source));

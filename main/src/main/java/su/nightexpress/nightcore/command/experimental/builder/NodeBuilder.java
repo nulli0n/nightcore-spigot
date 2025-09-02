@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
 import java.util.stream.Stream;
 
+@Deprecated
 public abstract class NodeBuilder<S extends CommandNode, B extends NodeBuilder<S, B>> {
 
     protected final NightCorePlugin plugin;

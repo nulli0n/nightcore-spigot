@@ -17,6 +17,7 @@ import su.nightexpress.nightcore.util.text.night.NightMessage;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class EntityUtil {
 
@@ -43,14 +44,50 @@ public class EntityUtil {
 
 
 
+    @Deprecated
     public static double getAttribute(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
+        return getAttributeValue(entity, attribute);
+    }
+
+    @Deprecated
+    public static double getAttributeBase(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
+        return getAttributeBaseValue(entity, attribute);
+    }
+
+    public static double getAttributeValue(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
         AttributeInstance instance = entity.getAttribute(attribute);
         return instance == null ? 0D : instance.getValue();
     }
 
-    public static double getAttributeBase(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
+    public static double getAttributeBaseValue(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
         AttributeInstance instance = entity.getAttribute(attribute);
         return instance == null ? 0D : instance.getBaseValue();
+    }
+
+    public static void modifyAttribute(@NotNull LivingEntity entity, @NotNull Attribute attribute, @NotNull Consumer<AttributeInstance> consumer) {
+        AttributeInstance instance = entity.getAttribute(attribute);
+        if (instance == null) return;
+
+        consumer.accept(instance);
+    }
+
+    public static double getMaxHealth(@NotNull LivingEntity entity) {
+        return getAttributeValue(entity, Attribute.MAX_HEALTH);
+    }
+
+    public static void addHealth(@NotNull LivingEntity entity, double amount) {
+        setHealth(entity, entity.getHealth() + Math.abs(amount));
+    }
+
+    public static void removeHealth(@NotNull LivingEntity entity, double amount) {
+        setHealth(entity, entity.getHealth() - Math.abs(amount));
+    }
+
+    public static void setHealth(@NotNull LivingEntity entity, double value) {
+        double maxHealth = getMaxHealth(entity);
+        double health = Math.clamp(value, 0, maxHealth);
+
+        entity.setHealth(health);
     }
 
     @Nullable

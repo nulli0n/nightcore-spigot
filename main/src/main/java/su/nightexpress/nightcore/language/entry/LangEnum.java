@@ -24,7 +24,7 @@ public class LangEnum<E extends Enum<E>> implements LangElement {
         this.path = path;
         this.clazz = clazz;
         this.defaultsMap = defaultsMap;
-        this.localeMap = new HashMap<>();
+        this.localeMap = new HashMap<>(defaultsMap);
     }
 
     @NotNull

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
+import su.nightexpress.nightcore.util.LowerCase;
 import su.nightexpress.nightcore.util.Plugins;
 
 import java.util.Collections;
@@ -57,7 +58,7 @@ public class LuckPermissionProvider implements PermissionProvider {
         if (user == null) return null;
 
         String group = user.getPrimaryGroup();
-        return group.toLowerCase();
+        return LowerCase.USER_LOCALE.apply(group);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class LuckPermissionProvider implements PermissionProvider {
         User user = getUser(player);
         if (user == null) return Collections.emptySet();
 
-        return user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName).map(String::toLowerCase).collect(Collectors.toSet());
+        return user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName).map(LowerCase.USER_LOCALE::apply).collect(Collectors.toSet());
     }
 
     @Override
