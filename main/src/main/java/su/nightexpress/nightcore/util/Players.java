@@ -12,6 +12,7 @@ import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
+import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
 import su.nightexpress.nightcore.util.bridge.Software;
@@ -30,6 +31,8 @@ public class Players {
     @Deprecated
     public static final String TEXTURES_HOST         = PlayerProfiles.TEXTURES_HOST;
     public static final String PLAYER_COMMAND_PREFIX = "player:";
+
+    private static final NightCore plugin = NightCore.getPlugin(NightCore.class);
 
     @NotNull
     public static Set<Player> getOnline() {
@@ -269,18 +272,27 @@ public class Players {
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {
-        for (String command : commands) {
-            dispatchCommand(player, command);
-        }
+        Bukkit.getGlobalRegionScheduler().execute(NightCore.getPlugin(NightCore.class), () -> {
+            for (String command : commands) {
+                dispatchCommand(player, command);
+            }
+        });
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull List<String> commands) {
-        for (String command : commands) {
-            dispatchCommand(player, command);
-        }
+        Bukkit.getGlobalRegionScheduler().execute(NightCore.getPlugin(NightCore.class), () -> {
+            for (String command : commands) {
+                dispatchCommand(player, command);
+            }
+        });
     }
 
     public static void dispatchCommand(@NotNull Player player, @NotNull String command) {
+        Bukkit.getGlobalRegionScheduler().execute(NightCore.getPlugin(NightCore.class),
+            () -> dispatchCommand0(player,command));
+    }
+
+    private static void dispatchCommand0(@NotNull Player player, @NotNull String command) {
         CommandSender sender = Bukkit.getConsoleSender();
         if (command.startsWith(PLAYER_COMMAND_PREFIX)) {
             command = command.substring(PLAYER_COMMAND_PREFIX.length());
@@ -382,13 +394,15 @@ public class Players {
     public static void addItem(@NotNull Player player, @NotNull ItemStack itemStack, int amount) {
         if (amount <= 0 || itemStack.getType().isAir()) return;
 
-        World world = player.getWorld();
         ItemStack split = new ItemStack(itemStack);
 
         int realAmount = Math.min(split.getMaxStackSize(), amount);
         split.setAmount(realAmount);
-        player.getInventory().addItem(split).values().forEach(left -> {
-            world.dropItem(player.getLocation(), left);
+
+        final ItemStack copy = split.clone();
+        plugin.getFoliaScheduler().execute(player, () -> {
+            World world = player.getWorld();
+            player.getInventory().addItem(copy).values().forEach(left -> world.dropItem(player.getLocation(), left));
         });
 
         amount -= realAmount;
