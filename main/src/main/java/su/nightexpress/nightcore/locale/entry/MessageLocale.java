@@ -87,9 +87,8 @@ public class MessageLocale extends LangEntry<LangMessage> {
 
 
     @Override
-    public void load(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String langCode) {
-        super.load(plugin, config, langCode);
-
+    public void load(@NotNull NightPlugin plugin, @NotNull FileConfig config) {
+        super.load(plugin, config);
         this.value = this.withPrefix(plugin);
     }
 

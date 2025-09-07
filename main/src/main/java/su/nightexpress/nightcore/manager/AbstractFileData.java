@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.util.StringUtil;
 
 import java.io.File;
 
+@Deprecated
 public abstract class AbstractFileData<P extends NightCorePlugin> {
 
     protected final P      plugin;
