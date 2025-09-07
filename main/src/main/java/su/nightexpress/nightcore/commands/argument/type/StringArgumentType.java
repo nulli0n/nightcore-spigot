@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.commands.argument.type;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.commands.SuggestionsProvider;
 import su.nightexpress.nightcore.commands.argument.ArgumentReader;
 import su.nightexpress.nightcore.commands.argument.ArgumentType;
 import su.nightexpress.nightcore.commands.context.CommandContext;
@@ -10,7 +11,7 @@ import su.nightexpress.nightcore.util.Lists;
 
 import java.util.List;
 
-public class StringArgumentType implements ArgumentType<String> {
+public class StringArgumentType implements ArgumentType<String>, SuggestionsProvider {
 
     @Override
     @NotNull

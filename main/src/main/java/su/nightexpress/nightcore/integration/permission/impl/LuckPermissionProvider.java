@@ -18,19 +18,29 @@ import java.util.stream.Collectors;
 
 public class LuckPermissionProvider implements PermissionProvider {
 
-    private LuckPerms api;
+    private volatile LuckPerms api;
 
     @Override
     public void setup() {
-        this.api = LuckPermsProvider.get();
+        try {
+            this.api = LuckPermsProvider.get();
+        } catch (IllegalStateException ignored) {
+            // Not yet loaded
+        }
     }
 
-//    @NotNull
-//    private LuckPerms getAPI() {
-//        if (api == null) api = LuckPermsProvider.get();
-//
-//        return api;
-//    }
+    @Nullable
+    private LuckPerms getAPI() {
+        LuckPerms lp = this.api;
+        if (lp != null) return lp;
+        try {
+            lp = LuckPermsProvider.get();
+            this.api = lp;
+            return lp;
+        } catch (IllegalStateException e) {
+            return null;
+        }
+    }
 
     @Override
     @NotNull
@@ -40,16 +50,10 @@ public class LuckPermissionProvider implements PermissionProvider {
 
     @Nullable
     private User getUser(@NotNull Player player) {
-        return this.api.getUserManager().getUser(player.getUniqueId());
+        LuckPerms lp = getAPI();
+        if (lp == null) return null;
+        return lp.getUserManager().getUser(player.getUniqueId());
     }
-
-//    @Nullable
-//    private static String getMetaNode(@NotNull Player player, @NotNull NodeType<? extends ChatMetaNode<?, ?>> type) {
-//        User user = getUser(player);
-//        if (user == null) return null;
-//
-//        return user.getNodes(type).stream().max(Comparator.comparingInt(ChatMetaNode::getPriority)).map(ChatMetaNode::getMetaValue).orElse(null);
-//    }
 
     @Override
     @Nullable
@@ -66,8 +70,11 @@ public class LuckPermissionProvider implements PermissionProvider {
     public Set<String> getPermissionGroups(@NotNull Player player) {
         User user = getUser(player);
         if (user == null) return Collections.emptySet();
-
-        return user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName).map(LowerCase.USER_LOCALE::apply).collect(Collectors.toSet());
+        return user.getNodes(NodeType.INHERITANCE)
+            .stream()
+            .map(InheritanceNode::getGroupName)
+            .map(LowerCase.USER_LOCALE::apply)
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -75,7 +82,6 @@ public class LuckPermissionProvider implements PermissionProvider {
     public String getPrefix(@NotNull Player player) {
         User user = getUser(player);
         if (user == null) return null;
-
         return user.getCachedData().getMetaData().getPrefix();
     }
 
@@ -84,7 +90,6 @@ public class LuckPermissionProvider implements PermissionProvider {
     public String getSuffix(@NotNull Player player) {
         User user = getUser(player);
         if (user == null) return null;
-
         return user.getCachedData().getMetaData().getSuffix();
     }
 }

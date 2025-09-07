@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.commands.argument.type;
 
 import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.commands.SuggestionsProvider;
 import su.nightexpress.nightcore.commands.argument.ArgumentReader;
 import su.nightexpress.nightcore.commands.argument.ArgumentType;
 import su.nightexpress.nightcore.commands.context.CommandContext;
@@ -13,7 +14,7 @@ import su.nightexpress.nightcore.util.bridge.RegistryType;
 
 import java.util.List;
 
-public class EnchantmentArgumentType implements ArgumentType<Enchantment> {
+public class EnchantmentArgumentType implements ArgumentType<Enchantment>, SuggestionsProvider {
 
     private static final List<String> EXAMPLES = BukkitThing.getAsStrings(RegistryType.ENCHANTMENT);
 

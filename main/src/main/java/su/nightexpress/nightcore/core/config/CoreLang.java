@@ -112,8 +112,8 @@ public final class CoreLang implements LangContainer {
     public static final BooleanLocale STATE_YES_NO           = LangEntry.builder("States.YesNo").bool(GREEN.wrap("Yes"), RED.wrap("No"));
     public static final BooleanLocale STATE_ON_OFF           = LangEntry.builder("States.OnOff").bool(GREEN.wrap("ON"), RED.wrap("OFF"));
 
-    public static final TextLocale ENTRY_GOOD = LangEntry.builder("Entry.Good").text(GREEN.wrap("✔") + " " + GRAY.wrap("%s"));
-    public static final TextLocale ENTRY_BAD  = LangEntry.builder("Entry.Bad").text(RED.wrap("✘") + " " + GRAY.wrap("%s"));
+    public static final TextLocale ENTRY_GOOD = LangEntry.builder("Entry.Valid").text(GREEN.wrap("✔") + " " + GRAY.wrap("%s"));
+    public static final TextLocale ENTRY_BAD  = LangEntry.builder("Entry.Invalid").text(RED.wrap("✘") + " " + GRAY.wrap("%s"));
 
     public static final TextLocale OTHER_ANY       = LangEntry.builder("Other.Any").text("Any");
     public static final TextLocale OTHER_NONE      = LangEntry.builder("Other.None").text("None");

@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.ui.menu.item.ItemHandler;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.*;
 
@@ -44,21 +45,30 @@ public class MenuLoader {
     }
 
     public void addDefaultItem(@NotNull MenuItem menuItem) {
-        String name = BukkitThing.toString(menuItem.getItem().getMaterial());
-
+        NightItem item = menuItem.getItem();
         ItemHandler handler = menuItem.getHandler();
+
+        String name;
         if (handler != null) {
             name = handler.getName();
             this.addHandler(handler);
         }
+        else {
+            String displayName = item.getDisplayName();
+            String stripped = displayName == null ? null : Strings.filterForVariable(NightMessage.stripTags(displayName));
+            if (stripped != null && !stripped.isBlank()) {
+                name = stripped;
+            }
+            else name = BukkitThing.getValue(item.getMaterial());
+        }
 
-        name = name.toLowerCase();
+        name = LowerCase.INTERNAL.apply(name);
 
         if (this.defaultItems.containsKey(name)) {
             name += "_" + UUID.randomUUID().toString().substring(0, 8);
         }
 
-        this.defaultItems.put(name.toLowerCase(), menuItem);
+        this.defaultItems.put(name, menuItem);
     }
 
     @NotNull
@@ -79,12 +89,12 @@ public class MenuLoader {
 
             MenuType newType = getNewType(oldType, oldSize);
 
-            config.set("Settings.MenuType", BukkitThing.toString(newType));
+            config.set("Settings.MenuType", BukkitThing.getAsString(newType));
             config.remove("Settings.Inventory_Type");
             config.remove("Settings.Size");
         }
 
-        MenuType menuType = BukkitThing.getMenuType(ConfigValue.create("Settings.MenuType", BukkitThing.toString(this.menu.getMenuType())).read(config));
+        MenuType menuType = BukkitThing.getMenuType(ConfigValue.create("Settings.MenuType", BukkitThing.getAsString(this.menu.getMenuType())).read(config));
 
         this.menu.setMenuType(menuType == null ? MenuType.GENERIC_9X3 : menuType);
         this.menu.setTitle(ConfigValue.create("Settings.Title", this.menu.getTitle()).read(config));
@@ -183,7 +193,7 @@ public class MenuLoader {
         if (config.contains(path + ".Click_Commands")) {
             Map<ClickKey, List<String>> commandMap = new HashMap<>();
             for (String sType : config.getSection(path + ".Click_Commands")) {
-                ClickKey clickType = StringUtil.getEnum(sType, ClickKey.class).orElse(null);
+                ClickKey clickType = Enums.get(sType, ClickKey.class);
                 if (clickType == null) continue;
 
                 List<String> commands = config.getStringList(path + ".Click_Commands." + sType);

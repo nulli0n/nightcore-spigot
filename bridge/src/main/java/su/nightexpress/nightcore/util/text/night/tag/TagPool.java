@@ -14,7 +14,7 @@ public interface TagPool extends Predicate<TagHandler> {
     TagPool ADVANCED_COLORS = tag -> tag instanceof GradientTagHandler || tag instanceof ShadowTagHandler;
     TagPool DECORATIONS     = tag -> tag instanceof DecorationTagHandler;
 
-    TagPool NO_INVERTED_DECORATIONS = tag -> !(tag instanceof DecorationTagHandler handler) || handler.isInverted();
+    TagPool NO_INVERTED_DECORATIONS = tag -> !(tag instanceof DecorationTagHandler handler) || !handler.isInverted();
 
     Predicate<TagHandler> ALL_COLORS                  = BASE_COLORS.and(ADVANCED_COLORS);
     Predicate<TagHandler> BASE_COLORS_AND_DECORATIONS = BASE_COLORS.and(DECORATIONS);
