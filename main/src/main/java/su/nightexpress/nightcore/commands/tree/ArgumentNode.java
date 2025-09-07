@@ -17,6 +17,7 @@ import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Placeholders;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
@@ -69,7 +70,12 @@ public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
 
     @Override
     public void provideSuggestions(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
-        SuggestionsProvider provider = this.customSuggestions == null ? this.type : this.customSuggestions;
+        SuggestionsProvider provider = this.customSuggestions == null && this.type instanceof SuggestionsProvider typeSuggestions ? typeSuggestions : this.customSuggestions;
+        if (provider == null) {
+            suggestions.setSuggestions(Collections.emptyList());
+            return;
+        }
+
         String input = reader.getCursorArgument();
         List<String> values = provider.suggest(reader, context);
         suggestions.setSuggestions(Lists.getSequentialMatches(values, input));

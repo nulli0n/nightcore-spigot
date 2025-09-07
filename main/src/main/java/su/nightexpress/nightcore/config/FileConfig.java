@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 public class FileConfig extends YamlConfiguration {
@@ -148,6 +149,11 @@ public class FileConfig extends YamlConfiguration {
             exception.printStackTrace();
         }
         return false;
+    }
+
+    public void edit(@NotNull Consumer<FileConfig> consumer) {
+        consumer.accept(this);
+        this.saveChanges();
     }
 
     public boolean addMissing(@NotNull String path, @Nullable Object val) {

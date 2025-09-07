@@ -132,6 +132,9 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
                 key = Option.PREFIX.name();
                 value = "false";
             }
+            else if (key.equalsIgnoreCase("sound")) {
+                value = value.replace(':', ';').replace("minecraft;", "minecraft:");
+            }
             else if (key.equalsIgnoreCase("output")) {
                 if (value.startsWith("titles:")) {
                     parseOption(Option.TITLE_TIMES, value.substring("titles:".length()), builder);
