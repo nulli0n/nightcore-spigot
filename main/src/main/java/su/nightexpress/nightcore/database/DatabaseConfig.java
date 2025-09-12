@@ -134,20 +134,35 @@ public class DatabaseConfig {
             .read(config);
 
         // Read values with environment variable fallback
-        databaseType = getEnvValue("DB_TYPE", config, path + "Type", DatabaseType.SQLITE, value -> DatabaseType.valueOf(value.toUpperCase()));
-        saveInterval = getEnvValue("DB_AUTO_SAVE_INTERVAL", config, path + "Auto_Save_Interval", 20, Integer::parseInt);
-        syncInterval = getEnvValue("DB_SYNC_INTERVAL", config, path + "Sync_Interval", -1, Integer::parseInt);
-        tablePrefix = getEnvValue("DB_TABLE_PREFIX", config, path + "Table_Prefix", defaultPrefix, String::toString);
-        purgeEnabled = getEnvValue("DB_PURGE_ENABLED", config, path + "Purge.Enabled", false, Boolean::parseBoolean);
-        purgePeriod = getEnvValue("DB_PURGE_PERIOD", config, path + "Purge.For_Period", 60, Integer::parseInt);
+        if (System.getenv("_DB_TYPE") != null) {
+            try {
+                databaseType = DatabaseType.valueOf(System.getenv("DB_TYPE").toUpperCase());
+            } catch (IllegalArgumentException ignored) {}
+        }
 
-        mysqlUser = getEnvValue("DB_MYSQL_USER", config, path + "MySQL.Username", "root", String::toString);
-        mysqlPassword = getEnvValue("DB_MYSQL_PASS", config, path + "MySQL.Password", "", String::toString);
-        mysqlHost = getEnvValue("DB_MYSQL_HOST", config, path + "MySQL.Host", "localhost:3306", String::toString);
-        mysqlBase = getEnvValue("DB_MYSQL_DATABASE", config, path + "MySQL.Database", "minecraft", String::toString);
-        urlOptions = getEnvValue("DB_MYSQL_OPTIONS", config, path + "MySQL.Options", "?allowPublicKeyRetrieval=true&useSSL=false", String::toString);
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_USER") != null) {
+            mysqlUser = System.getenv("DB_MYSQL_USER");
+        }
 
-        sqliteFilename = getEnvValue("DB_SQLITE_FILE", config, path + "SQLite.FileName", defFileName, String::toString);
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_PASS") != null) {
+            mysqlPassword = System.getenv("DB_MYSQL_PASS");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_HOST") != null) {
+            mysqlHost = System.getenv("DB_MYSQL_HOST");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_DATABASE") != null) {
+            mysqlBase = System.getenv("DB_MYSQL_DATABASE");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_OPTIONS") != null) {
+            urlOptions = System.getenv("DB_MYSQL_OPTIONS");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_SQLITE_FILE") != null) {
+            sqliteFilename = System.getenv("DB_SQLITE_FILE");
+        }
 
         return new DatabaseConfig(
             saveInterval, syncInterval,
@@ -217,16 +232,4 @@ public class DatabaseConfig {
         return filename;
     }
 
-    private static <T> T getEnvValue(String envKey, FileConfig config, String configPath, T defaultValue, Function<String, T> parser) {
-        String envValue = System.getenv(envKey);
-        if (envValue != null) {
-            try {
-                return parser.apply(envValue);
-            } catch (Exception e) {
-                // Log error if needed
-                return defaultValue;
-            }
-        }
-        return ConfigValue.create(configPath, defaultValue).read(config);
-    }
 }
