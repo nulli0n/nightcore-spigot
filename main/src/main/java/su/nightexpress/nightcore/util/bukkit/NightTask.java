@@ -1,22 +1,21 @@
 package su.nightexpress.nightcore.util.bukkit;
 
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.util.TimeUtil;
-
-import java.util.function.Function;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class NightTask {
 
     private final NightCorePlugin plugin;
-    private final BukkitTask bukkitTask;
+    private final MyScheduledTask scheduledTask;
 
-    public NightTask(@NotNull NightCorePlugin plugin, @Nullable BukkitTask bukkitTask) {
+    public NightTask(@NotNull NightCorePlugin plugin, @Nullable MyScheduledTask scheduledTask) {
         this.plugin = plugin;
-        this.bukkitTask = bukkitTask;
+        this.scheduledTask = scheduledTask;
     }
 
     @NotNull
@@ -26,7 +25,7 @@ public class NightTask {
 
     @NotNull
     public static NightTask create(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval) {
-        return createTask(plugin, scheduler -> interval <= 0 ? null : scheduler.runTaskTimer(plugin, runnable, 0L, interval));
+        return createTask(plugin, () -> interval <= 0 ? null : plugin.getFoliaScheduler().runTaskTimer(plugin, runnable, 0L, interval));
     }
 
     @NotNull
@@ -36,33 +35,37 @@ public class NightTask {
 
     @NotNull
     public static NightTask createAsync(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval) {
-        return createTask(plugin, scheduler -> interval <= 0 ? null : scheduler.runTaskTimerAsynchronously(plugin, runnable, 0L, interval));
+        return createTask(plugin, () -> {
+            if (interval <= 0) return null;
+
+            return plugin.getFoliaScheduler().runTaskTimer(plugin, () -> CompletableFuture.runAsync(runnable), 0L, interval);
+        });
     }
 
     @NotNull
-    private static NightTask createTask(@NotNull NightCorePlugin plugin, @NotNull Function<BukkitScheduler, BukkitTask> function) {
-        BukkitTask bukkitTask = function.apply(plugin.getScheduler());
-        return new NightTask(plugin, bukkitTask);
+    private static NightTask createTask(@NotNull NightCorePlugin plugin, @NotNull Supplier<MyScheduledTask> supplier) {
+        MyScheduledTask scheduledTask = supplier.get();
+        return new NightTask(plugin, scheduledTask);
     }
 
     @Nullable
-    public BukkitTask getBukkitTask() {
-        return this.bukkitTask;
+    public MyScheduledTask getScheduledTask() {
+        return this.scheduledTask;
     }
 
     public boolean isValid() {
-        return this.bukkitTask != null;
+        return this.scheduledTask != null;
     }
 
     @Deprecated
     public boolean isRunning() {
-        return this.isValid();//this.bukkitTask != null && this.plugin.getScheduler().isCurrentlyRunning(this.bukkitTask.getTaskId());
+        return this.isValid();
     }
 
     public boolean stop() {
-        if (this.bukkitTask == null) return false;
+        if (this.scheduledTask == null) return false;
 
-        this.plugin.getScheduler().cancelTask(this.bukkitTask.getTaskId());
+        this.scheduledTask.cancel();
         return true;
     }
 }
