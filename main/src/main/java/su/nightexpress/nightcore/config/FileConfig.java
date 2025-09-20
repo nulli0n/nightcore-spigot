@@ -205,7 +205,10 @@ public class FileConfig extends YamlConfiguration {
 
     @Override
     public void setInlineComments(@NotNull String path, @Nullable List<String> comments) {
+        if (this.getInlineComments(path).equals(comments)) return;
+
         super.setInlineComments(path, comments);
+        this.changed = true;
     }
 
     public boolean remove(@NotNull String path) {

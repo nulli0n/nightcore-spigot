@@ -91,8 +91,9 @@ public class Rnd {
         return nextDouble() <= chance / 100.0;
     }
 
-    public static int nextInt(int n) {
-        return (int) Math.floor(RANDOM.nextDouble() * n);
+    public static int nextInt(int bound) {
+        return RANDOM.nextInt(bound);
+        //return (int) Math.floor(RANDOM.nextDouble() * bound);
     }
 
     public static int nextInt() {

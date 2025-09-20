@@ -87,7 +87,12 @@ public class IconLocale extends LangEntry<IconLocale.Value> {
 
         @NotNull
         public Builder name(@NotNull String name, @NotNull TagWrapper color) {
-            this.name = color.and(TagWrappers.BOLD).wrap(name);
+            return this.rawName(color.and(TagWrappers.BOLD).wrap(name));
+        }
+
+        @NotNull
+        public Builder rawName(@NotNull String name) {
+            this.name = name;
             return this;
         }
 
@@ -99,6 +104,12 @@ public class IconLocale extends LangEntry<IconLocale.Value> {
         @NotNull
         public Builder appendInfo(@NotNull List<String> text) {
             this.lore.addAll(Lists.modify(text, TagWrappers.GRAY::wrap));
+            return this;
+        }
+
+        @NotNull
+        public Builder rawLore(@NotNull String... text) {
+            this.lore.addAll(Lists.newList(text));
             return this;
         }
 
