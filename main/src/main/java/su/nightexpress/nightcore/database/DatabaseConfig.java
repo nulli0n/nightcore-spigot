@@ -134,34 +134,34 @@ public class DatabaseConfig {
             .read(config);
 
         // Read values with environment variable fallback
-        if (System.getenv("_DB_TYPE") != null) {
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_TYPE") != null) {
             try {
-                databaseType = DatabaseType.valueOf(System.getenv("DB_TYPE").toUpperCase());
+                databaseType = DatabaseType.valueOf(System.getenv(defaultPrefix.toUpperCase() + "DB_TYPE").toUpperCase());
             } catch (IllegalArgumentException ignored) {}
         }
 
         if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_USER") != null) {
-            mysqlUser = System.getenv("DB_MYSQL_USER");
+            mysqlUser = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_USER");
         }
 
         if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_PASS") != null) {
-            mysqlPassword = System.getenv("DB_MYSQL_PASS");
+            mysqlPassword = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_PASS");
         }
 
         if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_HOST") != null) {
-            mysqlHost = System.getenv("DB_MYSQL_HOST");
+            mysqlHost = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_HOST");
         }
 
         if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_DATABASE") != null) {
-            mysqlBase = System.getenv("DB_MYSQL_DATABASE");
+            mysqlBase = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_DATABASE");
         }
 
         if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_OPTIONS") != null) {
-            urlOptions = System.getenv("DB_MYSQL_OPTIONS");
+            urlOptions = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_OPTIONS");
         }
 
         if (System.getenv(defaultPrefix.toUpperCase() + "_DB_SQLITE_FILE") != null) {
-            sqliteFilename = System.getenv("DB_SQLITE_FILE");
+            sqliteFilename = System.getenv(defaultPrefix.toUpperCase() + "DB_SQLITE_FILE");
         }
 
         return new DatabaseConfig(
