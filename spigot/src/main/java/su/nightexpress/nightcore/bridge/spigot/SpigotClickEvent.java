@@ -4,8 +4,8 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEventCustom;
 import net.md_5.bungee.api.dialog.Dialog;
 import net.md_5.bungee.api.dialog.chat.ShowDialogClickEvent;
-import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
@@ -18,7 +18,7 @@ public class SpigotClickEvent {
         WrappedPayload payload = event.payload();
 
         return switch (payload) {
-            case WrappedPayload.Custom(@NotNull NamespacedKey key, @NotNull NightNbtHolder nbt) -> new ClickEventCustom(key.getKey(), nbt.asString());
+            case WrappedPayload.Custom(@NotNull NightKey key, @NotNull NightNbtHolder nbt) -> new ClickEventCustom(key.value(), nbt.asString());
             case WrappedPayload.Dialog dialog -> new ShowDialogClickEvent((Dialog) dDialogAdapter.adaptDialog(dialog.dialog()));
             case WrappedPayload.Int(int integer) -> new ClickEvent(ClickEvent.Action.CHANGE_PAGE, String.valueOf(integer));
             case WrappedPayload.Text(@NotNull String value) -> {

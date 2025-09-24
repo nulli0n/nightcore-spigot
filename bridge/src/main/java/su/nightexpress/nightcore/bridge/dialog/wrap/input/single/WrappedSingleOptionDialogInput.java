@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input.single;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedDialogInput;
 import su.nightexpress.nightcore.util.Strings;
@@ -30,10 +31,10 @@ public record WrappedSingleOptionDialogInput(@NotNull String key,
 
         private final String                         key;
         private final List<WrappedSingleOptionEntry> entries;
-        private final String                 label;
+        private final String                         label;
 
-        private int     width        = 200; // TODO Config
-        private boolean labelVisible = true; // TODO Config
+        private int     width        = DialogDefaults.DEFAULT_SINGLE_INPUT_WIDTH;
+        private boolean labelVisible = true;
 
         public Builder(@NotNull String key, @NotNull String label, @NotNull List<WrappedSingleOptionEntry> entries) {
             this.key = Strings.filterForVariable(key);
@@ -43,7 +44,7 @@ public record WrappedSingleOptionDialogInput(@NotNull String key,
 
         @NotNull
         public Builder width(int width) {
-            this.width = Math.clamp(width, 1, 1024); // TODO Const
+            this.width = DialogDefaults.clampWidth(width);
             return this;
         }
 

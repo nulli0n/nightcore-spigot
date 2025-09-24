@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickResult;
-import su.nightexpress.nightcore.util.NbtUtil;
+import su.nightexpress.nightcore.util.nbt.NbtUtil;
 
 public class PaperDialogListener implements Listener {
 
@@ -33,8 +33,8 @@ public class PaperDialogListener implements Listener {
         NightNbtHolder response = null;
         BinaryTagHolder tagHolder = event.getTag();
         if (tagHolder != null) {
-            Object compound = NbtUtil.parseTag(tagHolder.string());
-            JsonElement converted = compound == null ? null : NbtUtil.snbtToJson(compound);
+            Object compound = NbtUtil.tagFromString(tagHolder.string());
+            JsonElement converted = compound == null ? null : NbtUtil.tagToJson(compound);
 
             response = converted == null ? null : NightNbtHolder.fromJson(converted);
         }

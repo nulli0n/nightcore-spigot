@@ -8,9 +8,9 @@ import net.luckperms.api.node.types.InheritanceNode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.integration.permission.PermissionPlugins;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
 import su.nightexpress.nightcore.util.LowerCase;
-import su.nightexpress.nightcore.util.Plugins;
 
 import java.util.Collections;
 import java.util.Set;
@@ -18,29 +18,19 @@ import java.util.stream.Collectors;
 
 public class LuckPermissionProvider implements PermissionProvider {
 
-    private LuckPerms api;
-
-    @Override
-    public void setup() {
-        this.api = LuckPermsProvider.get();
-    }
-
-//    @NotNull
-//    private LuckPerms getAPI() {
-//        if (api == null) api = LuckPermsProvider.get();
-//
-//        return api;
-//    }
-
     @Override
     @NotNull
     public String getName() {
-        return Plugins.LUCK_PERMS;
+        return PermissionPlugins.LUCK_PERMS;
+    }
+
+    private LuckPerms api() {
+        return LuckPermsProvider.get();
     }
 
     @Nullable
     private User getUser(@NotNull Player player) {
-        return this.api.getUserManager().getUser(player.getUniqueId());
+        return this.api().getUserManager().getUser(player.getUniqueId());
     }
 
 //    @Nullable

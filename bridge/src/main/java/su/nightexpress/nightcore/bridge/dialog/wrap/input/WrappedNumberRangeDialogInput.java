@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.bridge.dialog.wrap.input;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.util.Strings;
 
@@ -34,7 +35,7 @@ public record WrappedNumberRangeDialogInput(@NotNull String key,
         private final float     start;
         private final float     end;
 
-        private int    width       = 200; // TODO Config
+        private int    width       = DialogDefaults.DEFAULT_NUMBER_INPUT_WIDTH;
         private String labelFormat = "options.generic_value";
         private Float  initial     = null;
         private Float  step        = null;
@@ -48,7 +49,7 @@ public record WrappedNumberRangeDialogInput(@NotNull String key,
 
         @NotNull
         public Builder width(int width) {
-            this.width = Math.clamp(width, 1, 1024); // TODO Config
+            this.width = DialogDefaults.clampWidth(width);
             return this;
         }
 

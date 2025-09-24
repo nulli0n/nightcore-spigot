@@ -42,7 +42,6 @@ public class CommandManager extends SimpleManager<NightPlugin> {
 
         if (this.plugin instanceof ImprovedCommands) {
             this.rootCommand = RootCommand.chained(this.plugin, aliases, builder -> builder
-                // TODO Permission?
                 .localized(this.plugin.getNameLocalized())
             );
             this.registerCommand(this.rootCommand);

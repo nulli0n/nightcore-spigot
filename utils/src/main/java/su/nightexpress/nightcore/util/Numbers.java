@@ -54,4 +54,33 @@ public class Numbers {
             return Optional.empty();
         }
     }
+
+
+
+
+    public static double getDoubleAbs(@NotNull String input) {
+        return getDoubleAbs(input, 0D);
+    }
+
+    public static double getDoubleAbs(@NotNull String input, double defaultValue) {
+        return Math.abs(getDouble(input, defaultValue));
+    }
+
+    public static double getDouble(@NotNull String input, double defaultValue) {
+        return parseDouble(input).orElse(defaultValue);
+    }
+
+    @NotNull
+    public static Optional<Double> parseDouble(@NotNull String input) {
+        try {
+            double amount = Double.parseDouble(input);
+            if (!Double.isNaN(amount) && !Double.isInfinite(amount)) {
+                return Optional.of(amount);
+            }
+            return Optional.empty();
+        }
+        catch (NumberFormatException exception) {
+            return Optional.empty();
+        }
+    }
 }

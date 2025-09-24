@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.bridge.dialog.wrap.body;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogBodyAdapter;
 
 import java.util.function.UnaryOperator;
@@ -34,8 +35,8 @@ public record WrappedItemDialogBody(@NotNull ItemStack item,
 
         private boolean showDecorations = true;
         private boolean showTooltip     = true;
-        private int     width           = 16; // TODO Config
-        private int     height          = 16;
+        private int     width           = DialogDefaults.DEFAULT_ITEM_BODY_WIDTH;
+        private int     height          = DialogDefaults.DEFAULT_ITEM_BODY_HEIGHT;
 
         public Builder(@NotNull ItemStack item) {
             this.item = item;
@@ -61,13 +62,13 @@ public record WrappedItemDialogBody(@NotNull ItemStack item,
 
         @NotNull
         public Builder width(int width) {
-            this.width = Math.clamp(width, 1, 256); // TODO Const
+            this.width = Math.clamp(width, DialogDefaults.MIN_WIDTH, DialogDefaults.MAX_ITEM_BODY_WIDTH);
             return this;
         }
 
         @NotNull
         public Builder height(int height) {
-            this.height = Math.clamp(height, 1, 256); // TODO Const
+            this.height = Math.clamp(height, DialogDefaults.MIN_WIDTH, DialogDefaults.MAX_ITEM_BODY_HEIGHT);
             return this;
         }
 

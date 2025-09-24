@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface PermissionProvider {
 
-    void setup();
+    //void setup();
 
     @NotNull String getName();
 

@@ -4,29 +4,30 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Reflex {
 
     @Nullable
+    @Deprecated
     public static Class<?> getClass(@NotNull String path, @NotNull String name) {
         return getClass(path + "." + name);
     }
 
     @Nullable
+    @Deprecated
     public static Class<?> getInnerClass(@NotNull String path, @NotNull String name) {
         return getClass(path + "$" + name);
     }
 
     @Nullable
+    @Deprecated
     public static Class<?> getNMSClass(@NotNull String path, @NotNull String realName) {
         return getNMSClass(path, realName, null);
     }
 
     @Nullable
+    @Deprecated
     public static Class<?> getNMSClass(@NotNull String path, @NotNull String realName, @Nullable String obfName) {
         Class<?> byRealName = getClass(path + "." + realName, false);
         if (byRealName != null) {
@@ -40,10 +41,12 @@ public class Reflex {
         return null;
     }
 
+    @Deprecated
     private static Class<?> getClass(@NotNull String path) {
         return getClass(path, true);
     }
 
+    @Deprecated
     private static Class<?> getClass(@NotNull String path, boolean printError) {
         try {
             return Class.forName(path);
@@ -51,6 +54,51 @@ public class Reflex {
         catch (ClassNotFoundException exception) {
             if (printError) exception.printStackTrace();
             return null;
+        }
+    }
+
+    @NotNull
+    public static Class<?> safeClass(@NotNull String path, @NotNull String name, @NotNull String altName) {
+        return findClass(path, name).orElse(safeClass(path, altName));
+    }
+
+    @NotNull
+    public static Class<?> safeClass(@NotNull String path, @NotNull String name) {
+        return safeClass(path + "." + name);
+    }
+
+    @NotNull
+    public static Class<?> safeInnerClass(@NotNull String path, @NotNull String name) {
+        return safeClass(path + "$" + name);
+    }
+
+    @NotNull
+    public static Class<?> safeClass(@NotNull String path) {
+        return findClass(path).orElseThrow(() -> new IllegalStateException("Could not load class: '" + path + "'"));
+    }
+
+    @NotNull
+    public static Optional<Class<?>> findClass(@NotNull String path, @NotNull String name, @NotNull String altName) {
+        return findClass(path, name).or(() -> findClass(path, altName));
+    }
+
+    @NotNull
+    public static Optional<Class<?>> findClass(@NotNull String path, @NotNull String name) {
+        return findClass(path + "." + name);
+    }
+
+    @NotNull
+    public static Optional<Class<?>> findInnerClass(@NotNull String path, @NotNull String name) {
+        return findClass(path + "$" + name);
+    }
+
+    @NotNull
+    public static Optional<Class<?>> findClass(@NotNull String path) {
+        try {
+            return Optional.of(Class.forName(path));
+        }
+        catch (ClassNotFoundException exception) {
+            return Optional.empty();
         }
     }
 
@@ -173,11 +221,13 @@ public class Reflex {
         return false;
     }
 
+    @Deprecated
     public static Method getMethod(@NotNull Class<?> source, @NotNull String realName, @NotNull String obfName, @NotNull Class<?>... params) {
         Method byName = getMethod(source, realName, params);
         return byName == null ? getMethod(source, obfName, params) : byName;
     }
 
+    @Deprecated
     public static Method getMethod(@NotNull Class<?> source, @NotNull String name, @NotNull Class<?>... params) {
         try {
             return source.getDeclaredMethod(name, params);
@@ -188,14 +238,36 @@ public class Reflex {
         }
     }
 
-    public static Object invokeMethod(@NotNull Method method, @Nullable Object by, @Nullable Object... param) {
-        method.setAccessible(true);
+    @NotNull
+    public static Method safeMethod(@NotNull Class<?> source, @NotNull String name, @NotNull String altName, @NotNull Class<?>... params) {
+        return findMethod(source, name, params).orElse(safeMethod(source, altName, params));
+    }
+
+    @NotNull
+    public static Method safeMethod(@NotNull Class<?> source, @NotNull String name, @NotNull Class<?>... params) {
+        return findMethod(source, name, params).orElseThrow(() -> new IllegalStateException("Could not find method: '" + name + "' in '" + source.getName() + "'"));
+    }
+
+    @NotNull
+    public static Optional<Method> findMethod(@NotNull Class<?> source, @NotNull String name, @NotNull Class<?>... params) {
         try {
+            return Optional.of(source.getDeclaredMethod(name, params));
+        }
+        catch (NoSuchMethodException exception) {
+            Class<?> superClass = source.getSuperclass();
+            return superClass == null ? Optional.empty() : findMethod(superClass, name);
+        }
+    }
+
+    @Nullable
+    public static Object invokeMethod(@NotNull Method method, @Nullable Object by, @Nullable Object... param) {
+        try {
+            method.setAccessible(true);
             return method.invoke(by, param);
         }
-        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
+        catch (Throwable exception) {
             exception.printStackTrace();
+            return null;
         }
-        return null;
     }
 }
