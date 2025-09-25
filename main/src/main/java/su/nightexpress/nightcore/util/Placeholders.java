@@ -22,6 +22,9 @@ public class Placeholders {
     public static final String URL_WIKI_LANG   = URL_WIKI + "configuration/language/";
     public static final String URL_WIKI_NUMBER = URL_WIKI + "configuration/number-formation/";
 
+    public static final String URL_WIKI_CURRENCIES   = URL_WIKI + "integrations/currencies/";
+    public static final String URL_WIKI_CUSTOM_ITEMS = URL_WIKI + "integrations/items/";
+
     @Deprecated
     public static final String WIKI_MAIN_URL     = URL_WIKI;
     @Deprecated
