@@ -6,7 +6,7 @@
     <parent>
         <groupId>su.nightexpress.nightcore</groupId>
         <artifactId>nightcore</artifactId>
-        <version>2.7.17</version>
+        <version>2.8.0</version>
     </parent>
 
     <artifactId>main</artifactId>
@@ -52,31 +52,61 @@
             <id>opencollab</id>
             <url>https://repo.opencollab.dev/maven-releases/</url>
         </repository>
+
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+
+        <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
+        </repository>
+
+        <repository>
+            <id>rosewood-repo</id>
+            <url>https://repo.rosewooddev.io/repository/public/</url>
+        </repository>
+
+        <repository>
+            <id>BenCodez Repo</id>
+            <url>https://nexus.bencodez.com/repository/maven-public/</url>
+        </repository>
+
+        <repository>
+            <id>techscode</id>
+            <url>https://repo.techscode.com/repository/techscode-apis/</url>
+        </repository>
+
+        <repository>
+            <id>phoenix</id>
+            <url>https://nexus.phoenixdevt.fr/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>bridge</artifactId>
-            <version>2.7.17</version>
+            <version>2.8.0</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>utils</artifactId>
-            <version>2.7.17</version>
+            <version>2.8.0</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>paper</artifactId>
-            <version>2.7.17</version>
+            <version>2.8.0</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>spigot</artifactId>
-            <version>2.7.17</version>
+            <version>2.8.0</version>
         </dependency>
 
         <dependency>
@@ -146,6 +176,102 @@
             <groupId>org.geysermc.cumulus</groupId>
             <artifactId>cumulus</artifactId>
             <version>1.1.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Currency/Economy hooks -->
+
+        <dependency>
+            <groupId>org.black_ixx</groupId>
+            <artifactId>playerpoints</artifactId>
+            <version>3.2.6</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.mraxetv.beasttokens</groupId>
+            <artifactId>BeastTokens</artifactId>
+            <version>3.11.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bencodez</groupId>
+            <artifactId>votingplugin</artifactId>
+            <version>6.15.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.magmaguy.elitemobs</groupId>
+            <artifactId>EliteMobs</artifactId>
+            <version>8.5.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.coinsengine</groupId>
+            <artifactId>CoinsEngine</artifactId>
+            <version>2.5.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.TechsCode</groupId>
+            <artifactId>UltraEconomyAPI</artifactId>
+            <version>1.1.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Item Bridge -->
+        <dependency>
+            <groupId>com.nexomc.nexo</groupId>
+            <artifactId>Nexo</artifactId>
+            <version>0.9-dev</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.excellentcrates</groupId>
+            <artifactId>ExcellentCrates</artifactId>
+            <version>6.2.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.th0rgal.oraxen</groupId>
+            <artifactId>Oraxen</artifactId>
+            <version>1.155.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.LoneDev6</groupId>
+            <artifactId>api-itemsadder</artifactId>
+            <version>3.6.2-beta-r3-b</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Local -->
+        <dependency>
+            <groupId>io.lumine.mythic.lib</groupId>
+            <artifactId>MythicLib</artifactId>
+            <version>1.6.2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Local -->
+        <dependency>
+            <groupId>com.ssomar.score</groupId>
+            <artifactId>SCore</artifactId>
+            <version>5.24.12.29</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.Indyuce</groupId>
+            <artifactId>MMOItems-API</artifactId>
+            <version>6.10.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

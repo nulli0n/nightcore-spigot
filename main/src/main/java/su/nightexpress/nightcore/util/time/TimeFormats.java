@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.locale.entry.TextLocale;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.TimeUtil;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +24,22 @@ public class TimeFormats {
         LITERAL_TIME_UNITS.put(TimeUnit.HOURS, CoreLang.TIME_LABEL_HOUR);
         LITERAL_TIME_UNITS.put(TimeUnit.MINUTES, CoreLang.TIME_LABEL_MINUTE);
         LITERAL_TIME_UNITS.put(TimeUnit.SECONDS, CoreLang.TIME_LABEL_SECOND);
+    }
+
+    private static DateTimeFormatter dateTimeFormatter;
+
+    public static void setDateTimeFormatter(@NotNull String pattern) {
+        TimeFormats.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+    }
+
+    @NotNull
+    public static String formatDateTime(long millis) {
+        return formatDateTime(TimeUtil.getLocalDateTimeOf(millis));
+    }
+
+    @NotNull
+    public static String formatDateTime(@NotNull LocalDateTime time) {
+        return dateTimeFormatter.format(time);
     }
 
     @NotNull
@@ -45,16 +62,6 @@ public class TimeFormats {
     }
 
     @NotNull
-    public static String toDigital(long millis) {
-        return toFormat(millis, DIGITAL_FULL_FORMATTER);
-    }
-
-    @NotNull
-    public static String toDigitalShort(long millis) {
-        return toFormat(millis, DIGITAL_SHORT_FORMATTER);
-    }
-
-    @NotNull
     public static String toSeconds(long millis) {
         long whole = TimeUnit.MILLISECONDS.toSeconds(millis);
 
@@ -62,36 +69,23 @@ public class TimeFormats {
     }
 
     @NotNull
-    public static String toFormat(long millis, @NotNull DateTimeFormatter formatter) {
-        return TimeUtil.getLocalTimeOf(millis).format(formatter);
+    public static String toDigital(long millis) {
+        return DIGITAL_FULL_FORMATTER.format(TimeUtil.getLocalTimeOf(millis));
     }
 
-    /*@NotNull
-    public static String toLiteral(long millis) {
-        TimeUnit[] units = {TimeUnit.DAYS, TimeUnit.HOURS, TimeUnit.MINUTES, TimeUnit.SECONDS};
-        long[] scales = {0, 24, 60, 60};
-        LangString[] literals = {CoreLang.TIME_DAY, CoreLang.TIME_HOUR, CoreLang.TIME_MINUTE, CoreLang.TIME_SECOND};
-        String delimiter = CoreLang.TIME_DELIMITER.getString();
+    @NotNull
+    public static String toDigitalShort(long millis) {
+        return DIGITAL_SHORT_FORMATTER.format(TimeUtil.getLocalTimeOf(millis));
+    }
 
-        StringBuilder str = new StringBuilder();
-        for (int index = 0; index < units.length; index++) {
-            TimeUnit unit = units[index];
-            long scale = scales[index];
-            LangString literal = literals[index];
+    @NotNull
+    @Deprecated
+    public static String toFormat(long millis, @NotNull DateTimeFormatter formatter) {
+        return formatter.format(TimeUtil.getLocalTimeOf(millis));
+        //return TimeUtil.getLocalTimeOf(millis).format(formatter);
+    }
 
-            long converted = unit.convert(millis, TimeUnit.MILLISECONDS);
-            long result = scale != 0 ? converted % scale : converted;
 
-            if (result > 0 || (millis <= 1000L && unit == TimeUnit.SECONDS)) {
-                if (!str.isEmpty()) {
-                    str.append(delimiter);
-                }
-                str.append(literal.getString().replace(Placeholders.GENERIC_AMOUNT, String.valueOf(result)));
-            }
-        }
-
-        return str.toString();
-    }*/
 
     @NotNull
     public static String toLiteral(long millis) {

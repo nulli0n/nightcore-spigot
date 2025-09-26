@@ -7,11 +7,11 @@ public class DialogKeys {
 
     public static final String NAMESPACE = "nightcore_dialogs";
 
-    public static boolean isNamespace(@NotNull NamespacedKey key) {
-        return isNamespace(key.getNamespace());
+    public static boolean isRightNamespace(@NotNull NamespacedKey key) {
+        return isRightNamespace(key.getNamespace());
     }
 
-    public static boolean isNamespace(@NotNull String namespace) {
+    public static boolean isRightNamespace(@NotNull String namespace) {
         return namespace.equalsIgnoreCase(NAMESPACE);
     }
 }

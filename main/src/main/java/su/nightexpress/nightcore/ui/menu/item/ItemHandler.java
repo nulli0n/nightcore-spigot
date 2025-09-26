@@ -14,6 +14,7 @@ public class ItemHandler {
     public static final String CLOSE         = "close";
     public static final String NEXT_PAGE     = "page_next";
     public static final String PREVIOUS_PAGE = "page_previous";
+    public static final String USER_SKIN     = "user_skin";
 
     private final String      name;
     private final ItemClick   click;
@@ -60,6 +61,14 @@ public class ItemHandler {
     @NotNull
     public static ItemHandler forClick(@NotNull ItemClick click, @Nullable ItemOptions options) {
         return new ItemHandler(randomName(), click, options);
+    }
+
+    @NotNull
+    public static ItemHandler forUserSkin(@NotNull Menu menu) {
+        return new ItemHandler(USER_SKIN,
+            (viewer, event) -> {},
+            ItemOptions.builder().setDisplayModifier((viewer, nightItem) -> nightItem.setPlayerProfile(viewer.getPlayer())).build()
+        );
     }
 
     @NotNull

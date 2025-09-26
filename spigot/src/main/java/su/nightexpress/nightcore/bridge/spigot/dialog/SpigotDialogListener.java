@@ -21,12 +21,10 @@ public class SpigotDialogListener implements Listener {
         this.handler = handler;
     }
 
-    // TODO Organize
-
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCustomClick(PlayerCustomClickEvent event) {
         NamespacedKey id = event.getId();
-        if (!DialogKeys.isNamespace(id)) return;
+        if (!DialogKeys.isRightNamespace(id)) return;
 
         Player player = event.getPlayer();
         JsonElement element = event.getData();

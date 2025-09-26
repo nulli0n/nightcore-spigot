@@ -8,5 +8,5 @@ import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 
 public interface DialogResponseHandler {
 
-    void handle(@NotNull Player player, @NotNull NamespacedKey identifier, @Nullable NightNbtHolder nbtHolder);
+    void handle(@NotNull Player user, @NotNull NamespacedKey identifier, @Nullable NightNbtHolder nbtHolder);
 }

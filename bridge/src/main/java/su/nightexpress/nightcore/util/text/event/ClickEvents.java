@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.event;
 
-import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
@@ -52,7 +52,7 @@ public class ClickEvents {
     }
 
     @NotNull
-    public static NightClickEvent custom(@NotNull NamespacedKey key, @NotNull NightNbtHolder nbt) {
+    public static NightClickEvent custom(@NotNull NightKey key, @NotNull NightNbtHolder nbt) {
         return new NightClickEvent(NightClickEvent.Action.CUSTOM, WrappedPayload.custom(key, nbt));
     }
 }

@@ -15,7 +15,6 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -78,7 +77,7 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
         return switch (nightClickEvent.action()) {
             case CUSTOM -> {
                 WrappedPayload.Custom custom = (WrappedPayload.Custom) payload;
-                NamespacedKey namespacedKey = custom.key();
+                NightKey namespacedKey = custom.key();
                 Key key = Key.key(namespacedKey.namespace(), namespacedKey.value());
                 BinaryTagHolder nbt = BinaryTagHolder.binaryTagHolder(custom.nbt().asString());
 
@@ -160,14 +159,6 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
 
     @NotNull
     public List<Component> adaptComponents(@NotNull List<NightComponent> components) {
-/*        var builder = Component.text().decorations(Lists.newSet(TextDecoration.values()), false);
-
-        components.forEach(child -> {
-            builder.append(this.adaptComponent(child));
-        });
-
-        return builder.build();*/
-
         return Lists.modify(components, this::adaptComponent);
     }
 

@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.bridge.dialog.wrap.input.text;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedDialogInput;
 import su.nightexpress.nightcore.util.Strings;
@@ -35,8 +36,8 @@ public record WrappedTextDialogInput(@NotNull String key,
 
         private boolean                 labelVisible = true;
         private String                  initial      = "";
-        private int                     width        = 200; // TODO Config
-        private int                     maxLength    = 32;
+        private int                     width        = DialogDefaults.DEFAULT_TEXT_INPUT_WIDTH;
+        private int                     maxLength    = DialogDefaults.DEFAULT_TEXT_INPUT_LENGTH;
         private WrappedMultilineOptions multiline    = null;
 
         public Builder(@NotNull String key, @NotNull String label) {
@@ -46,7 +47,7 @@ public record WrappedTextDialogInput(@NotNull String key,
 
         @NotNull
         public Builder width(int width) {
-            this.width = Math.clamp(width, 1, 1024); // TODO Const
+            this.width = DialogDefaults.clampWidth(width);
             return this;
         }
 
@@ -64,7 +65,7 @@ public record WrappedTextDialogInput(@NotNull String key,
 
         @NotNull
         public Builder maxLength(int maxLength) {
-            this.maxLength = Math.max(1, maxLength); // TODO Const
+            this.maxLength = Math.max(1, maxLength);
             return this;
         }
 

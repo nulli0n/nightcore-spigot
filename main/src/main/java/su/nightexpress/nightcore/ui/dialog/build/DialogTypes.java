@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
 import su.nightexpress.nightcore.bridge.dialog.wrap.type.*;
+import su.nightexpress.nightcore.locale.LangDefaults;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
@@ -39,7 +40,7 @@ public class DialogTypes {
 
     @NotNull
     public static WrappedNoticeType notice() {
-        return notice(DialogButtons.action(TagWrappers.LANG.apply("gui.ok")).width(150).build()); // TODO Config
+        return notice(DialogButtons.action(TagWrappers.LANG.apply(LangDefaults.GAME_GUI_OK)).build());
     }
 
     @NotNull

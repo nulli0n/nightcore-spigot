@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.bridge.dialog.wrap.type;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogTypeAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
@@ -32,7 +33,7 @@ public record WrappedDialogListType(@NotNull List<WrappedDialog> dialogs,
 
         private WrappedActionButton exitAction;
         private int                 columns     = 2;
-        private int                 buttonWidth = 150; // TODO Config
+        private int                 buttonWidth = DialogDefaults.DEFAULT_BUTTON_WIDTH;
 
         public Builder(@NotNull List<WrappedDialog> dialogs) {
             this.dialogs = dialogs;
@@ -52,7 +53,7 @@ public record WrappedDialogListType(@NotNull List<WrappedDialog> dialogs,
 
         @NotNull
         public Builder buttonWidth(int buttonWidth) {
-            this.buttonWidth = Math.clamp(buttonWidth, 1, 1024); // TODO Const
+            this.buttonWidth = DialogDefaults.clampWidth(buttonWidth);
             return this;
         }
 

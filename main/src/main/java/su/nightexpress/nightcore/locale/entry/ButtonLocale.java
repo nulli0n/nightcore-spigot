@@ -2,9 +2,12 @@ package su.nightexpress.nightcore.locale.entry;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.LangValue;
+
+import java.util.function.UnaryOperator;
 
 public class ButtonLocale extends LangEntry<ButtonLocale.Value> {
 
@@ -24,12 +27,17 @@ public class ButtonLocale extends LangEntry<ButtonLocale.Value> {
 
     @NotNull
     public static ButtonLocale create(@NotNull String path, @NotNull String label, @Nullable String tooltip) {
-        return create(path, label, tooltip, 200); // TODO
+        return create(path, label, tooltip, DialogDefaults.DEFAULT_BUTTON_WIDTH);
     }
 
     @NotNull
     public static ButtonLocale create(@NotNull String path, @NotNull String label, @Nullable String tooltip, int width) {
         return new ButtonLocale(path, new Value(label, tooltip, width));
+    }
+
+    @NotNull
+    public ButtonLocale replace(@NotNull UnaryOperator<String> operator) {
+        return create(this.path, operator.apply(this.value.label()), this.value.tooltip == null ? null : operator.apply(this.value.tooltip()), this.value.width());
     }
 
     public record Value(@NotNull String label, @Nullable String tooltip, int width) implements LangValue {

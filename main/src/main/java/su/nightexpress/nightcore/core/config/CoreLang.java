@@ -34,6 +34,10 @@ public final class CoreLang implements LangContainer {
     public static final TextLocale COMMAND_CHECKPERM_DESC = LangEntry.builder("Command.CheckPerm.Desc").text("Print player permissions info.");
     public static final TextLocale COMMAND_DUMPITEM_DESC  = LangEntry.builder("Command.DumpItem.Desc").text("Print item NBT info.");
 
+    public static final TextLocale COMMAND_ECONOMY_BRIDGE_NAME           = LangEntry.builder("Command.EconomyBridge.Name").text("Economy Bridge");
+    public static final TextLocale COMMAND_ECONOMY_BRIDGE_DESC           = LangEntry.builder("Command.EconomyBridge.Desc").text("Economy Bridge commands.");
+    public static final TextLocale COMMAND_ECONOMY_BRIDGE_FROM_ITEM_DESC = LangEntry.builder("Command.EconomyBridge.FromItem.Desc").text("Create item currency.");
+
     public static final MessageLocale COMMAND_SYNTAX_GENERIC_ERROR = LangEntry.builder("Command.Syntax.GenericError")
         .chatMessage(GRAY.wrap(SOFT_RED.wrap(GENERIC_INPUT) + " is not a valid " + SOFT_RED.wrap(GENERIC_NAME) + " argument!"));
 
@@ -94,6 +98,18 @@ public final class CoreLang implements LangContainer {
     public static final MessageLocale PLUGIN_RELOADED = LangEntry.builder("Plugin.Reloaded")
         .chatMessage(GRAY.wrap("Plugin " + GREEN.wrap("reloaded") + "!"));
 
+
+    public static final MessageLocale ECONOMY_BRIDGE_FROM_ITEM_NOTHING = LangEntry.builder("EconomyBridge.FromItem.Nothing").chatMessage(
+        RED.wrap("You must hold an item in hand!")
+    );
+
+    public static final MessageLocale ECONOMY_BRIDGE_FROM_ITEM_EXISTS = LangEntry.builder("EconomyBridge.FromItem.Exists").chatMessage(
+        RED.wrap("Currency with this name already exists!")
+    );
+
+    public static final MessageLocale ECONOMY_BRIDGE_FROM_ITEM_CREATED = LangEntry.builder("EconomyBridge.FromItem.Created").chatMessage(
+        GRAY.wrap("Created " + YELLOW.wrap(CURRENCY_NAME) + " currency as " + YELLOW.wrap(CURRENCY_ID) + ".")
+    );
 
     public static final MessageLocale ERROR_NO_PERMISSION = LangEntry.builder("Error.NoPermission")
         .chatMessage(SOFT_RED.wrap("You don't have permission to do that!"));
