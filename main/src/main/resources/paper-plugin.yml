@@ -23,3 +23,27 @@ dependencies:
     floodgate:
       required: false
       join-classpath: true
+    CoinsEngine:
+      required: false
+    BeastTokens:
+      required: false
+    EliteMobs:
+      required: false
+    PlayerPoints:
+      required: false
+    UltraEconomy:
+      required: false
+    VotingPlugin:
+      required: false
+    ExcellentCrates:
+      required: false
+    ExecutableItems:
+      required: false
+    ItemsAdder:
+      required: false
+    MMOItems:
+      required: false
+    Nexo:
+      required: false
+    Oraxen:
+      required: false

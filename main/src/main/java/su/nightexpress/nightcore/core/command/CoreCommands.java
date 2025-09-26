@@ -3,17 +3,15 @@ package su.nightexpress.nightcore.core.command;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCore;
-import su.nightexpress.nightcore.command.experimental.CommandContext;
-import su.nightexpress.nightcore.command.experimental.argument.ArgumentTypes;
-import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
-import su.nightexpress.nightcore.command.experimental.impl.ReloadCommand;
-import su.nightexpress.nightcore.command.experimental.node.ChainedNode;
-import su.nightexpress.nightcore.command.experimental.node.DirectNode;
-import su.nightexpress.nightcore.core.CoreLang;
+import su.nightexpress.nightcore.commands.Arguments;
+import su.nightexpress.nightcore.commands.Commands;
+import su.nightexpress.nightcore.commands.builder.HubNodeBuilder;
+import su.nightexpress.nightcore.commands.context.CommandContext;
+import su.nightexpress.nightcore.commands.context.ParsedArguments;
 import su.nightexpress.nightcore.core.CorePerms;
-import su.nightexpress.nightcore.util.ItemNbt;
+import su.nightexpress.nightcore.core.config.CoreLang;
+import su.nightexpress.nightcore.integration.permission.PermissionBridge;
 import su.nightexpress.nightcore.util.ItemTag;
 import su.nightexpress.nightcore.util.Players;
 
@@ -25,47 +23,35 @@ public class CoreCommands {
 
     private static final String ARG_PLAYER = "player";
 
-    public static void load(@NotNull NightCore core) {
-        ChainedNode root = core.getRootNode();
-
-        if (Engine.hasPermissions()) {
-            root.addChildren(DirectNode.builder(core, CMD_CHECKPERM)
+    public static void load(@NotNull NightCore core, @NotNull HubNodeBuilder builder) {
+        if (PermissionBridge.hasProvider()) {
+            builder.branch(Commands.literal(CMD_CHECKPERM)
                 .permission(CorePerms.COMMAND_CHECK_PERM)
                 .description(CoreLang.COMMAND_CHECKPERM_DESC)
-                .withArgument(ArgumentTypes.player(ARG_PLAYER).required())
+                .withArguments(Arguments.player(ARG_PLAYER))
                 .executes(CoreCommands::checkPermissions)
             );
         }
 
-        root.addChildren(DirectNode.builder(core, "dumpitem")
+        builder.branch(Commands.literal("dumpitem")
             .playerOnly()
             .permission(CorePerms.COMMAND_DUMP_ITEM)
             .description(CoreLang.COMMAND_DUMPITEM_DESC)
             .executes(CoreCommands::dumpItem)
         );
 
-        /*root.addChildren(DirectNode.builder(core, "dialog")
-            .playerOnly()
+        builder.branch(Commands.literal("reload")
+            .description(CoreLang.COMMAND_RELOAD_DESC)
+            .permission(CorePerms.COMMAND_RELOAD)
             .executes((context, arguments) -> {
-                Dialogs.testDialog(context.getPlayerOrThrow());
+                core.doReload(context.getSender());
                 return true;
             })
         );
-
-        root.addChildren(DirectNode.builder(core, "text")
-            .playerOnly()
-            .withArgument(ArgumentTypes.string("text").required().complex())
-            .executes((context, arguments) -> {
-                TextParser.parse(arguments.getStringArgument("text")).send(context.getSender());
-                return true;
-            })
-        );*/
-
-        root.addChildren(ReloadCommand.builder(core, CorePerms.COMMAND_RELOAD));
     }
 
     private static boolean checkPermissions(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        Player player = arguments.getPlayerArgument(ARG_PLAYER);
+        Player player = arguments.getPlayer(ARG_PLAYER);
         String builder =
             BOLD.wrap(SOFT_YELLOW.wrap("Permissions report for ") + SOFT_ORANGE.wrap(player.getName() + ":")) +
                 BR +
@@ -83,11 +69,13 @@ public class CoreCommands {
     private static boolean dumpItem(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         Player player = context.getPlayerOrThrow();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
-        ItemTag tag = ItemNbt.getTag(itemStack);
+        ItemTag tag = ItemTag.of(itemStack);
 
         player.sendMessage("=".repeat(10) + " DUMP ITEM " + "=".repeat(10));
         player.sendMessage(tag == null ? "null": tag.getTag());
 
         return true;
     }
+
+
 }

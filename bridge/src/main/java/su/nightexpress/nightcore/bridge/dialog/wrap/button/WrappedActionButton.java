@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.bridge.dialog.wrap.button;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogButtonAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogAction;
 
@@ -26,8 +27,8 @@ public record WrappedActionButton(@NotNull String label,
 
         private final String label;
 
-        private String      tooltip;
-        private int                 width = 150; // TODO Config
+        private String              tooltip;
+        private int                 width = DialogDefaults.DEFAULT_BUTTON_WIDTH;
         private WrappedDialogAction action;
 
         public Builder(@NotNull String label) {
@@ -47,7 +48,7 @@ public record WrappedActionButton(@NotNull String label,
 
         @NotNull
         public Builder width(int width) {
-            this.width = Math.clamp(width, 1, 1024); // TODO Const
+            this.width = DialogDefaults.clampWidth(width);
             return this;
         }
 

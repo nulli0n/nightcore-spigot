@@ -181,8 +181,18 @@ public class LangEntry<T extends LangValue> implements LangElement {
         }
 
         @NotNull
+        public ButtonLocale button(@NotNull String label, int width) {
+            return ButtonLocale.create(this.path, label, width);
+        }
+
+        @NotNull
         public ButtonLocale button(@NotNull String label, @Nullable String tooltip) {
             return ButtonLocale.create(this.path, label, tooltip);
+        }
+
+        @NotNull
+        public ButtonLocale button(@NotNull String label, @Nullable String tooltip, int width) {
+            return ButtonLocale.create(this.path, label, tooltip, width);
         }
 
         @NotNull

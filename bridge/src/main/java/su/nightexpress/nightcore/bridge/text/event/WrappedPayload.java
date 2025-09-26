@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.text.event;
 
-import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 
@@ -11,7 +11,7 @@ public interface WrappedPayload {
 
     record Int(int integer) implements WrappedPayload {}
 
-    record Custom(@NotNull NamespacedKey key, @NotNull NightNbtHolder nbt) implements WrappedPayload {} // TODO NightKey
+    record Custom(@NotNull NightKey key, @NotNull NightNbtHolder nbt) implements WrappedPayload {}
 
     record Dialog(@NotNull WrappedDialog dialog) implements WrappedPayload {}
 
@@ -32,7 +32,7 @@ public interface WrappedPayload {
 
     // BinaryTagHolder nbt
     @NotNull
-    static WrappedPayload.Custom custom(@NotNull NamespacedKey key, @NotNull NightNbtHolder nbt) {
+    static WrappedPayload.Custom custom(@NotNull NightKey key, @NotNull NightNbtHolder nbt) {
         return new Custom(key, nbt);
     }
 }

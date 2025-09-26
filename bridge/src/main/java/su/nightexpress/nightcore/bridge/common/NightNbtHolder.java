@@ -97,6 +97,24 @@ public class NightNbtHolder {
         return null;
     }
 
+    @Nullable
+    private static Double asDouble(JsonElement element) {
+        if (element == null || element.isJsonNull()) return null;
+
+        if (element.isJsonPrimitive()) {
+            var prim = element.getAsJsonPrimitive();
+            if (prim.isNumber()) {
+                return prim.getAsDouble();
+            }
+            else if (prim.isString()) {
+                String s = prim.getAsString();
+                return Numbers.parseDouble(s).orElse(null);
+            }
+        }
+
+        return null;
+    }
+
     @NotNull
     public Optional<String> getText(@NotNull String key) {
         return this.get(key).map(JsonElement::getAsString);
@@ -114,6 +132,15 @@ public class NightNbtHolder {
 
     public boolean getBoolean(@NotNull String key, boolean fallback) {
         return this.getBoolean(key).orElse(false);
+    }
+
+    @NotNull
+    public Optional<Double> getDouble(@NotNull String key) {
+        return this.get(key).map(NightNbtHolder::asDouble);
+    }
+
+    public double getDouble(@NotNull String key, double fallback) {
+        return this.getDouble(key).orElse(fallback);
     }
 
     @NotNull

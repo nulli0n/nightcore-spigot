@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.core.CoreLang;
+import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
@@ -32,21 +32,21 @@ public class MenuItem {
 
     @NotNull
     public static Builder buildNextPage(@NotNull Menu menu, int slot) {
-        return builder(NightItem.fromType(Material.ARROW).localized(CoreLang.EDITOR_ITEM_NEXT))
+        return builder(NightItem.fromType(Material.ARROW).localized(CoreLang.MENU_ICON_NEXT_PAGE))
             .setHandler(ItemHandler.forNextPage(menu))
             .setSlots(slot);
     }
 
     @NotNull
     public static Builder buildPreviousPage(@NotNull Menu menu, int slot) {
-        return builder(NightItem.fromType(Material.ARROW).localized(CoreLang.EDITOR_ITEM_PREVIOUS))
+        return builder(NightItem.fromType(Material.ARROW).localized(CoreLang.MENU_ICON_PREVIOUS_PAGE))
             .setHandler(ItemHandler.forPreviousPage(menu))
             .setSlots(slot);
     }
 
     @NotNull
     public static Builder buildExit(@NotNull Menu menu, int slot) {
-        return builder(NightItem.fromType(Material.IRON_DOOR).localized(CoreLang.EDITOR_ITEM_EXIT))
+        return builder(NightItem.fromType(Material.IRON_DOOR).localized(CoreLang.MENU_ICON_EXIT))
             .setHandler(ItemHandler.forClose(menu))
             .setSlots(slot);
     }
@@ -58,7 +58,7 @@ public class MenuItem {
 
     @NotNull
     public static Builder buildReturn(@NotNull Menu menu, int slot, @NotNull ItemClick click, @Nullable ItemOptions options) {
-        return builder(NightItem.fromType(Material.IRON_DOOR).localized(CoreLang.EDITOR_ITEM_BACK))
+        return builder(NightItem.fromType(Material.IRON_DOOR).localized(CoreLang.MENU_ICON_BACK))
             .setHandler(ItemHandler.forReturn(menu, click, options))
             .setSlots(slot);
     }

@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.ui.menu.confirmation.ConfirmMenu;
 import su.nightexpress.nightcore.ui.menu.confirmation.Confirmation;
 import su.nightexpress.nightcore.util.Version;
 
+@Deprecated
 public class UIUtils {
 
     private static ConfirmMenu confirmMenu;

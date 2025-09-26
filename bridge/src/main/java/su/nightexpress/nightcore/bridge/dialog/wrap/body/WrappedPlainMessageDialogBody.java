@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.body;
 
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogBodyAdapter;
 
 import java.util.function.UnaryOperator;
@@ -8,12 +9,12 @@ import java.util.function.UnaryOperator;
 public record WrappedPlainMessageDialogBody(@NotNull String contents, int width) implements WrappedDialogBody {
 
     public WrappedPlainMessageDialogBody(@NotNull String contents) {
-        this(contents, 200);
+        this(contents, DialogDefaults.DEFAULT_PLAIN_BODY_WIDTH);
     }
 
     public WrappedPlainMessageDialogBody(@NotNull String contents, int width) {
         this.contents = contents;
-        this.width = Math.clamp(width, 1, 1024); // TODO Const
+        this.width = DialogDefaults.clampWidth(width);
     }
 
     @Override

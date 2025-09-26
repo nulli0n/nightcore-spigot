@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickResult;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
-import su.nightexpress.nightcore.bridge.dialog.wrap.base.WrappedDialogAfterAction;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
@@ -32,21 +31,20 @@ public class Dialogs {
     }
 
     public static void handleClick(@NotNull Player player, @NotNull DialogClickResult result) {
-        WrappedDialog dialog = getDialog(player);
+        // We can't know when a player's dialog was closed by API calls or other causes,
+        // so to prevent it staying in the map, we do remove it on any button click.
+        // This should be safe as dialogs are either closed or reopened on any clicks/changes.
+        WrappedDialog dialog = ACTIVE_DIALOGS.remove(player.getUniqueId());
         if (dialog == null) return;
 
         dialog.handleResponse(result);
-
-        if (dialog.base().afterAction() == WrappedDialogAfterAction.CLOSE) {
-            ACTIVE_DIALOGS.remove(player.getUniqueId());
-        }
     }
 
     public static void exitDialog(@NotNull Player player) {
         WrappedDialog dialog = ACTIVE_DIALOGS.remove(player.getUniqueId());
         if (dialog == null) return;
 
-        player.closeInventory();
+        Players.closeDialog(player);
     }
 
     public static void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog) {

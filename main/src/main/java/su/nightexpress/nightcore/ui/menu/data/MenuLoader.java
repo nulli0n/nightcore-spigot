@@ -16,7 +16,6 @@ import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.*;
 
-@SuppressWarnings("UnstableApiUsage")
 public class MenuLoader {
 
     private static final String ITEM_SECTION = "Content";
@@ -34,6 +33,7 @@ public class MenuLoader {
         this.handlerMap = new LinkedHashMap<>();
 
         this.addHandler(ItemHandler.forClose(menu));
+        this.addHandler(ItemHandler.forUserSkin(menu));
         if (menu instanceof Filled<?>) {
             this.addHandler(ItemHandler.forNextPage(menu));
             this.addHandler(ItemHandler.forPreviousPage(menu));

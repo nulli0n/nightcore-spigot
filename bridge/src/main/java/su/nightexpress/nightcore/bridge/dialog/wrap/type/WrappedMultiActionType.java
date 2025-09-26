@@ -32,7 +32,7 @@ public record WrappedMultiActionType(@NotNull List<WrappedActionButton> actions,
         private final List<WrappedActionButton> actions;
 
         private WrappedActionButton exitAction = null;
-        private int                 columns    = 2; // TODO Config
+        private int                 columns    = 2;
 
         public Builder(@NotNull List<WrappedActionButton> actions) {
             this.actions = actions;
