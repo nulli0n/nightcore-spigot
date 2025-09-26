@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
+import su.nightexpress.nightcore.integration.permission.PermissionBridge;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
@@ -47,7 +48,6 @@ public class Players {
     @NotNull
     public static List<String> playerNames(@Nullable Player viewer) {
         return getOnline().stream().filter(player -> viewer == null || viewer.canSee(player)).map(Player::getName).sorted(String::compareTo).toList();
-        //return playerNames(viewer, true);
     }
 
     @NotNull
@@ -140,8 +140,7 @@ public class Players {
 
     @Nullable
     public static String getPrimaryGroup(@NotNull Player player) {
-        PermissionProvider provider = Engine.getPermissions();
-        return provider == null ? null : provider.getPrimaryGroup(player);
+        return PermissionBridge.provider().map(provider -> provider.getPrimaryGroup(player)).orElse(null);
     }
 
     @NotNull
@@ -163,8 +162,7 @@ public class Players {
 
     @NotNull
     public static Set<String> getInheritanceGroups(@NotNull Player player) {
-        PermissionProvider provider = Engine.getPermissions();
-        return provider == null ? Collections.emptySet() : provider.getPermissionGroups(player);
+        return PermissionBridge.provider().map(provider -> provider.getPermissionGroups(player)).orElse(Collections.emptySet());
     }
 
     @NotNull
@@ -192,8 +190,7 @@ public class Players {
 
     @Nullable
     public static String getRawPrefix(@NotNull Player player) {
-        PermissionProvider provider = Engine.getPermissions();
-        return provider == null ? null : provider.getPrefix(player);
+        return PermissionBridge.provider().map(provider -> provider.getPrefix(player)).orElse(null);
     }
 
     @NotNull
@@ -215,8 +212,7 @@ public class Players {
 
     @Nullable
     public static String getRawSuffix(@NotNull Player player) {
-        PermissionProvider provider = Engine.getPermissions();
-        return provider == null ? null : provider.getSuffix(player);
+        return PermissionBridge.provider().map(provider -> provider.getSuffix(player)).orElse(null);
     }
 
     @NotNull
@@ -268,7 +264,7 @@ public class Players {
     }
 
     public static void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
-        Engine.software().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
+        Software.instance().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {
