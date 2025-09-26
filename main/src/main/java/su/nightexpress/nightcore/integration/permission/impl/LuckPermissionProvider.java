@@ -33,14 +33,6 @@ public class LuckPermissionProvider implements PermissionProvider {
         return this.api().getUserManager().getUser(player.getUniqueId());
     }
 
-//    @Nullable
-//    private static String getMetaNode(@NotNull Player player, @NotNull NodeType<? extends ChatMetaNode<?, ?>> type) {
-//        User user = getUser(player);
-//        if (user == null) return null;
-//
-//        return user.getNodes(type).stream().max(Comparator.comparingInt(ChatMetaNode::getPriority)).map(ChatMetaNode::getMetaValue).orElse(null);
-//    }
-
     @Override
     @Nullable
     public String getPrimaryGroup(@NotNull Player player) {
@@ -56,8 +48,11 @@ public class LuckPermissionProvider implements PermissionProvider {
     public Set<String> getPermissionGroups(@NotNull Player player) {
         User user = getUser(player);
         if (user == null) return Collections.emptySet();
-
-        return user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName).map(LowerCase.USER_LOCALE::apply).collect(Collectors.toSet());
+        return user.getNodes(NodeType.INHERITANCE)
+            .stream()
+            .map(InheritanceNode::getGroupName)
+            .map(LowerCase.USER_LOCALE::apply)
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -65,7 +60,6 @@ public class LuckPermissionProvider implements PermissionProvider {
     public String getPrefix(@NotNull Player player) {
         User user = getUser(player);
         if (user == null) return null;
-
         return user.getCachedData().getMetaData().getPrefix();
     }
 
@@ -74,7 +68,6 @@ public class LuckPermissionProvider implements PermissionProvider {
     public String getSuffix(@NotNull Player player) {
         User user = getUser(player);
         if (user == null) return null;
-
         return user.getCachedData().getMetaData().getSuffix();
     }
 }

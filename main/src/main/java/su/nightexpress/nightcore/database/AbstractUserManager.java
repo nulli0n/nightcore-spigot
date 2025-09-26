@@ -201,7 +201,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
     }
 
     private void manageUserSynchronized(@NotNull Supplier<U> loadedSupplier, @NotNull Supplier<CompletableFuture<U>> fetchSupplier, @NotNull Consumer<U> consumer) {
-        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(task -> consumer.accept(user)));
+        this.manageUser(loadedSupplier, fetchSupplier, user -> this.plugin.runTask(() -> consumer.accept(user)));
     }
 
     @Deprecated
@@ -244,8 +244,7 @@ public abstract class AbstractUserManager<P extends NightDataPlugin<U>, U extend
         if (this.isScheduledToSave(user)) {
             this.scheduledSaves.remove(user.getId());
         }
-        this.plugin.runTaskAsync(task -> this.save(user));
-        //this.scheduleSave(user);
+        this.plugin.runTaskAsync(() -> this.save(user));
         this.cacheTemporary(user);
     }
 
