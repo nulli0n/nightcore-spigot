@@ -69,8 +69,7 @@ public class UniParticle implements Writeable {
 
     @NotNull
     public static UniParticle redstone(@NotNull Color color, float size) {
-        Particle var = Version.isBehindOrEqual(Version.V1_20_R3) ? Particle.valueOf("REDSTONE") : BukkitThing.getParticle("dust");
-        return new UniParticle(var, new Particle.DustOptions(color, size));
+        return new UniParticle(Particle.DUST, new Particle.DustOptions(color, size));
     }
 
     @NotNull
