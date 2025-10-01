@@ -5,6 +5,7 @@ import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -14,7 +15,11 @@ public interface NightProfile {
 
     @Nullable UUID getId();
 
+    @NotNull Optional<UUID> id();
+
     @Nullable String getName();
+
+    @NotNull Optional<String> name();
 
     @NotNull PlayerTextures getTextures();
 

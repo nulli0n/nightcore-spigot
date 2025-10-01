@@ -4,13 +4,16 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.core.CoreConfig;
+import su.nightexpress.nightcore.util.bridge.Software;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
@@ -89,23 +92,23 @@ public class PlayerProfiles {
 
     @NotNull
     public static CachedProfile getProfile(@NotNull OfflinePlayer player) {
-        return queryOrCache(player.getUniqueId(), () -> Engine.software().getProfile(player));
+        return queryOrCache(player.getUniqueId(), () -> Software.get().getProfile(player));
     }
 
     @NotNull
     public static CachedProfile createProfile(@NotNull UUID uuid) {
-        return queryOrCache(uuid, () -> Engine.software().createProfile(uuid));
+        return queryOrCache(uuid, () -> Software.get().createProfile(uuid));
     }
 
     @NotNull
     @Deprecated
     public static NightProfile createProfile(@NotNull String name) {
-        return Engine.software().createProfile(name);
+        return Software.get().createProfile(name);
     }
 
     @NotNull
     public static CachedProfile createProfile(@NotNull UUID uuid, @Nullable String name) {
-        return queryOrCache(uuid, () -> Engine.software().createProfile(uuid, name));
+        return queryOrCache(uuid, () -> Software.get().createProfile(uuid, name));
     }
 
     @Nullable
@@ -124,7 +127,7 @@ public class PlayerProfiles {
             if (cached != null) return cached;
 
             // If no name, then meta#getOwnerProfile will return 'null'.
-            NightProfile profile = Engine.software().createProfile(uuid, name);
+            NightProfile profile = Software.get().createProfile(uuid, name);
             URL url = URI.create(urlData).toURL();
             PlayerTextures textures = profile.getTextures();
 

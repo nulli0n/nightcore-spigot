@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.ui.menu.item.ItemClick;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
+@Deprecated
 public class Confirmation {
 
     private final ItemClick onAccept;
