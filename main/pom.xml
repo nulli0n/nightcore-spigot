@@ -240,11 +240,17 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Local -->
         <dependency>
-            <groupId>io.lumine.mythic.lib</groupId>
-            <artifactId>MythicLib</artifactId>
+            <groupId>io.lumine</groupId>
+            <artifactId>MythicLib-dist</artifactId>
             <version>1.6.2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.Indyuce</groupId>
+            <artifactId>MMOItems-API</artifactId>
+            <version>6.10.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -253,13 +259,6 @@
             <groupId>com.ssomar.score</groupId>
             <artifactId>SCore</artifactId>
             <version>5.24.12.29</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.Indyuce</groupId>
-            <artifactId>MMOItems-API</artifactId>
-            <version>6.10.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
