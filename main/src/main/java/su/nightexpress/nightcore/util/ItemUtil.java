@@ -15,8 +15,8 @@ import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
+import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
@@ -35,11 +35,11 @@ public class ItemUtil {
     public static final String TEXTURES_HOST = "http://textures.minecraft.net/texture/";
 
     public static void editMeta(@NotNull ItemStack item, @NotNull Consumer<ItemMeta> consumer) {
-        Engine.software().editMeta(item, consumer);
+        Software.get().editMeta(item, consumer);
     }
 
     public static <T extends ItemMeta> void editMeta(@NotNull ItemStack item, @NotNull Class<T> clazz, @NotNull Consumer<T> consumer) {
-        Engine.software().editMeta(item, clazz, consumer);
+        Software.get().editMeta(item, clazz, consumer);
     }
 
     @NotNull
@@ -49,6 +49,14 @@ public class ItemUtil {
         if (metaName != null) return metaName;
 
         return LangUtil.getSerializedName(itemStack.getType());
+    }
+
+    @Nullable
+    public static String getDisplayNameSerialized(@NotNull ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) return null;
+
+        return getNameSerialized(meta);
     }
 
     @Nullable
@@ -120,15 +128,16 @@ public class ItemUtil {
 
     @Nullable
     public static String getCustomNameSerialized(@NotNull ItemMeta meta) {
-        return Engine.software().getCustomName(meta);
+        String name = Software.get().getCustomName(meta);
+        return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
     }
 
     public static void setCustomName(@NotNull ItemMeta meta, @NotNull String name) {
-        Engine.software().setCustomName(meta, NightMessage.parse(name));
+        Software.get().setCustomName(meta, NightMessage.parse(name));
     }
 
     public static void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name) {
-        Engine.software().setCustomName(meta, name);
+        Software.get().setCustomName(meta, name);
     }
 
     @Nullable
@@ -139,12 +148,12 @@ public class ItemUtil {
 
     @Nullable
     public static String getItemNameSerialized(@NotNull ItemMeta meta) {
-        String name = Engine.software().getItemName(meta);
+        String name = Software.get().getItemName(meta);
         return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
     }
 
     public static void setItemName(@NotNull ItemMeta meta, @NotNull String name) {
-        Engine.software().setItemName(meta, NightMessage.parse(name));
+        Software.get().setItemName(meta, NightMessage.parse(name));
     }
 
     @NotNull
@@ -162,8 +171,8 @@ public class ItemUtil {
 
     @NotNull
     public static List<String> getLoreSerialized(@NotNull ItemMeta meta) {
-        List<String> lore = meta.getLore();
-        return lore == null ? new ArrayList<>() : new ArrayList<>(lore);
+        List<String> lore = Software.get().getLore(meta);
+        return lore == null ? new ArrayList<>() : Lists.modify(lore, line -> NightMessage.stripTags(line, TagPool.NO_INVERTED_DECORATIONS)); // MiniMessage moment
     }
 
     public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {
@@ -172,13 +181,13 @@ public class ItemUtil {
     }
 
     public static void setItemLore(@NotNull ItemMeta meta, @NotNull List<NightComponent> lore) {
-        Engine.software().setLore(meta, lore);
+        Software.get().setLore(meta, lore);
     }
 
     @Deprecated
     public static void hideAttributes(@NotNull ItemStack itemStack) {
         if (Version.isAtLeast(Version.MC_1_21_5)) {
-            Engine.software().hideComponents(itemStack);
+            Software.get().hideComponents(itemStack);
             return;
         }
 
@@ -294,7 +303,7 @@ public class ItemUtil {
 
     @Nullable
     public static NightProfile getOwnerProfile(@NotNull ItemStack itemStack) {
-        return Engine.software().getOwnerProfile(itemStack);
+        return Software.get().getOwnerProfile(itemStack);
     }
 
     @Nullable
