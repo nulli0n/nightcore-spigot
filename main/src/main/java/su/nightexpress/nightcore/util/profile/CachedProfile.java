@@ -3,11 +3,18 @@ package su.nightexpress.nightcore.util.profile;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.core.CoreConfig;
+import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class CachedProfile {
+
+    private static final int UPDATES_THRESHOLD = 100;
+    private static final int UPDATES_COOLDOWN  = 300;
+
+    private static int  updateCount;
+    private static long updateDelayedUntil;
 
     private final boolean permanent;
     private final boolean noUpdate;
@@ -23,6 +30,19 @@ public class CachedProfile {
         this.lastUpdated = 0L;
         this.permanent = permanent;
         this.noUpdate = noUpdate;
+    }
+
+    private static void countUpdate() {
+        if (++updateCount >= UPDATES_THRESHOLD) {
+            updateDelayedUntil = TimeUtil.createFutureTimestamp(UPDATES_COOLDOWN);
+        }
+    }
+
+    private static boolean canUpdate() {
+        if (!TimeUtil.isPassed(updateDelayedUntil)) return false;
+
+        updateCount = 0;
+        return true;
     }
 
     @NotNull
@@ -42,16 +62,14 @@ public class CachedProfile {
 
     @NotNull
     public CompletableFuture<CachedProfile> update() {
-        if (this.noUpdate) {
-            return CompletableFuture.supplyAsync(() -> this);
-        }
-        if (this.inUpdate) {
+        if (this.noUpdate || this.inUpdate || !canUpdate()) {
             return CompletableFuture.supplyAsync(() -> this);
         }
 
         this.inUpdate = true;
         this.updateQueryTime();
         this.updateUpdateTime();
+        countUpdate();
 
         return this.profile.update().thenApply(updated -> {
             this.profile = updated;
