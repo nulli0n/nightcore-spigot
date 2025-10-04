@@ -13,16 +13,12 @@ dependencies:
   server:
     Vault:
       required: false
-      join-classpath: true
     LuckPerms:
       required: false
-      join-classpath: true
     PlaceholderAPI:
       required: false
-      join-classpath: true
     floodgate:
       required: false
-      join-classpath: true
     CoinsEngine:
       required: false
     BeastTokens:

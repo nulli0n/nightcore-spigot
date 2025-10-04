@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.bridge.currency.Currency;
 import su.nightexpress.nightcore.bridge.registry.NightRegistry;
 import su.nightexpress.nightcore.integration.currency.impl.DummyCurrency;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -27,9 +28,9 @@ public class EconomyBridge {
         return getCurrency(id) != null;
     }
 
-    /*public static boolean hasEconomy() {
+    public static boolean hasEconomy() {
         return hasCurrency(CurrencyId.VAULT);
-    }*/
+    }
 
     public static boolean handle(@NotNull String id, @NotNull Consumer<Currency> consumer) {
         Currency currency = getCurrency(id);
@@ -117,6 +118,11 @@ public class EconomyBridge {
         return registry().keys();
     }
 
+    @NotNull
+    public static Optional<Currency> currency(@NotNull String internalId) {
+        return Optional.ofNullable(getCurrency(internalId));
+    }
+
     @Nullable
     public static Currency getCurrency(@NotNull String internalId) {
         return registry().byKey(internalId);
@@ -125,6 +131,16 @@ public class EconomyBridge {
     @NotNull
     public static Currency getCurrencyOrDummy(@NotNull String internalId) {
         return registry().lookup(internalId).orElse(DummyCurrency.INSTANCE);
+    }
+
+    @Nullable
+    public static Currency getEconomyCurrency() {
+        return getCurrency(CurrencyId.VAULT);
+    }
+
+    @NotNull
+    public static Optional<Currency> economyCurrency() {
+        return Optional.ofNullable(getEconomyCurrency());
     }
 
     @NotNull

@@ -46,7 +46,7 @@ public class NightItem implements Writeable {
     }
 
     public NightItem(@NotNull ItemStack itemStack) {
-        this(itemStack, NightMeta.fromItemStack(itemStack));
+        this(itemStack, new NightMeta());
     }
 
     private NightItem(@NotNull ItemStack itemStack, @NotNull NightMeta meta) {
@@ -204,8 +204,6 @@ public class NightItem implements Writeable {
     @NotNull
     @Deprecated
     public NightItem localized(@NotNull LangItem langItem) {
-//        this.setDisplayName(langItem.getLocalizedName());
-//        this.setLore(langItem.getLocalizedLore());
         this.meta.localized(langItem);
         return this;
     }
@@ -275,25 +273,12 @@ public class NightItem implements Writeable {
         return this;
     }
 
-//    @Nullable
-//    @Deprecated
-//    public PlayerProfile getSkullOwner() {
-//        return this.meta.getSkullOwner();
-//    }
-
     @NotNull
     @Deprecated
     public NightItem setSkullOwner(@Nullable OfflinePlayer owner) {
         this.meta.setSkullOwner(owner);
         return this;
     }
-
-//    @NotNull
-//    @Deprecated
-//    public NightItem setSkullOwner(@Nullable PlayerProfile skullOwner) {
-//        this.meta.setSkullOwner(skullOwner);
-//        return this;
-//    }
 
     @Nullable
     public CachedProfile getPlayerProfile() {

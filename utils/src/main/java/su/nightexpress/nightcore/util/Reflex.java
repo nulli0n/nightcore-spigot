@@ -59,17 +59,17 @@ public class Reflex {
 
     @NotNull
     public static Class<?> safeClass(@NotNull String path, @NotNull String name, @NotNull String altName) {
-        return findClass(path, name).orElse(safeClass(path, altName));
+        return findClass(path, name, altName).orElseThrow(() -> new IllegalStateException("Could not load classes: '" + name + "' and '" + altName + "' in '" + path + "'"));
     }
 
     @NotNull
     public static Class<?> safeClass(@NotNull String path, @NotNull String name) {
-        return safeClass(path + "." + name);
+        return findClass(path, name).orElseThrow(() -> new IllegalStateException("Could not load class: '" + name + "' in '" + path + "'"));
     }
 
     @NotNull
     public static Class<?> safeInnerClass(@NotNull String path, @NotNull String name) {
-        return safeClass(path + "$" + name);
+        return findInnerClass(path, name).orElseThrow(() -> new IllegalStateException("Could not load inner class: '" + name + "' in '" + path + "'"));
     }
 
     @NotNull
@@ -240,12 +240,17 @@ public class Reflex {
 
     @NotNull
     public static Method safeMethod(@NotNull Class<?> source, @NotNull String name, @NotNull String altName, @NotNull Class<?>... params) {
-        return findMethod(source, name, params).orElse(safeMethod(source, altName, params));
+        return findMethod(source, name, altName, params).orElseThrow(() -> new IllegalStateException("Could not find methods: '" + name + "' and '" + altName + "' in '" + source.getName() + "'"));
     }
 
     @NotNull
     public static Method safeMethod(@NotNull Class<?> source, @NotNull String name, @NotNull Class<?>... params) {
         return findMethod(source, name, params).orElseThrow(() -> new IllegalStateException("Could not find method: '" + name + "' in '" + source.getName() + "'"));
+    }
+
+    @NotNull
+    public static Optional<Method> findMethod(@NotNull Class<?> source, @NotNull String name, @NotNull String altName, @NotNull Class<?>... params) {
+        return findMethod(source, name, params).or(() -> findMethod(source, altName, params));
     }
 
     @NotNull
