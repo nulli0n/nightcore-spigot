@@ -57,7 +57,13 @@ public interface Software {
     }
 
     @NotNull
+    @Deprecated
     static Software instance() {
+        return get();
+    }
+
+    @NotNull
+    static Software get() {
         return INSTANCE.get();
     }
 

@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.UnaryOperator;
 
 public class CoinsEngineCurrency extends AbstractCurrency {
 
@@ -38,11 +39,11 @@ public class CoinsEngineCurrency extends AbstractCurrency {
         return Optional.ofNullable(CoinsEngineAPI.getCurrency(this.originalId));
     }
 
-    /*@Override
+    @Override
     @NotNull
     public UnaryOperator<String> replacePlaceholders() {
         return this.currency().map(Currency::replacePlaceholders).orElse(str -> str);
-    }*/
+    }
 
     @Override
     public boolean canHandleDecimals() {

@@ -96,9 +96,7 @@ public class SpigotBridge implements Software {
         Class<?> entityClass = Reflex.getClass("net.minecraft.world.entity", "Entity");
         if (entityClass == null) return;
 
-        String fieldName = Version.isBehind(Version.MC_1_20_6) ? "d" : "c";
-
-        Object object = Reflex.getFieldValue(entityClass, fieldName);
+        Object object = Reflex.getFieldValue(entityClass, "c");
         if (!(object instanceof AtomicInteger atomicInteger)) return;
 
         entityCounter = atomicInteger;

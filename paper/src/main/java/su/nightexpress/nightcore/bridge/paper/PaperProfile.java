@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,9 +31,21 @@ public class PaperProfile implements NightProfile {
     }
 
     @Override
+    @NotNull
+    public Optional<UUID> id() {
+        return Optional.ofNullable(this.getId());
+    }
+
+    @Override
     @Nullable
     public String getName() {
         return this.backend.getName();
+    }
+
+    @Override
+    @NotNull
+    public Optional<String> name() {
+        return Optional.ofNullable(this.getName());
     }
 
     @Override
