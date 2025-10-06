@@ -120,6 +120,19 @@ public class CoreConfig {
         "[Default is 600 (10 minutes)]"
     );
 
+    public static final ConfigValue<Integer> PROFILE_UPDATE_INTERVAL = ConfigValue.create("Profiles.UpdateInterval",
+        1,
+        "How often (in seconds) to perform updates for profiles that were put in update queue.",
+        "",
+        "[Default is 1]"
+    );
+
+    public static final ConfigValue<Integer> PROFILE_UPDATE_AMOUNT = ConfigValue.create("Profiles.UpdateAmount",
+        1,
+        "Amount of profiles to be updated from a queue (see UpdateInterval).",
+        "[Default is 1]"
+    );
+
     public static final ConfigValue<Boolean> PROFILE_UPDATE_ON_JOIN = ConfigValue.create("Profiles.UpdateOnJoin",
         true,
         "Controls whether cached player profiles should force update when their owner joins the server.",

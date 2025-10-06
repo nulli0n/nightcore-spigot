@@ -24,6 +24,7 @@ import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.util.Plugins;
+import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 
 import java.util.HashSet;
@@ -47,6 +48,7 @@ public class CoreManager extends AbstractManager<NightCore> {
 
         this.addTask(this::tickMenusAndDialogs, 1);
         this.addAsyncTask(PlayerProfiles::purgeProfiles, CoreConfig.PROFILE_PURGE_INTERVAL.get());
+        this.addAsyncTask(this::updateProfiles, CoreConfig.PROFILE_UPDATE_INTERVAL.get());
     }
 
     @Override
@@ -100,6 +102,10 @@ public class CoreManager extends AbstractManager<NightCore> {
         ItemBridge.register(provider);
         this.plugin.info("Registered item provider: '" + name + "'.");
         return true;
+    }
+
+    private void updateProfiles() {
+        CachedProfile.updateCandidates(CoreConfig.PROFILE_UPDATE_AMOUNT.get());
     }
 
     private void tickMenusAndDialogs() {
