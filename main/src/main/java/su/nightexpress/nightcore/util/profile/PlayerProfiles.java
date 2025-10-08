@@ -73,7 +73,7 @@ public class PlayerProfiles {
         CACHED_PROFILES.clear();
     }
 
-    public static void inspectProfiles() {
+    /*public static void inspectProfiles() {
         purgeProfiles();
         updateProfiles();
     }
@@ -84,7 +84,7 @@ public class PlayerProfiles {
                 cachedProfile.update();
             }
         });
-    }
+    }*/
 
     public static void purgeProfiles() {
         CACHED_PROFILES.values().removeIf(CachedProfile::isPurgeTime);

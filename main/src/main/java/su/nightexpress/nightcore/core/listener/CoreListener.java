@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.manager.AbstractListener;
+import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 
@@ -25,6 +26,6 @@ public class CoreListener extends AbstractListener<NightCore> {
         CachedProfile profile = PlayerProfiles.getCachedProfile(player.getUniqueId());
         if (profile == null) return;
 
-        profile.update();
+        profile.update(Software.get().getProfile(player));
     }
 }
