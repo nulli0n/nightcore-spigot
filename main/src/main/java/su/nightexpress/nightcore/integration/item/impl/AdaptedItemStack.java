@@ -10,6 +10,8 @@ import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.integration.item.ItemBridge;
 import su.nightexpress.nightcore.integration.item.adapter.AbstractItemAdapter;
 
+import java.util.Optional;
+
 public abstract class AdaptedItemStack<T> implements AdaptedItem, Writeable {
 
     protected final ItemAdapter<T> adapter;
@@ -44,6 +46,12 @@ public abstract class AdaptedItemStack<T> implements AdaptedItem, Writeable {
     @NotNull
     public T getData() {
         return this.data;
+    }
+
+    @Override
+    @NotNull
+    public Optional<ItemStack> itemStack() {
+        return Optional.ofNullable(this.getItemStack());
     }
 
     @Override

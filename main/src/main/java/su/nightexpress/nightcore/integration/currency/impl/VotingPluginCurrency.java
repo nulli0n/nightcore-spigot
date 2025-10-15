@@ -4,7 +4,7 @@ import com.bencodez.votingplugin.VotingPluginHooks;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.economybridge.EconomyBridge;
+import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.integration.currency.CurrencyId;
 import su.nightexpress.nightcore.integration.currency.CurrencySettings;
 import su.nightexpress.nightcore.integration.currency.type.IncompleteCurrency;
@@ -46,14 +46,14 @@ public class VotingPluginCurrency extends IncompleteCurrency {
 
     @Override
     public void give(@NotNull Player player, double amount) {
-        EconomyBridge.getPlugin().runTaskAsync(task -> {
+        NightCore.get().runTaskAsync(task -> {
             VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(player).addPoints((int) amount);
         });
     }
 
     @Override
     public void give(@NotNull UUID playerId, double amount) {
-        EconomyBridge.getPlugin().runTaskAsync(task -> {
+        NightCore.get().runTaskAsync(task -> {
             VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(playerId).addPoints((int) amount);
         });
     }

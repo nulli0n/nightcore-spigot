@@ -25,7 +25,7 @@ public class ECratesKeyAdapter extends IdentifiableItemAdapter {
     @Nullable
     public ItemStack createItem(@NotNull String itemId) {
         CrateKey key = CratesAPI.getKeyManager().getKeyById(itemId);
-        return key == null ? null : key.getItem();
+        return key == null ? null : key.getItemStack();
     }
 
     @Override

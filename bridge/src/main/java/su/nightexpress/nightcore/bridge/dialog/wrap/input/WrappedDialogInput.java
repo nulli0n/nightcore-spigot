@@ -11,5 +11,6 @@ public interface WrappedDialogInput {
 
     @NotNull <I> I adapt(@NotNull DialogInputAdapter<I> adapter);
 
+    @Deprecated
     @NotNull WrappedDialogInput replace(@NotNull UnaryOperator<String> operator);
 }

@@ -24,10 +24,10 @@ import su.nightexpress.nightcore.util.bukkit.NightSound;
 import su.nightexpress.nightcore.util.sound.AbstractSound;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -36,20 +36,41 @@ public class FileConfig extends YamlConfiguration {
 
     public static final String EXTENSION = ".yml";
 
-    private final File    file;
-    private       boolean changed;
+    private final Path path;
 
+    private boolean changed;
+
+    @Deprecated
     public FileConfig(@NotNull String path, @NotNull String file) {
         this(new File(path, file));
     }
 
+    @Deprecated
     public FileConfig(@NotNull File file) {
         this.changed = false;
         this.options().width(512);
 
         FileUtil.create(file);
-        this.file = file;
+        this.path = file.toPath();
         this.reload();
+    }
+
+    private FileConfig(@NotNull Path path) {
+        this.path = path;
+        this.changed = false;
+        this.options().width(512);
+    }
+
+    @NotNull
+    public static FileConfig load(@NotNull String path, @NotNull String file) {
+        return load(Path.of(path, file));
+    }
+
+    @NotNull
+    public static FileConfig load(@NotNull Path path) {
+        FileConfig config = new FileConfig(path);
+        config.load();
+        return config;
     }
 
     public static boolean isConfig(@NotNull File file) {
@@ -72,6 +93,7 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @NotNull
+    @Deprecated
     public static FileConfig loadOrExtract(@NotNull NightCorePlugin plugin, @NotNull String path, @NotNull String file) {
         if (!path.endsWith("/")) {
             path += "/";
@@ -80,6 +102,7 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @NotNull
+    @Deprecated
     public static FileConfig loadOrExtract(@NotNull NightCorePlugin plugin, @NotNull String filePath) {
         if (!filePath.startsWith("/")) {
             filePath = "/" + filePath;
@@ -118,13 +141,40 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @NotNull
+    @Deprecated
     public File getFile() {
-        return this.file;
+        return this.path.toFile();
+    }
+
+    @NotNull
+    public Path getPath() {
+        return this.path;
+    }
+
+    @Deprecated
+    public boolean reload() {
+        this.load();
+        return true;
+    }
+
+    public void load() {
+        FileUtil.createFileIfNotExists(this.path);
+        this.changed = false;
+
+        //this.load(this.file);
+        try (BufferedReader reader = Files.newBufferedReader(this.path, StandardCharsets.UTF_8)) {
+            this.load(reader);
+        }
+        catch (IOException | InvalidConfigurationException | IllegalArgumentException exception) {
+            exception.printStackTrace();
+        }
     }
 
     public void save() {
-        try {
-            this.save(this.file);
+        FileUtil.createFileIfNotExists(this.path);
+
+        try (BufferedWriter writer = Files.newBufferedWriter(this.path, StandardCharsets.UTF_8)) {
+            writer.write(this.saveToString());
         }
         catch (IOException exception) {
             exception.printStackTrace();
@@ -137,18 +187,6 @@ public class FileConfig extends YamlConfiguration {
         this.save();
         this.changed = false;
         return true;
-    }
-
-    public boolean reload() {
-        try {
-            this.load(this.file);
-            this.changed = false;
-            return true;
-        }
-        catch (IOException | InvalidConfigurationException exception) {
-            exception.printStackTrace();
-        }
-        return false;
     }
 
     public void edit(@NotNull Consumer<FileConfig> consumer) {

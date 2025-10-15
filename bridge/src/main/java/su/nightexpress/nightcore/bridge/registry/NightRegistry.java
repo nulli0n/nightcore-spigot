@@ -13,29 +13,40 @@ public class NightRegistry<T> {
 
     private boolean frozen;
 
-    public NightRegistry(@NotNull Map<String, T> byKey) {
-        this.byKey = byKey;
+    public NightRegistry() {
+        this.byKey = new ConcurrentHashMap<>();
     }
 
-    @NotNull
-    public static <E> NightRegistry<E> create() {
-        return new NightRegistry<>(new ConcurrentHashMap<>());
-    }
-
+    @Deprecated
     public void add(@NotNull String key, @NotNull T value) {
-        if (this.isFrozen()) throw new UnsupportedOperationException("Could not add values to frozen registry!");
+        this.register(key, value);
+    }
+
+    public void register(@NotNull String key, @NotNull T value) {
+        if (this.isFrozen()) throw new UnsupportedOperationException("Adding values to frozen registry");
 
         this.byKey.put(LowerCase.INTERNAL.apply(key), value);
     }
 
+    public void unregister(@NotNull String key) {
+        if (this.isFrozen()) throw new UnsupportedOperationException("Removing values from frozen registry");
+
+        this.byKey.remove(key);
+    }
+
     @Nullable
     public T byKey(@NotNull String key) {
-        return this.byKey.get(LowerCase.INTERNAL.apply(key));
+        return this.byKey.get(key);
     }
 
     @NotNull
     public Optional<T> lookup(@NotNull String key) {
         return Optional.ofNullable(this.byKey(key));
+    }
+
+    @NotNull
+    public Map<String, T> map() {
+        return this.byKey;
     }
 
     @NotNull

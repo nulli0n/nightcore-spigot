@@ -34,10 +34,9 @@ public class ItemTag implements Writeable {
         config.set(path + ".DataVersion", this.dataVersion);
     }
 
-    @Nullable
-    public static ItemTag of(@NotNull ItemStack item) {
-        Object compoundTag = NbtUtil.tagFromItemStack(item);
-        if (compoundTag == null) return null;
+    @NotNull
+    public static ItemTag of(@NotNull ItemStack itemStack) {
+        Object compoundTag = NbtUtil.tagFromItemStack(itemStack);
 
         return new ItemTag(compoundTag.toString(), Version.getCurrent().getDataVersion());
     }

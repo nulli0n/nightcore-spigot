@@ -25,6 +25,7 @@ public record WrappedDialogBase(@NotNull String title,
     }
 
     @NotNull
+    @Deprecated
     public WrappedDialogBase replace(@NotNull UnaryOperator<String> operator) {
         String title = operator.apply(this.title);
         String externalTitle = this.externalTitle == null ? null : operator.apply(this.externalTitle);

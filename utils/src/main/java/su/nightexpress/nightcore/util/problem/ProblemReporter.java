@@ -15,7 +15,7 @@ public interface ProblemReporter {
 
     @NotNull String getReport();
 
-    @NotNull List<String> getLines();
+    List<Problem.ChildReport> getChildren();
 
     boolean isEmpty();
 
@@ -25,9 +25,7 @@ public interface ProblemReporter {
 
     void report(@NotNull String problem);
 
-    void children(@NotNull ProblemReporter reporter);
-
-    @NotNull ProblemReporter children(@NotNull String subject, @NotNull String path);
+    void children(@NotNull String description, @NotNull ProblemReporter reporter);
 
     int countProblems();
 

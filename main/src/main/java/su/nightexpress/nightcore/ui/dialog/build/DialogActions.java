@@ -10,6 +10,10 @@ import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 
 public class DialogActions {
 
+    public static final String OK     = "ok";
+    public static final String CANCEL = "cancel";
+    public static final String BACK   = "back";
+
     @NotNull
     public static WrappedDialogStaticAction staticAction(@NotNull NightClickEvent event) {
         return new WrappedDialogStaticAction(event);

@@ -28,10 +28,7 @@ import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
 import su.nightexpress.nightcore.bridge.text.event.WrappedPayload;
-import su.nightexpress.nightcore.bridge.text.impl.NightKeybindComponent;
-import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
-import su.nightexpress.nightcore.bridge.text.impl.NightTranslatableComponent;
-import su.nightexpress.nightcore.bridge.text.impl.NightTranslationArgument;
+import su.nightexpress.nightcore.bridge.text.impl.*;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
@@ -209,6 +206,12 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
             .append(this.adaptComponents(component.children()))
             .keybind(component.key())
         );
+    }
+
+    @Override
+    @NotNull
+    public Component adaptComponent(@NotNull NightObjectComponent component) {
+        return Component.object(PaperObjectContantsAdapter.get().adaptContents(component.contents()));
     }
 
     // Quick fix for <1.21.4 loading.

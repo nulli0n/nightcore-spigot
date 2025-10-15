@@ -6,6 +6,10 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.locale.message.LangMessage;
 import su.nightexpress.nightcore.locale.message.MessageData;
 import su.nightexpress.nightcore.util.Players;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
+
+import java.util.Collection;
 
 public class ChatMessage extends LangMessage {
 
@@ -39,9 +43,10 @@ public class ChatMessage extends LangMessage {
     }
 
     @Override
-    protected void send(@NotNull CommandSender sender, @NotNull String text) {
+    protected void send(@NotNull Collection<CommandSender> receivers, @NotNull String text) {
         String message = (this.prefix != null && !this.noPrefix) ? (this.prefix + text) : text;
+        NightComponent component = NightMessage.parse(message);
 
-        Players.sendMessage(sender, message);
+        receivers.forEach(player -> Players.sendMessage(player, component));
     }
 }

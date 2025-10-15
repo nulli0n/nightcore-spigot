@@ -22,6 +22,7 @@ import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
 import su.nightexpress.nightcore.bridge.text.impl.NightKeybindComponent;
+import su.nightexpress.nightcore.bridge.text.impl.NightObjectComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightTranslatableComponent;
 import su.nightexpress.nightcore.util.BukkitThing;
@@ -158,5 +159,11 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
         spigot.setWith(Lists.modify(component.arguments(), argument -> this.adaptComponent(argument.asComponent())));
         this.adaptProperties(spigot, component);
         return spigot;
+    }
+
+    @Override
+    @NotNull
+    public BaseComponent adaptComponent(@NotNull NightObjectComponent component) {
+        return new ObjectComponent(SpigotObjectContentsAdapter.get().adaptContents(component.contents()));
     }
 }

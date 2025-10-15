@@ -16,6 +16,6 @@ public class FontDecorator implements Decorator {
     @Override
     @NotNull
     public NightComponent decorate(@NotNull NightComponent component) {
-        return component.font(NightKey.fromString(this.font));
+        return component.font(NightKey.key(this.font));
     }
 }

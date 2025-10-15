@@ -10,13 +10,15 @@ public class TagShortNames {
     public static final String BR       = "br";
     public static final String NEWLINE = "newline";
 
-    public static final String RESET        = "r";
-    public static final String LANG         = "lang";
-    public static final String LANG_OR      = "lang_or";
-    public static final String KEYBIND      = "key";
-    public static final String INSERTION    = "insertion";
-    public static final String HOVER        = "hover";
-    public static final String CLICK        = "click";
+    public static final String RESET     = "r";
+    public static final String LANG      = "lang";
+    public static final String LANG_OR   = "lang_or";
+    public static final String KEYBIND   = "key";
+    public static final String INSERTION = "insertion";
+    public static final String HEAD      = "head";
+    public static final String HOVER     = "hover";
+    public static final String CLICK     = "click";
+    public static final String SPRITE    = "sprite";
 
     public static final String BOLD          = "b";
     public static final String ITALIC        = "i";

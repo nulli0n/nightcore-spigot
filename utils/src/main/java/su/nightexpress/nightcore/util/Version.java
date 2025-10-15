@@ -22,8 +22,8 @@ public enum Version {
     MC_1_21_6("1.21.6", 4435, Status.OUTDATED),
     MC_1_21_7("1.21.7", 4438, Status.OUTDATED),
     MC_1_21_8("1.21.8", 4440),
-    MC_1_21_9("1.21.9", 4554),
-    MC_1_21_10("1.12.10", 4555),
+    MC_1_21_9("1.21.9", 4554, Status.OUTDATED),
+    MC_1_21_10("1.21.10", 4556),
     UNKNOWN("Unknown", 10000),
     ;
 
@@ -66,6 +66,14 @@ public enum Version {
         if (current == null) throw new IllegalStateException("Version is not initialized!");
 
         return current;
+    }
+
+    public static boolean withDialogs() {
+        return isAtLeast(MC_1_21_7);
+    }
+
+    public static boolean withCopperAge() {
+        return isAtLeast(MC_1_21_9);
     }
 
     public static boolean isSpigot() {

@@ -25,7 +25,7 @@ public class ECratesCrateAdapter extends IdentifiableItemAdapter {
     @Nullable
     public ItemStack createItem(@NotNull String itemId) {
         Crate crate = CratesAPI.getCrateManager().getCrateById(itemId);
-        return crate == null ? null : crate.getItem();
+        return crate == null ? null : crate.getItemStack();
     }
 
     @Override

@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -31,6 +33,20 @@ public class FileUtil {
         }
         catch (IOException exception) {
             exception.printStackTrace();
+        }
+    }
+
+    public static boolean createFileIfNotExists(@NotNull Path path) {
+        if (Files.exists(path)) return false;
+
+        try {
+            Files.createDirectories(path.getParent());
+            Files.createFile(path);
+            return true;
+        }
+        catch (IOException exception) {
+            exception.printStackTrace();
+            return false;
         }
     }
 

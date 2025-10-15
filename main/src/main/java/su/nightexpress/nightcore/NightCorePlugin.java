@@ -10,6 +10,8 @@ import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.language.LangManager;
+import su.nightexpress.nightcore.locale.LangContainer;
+import su.nightexpress.nightcore.locale.LangElement;
 import su.nightexpress.nightcore.util.wrapper.UniTask;
 
 import java.util.function.Consumer;
@@ -38,6 +40,16 @@ public interface NightCorePlugin extends Plugin {
     void extractResources(@NotNull String jarPath);
 
     void extractResources(@NotNull String jarParh, @NotNull String toPath);
+
+    /**
+     * Saves and loads {@link LangElement} objects from the provided {@link LangContainer} object into the lang config file according to selected
+     * language during the "enable" plugin's phase if the same can not be achieved through {@link NightPlugin#registerLang(Class)}
+     * <br>
+     * <b>Note:</b> This can not be used outside of the {@link NightPlugin#enable()} phase.
+     * @param langContainer LangContainer object with some LangElement fields defined.
+     * @see NightPlugin#registerLang(Class)
+     */
+    void injectLang(@NotNull LangContainer langContainer);
 
     @NotNull
     default String getNameLocalized() {

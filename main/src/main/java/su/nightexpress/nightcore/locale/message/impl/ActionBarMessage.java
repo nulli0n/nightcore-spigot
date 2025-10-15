@@ -6,6 +6,10 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.locale.message.LangMessage;
 import su.nightexpress.nightcore.locale.message.MessageData;
 import su.nightexpress.nightcore.util.Players;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
+
+import java.util.Collection;
 
 public class ActionBarMessage extends LangMessage {
 
@@ -19,9 +23,10 @@ public class ActionBarMessage extends LangMessage {
     }
 
     @Override
-    protected void send(@NotNull CommandSender sender, @NotNull String text) {
-        if (!(sender instanceof Player player)) return;
-
-        Players.sendActionBar(player, text);
+    protected void send(@NotNull Collection<CommandSender> receivers, @NotNull String text) {
+        NightComponent component = NightMessage.parse(text);
+        receivers.forEach(sender -> {
+            if (sender instanceof Player player) Players.sendActionBar(player, component);
+        });
     }
 }

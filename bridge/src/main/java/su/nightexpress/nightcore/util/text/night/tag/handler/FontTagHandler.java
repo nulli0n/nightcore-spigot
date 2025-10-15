@@ -11,7 +11,7 @@ public class FontTagHandler extends ClassicTagHandler {
     protected void onHandleOpen(@NotNull EntryGroup group, @Nullable String tagContent) {
         if (tagContent == null) return;
 
-        NightKey font = NightKey.fromString(tagContent);
+        NightKey font = NightKey.key(tagContent);
         group.setStyle(style -> style.font(font));
     }
 

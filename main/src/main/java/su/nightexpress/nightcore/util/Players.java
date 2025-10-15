@@ -88,7 +88,7 @@ public class Players {
     }
 
     public static void closeDialog(@NotNull Player player) {
-        Software.instance().closeDialog(player);
+        Software.get().closeDialog(player);
     }
 
     @NotNull
@@ -228,7 +228,7 @@ public class Players {
     }
 
     public static void sendMessage(@NotNull CommandSender sender, @NotNull NightComponent component) {
-        Software.instance().getTextComponentAdapter().send(sender, component);
+        Software.get().getTextComponentAdapter().send(sender, component);
     }
 
     @Deprecated
@@ -247,7 +247,7 @@ public class Players {
     }
 
     public static void sendActionBar(@NotNull Player player, @NotNull NightComponent component) {
-        Software.instance().getTextComponentAdapter().sendActionBar(player, component);
+        Software.get().getTextComponentAdapter().sendActionBar(player, component);
     }
 
     @Deprecated
@@ -260,7 +260,7 @@ public class Players {
     }
 
     public static void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
-        Software.instance().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
+        Software.get().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
     public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {

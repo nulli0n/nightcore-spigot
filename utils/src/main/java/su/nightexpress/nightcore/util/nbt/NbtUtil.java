@@ -70,17 +70,15 @@ public class NbtUtil {
         return itemStack == null ? null : (ItemStack) Reflex.invokeMethod(AS_BUKKIT_COPY, null, itemStack);
     }
 
-    @Nullable
+    @NotNull
     public static Object tagFromItemStack(@NotNull ItemStack bukkitStack) {
-        if (bukkitStack.getType().isAir() || bukkitStack.getAmount() <= 0) return null;
-
         Object nmsStack = Reflex.invokeMethod(AS_NMS_COPY, null, bukkitStack);
         if (nmsStack == null) throw new IllegalStateException("Could not convert bukkit ItemStack to NMS copy");
 
-        if (USE_CODEC) {
-            return NbtSerializer.encodeItemStack(nmsStack);
+        if (!USE_CODEC) {
+            Reflex.safeInvoke(ITEM_STACK_SAVE, nmsStack, REGISTRY_ACCESS).orElseThrow(() -> new IllegalStateException("Could not #save() ItemStack"));
         }
 
-        return Reflex.invokeMethod(ITEM_STACK_SAVE, nmsStack, REGISTRY_ACCESS);
+        return NbtSerializer.encodeItemStack(nmsStack);
     }
 }
