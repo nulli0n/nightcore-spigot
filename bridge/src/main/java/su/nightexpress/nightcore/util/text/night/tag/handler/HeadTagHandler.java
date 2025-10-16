@@ -25,7 +25,7 @@ public class HeadTagHandler extends ClassicTagHandler {
 
         TagContent content = ParserUtils.parseInnerContent(tagContent);
 
-        String data = content.first();
+        String data = ParserUtils.unquoted(content.first());
         boolean hat = !content.hasBoth() || Boolean.parseBoolean(content.second());
         NightPlayerHeadObjectContents contents;
 

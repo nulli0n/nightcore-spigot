@@ -19,7 +19,7 @@ public class SilentMessage extends LangMessage {
     }
 
     @Override
-    protected void send(@NotNull Collection<CommandSender> receivers, @NotNull String text) {
+    protected void send(@NotNull Collection<? extends CommandSender> receivers, @NotNull String text) {
 
     }
 }

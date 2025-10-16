@@ -2,14 +2,16 @@ package su.nightexpress.nightcore.bridge.registry;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.LowerCase;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class NightRegistry<T> {
+public class NightRegistry<K, V> {
 
-    private final Map<String, T> byKey;
+    private final Map<K, V> byKey;
 
     private boolean frozen;
 
@@ -17,45 +19,40 @@ public class NightRegistry<T> {
         this.byKey = new ConcurrentHashMap<>();
     }
 
-    @Deprecated
-    public void add(@NotNull String key, @NotNull T value) {
-        this.register(key, value);
-    }
-
-    public void register(@NotNull String key, @NotNull T value) {
+    public void register(@NotNull K key, @NotNull V value) {
         if (this.isFrozen()) throw new UnsupportedOperationException("Adding values to frozen registry");
 
-        this.byKey.put(LowerCase.INTERNAL.apply(key), value);
+        this.byKey.put(key, value);
     }
 
-    public void unregister(@NotNull String key) {
+    public void unregister(@NotNull K key) {
         if (this.isFrozen()) throw new UnsupportedOperationException("Removing values from frozen registry");
 
         this.byKey.remove(key);
     }
 
     @Nullable
-    public T byKey(@NotNull String key) {
+    public V byKey(@NotNull K key) {
         return this.byKey.get(key);
     }
 
     @NotNull
-    public Optional<T> lookup(@NotNull String key) {
+    public Optional<V> lookup(@NotNull K key) {
         return Optional.ofNullable(this.byKey(key));
     }
 
     @NotNull
-    public Map<String, T> map() {
+    public Map<K, V> map() {
         return this.byKey;
     }
 
     @NotNull
-    public Set<T> values() {
+    public Set<V> values() {
         return new HashSet<>(this.byKey.values());
     }
 
     @NotNull
-    public Set<String> keys() {
+    public Set<K> keys() {
         return new HashSet<>(this.byKey.keySet());
     }
 

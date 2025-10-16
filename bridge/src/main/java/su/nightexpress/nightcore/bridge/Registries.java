@@ -6,7 +6,7 @@ import su.nightexpress.nightcore.bridge.registry.NightRegistry;
 
 public class Registries {
 
-    public static final NightRegistry<Currency>       CURRENCY     = new NightRegistry<>();
-    public static final NightRegistry<ItemAdapter<?>> ITEM_ADAPTER = new NightRegistry<>();
+    public static final NightRegistry<String, Currency>       CURRENCY     = new NightRegistry<>();
+    public static final NightRegistry<String, ItemAdapter<?>> ITEM_ADAPTER = new NightRegistry<>();
 
 }

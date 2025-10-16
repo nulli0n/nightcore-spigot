@@ -31,7 +31,7 @@ public class TitleMessage extends LangMessage {
     }
 
     @Override
-    protected void send(@NotNull Collection<CommandSender> receivers, @NotNull String text) {
+    protected void send(@NotNull Collection<? extends CommandSender> receivers, @NotNull String text) {
         String[] split = ParserUtils.breakDownLineSplitters(text);
 
         String title = split[0];
