@@ -103,7 +103,7 @@ public abstract class LangMessage implements LangValue {
         this.send(Collections.singleton(sender), consumer);
     }
 
-    public void send(@NotNull Collection<CommandSender> receivers, @Nullable Consumer<Replacer> consumer) {
+    public void send(@NotNull Collection<? extends CommandSender> receivers, @Nullable Consumer<Replacer> consumer) {
         Replacer replacer = new Replacer();
         if (consumer != null) consumer.accept(replacer);
 
@@ -122,5 +122,5 @@ public abstract class LangMessage implements LangValue {
         }
     }
 
-    protected abstract void send(@NotNull Collection<CommandSender> receivers, @NotNull String text);
+    protected abstract void send(@NotNull Collection<? extends CommandSender> receivers, @NotNull String text);
 }

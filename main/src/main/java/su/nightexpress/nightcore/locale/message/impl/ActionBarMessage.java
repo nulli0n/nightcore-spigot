@@ -23,7 +23,7 @@ public class ActionBarMessage extends LangMessage {
     }
 
     @Override
-    protected void send(@NotNull Collection<CommandSender> receivers, @NotNull String text) {
+    protected void send(@NotNull Collection<? extends CommandSender> receivers, @NotNull String text) {
         NightComponent component = NightMessage.parse(text);
         receivers.forEach(sender -> {
             if (sender instanceof Player player) Players.sendActionBar(player, component);

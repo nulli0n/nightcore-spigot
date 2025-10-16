@@ -26,7 +26,7 @@ public class SpriteTagHandler extends ClassicTagHandler {
             sprite = content.second();
         }
         else {
-            sprite = content.first();
+            sprite = ParserUtils.unquoted(content.first());
         }
 
         try {

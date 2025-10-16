@@ -20,7 +20,7 @@ public class EconomyBridge {
     }
 
     @NotNull
-    public static NightRegistry<Currency> registry() {
+    public static NightRegistry<String, Currency> registry() {
         return Registries.CURRENCY;
     }
 
@@ -105,7 +105,7 @@ public class EconomyBridge {
     }
 
     public static void register(@NotNull Currency currency) {
-        registry().add(currency.getInternalId(), currency);
+        registry().register(currency.getInternalId(), currency);
     }
 
     @NotNull

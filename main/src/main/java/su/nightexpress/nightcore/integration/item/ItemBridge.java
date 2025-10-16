@@ -19,12 +19,12 @@ public class ItemBridge {
     }
 
     @NotNull
-    public static NightRegistry<ItemAdapter<?>> registry() {
+    public static NightRegistry<String, ItemAdapter<?>> registry() {
         return Registries.ITEM_ADAPTER;
     }
 
     public static void register(@NotNull ItemAdapter<?> adapter) {
-        registry().add(adapter.getName(), adapter);
+        registry().register(adapter.getName(), adapter);
     }
 
     @NotNull
