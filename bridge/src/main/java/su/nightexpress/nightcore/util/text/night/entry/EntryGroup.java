@@ -97,6 +97,11 @@ public class EntryGroup implements Entry {
     }
 
     @NotNull
+    public <T extends ChildEntry> T appendEntry(@NotNull T entry) {
+        return this.addChildren(entry);
+    }
+
+    @NotNull
     private <T extends Entry> T addChildren(@NotNull T child) {
         this.childrens.add(child);
         return child;

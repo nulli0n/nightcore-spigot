@@ -1,20 +1,23 @@
 package su.nightexpress.nightcore.ui.dialog;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
+import su.nightexpress.nightcore.bridge.dialog.DialogViewer;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickResult;
+import su.nightexpress.nightcore.bridge.dialog.response.DialogResponseHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.bridge.Software;
-import su.nightexpress.nightcore.util.placeholder.Replacer;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 public class Dialogs {
 
-    private static final Map<UUID, WrappedDialog> ACTIVE_DIALOGS = new HashMap<>();
+    private static final Map<UUID, DialogViewer> ACTIVE_DIALOGS = new HashMap<>();
 
     public static void clearDialogs() {
         new HashSet<>(ACTIVE_DIALOGS.keySet()).stream().map(Players::getPlayer).filter(Objects::nonNull).forEach(Dialogs::exitDialog);
@@ -26,23 +29,33 @@ public class Dialogs {
     }
 
     @Nullable
-    public static WrappedDialog getDialog(@NotNull Player player) {
+    public static DialogViewer getViewer(@NotNull Player player) {
         return ACTIVE_DIALOGS.get(player.getUniqueId());
     }
 
-    public static void handleClick(@NotNull Player player, @NotNull DialogClickResult result) {
+    public static void handleClick(@NotNull DialogClickResult result) {
+        Player player = result.getPlayer();
+
         // We can't know when a player's dialog was closed by API calls or other causes,
         // so to prevent it staying in the map, we do remove it on any button click.
         // This should be safe as dialogs are either closed or reopened on any clicks/changes.
-        WrappedDialog dialog = ACTIVE_DIALOGS.remove(player.getUniqueId());
-        if (dialog == null) return;
+        DialogViewer viewer = ACTIVE_DIALOGS.remove(player.getUniqueId());
+        if (viewer == null) return;
 
-        dialog.handleResponse(result);
+        WrappedDialog dialog = viewer.getDialog();
+
+        NamespacedKey identifier = result.getIdentifier();
+        NightNbtHolder nbtHolder = result.getNbtHolder();
+
+        DialogResponseHandler handler = dialog.responseHandlers().get(identifier.getKey());
+        if (handler == null) return;
+
+        handler.handle(viewer, identifier, nbtHolder);
     }
 
     public static void exitDialog(@NotNull Player player) {
-        WrappedDialog dialog = ACTIVE_DIALOGS.remove(player.getUniqueId());
-        if (dialog == null) return;
+        DialogViewer viewer = ACTIVE_DIALOGS.remove(player.getUniqueId());
+        if (viewer == null) return;
 
         Players.closeDialog(player);
     }
@@ -51,18 +64,11 @@ public class Dialogs {
         showDialog(player, dialog, null);
     }
 
-    /*public static void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog, @Nullable Consumer<Replacer> consumer) {
-        showDialog(player, dialog, consumer == null ? null : Replacer.create().and(consumer).chained());
-    }*/
+    public static void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog, @Nullable Runnable callback) {
+        DialogUser user = new DialogUser(player, dialog, callback);
+        ACTIVE_DIALOGS.put(player.getUniqueId(), user);
 
-    public static void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog, @Nullable Consumer<Replacer> replacer) {
-        if (replacer != null) {
-            dialog = dialog.replace(Replacer.create().and(replacer).chained());
-        }
-
-        ACTIVE_DIALOGS.put(player.getUniqueId(), dialog);
-
-        Software.instance().showDialog(player, dialog);
+        Software.get().showDialog(player, dialog);
     }
 
     @NotNull
@@ -78,13 +84,9 @@ public class Dialogs {
         createAndShow(player, consumer, null);
     }
 
-    /*public static void createAndShow(@NotNull Player player, @NotNull Consumer<WrappedDialog.Builder> consumer, @Nullable Consumer<Replacer> replacer) {
-        createAndShow(player, consumer, replacer == null ? null : Replacer.create().and(replacer).chained());
-    }*/
-
-    public static void createAndShow(@NotNull Player player, @NotNull Consumer<WrappedDialog.Builder> consumer, @Nullable Consumer<Replacer> replacer) {
+    public static void createAndShow(@NotNull Player player, @NotNull Consumer<WrappedDialog.Builder> consumer, @Nullable Runnable callback) {
         WrappedDialog dialog = create(consumer);
-        showDialog(player, dialog, replacer);
+        showDialog(player, dialog, callback);
     }
 
     @NotNull

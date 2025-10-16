@@ -9,5 +9,6 @@ public interface WrappedDialogBody {
 
     @NotNull <D> D adapt(@NotNull DialogBodyAdapter<D> adapter);
 
+    @Deprecated
     @NotNull WrappedDialogBody replace(@NotNull UnaryOperator<String> operator);
 }

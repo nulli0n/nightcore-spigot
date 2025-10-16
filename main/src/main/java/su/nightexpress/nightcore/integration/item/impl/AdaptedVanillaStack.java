@@ -15,6 +15,12 @@ public class AdaptedVanillaStack extends AdaptedItemStack<ItemTag> {
         this.itemStack = this.adapter.toItemStack(itemTag);
     }
 
+    @NotNull
+    public static AdaptedVanillaStack of(@NotNull ItemStack itemStack) {
+        ItemTag tag = ItemTag.of(itemStack);
+        return new AdaptedVanillaStack(tag);
+    }
+
     @Override
     public boolean isValid() {
         return this.itemStack != null;

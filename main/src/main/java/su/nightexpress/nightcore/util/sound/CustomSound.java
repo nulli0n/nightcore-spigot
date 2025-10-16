@@ -4,7 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.BukkitThing;
+import su.nightexpress.nightcore.bridge.common.NightKey;
+import su.nightexpress.nightcore.util.Strings;
 
 public class CustomSound extends AbstractSound {
 
@@ -12,7 +13,7 @@ public class CustomSound extends AbstractSound {
 
     public CustomSound(@NotNull String sound, float volume, float pitch) {
         super(volume, pitch);
-        this.sound = BukkitThing.validateValue(sound);
+        this.sound = Strings.varStyle(sound, NightKey::allowedInValue).orElse("null");
     }
 
     @NotNull

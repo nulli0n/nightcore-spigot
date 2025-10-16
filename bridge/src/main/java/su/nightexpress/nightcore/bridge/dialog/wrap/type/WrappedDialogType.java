@@ -9,5 +9,6 @@ public interface WrappedDialogType {
 
     @NotNull <T> T adapt(@NotNull DialogTypeAdapter<T> factory);
 
+    @Deprecated
     @NotNull WrappedDialogType replace(@NotNull UnaryOperator<String> operator);
 }

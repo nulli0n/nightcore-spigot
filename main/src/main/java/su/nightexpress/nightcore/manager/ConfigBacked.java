@@ -5,14 +5,20 @@ import su.nightexpress.nightcore.config.FileConfig;
 
 public interface ConfigBacked extends FileBacked {
 
+    @NotNull
+    @Deprecated
+    default FileConfig getConfig() {
+        return this.loadConfig();
+    }
+
     /**
      * Parses the YAML configuration from the object's file.
      * The config is not cached and is being loaded/parsed every time this method called.
      * @return A "fresh" FileConfig for the object's file.
-     * @see FileBacked#getFile()
+     * @see FileBacked#getPath()
      */
     @NotNull
-    default FileConfig getConfig() {
-        return new FileConfig(this.getFile());
+    default FileConfig loadConfig() {
+        return FileConfig.load(this.getPath());
     }
 }

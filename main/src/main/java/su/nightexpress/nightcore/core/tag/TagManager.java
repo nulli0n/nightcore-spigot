@@ -57,6 +57,8 @@ public class TagManager extends AbstractManager<NightCore> {
         TagHandlerRegistry.register(ResetTagHandler::new, TagShortNames.RESET, "reset");
         TagHandlerRegistry.register(KeybindTagHandler::new, TagShortNames.KEYBIND);
         TagHandlerRegistry.register(InsertionTagHandler::new, TagShortNames.INSERTION);
+        TagHandlerRegistry.register(SpriteTagHandler::new, TagShortNames.SPRITE);
+        TagHandlerRegistry.register(HeadTagHandler::new, TagShortNames.HEAD);
 
         TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.BOLD, true), TagShortNames.BOLD, "bold");
         TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.ITALIC, true), TagShortNames.ITALIC, "italic", "em");

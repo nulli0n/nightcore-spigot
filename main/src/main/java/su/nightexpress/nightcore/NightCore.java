@@ -157,8 +157,6 @@ public class NightCore extends NightPlugin {
             });
 
             ItemTag tag = ItemTag.of(testItem);
-            if (tag == null) return false;
-
             ItemStack parsed = tag.getItemStack();
             return parsed != null && parsed.isSimilar(testItem);
         }

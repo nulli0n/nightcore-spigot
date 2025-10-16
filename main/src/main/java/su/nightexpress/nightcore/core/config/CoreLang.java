@@ -3,10 +3,7 @@ package su.nightexpress.nightcore.core.config;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangEntry;
-import su.nightexpress.nightcore.locale.entry.BooleanLocale;
-import su.nightexpress.nightcore.locale.entry.IconLocale;
-import su.nightexpress.nightcore.locale.entry.MessageLocale;
-import su.nightexpress.nightcore.locale.entry.TextLocale;
+import su.nightexpress.nightcore.locale.entry.*;
 import su.nightexpress.nightcore.locale.message.MessageData;
 
 import static su.nightexpress.nightcore.util.Placeholders.*;
@@ -142,6 +139,10 @@ public final class CoreLang implements LangContainer {
     public static final IconLocale MENU_ICON_BACK          = LangEntry.iconBuilder("MenuItem.Back").name("Back", SOFT_YELLOW).build();
     public static final IconLocale MENU_ICON_NEXT_PAGE     = LangEntry.iconBuilder("MenuItem.NextPage").name(UNDERLINED.wrap("Next Page") + " →", WHITE).build();
     public static final IconLocale MENU_ICON_PREVIOUS_PAGE = LangEntry.iconBuilder("MenuItem.PreviousPage").name("← " + UNDERLINED.wrap("Previous Page"), WHITE).build();
+
+    public static final ButtonLocale DIALOG_BUTTON_OK     = LangEntry.builder("Dialog.Button.OK").button(GREEN.wrap("✔") + " OK");
+    public static final ButtonLocale DIALOG_BUTTON_CANCEL = LangEntry.builder("Dialog.Button.Cancel").button(RED.wrap("✘") + " Cancel");
+    public static final ButtonLocale DIALOG_BUTTON_BACK   = LangEntry.builder("Dialog.Button.Back").button(SOFT_YELLOW.wrap("←") + " Back");
 
     @NotNull
     public static String formatEntry(@NotNull String entry, boolean flag) {

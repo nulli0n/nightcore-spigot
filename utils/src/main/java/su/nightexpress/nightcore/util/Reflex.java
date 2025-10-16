@@ -264,15 +264,20 @@ public class Reflex {
         }
     }
 
-    @Nullable
-    public static Object invokeMethod(@NotNull Method method, @Nullable Object by, @Nullable Object... param) {
+    @NotNull
+    public static Optional<Object> safeInvoke(@NotNull Method method, @Nullable Object by, @Nullable Object... param) {
         try {
             method.setAccessible(true);
-            return method.invoke(by, param);
+            return Optional.ofNullable(method.invoke(by, param));
         }
-        catch (Throwable exception) {
+        catch (ReflectiveOperationException exception) {
             exception.printStackTrace();
-            return null;
+            return Optional.empty();
         }
+    }
+
+    @Nullable
+    public static Object invokeMethod(@NotNull Method method, @Nullable Object by, @Nullable Object... param) {
+        return safeInvoke(method, by, param).orElse(null);
     }
 }

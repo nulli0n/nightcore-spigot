@@ -36,12 +36,13 @@ public class NbtSerializer {
         return result.resultOrPartial(itemId -> LOGGER.error("Could not decode ItemStack from tag: {}", itemId)).orElse(null);
     }
 
-    @Nullable
+    @NotNull
     public static Object encodeItemStack(@NotNull Object nmsStack) {
         Object context = createSerializationContext();
-        DataResult.Success<?> result = (DataResult.Success<?>) Reflex.invokeMethod(ENCODER_START, ITEM_STACK_CODEC, context, nmsStack);
-        if (result == null) return null;
 
-        return result.getOrThrow();
+        return Reflex.safeInvoke(ENCODER_START, ITEM_STACK_CODEC, context, nmsStack)
+            .map(DataResult.Success.class::cast)
+            .map(DataResult::getOrThrow)
+            .orElseThrow(() -> new IllegalStateException("Could not encode ItemStack into CompoundTag"));
     }
 }

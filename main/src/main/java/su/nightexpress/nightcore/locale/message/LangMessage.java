@@ -18,6 +18,8 @@ import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -94,25 +96,31 @@ public abstract class LangMessage implements LangValue {
     }
 
     public void send(@NotNull CommandSender sender) {
-        this.send(sender, replacer -> {});
+        this.send(sender, null);
     }
 
     public void send(@NotNull CommandSender sender, @Nullable Consumer<Replacer> consumer) {
+        this.send(Collections.singleton(sender), consumer);
+    }
+
+    public void send(@NotNull Collection<CommandSender> receivers, @Nullable Consumer<Replacer> consumer) {
         Replacer replacer = new Replacer();
         if (consumer != null) consumer.accept(replacer);
 
-        if (sender instanceof Player player) {
-            if (this.data != null && this.data.replacePlaceholders()) {
-                replacer.replacePlaceholderAPI(player);
-            }
-            if (this.data != null && this.data.sound() != null) {
-                this.data.sound().play(player);
-            }
+        if (this.data != null && this.data.sound() != null) {
+            receivers.forEach(sender -> {
+                if (sender instanceof Player player) this.data.sound().play(player);
+            });
         }
-
-        String text = replacer.apply(this.text);
-        this.send(sender, text);
+        if (this.data != null && this.data.replacePlaceholders()) {
+            receivers.forEach(sender -> {
+                if (sender instanceof Player player) this.send(Collections.singleton(player), replacer.replacePlaceholderAPI(player).apply(this.text));
+            });
+        }
+        else {
+            this.send(receivers, replacer.apply(this.text));
+        }
     }
 
-    protected abstract void send(@NotNull CommandSender sender, @NotNull String text);
+    protected abstract void send(@NotNull Collection<CommandSender> receivers, @NotNull String text);
 }

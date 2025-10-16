@@ -26,8 +26,14 @@ public class TagWrappers {
     public static final String NEWLINE = TagWrapper.simple(TagShortNames.NEWLINE).opening();
 
     public static final OneArgument<SimpleTagWrapper> FONT      = font -> TagWrapper.withArguments(TagShortNames.FONT, font);
-    public static final OneArgument<SimpleTagWrapper> KEY       = key -> TagWrapper.withArguments(TagShortNames.KEYBIND, key);
+    public static final Function<String, String>      KEY       = key -> TagWrapper.withArguments(TagShortNames.KEYBIND, key).opening();
     public static final OneArgument<SimpleTagWrapper> INSERTION = text -> TagWrapper.withArguments(TagShortNames.INSERTION, text);
+
+    public static final BiFunction<String, String, String> SPRITE          = (atlas, sprite) -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted(atlas), ParserUtils.quoted(sprite)).opening();
+    public static final Function<String, String>           SPRITE_NO_ATLAS = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted(sprite)).opening();
+
+    public static final BiFunction<String, Boolean, String> HEAD     = (data, hat) -> TagWrapper.withArguments(TagShortNames.HEAD, ParserUtils.quoted(data), String.valueOf(hat)).opening();
+    public static final Function<String, String>            HEAD_HAT = data -> TagWrapper.withArguments(TagShortNames.HEAD, ParserUtils.quoted(data)).opening();
 
     public static final Function<String, String>           LANG    = key -> TagWrapper.withArguments(TagShortNames.LANG, ParserUtils.quoted(key)).opening();
     public static final BiFunction<String, String, String> LANG_OR = (key, fallback) -> TagWrapper.withArguments(TagShortNames.LANG_OR, ParserUtils.quoted(key), ParserUtils.quoted(fallback)).opening();

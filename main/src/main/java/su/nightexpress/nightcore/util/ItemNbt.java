@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.util.nbt.NbtUtil;
 
 import java.io.*;
@@ -57,7 +56,7 @@ public class ItemNbt {
         DataInputStream dataInput = new DataInputStream(inputStream);
 
         Object compoundTag = Reflex.invokeMethod(NBT_IO_READ, null, dataInput);
-        return compoundTag == null ? null : fromCompoundTag(compoundTag, CoreConfig.DATA_FIXER_MISSING_VERSION.get());
+        return compoundTag == null ? null : fromCompoundTag(compoundTag, Version.MC_1_21.getDataVersion());
     }
 
     @Deprecated
@@ -78,7 +77,7 @@ public class ItemNbt {
     @Nullable
     @Deprecated
     public static ItemStack fromTagString(@NotNull String tagString) {
-        return new ItemTag(tagString, CoreConfig.DATA_FIXER_MISSING_VERSION.get()).getItemStack();
+        return new ItemTag(tagString, Version.MC_1_21.getDataVersion()).getItemStack();
     }
 
     @Nullable
@@ -90,7 +89,12 @@ public class ItemNbt {
     @Nullable
     @Deprecated
     public static ItemTag getTag(@NotNull ItemStack item) {
-        return ItemTag.of(item);
+        try {
+            return ItemTag.of(item);
+        }
+        catch (IllegalStateException e) {
+            return null;
+        }
     }
 
     @Nullable
@@ -117,6 +121,8 @@ public class ItemNbt {
     @Nullable
     @Deprecated
     private static Object toCompoundTag(@NotNull ItemStack bukkitStack) {
+        if (bukkitStack.getType().isAir() || bukkitStack.getAmount() <= 0) return null;
+
         return NbtUtil.tagFromItemStack(bukkitStack);
     }
 

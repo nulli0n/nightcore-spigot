@@ -35,13 +35,13 @@ public class ExcellentCratesHandler extends IdentifiableItemAdapter {
         if (itemId.startsWith(PREFIX_CRATE)) {
             String id = itemId.substring(PREFIX_CRATE.length());
             Crate crate = CratesAPI.getCrateManager().getCrateById(id);
-            return crate == null ? null : crate.getItem();
+            return crate == null ? null : crate.getItemStack();
         }
 
         if (itemId.startsWith(PREFIX_KEY)) {
             String id = itemId.substring(PREFIX_KEY.length());
             CrateKey key = CratesAPI.getKeyManager().getKeyById(id);
-            return key == null ? null : key.getItem();
+            return key == null ? null : key.getItemStack();
         }
 
         return null;

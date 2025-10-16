@@ -138,17 +138,7 @@ public class SpigotDialogAdapter implements
     @Override
     @NotNull
     public DialogBody adaptBody(@NotNull WrappedItemDialogBody body) {
-        throw new UnsupportedOperationException("Not implemented.");
-/*        ItemStack item = body.item();
-        WrappedPlainMessageDialogBody description = body.description();
-        boolean showDecorations = body.showDecorations();
-        boolean showTooltip = body.showTooltip();
-        int width = body.width();
-        int height = body.height();
-
-        PlainMessageDialogBody desc = description == null ? null : this.adaptBody(description);
-
-        return DialogBody.item(item, desc, showDecorations, showTooltip, width, height);*/
+        return new PlainMessageBody(this.adaptComponent(body.description() == null ? "" : body.description().contents()), body.width());
     }
 
     @Override

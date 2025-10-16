@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.locale.message.LangMessage;
 import su.nightexpress.nightcore.locale.message.MessageData;
 
+import java.util.Collection;
+
 public class SilentMessage extends LangMessage {
 
     public SilentMessage(@NotNull String text, @NotNull MessageData data) {
@@ -17,7 +19,7 @@ public class SilentMessage extends LangMessage {
     }
 
     @Override
-    protected void send(@NotNull CommandSender sender, @NotNull String text) {
+    protected void send(@NotNull Collection<CommandSender> receivers, @NotNull String text) {
 
     }
 }

@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 public class MenuItem {
 
+    public static final int BACKGROUND_PRIORITY = -1;
     public static final int HIGH_PRIORITY = 100;
 
     protected final NightItem   item;
@@ -61,6 +62,16 @@ public class MenuItem {
         return builder(NightItem.fromType(Material.IRON_DOOR).localized(CoreLang.MENU_ICON_BACK))
             .setHandler(ItemHandler.forReturn(menu, click, options))
             .setSlots(slot);
+    }
+
+    @NotNull
+    public static MenuItem background(@NotNull Material type, int... slots) {
+        return background(NightItem.fromType(type), slots);
+    }
+
+    @NotNull
+    public static MenuItem background(@NotNull NightItem item, int... slots) {
+        return item.setHideTooltip(true).toMenuItem().setSlots(slots).setPriority(BACKGROUND_PRIORITY).build();
     }
 
     @NotNull

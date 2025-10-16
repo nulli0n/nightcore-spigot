@@ -34,8 +34,6 @@ public class VanillaItemAdapter extends AbstractItemAdapter<ItemTag> {
     @NotNull
     public Optional<AdaptedVanillaStack> adapt(@NotNull ItemStack itemStack) {
         ItemTag tag = this.fromItemStack(itemStack);
-        if (tag == null) return Optional.empty();
-
         return Optional.of(new AdaptedVanillaStack(tag));
     }
 
@@ -56,7 +54,7 @@ public class VanillaItemAdapter extends AbstractItemAdapter<ItemTag> {
     }
 
     @Override
-    @Nullable
+    @NotNull
     public ItemTag fromItemStack(@NotNull ItemStack itemStack) {
         return ItemTag.of(itemStack);
     }

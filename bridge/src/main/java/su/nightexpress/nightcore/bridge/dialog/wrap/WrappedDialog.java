@@ -1,11 +1,7 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.bridge.dialog.response.DialogClickResult;
-import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogResponseHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.base.WrappedDialogBase;
 import su.nightexpress.nightcore.bridge.dialog.wrap.type.WrappedDialogType;
@@ -13,25 +9,8 @@ import su.nightexpress.nightcore.util.LowerCase;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.UnaryOperator;
 
 public record WrappedDialog(@NotNull WrappedDialogBase base, @NotNull WrappedDialogType type, @NotNull Map<String, DialogResponseHandler> responseHandlers) {
-
-    public void handleResponse(@NotNull DialogClickResult result) {
-        Player player = result.getPlayer();
-        NamespacedKey identifier = result.getIdentifier();
-        NightNbtHolder nbtHolder = result.getNbtHolder();
-
-        DialogResponseHandler handler = this.responseHandlers.get(identifier.getKey());
-        if (handler == null) return;
-
-        handler.handle(player, identifier, nbtHolder);
-    }
-
-    @NotNull
-    public WrappedDialog replace(@NotNull UnaryOperator<String> operator) {
-        return new WrappedDialog(this.base.replace(operator), this.type.replace(operator), Map.copyOf(this.responseHandlers));
-    }
 
     public static class Builder {
 

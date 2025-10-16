@@ -22,7 +22,6 @@ public class TagContent {
         return this.first;
     }
 
-    @Nullable
     public String second() {
         return this.second;
     }

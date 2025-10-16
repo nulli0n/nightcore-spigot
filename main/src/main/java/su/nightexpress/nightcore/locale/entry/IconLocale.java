@@ -115,13 +115,15 @@ public class IconLocale extends LangEntry<IconLocale.Value> {
 
         @NotNull
         public Builder appendCurrent(@NotNull String type, @NotNull String value) {
-            return this.appendCurrent(type, value, this.accentColor);
+            this.appendInfo(TagWrappers.DARK_GRAY.wrap("» ") + type + ": " + TagWrappers.WHITE.wrap(value));
+            return this;
         }
 
         @NotNull
+        @Deprecated
         public Builder appendCurrent(@NotNull String type, @NotNull String value, @NotNull TagWrapper color) {
-            this.appendInfo(color.wrap("● ") + type + ": " + color.wrap(value));
-            return this;
+            //this.appendInfo(TagWrappers.DARK_GRAY.wrap("» ") + type + ": " + TagWrappers.WHITE.wrap(value));
+            return this.appendCurrent(type, value);
         }
 
         @NotNull

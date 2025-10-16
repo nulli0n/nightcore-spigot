@@ -261,14 +261,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.langRegistry.register(clazz);
     }
 
-    /**
-     * Saves and loads {@link LangElement} objects from the provided {@link LangContainer} object into the lang config file according to selected
-     * language during the "enable" plugin's phase if the same can not be achieved through {@link NightPlugin#registerLang(Class)}
-     * <br>
-     * <b>Note:</b> This can not be used outside of the {@link NightPlugin#enable()} phase.
-     * @param langContainer LangContainer object with some LangElement fields defined.
-     * @see NightPlugin#registerLang(Class)
-     */
+
+    @Override
     public void injectLang(@NotNull LangContainer langContainer) {
         this.langRegistry.inject(langContainer);
     }

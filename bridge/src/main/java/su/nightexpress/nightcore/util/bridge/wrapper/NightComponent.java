@@ -5,14 +5,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.common.NightKey;
-import su.nightexpress.nightcore.bridge.text.*;
+import su.nightexpress.nightcore.bridge.text.NightStyle;
+import su.nightexpress.nightcore.bridge.text.NightTextDecoration;
 import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
-import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
+import su.nightexpress.nightcore.bridge.text.contents.NightObjectContents;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
-import su.nightexpress.nightcore.bridge.text.impl.NightKeybindComponent;
-import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
-import su.nightexpress.nightcore.bridge.text.impl.NightTranslatableComponent;
-import su.nightexpress.nightcore.bridge.text.impl.NightTranslationArgument;
+import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
+import su.nightexpress.nightcore.bridge.text.impl.*;
 
 import java.awt.*;
 import java.util.Collections;
@@ -44,6 +43,11 @@ public interface NightComponent {
     @NotNull
     static NightKeybindComponent keybind(@NotNull String keybind, @NotNull NightStyle style) {
         return NightKeybindComponent.create(keybind, style);
+    }
+
+    @NotNull
+    static NightObjectComponent object(@NotNull NightStyle style, @NotNull NightObjectContents contents) {
+        return NightObjectComponent.create(style, contents);
     }
 
     @NotNull

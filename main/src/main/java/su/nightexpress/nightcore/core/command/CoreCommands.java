@@ -69,10 +69,10 @@ public class CoreCommands {
     private static boolean dumpItem(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         Player player = context.getPlayerOrThrow();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
-        ItemTag tag = ItemTag.of(itemStack);
+        ItemTag tag = ItemTag.of(itemStack); // TODO try catch
 
         player.sendMessage("=".repeat(10) + " DUMP ITEM " + "=".repeat(10));
-        player.sendMessage(tag == null ? "null": tag.getTag());
+        player.sendMessage(tag.getTag());
 
         return true;
     }
