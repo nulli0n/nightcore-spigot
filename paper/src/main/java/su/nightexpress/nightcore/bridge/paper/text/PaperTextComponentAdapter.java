@@ -211,7 +211,11 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
     @Override
     @NotNull
     public Component adaptComponent(@NotNull NightObjectComponent component) {
-        return Component.object(PaperObjectContantsAdapter.get().adaptContents(component.contents()));
+        return Component.object()
+            .style(this.adaptStyle(component.style()))
+            .append(this.adaptComponents(component.children()))
+            .contents(PaperObjectContantsAdapter.get().adaptContents(component.contents()))
+            .build();
     }
 
     // Quick fix for <1.21.4 loading.

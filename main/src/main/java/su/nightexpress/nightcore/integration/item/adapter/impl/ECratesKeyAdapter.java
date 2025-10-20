@@ -17,6 +17,8 @@ public class ECratesKeyAdapter extends IdentifiableItemAdapter {
     @Override
     @Nullable
     public String getItemId(@NotNull ItemStack itemStack) {
+        if (!CratesAPI.isLoaded()) return null;
+
         CrateKey key = CratesAPI.getKeyManager().getKeyByItem(itemStack);
         return key == null ? null : key.getId();
     }
@@ -24,17 +26,19 @@ public class ECratesKeyAdapter extends IdentifiableItemAdapter {
     @Override
     @Nullable
     public ItemStack createItem(@NotNull String itemId) {
+        if (!CratesAPI.isLoaded()) return null;
+
         CrateKey key = CratesAPI.getKeyManager().getKeyById(itemId);
         return key == null ? null : key.getItemStack();
     }
 
     @Override
     public boolean canHandle(@NotNull ItemStack itemStack) {
-        return CratesAPI.getKeyManager().getKeyByItem(itemStack) != null;
+        return CratesAPI.isLoaded() && CratesAPI.getKeyManager().getKeyByItem(itemStack) != null;
     }
 
     @Override
     public boolean canHandle(@NotNull ItemIdData data) {
-        return CratesAPI.getKeyManager().getKeyById(data.getItemId()) != null;
+        return CratesAPI.isLoaded() && CratesAPI.getKeyManager().getKeyById(data.getItemId()) != null;
     }
 }
