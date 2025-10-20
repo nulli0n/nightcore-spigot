@@ -38,8 +38,8 @@ public class TagWrappers {
     public static final Function<String, String>           LANG    = key -> TagWrapper.withArguments(TagShortNames.LANG, ParserUtils.quoted(key)).opening();
     public static final BiFunction<String, String, String> LANG_OR = (key, fallback) -> TagWrapper.withArguments(TagShortNames.LANG_OR, ParserUtils.quoted(key), ParserUtils.quoted(fallback)).opening();
 
-    public static final OneArgument<SimpleTagWrapper> SHOW_TEXT = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_TEXT.name(), ParserUtils.quoted(text));
-    public static final OneArgument<SimpleTagWrapper> SHOW_ITEM = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_ITEM.name(), ParserUtils.quoted(text));
+    public static final OneArgument<SimpleTagWrapper> SHOW_TEXT = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_TEXT.name(), ParserUtils.quoted(ParserUtils.escapeQuotes(text)));
+    public static final OneArgument<SimpleTagWrapper> SHOW_ITEM = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_ITEM.name(), ParserUtils.quoted(ParserUtils.escapeQuotes(text)));
 
     public static final OneArgument<SimpleTagWrapper> SUGGEST_COMMAND   = command -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.SUGGEST_COMMAND.toString(), ParserUtils.quoted(command));
     public static final OneArgument<SimpleTagWrapper> RUN_COMMAND       = command -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.RUN_COMMAND.toString(), ParserUtils.quoted(command));

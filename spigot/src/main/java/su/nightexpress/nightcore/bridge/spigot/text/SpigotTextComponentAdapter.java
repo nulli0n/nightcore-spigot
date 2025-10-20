@@ -164,6 +164,8 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
     @Override
     @NotNull
     public BaseComponent adaptComponent(@NotNull NightObjectComponent component) {
-        return new ObjectComponent(SpigotObjectContentsAdapter.get().adaptContents(component.contents()));
+        ObjectComponent spigot = new ObjectComponent(SpigotObjectContentsAdapter.get().adaptContents(component.contents()));
+        this.adaptProperties(spigot, component);
+        return spigot;
     }
 }

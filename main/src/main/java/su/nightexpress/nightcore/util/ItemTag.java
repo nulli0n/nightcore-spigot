@@ -41,6 +41,16 @@ public class ItemTag implements Writeable {
         return new ItemTag(compoundTag.toString(), Version.getCurrent().getDataVersion());
     }
 
+    @NotNull
+    public static String getTagString(@NotNull ItemStack itemStack) {
+        return of(itemStack).getTag();
+    }
+
+    @NotNull
+    public static String getTagStringEncoded(@NotNull ItemStack itemStack) {
+        return Strings.toBase64(getTagString(itemStack));
+    }
+
     @Nullable
     public ItemStack getItemStack() {
         if (this.isEmpty()) return null;

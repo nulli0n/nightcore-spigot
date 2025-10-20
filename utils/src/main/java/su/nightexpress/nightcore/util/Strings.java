@@ -2,6 +2,8 @@ package su.nightexpress.nightcore.util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -47,5 +49,17 @@ public class Strings {
 
     private static boolean isValidVariableChar(char c) {
         return Character.isLetterOrDigit(c) || c == '_' || c == '-';
+    }
+
+    @NotNull
+    public static String toBase64(@NotNull String string) {
+        byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
+        return Base64.getEncoder().encodeToString(bytes);
+    }
+
+    @NotNull
+    public static String fromBase64(@NotNull String encoded) {
+        byte[] bytes = Base64.getDecoder().decode(encoded);
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 }

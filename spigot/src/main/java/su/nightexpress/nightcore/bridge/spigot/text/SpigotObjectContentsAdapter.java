@@ -33,7 +33,7 @@ public class SpigotObjectContentsAdapter implements ObjectContentsAdapter<ChatOb
     @Override
     @NotNull
     public ChatObject adaptContents(@NotNull NightSpriteObjectContents contents) {
-        return new SpriteObject(contents.atlas().asString(), contents.sprite().asString());
+        return new SpriteObject(contents.atlas().asString(), contents.sprite().value());
     }
 
     @Override

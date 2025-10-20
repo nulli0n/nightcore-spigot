@@ -43,7 +43,6 @@ import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;

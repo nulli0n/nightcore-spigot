@@ -46,7 +46,12 @@ public class ArgumentNodeBuilder<T> extends NodeBuilder<ArgumentNodeBuilder<T>> 
 
     @NotNull
     public ArgumentNodeBuilder<T> optional() {
-        this.required = false;
+        return this.optional(true);
+    }
+
+    @NotNull
+    public ArgumentNodeBuilder<T> optional(boolean optional) {
+        this.required = !optional;
         return this.getThis();
     }
 

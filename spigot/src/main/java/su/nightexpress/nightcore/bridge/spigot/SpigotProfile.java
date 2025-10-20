@@ -21,7 +21,9 @@ public class SpigotProfile implements NightProfile {
 
     @Override
     public void apply(@NotNull SkullMeta meta) {
-        meta.setOwnerProfile(this.backend);
+        if (this.backend == null || !this.backend.getTextures().isEmpty()) { // spigot moment
+            meta.setOwnerProfile(this.backend);
+        }
     }
 
     @Override

@@ -26,12 +26,16 @@ public class ExcellentCratesHandler extends IdentifiableItemAdapter {
 
     @Override
     public boolean canHandle(@NotNull ItemStack item) {
+        if (!CratesAPI.isLoaded()) return false;
+
         return CratesAPI.getCrateManager().isCrate(item) || CratesAPI.getKeyManager().isKey(item);
     }
 
     @Override
     @Nullable
     public ItemStack createItem(@NotNull String itemId) {
+        if (!CratesAPI.isLoaded()) return null;
+
         if (itemId.startsWith(PREFIX_CRATE)) {
             String id = itemId.substring(PREFIX_CRATE.length());
             Crate crate = CratesAPI.getCrateManager().getCrateById(id);
@@ -50,6 +54,8 @@ public class ExcellentCratesHandler extends IdentifiableItemAdapter {
     @Override
     @Nullable
     public String getItemId(@NotNull ItemStack item) {
+        if (!CratesAPI.isLoaded()) return null;
+
         Crate crate = CratesAPI.getCrateManager().getCrateByItem(item);
         if (crate != null) return PREFIX_CRATE + crate.getId();
 
@@ -61,6 +67,8 @@ public class ExcellentCratesHandler extends IdentifiableItemAdapter {
 
     @Override
     public boolean canHandle(@NotNull ItemIdData data) {
+        if (!CratesAPI.isLoaded()) return false;
+
         String itemId = data.getItemId();
         if (itemId.startsWith(PREFIX_CRATE)) {
             String id = itemId.substring(PREFIX_CRATE.length());
