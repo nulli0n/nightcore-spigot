@@ -6,7 +6,7 @@
     <parent>
         <groupId>su.nightexpress.nightcore</groupId>
         <artifactId>nightcore</artifactId>
-        <version>2.9.3</version>
+        <version>2.9.4</version>
     </parent>
 
     <artifactId>main</artifactId>
@@ -88,25 +88,25 @@
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>bridge</artifactId>
-            <version>2.9.3</version>
+            <version>2.9.4</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>utils</artifactId>
-            <version>2.9.3</version>
+            <version>2.9.4</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>paper</artifactId>
-            <version>2.9.3</version>
+            <version>2.9.4</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>spigot</artifactId>
-            <version>2.9.3</version>
+            <version>2.9.4</version>
         </dependency>
 
         <dependency>

@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractUserManager<P extends NightPlugin, U extends AbstractUser> extends AbstractManager<P> {
 
-    private final UserdataConfig                config;
-    private final AbstractUserDataManager<P, U> dataManager;
+    protected final UserdataConfig                config;
+    protected final AbstractUserDataManager<P, U> dataManager;
 
     private final Map<UUID, U>   loadedByIdMap;
     private final Map<String, U> loadedByNameMap;
