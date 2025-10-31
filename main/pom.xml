@@ -82,6 +82,46 @@
             <id>phoenix</id>
             <url>https://nexus.phoenixdevt.fr/repository/maven-public/</url>
         </repository>
+
+        <repository>
+            <id>nightexpress-releases</id>
+            <url>https://repo.nightexpressdev.com/releases</url>
+        </repository>
+
+        <repository>
+            <id>oraxen</id>
+            <url>https://repo.oraxen.com/releases</url>
+        </repository>
+
+        <repository>
+            <id>nexo</id>
+            <url>https://repo.nexomc.com/releases</url>
+        </repository>
+
+        <repository>
+            <id>magmaguy</id>
+            <url>https://repo.magmaguy.com/releases</url>
+        </repository>
+
+        <repository>
+            <id>lumine-repo</id>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
+
+        <repository>
+            <id>modrinth</id>
+            <url>https://api.modrinth.com/maven/</url>
+        </repository>
+
+        <repository>
+            <id>bg-softdeps</id>
+            <url>https://repo.bg-software.com/repository/dependencies/</url>
+        </repository>
+
+        <repository>
+            <id>alessiodp-releases</id>
+            <url>https://repo.alessiodp.com/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -198,15 +238,25 @@
         <dependency>
             <groupId>com.bencodez</groupId>
             <artifactId>votingplugin</artifactId>
-            <version>6.15.1</version>
+            <version>6.19</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.magmaguy.elitemobs</groupId>
+            <groupId>com.magmaguy</groupId>
             <artifactId>EliteMobs</artifactId>
-            <version>8.5.4</version>
+            <version>9.1.9</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.magmaguy</groupId>
+                    <artifactId>MagmaCore</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.byteflux</groupId>
+                    <artifactId>libby-bukkit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -225,9 +275,9 @@
 
         <!-- Item Bridge -->
         <dependency>
-            <groupId>com.nexomc.nexo</groupId>
-            <artifactId>Nexo</artifactId>
-            <version>0.9-dev</version>
+            <groupId>com.nexomc</groupId>
+            <artifactId>nexo</artifactId>
+            <version>0.9.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -239,10 +289,16 @@
         </dependency>
 
         <dependency>
-            <groupId>io.th0rgal.oraxen</groupId>
+            <groupId>io.th0rgal</groupId>
             <artifactId>Oraxen</artifactId>
             <version>1.155.1</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.byteflux</groupId>
+                    <artifactId>libby-bukkit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -268,9 +324,9 @@
 
         <!-- Local -->
         <dependency>
-            <groupId>com.ssomar.score</groupId>
+            <groupId>maven.modrinth</groupId>
             <artifactId>SCore</artifactId>
-            <version>5.24.12.29</version>
+            <version>5.25.7.19</version>
             <scope>provided</scope>
         </dependency>
 
