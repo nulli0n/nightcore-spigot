@@ -11,14 +11,15 @@ import su.nightexpress.nightcore.core.config.CoreLang;
 
 public class Arguments {
 
-    public static final BlockTypeArgumentType   BLOCK_TYPE  = new BlockTypeArgumentType();
-    public static final BoolArgumentType        BOOLEAN     = new BoolArgumentType();
-    public static final EnchantmentArgumentType ENCHANTMENT = new EnchantmentArgumentType();
-    public static final ItemTypeArgumentType    ITEM_TYPE   = new ItemTypeArgumentType();
-    public static final PlayerArgumentType      PLAYER      = new PlayerArgumentType();
-    public static final PlayerNameArgumentType  PLAYER_NAME = new PlayerNameArgumentType();
-    public static final StringArgumentType      STRING      = new StringArgumentType();
-    public static final WorldArgumentType       WORLD       = new WorldArgumentType();
+    public static final BlockTypeArgumentType   BLOCK_TYPE    = new BlockTypeArgumentType();
+    public static final BoolArgumentType        BOOLEAN       = new BoolArgumentType();
+    public static final EnchantmentArgumentType ENCHANTMENT   = new EnchantmentArgumentType();
+    public static final ItemTypeArgumentType    ITEM_TYPE     = new ItemTypeArgumentType();
+    public static final PlayerArgumentType      PLAYER        = new PlayerArgumentType();
+    public static final PlayerNameArgumentType  PLAYER_NAME   = new PlayerNameArgumentType();
+    public static final StringArgumentType      STRING        = new StringArgumentType(false);
+    public static final StringArgumentType      GREEDY_STRING = new StringArgumentType(true);
+    public static final WorldArgumentType       WORLD         = new WorldArgumentType();
 
     @NotNull
     public static ArgumentNodeBuilder<Boolean> bool(@NotNull String name) {
@@ -106,6 +107,11 @@ public class Arguments {
     @NotNull
     public static ArgumentNodeBuilder<String> string(@NotNull String name) {
         return Commands.argument(name, STRING).localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC);
+    }
+
+    @NotNull
+    public static ArgumentNodeBuilder<String> greedyString(@NotNull String name) {
+        return Commands.argument(name, GREEDY_STRING).localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC);
     }
 
     @NotNull

@@ -18,6 +18,7 @@ import su.nightexpress.nightcore.integration.currency.CurrencyManager;
 import su.nightexpress.nightcore.language.LangAssets;
 import su.nightexpress.nightcore.ui.UIUtils;
 import su.nightexpress.nightcore.ui.dialog.DialogWatcher;
+import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 import su.nightexpress.nightcore.util.bridge.Software;
@@ -35,6 +36,7 @@ public class NightCore extends NightPlugin {
 
     private TagManager    tagManager;
     private CoreManager   coreManager;
+    private MenuRegistry menuRegistry;
     private DialogWatcher dialogWatcher;
     private CurrencyManager currencyManager;
 
@@ -70,7 +72,7 @@ public class NightCore extends NightPlugin {
         Version version = Version.detect();
         if (!version.isDropped()) {
             Software.INSTANCE.load(Version.isPaper() ? new PaperBridge() : new SpigotBridge());
-            this.info("Server version detected as " + version.getLocalized() + ". Using " + Software.instance().getName() + ".");
+            this.info("Server version detected as " + version.getLocalized() + ". Using " + Software.get().getName() + ".");
 
             if (!testNbt()) {
                 this.error("Could not initialize NBT Utils.");
@@ -84,6 +86,13 @@ public class NightCore extends NightPlugin {
     }
 
     @Override
+    protected void onStartup() {
+        super.onStartup();
+
+        this.menuRegistry = new MenuRegistry(this);
+    }
+
+    @Override
     public void enable() {
         LangAssets.load(this);
         UIUtils.load(this);
@@ -94,6 +103,9 @@ public class NightCore extends NightPlugin {
 
         this.coreManager = new CoreManager(this);
         this.coreManager.setup();
+
+
+        this.menuRegistry.setup();
 
         this.currencyManager = new CurrencyManager(this);
         this.currencyManager.setup();
@@ -109,6 +121,7 @@ public class NightCore extends NightPlugin {
     @Override
     public void disable() {
         if (this.dialogWatcher != null) this.dialogWatcher.shutdown();
+        if (this.menuRegistry != null) this.menuRegistry.shutdown();
         if (this.coreManager != null) this.coreManager.shutdown();
         if (this.tagManager != null) this.tagManager.shutdown();
         if (this.currencyManager != null) this.currencyManager.shutdown();
@@ -164,5 +177,10 @@ public class NightCore extends NightPlugin {
             exception.printStackTrace();
             return false;
         }
+    }
+
+    @NotNull
+    public MenuRegistry getMenuRegistry() {
+        return this.menuRegistry;
     }
 }

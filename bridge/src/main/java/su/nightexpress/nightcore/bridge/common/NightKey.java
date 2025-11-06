@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.Strings;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class NightKey {
 
@@ -22,6 +23,31 @@ public class NightKey {
     }
 
     @NotNull
+    public static NightKey of(@NotNull String namespace, @NotNull String value) {
+        return new NightKey(namespace, value);
+    }
+
+    @NotNull
+    public static Optional<NightKey> parse(@NotNull String string) {
+        try {
+            return Optional.of(key(string));
+        }
+        catch (IllegalStateException exception) {
+            return Optional.empty();
+        }
+    }
+
+    @NotNull
+    public static Optional<NightKey> parse(@NotNull String namespace, @NotNull String value) {
+        try {
+            return Optional.of(key(namespace, value));
+        }
+        catch (IllegalStateException exception) {
+            return Optional.empty();
+        }
+    }
+
+    @NotNull
     public static NightKey key(@NotNull String string) {
         return key(string, DELIMITER);
     }
@@ -32,15 +58,15 @@ public class NightKey {
         String namespace = index >= 1 ? string.substring(0, index) : NamespacedKey.MINECRAFT;
         String value = index >= 0 ? string.substring(index + 1) : string;
 
-        String namespaceFiltered = Strings.varStyle(namespace, NightKey::allowedInNamespace).orElseThrow(() -> new IllegalStateException("Invalid namespace: " + namespace));
-        String valueFiltered = Strings.varStyle(value, NightKey::allowedInValue).orElseThrow(() -> new IllegalStateException("Invalid value: " + value));
-
-        return key(namespaceFiltered, valueFiltered);
+        return key(namespace, value);
     }
 
     @NotNull
     public static NightKey key(@NotNull String namespace, @NotNull String value) {
-        return new NightKey(namespace, value);
+        String namespaceFiltered = Strings.varStyle(namespace, NightKey::allowedInNamespace).orElseThrow(() -> new IllegalStateException("Invalid namespace: " + namespace));
+        String valueFiltered = Strings.varStyle(value, NightKey::allowedInValue).orElseThrow(() -> new IllegalStateException("Invalid value: " + value));
+
+        return of(namespaceFiltered, valueFiltered);
     }
 
     @NotNull
@@ -51,7 +77,7 @@ public class NightKey {
 
     @NotNull
     public static NightKey fromBukkit(@NotNull NamespacedKey key) {
-        return new NightKey(key.getNamespace(), key.getKey());
+        return of(key.getNamespace(), key.getKey());
     }
 
     public static boolean parseable(@NotNull String string) {

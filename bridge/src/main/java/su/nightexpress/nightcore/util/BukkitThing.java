@@ -141,12 +141,12 @@ public class BukkitThing {
 
     @Nullable
     public static <T extends Keyed> T getByString(@NotNull RegistryType<T> registryKey, @NotNull String string) {
-        return getByKey(registryKey, NightKey.key(string));
+        return NightKey.parse(string).map(key -> getByKey(registryKey, key)).orElse(null);
     }
 
     @Nullable
     public static <T extends Keyed> T getByNamespaceValue(@NotNull RegistryType<T> registryKey, @NotNull String namespace, @NotNull String value) {
-        return getByKey(registryKey, NightKey.key(namespace, value));
+        return NightKey.parse(namespace, value).map(key -> getByKey(registryKey, key)).orElse(null);
     }
 
     @Nullable
@@ -268,7 +268,13 @@ public class BukkitThing {
     }
 
     @Nullable
+    @Deprecated
     public static PotionEffectType getPotionEffect(@NotNull String name) {
+        return getEffectType(name);
+    }
+
+    @Nullable
+    public static PotionEffectType getEffectType(@NotNull String name) {
         return getByString(RegistryType.MOB_EFFECT, name);
     }
 
@@ -279,9 +285,6 @@ public class BukkitThing {
 
     @Nullable
     public static Sound getSound(@NotNull String name) {
-//        if (Version.isBehind(Version.MC_1_21_3)) {
-//            return Sound.valueOf(name.toUpperCase());
-//        }
         return getByString(RegistryType.SOUND, name);
     }
 

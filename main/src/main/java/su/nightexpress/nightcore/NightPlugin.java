@@ -12,7 +12,6 @@ import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.locale.LangContainer;
-import su.nightexpress.nightcore.locale.LangElement;
 import su.nightexpress.nightcore.locale.LangRegistry;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
@@ -317,5 +316,11 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.warn("=".repeat(35));
 
         return !current.isDropped();
+    }
+
+    @Override
+    @NotNull
+    public su.nightexpress.nightcore.ui.inventory.MenuRegistry getMenuRegistry() {
+        return NightCore.get().getMenuRegistry();
     }
 }

@@ -10,9 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightPlugin;
-import su.nightexpress.nightcore.api.event.MenuOpenEvent;
+import su.nightexpress.nightcore.event.MenuOpenEvent;
 import su.nightexpress.nightcore.ui.dialog.Dialog;
 import su.nightexpress.nightcore.ui.dialog.DialogManager;
 import su.nightexpress.nightcore.ui.menu.Menu;
@@ -24,13 +23,11 @@ import su.nightexpress.nightcore.ui.menu.item.ItemHandler;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
@@ -151,7 +148,7 @@ public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
             if (this.isApplyPlaceholderAPI()) {
                 title = Placeholders.forPlayerWithPAPI(player).apply(title);
             }
-            view = Engine.software().createView(this.menuType, NightMessage.parse(title), player);
+            view = Software.get().createView(this.menuType, NightMessage.parse(title), player);
             viewer.assignInventory(view);
             player.openInventory(view);
         }

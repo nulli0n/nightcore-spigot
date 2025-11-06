@@ -654,6 +654,11 @@ public class NightMeta implements Writeable {
         return this;
     }
 
+    @Nullable
+    public Replacer getReplacer() {
+        return this.replacer;
+    }
+
     public NightMeta setReplacer(@Nullable Replacer replacer) {
         this.replacer = replacer;
         return this;

@@ -13,6 +13,12 @@ import java.util.List;
 
 public class StringArgumentType implements ArgumentType<String>, SuggestionsProvider {
 
+    private final boolean greedy;
+
+    public StringArgumentType(boolean greedy) {
+        this.greedy = greedy;
+    }
+
     @Override
     @NotNull
     public String parse(@NotNull CommandContextBuilder contextBuilder, @NotNull String string) throws CommandSyntaxException {
@@ -23,5 +29,9 @@ public class StringArgumentType implements ArgumentType<String>, SuggestionsProv
     @NotNull
     public List<String> suggest(@NotNull ArgumentReader reader, @NotNull CommandContext context) {
         return Lists.newList("<value>");
+    }
+
+    public boolean isGreedy() {
+        return this.greedy;
     }
 }

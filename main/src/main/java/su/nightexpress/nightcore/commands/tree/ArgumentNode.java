@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.commands.tree;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.commands.Arguments;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.NodeUtils;
 import su.nightexpress.nightcore.commands.SuggestionsProvider;
@@ -59,9 +60,17 @@ public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
     @Override
     public void parse(@NotNull ArgumentReader reader, @NotNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
         int cursor = reader.getCursor();
-        String string = reader.getCursorArgument();
+        StringBuilder string = new StringBuilder(reader.getCursorArgument());
 
-        T result = this.type.parse(contextBuilder, string);
+        // TODO Quick workaround to avoid custom argument types breaking in other plugins by adding ArgumentReader to the parse method.
+        if (this.type == Arguments.GREEDY_STRING) {
+            while (!reader.isEnd()) {
+                reader.moveForward();
+                string.append(" ").append(reader.getCursorArgument());
+            }
+        }
+
+        T result = this.type.parse(contextBuilder, string.toString());
 
         ParsedArgument<T> parsed = new ParsedArgument<>(result, cursor);
         contextBuilder.withArgument(this.name, parsed);
