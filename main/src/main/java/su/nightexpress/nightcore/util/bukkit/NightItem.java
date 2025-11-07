@@ -46,7 +46,7 @@ public class NightItem implements Writeable {
     }
 
     public NightItem(@NotNull ItemStack itemStack) {
-        this(itemStack, new NightMeta());
+        this(itemStack, NightMeta.fromItemStack(itemStack));
     }
 
     private NightItem(@NotNull ItemStack itemStack, @NotNull NightMeta meta) {
