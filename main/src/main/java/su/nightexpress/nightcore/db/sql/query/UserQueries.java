@@ -23,7 +23,7 @@ public class UserQueries {
     }
 
     @NotNull
-    public static <U extends AbstractUser> UpdateQuery<U> update() {
+    public static <U extends AbstractUser> UpdateQuery<U> updateCommons() {
         return new UpdateQuery<U>()
             .setValue(AbstractUserDataManager.COLUMN_USER_NAME, AbstractUser::getName)
             .setValue(AbstractUserDataManager.COLUMN_USER_DATE_CREATED, user -> String.valueOf(user.getDateCreated()))

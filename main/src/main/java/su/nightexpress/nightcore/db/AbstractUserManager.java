@@ -83,14 +83,19 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
     }
 
     public final void handleQuit(@NotNull Player player) {
-        U user = this.getLoaded(player.getUniqueId());
+        U user = this.getLoaded(player);
         if (user == null) return;
 
-        user.setName(player.getName()); // Update name
         user.setLastOnline(System.currentTimeMillis());
 
         // Force save data on quit + disable auto-save and delay synchronization.
-        this.plugin.runTaskAsync(task -> this.saveScheduled(Collections.singletonList(user)));
+        if (user.isAutoSavePlanned()) {
+            this.plugin.runTaskAsync(task -> this.saveScheduled(Collections.singletonList(user)));
+        }
+        else {
+            this.plugin.runTaskAsync(task -> this.dataManager.saveUserCommons(user));
+        }
+
         //this.plugin.runTaskAsync(task -> this.saveInDatabase(user));
 
         this.cacheTemporary(user);
@@ -104,7 +109,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
     private void saveScheduled(@NotNull Collection<U> users) {
         if (users.isEmpty()) return;
 
-        this.dataManager.saveUsers(users);
+        this.dataManager.saveUsersFully(users);
         //this.plugin.debug("Saved " + users.size() + " users");
 
         users.forEach(user -> {
@@ -114,7 +119,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
     }
 
     public void saveLoaded() {
-        this.dataManager.saveUsers(this.getLoaded());
+        this.dataManager.saveUsersCommons(this.getLoaded());
     }
 
     public void save(@NotNull Player player) {
@@ -176,7 +181,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends Abstr
     }
 
     public void saveInDatabase(@NotNull U user) {
-        this.dataManager.saveUser(user);
+        this.dataManager.saveUserFully(user);
     }
 
     @Nullable

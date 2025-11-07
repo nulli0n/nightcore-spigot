@@ -45,9 +45,16 @@ public class ParserUtils {
     }
 
     public static int findUnescapedUnquotedChar(String input, char target, int fromIndex) {
+        return findUnescapedUnquotedUnprecededByChar(input, target, null, fromIndex);
+    }
+
+    public static int findUnescapedUnquotedUnprecededByChar(String input, char target, @Nullable Character precede, int fromIndex) {
+        if (fromIndex >= input.length()) return -1;
+
         boolean inSingleQuotes = false;
         boolean inDoubleQuotes = false;
         boolean escaped = false;
+        boolean preceded = false;
 
         for (int index = fromIndex; index < input.length(); index++) {
             char letter = input.charAt(index);
@@ -62,6 +69,11 @@ public class ParserUtils {
                 continue;
             }
 
+            if (precede != null && letter == precede) {
+                preceded = true;
+                continue;
+            }
+
             if (!inDoubleQuotes && letter == '\'') {
                 inSingleQuotes = !inSingleQuotes;
                 continue;
@@ -73,6 +85,10 @@ public class ParserUtils {
             }
 
             if (!inSingleQuotes && !inDoubleQuotes && letter == target) {
+                if (preceded) {
+                    preceded = false;
+                    continue;
+                }
                 return index;
             }
         }
