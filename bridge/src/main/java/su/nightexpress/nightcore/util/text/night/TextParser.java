@@ -165,7 +165,7 @@ public class TextParser {
                     }
 
                     // There is no closing brackets at all, skip.
-                    tagEndIndex = ParserUtils.findUnescapedUnquotedChar(this.string, ParserUtils.CLOSE_BRACKET, index);
+                    tagEndIndex = ParserUtils.findUnescapedUnquotedUnprecededByChar(this.string, ParserUtils.CLOSE_BRACKET, ParserUtils.OPEN_BRACKET, index + 1);
                     if (tagEndIndex == -1) {
                         this.eat(letter);
                         continue;
@@ -224,7 +224,12 @@ public class TextParser {
 
             TagHandler handler = TagHandlerRegistry.create(tagName);
             if (handler == null) {
-                this.eat(TagWrapper.simple(bracketsContent).opening());
+                // Pretend that there was no tag detection and continue from the same index to parse "false tag content" normally.
+                index--;
+                isTagEntered = false;
+                this.eat(ParserUtils.OPEN_BRACKET);
+                continue;
+                //this.eat(TagWrapper.simple(bracketsContent).opening());
             }
             else if (this.tagPool.isGoodTag(handler)) {
                 if (this.mode == ParserMode.STRIP) {

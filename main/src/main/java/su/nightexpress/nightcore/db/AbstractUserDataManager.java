@@ -5,15 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.db.config.DatabaseConfig;
-import su.nightexpress.nightcore.db.sql.query.UserQueries;
 import su.nightexpress.nightcore.db.sql.column.Column;
 import su.nightexpress.nightcore.db.sql.column.ColumnType;
-import su.nightexpress.nightcore.db.sql.query.type.ValuedQuery;
-import su.nightexpress.nightcore.db.sql.util.WhereOperator;
+import su.nightexpress.nightcore.db.sql.query.UserQueries;
 import su.nightexpress.nightcore.db.sql.query.impl.InsertQuery;
 import su.nightexpress.nightcore.db.sql.query.impl.SelectQuery;
 import su.nightexpress.nightcore.db.sql.query.impl.UpdateQuery;
-import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.db.sql.query.type.ValuedQuery;
+import su.nightexpress.nightcore.db.sql.util.WhereOperator;
 import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.sql.ResultSet;
@@ -129,12 +128,30 @@ public abstract class AbstractUserDataManager <P extends NightPlugin, U extends 
         );
     }
 
+    @Deprecated
     public void saveUser(@NotNull U user) {
-        this.saveUsers(Lists.newList(user));
+        this.saveUsersFully(Collections.singletonList(user));
     }
 
+    @Deprecated
     public void saveUsers(@NotNull Collection<U> users) {
-        UpdateQuery<U> query = UserQueries.update();
+        this.saveUsersFully(users);
+    }
+
+    public void saveUserCommons(@NotNull U user) {
+        this.saveUsersCommons(Collections.singletonList(user));
+    }
+
+    public void saveUsersCommons(@NotNull Collection<U> users) {
+        this.update(this.tableUsers, UserQueries.updateCommons(), users);
+    }
+
+    public void saveUserFully(@NotNull U user) {
+        this.saveUsersFully(Collections.singletonList(user));
+    }
+
+    public void saveUsersFully(@NotNull Collection<U> users) {
+        UpdateQuery<U> query = UserQueries.updateCommons();
         this.addUpsertQueryData(query);
 
         this.update(this.tableUsers, query, users);
