@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.commands.context.CommandContextBuilder;
 import su.nightexpress.nightcore.commands.exceptions.CommandSyntaxException;
 import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.Numbers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +37,7 @@ public class IntegerArgumentType implements ArgumentType<Integer>, SuggestionsPr
             parse = NumberUtil.parseIntCompact(string);
         }
         else {
-            parse = NumberUtil.parseInteger(string);
+            parse = Numbers.parseInteger(string);
         }
 
         int result = parse.orElseThrow(() -> CommandSyntaxException.custom(CoreLang.COMMAND_SYNTAX_NUMBER_NOT_INTEGER));

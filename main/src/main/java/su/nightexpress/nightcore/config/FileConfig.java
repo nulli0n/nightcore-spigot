@@ -18,6 +18,8 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
+import su.nightexpress.nightcore.configuration.ConfigProperty;
+import su.nightexpress.nightcore.configuration.ConfigType;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.bukkit.NightSound;
@@ -30,7 +32,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.IntStream;
 
 public class FileConfig extends YamlConfiguration {
 
@@ -200,6 +201,32 @@ public class FileConfig extends YamlConfiguration {
         return true;
     }
 
+    @NotNull
+    public <T> T get(@NotNull ConfigProperty<T> property) {
+        return property.read(this);
+    }
+
+    @NotNull
+    public <T> T get(@NotNull ConfigType<T> type, @NotNull String path, @NotNull T def, @Nullable String... comments) {
+        if (!this.contains(path)) {
+            type.write(this, path, def);
+            this.setComments(path, comments);
+        }
+        return type.read(this, path, def);
+    }
+
+    public void setArray(@NotNull String path, double[] array) {
+        this.set(path, array == null ? null : ArrayUtil.arrayToString(array));
+    }
+
+    public void setArray(@NotNull String path, int[] array) {
+        this.set(path, array == null ? null : ArrayUtil.arrayToString(array));
+    }
+
+    public void setArray(@NotNull String path, long[] array) {
+        this.set(path, array == null ? null : ArrayUtil.arrayToString(array));
+    }
+
     @Override
     public void set(@NotNull String path, @Nullable Object value) {
         if (value instanceof Writeable writeable) {
@@ -226,16 +253,16 @@ public class FileConfig extends YamlConfiguration {
     }
 
     public void setComments(@NotNull String path, @Nullable String... comments) {
-        this.setComments(path, Arrays.asList(comments));
+        this.setComments(path, comments == null ? null : Arrays.asList(comments));
     }
 
     public void setInlineComments(@NotNull String path, @Nullable String... comments) {
-        this.setInlineComments(path, Arrays.asList(comments));
+        this.setInlineComments(path, comments == null ? null : Arrays.asList(comments));
     }
 
     @Override
     public void setComments(@NotNull String path, @Nullable List<String> comments) {
-        if (this.getComments(path).equals(comments)) return;
+        if (!this.areCommentsDifferent(this.getComments(path), comments)) return;
 
         super.setComments(path, comments);
         this.changed = true;
@@ -243,10 +270,18 @@ public class FileConfig extends YamlConfiguration {
 
     @Override
     public void setInlineComments(@NotNull String path, @Nullable List<String> comments) {
-        if (this.getInlineComments(path).equals(comments)) return;
+        if (!this.areCommentsDifferent(this.getInlineComments(path), comments)) return;
 
         super.setInlineComments(path, comments);
         this.changed = true;
+    }
+
+    private boolean areCommentsDifferent(@NotNull List<String> current, @Nullable List<String> comments) {
+        if ((comments == null || comments.isEmpty())) {
+            return !current.isEmpty();
+        }
+
+        return !new HashSet<>(current).equals(new HashSet<>(comments));
     }
 
     public boolean remove(@NotNull String path) {
@@ -289,21 +324,36 @@ public class FileConfig extends YamlConfiguration {
         return raw == null ? null : LocationUtil.deserialize(raw);
     }
 
+    @Deprecated
+    public void setIntArray(@NotNull String path, int[] arr) {
+        this.setArray(path, arr);
+    }
+
     public int[] getIntArray(@NotNull String path) {
         return getIntArray(path, new int[0]);
     }
 
-    public int[] getIntArray(@NotNull String path, int[] def) {
+    public int[] getIntArray(@NotNull String path, int[] defaultArray) {
         String str = this.getString(path);
-        return str == null ? def : NumberUtil.getIntArray(str);
+        return str == null ? defaultArray : ArrayUtil.parseIntArray(str);
     }
 
-    public void setIntArray(@NotNull String path, int[] arr) {
-        if (arr == null) {
-            this.set(path, null);
-            return;
-        }
-        this.set(path, String.join(",", IntStream.of(arr).boxed().map(String::valueOf).toList()));
+    public double[] getDoubleArray(@NotNull String path) {
+        return getDoubleArray(path, new double[0]);
+    }
+
+    public double[] getDoubleArray(@NotNull String path, double[] defaultArray) {
+        String str = this.getString(path);
+        return str == null ? defaultArray : ArrayUtil.parseDoubleArray(str);
+    }
+
+    public long[] getLongArray(@NotNull String path) {
+        return getLongArray(path, new long[0]);
+    }
+
+    public long[] getLongArray(@NotNull String path, long[] defaultArray) {
+        String str = this.getString(path);
+        return str == null ? defaultArray : ArrayUtil.parseLongArray(str);
     }
 
     @NotNull
@@ -318,11 +368,7 @@ public class FileConfig extends YamlConfiguration {
     }
 
     public void setStringArray(@NotNull String path, String[] arr) {
-        if (arr == null) {
-            this.set(path, null);
-            return;
-        }
-        this.set(path, String.join(",", arr));
+        this.set(path, arr == null ? null : String.join(",", arr));
     }
 
     @Nullable

@@ -10,6 +10,10 @@ import java.util.List;
 
 public class PlayerNameArgumentType extends StringArgumentType {
 
+    public PlayerNameArgumentType() {
+        super(false);
+    }
+
     @Override
     @NotNull
     public List<String> suggest(@NotNull ArgumentReader reader, @NotNull CommandContext context) {

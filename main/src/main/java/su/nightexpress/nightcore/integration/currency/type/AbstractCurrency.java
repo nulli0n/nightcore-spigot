@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.integration.currency.impl.DummyCurrency;
 import su.nightexpress.nightcore.util.LowerCase;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.Plugins;
 
 import java.util.function.UnaryOperator;
 
@@ -52,14 +53,12 @@ public abstract class AbstractCurrency implements Currency {
     @Override
     @NotNull
     public String format(double amount) {
-        //return this.applyFormat(this.getFormat(), amount);
-
         String format = this.replacePlaceholders().apply(this.getFormat()
             .replace(Placeholders.GENERIC_AMOUNT, this.formatValue(amount))
             .replace(Placeholders.GENERIC_NAME, this.getName())
         );
 
-        if (CoreConfig.ECONOMY_PLACEHOLDERS_API_FORMAT.get()) {
+        if (CoreConfig.ECONOMY_PLACEHOLDERS_API_FORMAT.get() && Plugins.hasPlaceholderAPI()) {
             format = PlaceholderAPI.setPlaceholders(null, format);
         }
 
@@ -70,17 +69,6 @@ public abstract class AbstractCurrency implements Currency {
     @NotNull
     public String applyFormat(@NotNull String format, double amount) {
         return this.replacePlaceholders().apply(format).replace(Placeholders.GENERIC_AMOUNT, this.format(amount));
-
-        /*format = this.replacePlaceholders().apply(format
-            .replace(Placeholders.GENERIC_AMOUNT, this.formatValue(amount))
-            .replace(Placeholders.GENERIC_NAME, this.getName())
-        );
-
-        if (CoreConfig.ECONOMY_PLACEHOLDERS_API_FORMAT.get()) {
-            format = PlaceholderAPI.setPlaceholders(null, format);
-        }
-
-        return format;*/
     }
 
     @Override

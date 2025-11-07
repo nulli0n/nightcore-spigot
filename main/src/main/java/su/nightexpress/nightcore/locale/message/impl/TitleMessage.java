@@ -20,9 +20,11 @@ public class TitleMessage extends LangMessage {
 
     public TitleMessage(@NotNull String text, @NotNull MessageData data) {
         super(text, data);
-        this.fadeIn = data.titleTimes().length >= 1 ? data.titleTimes()[0] : 20;
-        this.stay = data.titleTimes().length >= 2 ? data.titleTimes()[1] : 60;
-        this.fadeOut = data.titleTimes().length >= 3 ? data.titleTimes()[2] : 20;
+
+        int[] titleTimes = data.titleTimes();
+        this.fadeIn = titleTimes != null && titleTimes.length >= 1 ? titleTimes[0] : 20;
+        this.stay = titleTimes != null && titleTimes.length >= 2 ? titleTimes[1] : 60;
+        this.fadeOut = titleTimes != null && titleTimes.length >= 3 ? titleTimes[2] : 20;
     }
 
     @Override
