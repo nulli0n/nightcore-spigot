@@ -97,7 +97,6 @@ public class CurrencyManager extends AbstractManager<NightCore> {
     private void loadProviders() {
         this.addExternalLoader(CurrencyPlugins.VAULT, () -> this.loadIncompleted(VaultEconomyCurrency::new));
         this.addExternalLoader(CurrencyPlugins.PLAYER_POINTS, () -> this.loadIncompleted(PlayerPointsCurrency::new));
-        this.addExternalLoader(CurrencyPlugins.BEAST_TOKENS, () -> this.loadIncompleted(BeastTokensCurrency::new));
         this.addExternalLoader(CurrencyPlugins.VOTING_PLUGIN, () -> this.loadIncompleted(VotingPluginCurrency::new));
         this.addExternalLoader(CurrencyPlugins.ELITEMOBS, () -> this.loadIncompleted(EliteMobsCurrency::new));
         this.addExternalLoader(CurrencyPlugins.COINS_ENGINE, () -> CoinsEngineCurrency.getCurrencies().forEach(this::register));
