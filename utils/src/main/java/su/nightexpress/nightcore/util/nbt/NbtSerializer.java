@@ -41,6 +41,7 @@ public class NbtSerializer {
         Object context = createSerializationContext();
 
         return Reflex.safeInvoke(ENCODER_START, ITEM_STACK_CODEC, context, nmsStack)
+            .filter(DataResult.Success.class::isInstance)
             .map(DataResult.Success.class::cast)
             .map(DataResult::getOrThrow)
             .orElseThrow(() -> new IllegalStateException("Could not encode ItemStack into CompoundTag"));

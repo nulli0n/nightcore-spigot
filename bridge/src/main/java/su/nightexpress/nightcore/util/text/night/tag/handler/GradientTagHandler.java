@@ -77,14 +77,14 @@ public class GradientTagHandler extends ClassicTagHandler {
         int length = split.length;
         if (length < 2) return;
 
-        this.colorStops = new Color[length];
+        List<Color> colors = new ArrayList<>();
 
-        for (int index = 0; index < length; index++) {
-            Color stop = ParserUtils.colorFromSchemeOrHex(split[index]);
-            if (stop == null) continue;
-
-            this.colorStops[index] = stop;
+        for (String string : split) {
+            Color stop = ParserUtils.colorFromSchemeOrHex(string);
+            if (stop != null) colors.add(stop);
         }
+
+        this.colorStops = colors.toArray(new Color[0]);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class GradientTagHandler extends ClassicTagHandler {
 
         this.splitGroup(group, textLength, gradientEntries, true);
 
-        Color[] gradientColors = this.createGradient(colorStops, textLength.get());
+        Color[] gradientColors = this.createGradient(this.colorStops, textLength.get());
         if (gradientColors.length == 0) return;
 
         Gradient gradient = new Gradient(gradientColors);

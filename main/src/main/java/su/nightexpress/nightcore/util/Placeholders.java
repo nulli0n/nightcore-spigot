@@ -55,6 +55,8 @@ public class Placeholders {
 
     public static final String PLAYER_NAME         = "%player_name%";
     public static final String PLAYER_DISPLAY_NAME = "%player_display_name%";
+    public static final String PLAYER_PREFIX       = "%player_prefix%";
+    public static final String PLAYER_SUFFIX       = "%player_suffix%";
 
     public static final String LOCATION_X     = "%location_x%";
     public static final String LOCATION_Y     = "%location_y%";
@@ -85,19 +87,19 @@ public class Placeholders {
 
     public static final PlaceholderList<Currency> CURRENCY = new PlaceholderList<Currency>()
         .add(CURRENCY_ID, Currency::getInternalId)
-        .add(CURRENCY_NAME, Currency::getName)
-        ;
+        .add(CURRENCY_NAME, Currency::getName);
 
     public static final PlaceholderList<Player> PLAYER = new PlaceholderList<Player>()
         .add(PLAYER_NAME, Player::getName)
-        .add(PLAYER_DISPLAY_NAME, Player::getDisplayName);
+        .add(PLAYER_DISPLAY_NAME, Players::getDisplayNameSerialized)
+        .add(PLAYER_PREFIX, Players::getPrefixOrEmpty)
+        .add(PLAYER_SUFFIX, Players::getSuffixOrEmpty);
 
     public static final PlaceholderList<Location> LOCATION = new PlaceholderList<Location>()
         .add(LOCATION_X, location -> String.valueOf(location.getBlockX()))
         .add(LOCATION_Y, location -> String.valueOf(location.getBlockY()))
         .add(LOCATION_Z, location -> String.valueOf(location.getBlockZ()))
-        .add(LOCATION_WORLD, LocationUtil::getWorldName)
-        ;
+        .add(LOCATION_WORLD, LocationUtil::getWorldName);
 
     public static final PlaceholderList<CommandSender> SENDER = new PlaceholderList<CommandSender>()
         .add(PLAYER_NAME, CommandSender::getName)

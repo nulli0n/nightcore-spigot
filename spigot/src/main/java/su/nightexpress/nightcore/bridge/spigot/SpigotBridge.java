@@ -242,6 +242,16 @@ public class SpigotBridge implements Software {
     }
 
 
+    @Override
+    @NotNull
+    public String getDisplayNameSerialized(@NotNull Player player) {
+        return LegacyColors.plainColors(player.getDisplayName());
+    }
+
+    @Override
+    public void setDisplayName(@NotNull Player player, @NotNull NightComponent component) {
+        player.setDisplayName(component.toLegacy());
+    }
 
     @Override
     public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {

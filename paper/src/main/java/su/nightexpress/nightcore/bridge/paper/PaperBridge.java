@@ -235,6 +235,19 @@ public class PaperBridge implements Software {
     }
 
 
+    @Override
+    @NotNull
+    public String getDisplayNameSerialized(@NotNull Player player) {
+        return serializeComponent(player.displayName());
+    }
+
+    @Override
+    public void setDisplayName(@NotNull Player player, @NotNull NightComponent component) {
+        player.displayName(this.adaptComponent(component));
+    }
+
+
+
 
     @Override
     public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {
