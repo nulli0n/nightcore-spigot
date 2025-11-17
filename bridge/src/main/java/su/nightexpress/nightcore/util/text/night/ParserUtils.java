@@ -69,11 +69,6 @@ public class ParserUtils {
                 continue;
             }
 
-            if (precede != null && letter == precede) {
-                preceded = true;
-                continue;
-            }
-
             if (!inDoubleQuotes && letter == '\'') {
                 inSingleQuotes = !inSingleQuotes;
                 continue;
@@ -82,6 +77,13 @@ public class ParserUtils {
             if (!inSingleQuotes && letter == '\"') {
                 inDoubleQuotes = !inDoubleQuotes;
                 continue;
+            }
+
+            if (!inSingleQuotes && !inDoubleQuotes) {
+                if (precede != null && letter == precede) {
+                    preceded = true;
+                    continue;
+                }
             }
 
             if (!inSingleQuotes && !inDoubleQuotes && letter == target) {

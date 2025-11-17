@@ -92,6 +92,19 @@ public class Players {
     }
 
     @NotNull
+    public static String getDisplayNameSerialized(@NotNull Player player) {
+        return Software.get().getDisplayNameSerialized(player);
+    }
+
+    public void setDisplayName(@NotNull Player player, @NotNull String name) {
+        setDisplayName(player, NightMessage.parse(name));
+    }
+
+    public void setDisplayName(@NotNull Player player, @NotNull NightComponent name) {
+        Software.get().setDisplayName(player, name);
+    }
+
+    @NotNull
     @Deprecated
     public static NightProfile getProfile(@NotNull OfflinePlayer player) {
         return PlayerProfiles.getProfile(player).query();

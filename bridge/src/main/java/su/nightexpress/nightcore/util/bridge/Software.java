@@ -118,6 +118,11 @@ public interface Software {
     @NotNull String getTranslationKey(@NotNull PotionEffectType effectType);
 
 
+    @NotNull String getDisplayNameSerialized(@NotNull Player player);
+
+    void setDisplayName(@NotNull Player player, @NotNull NightComponent component);
+
+
     void setCustomName(@NotNull Entity entity, @NotNull NightComponent component);
 
     @Nullable String getEntityName(@NotNull Entity entity);
