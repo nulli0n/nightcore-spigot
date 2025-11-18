@@ -115,8 +115,6 @@ public class ItemUtil {
         return getLoreSerialized(meta);
     }
 
-
-
     @Deprecated
     public static void setDisplayName(@NotNull ItemMeta meta, @NotNull String name) {
         setCustomName(meta, name);
@@ -142,8 +140,6 @@ public class ItemUtil {
         Software.get().setCustomName(meta, name);
     }
 
-
-
     @Nullable
     public static String getItemNameSerialized(@NotNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
@@ -159,8 +155,6 @@ public class ItemUtil {
     public static void setItemName(@NotNull ItemMeta meta, @NotNull String name) {
         Software.get().setItemName(meta, NightMessage.parse(name));
     }
-
-
 
     @NotNull
     @Deprecated
@@ -189,8 +183,6 @@ public class ItemUtil {
     public static void setItemLore(@NotNull ItemMeta meta, @NotNull List<NightComponent> lore) {
         Software.get().setLore(meta, lore);
     }
-
-
 
     @Deprecated
     public static void hideAttributes(@NotNull ItemStack itemStack) {

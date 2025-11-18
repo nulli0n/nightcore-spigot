@@ -17,7 +17,6 @@ import su.nightexpress.nightcore.configuration.ConfigTypes;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.ui.inventory.Menu;
-import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
 import su.nightexpress.nightcore.ui.inventory.action.ActionRegistry;
 import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
 import su.nightexpress.nightcore.ui.inventory.action.MenuItemActions;
@@ -27,6 +26,7 @@ import su.nightexpress.nightcore.ui.inventory.condition.ItemStateConditions;
 import su.nightexpress.nightcore.ui.inventory.item.ItemState;
 import su.nightexpress.nightcore.ui.inventory.item.MenuItem;
 import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
+import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Strings;
@@ -270,7 +270,6 @@ public abstract class AbstractMenuBase implements Menu {
 
         MenuViewer viewer = this.getOrCreateViewer(player, object);
         viewer.renderMenu(this, object);
-        registry.registerViewer(player, this);
         return true;
     }
 
@@ -354,7 +353,6 @@ public abstract class AbstractMenuBase implements Menu {
         this.onDrag(viewer, event);
     }
 
-    @Override
     public void handleClose(@NotNull Player player, @NotNull InventoryCloseEvent event, @NotNull MenuRegistry menuRegistry) {
         MenuViewer viewer = this.viewers.get(player.getUniqueId());
         if (viewer == null || viewer.isRefreshing()) return;
@@ -363,7 +361,6 @@ public abstract class AbstractMenuBase implements Menu {
 
         this.onClose(viewer, event);
         viewer.handleClose(event);
-        menuRegistry.unregisterViewer(player);
     }
 
     @Override
