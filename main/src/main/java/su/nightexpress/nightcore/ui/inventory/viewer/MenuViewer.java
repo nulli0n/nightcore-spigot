@@ -32,9 +32,9 @@ public class MenuViewer {
     private long nextClickIn;
     private boolean isRefreshing;
 
-    public MenuViewer(@NotNull Player player, @Nullable Object currentObject) {
+    public MenuViewer(@NotNull Player player/*, @Nullable Object currentObject*/) {
         this.player = player;
-        this.currentObject = currentObject;
+        //this.currentObject = currentObject;
         this.currentDisplay = new HashMap<>();
         this.setCurrentPage(1);
         this.setTotalPages(1);
@@ -46,23 +46,23 @@ public class MenuViewer {
         this.currentDisplay.clear();
         this.isRefreshing = false;
 
+        ViewerContext context = this.createContext();
+
         if (this.currentView == null) {
             this.isRefreshing = true;
-            this.currentView = Software.get().createView(menu.getType(this), menu.getTitle(this), this.player);
+            this.currentView = Software.get().createView(menu.getType(this), menu.getTitle(context), this.player);
         }
         else {
             this.currentView.getTopInventory().clear();
         }
 
         Inventory inventory = this.currentView.getTopInventory();
-        ViewerContext resolveContext = new ViewerContext(this, this.currentObject);
-
         List<MenuItem> menuItems = new ArrayList<>(menu.getItemsToDisplay().values());
 
-        menu.onPrepare(this, this.currentView, inventory, menuItems);
+        menu.onPrepare(context, this.currentView, inventory, menuItems);
 
         menuItems.forEach(menuItem -> {
-            ItemState itemState = menuItem.resolveState(resolveContext);
+            ItemState itemState = menuItem.resolveState(context);
             if (!itemState.isVisible()) return;
 
             NightItem icon = itemState.getIcon();
@@ -71,7 +71,7 @@ public class MenuViewer {
                 icon.replacement(replacer -> replacer.replacePlaceholderAPI(this.player));
             }
 
-            itemState.modifyDisplay(resolveContext, icon);
+            itemState.modifyDisplay(context, icon);
 
             ItemStack itemStack = icon.getItemStack();
 
@@ -83,11 +83,11 @@ public class MenuViewer {
             }
         });
 
-        menu.onReady(this, this.currentView, inventory);
+        menu.onReady(context, this.currentView, inventory);
 
         if (this.isRefreshing) {
             this.player.openInventory(this.currentView);
-            menu.onRender(this, this.currentView, inventory);
+            menu.onRender(context, this.currentView, inventory);
             this.isRefreshing = false;
         }
     }
@@ -170,6 +170,11 @@ public class MenuViewer {
     }
 
     @NotNull
+    public ViewerContext createContext() {
+        return new ViewerContext(this, this.currentObject);
+    }
+
+    @NotNull
     public Player getPlayer() {
         return this.player;
     }
@@ -187,6 +192,10 @@ public class MenuViewer {
     @Nullable
     public InventoryView getCurrentView() {
         return this.currentView;
+    }
+
+    public void setCurrentObject(@Nullable Object currentObject) {
+        this.currentObject = currentObject;
     }
 
     public int getCurrentPage() {

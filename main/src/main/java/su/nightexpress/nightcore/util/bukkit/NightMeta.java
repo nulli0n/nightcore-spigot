@@ -21,6 +21,7 @@ import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.locale.entry.IconLocale;
 import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderContext;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
@@ -51,6 +52,7 @@ public class NightMeta implements Writeable {
     private boolean hideTooltip;
 
     private Replacer replacer;
+    private PlaceholderContext placeholderContext;
 
     public NightMeta() {
 
@@ -74,7 +76,8 @@ public class NightMeta implements Writeable {
             .setEnchantGlint(this.enchantGlint)
             .setHiddenComponents(this.hiddenComponents)
             .setHideTooltip(this.hideTooltip)
-            .setReplacer(this.replacer == null ? null : new Replacer(this.replacer));
+            .setReplacer(this.replacer == null ? null : new Replacer(this.replacer))
+            .setPlaceholderContext(this.placeholderContext);
     }
 
     @NotNull
@@ -286,15 +289,33 @@ public class NightMeta implements Writeable {
             }
 
             if (this.displayName != null) {
-                String name = this.replacer == null ? this.displayName : this.replacer.apply(this.displayName);
+                String name;
+
+                if (this.placeholderContext != null) {
+                    name = this.placeholderContext.apply(this.displayName);
+                }
+                else name = this.replacer == null ? this.displayName : this.replacer.apply(this.displayName);
+
                 ItemUtil.setCustomName(meta, name);
             }
             if (this.itemName != null && Version.isAtLeast(Version.MC_1_21)) {
-                String name = this.replacer == null ? this.itemName : this.replacer.apply(this.itemName);
+                String name;
+
+                if (this.placeholderContext != null) {
+                    name = this.placeholderContext.apply(this.itemName);
+                }
+                else name = this.replacer == null ? this.itemName : this.replacer.apply(this.itemName);
+
                 ItemUtil.setItemName(meta, name);
             }
             if (this.lore != null) {
-                List<String> lore = this.replacer == null ? this.lore : this.replacer.apply(this.lore);
+                List<String> lore;
+
+                if (this.placeholderContext != null) {
+                    lore = this.placeholderContext.apply(this.lore);
+                }
+                else lore = this.replacer == null ? this.lore : this.replacer.apply(this.lore);
+
                 ItemUtil.setLore(meta, this.addEmptyLines(lore));
             }
             if (this.modelData != null) {
@@ -670,5 +691,24 @@ public class NightMeta implements Writeable {
 
         consumer.accept(this.replacer);
         return this;
+    }
+
+    @Nullable
+    public PlaceholderContext getPlaceholderContext() {
+        return this.placeholderContext;
+    }
+
+    @NotNull
+    public NightMeta setPlaceholderContext(@Nullable PlaceholderContext placeholderContext) {
+        this.placeholderContext = placeholderContext;
+        return this;
+    }
+
+    @NotNull
+    public NightMeta replace(@NotNull Consumer<PlaceholderContext.Builder> consumer) {
+        PlaceholderContext.Builder builder = PlaceholderContext.builder();
+
+        consumer.accept(builder);
+        return this.setPlaceholderContext(builder.build());
     }
 }

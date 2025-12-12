@@ -18,6 +18,7 @@ import su.nightexpress.nightcore.locale.entry.IconLocale;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderContext;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
 
@@ -189,6 +190,23 @@ public class NightItem implements Writeable {
     @NotNull
     public NightItem replacement(@NotNull Consumer<Replacer> consumer) {
         this.meta.replacement(consumer);
+        return this;
+    }
+
+    @Nullable
+    public PlaceholderContext getPlaceholderContext() {
+        return this.meta.getPlaceholderContext();
+    }
+
+    @NotNull
+    public NightItem setPlaceholderContext(@Nullable PlaceholderContext placeholderContext) {
+        this.meta.setPlaceholderContext(placeholderContext);
+        return this;
+    }
+
+    @NotNull
+    public NightItem replace(@NotNull Consumer<PlaceholderContext.Builder> consumer) {
+        this.meta.replace(consumer);
         return this;
     }
 

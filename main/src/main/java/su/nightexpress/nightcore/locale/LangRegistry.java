@@ -81,11 +81,15 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
      * @see NightPlugin#registerLang(Class)
      */
     public void inject(@NotNull LangContainer langContainer) {
+        this.inject(langContainer.getClass());
+    }
+
+    public void inject(@NotNull Class<? extends LangContainer> langClass) {
         if (this.config != null) {
-            loadEntries(langContainer.getClass(), this.plugin, this.config);
+            loadEntries(langClass, this.plugin, this.config);
         }
         else {
-            this.plugin.warn("Lang Container " + langContainer.getClass().getSimpleName() + " is not injected due to be out of the #enable() phase.");
+            this.plugin.warn("Lang Container " + langClass.getSimpleName() + " is not injected due to be out of the #enable() phase.");
         }
     }
 

@@ -134,6 +134,10 @@ public class ItemUtil {
         return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
     }
 
+    public static void setCustomName(@NotNull ItemStack itemStack, @NotNull String name) {
+        editMeta(itemStack, meta -> setCustomName(meta, name));
+    }
+
     public static void setCustomName(@NotNull ItemMeta meta, @NotNull String name) {
         Software.get().setCustomName(meta, NightMessage.parse(name));
     }
@@ -154,6 +158,10 @@ public class ItemUtil {
     public static String getItemNameSerialized(@NotNull ItemMeta meta) {
         String name = Software.get().getItemName(meta);
         return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
+    }
+
+    public static void setItemName(@NotNull ItemStack itemStack, @NotNull String name) {
+        editMeta(itemStack, meta -> setItemName(meta, name));
     }
 
     public static void setItemName(@NotNull ItemMeta meta, @NotNull String name) {
@@ -179,6 +187,10 @@ public class ItemUtil {
     public static List<String> getLoreSerialized(@NotNull ItemMeta meta) {
         List<String> lore = Software.get().getLore(meta);
         return lore == null ? new ArrayList<>() : Lists.modify(lore, line -> NightMessage.stripTags(line, TagPool.NO_INVERTED_DECORATIONS)); // MiniMessage moment
+    }
+
+    public static void setLore(@NotNull ItemStack itemStack, @NotNull List<String> lore) {
+        editMeta(itemStack, meta -> setLore(meta, lore));
     }
 
     public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {

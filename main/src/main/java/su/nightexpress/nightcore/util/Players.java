@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.geysermc.floodgate.api.FloodgateApi;
@@ -21,6 +22,7 @@ import su.nightexpress.nightcore.util.text.TextRoot;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -96,12 +98,28 @@ public class Players {
         return Software.get().getDisplayNameSerialized(player);
     }
 
-    public void setDisplayName(@NotNull Player player, @NotNull String name) {
+    public static void setDisplayName(@NotNull Player player, @NotNull String name) {
         setDisplayName(player, NightMessage.parse(name));
     }
 
-    public void setDisplayName(@NotNull Player player, @NotNull NightComponent name) {
+    public static void setDisplayName(@NotNull Player player, @NotNull NightComponent name) {
         Software.get().setDisplayName(player, name);
+    }
+
+    public static void kick(@NotNull Player player, @NotNull String reason) {
+        kick(player, NightMessage.parse(reason));
+    }
+
+    public static void kick(@NotNull Player player, @NotNull NightComponent reason) {
+        Software.get().kick(player, reason);
+    }
+
+    public static void disallowLogin(@NotNull AsyncPlayerPreLoginEvent event, @NotNull AsyncPlayerPreLoginEvent.Result result, @NotNull String message) {
+        disallowLogin(event, result, NightMessage.parse(message));
+    }
+
+    public static void disallowLogin(@NotNull AsyncPlayerPreLoginEvent event, @NotNull AsyncPlayerPreLoginEvent.Result result, @NotNull NightComponent message) {
+        Software.get().disallowLogin(event, result, message);
     }
 
     @NotNull
@@ -159,6 +177,11 @@ public class Players {
     }
 
     @NotNull
+    public static CompletableFuture<String> getPrimaryGroup(@NotNull UUID playerId) {
+        return PermissionBridge.provider().map(provider -> provider.getPrimaryGroup(playerId)).orElse(CompletableFuture.completedFuture(null));
+    }
+
+    @NotNull
     public static String getPrimaryGroupOrDefault(@NotNull Player player) {
         return getPrimaryGroup(player, Placeholders.DEFAULT);
     }
@@ -178,6 +201,11 @@ public class Players {
     public static Set<String> getInheritanceGroups(@NotNull Player player, @NotNull Set<String> fallback) {
         Set<String> groups = getInheritanceGroups(player);
         return groups.isEmpty() ? fallback : groups;
+    }
+
+    @NotNull
+    public static CompletableFuture<Set<String>> getInheritanceGroups(@NotNull UUID playerId) {
+        return PermissionBridge.provider().map(provider -> provider.getPermissionGroups(playerId)).orElse(CompletableFuture.completedFuture(Collections.emptySet()));
     }
 
     @NotNull
@@ -203,6 +231,11 @@ public class Players {
     }
 
     @NotNull
+    public static CompletableFuture<String> getRawPrefix(@NotNull UUID playerId) {
+        return PermissionBridge.provider().map(provider -> provider.getPrefix(playerId)).orElse(CompletableFuture.completedFuture(null));
+    }
+
+    @NotNull
     public static String getPrefix(@NotNull Player player, @NotNull String fallback) {
         String prefix = getRawPrefix(player);
         return prefix == null ? fallback : prefix;
@@ -222,6 +255,11 @@ public class Players {
     @Nullable
     public static String getRawSuffix(@NotNull Player player) {
         return PermissionBridge.provider().map(provider -> provider.getSuffix(player)).orElse(null);
+    }
+
+    @NotNull
+    public static CompletableFuture<String> getRawSuffix(@NotNull UUID playerId) {
+        return PermissionBridge.provider().map(provider -> provider.getSuffix(playerId)).orElse(CompletableFuture.completedFuture(null));
     }
 
     @NotNull

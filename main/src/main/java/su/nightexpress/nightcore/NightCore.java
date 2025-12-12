@@ -2,10 +2,13 @@ package su.nightexpress.nightcore;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.chat.UniversalChatEventHandler;
 import su.nightexpress.nightcore.bridge.paper.PaperBridge;
 import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
+import su.nightexpress.nightcore.chat.ChatManager;
 import su.nightexpress.nightcore.commands.command.NightCommand;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.core.CoreConfig;
@@ -34,6 +37,8 @@ public class NightCore extends NightPlugin {
 
     private static NightCore core;
 
+    private final ChatManager chatManager;
+
     private TagManager    tagManager;
     private CoreManager   coreManager;
     private MenuRegistry menuRegistry;
@@ -45,6 +50,10 @@ public class NightCore extends NightPlugin {
         if (core == null) throw new IllegalStateException("NightCore is not initialized!");
 
         return core;
+    }
+
+    public NightCore() {
+        this.chatManager = new ChatManager(this);
     }
 
     @Override
@@ -90,6 +99,7 @@ public class NightCore extends NightPlugin {
         super.onStartup();
 
         this.menuRegistry = new MenuRegistry(this);
+        this.chatManager.setup();
     }
 
     @Override
@@ -103,7 +113,6 @@ public class NightCore extends NightPlugin {
 
         this.coreManager = new CoreManager(this);
         this.coreManager.setup();
-
 
         this.menuRegistry.setup();
 
@@ -135,6 +144,8 @@ public class NightCore extends NightPlugin {
         super.onShutdown();
         PlayerProfiles.clear();
         PlayerBlockTracker.shutdown();
+
+        this.chatManager.shutdown();
 
         CHILDRENS.clear();
         core = null;
@@ -179,8 +190,23 @@ public class NightCore extends NightPlugin {
         }
     }
 
+    @Override
+    public void addChatHandler(@NotNull EventPriority priority, @NotNull UniversalChatEventHandler handler) {
+        this.chatManager.addHandler(priority, handler);
+    }
+
+    @Override
+    public void removeChatHandler(@NotNull UniversalChatEventHandler handler) {
+        this.chatManager.removeHandler(handler);
+    }
+
     @NotNull
     public MenuRegistry getMenuRegistry() {
         return this.menuRegistry;
+    }
+
+    @NotNull
+    public ChatManager getChatManager() {
+        return this.chatManager;
     }
 }

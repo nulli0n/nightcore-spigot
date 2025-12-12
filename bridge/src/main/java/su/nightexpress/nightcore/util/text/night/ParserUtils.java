@@ -24,8 +24,10 @@ public class ParserUtils {
     public static final char QUOTE       = '\'';
     public static final char DOUBLE_QUOTE  = '"';
 
+    @Deprecated
     private static final String[] LINE_SPLITTERS = {TagWrappers.BR, TagWrappers.NEWLINE};
 
+    @Deprecated
     public static String[] breakDownLineSplitters(@NotNull String string) {
         for (String alias : LINE_SPLITTERS) {
             string = string.replace(alias, "\n");
@@ -34,6 +36,7 @@ public class ParserUtils {
     }
 
     @NotNull
+    @Deprecated
     public static List<String> breakDownLineSplitters(@NotNull List<String> list) {
         List<String> segmented = new ArrayList<>();
 
