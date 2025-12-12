@@ -50,7 +50,6 @@ This library is required for all [NightExpress](https://www.spigotmc.org/resourc
 - Forge Supported: <span style="color:red">**No**</span>
 
 ## Links
-- [Github Releases](https://github.com/nulli0n/nightcore-spigot/releases)
 - [Modrinth](https://modrinth.com/plugin/nightcore)
 - [Hangar](https://hangar.papermc.io/NightExpress/nightcore)
 - [Documentation](https://nightexpressdev.com/nightcore/)
