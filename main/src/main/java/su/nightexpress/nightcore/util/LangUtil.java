@@ -8,6 +8,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.bridge.paper.PaperBridge;
+import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 import su.nightexpress.nightcore.util.text.tag.Tags;
 
 public class LangUtil {
@@ -62,5 +63,10 @@ public class LangUtil {
     @NotNull
     public static String getSerializedName(@NotNull PotionEffectType effectType) {
         return Tags.TRANSLATE.wrap(getTranslationKey(effectType));
+    }
+
+    @NotNull
+    public static String getEnchantmentLevelLang(int level) {
+        return TagWrappers.LANG_OR.apply("enchantment.level." + level, String.valueOf(level));
     }
 }

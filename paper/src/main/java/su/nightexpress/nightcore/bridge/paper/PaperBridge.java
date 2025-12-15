@@ -22,6 +22,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
@@ -36,10 +37,12 @@ import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.paper.bossbar.PaperBossBar;
 import su.nightexpress.nightcore.bridge.paper.bossbar.PaperBossBarAdapter;
 import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogAdapter;
 import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogListener;
+import su.nightexpress.nightcore.bridge.paper.event.PaperChatListener;
 import su.nightexpress.nightcore.bridge.paper.text.PaperTextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.BukkitThing;
@@ -95,8 +98,19 @@ public class PaperBridge implements Software {
 
     @Override
     @NotNull
+    public Listener createChatListener(@NotNull UniversalChatListenerCallback callback) {
+        return new PaperChatListener(this, callback);
+    }
+
+    @Override
+    @NotNull
     public Listener createDialogListener(@NotNull DialogClickHandler handler) {
         return new PaperDialogListener(handler);
+    }
+
+    @Override
+    public void disallowLogin(@NotNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NotNull Result result, @NotNull NightComponent message) {
+        event.disallow(result, this.textComponentAdapter.adaptComponent(message));
     }
 
     @Override
@@ -246,8 +260,10 @@ public class PaperBridge implements Software {
         player.displayName(this.adaptComponent(component));
     }
 
-
-
+    @Override
+    public void kick(@NotNull Player player, @NotNull NightComponent component) {
+        player.kick(this.adaptComponent(component));
+    }
 
     @Override
     public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {

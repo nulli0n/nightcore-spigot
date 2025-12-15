@@ -14,6 +14,7 @@ import su.nightexpress.nightcore.ui.inventory.action.ActionRegistry;
 import su.nightexpress.nightcore.ui.inventory.condition.ConditionRegistry;
 import su.nightexpress.nightcore.ui.inventory.item.MenuItem;
 import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
+import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.util.List;
@@ -23,11 +24,11 @@ import java.util.UUID;
 
 public interface Menu {
 
-    void onPrepare(@NotNull MenuViewer viewer, @NotNull InventoryView view, @NotNull Inventory inventory, @NotNull List<MenuItem> items);
+    void onPrepare(@NotNull ViewerContext context, @NotNull InventoryView view, @NotNull Inventory inventory, @NotNull List<MenuItem> items);
 
-    void onReady(@NotNull MenuViewer viewer, @NotNull InventoryView view, @NotNull Inventory inventory);
+    void onReady(@NotNull ViewerContext context, @NotNull InventoryView view, @NotNull Inventory inventory);
 
-    void onRender(@NotNull MenuViewer viewer, @NotNull InventoryView view, @NotNull Inventory inventory);
+    void onRender(@NotNull ViewerContext context, @NotNull InventoryView view, @NotNull Inventory inventory);
 
     void tick();
 
@@ -53,7 +54,9 @@ public interface Menu {
 
     boolean isViewer(@NotNull UUID playerId);
 
-    @NotNull NightComponent getTitle(@NotNull MenuViewer viewer);
+    //@NotNull NightComponent getTitle(@NotNull MenuViewer viewer);
+
+    @NotNull NightComponent getTitle(@NotNull ViewerContext context);
 
     @NotNull MenuType getType(@NotNull MenuViewer viewer);
 

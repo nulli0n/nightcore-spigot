@@ -42,16 +42,29 @@ public class ConfigProperty<T> {
     }
 
     @NotNull
+    @Deprecated
     public T read(@NotNull FileConfig config) {
+        return this.loadOrWriteDefault(config);
+    }
+
+    @NotNull
+    public T loadOrWriteDefault(@NotNull FileConfig config) {
         if (!config.contains(this.path)) {
-            this.write(config);
+            this.type.write(config, this.path, this.defaultValue);
         }
 
         if (this.description != null && this.description.length > 0 && Stream.of(this.description).anyMatch(Predicate.not(String::isBlank))) {
             config.setComments(this.path, this.description);
         }
 
-        return this.type.read(config, this.path, this.defaultValue);
+        return this.load(config);
+    }
+
+    @NotNull
+    public T load(@NotNull FileConfig config) {
+        this.set(this.type.read(config, this.path, this.defaultValue));
+
+        return this.get();
     }
 
     public void write(@NotNull FileConfig config) {

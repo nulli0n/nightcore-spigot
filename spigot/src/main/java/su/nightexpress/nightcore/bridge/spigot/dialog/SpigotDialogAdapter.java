@@ -9,7 +9,9 @@ import net.md_5.bungee.api.dialog.body.DialogBody;
 import net.md_5.bungee.api.dialog.body.PlainMessageBody;
 import net.md_5.bungee.api.dialog.input.*;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
+import su.nightexpress.nightcore.bridge.dialog.DialogKeys;
 import su.nightexpress.nightcore.bridge.dialog.adapter.*;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogAction;
@@ -93,7 +95,7 @@ public class SpigotDialogAdapter implements
     @Override
     @NotNull
     public CustomClickAction adaptAction(@NotNull WrappedDialogCustomAction action) {
-        CustomClickAction handle = new CustomClickAction(action.id());
+        CustomClickAction handle = new CustomClickAction(NightKey.key(DialogKeys.NAMESPACE, action.id()).asString());
         handle.additions(action.nbt() == null ? null : action.nbt().payload());
         return handle;
     }

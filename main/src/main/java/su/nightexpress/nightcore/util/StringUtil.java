@@ -4,13 +4,15 @@ import org.bukkit.Color;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderEntry;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderResolver;
 import su.nightexpress.nightcore.util.random.Rnd;
 import su.nightexpress.nightcore.util.regex.TimedMatcher;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
+import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -18,6 +20,7 @@ public class StringUtil {
 
     private static final Pattern ID_PATTERN = Pattern.compile("[<>\\%\\$\\!\\@\\#\\^\\&\\*\\(\\)\\,\\.\\'\\:\\;\\\"\\}\\]\\{\\[\\=\\+\\`\\~\\\\]");
     private static final Pattern ID_STRICT_PATTERN = Pattern.compile("[^a-zA-Zа-яА-Я_0-9]");
+    private static final String[] DELIMITERS = {TagWrappers.BR, TagWrappers.NEWLINE, "\n"};
 
     @NotNull
     @Deprecated
@@ -107,6 +110,7 @@ public class StringUtil {
     }
 
     @NotNull
+    @Deprecated
     public static <T> String replaceEach(@NotNull String text, @NotNull List<PlaceholderEntry<T>> replacements, @NotNull T source) {
         if (text.isEmpty() || replacements.isEmpty()) {
             return text;
@@ -181,17 +185,15 @@ public class StringUtil {
     }
 
     @NotNull
-    public static <T> String replacePlaceholders(@NotNull String string, @NotNull List<PlaceholderEntry<T>> replacements, @NotNull T source) {
-        LinkedHashMap<String, Supplier<String>> placeholders = new LinkedHashMap<>();
-        replacements.forEach(entry -> {
-            placeholders.put(entry.getKey(), () -> entry.get(source));
-        });
-        return replacePlaceholders(string, placeholders);
-    }
-
-    @NotNull
-    public static String replacePlaceholders(@NotNull String string, @NotNull LinkedHashMap<String, Supplier<String>> placeholders) {
+    public static String replacePlaceholders(@NotNull String string, @NotNull PlaceholderResolver resolver) {
         if (string.isBlank()) return string;
+
+        // OPTIMIZATION: Fail-Fast
+        // If there is no '%', don't waste memory creating a StringBuilder.
+        // Return the original instance immediately.
+        if (string.indexOf('%') == -1) {
+            return string;
+        }
 
         StringBuilder builder = new StringBuilder();
 
@@ -203,16 +205,17 @@ public class StringUtil {
                 // Escaping when using double %%
                 if (index + 1 < length && string.charAt(index + 1) == '%') {
                     builder.append('%');
-                    index++; // skip next
+                    index++;
                     continue;
                 }
 
                 int indexNext = string.indexOf(letter, index + 1);
                 if (indexNext != -1) {
-                    String key = string.substring(index + 1, indexNext);
-                    Supplier<String> supplier = placeholders.get(key);
-                    if (supplier != null) {
-                        builder.append(supplier.get());
+                    String key = string.substring(index, indexNext + 1);
+
+                    String replacement = resolver.resolve(key);
+                    if (replacement != null) {
+                        builder.append(replacement);
                         index = indexNext;
                         continue;
                     }
@@ -251,19 +254,12 @@ public class StringUtil {
     @Deprecated
     public static <T extends Enum<T>> Optional<T> getEnum(String str, @NotNull Class<T> clazz) {
         return Enums.parse(str, clazz);
-//        try {
-//            return str == null ? Optional.empty() : Optional.of(Enum.valueOf(clazz, str.toUpperCase()));
-//        }
-//        catch (Exception exception) {
-//            return Optional.empty();
-//        }
     }
 
     @NotNull
     @Deprecated
     public static String inlineEnum(@NotNull Class<? extends Enum<?>> clazz, @NotNull String delimiter) {
         return Enums.inline(clazz, delimiter);
-        //return String.join(delimiter, Lists.getEnums(clazz));
     }
 
     @NotNull
@@ -291,34 +287,11 @@ public class StringUtil {
     @Deprecated
     public static String transformForID(@NotNull String str, int length) {
         return Strings.filterForVariable(str, length);
-//        char[] chars = str.toLowerCase().toCharArray();
-//
-//        StringBuilder builder = new StringBuilder();
-//        for (int index = 0; index < chars.length; index++) {
-//            if (length > 0 && index >= length) break;
-//
-//            char letter = chars[index];
-//            if (Character.isWhitespace(letter)) {
-//                builder.append("_");
-//                continue;
-//            }
-//            if (!isValidIDChar(letter)) {
-//                continue;
-//            }
-//            builder.append(Character.toLowerCase(letter));
-//        }
-//        return builder.toString();
     }
-
-//    private static boolean isValidIDChar(char c) {
-//        return Character.isLetterOrDigit(c) || c == '_' || c == '-';
-//        //return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_' || c == '-';
-//    }
 
     @NotNull
     public static String lowerCaseUnderscore(@NotNull String str) {
         return LowerCase.INTERNAL.apply(str).replace(' ', '_');
-        //return lowerCaseUnderscore(str, -1);
     }
 
     @NotNull
@@ -348,7 +321,6 @@ public class StringUtil {
         }
 
         TimedMatcher matcher = TimedMatcher.create(pattern, clean, 200);
-        //Matcher matcher = RegexUtil.getMatcher(ID_STRICT_PATTERN, clean);
         return matcher.replaceAll("");
     }
 
@@ -391,5 +363,56 @@ public class StringUtil {
     public static String capitalizeFirstLetter(@NotNull String original) {
         if (original.isEmpty()) return original;
         return original.substring(0, 1).toUpperCase() + original.substring(1);
+    }
+
+    public static void splitDelimiters(@NotNull String string, @NotNull Consumer<String> result) {
+        if (string.isBlank()) {
+            result.accept(string);
+            return;
+        }
+
+        int cursor = 0;
+        int length = string.length();
+
+        while (cursor < length) {
+            int closestIndex = -1;
+            String closestDelimiter = null;
+
+            // Find the nearest delimiter from the current cursor
+            for (String token : DELIMITERS) {
+                int index = string.indexOf(token, cursor);
+                if (index != -1) {
+                    // We found a token, is it closer than the previous one we found?
+                    if (closestIndex == -1 || index < closestIndex) {
+                        closestIndex = index;
+                        closestDelimiter = token;
+                    }
+                }
+            }
+
+            // CASE A: No more delimiters found in the rest of the string
+            if (closestIndex == -1) {
+                // Optimization: If cursor is 0, it means the whole string had no splits.
+                // Just use the original 'string' object to avoid new String allocation.
+                if (cursor == 0) {
+                    result.accept(string);
+                } else {
+                    result.accept(string.substring(cursor));
+                }
+                break;
+            }
+
+            // CASE B: Found a delimiter
+            // Add the text BEFORE the delimiter
+            result.accept(string.substring(cursor, closestIndex));
+
+            // Advance the cursor: skip past the delimiter
+            cursor = closestIndex + closestDelimiter.length();
+        }
+
+        // Edge Case: If the string ends EXACTLY with a delimiter (e.g. "Line<br>")
+        if (cursor == length) {
+            result.accept("");
+        }
     }
 }

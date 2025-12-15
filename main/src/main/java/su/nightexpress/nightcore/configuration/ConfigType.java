@@ -23,6 +23,8 @@ public class ConfigType<T> {
 
     @NotNull
     public Optional<T> read(@NotNull FileConfig config, @NotNull String path) {
+        if (!config.contains(path)) return Optional.empty();
+
         return Optional.ofNullable(this.loader.read(config, path));
     }
 

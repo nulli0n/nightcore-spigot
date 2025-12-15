@@ -14,6 +14,7 @@ import su.nightexpress.nightcore.bridge.wrap.NightSound;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Enums;
+import su.nightexpress.nightcore.util.LowerCase;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.*;
@@ -37,6 +38,9 @@ public class ConfigTypes {
     public static final ConfigType<String[]>     STRING_ARRAY = ConfigType.of(FileConfig::getStringArray, FileConfig::setStringArray);
     public static final ConfigType<List<String>> STRING_LIST  = ConfigType.of(FileConfig::getStringList, FileConfig::set);
     public static final ConfigType<Set<String>>  STRING_SET   = ConfigType.of(FileConfig::getStringSet, FileConfig::set);
+
+    public static final ConfigType<List<String>> STRING_LIST_LOWER_CASE = forList(LowerCase.INTERNAL::apply, key -> key);
+    public static final ConfigType<Set<String>>  STRING_SET_LOWER_CASE  = forSet(LowerCase.INTERNAL::apply, key -> key);
 
     public static final ConfigType<NightItem>  NIGHT_ITEM  = ConfigType.of(FileConfig::getCosmeticItem, FileConfig::set);
     public static final ConfigType<NightSound> NIGHT_SOUND = ConfigType.of(FileConfig::readSound, FileConfig::set);
@@ -93,6 +97,18 @@ public class ConfigTypes {
     }
 
     @NotNull
+    public static <V> ConfigType<List<V>> forList(@NotNull Function<String, V> fromString, @NotNull Function<V, String> toString) {
+        return ConfigType.of(
+            (config, path) -> config.getStringList(path).stream()
+                .map(fromString)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toCollection(ArrayList::new)),
+
+            (config, path, set) -> config.set(path, set.stream().map(toString).toList())
+        );
+    }
+
+    @NotNull
     public static <V extends Keyed> ConfigType<Set<V>> forNamespacedSet(@NotNull Function<String, V> fromString) {
         return forSet(fromString, BukkitThing::getAsString);
     }
@@ -117,18 +133,31 @@ public class ConfigTypes {
      */
     @NotNull
     public static <V> ConfigType<Map<String, V>> forMap(@NotNull ConfigType<V> type) {
+        return forMap(s -> s, s -> s, type);
+    }
+
+    @NotNull
+    public static <V> ConfigType<Map<String, V>> forMapWithLowerKeys(@NotNull ConfigType<V> type) {
+        return forMap(LowerCase.INTERNAL::apply, key -> key, type);
+    }
+
+    @NotNull
+    public static <K, V> ConfigType<Map<K, V>> forMap(@NotNull Function<String, K> strToKey, @NotNull Function<K, String> keyToStr, @NotNull ConfigType<V> valType) {
         return ConfigType.of(
             (config, path) -> {
-                Map<String, V> map = new LinkedHashMap<>();
+                Map<K, V> map = new LinkedHashMap<>();
                 config.getSection(path).forEach(key -> {
-                    type.read(config, path + "." + key).ifPresent(value -> map.put(key, value));
+                    K k = strToKey.apply(key);
+                    if (k == null) return;
+
+                    valType.read(config, path + "." + key).ifPresent(value -> map.put(k, value));
                 });
                 return map;
             },
 
             (config, path, map) -> {
                 config.set(path, null); // Clear old values
-                map.forEach((key, value) -> type.write(config, path + "." + key, value));
+                map.forEach((key, value) -> valType.write(config, path + "." + keyToStr.apply(key), value));
             }
         );
     }

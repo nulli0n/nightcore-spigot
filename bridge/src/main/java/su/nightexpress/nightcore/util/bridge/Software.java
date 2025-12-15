@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
@@ -23,6 +24,7 @@ import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
 import su.nightexpress.nightcore.bridge.bossbar.NightBossBar;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
@@ -75,7 +77,11 @@ public interface Software {
 
     int nextEntityId();
 
+    @NotNull Listener createChatListener(@NotNull UniversalChatListenerCallback callback);
+
     @NotNull Listener createDialogListener(@NotNull DialogClickHandler handler);
+
+    void disallowLogin(@NotNull AsyncPlayerPreLoginEvent event, @NotNull AsyncPlayerPreLoginEvent.Result result, @NotNull NightComponent message);
 
     void closeDialog(@NotNull Player player);
 
@@ -121,6 +127,8 @@ public interface Software {
     @NotNull String getDisplayNameSerialized(@NotNull Player player);
 
     void setDisplayName(@NotNull Player player, @NotNull NightComponent component);
+
+    void kick(@NotNull Player player, @NotNull NightComponent component);
 
 
     void setCustomName(@NotNull Entity entity, @NotNull NightComponent component);

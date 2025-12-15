@@ -9,7 +9,7 @@ import su.nightexpress.nightcore.ui.inventory.Menu;
 
 public class MenuOpenEvent extends Event implements Cancellable {
 
-    public static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final Player player;
     private final Menu   menu;

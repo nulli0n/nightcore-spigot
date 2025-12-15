@@ -16,6 +16,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -32,10 +33,12 @@ import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBar;
 import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBarAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogListener;
+import su.nightexpress.nightcore.bridge.spigot.event.SpigotChatListener;
 import su.nightexpress.nightcore.bridge.spigot.text.SpigotTextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.*;
@@ -103,8 +106,19 @@ public class SpigotBridge implements Software {
 
     @Override
     @NotNull
+    public Listener createChatListener(@NotNull UniversalChatListenerCallback callback) {
+        return new SpigotChatListener(this, callback);
+    }
+
+    @Override
+    @NotNull
     public Listener createDialogListener(@NotNull DialogClickHandler handler) {
         return new SpigotDialogListener(handler);
+    }
+
+    @Override
+    public void disallowLogin(@NotNull AsyncPlayerPreLoginEvent event, @NotNull AsyncPlayerPreLoginEvent.Result result, @NotNull NightComponent message) {
+        event.disallow(result, message.toLegacy());
     }
 
     @Override
@@ -251,6 +265,11 @@ public class SpigotBridge implements Software {
     @Override
     public void setDisplayName(@NotNull Player player, @NotNull NightComponent component) {
         player.setDisplayName(component.toLegacy());
+    }
+
+    @Override
+    public void kick(@NotNull Player player, @NotNull NightComponent component) {
+        player.kickPlayer(component.toLegacy());
     }
 
     @Override
