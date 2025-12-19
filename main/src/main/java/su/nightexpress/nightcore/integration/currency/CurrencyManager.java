@@ -50,7 +50,7 @@ public class CurrencyManager extends AbstractManager<NightCore> {
         this.addListener(new CurrencyListener(this.plugin, this));
 
         // Clean up when all plugins are loaded.
-        this.plugin.runTask(task -> {
+        this.plugin.runTask(() -> {
             this.pluginProviders.clear();
             this.config.saveChanges();
         });

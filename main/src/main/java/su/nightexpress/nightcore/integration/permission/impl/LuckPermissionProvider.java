@@ -40,14 +40,6 @@ public class LuckPermissionProvider implements PermissionProvider {
         return api().getUserManager().loadUser(playerId);
     }
 
-//    @Nullable
-//    private static String getMetaNode(@NotNull Player player, @NotNull NodeType<? extends ChatMetaNode<?, ?>> type) {
-//        User user = getUser(player);
-//        if (user == null) return null;
-//
-//        return user.getNodes(type).stream().max(Comparator.comparingInt(ChatMetaNode::getPriority)).map(ChatMetaNode::getMetaValue).orElse(null);
-//    }
-
     @Override
     @Nullable
     public String getPrimaryGroup(@NotNull Player player) {
