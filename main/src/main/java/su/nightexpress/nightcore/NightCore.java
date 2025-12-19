@@ -33,9 +33,9 @@ import java.util.Set;
 
 public class NightCore extends NightPlugin {
 
-    private static NightCore core;
-
     public static final Set<NightPlugin> CHILDRENS = new HashSet<>();
+
+    private static NightCore core;
 
     private final ChatManager chatManager;
 

@@ -75,11 +75,8 @@ public class LuckPermissionProvider implements PermissionProvider {
     @NotNull
     private Set<String> getPermissionGroups(@Nullable User user) {
         if (user == null) return Collections.emptySet();
-        return user.getNodes(NodeType.INHERITANCE)
-            .stream()
-            .map(InheritanceNode::getGroupName)
-            .map(LowerCase.USER_LOCALE::apply)
-            .collect(Collectors.toSet());
+
+        return user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName).map(LowerCase.USER_LOCALE::apply).collect(Collectors.toSet());
     }
 
     @Override

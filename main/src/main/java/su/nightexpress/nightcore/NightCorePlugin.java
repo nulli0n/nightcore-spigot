@@ -210,14 +210,14 @@ public interface NightCorePlugin extends Plugin {
         this.getScheduler().runTaskTimerAsynchronously(this, consumer, delay, interval);
     }
 
-    @Deprecated
     @NotNull
+    @Deprecated
     default UniTask createTask(@NotNull Runnable runnable) {
         return new UniTask(this, runnable);
     }
 
-    @Deprecated
     @NotNull
+    @Deprecated
     default UniTask createAsyncTask(@NotNull Runnable runnable) {
         return this.createTask(runnable).setAsync();
     }
