@@ -337,7 +337,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
     @Override
     @NotNull
-    public su.nightexpress.nightcore.ui.menu.MenuRegistry getMenuRegistry() {
+    public su.nightexpress.nightcore.ui.inventory.MenuRegistry getMenuRegistry() {
         return NightCore.get().getMenuRegistry();
     }
 }

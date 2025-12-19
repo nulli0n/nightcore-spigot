@@ -376,8 +376,8 @@ public class Players {
 
     public static int countItem(@NotNull Player player, @NotNull Predicate<ItemStack> predicate) {
         return Stream.of(player.getInventory().getContents())
-                .filter(item -> item != null && predicate.test(item))
-                .mapToInt(ItemStack::getAmount).sum();
+              .filter(item -> item != null && predicate.test(item))
+              .mapToInt(ItemStack::getAmount).sum();
     }
 
     public static int countItem(@NotNull Player player, @NotNull ItemStack item) {

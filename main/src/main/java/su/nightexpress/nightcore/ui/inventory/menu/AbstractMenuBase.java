@@ -27,7 +27,7 @@ import su.nightexpress.nightcore.ui.inventory.item.ItemState;
 import su.nightexpress.nightcore.ui.inventory.item.MenuItem;
 import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
 import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
-import su.nightexpress.nightcore.ui.menu.MenuRegistry;
+import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Strings;
@@ -272,6 +272,7 @@ public abstract class AbstractMenuBase implements Menu {
         MenuViewer viewer = this.getOrCreateViewer(player);
         viewer.setCurrentObject(object);
         viewer.renderMenu(this, object);
+        registry.registerViewer(player, this);
         return true;
     }
 
@@ -359,6 +360,7 @@ public abstract class AbstractMenuBase implements Menu {
         this.onDrag(context, event);
     }
 
+    @Override
     public void handleClose(@NotNull Player player, @NotNull InventoryCloseEvent event, @NotNull MenuRegistry menuRegistry) {
         MenuViewer viewer = this.viewers.get(player.getUniqueId());
         if (viewer == null || viewer.isRefreshing()) return;
@@ -369,6 +371,7 @@ public abstract class AbstractMenuBase implements Menu {
 
         this.onClose(context, event);
         viewer.handleClose(event);
+        menuRegistry.unregisterViewer(player);
     }
 
     @Override
