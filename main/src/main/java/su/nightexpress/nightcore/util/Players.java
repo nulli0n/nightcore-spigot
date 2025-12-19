@@ -33,7 +33,7 @@ public class Players {
     public static final String TEXTURES_HOST         = PlayerProfiles.TEXTURES_HOST;
     public static final String PLAYER_COMMAND_PREFIX = "player:";
 
-    private static final NightCore plugin = NightCore.getPlugin(NightCore.class);
+    private static final NightCore plugin = NightCore.get();
 
     @NotNull
     public static Set<Player> getOnline() {
