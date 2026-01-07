@@ -202,7 +202,14 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     protected void unloadManagers() {
-        this.getScheduler().cancelTasks(this);  // Stop all plugin tasks.
+        // 使用Folia兼容的方式停止所有插件任务
+        if (this.isFolia()) {
+            // 在Folia环境下，使用新的调度器系统取消所有任务
+            this.getNightScheduler().cancelAllTasks();
+        } else {
+            // 在传统Bukkit环境下，使用原版调度器
+            this.getScheduler().cancelTasks(this);
+        }
 
         this.disable();
 
@@ -310,7 +317,14 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
     @Override
     public void runTask(@NotNull Runnable runnable) {
-        this.getScheduler().runTask(this, runnable);
+        // 使用Folia兼容的调度器
+        if (this.isFolia()) {
+            // 在Folia环境下，使用新的调度器系统
+            this.getNightScheduler().runTask(runnable);
+        } else {
+            // 在传统Bukkit环境下，使用原版调度器
+            this.getScheduler().runTask(this, runnable);
+        }
     }
 
     private boolean checkVersion() {

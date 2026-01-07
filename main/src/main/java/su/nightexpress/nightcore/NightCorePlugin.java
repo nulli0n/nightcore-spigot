@@ -16,6 +16,9 @@ import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangElement;
 import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
+import su.nightexpress.nightcore.util.scheduler.NightScheduler;
+import su.nightexpress.nightcore.util.scheduler.NightTaskV2;
+import su.nightexpress.nightcore.util.scheduler.SchedulerFactory;
 import su.nightexpress.nightcore.util.wrapper.UniTask;
 
 import java.util.function.Consumer;
@@ -121,27 +124,54 @@ public interface NightCorePlugin extends Plugin {
     void runTask(@NotNull Runnable runnable);
 
     default void runTask(@NotNull Consumer<BukkitTask> consumer) {
-        this.getScheduler().runTask(this, consumer);
+        // 使用Folia兼容的调度器
+        if (this.isFolia()) {
+            // 在Folia环境下，使用新的调度器系统
+            this.getNightScheduler().runTask(() -> consumer.accept(null));
+        } else {
+            // 在传统Bukkit环境下，使用原版调度器
+            this.getScheduler().runTask(this, consumer);
+        }
     }
 
     default void runTaskAsync(@NotNull Consumer<BukkitTask> consumer) {
-        this.getScheduler().runTaskAsynchronously(this, consumer);
+        if (this.isFolia()) {
+            this.getNightScheduler().runTaskAsync(() -> consumer.accept(null));
+        } else {
+            this.getScheduler().runTaskAsynchronously(this, consumer);
+        }
     }
 
     default void runTaskLater(@NotNull Consumer<BukkitTask> consumer, long delay) {
-        this.getScheduler().runTaskLater(this, consumer, delay);
+        if (this.isFolia()) {
+            this.getNightScheduler().runTaskLater(() -> consumer.accept(null), delay);
+        } else {
+            this.getScheduler().runTaskLater(this, consumer, delay);
+        }
     }
 
     default void runTaskLaterAsync(@NotNull Consumer<BukkitTask> consumer, long delay) {
-        this.getScheduler().runTaskLaterAsynchronously(this, consumer, delay);
+        if (this.isFolia()) {
+            this.getNightScheduler().runTaskLaterAsync(() -> consumer.accept(null), delay);
+        } else {
+            this.getScheduler().runTaskLaterAsynchronously(this, consumer, delay);
+        }
     }
 
     default void runTaskTimer(@NotNull Consumer<BukkitTask> consumer, long delay, long interval) {
-        this.getScheduler().runTaskTimer(this, consumer, delay, interval);
+        if (this.isFolia()) {
+            this.getNightScheduler().runTaskTimer(() -> consumer.accept(null), delay, interval);
+        } else {
+            this.getScheduler().runTaskTimer(this, consumer, delay, interval);
+        }
     }
 
     default void runTaskTimerAsync(@NotNull Consumer<BukkitTask> consumer, long delay, long interval) {
-        this.getScheduler().runTaskTimerAsynchronously(this, consumer, delay, interval);
+        if (this.isFolia()) {
+            this.getNightScheduler().runTaskTimerAsync(() -> consumer.accept(null), delay, interval);
+        } else {
+            this.getScheduler().runTaskTimerAsynchronously(this, consumer, delay, interval);
+        }
     }
 
     @NotNull
@@ -154,5 +184,63 @@ public interface NightCorePlugin extends Plugin {
     @Deprecated
     default UniTask createAsyncTask(@NotNull Runnable runnable) {
         return this.createTask(runnable).setAsync();
+    }
+    
+    // ===========================================
+    // 新的Folia兼容调度器方法
+    // ===========================================
+    
+    /**
+     * 获取新的调度器实例（Folia兼容）
+     */
+    @NotNull
+    default NightScheduler getNightScheduler() {
+        return SchedulerFactory.createScheduler(this);
+    }
+    
+    /**
+     * 创建新的任务（Folia兼容）
+     */
+    @NotNull
+    default NightTaskV2 createNightTask(@NotNull Runnable runnable) {
+        return new NightTaskV2.Builder(this, runnable).build();
+    }
+    
+    /**
+     * 创建新的异步任务（Folia兼容）
+     */
+    @NotNull
+    default NightTaskV2 createNightAsyncTask(@NotNull Runnable runnable) {
+        return new NightTaskV2.Builder(this, runnable).async().build();
+    }
+    
+    /**
+     * 创建新的定时任务（Folia兼容）
+     */
+    @NotNull
+    default NightTaskV2 createNightTimer(@NotNull Runnable runnable, long interval) {
+        return new NightTaskV2.Builder(this, runnable).interval(interval).build();
+    }
+    
+    /**
+     * 创建新的异步定时任务（Folia兼容）
+     */
+    @NotNull
+    default NightTaskV2 createNightAsyncTimer(@NotNull Runnable runnable, long interval) {
+        return new NightTaskV2.Builder(this, runnable).async().interval(interval).build();
+    }
+    
+    /**
+     * 检查当前服务器是否使用Folia调度器
+     */
+    default boolean isFolia() {
+        return SchedulerFactory.getCurrentSchedulerType().name().equals("FOLIA");
+    }
+    
+    /**
+     * 检查当前服务器是否使用传统Bukkit调度器
+     */
+    default boolean isBukkit() {
+        return SchedulerFactory.getCurrentSchedulerType().name().equals("BUKKIT");
     }
 }

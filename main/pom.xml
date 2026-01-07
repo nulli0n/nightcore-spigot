@@ -54,6 +54,12 @@
         </repository>
 
         <repository>
+            <id>oraxen</id>
+            <name>Oraxen Repository</name>
+            <url>https://repo.oraxen.com/releases</url>
+        </repository>
+
+        <repository>
             <id>codemc-releases</id>
             <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
@@ -178,15 +184,16 @@
 
         <dependency>
             <groupId>me.mraxetv.beasttokens</groupId>
-            <artifactId>BeastTokens</artifactId>
-            <version>3.11.1</version>
-            <scope>provided</scope>
+            <artifactId>BeastTokensAPI</artifactId>
+            <version>3.14.6</version>
+            <systemPath>${project.basedir}/lib/bt-api-3.14.6.jar</systemPath>
+            <scope>system</scope>
         </dependency>
 
         <dependency>
             <groupId>com.bencodez</groupId>
             <artifactId>votingplugin</artifactId>
-            <version>6.15.1</version>
+            <version>6.19.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -194,14 +201,16 @@
             <groupId>com.magmaguy.elitemobs</groupId>
             <artifactId>EliteMobs</artifactId>
             <version>8.5.4</version>
-            <scope>provided</scope>
+            <systemPath>${project.basedir}/lib/EliteMobs.jar</systemPath>
+            <scope>system</scope>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.coinsengine</groupId>
             <artifactId>CoinsEngine</artifactId>
-            <version>2.5.0</version>
-            <scope>provided</scope>
+            <version>2.6.0</version>
+            <systemPath>${project.basedir}/lib/CoinsEngine-2.6.0.jar</systemPath>
+            <scope>system</scope>
         </dependency>
 
         <dependency>
@@ -213,24 +222,27 @@
 
         <!-- Item Bridge -->
         <dependency>
-            <groupId>com.nexomc.nexo</groupId>
-            <artifactId>Nexo</artifactId>
-            <version>0.9-dev</version>
-            <scope>provided</scope>
+            <groupId>com.nexomc</groupId>
+            <artifactId>nexo</artifactId>
+            <version>1.16.1</version>
+            <systemPath>${project.basedir}/lib/nexo-1.16.1.jar</systemPath>
+            <scope>system</scope>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.excellentcrates</groupId>
             <artifactId>ExcellentCrates</artifactId>
-            <version>6.4.1</version>
-            <scope>provided</scope>
+            <version>6.6.1</version>
+            <systemPath>${project.basedir}/lib/ExcellentCrates-6.6.1.jar</systemPath>
+            <scope>system</scope>
         </dependency>
 
         <dependency>
             <groupId>io.th0rgal.oraxen</groupId>
             <artifactId>Oraxen</artifactId>
-            <version>1.155.1</version>
-            <scope>provided</scope>
+            <version>1.200.0</version>
+            <systemPath>${project.basedir}/lib/oraxen-1.200.0.jar</systemPath>
+            <scope>system</scope>
         </dependency>
 
         <dependency>
@@ -258,8 +270,9 @@
         <dependency>
             <groupId>com.ssomar.score</groupId>
             <artifactId>SCore</artifactId>
-            <version>5.24.12.29</version>
-            <scope>provided</scope>
+            <version>5.25.12.24</version>
+            <systemPath>${project.basedir}/lib/SCore-5.25.12.24.jar</systemPath>
+            <scope>system</scope>
         </dependency>
 
     </dependencies>

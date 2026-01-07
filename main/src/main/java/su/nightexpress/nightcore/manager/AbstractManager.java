@@ -86,6 +86,8 @@ public abstract class AbstractManager<P extends NightCorePlugin> extends SimpleM
     protected void addTask(@NotNull NightTask task) {
         if (task.isValid()) {
             this.taskList.add(task);
+            // 对于Folia环境，需要显式启动任务
+            task.start();
         }
     }
 }

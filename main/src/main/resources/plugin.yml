@@ -8,3 +8,4 @@ load: STARTUP
 libraries:
   - com.zaxxer:HikariCP:6.0.0
   - it.unimi.dsi:fastutil-core:8.5.13
+folia-supported: true
