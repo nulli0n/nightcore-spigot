@@ -5,8 +5,12 @@ name: nightcore
 version: '${project.version}'
 description: Plugin engine
 load: STARTUP
+folia-supported: true
 authors:
   - NightExpress
+libraries:
+  - com.zaxxer:HikariCP:6.3.2
+  - it.unimi.dsi:fastutil-core:8.5.16
 api-version: 1.21
 dependencies:
   server:

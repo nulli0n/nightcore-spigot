@@ -17,7 +17,6 @@ import su.nightexpress.nightcore.configuration.ConfigTypes;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.ui.inventory.Menu;
-import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
 import su.nightexpress.nightcore.ui.inventory.action.ActionRegistry;
 import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
 import su.nightexpress.nightcore.ui.inventory.action.MenuItemActions;
@@ -28,6 +27,7 @@ import su.nightexpress.nightcore.ui.inventory.item.ItemState;
 import su.nightexpress.nightcore.ui.inventory.item.MenuItem;
 import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
 import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
+import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Strings;
@@ -246,12 +246,6 @@ public abstract class AbstractMenuBase implements Menu {
         return title;
     }
 
-    /*@Override
-    @NotNull
-    public NightComponent getTitle(@NotNull MenuViewer viewer) {
-        return NightMessage.parse(this.getRawTitle(viewer));
-    }*/
-
     @Override
     @NotNull
     public NightComponent getTitle(@NotNull ViewerContext context) {
@@ -277,7 +271,7 @@ public abstract class AbstractMenuBase implements Menu {
             return false;
         }
 
-        MenuViewer viewer = this.getOrCreateViewer(player/*, object*/);
+        MenuViewer viewer = this.getOrCreateViewer(player);
         viewer.setCurrentObject(object);
         viewer.renderMenu(this, object);
         registry.registerViewer(player, this);
@@ -398,8 +392,8 @@ public abstract class AbstractMenuBase implements Menu {
     }
 
     @NotNull
-    protected MenuViewer getOrCreateViewer(@NotNull Player player/*, @Nullable Object object*/) {
-        return this.viewers.computeIfAbsent(player.getUniqueId(), k -> new MenuViewer(player/*, object*/));
+    protected MenuViewer getOrCreateViewer(@NotNull Player player) {
+        return this.viewers.computeIfAbsent(player.getUniqueId(), k -> new MenuViewer(player));
     }
 
     @Override

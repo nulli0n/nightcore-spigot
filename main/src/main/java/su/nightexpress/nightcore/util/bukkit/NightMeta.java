@@ -112,9 +112,6 @@ public class NightMeta implements Writeable {
         if (meta instanceof Damageable damageable && damageable.getDamage() != 0) {
             displayMeta.setDamage(damageable.getDamage());
         }
-//        if (meta instanceof SkullMeta skullMeta) {
-//
-//        }
 
         displayMeta.setDisplayName(ItemUtil.getCustomNameSerialized(meta));
         displayMeta.setItemName(ItemUtil.getItemNameSerialized(meta));
@@ -122,7 +119,6 @@ public class NightMeta implements Writeable {
         displayMeta.setEnchants(meta.getEnchants());
         displayMeta.setUnbreakable(meta.isUnbreakable());
         displayMeta.setPlayerProfile(ItemUtil.getOwnerProfile(itemStack));
-        //displayMeta.setSkinURL(ItemUtil.getHeadSkin(itemStack));
         displayMeta.setCustomModelData(ItemUtil.getCustomModelData(meta));
         if (Version.isAtLeast(Version.MC_1_21)) {
             displayMeta.setEnchantGlint((meta.hasEnchantmentGlintOverride() && meta.getEnchantmentGlintOverride())/* || meta.hasEnchants()*/);
@@ -137,9 +133,7 @@ public class NightMeta implements Writeable {
         }
         else {
             displayMeta.setHiddenComponents(meta.getItemFlags().stream().map(Enum::name).collect(Collectors.toSet()));
-            //if (!meta.getItemFlags().isEmpty()) displayMeta.hideAllComponents();
         }
-        //displayMeta.setHideComponents(!meta.getItemFlags().isEmpty());
 
         switch (meta) {
             case LeatherArmorMeta armorMeta -> displayMeta.setColor(armorMeta.getColor());
@@ -357,7 +351,6 @@ public class NightMeta implements Writeable {
             }
             else {
                 SpigotBridge.hideComponentsByName(itemStack, this.hiddenComponents);
-                //ItemUtil.hideAttributes(itemStack);
             }
         }
     }
@@ -521,8 +514,6 @@ public class NightMeta implements Writeable {
         return this;
     }
 
-
-
     @Deprecated
     @Nullable
     public String getSkinURL() {
@@ -533,12 +524,6 @@ public class NightMeta implements Writeable {
     public NightMeta setSkinURL(@Nullable String skinURL) {
         return skinURL == null ? this.setPlayerProfile((NightProfile) null) : this.setProfileBySkinURL(skinURL);
     }
-
-//    @Nullable
-//    @Deprecated
-//    public PlayerProfile getSkullOwner() {
-//        return this.getPlayerProfile();
-//    }
 
     @NotNull
     @Deprecated
@@ -582,8 +567,6 @@ public class NightMeta implements Writeable {
         this.playerProfile = profile;
         return this;
     }
-
-
 
     @Nullable
     @Deprecated
@@ -661,8 +644,6 @@ public class NightMeta implements Writeable {
 
     @Deprecated
     public NightMeta setHideComponents(boolean hideComponents) {
-        //this.hideComponents = hideComponents;
-//        this.setHiddenComponents(Version.software().getCommonComponentsToHide());
         return hideComponents ? this.hideAllComponents() : this.showAllComponents();
     }
 

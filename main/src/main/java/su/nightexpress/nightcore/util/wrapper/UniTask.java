@@ -1,17 +1,20 @@
 package su.nightexpress.nightcore.util.wrapper;
 
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Deprecated
 public class UniTask {
 
     private final NightCorePlugin plugin;
     private final Runnable        runnable;
+    private final Set<MyScheduledTask> taskIdSet;
 
     private long    interval;
     private boolean async;
-    private int     taskId;
 
     public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable) {
         this(plugin, runnable, 0L);
@@ -32,10 +35,9 @@ public class UniTask {
     public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval, boolean async) {
         this.plugin = plugin;
         this.runnable = runnable;
+        this.taskIdSet = ConcurrentHashMap.newKeySet();
         this.interval = interval;
         this.async = async;
-
-        this.taskId = -1;
     }
 
     @Deprecated
@@ -61,7 +63,7 @@ public class UniTask {
     }
 
     public boolean isRunning() {
-        return this.taskId >= 0 && this.plugin.getScheduler().isCurrentlyRunning(this.taskId);
+        return !this.taskIdSet.isEmpty() && taskIdSet.iterator().next().isCurrentlyRunning();
     }
 
     public final void restart() {
@@ -70,22 +72,21 @@ public class UniTask {
     }
 
     public UniTask start() {
-        if (this.taskId >= 0 || this.interval <= 0L) return this;
+        if (!this.taskIdSet.isEmpty() || this.interval <= 0L) return this;
 
         if (this.async) {
-            this.taskId = plugin.getScheduler().runTaskTimerAsynchronously(plugin, runnable, 0L, interval).getTaskId();
-        }
-        else {
-            this.taskId = plugin.getScheduler().runTaskTimer(plugin, runnable, 0L, interval).getTaskId();
+            this.taskIdSet.add(plugin.getFoliaScheduler().runTaskTimerAsynchronously(plugin, runnable, 0L, interval));
+        } else {
+            this.taskIdSet.add(plugin.getFoliaScheduler().runTaskTimer(plugin, runnable, 0L, interval));
         }
         return this;
     }
 
     public boolean stop() {
-        if (this.taskId < 0) return false;
+        if (this.taskIdSet.isEmpty()) return false;
 
-        this.plugin.getServer().getScheduler().cancelTask(this.taskId);
-        this.taskId = -1;
+        this.taskIdSet.iterator().next().cancel();
+        this.taskIdSet.remove(this.taskIdSet.iterator().next());
         return true;
     }
 }

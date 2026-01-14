@@ -1,5 +1,11 @@
 package su.nightexpress.nightcore;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.foliaScheduler.FoliaScheduler;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -21,8 +27,6 @@ import su.nightexpress.nightcore.util.wrapper.UniTask;
 import java.util.function.Consumer;
 
 public interface NightCorePlugin extends Plugin {
-
-    //boolean isEngine();
 
     void enable();
 
@@ -108,9 +112,15 @@ public interface NightCorePlugin extends Plugin {
 
     @NotNull MenuRegistry getMenuRegistry();
 
+    @Deprecated
     @NotNull
     default BukkitScheduler getScheduler() {
         return this.getServer().getScheduler();
+    }
+
+    @NotNull
+    default FoliaScheduler getFoliaScheduler() {
+        return new FoliaScheduler(this);
     }
 
     @NotNull
@@ -118,28 +128,84 @@ public interface NightCorePlugin extends Plugin {
         return this.getServer().getPluginManager();
     }
 
-    void runTask(@NotNull Runnable runnable);
+    default void runTask(@NotNull Runnable consumer) {
+        this.getFoliaScheduler().runTask(this, consumer);
+    }
 
+    default void runTask(Entity entity, @NotNull Runnable consumer) {
+        if (!UniversalScheduler.isFolia) {
+            this.runTask(consumer);
+            return;
+        }
+
+        this.getFoliaScheduler().execute(entity, consumer);
+    }
+
+    default void runTask(Location location, @NotNull Runnable consumer) {
+        if (!UniversalScheduler.isFolia) {
+            this.runTask(consumer);
+            return;
+        }
+
+        this.getFoliaScheduler().execute(location, consumer);
+    }
+
+    default void runTask(Chunk chunk, @NotNull Runnable consumer) {
+        if (!UniversalScheduler.isFolia) {
+            this.runTask(consumer);
+            return;
+        }
+
+        Bukkit.getServer().getRegionScheduler().execute(this, chunk.getWorld(), chunk.getX(), chunk.getZ(),
+            consumer);
+    }
+
+    default void runTaskAsync(@NotNull Runnable consumer) {
+        this.getFoliaScheduler().runTaskAsynchronously(this, consumer);
+    }
+
+    default void runTaskLater(@NotNull Runnable consumer, long delay) {
+        this.getFoliaScheduler().runTaskLater(this, consumer, delay);
+    }
+
+    default void runTaskLaterAsync(@NotNull Runnable consumer, long delay) {
+        this.getFoliaScheduler().runTaskLaterAsynchronously(this, consumer, delay);
+    }
+
+    default void runTaskTimer(@NotNull Runnable consumer, long delay, long interval) {
+        this.getFoliaScheduler().runTaskTimer(this, consumer, delay, interval);
+    }
+
+    default void runTaskTimerAsync(@NotNull Runnable consumer, long delay, long interval) {
+        this.getFoliaScheduler().runTaskTimerAsynchronously(this, consumer, delay, interval);
+    }
+
+    @Deprecated
     default void runTask(@NotNull Consumer<BukkitTask> consumer) {
         this.getScheduler().runTask(this, consumer);
     }
 
+    @Deprecated
     default void runTaskAsync(@NotNull Consumer<BukkitTask> consumer) {
         this.getScheduler().runTaskAsynchronously(this, consumer);
     }
 
+    @Deprecated
     default void runTaskLater(@NotNull Consumer<BukkitTask> consumer, long delay) {
         this.getScheduler().runTaskLater(this, consumer, delay);
     }
 
+    @Deprecated
     default void runTaskLaterAsync(@NotNull Consumer<BukkitTask> consumer, long delay) {
         this.getScheduler().runTaskLaterAsynchronously(this, consumer, delay);
     }
 
+    @Deprecated
     default void runTaskTimer(@NotNull Consumer<BukkitTask> consumer, long delay, long interval) {
         this.getScheduler().runTaskTimer(this, consumer, delay, interval);
     }
 
+    @Deprecated
     default void runTaskTimerAsync(@NotNull Consumer<BukkitTask> consumer, long delay, long interval) {
         this.getScheduler().runTaskTimerAsynchronously(this, consumer, delay, interval);
     }

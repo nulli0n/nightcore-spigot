@@ -46,16 +46,12 @@ public class VotingPluginCurrency extends IncompleteCurrency {
 
     @Override
     public void give(@NotNull Player player, double amount) {
-        NightCore.get().runTaskAsync(task -> {
-            VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(player).addPoints((int) amount);
-        });
+        NightCore.get().runTaskAsync(() -> VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(player).addPoints((int) amount));
     }
 
     @Override
     public void give(@NotNull UUID playerId, double amount) {
-        NightCore.get().runTaskAsync(task -> {
-            VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(playerId).addPoints((int) amount);
-        });
+        NightCore.get().runTaskAsync(() -> VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(playerId).addPoints((int) amount));
     }
 
     @Override

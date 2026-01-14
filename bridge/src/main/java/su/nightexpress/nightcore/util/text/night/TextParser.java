@@ -234,7 +234,6 @@ public class TextParser {
                 isTagEntered = false;
                 this.eat(ParserUtils.OPEN_BRACKET);
                 continue;
-                //this.eat(TagWrapper.simple(bracketsContent).opening());
             }
             else if (this.tagPool.isGoodTag(handler)) {
                 if (this.mode == ParserMode.STRIP) {

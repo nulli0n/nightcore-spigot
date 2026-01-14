@@ -49,6 +49,11 @@
         </repository>
 
         <repository>
+            <id>opencollab</id>
+            <url>https://repo.opencollab.dev/maven-releases/</url>
+        </repository>
+
+        <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
@@ -76,6 +81,46 @@
         <repository>
             <id>phoenix</id>
             <url>https://nexus.phoenixdevt.fr/repository/maven-public/</url>
+        </repository>
+
+        <repository>
+            <id>nightexpress-releases</id>
+            <url>https://repo.nightexpressdev.com/releases</url>
+        </repository>
+
+        <repository>
+            <id>oraxen</id>
+            <url>https://repo.oraxen.com/releases</url>
+        </repository>
+
+        <repository>
+            <id>nexo</id>
+            <url>https://repo.nexomc.com/releases</url>
+        </repository>
+
+        <repository>
+            <id>magmaguy</id>
+            <url>https://repo.magmaguy.com/releases</url>
+        </repository>
+
+        <repository>
+            <id>lumine-repo</id>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
+
+        <repository>
+            <id>modrinth</id>
+            <url>https://api.modrinth.com/maven/</url>
+        </repository>
+
+        <repository>
+            <id>bg-softdeps</id>
+            <url>https://repo.bg-software.com/repository/dependencies/</url>
+        </repository>
+
+        <repository>
+            <id>alessiodp-releases</id>
+            <url>https://repo.alessiodp.com/releases/</url>
         </repository>
     </repositories>
 
@@ -114,7 +159,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>6.0.0</version>
+            <version>6.3.2</version>
             <scope>provided</scope>
         </dependency>
 
@@ -128,14 +173,14 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.47.0.0</version>
+            <version>3.49.1.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil-core</artifactId>
-            <version>8.5.13</version>
+            <version>8.5.16</version>
             <scope>provided</scope>
         </dependency>
 
@@ -156,14 +201,21 @@
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
-            <version>5.4</version>
+            <version>5.5</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.geysermc.floodgate</groupId>
             <artifactId>api</artifactId>
-            <version>2.2.0-SNAPSHOT</version>
+            <version>2.2.4-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.geysermc.cumulus</groupId>
+            <artifactId>cumulus</artifactId>
+            <version>1.1.2</version>
             <scope>provided</scope>
         </dependency>
 
@@ -186,15 +238,25 @@
         <dependency>
             <groupId>com.bencodez</groupId>
             <artifactId>votingplugin</artifactId>
-            <version>6.15.1</version>
+            <version>6.19</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.magmaguy.elitemobs</groupId>
+            <groupId>com.magmaguy</groupId>
             <artifactId>EliteMobs</artifactId>
-            <version>8.5.4</version>
+            <version>9.1.9</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.magmaguy</groupId>
+                    <artifactId>MagmaCore</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.byteflux</groupId>
+                    <artifactId>libby-bukkit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -213,9 +275,9 @@
 
         <!-- Item Bridge -->
         <dependency>
-            <groupId>com.nexomc.nexo</groupId>
-            <artifactId>Nexo</artifactId>
-            <version>0.9-dev</version>
+            <groupId>com.nexomc</groupId>
+            <artifactId>nexo</artifactId>
+            <version>0.9.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -227,10 +289,16 @@
         </dependency>
 
         <dependency>
-            <groupId>io.th0rgal.oraxen</groupId>
+            <groupId>io.th0rgal</groupId>
             <artifactId>Oraxen</artifactId>
             <version>1.155.1</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.byteflux</groupId>
+                    <artifactId>libby-bukkit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -256,27 +324,32 @@
 
         <!-- Local -->
         <dependency>
-            <groupId>com.ssomar.score</groupId>
+            <groupId>maven.modrinth</groupId>
             <artifactId>SCore</artifactId>
-            <version>5.24.12.29</version>
+            <version>5.25.7.19</version>
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.Anon8281</groupId>
+            <artifactId>UniversalScheduler</artifactId>
+            <version>0.1.6</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory> <!-- (your resources folder location) -->
-                <filtering>true
-                </filtering> <!-- this is the important part, it's what replaces, filters, all placeholders in the resources folder (such as ${project.version} in plugin.yml) -->
+                <filtering>true</filtering> <!-- this is the important part, it's what replaces, filters, all placeholders in the resources folder (such as ${project.version} in plugin.yml) -->
             </resource>
         </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.6.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -284,14 +357,21 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>${project.parent.basedir}\target\${project.parent.name}-${project.version}.jar
-                            </outputFile>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>shaded</shadedClassifierName>
                             <artifactSet>
                                 <includes>
                                     <include>su.nightexpress.nightcore:*</include>
-                                    <!--<include>net.kyori:adventure-nbt</include>-->
+                                    <include>com.github.Anon8281:UniversalScheduler</include>
                                 </includes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.github.Anon8281.universalScheduler</pattern>
+                                    <shadedPattern>su.nightexpress.nightcore.universalscheduler</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>

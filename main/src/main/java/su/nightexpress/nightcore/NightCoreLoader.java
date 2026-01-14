@@ -21,9 +21,8 @@ public class NightCoreLoader implements PluginLoader {
             resolver.addRepository(new RemoteRepository.Builder("maven", "default", "https://maven-central.storage-download.googleapis.com/maven2").build());
         }
 
-        //resolver.addDependency(new Dependency(new DefaultArtifact("org.xerial:sqlite-jdbc:3.49.1.0"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:6.0.0"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("it.unimi.dsi:fastutil-core:8.5.13"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:6.3.2"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("it.unimi.dsi:fastutil-core:8.5.16"), null));
 
         classpathBuilder.addLibrary(resolver);
     }

@@ -6,5 +6,5 @@ author: NightExpress
 api-version: 1.20
 load: STARTUP
 libraries:
-  - com.zaxxer:HikariCP:6.0.0
-  - it.unimi.dsi:fastutil-core:8.5.13
+  - com.zaxxer:HikariCP:6.3.2
+  - it.unimi.dsi:fastutil-core:8.5.16
