@@ -30,7 +30,11 @@ public class TagWrappers {
     public static final OneArgument<SimpleTagWrapper> INSERTION = text -> TagWrapper.withArguments(TagShortNames.INSERTION, text);
 
     public static final BiFunction<String, String, String> SPRITE          = (atlas, sprite) -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted(atlas), ParserUtils.quoted(sprite)).opening();
+    @Deprecated
     public static final Function<String, String>           SPRITE_NO_ATLAS = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted(sprite)).opening();
+    public static final Function<String, String>           SPRITE_BLOCKS   = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("blocks"), ParserUtils.quoted(sprite)).opening();
+    public static final Function<String, String>           SPRITE_ITEMS    = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("items"), ParserUtils.quoted(sprite)).opening();
+    public static final Function<String, String>           SPRITE_GUI    = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("gui"), ParserUtils.quoted(sprite)).opening();
 
     public static final BiFunction<String, Boolean, String> HEAD     = (data, hat) -> TagWrapper.withArguments(TagShortNames.HEAD, ParserUtils.quoted(data), String.valueOf(hat)).opening();
     public static final Function<String, String>            HEAD_HAT = data -> TagWrapper.withArguments(TagShortNames.HEAD, ParserUtils.quoted(data)).opening();
