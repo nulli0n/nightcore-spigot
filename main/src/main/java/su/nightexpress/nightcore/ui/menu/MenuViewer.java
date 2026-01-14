@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public class MenuViewer {
 
     private final Menu          menu;

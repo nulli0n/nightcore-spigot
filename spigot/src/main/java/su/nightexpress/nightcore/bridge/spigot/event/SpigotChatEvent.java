@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class SpigotChatEvent implements UniversalChatEvent {
 
@@ -40,12 +41,12 @@ public class SpigotChatEvent implements UniversalChatEvent {
 
     @Override
     @NotNull
-    public Set<? extends CommandSender> viewers() {
-        return this.backend.getRecipients();
+    public Set<CommandSender> viewers() {
+        return this.backend.getRecipients().stream().map(player -> (CommandSender) player).collect(Collectors.toSet());
     }
 
     @Override
-    public void editViewers(@NotNull Consumer<Set<? extends CommandSender>> consumer) {
+    public void editViewers(@NotNull Consumer<Set<CommandSender>> consumer) {
         consumer.accept(this.viewers());
     }
 

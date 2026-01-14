@@ -147,6 +147,11 @@ public class TextParser {
             // Mark escaped character and move.
             if (letter == ParserUtils.ESCAPE) {
                 isEscaped = true;
+
+                // Keep escaped characters for the STRIP mode to make the String reusable.
+                if (this.mode == ParserMode.STRIP) {
+                    this.eat(letter);
+                }
                 continue;
             }
 

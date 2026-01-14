@@ -43,13 +43,13 @@ public class PaperChatEvent implements UniversalChatEvent {
 
     @Override
     @NotNull
-    public Set<? extends CommandSender> viewers() {
+    public Set<CommandSender> viewers() {
         return this.backend.viewers().stream().filter(audience -> audience instanceof CommandSender).map(CommandSender.class::cast).collect(Collectors.toCollection(HashSet::new));
     }
 
     @Override
-    public void editViewers(@NotNull Consumer<Set<? extends CommandSender>> consumer) {
-        Set<? extends CommandSender> viewers = this.viewers();
+    public void editViewers(@NotNull Consumer<Set<CommandSender>> consumer) {
+        Set<CommandSender> viewers = this.viewers();
         consumer.accept(viewers);
         this.backend.viewers().clear();
         this.backend.viewers().addAll(viewers);

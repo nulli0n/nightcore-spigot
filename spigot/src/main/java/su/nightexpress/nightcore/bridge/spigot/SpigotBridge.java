@@ -39,6 +39,7 @@ import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBarAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogListener;
 import su.nightexpress.nightcore.bridge.spigot.event.SpigotChatListener;
+import su.nightexpress.nightcore.bridge.spigot.event.SpigotEventAdapter;
 import su.nightexpress.nightcore.bridge.spigot.text.SpigotTextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.*;
@@ -60,6 +61,7 @@ public class SpigotBridge implements Software {
 
     private SpigotTextComponentAdapter textComponentAdapter;
     private DialogAdapter<?>              dialogAdapter;
+    private SpigotEventAdapter eventAdapter;
 
     private Set<ItemFlag>      commonFlagsToHide;
 
@@ -87,6 +89,7 @@ public class SpigotBridge implements Software {
             );
         }
 
+        this.eventAdapter = new SpigotEventAdapter();
         return true;
     }
 
@@ -95,13 +98,19 @@ public class SpigotBridge implements Software {
     }
 
     private static void loadEntityCounter() {
-        Class<?> entityClass = Reflex.getClass("net.minecraft.world.entity", "Entity");
+        Class<?> entityClass = Reflex.findClass("net.minecraft.world.entity", "Entity").orElse(null);
         if (entityClass == null) return;
 
         Object object = Reflex.getFieldValue(entityClass, "c");
         if (!(object instanceof AtomicInteger atomicInteger)) return;
 
         entityCounter = atomicInteger;
+    }
+
+    @Override
+    @NotNull
+    public SpigotEventAdapter eventAdapter() {
+        return this.eventAdapter;
     }
 
     @Override
@@ -268,8 +277,38 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    public void kick(@NotNull Player player, @NotNull NightComponent component) {
-        player.kickPlayer(component.toLegacy());
+    @Nullable
+    public String getPlayerListHeaderSerialized(@NotNull Player player) {
+        String header = player.getPlayerListHeader();
+        return header == null ? null : LegacyColors.plainColors(header);
+    }
+
+    @Override
+    @Nullable
+    public String getPlayerListFooterSerialized(@NotNull Player player) {
+        String footer = player.getPlayerListFooter();
+        return footer == null ? null : LegacyColors.plainColors(footer);
+    }
+
+    @Override
+    public void setPlayerListHeaderFooter(@NotNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
+        player.setPlayerListHeaderFooter(header == null ? null : header.toLegacy(), footer == null ? null : footer.toLegacy());
+    }
+
+    @Override
+    @NotNull
+    public String getPlayerListNameSerialized(@NotNull Player player) {
+        return LegacyColors.plainColors(player.getPlayerListName());
+    }
+
+    @Override
+    public void setPlayerListName(@NotNull Player player, @NotNull NightComponent name) {
+        player.setPlayerListName(name.toLegacy());
+    }
+
+    @Override
+    public void kick(@NotNull Player player, @Nullable NightComponent component) {
+        player.kickPlayer(component == null ? null : component.toLegacy());
     }
 
     @Override

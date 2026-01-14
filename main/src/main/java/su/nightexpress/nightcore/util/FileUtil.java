@@ -69,6 +69,15 @@ public class FileUtil {
     }
 
     @NotNull
+    public static String getNameWithoutExtension(@NotNull Path path) {
+        String fileName = path.getFileName().toString();
+        int index = fileName.lastIndexOf('.');
+        if (index == -1) return fileName;
+
+        return fileName.substring(0, index);
+    }
+
+    @NotNull
     public static List<File> getConfigFiles(@NotNull String path) {
         return getConfigFiles(path, false);
     }

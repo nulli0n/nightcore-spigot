@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 
+@Deprecated
 public class UserdataConfig implements Writeable {
 
     private final long cacheLifetime;

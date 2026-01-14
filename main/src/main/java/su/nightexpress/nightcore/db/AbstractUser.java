@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.util.UUID;
 
+@Deprecated
 public abstract class AbstractUser {
 
     protected final UUID uuid;

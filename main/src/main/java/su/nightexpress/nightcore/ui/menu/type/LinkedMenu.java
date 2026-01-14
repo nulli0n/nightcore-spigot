@@ -23,7 +23,7 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.function.Consumer;
 
-@SuppressWarnings("UnstableApiUsage")
+@Deprecated
 public abstract class LinkedMenu<P extends NightPlugin, T> extends AbstractMenu<P> implements Linked<T> {
 
     protected final LinkCache<T> cache;

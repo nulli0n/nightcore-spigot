@@ -30,6 +30,7 @@ import su.nightexpress.nightcore.util.text.night.NightMessage;
 import java.util.*;
 import java.util.function.Consumer;
 
+@Deprecated
 public abstract class AbstractMenu<P extends NightPlugin> implements Menu {
 
     protected final P             plugin;

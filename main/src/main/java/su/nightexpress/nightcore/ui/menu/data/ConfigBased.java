@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.ui.menu.Menu;
 
+@Deprecated
 public interface ConfigBased extends Menu {
 
     default void load(@NotNull FileConfig config) {

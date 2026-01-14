@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class EnumLocale<E extends Enum<E>> extends LangEntry<EnumLocale.Value<E>> {
@@ -19,11 +20,15 @@ public class EnumLocale<E extends Enum<E>> extends LangEntry<EnumLocale.Value<E>
 
     @NotNull
     public static <E extends Enum<E>> EnumLocale<E> create(@NotNull String path, @NotNull Class<E> clazz) {
+        return create(path, clazz, con -> StringUtil.capitalizeUnderscored(con.name()));
+    }
+
+    @NotNull
+    public static <E extends Enum<E>> EnumLocale<E> create(@NotNull String path, @NotNull Class<E> clazz, @NotNull Function<E, String> defaultMapper) {
         Map<E, String> localeMap = new HashMap<>();
 
         Stream.of(clazz.getEnumConstants()).forEach(con -> {
-            String def = StringUtil.capitalizeUnderscored(con.name());
-            localeMap.put(con, def);
+            localeMap.put(con, defaultMapper.apply(con));
         });
 
         return new EnumLocale<>(clazz, path, new Value<>(localeMap));

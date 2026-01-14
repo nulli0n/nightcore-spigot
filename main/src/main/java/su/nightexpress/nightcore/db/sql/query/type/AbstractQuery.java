@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.db.sql.util.SQLUtils;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Deprecated
 public abstract class AbstractQuery<T> {
 
     @NotNull

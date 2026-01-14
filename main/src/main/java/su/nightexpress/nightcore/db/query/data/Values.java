@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class Values<T> {
 
     private final List<TypedValue<T>>      values;

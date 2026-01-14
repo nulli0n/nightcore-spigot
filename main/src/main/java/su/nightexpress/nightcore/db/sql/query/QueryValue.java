@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+@Deprecated
 public class QueryValue<T> {
 
     private final String              sqlPart;

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+@Deprecated
 public abstract class AbstractDataManager<P extends NightPlugin> extends AbstractManager<P> {
 
     protected final DatabaseConfig    config;
@@ -42,7 +43,7 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
         super(plugin);
         this.config = config;
         this.connector = AbstractConnector.create(plugin, config);
-        this.synchronizer = new DataSynchronizer(this);
+        this.synchronizer = new DataSynchronizer(this.connector);
 
         this.gson = this.registerAdapters(new GsonBuilder().setPrettyPrinting()).create();
     }

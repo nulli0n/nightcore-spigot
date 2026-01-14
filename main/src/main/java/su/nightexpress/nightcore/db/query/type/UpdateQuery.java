@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.db.sql.util.WhereOperator;
 
 import java.util.function.Function;
 
+@Deprecated
 public class UpdateQuery<T> extends TypedQuery<T> {
 
     private final Values<T> values;

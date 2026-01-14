@@ -85,8 +85,9 @@ public class Players {
         return Plugins.hasFloodgate() && FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId());
     }
 
+    @Deprecated
     public static boolean isReal(@NotNull Player player) {
-        return getPlayer(player.getUniqueId()) != null;
+        return player.isOnline();
     }
 
     public static void closeDialog(@NotNull Player player) {
@@ -104,6 +105,37 @@ public class Players {
 
     public static void setDisplayName(@NotNull Player player, @NotNull NightComponent name) {
         Software.get().setDisplayName(player, name);
+    }
+
+    @Nullable
+    public static String getPlayerListHeaderSerialized(@NotNull Player player) {
+        return Software.get().getPlayerListHeaderSerialized(player);
+    }
+
+    @Nullable
+    public static String getPlayerListFooterSerialized(@NotNull Player player) {
+        return Software.get().getPlayerListFooterSerialized(player);
+    }
+
+    public static void setPlayerListHeaderFooter(@NotNull Player player, @Nullable String header, @Nullable String footer) {
+        setPlayerListHeaderFooter(player, header == null ? null : NightMessage.parse(header), footer == null ? null : NightMessage.parse(footer));
+    }
+
+    public static void setPlayerListHeaderFooter(@NotNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
+        Software.get().setPlayerListHeaderFooter(player, header, footer);
+    }
+
+    @NotNull
+    public static String getPlayerListNameSerialized(@NotNull Player player) {
+        return Software.get().getPlayerListNameSerialized(player);
+    }
+
+    public static void setPlayerListName(@NotNull Player player, @NotNull String name) {
+        setPlayerListName(player, NightMessage.parse(name));
+    }
+
+    public static void setPlayerListName(@NotNull Player player, @NotNull NightComponent name) {
+        Software.get().setPlayerListName(player, name);
     }
 
     public static void kick(@NotNull Player player, @NotNull String reason) {

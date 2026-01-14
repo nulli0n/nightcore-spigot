@@ -16,6 +16,7 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.function.Consumer;
 
+@Deprecated
 public interface Linked<T> extends Menu {
 
     boolean open(@NotNull Player player, @NotNull T obj);

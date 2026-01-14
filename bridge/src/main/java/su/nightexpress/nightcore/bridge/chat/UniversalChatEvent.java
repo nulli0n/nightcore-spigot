@@ -16,9 +16,9 @@ public interface UniversalChatEvent {
 
     @NotNull Player getPlayer();
 
-    @NotNull Set<? extends CommandSender> viewers();
+    @NotNull Set<CommandSender> viewers();
 
-    void editViewers(@NotNull Consumer<Set<? extends CommandSender>> consumer);
+    void editViewers(@NotNull Consumer<Set<CommandSender>> consumer);
 
     void renderer(@NotNull UniversalChatRenderer renderer);
 

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+@Deprecated
 public class TypedValue<T>  {
 
     private final String              sql;

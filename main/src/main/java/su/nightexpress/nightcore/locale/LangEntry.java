@@ -11,6 +11,8 @@ import su.nightexpress.nightcore.locale.entry.*;
 import su.nightexpress.nightcore.locale.message.MessageData;
 import su.nightexpress.nightcore.util.bridge.RegistryType;
 
+import java.util.function.Function;
+
 public class LangEntry<T extends LangValue> implements LangElement {
 
     protected final ConfigValue.Loader<T> loader;
@@ -168,6 +170,11 @@ public class LangEntry<T extends LangValue> implements LangElement {
         @NotNull
         public <E extends Enum<E>> EnumLocale<E> enumeration(@NotNull Class<E> clazz) {
             return EnumLocale.create(this.path, clazz);
+        }
+
+        @NotNull
+        public <E extends Enum<E>> EnumLocale<E> enumeration(@NotNull Class<E> clazz, @NotNull Function<E, String> defaultMapper) {
+            return EnumLocale.create(this.path, clazz, defaultMapper);
         }
 
         @NotNull

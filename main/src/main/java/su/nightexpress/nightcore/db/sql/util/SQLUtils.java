@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.db.sql.util;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.db.sql.column.Column;
 
+@Deprecated
 public class SQLUtils {
 
     @NotNull

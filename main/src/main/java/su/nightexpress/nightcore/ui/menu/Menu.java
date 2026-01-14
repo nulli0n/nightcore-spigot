@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@SuppressWarnings("UnstableApiUsage")
+@Deprecated
 public interface Menu {
 
     void tick();

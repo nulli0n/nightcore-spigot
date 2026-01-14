@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+@Deprecated
 public class MenuFiller<I> {
 
     private final int[]                  slots;

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Deprecated
 public abstract class ConditionalQuery<Q extends ConditionalQuery<Q, T>, T> extends AbstractQuery<T> {
 
     protected final List<QueryValue<T>> whereColumns;

@@ -1,11 +1,10 @@
 package su.nightexpress.nightcore.db;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.connection.AbstractConnector;
 import su.nightexpress.nightcore.db.sql.column.Column;
 import su.nightexpress.nightcore.db.sql.column.ColumnType;
-import su.nightexpress.nightcore.db.sql.query.SQLQueries;
+import su.nightexpress.nightcore.db.statement.SQLStatements;
 
 import java.sql.*;
 import java.time.Instant;
@@ -17,23 +16,21 @@ public class DataSynchronizer {
 
     public static final Column COLUMN_LAST_MODIFIED = Column.of("last_modified", ColumnType.TIMESTAMP);
 
-    private final AbstractDataManager<?> backend;
+    private final AbstractConnector connector;
 
     private final Map<String, Consumer<ResultSet>> synchronics;
     private final Map<String, Timestamp>           lastSyncTimes;
 
-    public DataSynchronizer(@NotNull AbstractDataManager<?> backend) {
-        this.backend = backend;
+    public DataSynchronizer(@NotNull AbstractConnector connector) {
+        this.connector = connector;
         this.synchronics = new HashMap<>();
         this.lastSyncTimes = new HashMap<>();
     }
 
     public void addTable(@NotNull String tableName, @NotNull Consumer<ResultSet> consumer) {
-        AbstractConnector connector = this.backend.getConnector();
-
-        if (!SQLQueries.hasColumn(connector, tableName, COLUMN_LAST_MODIFIED)) {
-            String sql = "ALTER TABLE " + tableName + " ADD COLUMN " + COLUMN_LAST_MODIFIED.getName() + " " + COLUMN_LAST_MODIFIED.formatType(DatabaseType.MYSQL) + " DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
-            SQLQueries.executeSimpleQuery(connector, sql);
+        if (!SQLStatements.hasColumn(this.connector, tableName, COLUMN_LAST_MODIFIED.getName())) {
+            String sql = "ALTER TABLE " + tableName + " ADD COLUMN " + COLUMN_LAST_MODIFIED.getName() + " TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
+            SQLStatements.executeUpdate(this.connector, sql);
         }
 
         this.synchronics.put(tableName, consumer);
@@ -47,7 +44,7 @@ public class DataSynchronizer {
         Timestamp lastSync = this.lastSyncTimes.getOrDefault(tableName, Timestamp.from(Instant.now()));
 
         String query = "SELECT * FROM " + tableName + " WHERE " + COLUMN_LAST_MODIFIED.getName() + " > ?";
-        try (Connection connection = this.backend.getConnection();
+        try (Connection connection = this.connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setTimestamp(1, lastSync);

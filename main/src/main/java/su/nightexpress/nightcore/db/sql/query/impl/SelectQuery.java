@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+@Deprecated
 public class SelectQuery<T> extends ConditionalQuery<SelectQuery<T>, ArrayList<T>> {
 
     private final List<String>           columns;

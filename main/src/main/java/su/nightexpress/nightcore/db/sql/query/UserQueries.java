@@ -10,6 +10,7 @@ import su.nightexpress.nightcore.db.sql.query.impl.UpdateQuery;
 
 import java.util.UUID;
 
+@Deprecated
 public class UserQueries {
 
     @NotNull

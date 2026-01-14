@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
+@Deprecated
 public class ItemOptions {
 
     private final Predicate<MenuViewer>             visibilityPolicy;

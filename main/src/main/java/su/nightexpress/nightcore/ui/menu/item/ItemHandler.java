@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.ui.menu.data.Linked;
 
 import java.util.UUID;
 
+@Deprecated
 public class ItemHandler {
 
     public static final String RETURN        = "return";

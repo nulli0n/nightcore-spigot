@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+@Deprecated
 public class SelectQuery<T> implements Query {
 
     private final List<String>           columns;

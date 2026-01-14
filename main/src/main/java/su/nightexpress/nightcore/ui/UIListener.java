@@ -23,6 +23,7 @@ import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.ui.menu.click.ClickResult;
 import su.nightexpress.nightcore.util.NumberUtil;
 
+@Deprecated
 public class UIListener extends AbstractListener<NightCore> {
 
     public UIListener(@NotNull NightCore plugin) {

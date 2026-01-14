@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.ui.menu.click;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class ClickResult {
 
     private final int       slot;

@@ -47,28 +47,54 @@ public class ConfigProperty<T> {
         return this.loadOrWriteDefault(config);
     }
 
-    @NotNull
-    public T loadOrWriteDefault(@NotNull FileConfig config) {
+    public void writeDefaults(@NotNull FileConfig config) {
         if (!config.contains(this.path)) {
-            this.type.write(config, this.path, this.defaultValue);
+            this.writeValue(config, this.defaultValue);
         }
 
         if (this.description != null && this.description.length > 0 && Stream.of(this.description).anyMatch(Predicate.not(String::isBlank))) {
             config.setComments(this.path, this.description);
         }
+    }
 
-        return this.load(config);
+    @NotNull
+    public T resolve(@NotNull FileConfig config) {
+        return this.type.read(config, this.path, this.defaultValue);
+    }
+
+    @NotNull
+    public T resolveWithDefaults(@NotNull FileConfig config) {
+        this.writeDefaults(config);
+
+        return this.resolve(config);
+    }
+
+    @NotNull
+    @Deprecated
+    public T loadOrWriteDefault(@NotNull FileConfig config) {
+        return this.loadWithDefaults(config);
     }
 
     @NotNull
     public T load(@NotNull FileConfig config) {
-        this.set(this.type.read(config, this.path, this.defaultValue));
+        this.set(this.resolve(config));
 
         return this.get();
     }
 
+    @NotNull
+    public T loadWithDefaults(@NotNull FileConfig config) {
+        this.writeDefaults(config);
+
+        return this.load(config);
+    }
+
     public void write(@NotNull FileConfig config) {
-        this.type.write(config, this.path, this.get());
+        this.writeValue(config, this.get());
+    }
+
+    public void writeValue(@NotNull FileConfig config, @NotNull T value) {
+        this.type.write(config, this.path, value);
     }
 
     public void remove(@NotNull FileConfig config) {

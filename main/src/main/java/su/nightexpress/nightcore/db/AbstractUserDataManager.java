@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+@Deprecated
 public abstract class AbstractUserDataManager <P extends NightPlugin, U extends AbstractUser> extends AbstractDataManager<P> {
 
     public static final Column COLUMN_USER_ID           = Column.of("uuid", ColumnType.STRING);

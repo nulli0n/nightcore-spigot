@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
+@Deprecated
 public class MenuItem {
 
     public static final int BACKGROUND_PRIORITY = -1;

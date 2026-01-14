@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public enum ClickKey {
 
     LEFT, RIGHT, SHIFT_LEFT, SHIFT_RIGHT,

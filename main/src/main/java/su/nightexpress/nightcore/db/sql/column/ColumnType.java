@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.db.sql.column;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 
+@Deprecated
 public interface ColumnType {
 
     ColumnType STRING = (type, length) -> {

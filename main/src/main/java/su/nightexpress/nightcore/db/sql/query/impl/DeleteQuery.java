@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.db.sql.query.type.ConditionalQuery;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Deprecated
 public class DeleteQuery<T> extends ConditionalQuery<DeleteQuery<T>, T> {
 
     public DeleteQuery() {

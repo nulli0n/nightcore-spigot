@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.ui.menu.MenuViewer;
 
 import java.util.*;
 
+@Deprecated
 public class LinkCache<T> {
 
     private final Map<UUID, T> map;

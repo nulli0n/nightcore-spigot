@@ -10,6 +10,8 @@ public class CommandSyntaxException extends Exception {
     private final MessageLocale messageLocale;
     private final String        value;
 
+    // TODO Add support for premade prefixed LangMessages
+
     public CommandSyntaxException(@NotNull MessageLocale messageLocale, @Nullable String value) {
         this.messageLocale = messageLocale;
         this.value = value;

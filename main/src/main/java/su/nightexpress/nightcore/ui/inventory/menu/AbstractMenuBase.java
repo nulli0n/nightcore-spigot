@@ -56,6 +56,7 @@ public abstract class AbstractMenuBase implements Menu {
     protected final ConfigProperty<Boolean>  papiIntegration;
 
     protected long autoRefreshIn;
+    protected boolean configured;
 
     public AbstractMenuBase(@NotNull MenuType defaultType, @NotNull String  defaultTitle) {
         this.actionRegistry = new ActionRegistry();
@@ -115,6 +116,7 @@ public abstract class AbstractMenuBase implements Menu {
         // TODO item commands
 
         config.saveChanges();
+        this.configured = true;
     }
 
     private void loadButtons(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String path) {
@@ -476,8 +478,14 @@ public abstract class AbstractMenuBase implements Menu {
     @NotNull
     public Map<String, MenuItem> getItemsToDisplay() {
         Map<String, MenuItem> items = new LinkedHashMap<>();
-        items.putAll(this.configItems);
-        items.putAll(this.configButtons);
+        if (this.configured) {
+            items.putAll(this.configItems);
+            items.putAll(this.configButtons);
+        }
+        else {
+            items.putAll(this.defaultItems);
+            items.putAll(this.defaultButtons);
+        }
         return items;
     }
 

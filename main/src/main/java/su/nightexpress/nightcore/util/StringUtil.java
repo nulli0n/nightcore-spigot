@@ -201,14 +201,15 @@ public class StringUtil {
         for (int index = 0; index < length; index++) {
             char letter = string.charAt(index);
 
-            if (letter == '%') {
-                // Escaping when using double %%
+            if (letter == '\\') {
                 if (index + 1 < length && string.charAt(index + 1) == '%') {
                     builder.append('%');
                     index++;
                     continue;
                 }
+            }
 
+            if (letter == '%') {
                 int indexNext = string.indexOf(letter, index + 1);
                 if (indexNext != -1) {
                     String key = string.substring(index, indexNext + 1);

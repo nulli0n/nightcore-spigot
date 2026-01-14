@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class MenuRegistry {
 
     private static final Map<UUID, MenuViewer> VIEWER_BY_ID = new HashMap<>();

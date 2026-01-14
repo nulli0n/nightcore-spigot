@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
 
+@Deprecated
 public abstract class TypedQuery<T> implements Query {
 
     @Nullable

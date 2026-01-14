@@ -23,6 +23,6 @@ public class AbstractConfig {
     }
 
     public void load(@NotNull FileConfig config) {
-        this.properties.forEach(configProperty -> configProperty.loadOrWriteDefault(config));
+        this.properties.forEach(configProperty -> configProperty.loadWithDefaults(config));
     }
 }

@@ -1,9 +1,11 @@
 package su.nightexpress.nightcore.util.placeholder;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.Plugins;
 
@@ -28,6 +30,7 @@ public class CommonPlaceholders {
     public static final String PLAYER_DISPLAY_NAME = "%player_display_name%";
     public static final String PLAYER_PREFIX       = "%player_prefix%";
     public static final String PLAYER_SUFFIX       = "%player_suffix%";
+    public static final String PLAYER_WORLD        = "%player_world%";
 
     public static final String LOCATION_X     = "%location_x%";
     public static final String LOCATION_Y     = "%location_y%";
@@ -46,6 +49,14 @@ public class CommonPlaceholders {
         .with(PLAYER_DISPLAY_NAME, Players::getDisplayNameSerialized)
         .with(PLAYER_PREFIX, Players::getPrefixOrEmpty)
         .with(PLAYER_SUFFIX, Players::getSuffixOrEmpty)
+        .with(PLAYER_WORLD, player -> player.getWorld().getName())
+        .build();
+
+    public static final TypedPlaceholder<Location> LOCATION = TypedPlaceholder.builder(Location.class)
+        .with(LOCATION_X, location -> NumberUtil.format(location.getX()))
+        .with(LOCATION_Y, location -> NumberUtil.format(location.getY()))
+        .with(LOCATION_Z, location -> NumberUtil.format(location.getZ()))
+        .with(LOCATION_WORLD, location -> location.getWorld().getName())
         .build();
 
     @NotNull
@@ -53,5 +64,16 @@ public class CommonPlaceholders {
         if (!Plugins.hasPlaceholderAPI()) return string -> string;
 
         return s -> PlaceholderAPI.setPlaceholders(player, s);
+    }
+
+    @NotNull
+    public static String withoutBrackets(@NotNull String placeholder) {
+        int length = placeholder.length();
+
+        if (length > 2 && placeholder.startsWith("%") && placeholder.endsWith("%")) {
+            return placeholder.substring(1, length - 1);
+        }
+
+        return placeholder;
     }
 }

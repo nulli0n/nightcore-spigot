@@ -16,6 +16,7 @@ import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.*;
 
+@Deprecated
 public class MenuLoader {
 
     private static final String ITEM_SECTION = "Content";

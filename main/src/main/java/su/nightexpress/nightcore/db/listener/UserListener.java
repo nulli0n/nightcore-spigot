@@ -13,6 +13,7 @@ import su.nightexpress.nightcore.manager.AbstractListener;
 
 import java.util.UUID;
 
+@Deprecated
 public class UserListener<P extends NightPlugin, U extends AbstractUser> extends AbstractListener<P> {
 
     private final AbstractUserManager<P, U> manager;

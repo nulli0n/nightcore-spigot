@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.db.sql.util;
 
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public enum WhereOperator {
 
     GREATER(">"),

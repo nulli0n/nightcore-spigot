@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.sql.util.SQLUtils;
 
+@Deprecated
 public class Column {
 
     private final String     name;

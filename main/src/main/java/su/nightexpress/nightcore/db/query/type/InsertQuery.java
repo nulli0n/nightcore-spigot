@@ -9,6 +9,7 @@ import su.nightexpress.nightcore.db.sql.column.Column;
 
 import java.util.function.Function;
 
+@Deprecated
 public class InsertQuery<T> extends TypedQuery<T> {
 
     private final Values<T> values;
