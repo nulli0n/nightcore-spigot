@@ -6,48 +6,42 @@ This library is required for all [NightExpress](https://www.spigotmc.org/resourc
 
 ## Features
 
-**✅ Features Included:**
-- ✅ **Software Compatibility**: Spigot and Paper compatible.
-- ✅ **Commands API**: Brigadier-like command API, but less tedious and with custom argument support.
-- ✅ **Component API**: Create and use custom text components in messages, GUIs, dialogs, items, etc.
-- ✅ **Config API**: Read and write custom config files with ease.
-- ✅ **Database API**: Handle SQLite and MySQL databases with SQL query builders and data synchronization across multiple servers.
-- ✅ **Dialogs API**: Create and show custom dialogs for players.
-- ✅ **Economy Integrations**. Handle custom currencies from various plugins with ease.
-- ✅ **Item Integrations**. Handle custom items from various plugins with ease.
-- ✅ **Permission Integrations**. Handle player's permission data from any permission plugin.
-- ✅ **Language API**: Flexible, highly customizable and powerful language API.
-- ✅ **Manager API**: Custom manager classes with built-in support for Listeners, Menus and Tasks.
-- ✅ **Menu API**: Inventory GUIs with config support and dynamic content.
-- ✅ **Block Tracker**: Track blocks placed by players using the native MC's chunk data container.
-- ✅ **Bukkit Wrappers**: A bunch of wrappers for bukkit objects (`ItemStack`, `Sound`, `BukkitTask`, etc) that are pleasure to work with.
-- ✅ **Player Utils**: Send messages, dispatch commands, add inventory items to players.
-- ✅ **Entity Utils**: Modify entity's attributes and equipment.
-- ✅ **Location Utils**: Utilities to work with cuboids, locations, block and chunk positions.
-- ✅ **Number Utils**: Parse, round, and format integers, doubles and floats with ease.
-- ✅ **Placeholder Utils**: Replace custom placeholders in any string fast.
-- ✅ **Profile Utils**: Handle player's profiles properly without spamming the Mojang API.
-- ✅ **Random Utils**: A better `Random` implementation with various utility methods.
-- ✅ **Time Utils**: Utilities to format and convert time and date.
-- ✅ **Item Utils**: Decode and encode `ItemStack` to/from NBT tags.
-- ✅ **Enum Utils**: Simple enum parser util.
-- ✅ **String Utils**: String format utils.
-- ✅ **PDC Utils**: Utilities to work with the `PersistentDataContainer`.
-- ✅ **Reflection Utils**: Small reflection helper.
+✅ What exactly is included in these 1.4 MB:
+- **Pure original code** written by a human, not by AI.
+- `UniversalScheduler` for **Folia** support.
+- **Server Bridge**, providing simultaneous support for **Spigot** and **Paper**.
+- **Economy Bridge**, providing simultaneous support for economies/currencies from multiple plugins.
+- **Item Bridge**, providing simultaneous support for custom items from multiple plugins.
+- **Permissions Bridge**, providing support for various permission plugins.
+- **Custom Text Component Parser** with **Spigot** and **Paper** support.
+- **Custom Placeholder Parser** featuring "lazy" replacement for maximum efficiency.
+- **Command Tools** for creating commands, custom argument types, and tab-completion.
+- **YAML Config Tools** for creating config "schemas" with automated reading/writing of paths, values, and comments.
+- **Localization Tools** for creating localization "schemas" with automated reading/writing of paths, values, and parameters.
+- **Database Tools** for SQLite and MySQL, including SQL query wrappers and table data synchronization.
+- **Dialog Screen Tools** for creating interactive dialog screens.
+- **Inventory GUI Tools** for creating custom inventory menus.
+- **Player Utilities** for handling `Player` objects.
+- **Entity Utilities** for handling `Entity` objects.
+- **Location Utilities** for handling `Location` objects.
+- **Number Utilities** (parsing, rounding, etc.).
+- **Randomization Utilities** (utilizing the new `RandomGenerator`).
+- **Time Utilities** (`LocalTime`, various formatting options).
+- **ItemStack Utilities** for handling `ItemStack` objects.
+- **Enum Utilities** for working with `enum` types.
+- **String Utilities** for text manipulation.
+- **PersistentDataContainer Utilities** for easier data storage.
+- **Reflection Utilities** for advanced backend tasks.
+- **Bukkit Wrappers** for simpler and more convenient interaction with Bukkit objects.
+- **GameProfile Wrapper & Cache** for fast access to player skins and custom heads.
+- **Player-Placed Block Tracker** (uses native world chunk storage, no unnecessary databases).
 
-**❌ Completely Excluded:**
-- ❌ Garbage libraries like **XSeries**.
-- ❌ Metrics or data collectors (we respect privacy).
-- ❌ Update checkers (who needs another useless notifications?).
-- ❌ DRM systems.
-- ❌ Advertisement.
-
-## System Requirements
-- Server Software: [**Spigot**](https://www.spigotmc.org/link-forums/88/) or [**Paper**](https://papermc.io/downloads/paper)
-- Server Version: <span style="color:red">**1.21.1**</span> or above
-- Java Version: [**21**](https://adoptium.net/temurin/releases) or above
-- Folia Supported: <span style="color:red">**No**</span>
-- Forge Supported: <span style="color:red">**No**</span>
+❌ What is NOT included:
+- **No "bloatware" libraries** for every minor task.
+- **No data collectors** or analytics.
+- **No update checkers** or network access.
+- **No licensing systems** or activation keys.
+- **No advertisements**.
 
 ## Links
 - [Modrinth](https://modrinth.com/plugin/nightcore)
