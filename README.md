@@ -1,6 +1,6 @@
 # About
 
-**NightCore** is a lightweight library that provides a wide set of utilities to make plugin development faster and more efficient.
+**NightCore** is a lightweight library with a wide range of utilities and tools for faster and more efficient plugin development.
 
 This library is required for all [NightExpress](https://www.spigotmc.org/resources/authors/81588/)'s plugins.
 
