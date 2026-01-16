@@ -38,7 +38,7 @@ public class PlaceholderContext {
 
         for (String original : list) {
             String replaced = this.apply(original);
-            if (replaced.isEmpty()) continue; // Skip empty repalcements to keep item lore pretty.
+            if (!original.isEmpty() && replaced.isEmpty()) continue; // Skip empty repalcements to keep item lore pretty.
 
             StringUtil.splitDelimiters(replaced, result::add);
         }
