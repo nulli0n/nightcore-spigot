@@ -90,11 +90,14 @@ public class NightItem implements Writeable {
 
         Material material = BukkitThing.getMaterial(String.valueOf(materialName));
         if (material == null) {
+            
             Engine.core().error("Invalid material '" + materialName + "'. Found in '" + config.getFile().getAbsolutePath() + "' -> '" + path + "'.");
             material = Material.BARRIER;
         }
 
-        ItemStack itemStack = new ItemStack(material, amount);
+        ItemStack itemStack;
+        if ()
+
         NightMeta displayMeta = NightMeta.read(config, path);
 
         return new NightItem(itemStack, displayMeta);
