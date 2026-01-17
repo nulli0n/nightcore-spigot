@@ -131,6 +131,7 @@ public class FileUtil {
     @NotNull
     public static List<Path> findFiles(@NotNull String directoryPath, @NotNull Predicate<Path> predicate) {
         Path path = Paths.get(directoryPath);
+        if (!Files.exists(path)) return Collections.emptyList();
 
         try (Stream<Path> stream = Files.list(path)) {
             return stream.filter(predicate).toList();
