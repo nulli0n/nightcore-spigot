@@ -17,7 +17,7 @@ public class Randomizer {
         try {
             return RandomGeneratorFactory.of("Xoshiro256PlusPlus");
         }
-        catch (IllegalStateException exception) {
+        catch (IllegalArgumentException exception) {
             return RandomGeneratorFactory.getDefault();
         }
     }
