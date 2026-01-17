@@ -116,7 +116,11 @@ public class NightItem implements Writeable {
 
     @Override
     public void write(@NotNull FileConfig config, @NotNull String path) {
-        config.set(path + ".Material", BukkitThing.getAsString(this.material));
+        if (ItemBridge.getAdapterOrVanilla(this.backend) instanceof IdentifiableItemAdapter itemAdapter) {
+            config.set(path + ".Material", itemAdapter.getName() + ":" + itemAdapter.getItemId(this.backend));
+        } else {
+            config.set(path + ".Material", BukkitThing.getAsString(this.material));
+        }
         config.set(path + ".Amount", this.amount == 1 ? null : this.amount);
         this.meta.write(config, path);
     }
