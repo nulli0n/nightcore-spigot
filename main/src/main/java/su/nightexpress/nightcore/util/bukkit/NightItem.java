@@ -15,7 +15,6 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.integration.item.ItemBridge;
 import su.nightexpress.nightcore.integration.item.adapter.IdentifiableItemAdapter;
-import su.nightexpress.nightcore.integration.item.adapter.impl.VanillaItemAdapter;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.locale.entry.IconLocale;
