@@ -9,9 +9,12 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
+import su.nightexpress.nightcore.bridge.item.ItemAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
+import su.nightexpress.nightcore.integration.item.ItemBridge;
+import su.nightexpress.nightcore.integration.item.adapter.IdentifiableItemAdapter;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.locale.entry.IconLocale;
@@ -88,21 +91,36 @@ public class NightItem implements Writeable {
         String materialName = config.getString(path + ".Material");
         int amount = config.getInt(path + ".Amount", 1);
 
+        NightMeta displayMeta = NightMeta.read(config, path);
+
         Material material = BukkitThing.getMaterial(String.valueOf(materialName));
         if (material == null) {
+            String adapterKey = materialName.substring(0, materialName.indexOf(':'));
+            String adapterKeyId = materialName.substring(materialName.indexOf(':'));
+            ItemAdapter<?> adapter = ItemBridge.getAdapterOrVanilla(adapterKey);
+            if (adapter instanceof IdentifiableItemAdapter itemAdapter) {
+                ItemStack adapterItem = itemAdapter.createItem(adapterKeyId);
+                if (adapterItem != null) {
+                    return new NightItem(adapterItem, displayMeta);
+                }
+            }
+
             Engine.core().error("Invalid material '" + materialName + "'. Found in '" + config.getFile().getAbsolutePath() + "' -> '" + path + "'.");
             material = Material.BARRIER;
         }
 
-        ItemStack itemStack = new ItemStack(material, amount);
-        NightMeta displayMeta = NightMeta.read(config, path);
+        ItemStack item = new ItemStack(material, amount);
 
-        return new NightItem(itemStack, displayMeta);
+        return new NightItem(item, displayMeta);
     }
 
     @Override
     public void write(@NotNull FileConfig config, @NotNull String path) {
-        config.set(path + ".Material", BukkitThing.getAsString(this.material));
+        if (ItemBridge.getAdapterOrVanilla(this.backend) instanceof IdentifiableItemAdapter itemAdapter) {
+            config.set(path + ".Material", itemAdapter.getName() + ":" + itemAdapter.getItemId(this.backend));
+        } else {
+            config.set(path + ".Material", BukkitThing.getAsString(this.material));
+        }
         config.set(path + ".Amount", this.amount == 1 ? null : this.amount);
         this.meta.write(config, path);
     }
