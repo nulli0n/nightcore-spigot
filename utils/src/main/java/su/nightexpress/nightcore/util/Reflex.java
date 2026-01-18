@@ -8,6 +8,10 @@ import java.util.*;
 
 public class Reflex {
 
+    public static boolean classExists(@NotNull String path) {
+        return findClass(path).isPresent();
+    }
+
     @Nullable
     @Deprecated
     public static Class<?> getClass(@NotNull String path, @NotNull String name) {

@@ -13,7 +13,7 @@ import java.util.function.UnaryOperator;
 
 public class PlaceholderContext {
 
-    private final int maxRecursion; // Safety limit
+    private final int maxRecursion;
     private final List<PlaceholderResolver>   resolvers;
     private final List<UnaryOperator<String>> postReplacers;
 
@@ -48,16 +48,6 @@ public class PlaceholderContext {
 
     @NotNull
     public String apply(@NotNull String string) {
-        /*String replaced = StringUtil.replacePlaceholders(string, key -> {
-
-            for (PlaceholderResolver resolver : this.resolvers) {
-                String result = resolver.resolve(key);
-                if (result != null) return result;
-            }
-
-            return null;
-        });*/
-
         String replaced = StringUtil.replacePlaceholders(string, new RecursiveResolver(0));
 
         for (UnaryOperator<String> postReplacer : this.postReplacers) {
@@ -126,8 +116,7 @@ public class PlaceholderContext {
 
         @NotNull
         public <T> Builder with(@NotNull TypedPlaceholder<T> placeholder, @NotNull T source) {
-            this.resolvers.add(placeholder.resolver(source));
-            return this;
+            return this.with(placeholder.resolver(source));
         }
 
         @NotNull
@@ -138,8 +127,7 @@ public class PlaceholderContext {
 
         @NotNull
         public Builder with(@NotNull Map<String, String> staticValues) {
-            this.resolvers.add(staticValues::get);
-            return this;
+            return this.with(staticValues::get);
         }
 
         @NotNull

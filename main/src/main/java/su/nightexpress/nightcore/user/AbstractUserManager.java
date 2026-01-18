@@ -43,7 +43,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         this.addAsyncTask(this::saveDirty, this.settings.getSaveInterval());
         this.addAsyncTask(this.repository::cleanExpired, this.settings.getCacheCleanupInterval());
 
-        this.plugin.runTaskAsync(task -> {
+        this.plugin.runTaskAsync(() -> {
             this.dataAccessor.loadProfiles().forEach(userInfo -> this.repository.addNameIdMapping(userInfo.name(), userInfo.id()));
         });
 
@@ -126,11 +126,11 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
 
         this.repository.getById(player.getUniqueId()).ifPresent(user -> {
             if (user.isDirty()) {
-                this.plugin.runTaskAsync(task -> this.dataAccessor.update(user));
+                this.plugin.runTaskAsync(() -> this.dataAccessor.update(user));
                 user.markClean();
             }
             else {
-                this.plugin.runTaskAsync(task -> this.dataAccessor.tinyUpdate(user));
+                this.plugin.runTaskAsync(() -> this.dataAccessor.tinyUpdate(user));
             }
 
             this.cacheTemporary(user); // Cache temporary so user data is still accessible for a while.

@@ -1,12 +1,17 @@
 package su.nightexpress.nightcore;
 
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEventHandler;
+import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.command.CommandManager;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.commands.command.NightCommand;
@@ -22,6 +27,7 @@ import su.nightexpress.nightcore.util.FileUtil;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Reflex;
 import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
 import java.io.File;
@@ -32,6 +38,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
     public static final String CONFIG_FILE = "config.yml";
     public static final String ENGINE_FILE = "engine.yml";
+
+    protected AdaptedScheduler scheduler;
 
     protected NightCommand   rootCommand;
     protected List<Runnable> postLoaders;
@@ -52,6 +60,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         }
 
         long loadTook = System.currentTimeMillis();
+        this.scheduler = Software.get().getScheduler(this);
         this.onStartup();
         this.loadManagers();
         this.info("Plugin loaded in " + (System.currentTimeMillis() - loadTook) + " ms!");
@@ -202,7 +211,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     protected void unloadManagers() {
-        this.getFoliaScheduler().cancelTasks(this); // Stop all plugin tasks.
+        this.scheduler.cancelTasks(); // Stop all plugin tasks.
 
         this.disable();
 
@@ -337,7 +346,64 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
     @Override
     @NotNull
+    public PluginManager getPluginManager() {
+        return this.getServer().getPluginManager();
+    }
+
+    @Override
+    @NotNull
+    public AdaptedScheduler scheduler() {
+        return this.scheduler;
+    }
+
+    @Override
+    @NotNull
     public su.nightexpress.nightcore.ui.inventory.MenuRegistry getMenuRegistry() {
         return NightCore.get().getMenuRegistry();
+    }
+
+    @Override
+    public void runTask(@NotNull Runnable consumer) {
+        this.scheduler.runTask(consumer);
+    }
+
+    @Override
+    public void runTask(@NotNull Entity entity, @NotNull Runnable runnable) {
+        this.scheduler.runTask(entity, runnable);
+    }
+
+    @Override
+    public void runTask(@NotNull Location location, @NotNull Runnable runnable) {
+        this.scheduler.runTask(location, runnable);
+    }
+
+    @Override
+    public void runTask(@NotNull Chunk chunk, @NotNull Runnable runnable) {
+        this.scheduler.runTask(chunk, runnable);
+    }
+
+    @Override
+    public void runTaskAsync(@NotNull Runnable consumer) {
+        this.scheduler.runTaskAsync(consumer);
+    }
+
+    @Override
+    public void runTaskLater(@NotNull Runnable consumer, long delay) {
+        this.scheduler.runTaskLater(consumer, delay);
+    }
+
+    @Override
+    public void runTaskLaterAsync(@NotNull Runnable consumer, long delay) {
+        this.scheduler.runTaskLaterAsync(consumer, delay);
+    }
+
+    @Override
+    public void runTaskTimer(@NotNull Runnable consumer, long delay, long interval) {
+        this.scheduler.runTaskTimer(consumer, delay, interval);
+    }
+
+    @Override
+    public void runTaskTimerAsync(@NotNull Runnable consumer, long delay, long interval) {
+        this.scheduler.runTaskTimerAsync(consumer, delay, interval);
     }
 }

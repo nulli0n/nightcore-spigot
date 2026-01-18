@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.util.random;
 
 import java.util.Random;
 
+@Deprecated
 public class MTRandom extends Random {
 
     private final static int UPPER_MASK = 0x80000000;

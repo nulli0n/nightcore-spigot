@@ -1,8 +1,5 @@
 package su.nightexpress.nightcore;
 
-import com.github.Anon8281.universalScheduler.UniversalScheduler;
-import com.github.Anon8281.universalScheduler.foliaScheduler.FoliaScheduler;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -14,6 +11,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEventHandler;
+import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.command.CommandManager;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -118,67 +116,27 @@ public interface NightCorePlugin extends Plugin {
         return this.getServer().getScheduler();
     }
 
-    @NotNull
-    default FoliaScheduler getFoliaScheduler() {
-        return new FoliaScheduler(this);
-    }
+    @NotNull AdaptedScheduler scheduler();
 
-    @NotNull
-    default PluginManager getPluginManager() {
-        return this.getServer().getPluginManager();
-    }
+    @NotNull PluginManager getPluginManager();
 
-    default void runTask(@NotNull Runnable consumer) {
-        this.getFoliaScheduler().runTask(this, consumer);
-    }
+    void runTask(@NotNull Runnable consumer);
 
-    default void runTask(Entity entity, @NotNull Runnable consumer) {
-        if (!UniversalScheduler.isFolia) {
-            this.runTask(consumer);
-            return;
-        }
+    void runTask(Entity entity, @NotNull Runnable consumer);
 
-        this.getFoliaScheduler().execute(entity, consumer);
-    }
+    void runTask(Location location, @NotNull Runnable consumer);
 
-    default void runTask(Location location, @NotNull Runnable consumer) {
-        if (!UniversalScheduler.isFolia) {
-            this.runTask(consumer);
-            return;
-        }
+    void runTask(Chunk chunk, @NotNull Runnable consumer);
 
-        this.getFoliaScheduler().execute(location, consumer);
-    }
+    void runTaskAsync(@NotNull Runnable consumer);
 
-    default void runTask(Chunk chunk, @NotNull Runnable consumer) {
-        if (!UniversalScheduler.isFolia) {
-            this.runTask(consumer);
-            return;
-        }
+    void runTaskLater(@NotNull Runnable consumer, long delay);
 
-        Bukkit.getServer().getRegionScheduler().execute(this, chunk.getWorld(), chunk.getX(), chunk.getZ(),
-            consumer);
-    }
+    void runTaskLaterAsync(@NotNull Runnable consumer, long delay);
 
-    default void runTaskAsync(@NotNull Runnable consumer) {
-        this.getFoliaScheduler().runTaskAsynchronously(this, consumer);
-    }
+    void runTaskTimer(@NotNull Runnable consumer, long delay, long interval);
 
-    default void runTaskLater(@NotNull Runnable consumer, long delay) {
-        this.getFoliaScheduler().runTaskLater(this, consumer, delay);
-    }
-
-    default void runTaskLaterAsync(@NotNull Runnable consumer, long delay) {
-        this.getFoliaScheduler().runTaskLaterAsynchronously(this, consumer, delay);
-    }
-
-    default void runTaskTimer(@NotNull Runnable consumer, long delay, long interval) {
-        this.getFoliaScheduler().runTaskTimer(this, consumer, delay, interval);
-    }
-
-    default void runTaskTimerAsync(@NotNull Runnable consumer, long delay, long interval) {
-        this.getFoliaScheduler().runTaskTimerAsynchronously(this, consumer, delay, interval);
-    }
+    void runTaskTimerAsync(@NotNull Runnable consumer, long delay, long interval);
 
     @Deprecated
     default void runTask(@NotNull Consumer<BukkitTask> consumer) {

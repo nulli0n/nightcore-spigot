@@ -1,8 +1,9 @@
 package su.nightexpress.nightcore.util.wrapper;
 
-import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.NightCorePlugin;
+import su.nightexpress.nightcore.bridge.scheduler.AdaptedTask;
+
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UniTask {
 
     private final NightCorePlugin plugin;
-    private final Runnable        runnable;
-    private final Set<MyScheduledTask> taskIdSet;
+    private final Runnable         runnable;
+    private final Set<AdaptedTask> taskIdSet;
 
     private long    interval;
     private boolean async;
@@ -75,9 +76,9 @@ public class UniTask {
         if (!this.taskIdSet.isEmpty() || this.interval <= 0L) return this;
 
         if (this.async) {
-            this.taskIdSet.add(plugin.getFoliaScheduler().runTaskTimerAsynchronously(plugin, runnable, 0L, interval));
+            this.taskIdSet.add(plugin.scheduler().runTaskTimerAsync(runnable, 0L, interval));
         } else {
-            this.taskIdSet.add(plugin.getFoliaScheduler().runTaskTimer(plugin, runnable, 0L, interval));
+            this.taskIdSet.add(plugin.scheduler().runTaskTimer(runnable, 0L, interval));
         }
         return this;
     }
