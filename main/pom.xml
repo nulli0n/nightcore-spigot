@@ -122,6 +122,11 @@
             <id>alessiodp-releases</id>
             <url>https://repo.alessiodp.com/releases/</url>
         </repository>
+
+        <repository>
+            <id>momirealms-repo</id>
+            <url>https://repo.momirealms.net/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -319,6 +324,19 @@
             <groupId>net.Indyuce</groupId>
             <artifactId>MMOItems-API</artifactId>
             <version>6.10.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.momirealms</groupId>
+            <artifactId>craft-engine-core</artifactId>
+            <version>0.0.66</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.momirealms</groupId>
+            <artifactId>craft-engine-bukkit</artifactId>
+            <version>0.0.66</version>
             <scope>provided</scope>
         </dependency>
 
