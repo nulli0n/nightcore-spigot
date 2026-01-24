@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
@@ -34,12 +35,14 @@ import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
+import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBar;
 import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBarAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogListener;
 import su.nightexpress.nightcore.bridge.spigot.event.SpigotChatListener;
 import su.nightexpress.nightcore.bridge.spigot.event.SpigotEventAdapter;
+import su.nightexpress.nightcore.bridge.spigot.scheduler.SpigotScheduler;
 import su.nightexpress.nightcore.bridge.spigot.text.SpigotTextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.*;
@@ -111,6 +114,12 @@ public class SpigotBridge implements Software {
     @NotNull
     public SpigotEventAdapter eventAdapter() {
         return this.eventAdapter;
+    }
+
+    @Override
+    @NotNull
+    public AdaptedScheduler getScheduler(@NotNull JavaPlugin plugin) {
+        return new SpigotScheduler(plugin);
     }
 
     @Override

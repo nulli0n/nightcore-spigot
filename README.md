@@ -8,8 +8,7 @@ This library is required for all [NightExpress](https://www.spigotmc.org/resourc
 
 ✅ What exactly is included in these 1.4 MB:
 - **Pure original code** written by a human, not by AI.
-- `UniversalScheduler` for **Folia** support.
-- **Server Bridge**, providing simultaneous support for **Spigot** and **Paper**.
+- **Server Bridge**, providing simultaneous support for **Spigot**, **Paper** and **Folia**.
 - **Economy Bridge**, providing simultaneous support for economies/currencies from multiple plugins.
 - **Item Bridge**, providing simultaneous support for custom items from multiple plugins.
 - **Permissions Bridge**, providing support for various permission plugins.

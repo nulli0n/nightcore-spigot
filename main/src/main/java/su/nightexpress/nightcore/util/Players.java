@@ -33,8 +33,6 @@ public class Players {
     public static final String TEXTURES_HOST         = PlayerProfiles.TEXTURES_HOST;
     public static final String PLAYER_COMMAND_PREFIX = "player:";
 
-    private static final NightCore plugin = NightCore.get();
-
     @NotNull
     public static Set<Player> getOnline() {
         return new HashSet<>(Bukkit.getServer().getOnlinePlayers());
@@ -374,14 +372,20 @@ public class Players {
 
         command = Placeholders.forPlayerWithPAPI(player).apply(command).trim();
 
-        if (usePlayer) {
-            CommandSender playerSender = sender;
-            @NotNull String playerCommand = command;
-            plugin.runTask(player, () -> Bukkit.dispatchCommand(playerSender, playerCommand));
-        } else {
-            CommandSender consoleSender = sender;
-            @NotNull String consoleCommand = command;
-            plugin.runTask(() -> Bukkit.dispatchCommand(consoleSender, consoleCommand));
+        if (Version.isFolia()) {
+            if (usePlayer) {
+                CommandSender playerSender = sender;
+                String playerCommand = command;
+                NightCore.get().runTask(player, () -> Bukkit.dispatchCommand(playerSender, playerCommand));
+            }
+            else {
+                CommandSender consoleSender = sender;
+                String consoleCommand = command;
+                NightCore.get().runTask(() -> Bukkit.dispatchCommand(consoleSender, consoleCommand));
+            }
+        }
+        else {
+            Bukkit.dispatchCommand(sender, command);
         }
     }
 
@@ -480,11 +484,14 @@ public class Players {
         int realAmount = Math.min(split.getMaxStackSize(), amount);
         split.setAmount(realAmount);
 
-        final ItemStack copy = split.clone();
-        plugin.getFoliaScheduler().execute(player, () -> {
-            World world = player.getWorld();
+        ItemStack copy = split.clone();
+        World world = player.getWorld();
+        if (Version.isFolia()) {
+            NightCore.get().runTask(player, () -> player.getInventory().addItem(copy).values().forEach(left -> world.dropItem(player.getLocation(), left)));
+        }
+        else {
             player.getInventory().addItem(copy).values().forEach(left -> world.dropItem(player.getLocation(), left));
-        });
+        }
 
         amount -= realAmount;
         if (amount > 0) addItem(player, itemStack, amount);

@@ -6,7 +6,7 @@
     <parent>
         <groupId>su.nightexpress.nightcore</groupId>
         <artifactId>nightcore</artifactId>
-        <version>2.13.0</version>
+        <version>2.13.1</version>
     </parent>
 
     <artifactId>main</artifactId>
@@ -122,31 +122,36 @@
             <id>alessiodp-releases</id>
             <url>https://repo.alessiodp.com/releases/</url>
         </repository>
+
+        <repository>
+            <id>momirealms-repo</id>
+            <url>https://repo.momirealms.net/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>bridge</artifactId>
-            <version>2.13.0</version>
+            <version>2.13.1</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>utils</artifactId>
-            <version>2.13.0</version>
+            <version>2.13.1</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>paper</artifactId>
-            <version>2.13.0</version>
+            <version>2.13.1</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>spigot</artifactId>
-            <version>2.13.0</version>
+            <version>2.13.1</version>
         </dependency>
 
         <dependency>
@@ -322,19 +327,25 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>net.momirealms</groupId>
+            <artifactId>craft-engine-core</artifactId>
+            <version>0.0.66</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.momirealms</groupId>
+            <artifactId>craft-engine-bukkit</artifactId>
+            <version>0.0.66</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Local -->
         <dependency>
             <groupId>maven.modrinth</groupId>
             <artifactId>SCore</artifactId>
             <version>5.25.7.19</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.Anon8281</groupId>
-            <artifactId>UniversalScheduler</artifactId>
-            <version>0.1.6</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -364,15 +375,8 @@
                             <artifactSet>
                                 <includes>
                                     <include>su.nightexpress.nightcore:*</include>
-                                    <include>com.github.Anon8281:UniversalScheduler</include>
                                 </includes>
                             </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.github.Anon8281.universalScheduler</pattern>
-                                    <shadedPattern>su.nightexpress.nightcore.universalscheduler</shadedPattern>
-                                </relocation>
-                            </relocations>
                         </configuration>
                     </execution>
                 </executions>

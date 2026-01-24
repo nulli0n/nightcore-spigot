@@ -2,6 +2,7 @@ package su.nightexpress.nightcore.util.random;
 
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class WeightedItem<T> {
 
     private final T item;

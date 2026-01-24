@@ -5,6 +5,7 @@ import su.nightexpress.nightcore.util.Randomizer;
 
 import java.util.*;
 
+@Deprecated
 public class Rnd {
 
     public static final MTRandom RANDOM = new MTRandom();

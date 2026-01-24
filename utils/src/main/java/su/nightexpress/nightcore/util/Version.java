@@ -30,6 +30,7 @@ public enum Version {
 
     private static Version current;
     private static boolean isPaper;
+    private static boolean isFolia;
 
     private final Status status;
     private final int    dataVersion;
@@ -58,6 +59,7 @@ public enum Version {
 
         current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
         isPaper = checkPaper();
+        isFolia = checkFolia();
 
         return current;
     }
@@ -83,6 +85,10 @@ public enum Version {
 
     public static boolean isPaper() {
         return isPaper;
+    }
+
+    public static boolean isFolia() {
+        return isFolia;
     }
 
     public boolean isDeprecated() {
@@ -140,12 +146,10 @@ public enum Version {
     }
 
     public static boolean checkPaper() {
-        try {
-            Class.forName("com.destroystokyo.paper.ParticleBuilder");
-            return true;
-        }
-        catch (ClassNotFoundException e) {
-            return false;
-        }
+        return Reflex.classExists("com.destroystokyo.paper.ParticleBuilder");
+    }
+
+    public static boolean checkFolia() {
+        return Reflex.classExists("io.papermc.paper.threadedregions.RegionizedServer");
     }
 }

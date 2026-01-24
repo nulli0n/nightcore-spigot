@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +45,10 @@ import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogAdapter;
 import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogListener;
 import su.nightexpress.nightcore.bridge.paper.event.PaperChatListener;
 import su.nightexpress.nightcore.bridge.paper.event.PaperEventAdapter;
+import su.nightexpress.nightcore.bridge.paper.scheduler.FoliaScheduler;
+import su.nightexpress.nightcore.bridge.paper.scheduler.PaperScheduler;
 import su.nightexpress.nightcore.bridge.paper.text.PaperTextComponentAdapter;
+import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Lists;
@@ -59,9 +63,9 @@ import java.util.stream.Collectors;
 
 public class PaperBridge implements Software {
 
-    private DialogAdapter<?>             dialogAdapter;
+    private DialogAdapter<?>          dialogAdapter;
     private PaperTextComponentAdapter textComponentAdapter;
-    private PaperEventAdapter eventAdapter;
+    private PaperEventAdapter         eventAdapter;
 
     private Set<DataComponentType> commonComponentsToHide;
 
@@ -103,6 +107,12 @@ public class PaperBridge implements Software {
     @NotNull
     public PaperEventAdapter eventAdapter() {
         return this.eventAdapter;
+    }
+
+    @Override
+    @NotNull
+    public AdaptedScheduler getScheduler(@NotNull JavaPlugin plugin) {
+        return Version.isFolia() ? new FoliaScheduler(plugin) : new PaperScheduler(plugin);
     }
 
     @Override
