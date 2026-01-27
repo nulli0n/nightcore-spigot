@@ -1,12 +1,12 @@
 package su.nightexpress.nightcore.util.bridge;
 
 import org.bukkit.Material;
+import org.bukkit.Nameable;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -148,9 +148,9 @@ public interface Software {
     void kick(@NotNull Player player, @Nullable NightComponent component);
 
 
-    void setCustomName(@NotNull Entity entity, @NotNull NightComponent component);
+    void setCustomName(@NotNull Nameable entity, @Nullable NightComponent component);
 
-    @Nullable String getEntityName(@NotNull Entity entity);
+    @Nullable String getCustomName(@NotNull Nameable entity);
 
 
     @NotNull ItemStack setType(@NotNull ItemStack itemStack, @NotNull Material material);
@@ -176,6 +176,9 @@ public interface Software {
     void hideComponents(@NotNull ItemStack itemStack);
 
     void hideComponents(@NotNull ItemStack itemStack, @NotNull Set<String> componentNames);
+
+
+
 
 
 

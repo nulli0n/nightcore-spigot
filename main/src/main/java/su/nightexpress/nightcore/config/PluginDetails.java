@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
 import su.nightexpress.nightcore.NightPlugin;
+import su.nightexpress.nightcore.configuration.ConfigProperty;
+import su.nightexpress.nightcore.configuration.ConfigTypes;
 import su.nightexpress.nightcore.database.DatabaseConfig;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.util.text.tag.Tags;
@@ -54,9 +56,9 @@ public class PluginDetails implements Writeable {
             "Localized plugin name. It's used in messages and with internal placeholders.")
             .read(config);
 
-        String pluginPrefix = ConfigValue.create("Plugin.Prefix", defaults.getPrefix(),
+        String pluginPrefix = ConfigProperty.of(ConfigTypes.STRING_OR_EMPTY, "Plugin.Prefix", defaults.getPrefix(),
             "Plugin prefix. Used in messages."
-        ).read(config);
+        ).resolveWithDefaults(config);
 
         String[] commandAliases = ConfigValue.create("Plugin.Command_Aliases", defaults.getCommandAliases(),
             "Command names that will be registered as main plugin commands.",

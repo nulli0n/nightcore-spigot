@@ -13,12 +13,12 @@ import net.kyori.adventure.translation.Translatable;
 import net.kyori.adventure.util.Ticks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Nameable;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -56,6 +56,8 @@ import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.RegistryType;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
+import su.nightexpress.nightcore.util.text.night.NightMessage;
+import su.nightexpress.nightcore.util.text.night.tag.TagPool;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -183,7 +185,7 @@ public class PaperBridge implements Software {
 
     @NotNull
     public static String serializeComponent(@NotNull Component component) {
-        return MiniMessage.miniMessage().serialize(component);
+        return NightMessage.stripTags(MiniMessage.miniMessage().serialize(component), TagPool.NO_INVERTED_DECORATIONS);
     }
 
     @Override
@@ -318,13 +320,13 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {
-        entity.customName(adaptComponent(component));
+    public void setCustomName(@NotNull Nameable entity, @Nullable NightComponent component) {
+        entity.customName(component == null ? null : this.adaptComponent(component));
     }
 
     @Override
     @Nullable
-    public String getEntityName(@NotNull Entity entity) {
+    public String getCustomName(@NotNull Nameable entity) {
         Component component = entity.customName();
         return component == null ? null : serializeComponent(component);
     }

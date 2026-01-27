@@ -1,10 +1,7 @@
 package su.nightexpress.nightcore.bridge.spigot;
 
 import net.md_5.bungee.api.dialog.Dialog;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Translatable;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -12,7 +9,6 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -31,10 +27,10 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
+import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
-import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBar;
 import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBarAdapter;
@@ -321,13 +317,13 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    public void setCustomName(@NotNull Entity entity, @NotNull NightComponent component) {
-        entity.setCustomName(component.toLegacy());
+    public void setCustomName(@NotNull Nameable entity, @Nullable NightComponent component) {
+        entity.setCustomName(component == null ? null : component.toLegacy());
     }
 
     @Override
     @Nullable
-    public String getEntityName(@NotNull Entity entity) {
+    public String getCustomName(@NotNull Nameable entity) {
         String name = entity.getCustomName();
         return name == null ? null : LegacyColors.plainColors(name);
     }

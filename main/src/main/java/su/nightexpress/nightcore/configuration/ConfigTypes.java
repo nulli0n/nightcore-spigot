@@ -34,10 +34,11 @@ public class ConfigTypes {
     public static final ConfigType<Long>   LONG       = ConfigType.of(FileConfig::getLong, FileConfig::set);
     public static final ConfigType<long[]> LONG_ARRAY = ConfigType.of(FileConfig::getLongArray, FileConfig::setArray);
 
-    public static final ConfigType<String>       STRING       = ConfigType.of(FileConfig::getString, FileConfig::set);
-    public static final ConfigType<String[]>     STRING_ARRAY = ConfigType.of(FileConfig::getStringArray, FileConfig::setStringArray);
-    public static final ConfigType<List<String>> STRING_LIST  = ConfigType.of(FileConfig::getStringList, FileConfig::set);
-    public static final ConfigType<Set<String>>  STRING_SET   = ConfigType.of(FileConfig::getStringSet, FileConfig::set);
+    public static final ConfigType<String>       STRING          = ConfigType.of(FileConfig::getString, FileConfig::set);
+    public static final ConfigType<String>       STRING_OR_EMPTY = ConfigType.of(FileConfig::getStringOrEmpty, FileConfig::set);
+    public static final ConfigType<String[]>     STRING_ARRAY    = ConfigType.of(FileConfig::getStringArray, FileConfig::setStringArray);
+    public static final ConfigType<List<String>> STRING_LIST     = ConfigType.of(FileConfig::getStringList, FileConfig::set);
+    public static final ConfigType<Set<String>>  STRING_SET      = ConfigType.of(FileConfig::getStringSet, FileConfig::set);
 
     public static final ConfigType<List<String>> STRING_LIST_LOWER_CASE = forList(LowerCase.INTERNAL::apply, key -> key);
     public static final ConfigType<Set<String>>  STRING_SET_LOWER_CASE  = forSet(LowerCase.INTERNAL::apply, key -> key);

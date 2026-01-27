@@ -22,7 +22,6 @@ import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
-import su.nightexpress.nightcore.util.text.night.tag.TagPool;
 
 import java.net.URI;
 import java.net.URL;
@@ -128,8 +127,7 @@ public class ItemUtil {
 
     @Nullable
     public static String getCustomNameSerialized(@NotNull ItemMeta meta) {
-        String name = Software.get().getCustomName(meta);
-        return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
+        return Software.get().getCustomName(meta);
     }
 
     public static void setCustomName(@NotNull ItemStack itemStack, @NotNull String name) {
@@ -152,8 +150,7 @@ public class ItemUtil {
 
     @Nullable
     public static String getItemNameSerialized(@NotNull ItemMeta meta) {
-        String name = Software.get().getItemName(meta);
-        return name == null ? null : NightMessage.stripTags(name, TagPool.NO_INVERTED_DECORATIONS); // MiniMessage moment
+        return Software.get().getItemName(meta);
     }
 
     public static void setItemName(@NotNull ItemStack itemStack, @NotNull String name) {
@@ -180,7 +177,7 @@ public class ItemUtil {
     @NotNull
     public static List<String> getLoreSerialized(@NotNull ItemMeta meta) {
         List<String> lore = Software.get().getLore(meta);
-        return lore == null ? new ArrayList<>() : Lists.modify(lore, line -> NightMessage.stripTags(line, TagPool.NO_INVERTED_DECORATIONS)); // MiniMessage moment
+        return lore == null ? new ArrayList<>() : lore;
     }
 
     public static void setLore(@NotNull ItemStack itemStack, @NotNull List<String> lore) {
@@ -208,7 +205,7 @@ public class ItemUtil {
 
     @Deprecated
     private static void hideAttributes(@NotNull ItemMeta meta, @NotNull Material material) {
-        if (Version.isBehind(Version.MC_1_21_5) && Version.isAtLeast(Version.MC_1_20_6)) {
+        if (Version.isBehind(Version.MC_1_21_5)) {
             if (material.isItem()) {
                 EquipmentSlot slot = material.getEquipmentSlot();
                 material.getDefaultAttributeModifiers(slot).forEach((attribute, modifier) -> {

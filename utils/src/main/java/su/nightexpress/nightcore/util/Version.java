@@ -28,10 +28,10 @@ public enum Version {
     UNKNOWN("Unknown", 10000),
     ;
 
-    private static Version current;
-    private static boolean isPaper;
-    private static boolean isFolia;
+    private static final boolean isPaper = checkPaper();
+    private static final boolean isFolia = checkFolia();
 
+    private static Version current;
     private final Status status;
     private final int    dataVersion;
     private final String localized;
@@ -58,8 +58,6 @@ public enum Version {
         String exact = bukkitVersion.split("-")[0];
 
         current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
-        isPaper = checkPaper();
-        isFolia = checkFolia();
 
         return current;
     }
@@ -145,11 +143,11 @@ public enum Version {
         return this == Version.getCurrent();
     }
 
-    public static boolean checkPaper() {
+    private static boolean checkPaper() {
         return Reflex.classExists("com.destroystokyo.paper.ParticleBuilder");
     }
 
-    public static boolean checkFolia() {
+    private static boolean checkFolia() {
         return Reflex.classExists("io.papermc.paper.threadedregions.RegionizedServer");
     }
 }

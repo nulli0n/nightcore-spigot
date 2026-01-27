@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore.util;
 
+import org.bukkit.Nameable;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
@@ -11,7 +12,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.Engine;
+import su.nightexpress.nightcore.util.bridge.Software;
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.Collections;
@@ -26,20 +28,37 @@ public class EntityUtil {
     };
 
     public static int nextEntityId() {
-        return Engine.software().nextEntityId();
+        return Software.get().nextEntityId();
     }
 
 
-    public static void setCustomName(@NotNull Entity entity, @NotNull String name) {
-        Engine.software().setCustomName(entity, NightMessage.parse(name));
+    public static void setCustomName(@NotNull Entity entity, @Nullable String name) {
+        setCustomName((Nameable) entity, name);
+    }
+
+    public static void setCustomName(@NotNull Entity entity, @Nullable NightComponent name) {
+        setCustomName((Nameable) entity, name);
     }
 
     @NotNull
     public static String getNameSerialized(@NotNull Entity entity) {
-        String customName = Engine.software().getEntityName(entity);
+        String customName = getNameSerialized((Nameable) entity);
         if (customName != null) return customName;
 
         return LangUtil.getSerializedName(entity.getType());
+    }
+
+    public static void setCustomName(@NotNull Nameable nameable, @Nullable String name) {
+        setCustomName(nameable, name == null ? null : NightMessage.parse(name));
+    }
+
+    public static void setCustomName(@NotNull Nameable nameable, @Nullable NightComponent name) {
+        Software.get().setCustomName(nameable, name);
+    }
+
+    @Nullable
+    public static String getNameSerialized(@NotNull Nameable nameable) {
+        return Software.get().getCustomName(nameable);
     }
 
 

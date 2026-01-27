@@ -296,6 +296,12 @@ public class FileConfig extends YamlConfiguration {
         return section == null ? Collections.emptySet() : section.getKeys(false);
     }
 
+    @NotNull
+    public String getStringOrEmpty(@NotNull String path) {
+        String str = super.getString(path);
+        return str == null ? "" : str;
+    }
+
     @Override
     @Nullable
     public String getString(@NotNull String path) {
