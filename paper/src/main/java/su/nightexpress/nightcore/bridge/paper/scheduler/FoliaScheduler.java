@@ -68,12 +68,18 @@ public class FoliaScheduler implements AdaptedScheduler {
     @Override
     @NotNull
     public FoliaScheduledTask runTaskLater(@NotNull Runnable runnable, long delay) {
+        if (delay <= 0L) {
+            return this.runTask(runnable);
+        }
         return new FoliaScheduledTask(this.globalRegionScheduler.runDelayed(this.plugin, task -> runnable.run(), delay));
     }
 
     @Override
     @NotNull
     public FoliaScheduledTask runTaskLaterAsync(@NotNull Runnable runnable, long delay) {
+        if (delay <= 0L) {
+            return this.runTaskAsync(runnable);
+        }
         long delayMs = ticksToMillis(delay);
 
         return new FoliaScheduledTask(this.asyncScheduler.runDelayed(this.plugin, task -> runnable.run(), delayMs, TimeUnit.MILLISECONDS));
@@ -82,16 +88,20 @@ public class FoliaScheduler implements AdaptedScheduler {
     @Override
     @NotNull
     public FoliaScheduledTask runTaskTimer(@NotNull Runnable runnable, long delay, long period) {
-        return new FoliaScheduledTask(this.globalRegionScheduler.runAtFixedRate(this.plugin, task -> runnable.run(), delay, period));
+        return new FoliaScheduledTask(this.globalRegionScheduler.runAtFixedRate(this.plugin, task -> runnable.run(), fixDelay(delay), period));
     }
 
     @Override
     @NotNull
     public FoliaScheduledTask runTaskTimerAsync(@NotNull Runnable runnable, long delay, long period) {
-        long delayMs = ticksToMillis(delay);
+        long delayMs = fixDelay(ticksToMillis(delay));
         long periodMs = ticksToMillis(period);
 
         return new FoliaScheduledTask(this.asyncScheduler.runAtFixedRate(this.plugin, task -> runnable.run(), delayMs, periodMs, TimeUnit.MILLISECONDS));
+    }
+
+    private static long fixDelay(long delay) {
+        return delay <= 0 ? 1L : delay;
     }
 
     private static long ticksToMillis(long ticks) {

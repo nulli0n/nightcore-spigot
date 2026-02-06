@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class UpsertStatement<T> implements BatchStatement<T> {
 
@@ -113,6 +114,16 @@ public abstract class UpsertStatement<T> implements BatchStatement<T> {
         @NotNull
         public B setString(@NotNull String column, @NotNull PropertyAccessor<T, String> accessor) {
             return this.set(column, accessor, ParameterBinder.STRING);
+        }
+
+        @NotNull
+        public B setUUID(@NotNull Column<?> column, @NotNull PropertyAccessor<T, UUID> accessor) {
+            return this.set(column, accessor, ParameterBinder.UUID);
+        }
+
+        @NotNull
+        public B setUUID(@NotNull String column, @NotNull PropertyAccessor<T, UUID> accessor) {
+            return this.set(column, accessor, ParameterBinder.UUID);
         }
 
         @NotNull

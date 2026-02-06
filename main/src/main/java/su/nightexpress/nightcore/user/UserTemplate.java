@@ -15,7 +15,12 @@ public abstract class UserTemplate {
     protected String name;
     protected boolean dirty;
 
+    @Deprecated
     public UserTemplate(@NotNull UUID uuid, @NotNull String name, long dateCreated, long lastOnline) {
+        this(uuid, name);
+    }
+
+    public UserTemplate(@NotNull UUID uuid, @NotNull String name) {
         this.uuid = uuid;
         this.name = name;
     }
@@ -49,6 +54,11 @@ public abstract class UserTemplate {
     @NotNull
     public final UUID getId() {
         return this.uuid;
+    }
+
+    @NotNull
+    public final String getIdString() {
+        return this.uuid.toString();
     }
 
     @NotNull

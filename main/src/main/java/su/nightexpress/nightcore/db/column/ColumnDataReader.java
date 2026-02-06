@@ -8,10 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @FunctionalInterface
 public interface ColumnDataReader<R> {
@@ -71,8 +68,22 @@ public interface ColumnDataReader<R> {
                 return null;
             }
 
-            Type mapType = TypeToken.getParameterized(List.class, valType).getType();
-            return gson.fromJson(jsonString, mapType);
+            Type listType = TypeToken.getParameterized(List.class, valType).getType();
+            return gson.fromJson(jsonString, listType);
+        };
+    }
+
+    @NotNull
+    static <V> ColumnDataReader<Set<V>> jsonSet(@NotNull Gson gson, @NotNull Class<V> valType) {
+        return (resultSet, column) -> {
+            String jsonString = resultSet.getString(column);
+
+            if (resultSet.wasNull() || jsonString == null) {
+                return null;
+            }
+
+            Type setType = TypeToken.getParameterized(Set.class, valType).getType();
+            return gson.fromJson(jsonString, setType);
         };
     }
 

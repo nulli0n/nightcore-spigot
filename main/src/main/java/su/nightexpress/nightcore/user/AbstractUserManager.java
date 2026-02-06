@@ -71,7 +71,9 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         }
 
         this.repository.getById(user.getId()).ifPresent(cached -> {
-            this.synchronize(user, cached);
+            if (!cached.isDirty()) {
+                this.synchronize(user, cached);
+            }
         });
     }
 

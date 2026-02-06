@@ -6,7 +6,7 @@
     <parent>
         <groupId>su.nightexpress.nightcore</groupId>
         <artifactId>nightcore</artifactId>
-        <version>2.13.2</version>
+        <version>2.13.3</version>
     </parent>
 
     <artifactId>main</artifactId>
@@ -20,7 +20,7 @@
     <repositories>
         <repository>
             <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
 
         <repository>
@@ -51,11 +51,6 @@
         <repository>
             <id>opencollab</id>
             <url>https://repo.opencollab.dev/maven-releases/</url>
-        </repository>
-
-        <repository>
-            <id>codemc-repo</id>
-            <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
 
         <repository>
@@ -133,25 +128,25 @@
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>bridge</artifactId>
-            <version>2.13.2</version>
+            <version>2.13.3</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>utils</artifactId>
-            <version>2.13.2</version>
+            <version>2.13.3</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>paper</artifactId>
-            <version>2.13.2</version>
+            <version>2.13.3</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>spigot</artifactId>
-            <version>2.13.2</version>
+            <version>2.13.3</version>
         </dependency>
 
         <dependency>
@@ -330,13 +325,13 @@
         <dependency>
             <groupId>net.momirealms</groupId>
             <artifactId>craft-engine-core</artifactId>
-            <version>0.0.66</version>
+            <version>0.0.67</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.momirealms</groupId>
             <artifactId>craft-engine-bukkit</artifactId>
-            <version>0.0.66</version>
+            <version>0.0.67</version>
             <scope>provided</scope>
         </dependency>
 

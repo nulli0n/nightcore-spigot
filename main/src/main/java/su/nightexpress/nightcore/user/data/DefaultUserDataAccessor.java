@@ -67,43 +67,51 @@ public class DefaultUserDataAccessor<U extends UserTemplate> implements UserData
     @Override
     @NotNull
     public Optional<U> loadByName(@NotNull String name) {
-        return this.databaseManager.selectFirst(this.dataSchema.getUsersTable(), this.dataSchema.getUserSelectStatement(), Wheres.where(this.dataSchema.getUserNameColumn(), Operator.EQUALS_IGNORE_CASE, o -> name));
+        return this.databaseManager.selectFirst(this.dataSchema.getUsersTable(), this.dataSchema.getUserSelectStatement(),
+            Wheres.where(this.dataSchema.getUserNameColumn(), Operator.EQUALS_IGNORE_CASE, o -> name));
     }
 
     @Override
     @NotNull
     public Optional<U> loadById(@NotNull UUID uuid) {
-        return this.databaseManager.selectFirst(this.dataSchema.getUsersTable(), this.dataSchema.getUserSelectStatement(), Wheres.where(this.dataSchema.getUserIdColumn(), Operator.EQUALS, o -> uuid));
+        return this.databaseManager.selectFirst(this.dataSchema.getUsersTable(), this.dataSchema.getUserSelectStatement(),
+            Wheres.whereUUID(this.dataSchema.getUserIdColumn(), o -> uuid));
     }
 
     @Override
     public boolean isExists(@NotNull String name) {
-        return this.databaseManager.contains(this.dataSchema.getUsersTable(), Wheres.where(this.dataSchema.getUserNameColumn(), Operator.EQUALS_IGNORE_CASE, o -> name));
+        return this.databaseManager.contains(this.dataSchema.getUsersTable(),
+            Wheres.where(this.dataSchema.getUserNameColumn(), Operator.EQUALS_IGNORE_CASE, o -> name));
     }
 
     @Override
     public boolean isExists(@NotNull UUID uuid) {
-        return this.databaseManager.contains(this.dataSchema.getUsersTable(), Wheres.where(this.dataSchema.getUserIdColumn(), Operator.EQUALS, o -> uuid));
+        return this.databaseManager.contains(this.dataSchema.getUsersTable(),
+            Wheres.whereUUID(this.dataSchema.getUserIdColumn(), o -> uuid));
     }
 
     @Override
     public void update(@NotNull U user) {
-        this.databaseManager.update(this.dataSchema.getUsersTable(), this.dataSchema.getUserUpdateStatement(), user, Wheres.where(this.dataSchema.getUserIdColumn(), Operator.EQUALS, UserTemplate::getId));
+        this.databaseManager.update(this.dataSchema.getUsersTable(), this.dataSchema.getUserUpdateStatement(), user,
+            Wheres.whereUUID(this.dataSchema.getUserIdColumn(), UserTemplate::getId));
     }
 
     @Override
     public void update(@NotNull Collection<U> collection) {
-        this.databaseManager.update(this.dataSchema.getUsersTable(), this.dataSchema.getUserUpdateStatement(), collection, Wheres.where(this.dataSchema.getUserIdColumn(), Operator.EQUALS, UserTemplate::getId));
+        this.databaseManager.update(this.dataSchema.getUsersTable(), this.dataSchema.getUserUpdateStatement(), collection,
+            Wheres.whereUUID(this.dataSchema.getUserIdColumn(), UserTemplate::getId));
     }
 
     @Override
     public void tinyUpdate(@NotNull U user) {
-        this.databaseManager.update(this.dataSchema.getUsersTable(), this.dataSchema.getUserTinyUpdateStatement(), user, Wheres.where(this.dataSchema.getUserIdColumn(), Operator.EQUALS, UserTemplate::getId));
+        this.databaseManager.update(this.dataSchema.getUsersTable(), this.dataSchema.getUserTinyUpdateStatement(), user,
+            Wheres.whereUUID(this.dataSchema.getUserIdColumn(), UserTemplate::getId));
     }
 
     @Override
     public void tinyUpdate(@NotNull Collection<U> collection) {
-        this.databaseManager.update(this.dataSchema.getUsersTable(), this.dataSchema.getUserTinyUpdateStatement(), collection, Wheres.where(this.dataSchema.getUserIdColumn(), Operator.EQUALS, UserTemplate::getId));
+        this.databaseManager.update(this.dataSchema.getUsersTable(), this.dataSchema.getUserTinyUpdateStatement(), collection,
+            Wheres.whereUUID(this.dataSchema.getUserIdColumn(), UserTemplate::getId));
     }
 
     @Override
@@ -118,11 +126,13 @@ public class DefaultUserDataAccessor<U extends UserTemplate> implements UserData
 
     @Override
     public void deleteByName(@NotNull String name) {
-        this.databaseManager.delete(this.dataSchema.getUsersTable(), Wheres.where(this.dataSchema.getUserNameColumn(), Operator.EQUALS_IGNORE_CASE, o -> name));
+        this.databaseManager.delete(this.dataSchema.getUsersTable(),
+            Wheres.where(this.dataSchema.getUserNameColumn(), Operator.EQUALS_IGNORE_CASE, o -> name));
     }
 
     @Override
     public void deleteById(@NotNull UUID uuid) {
-        this.databaseManager.delete(this.dataSchema.getUsersTable(), Wheres.where(this.dataSchema.getUserIdColumn(), Operator.EQUALS, o -> uuid));
+        this.databaseManager.delete(this.dataSchema.getUsersTable(),
+            Wheres.whereUUID(this.dataSchema.getUserIdColumn(), o -> uuid));
     }
 }

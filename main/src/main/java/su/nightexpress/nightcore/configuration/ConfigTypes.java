@@ -15,6 +15,7 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Enums;
 import su.nightexpress.nightcore.util.LowerCase;
+import su.nightexpress.nightcore.util.RankTable;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.*;
@@ -23,28 +24,30 @@ import java.util.stream.Collectors;
 
 public class ConfigTypes {
 
-    public static final ConfigType<Boolean> BOOLEAN = ConfigType.of(FileConfig::getBoolean, FileConfig::set);
+    public static final ConfigType<Boolean> BOOLEAN = ConfigType.of(FileConfig::getBoolean);
 
-    public static final ConfigType<Integer> INT       = ConfigType.of(FileConfig::getInt, FileConfig::set);
+    public static final ConfigType<Integer> INT       = ConfigType.of(FileConfig::getInt);
     public static final ConfigType<int[]>   INT_ARRAY = ConfigType.of(FileConfig::getIntArray, FileConfig::setArray);
 
-    public static final ConfigType<Double>   DOUBLE       = ConfigType.of(FileConfig::getDouble, FileConfig::set);
+    public static final ConfigType<Double>   DOUBLE       = ConfigType.of(FileConfig::getDouble);
     public static final ConfigType<double[]> DOUBLE_ARRAY = ConfigType.of(FileConfig::getDoubleArray, FileConfig::setArray);
 
-    public static final ConfigType<Long>   LONG       = ConfigType.of(FileConfig::getLong, FileConfig::set);
+    public static final ConfigType<Long>   LONG       = ConfigType.of(FileConfig::getLong);
     public static final ConfigType<long[]> LONG_ARRAY = ConfigType.of(FileConfig::getLongArray, FileConfig::setArray);
 
-    public static final ConfigType<String>       STRING          = ConfigType.of(FileConfig::getString, FileConfig::set);
-    public static final ConfigType<String>       STRING_OR_EMPTY = ConfigType.of(FileConfig::getStringOrEmpty, FileConfig::set);
+    public static final ConfigType<String>       STRING          = ConfigType.of(FileConfig::getString);
+    public static final ConfigType<String>       STRING_OR_EMPTY = ConfigType.of(FileConfig::getStringOrEmpty);
     public static final ConfigType<String[]>     STRING_ARRAY    = ConfigType.of(FileConfig::getStringArray, FileConfig::setStringArray);
-    public static final ConfigType<List<String>> STRING_LIST     = ConfigType.of(FileConfig::getStringList, FileConfig::set);
-    public static final ConfigType<Set<String>>  STRING_SET      = ConfigType.of(FileConfig::getStringSet, FileConfig::set);
+    public static final ConfigType<List<String>> STRING_LIST     = ConfigType.of(FileConfig::getStringList);
+    public static final ConfigType<Set<String>>  STRING_SET      = ConfigType.of(FileConfig::getStringSet);
 
     public static final ConfigType<List<String>> STRING_LIST_LOWER_CASE = forList(LowerCase.INTERNAL::apply, key -> key);
     public static final ConfigType<Set<String>>  STRING_SET_LOWER_CASE  = forSet(LowerCase.INTERNAL::apply, key -> key);
 
-    public static final ConfigType<NightItem>  NIGHT_ITEM  = ConfigType.of(FileConfig::getCosmeticItem, FileConfig::set);
-    public static final ConfigType<NightSound> NIGHT_SOUND = ConfigType.of(FileConfig::readSound, FileConfig::set);
+    public static final ConfigType<NightItem>  NIGHT_ITEM  = ConfigType.of(FileConfig::getCosmeticItem);
+    public static final ConfigType<NightSound> NIGHT_SOUND = ConfigType.of(FileConfig::readSound);
+
+    public static final ConfigType<RankTable> RANK_TABLE = ConfigType.of(RankTable::read);
 
     public static final ConfigType<MenuType>         MENU_TYPE       = forNamespaced(BukkitThing::getMenuType);
     public static final ConfigType<EntityType>       ENTITY_TYPE     = forNamespaced(BukkitThing::getEntityType);
@@ -159,6 +162,31 @@ public class ConfigTypes {
             (config, path, map) -> {
                 config.set(path, null); // Clear old values
                 map.forEach((key, value) -> valType.write(config, path + "." + keyToStr.apply(key), value));
+            }
+        );
+    }
+
+
+
+    @NotNull
+    public static <V> ConfigType<Map<String, V>> forMap(@NotNull ConfigType<V> type, @NotNull Function<V, String> idExtract) {
+        return forMap(type, idExtract, key -> key);
+    }
+
+    @NotNull
+    public static <K, V> ConfigType<Map<K, V>> forMap(@NotNull ConfigType<V> valType, @NotNull Function<V, K> idExtract, @NotNull Function<K, String> keyToStr) {
+        return ConfigType.of(
+            (config, path) -> {
+                Map<K, V> map = new LinkedHashMap<>();
+                config.getSection(path).forEach(key -> {
+                    valType.read(config, path + "." + key).ifPresent(value -> map.put(idExtract.apply(value), value));
+                });
+                return map;
+            },
+
+            (config, path, map) -> {
+                config.set(path, null); // Clear old values
+                map.forEach((key, value) -> valType.write(config, path + "." + idExtract.apply(value), value));
             }
         );
     }

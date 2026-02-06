@@ -1,13 +1,13 @@
 package su.nightexpress.nightcore.db.column;
 
+import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class Column<R> {
 
@@ -94,6 +94,21 @@ public class Column<R> {
     @NotNull
     public static <R> Builder<R> json(@NotNull String name, @NotNull ColumnDataReader<R> dataReader) {
         return builder(name, ColumnDataType.JSON, dataReader);
+    }
+
+    @NotNull
+    public static <K, V> Builder<Map<K, V>> jsonMap(@NotNull String name, @NotNull Gson gson, @NotNull Class<K> keyType, @NotNull Class<V> valType) {
+        return json(name, ColumnDataReader.jsonMap(gson, keyType, valType));
+    }
+
+    @NotNull
+    public static <V> Builder<List<V>> jsonList(@NotNull String name, @NotNull Gson gson, @NotNull Class<V> valType) {
+        return json(name, ColumnDataReader.jsonList(gson, valType));
+    }
+
+    @NotNull
+    public static <V> Builder<Set<V>> jsonSet(@NotNull String name, @NotNull Gson gson, @NotNull Class<V> valType) {
+        return json(name, ColumnDataReader.jsonSet(gson, valType));
     }
 
 

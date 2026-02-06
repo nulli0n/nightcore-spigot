@@ -22,6 +22,11 @@ public class ConfigType<T> {
     }
 
     @NotNull
+    public static <T> ConfigType<T> of(@NotNull Loader<T> loader) {
+        return of(loader, FileConfig::set);
+    }
+
+    @NotNull
     public Optional<T> read(@NotNull FileConfig config, @NotNull String path) {
         if (!config.contains(path)) return Optional.empty();
 

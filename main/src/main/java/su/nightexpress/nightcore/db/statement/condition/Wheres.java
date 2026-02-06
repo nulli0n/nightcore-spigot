@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.db.statement.PropertyAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Wheres<T> {
 
@@ -25,6 +26,16 @@ public class Wheres<T> {
     @NotNull
     public static <T> Wheres<T> where(@NotNull String column, @NotNull Operator operator, @NotNull PropertyAccessor<T, Object> value) {
         return new Wheres<T>().append(column, operator, value);
+    }
+
+    @NotNull
+    public static <T> Wheres<T> whereUUID(@NotNull Column<?> column, @NotNull PropertyAccessor<T, UUID> value) {
+        return whereUUID(column.getQuotedName(), value);
+    }
+
+    @NotNull
+    public static <T> Wheres<T> whereUUID(@NotNull String column, @NotNull PropertyAccessor<T, UUID> value) {
+        return where(column, Operator.EQUALS, o -> value.access(o).toString());
     }
 
     @NotNull
