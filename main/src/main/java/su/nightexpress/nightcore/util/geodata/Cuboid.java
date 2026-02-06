@@ -64,9 +64,20 @@ public class Cuboid {
     }
 
     @NotNull
+    @Deprecated
     public Cuboid maxHeight(@NotNull World world) {
-        BlockPos min = new BlockPos(this.min.getX(), world.getMinHeight(), this.min.getZ());
-        BlockPos max = new BlockPos(this.max.getX(), world.getMaxHeight(), this.max.getZ());
+        return this.setHeight(world);
+    }
+
+    @NotNull
+    public Cuboid setHeight(@NotNull World world) {
+        return this.setHeight(world.getMinHeight(), world.getMaxHeight());
+    }
+
+    @NotNull
+    public Cuboid setHeight(int minHeight, int maxHeight) {
+        BlockPos min = new BlockPos(this.min.getX(), minHeight, this.min.getZ());
+        BlockPos max = new BlockPos(this.max.getX(), maxHeight, this.max.getZ());
 
         return new Cuboid(min, max);
     }
