@@ -6,6 +6,7 @@ import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.StringUtil;
 
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 @Deprecated
@@ -132,6 +133,37 @@ public class DatabaseConfig {
             "By default it's days of inactivity for the plugin users.")
             .read(config);
 
+        // Read values with environment variable fallback
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_TYPE") != null) {
+            try {
+                databaseType = DatabaseType.valueOf(System.getenv(defaultPrefix.toUpperCase() + "DB_TYPE").toUpperCase());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_USER") != null) {
+            mysqlUser = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_USER");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_PASS") != null) {
+            mysqlPassword = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_PASS");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_HOST") != null) {
+            mysqlHost = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_HOST");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_DATABASE") != null) {
+            mysqlBase = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_DATABASE");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_MYSQL_OPTIONS") != null) {
+            urlOptions = System.getenv(defaultPrefix.toUpperCase() + "DB_MYSQL_OPTIONS");
+        }
+
+        if (System.getenv(defaultPrefix.toUpperCase() + "_DB_SQLITE_FILE") != null) {
+            sqliteFilename = System.getenv(defaultPrefix.toUpperCase() + "DB_SQLITE_FILE");
+        }
+
         return new DatabaseConfig(
             saveInterval, syncInterval,
             databaseType, tablePrefix,
@@ -199,4 +231,5 @@ public class DatabaseConfig {
     public String getFilename() {
         return filename;
     }
+
 }
