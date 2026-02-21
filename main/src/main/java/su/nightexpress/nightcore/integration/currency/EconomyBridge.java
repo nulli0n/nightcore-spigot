@@ -6,6 +6,7 @@ import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.currency.Currency;
 import su.nightexpress.nightcore.bridge.currency.EconomyBridgeAPI;
 import su.nightexpress.nightcore.bridge.registry.NightRegistry;
+import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.integration.currency.impl.DummyCurrency;
 
 import java.util.Optional;
@@ -111,12 +112,26 @@ public class EconomyBridge {
 
     @Deprecated(forRemoval = true)
     public static boolean deposit(@NonNull Player player, @NonNull String id, double amount) {
-        deposit(player.getUniqueId(), id, amount);
-        return true;
+        return deposit(player.getUniqueId(), id, amount);
     }
 
     @Deprecated(forRemoval = true)
     public static boolean deposit(@NonNull UUID playerId, @NonNull String id, double amount) {
+        if (CurrencyId.VAULT.equals(id)) {
+            Optional<UUID> debitAccountId = getVaultDebitAccountId();
+            if (debitAccountId.isPresent()) {
+                Currency currency = getCurrency(id);
+                if (currency == null) return false;
+
+                UUID debitId = debitAccountId.get();
+                if (getBalance(debitId, id) < amount) return false;
+
+                currency.take(debitId, amount);
+                currency.give(playerId, amount);
+                return true;
+            }
+        }
+
         api.deposit(playerId, id, amount);
         return true;
     }
@@ -168,7 +183,31 @@ public class EconomyBridge {
         return true;
     }
 
+    /**
+     * When a plugin uses a separate Vault account to pay from (see CoreConfig VAULT_DEBIT_ACCOUNT),
+     * use this to resolve the account to debit. If none is set, the payer is charged as usual.
+     * When {@link #deposit(UUID, String, double)} returns false and this is present, the debit account
+     * had insufficient balance; the caller is responsible for notifying players when appropriate.
+     *
+     * @return Optional UUID of the account to debit for Vault economy; empty if the payer should be charged.
+     */
+    @NotNull
+    public static Optional<UUID> getVaultDebitAccountId() {
+        return CoreConfig.VAULT_DEBIT_ACCOUNT.get();
+    }
 
+    /**
+     * Resolves the account to debit for a Vault economy payment: the configured debit account if set,
+     * otherwise the payer. Use this before {@link #hasEnough(UUID, String, double)} and
+     * {@link #withdraw(UUID, String, double)} so the correct account is checked and charged.
+     *
+     * @param payerId the player initiating the payment (used when no debit account is configured).
+     * @return UUID of the account to debit.
+     */
+    @NotNull
+    public static UUID getVaultDebitAccountIdOrPayer(@NotNull UUID payerId) {
+        return getVaultDebitAccountId().orElse(payerId);
+    }
 
     @Deprecated(forRemoval = true)
     public static boolean hasCurrency() {
