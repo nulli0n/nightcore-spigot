@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.integration.currency.CurrencyId;
 import su.nightexpress.nightcore.integration.currency.CurrencySettings;
+import su.nightexpress.nightcore.integration.currency.EconomyBridge;
 import su.nightexpress.nightcore.integration.currency.type.IncompleteCurrency;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.ServerUtils;
@@ -57,14 +58,18 @@ public class VaultEconomyCurrency extends IncompleteCurrency {
 
     @Override
     public void give(@NotNull Player player, double amount) {
-        this.economy().ifPresent(economy -> economy.depositPlayer(player, amount));
+        this.give(player.getUniqueId(), amount);
     }
 
     @Override
     public void give(@NotNull UUID playerId, double amount) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerId);
-
-        this.economy().ifPresent(economy -> economy.depositPlayer(offlinePlayer, amount));
+        Optional<UUID> debitAccountId = EconomyBridge.getVaultDebitAccountId();
+        if (debitAccountId.isPresent()) {
+            UUID debitId = debitAccountId.get();
+            if (this.getBalance(debitId) < amount) return;
+            this.take(debitId, amount);
+        }
+        this.economy().ifPresent(economy -> economy.depositPlayer(Bukkit.getOfflinePlayer(playerId), amount));
     }
 
     @Override
