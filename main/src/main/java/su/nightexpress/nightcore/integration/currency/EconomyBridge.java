@@ -191,7 +191,7 @@ public class EconomyBridge {
      *
      * @return Optional UUID of the account to debit for Vault economy; empty if the payer should be charged.
      */
-    @NotNull
+    @NonNull
     public static Optional<UUID> getVaultDebitAccountId() {
         return CoreConfig.VAULT_DEBIT_ACCOUNT.get();
     }
@@ -204,8 +204,8 @@ public class EconomyBridge {
      * @param payerId the player initiating the payment (used when no debit account is configured).
      * @return UUID of the account to debit.
      */
-    @NotNull
-    public static UUID getVaultDebitAccountIdOrPayer(@NotNull UUID payerId) {
+    @NonNull
+    public static UUID getVaultDebitAccountIdOrPayer(@NonNull UUID payerId) {
         return getVaultDebitAccountId().orElse(payerId);
     }
 
