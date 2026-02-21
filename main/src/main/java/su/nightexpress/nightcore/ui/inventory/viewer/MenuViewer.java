@@ -106,10 +106,14 @@ public class MenuViewer {
         this.refresh();
     }
 
+    public void flushView() {
+        this.currentView = null;
+    }
+
     public void refresh() {
         if (this.currentMenu == null) return;
 
-        this.currentView = null; // Render inventory from scratch.
+        this.flushView(); // Render inventory from scratch.
         this.renderMenu(this.currentMenu, this.currentObject);
     }
 

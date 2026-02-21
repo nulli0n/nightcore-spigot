@@ -28,7 +28,7 @@ public class StringArgumentType implements ArgumentType<String>, SuggestionsProv
     @Override
     @NotNull
     public List<String> suggest(@NotNull ArgumentReader reader, @NotNull CommandContext context) {
-        return Lists.newList("<value>");
+        return Lists.newList("...");
     }
 
     public boolean isGreedy() {

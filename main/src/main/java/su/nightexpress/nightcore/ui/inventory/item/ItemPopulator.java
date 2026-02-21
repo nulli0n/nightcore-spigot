@@ -17,6 +17,11 @@ public record ItemPopulator<T>(int[] slots,
                                @NotNull Function<T, MenuItemAction> actionProvider) {
 
     @NotNull
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
+    }
+
+    @NotNull
     public static <T> Builder<T> builder(@NotNull Class<T> type) {
         return new Builder<>();
     }

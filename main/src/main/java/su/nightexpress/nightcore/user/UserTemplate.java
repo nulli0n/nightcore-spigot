@@ -2,8 +2,9 @@ package su.nightexpress.nightcore.user;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -16,11 +17,11 @@ public abstract class UserTemplate {
     protected boolean dirty;
 
     @Deprecated
-    public UserTemplate(@NotNull UUID uuid, @NotNull String name, long dateCreated, long lastOnline) {
+    public UserTemplate(@NonNull UUID uuid, @NonNull String name, long dateCreated, long lastOnline) {
         this(uuid, name);
     }
 
-    public UserTemplate(@NotNull UUID uuid, @NotNull String name) {
+    public UserTemplate(@NonNull UUID uuid, @NonNull String name) {
         this.uuid = uuid;
         this.name = name;
     }
@@ -41,32 +42,45 @@ public abstract class UserTemplate {
         return this.player().isPresent();
     }
 
-    @NotNull
-    public final OfflinePlayer offlinePlayer() {
-        return Bukkit.getOfflinePlayer(this.getId());
+    public boolean isHolder(@NonNull CommandSender sender) {
+        return sender instanceof Player player && this.isHolder(player.getUniqueId());
+    }
+    
+    public boolean isHolder(@NonNull OfflinePlayer player) {
+        return this.isHolder(player.getUniqueId());
+    }
+    
+    public boolean isHolder(@NonNull UUID playerId) {
+        return this.uuid.equals(playerId);
     }
 
-    @NotNull
+    @NonNull
+    public final OfflinePlayer offlinePlayer() {
+        return Bukkit.getOfflinePlayer(this.uuid);
+    }
+
+    @NonNull
     public final Optional<Player> player() {
         return Optional.ofNullable(Bukkit.getPlayer(this.uuid));
     }
 
-    @NotNull
+    @NonNull
     public final UUID getId() {
         return this.uuid;
     }
 
-    @NotNull
+    @NonNull
+    @Deprecated
     public final String getIdString() {
         return this.uuid.toString();
     }
 
-    @NotNull
+    @NonNull
     public final String getName() {
         return this.name;
     }
 
-    public final void setName(@NotNull String name) {
+    public final void setName(@NonNull String name) {
         this.name = name;
     }
 }

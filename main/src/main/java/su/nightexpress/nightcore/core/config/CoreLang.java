@@ -1,15 +1,19 @@
 package su.nightexpress.nightcore.core.config;
 
+import org.bukkit.damage.DamageType;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.entry.*;
 import su.nightexpress.nightcore.locale.message.MessageData;
+import su.nightexpress.nightcore.util.bridge.RegistryType;
 
 import static su.nightexpress.nightcore.util.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.*;
 
 public final class CoreLang implements LangContainer {
+
+    public static final RegistryLocale<DamageType> DAMAGE_TYPE = LangEntry.builder("Bukkit.DamageType").registry(RegistryType.DAMAGE_TYPE);
 
     public static final TextLocale COMMAND_ARGUMENT_NAME_GENERIC     = LangEntry.builder("Command.ArgumentName.Generic").text("value");
     public static final TextLocale COMMAND_ARGUMENT_NAME_TYPE        = LangEntry.builder("Command.ArgumentName.Type").text("type");
@@ -22,9 +26,14 @@ public final class CoreLang implements LangContainer {
     public static final TextLocale COMMAND_ARGUMENT_NAME_BLOCK_TYPE  = LangEntry.builder("Command.ArgumentName.BlockType").text("blockType");
     public static final TextLocale COMMAND_ARGUMENT_NAME_ENCHANTMENT = LangEntry.builder("Command.ArgumentName.Enchantment").text("enchantment");
 
-    public static final TextLocale COMMAND_USAGE_REQUIRED_ARGUMENT = LangEntry.builder("Command.Usage.RequiredArgument").text(SOFT_RED.wrap("<" + GENERIC_NAME + ">"));
-    public static final TextLocale COMMAND_USAGE_OPTIONAL_ARGUMENT = LangEntry.builder("Command.Usage.OptionalArgument").text(SOFT_YELLOW.wrap("[" + GENERIC_NAME + "]"));
-    public static final TextLocale COMMAND_USAGE_OPTIONAL_FLAG     = LangEntry.builder("Command.Usage.OptionalFlag").text(GRAY.wrap("[" + GENERIC_NAME + "]"));
+    public static final TextLocale COMMAND_USAGE_REQUIRED_ARGUMENT = LangEntry.builder("Command.Usage.RequiredArgument")
+        .text(COLOR.with("#FF6B6B").and(SHADOW_1_0.with("#9C172B")).wrap("<" + GENERIC_NAME + ">"));
+
+    public static final TextLocale COMMAND_USAGE_OPTIONAL_ARGUMENT = LangEntry.builder("Command.Usage.OptionalArgument")
+        .text(COLOR.with("#4ADE80").and(SHADOW_1_0.with("#15803D")).wrap("[" + GENERIC_NAME + "]"));
+
+    public static final TextLocale COMMAND_USAGE_OPTIONAL_FLAG     = LangEntry.builder("Command.Usage.OptionalFlag")
+        .text(COLOR.with("#60A5FA").and(SHADOW_1_0.with("#1D4ED8")).wrap("[" + GENERIC_NAME + "]"));
 
     public static final TextLocale COMMAND_HELP_DESC      = LangEntry.builder("Command.Help.Desc").text("List all sub-commands.");
     public static final TextLocale COMMAND_RELOAD_DESC    = LangEntry.builder("Command.Reload.Desc").text("Reload the plugin.");
@@ -71,8 +80,8 @@ public final class CoreLang implements LangContainer {
     public static final MessageLocale COMMAND_EXECUTION_MISSING_ARGUMENTS = LangEntry.builder("Command.Execution.MissingArguments")
         .message(MessageData.CHAT_NO_PREFIX,
             " ",
-            RED.wrap("Error: ") + GRAY.wrap("Missing required arguments!"),
-            RED.wrap("Usage: ") + SOFT_YELLOW.wrap("/" + GENERIC_COMMAND),
+            RED.wrap("Error: ") + COLOR.with("#D9D9D9").and(SHADOW_1_0.with("#5D5D5D")).wrap("Missing required arguments!"),
+            RED.wrap("Usage: ") + COLOR.with("#FCC549").and(SHADOW_1_0.with("#B45115")).wrap("/" + GENERIC_COMMAND),
             " "
         );
 
@@ -80,17 +89,20 @@ public final class CoreLang implements LangContainer {
 
     public static final MessageLocale HELP_PAGE_GENERAL = LangEntry.builder("HelpPage.General")
         .message(MessageData.CHAT_NO_PREFIX,
+            COLOR.with("#FCE491").and(SHADOW_1_0.with("#C5741A")).and(STRIKETHROUGH).wrap(" ".repeat(60)),
+            COLOR.with("#FCC549").and(SHADOW_1_0.with("#B45115")).wrap("  " + BOLD.wrap(GENERIC_NAME + " Commands")),
             " ",
-            GRAY.wrap("  " + YELLOW.and(BOLD).wrap(GENERIC_NAME) + " - " + YELLOW.and(BOLD).wrap("Commands:")),
-            " ",
-            GRAY.wrap("  " + RED.and(BOLD).wrap("<>") + " - Required, " + GREEN.and(BOLD).wrap("[]") + " - Optional."),
+            "  " + SPRITE_GUI.apply("icon/info") + COLOR.with("#D9D9D9").and(SHADOW_1_0.with("#5D5D5D")).wrap("Hover over a command to see description."),
             " ",
             GENERIC_ENTRY,
-            " "
+            COLOR.with("#FCE491").and(SHADOW_1_0.with("#C5741A")).and(STRIKETHROUGH).wrap(" ".repeat(60))
         );
 
     public static final TextLocale HELP_PAGE_ENTRY = LangEntry.builder("HelpPage.Entry")
-        .text("  " + SOFT_YELLOW.wrap("/" + GENERIC_COMMAND) + GRAY.wrap(" - " + GENERIC_DESCRIPTION));
+        .text(
+            SHOW_TEXT.with(COLOR.with("#D9D9D9").and(SHADOW_1_0.with("#5D5D5D")).wrap(GENERIC_DESCRIPTION)).wrap(
+            COLOR.with("#FCC549").and(SHADOW_1_0.with("#B45115")).wrap("  • /" + GENERIC_COMMAND))
+        );
 
     public static final MessageLocale PLUGIN_RELOADED = LangEntry.builder("Plugin.Reloaded")
         .chatMessage(GRAY.wrap("Plugin " + GREEN.wrap("reloaded") + "!"));

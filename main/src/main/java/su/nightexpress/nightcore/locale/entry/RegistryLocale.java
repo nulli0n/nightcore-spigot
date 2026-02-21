@@ -1,9 +1,10 @@
 package su.nightexpress.nightcore.locale.entry;
 
 import org.bukkit.Keyed;
-import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.config.ConfigValue;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.configuration.ConfigType;
+import su.nightexpress.nightcore.configuration.ConfigTypes;
 import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.LangValue;
 import su.nightexpress.nightcore.util.BukkitThing;
@@ -15,17 +16,22 @@ import java.util.Map;
 
 public class RegistryLocale<E extends Keyed> extends LangEntry<RegistryLocale.Value<E>> {
 
-    public RegistryLocale(@NotNull RegistryType<E> registry, @NotNull String path, @NotNull RegistryLocale.Value<E> defaultValue) {
-        super((config, path1) -> Value.load(config, path1, registry), path, defaultValue);
+    public RegistryLocale(@NonNull ConfigType<Value<E>> type, @NonNull String path, RegistryLocale.@NonNull Value<E> defaultValue) {
+        super(type, path, defaultValue);
     }
 
-    @NotNull
-    public static <E extends Keyed> RegistryLocale<E> create(@NotNull String path, @NotNull RegistryType<E> registry) {
-        return new RegistryLocale<>(registry, path, new Value<>(new HashMap<>()));
+    @NonNull
+    public static <E extends Keyed> RegistryLocale<E> create(@NonNull String path, @NonNull RegistryType<E> registry) {
+        return new RegistryLocale<>(createType(registry), path, new Value<>(new HashMap<>()));
+    }
+    
+    @NonNull
+    private static <E extends Keyed> ConfigType<Value<E>> createType(@NonNull RegistryType<E> registryType) {
+        return ConfigType.of((config, path1) -> Value.load(config, path1, registryType), FileConfig::set);
     }
 
-    @NotNull
-    public String getLocalized(@NotNull E value) {
+    @NonNull
+    public String getLocalized(@NonNull E value) {
         return this.value.getLocalized(value);
     }
 
@@ -33,19 +39,19 @@ public class RegistryLocale<E extends Keyed> extends LangEntry<RegistryLocale.Va
 
         private final Map<String, String> localeMap;
 
-        public Value(@NotNull Map<String, String> localeMap) {
+        public Value(@NonNull Map<String, String> localeMap) {
             this.localeMap = localeMap;
         }
 
-        @NotNull
-        public static <E extends Keyed> Value<E> load(@NotNull FileConfig config, @NotNull String path, @NotNull RegistryType<E> registry) {
+        @NonNull
+        public static <E extends Keyed> Value<E> load(@NonNull FileConfig config, @NonNull String path, @NonNull RegistryType<E> registry) {
             Map<String, String> localeMap = new HashMap<>();
 
             BukkitThing.getAll(registry).forEach(keyed -> {
                 String value = BukkitThing.getValue(keyed);
                 String localized = StringUtil.capitalizeUnderscored(value);
 
-                String text = ConfigValue.create(path + "." + value, localized).read(config);
+                String text = config.get(ConfigTypes.STRING, path + "." + value, localized);
                 localeMap.put(value, text);
             });
 
@@ -53,14 +59,14 @@ public class RegistryLocale<E extends Keyed> extends LangEntry<RegistryLocale.Va
         }
 
         @Override
-        public void write(@NotNull FileConfig config, @NotNull String path) {
+        public void write(@NonNull FileConfig config, @NonNull String path) {
             this.localeMap.forEach((key, value) -> {
                 config.set(path + "." + key, value);
             });
         }
 
-        @NotNull
-        public String getLocalized(@NotNull E keyed) {
+        @NonNull
+        public String getLocalized(@NonNull E keyed) {
             String value = BukkitThing.getValue(keyed);
 
             return this.localeMap.getOrDefault(value, value);

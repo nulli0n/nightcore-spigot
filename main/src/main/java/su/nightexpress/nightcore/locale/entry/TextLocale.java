@@ -1,47 +1,44 @@
 package su.nightexpress.nightcore.locale.entry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.configuration.ConfigType;
 import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.LangValue;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 public class TextLocale extends LangEntry<TextLocale.Value> {
 
-    public TextLocale(@NotNull String path, @NotNull Value defaultValue) {
-        super(Value::read, path, defaultValue);
+    private static final ConfigType<Value> CONFIG_TYPE = ConfigType.of(Value::read, FileConfig::set);
+
+    public TextLocale(@NonNull String path, @NonNull Value defaultValue) {
+        super(CONFIG_TYPE, path, defaultValue);
     }
 
-    @NotNull
-    public static TextLocale create(@NotNull String path, @NotNull String string) {
+    @NonNull
+    public static TextLocale create(@NonNull String path, @NonNull String string) {
         return new TextLocale(path, new Value(string));
     }
 
-    @NotNull
-    public static TextLocale create(@NotNull String path, @NotNull String... text) {
+    @NonNull
+    public static TextLocale create(@NonNull String path, @NonNull String... text) {
         return new TextLocale(path, new Value(String.join(TagWrappers.BR, text)));
     }
 
-    /*@NotNull
-    public TextLocale withDefault(@NotNull String locale, @NotNull String text) {
-        this.withDefault(locale, new Value(text));
-        return this;
-    }*/
-
-    @NotNull
+    @NonNull
     public String text() {
         return this.value.text();
     }
 
-    public record Value(@NotNull String text) implements LangValue {
+    public record Value(@NonNull String text) implements LangValue {
 
-        @NotNull
-        public static Value read(@NotNull FileConfig config, @NotNull String path) {
+        @NonNull
+        public static Value read(@NonNull FileConfig config, @NonNull String path) {
             return new Value(String.valueOf(config.getString(path)));
         }
 
         @Override
-        public void write(@NotNull FileConfig config, @NotNull String path) {
+        public void write(@NonNull FileConfig config, @NonNull String path) {
             config.set(path, this.text);
         }
     }

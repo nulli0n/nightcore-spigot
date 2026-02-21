@@ -1,39 +1,48 @@
 package su.nightexpress.nightcore.locale.entry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.configuration.ConfigType;
 import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.LangValue;
-import su.nightexpress.nightcore.util.text.night.ParserUtils;
+import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderContext;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
 public class DialogElementLocale extends LangEntry<DialogElementLocale.Value> {
 
-    public DialogElementLocale(@NotNull String path, @NotNull Value defaultValue) {
-        super(Value::read, path, defaultValue);
+    private static final ConfigType<Value> CONFIG_TYPE = ConfigType.of(Value::read, FileConfig::set);
+
+    public DialogElementLocale(@NonNull String path, @NonNull Value defaultValue) {
+        super(CONFIG_TYPE, path, defaultValue);
     }
 
-    @NotNull
-    public static DialogElementLocale create(@NotNull String path, @NotNull String... contents) {
+    @NonNull
+    public static DialogElementLocale create(@NonNull String path, @NonNull String... contents) {
         return create(path, DialogDefaults.DEFAULT_PLAIN_BODY_WIDTH, contents);
     }
 
-    @NotNull
-    public static DialogElementLocale create(@NotNull String path, int width, @NotNull String... contents) {
+    @NonNull
+    public static DialogElementLocale create(@NonNull String path, int width, @NonNull String... contents) {
         return new DialogElementLocale(path, new Value(String.join(TagWrappers.BR, contents), width));
     }
 
-    @NotNull
-    public DialogElementLocale replace(@NotNull UnaryOperator<String> operator) {
+    @NonNull
+    public DialogElementLocale replace(@NonNull UnaryOperator<String> operator) {
         return create(this.path, this.width(), operator.apply(this.contents()));
     }
 
-    @NotNull
+    @NonNull
+    public DialogElementLocale replace(@NonNull PlaceholderContext context) {
+        return this.replace(context::apply);
+    }
+
+    @NonNull
     public String contents() {
         return this.value.contents();
     }
@@ -42,10 +51,10 @@ public class DialogElementLocale extends LangEntry<DialogElementLocale.Value> {
         return this.value.width();
     }
 
-    public record Value(@NotNull String contents, int width) implements LangValue {
+    public record Value(@NonNull String contents, int width) implements LangValue {
 
-        @NotNull
-        public static Value read(@NotNull FileConfig config, @NotNull String path) {
+        @NonNull
+        public static Value read(@NonNull FileConfig config, @NonNull String path) {
             String contents;
 
             List<String> list = config.getStringList(path + ".Contents");
@@ -62,8 +71,11 @@ public class DialogElementLocale extends LangEntry<DialogElementLocale.Value> {
         }
 
         @Override
-        public void write(@NotNull FileConfig config, @NotNull String path) {
-            List<String> list = Arrays.asList(ParserUtils.breakDownLineSplitters(this.contents));
+        public void write(@NonNull FileConfig config, @NonNull String path) {
+            List<String> list = new ArrayList<>();
+            StringUtil.splitDelimiters(this.contents, list::add);
+
+            //List<String> list = Arrays.asList(ParserUtils.breakDownLineSplitters(this.contents));
             config.set(path + ".Contents", list.size() != 1 ? list : list.getFirst());
             config.set(path + ".Width", this.width);
         }

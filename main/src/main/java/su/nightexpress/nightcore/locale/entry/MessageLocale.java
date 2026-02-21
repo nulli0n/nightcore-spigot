@@ -1,10 +1,11 @@
 package su.nightexpress.nightcore.locale.entry;
 
 import org.bukkit.Sound;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.configuration.ConfigType;
 import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.message.LangMessage;
 import su.nightexpress.nightcore.locale.message.MessageData;
@@ -13,91 +14,93 @@ import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 public class MessageLocale extends LangEntry<LangMessage> {
 
-    public MessageLocale(@NotNull String path, @NotNull LangMessage defaultValue) {
-        super(LangMessage::read, path, defaultValue);
+    private static final ConfigType<LangMessage> CONFIG_TYPE = ConfigType.of(LangMessage::read, FileConfig::set);
+
+    public MessageLocale(@NonNull String path, @NonNull LangMessage defaultValue) {
+        super(CONFIG_TYPE, path, defaultValue);
     }
 
-    @NotNull
-    public static MessageLocale message(@NotNull String path, @NotNull MessageData data, @NotNull String... text) {
+    @NonNull
+    public static MessageLocale message(@NonNull String path, @NonNull MessageData data, @NonNull String... text) {
         return message(path, String.join(TagWrappers.BR, text), data);
     }
 
-    @NotNull
-    public static MessageLocale message(@NotNull String path, @NotNull String text, @NotNull MessageData data) {
+    @NonNull
+    public static MessageLocale message(@NonNull String path, @NonNull String text, @NonNull MessageData data) {
         return new MessageLocale(path, LangMessage.createFromData(text, data));
     }
 
-    @NotNull
-    public static MessageLocale chat(@NotNull String path, @NotNull String text) {
+    @NonNull
+    public static MessageLocale chat(@NonNull String path, @NonNull String text) {
         return chat(path, new String[]{text});
     }
 
-    @NotNull
-    public static MessageLocale chat(@NotNull String path, @NotNull String... text) {
+    @NonNull
+    public static MessageLocale chat(@NonNull String path, @NonNull String... text) {
         return chat(path, MessageData.chat().build(), text);
     }
 
-    @NotNull
-    public static MessageLocale chat(@NotNull String path, @NotNull Sound sound, @NotNull String... text) {
+    @NonNull
+    public static MessageLocale chat(@NonNull String path, @NonNull Sound sound, @NonNull String... text) {
         return chat(path, MessageData.chat().sound(sound).build(), text);
     }
 
-    @NotNull
-    private static MessageLocale chat(@NotNull String path, @NotNull MessageData data, @NotNull String... text) {
+    @NonNull
+    private static MessageLocale chat(@NonNull String path, @NonNull MessageData data, @NonNull String... text) {
         return message(path, String.join(TagWrappers.BR, text), data);
     }
 
-    @NotNull
-    public static MessageLocale title(@NotNull String path, @NotNull String title, @NotNull String subtitle) {
+    @NonNull
+    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle) {
         return title(path, title, subtitle, MessageData.titles().build());
     }
 
-    @NotNull
-    public static MessageLocale title(@NotNull String path, @NotNull String title, @NotNull String subtitle, @NotNull Sound sound) {
+    @NonNull
+    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, @NonNull Sound sound) {
         return title(path, title, subtitle, MessageData.titles().sound(sound).build());
     }
 
-    @NotNull
-    public static MessageLocale title(@NotNull String path, @NotNull String title, @NotNull String subtitle, int fade, int stay) {
+    @NonNull
+    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, int fade, int stay) {
         return title(path, title, subtitle, MessageData.titles().titleTimes(fade, stay, fade).build());
     }
 
-    @NotNull
-    public static MessageLocale title(@NotNull String path, @NotNull String title, @NotNull String subtitle, int fade, int stay, @NotNull Sound sound) {
+    @NonNull
+    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, int fade, int stay, @NonNull Sound sound) {
         return title(path, title, subtitle, MessageData.titles().titleTimes(fade, stay, fade).sound(sound).build());
     }
 
-    @NotNull
-    private static MessageLocale title(@NotNull String path, @NotNull String title, @NotNull String subtitle, @NotNull MessageData data) {
+    @NonNull
+    private static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, @NonNull MessageData data) {
         return message(path, title + TagWrappers.BR + subtitle, data);
     }
 
 
 
-    @NotNull
-    public static MessageLocale actionBar(@NotNull String path, @NotNull String text) {
+    @NonNull
+    public static MessageLocale actionBar(@NonNull String path, @NonNull String text) {
         return message(path, text, MessageData.actionBar().build());
     }
 
-    @NotNull
-    public static MessageLocale actionBar(@NotNull String path, @NotNull String text, @NotNull Sound sound) {
+    @NonNull
+    public static MessageLocale actionBar(@NonNull String path, @NonNull String text, @NonNull Sound sound) {
         return message(path, text, MessageData.actionBar().sound(sound).build());
     }
 
 
 
     @Override
-    public void load(@NotNull NightPlugin plugin, @NotNull FileConfig config) {
+    public void load(@NonNull NightPlugin plugin, @NonNull FileConfig config) {
         super.load(plugin, config);
         this.value = this.withPrefix(plugin);
     }
 
-    @NotNull
-    public LangMessage withPrefix(@NotNull NightPlugin plugin) {
+    @NonNull
+    public LangMessage withPrefix(@NonNull NightPlugin plugin) {
         return this.withPrefix(plugin.getPrefix());
     }
 
-    @NotNull
+    @NonNull
     public LangMessage withPrefix(@Nullable String prefix) {
         if (this.value instanceof ChatMessage chatMessage) {
             return chatMessage.withPrefix(prefix);
@@ -105,7 +108,7 @@ public class MessageLocale extends LangEntry<LangMessage> {
         return this.value;
     }
 
-    @NotNull
+    @NonNull
     public LangMessage message() {
         return this.value;
     }

@@ -1,8 +1,10 @@
 package su.nightexpress.nightcore.util.text.night.wrapper;
 
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
+import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.night.tag.TagShortNames;
 
@@ -17,10 +19,12 @@ public class TagWrappers {
     public static final SimpleTagWrapper STRIKETHROUGH = TagWrapper.simple(TagShortNames.STRIKETHROUGH);
     public static final SimpleTagWrapper UNDERLINED    = TagWrapper.simple(TagShortNames.UNDERLINED);
 
-    public static final OneArgument<SimpleTagWrapper>   COLOR      = hex -> TagWrapper.withArguments(TagShortNames.COLOR, hex);
-    public static final OneArgument<SimpleTagWrapper>   SHADOW     = hex -> TagWrapper.withArguments(TagShortNames.SHADOW_COLOR, hex);
-    public static final TwoArgument<SimpleTagWrapper>   GRADIENT   = (first, second) -> TagWrapper.withArguments(TagShortNames.GRADIENT, first, second);
-    public static final ThreeArgument<SimpleTagWrapper> GRADIENT_3 = (first, second, third) -> TagWrapper.withArguments(TagShortNames.GRADIENT, first, second, third);
+    public static final OneArgument<SimpleTagWrapper>   COLOR        = hex -> TagWrapper.withArguments(TagShortNames.COLOR, hex);
+    public static final OneArgument<SimpleTagWrapper>   SHADOW       = hex -> TagWrapper.withArguments(TagShortNames.SHADOW_COLOR, hex);
+    public static final OneArgument<SimpleTagWrapper>   SHADOW_1_0       = hex -> TagWrapper.withArguments(TagShortNames.SHADOW_COLOR, hex, String.valueOf(1f));
+    public static final TwoArgument<SimpleTagWrapper>   SHADOW_ALPHA = (hex, alpha) -> TagWrapper.withArguments(TagShortNames.SHADOW_COLOR, hex, alpha);
+    public static final TwoArgument<SimpleTagWrapper>   GRADIENT     = (first, second) -> TagWrapper.withArguments(TagShortNames.GRADIENT, first, second);
+    public static final ThreeArgument<SimpleTagWrapper> GRADIENT_3   = (first, second, third) -> TagWrapper.withArguments(TagShortNames.GRADIENT, first, second, third);
 
     public static final String BR      = TagWrapper.simple(TagShortNames.BR).opening();
     public static final String NEWLINE = TagWrapper.simple(TagShortNames.NEWLINE).opening();
@@ -35,6 +39,9 @@ public class TagWrappers {
     public static final Function<String, String>           SPRITE_BLOCKS   = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("blocks"), ParserUtils.quoted(sprite)).opening();
     public static final Function<String, String>           SPRITE_ITEMS    = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("items"), ParserUtils.quoted(sprite)).opening();
     public static final Function<String, String>           SPRITE_GUI    = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("gui"), ParserUtils.quoted(sprite)).opening();
+
+    public static final Function<Material, String> SPRITE_BLOCK = blockType -> SPRITE_BLOCKS.apply("block/" + BukkitThing.getValue(blockType));
+    public static final Function<Material, String> SPRITE_ITEM  = itemType -> SPRITE_ITEMS.apply("item/" + BukkitThing.getValue(itemType));
 
     public static final BiFunction<String, Boolean, String> HEAD     = (data, hat) -> TagWrapper.withArguments(TagShortNames.HEAD, ParserUtils.quoted(data), String.valueOf(hat)).opening();
     public static final Function<String, String>            HEAD_HAT = data -> TagWrapper.withArguments(TagShortNames.HEAD, ParserUtils.quoted(data)).opening();

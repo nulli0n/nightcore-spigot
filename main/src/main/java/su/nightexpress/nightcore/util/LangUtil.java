@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.bridge.paper.PaperBridge;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
-import su.nightexpress.nightcore.util.text.tag.Tags;
 
 public class LangUtil {
 
@@ -42,27 +41,27 @@ public class LangUtil {
 
     @NotNull
     public static String getSerializedName(@NotNull Material material) {
-        return Tags.TRANSLATE.wrap(getTranslationKey(material));
+        return TagWrappers.LANG.apply(getTranslationKey(material));
     }
 
     @NotNull
     public static String getSerializedName(@NotNull Attribute attribute) {
-        return Tags.TRANSLATE.wrap(getTranslationKey(attribute));
+        return TagWrappers.LANG.apply(getTranslationKey(attribute));
     }
 
     @NotNull
     public static String getSerializedName(@NotNull Enchantment enchantment) {
-        return Version.isPaper() ? PaperBridge.serializeComponent(enchantment.description()) : Tags.TRANSLATE.wrap(getTranslationKey(enchantment), BukkitThing.getValue(enchantment));
+        return Version.isPaper() ? PaperBridge.serializeComponent(enchantment.description()) : TagWrappers.LANG_OR.apply(getTranslationKey(enchantment), BukkitThing.getValue(enchantment));
     }
 
     @NotNull
     public static String getSerializedName(@NotNull EntityType entityType) {
-        return Tags.TRANSLATE.wrap(getTranslationKey(entityType));
+        return TagWrappers.LANG.apply(getTranslationKey(entityType));
     }
 
     @NotNull
     public static String getSerializedName(@NotNull PotionEffectType effectType) {
-        return Tags.TRANSLATE.wrap(getTranslationKey(effectType));
+        return TagWrappers.LANG.apply(getTranslationKey(effectType));
     }
 
     @NotNull

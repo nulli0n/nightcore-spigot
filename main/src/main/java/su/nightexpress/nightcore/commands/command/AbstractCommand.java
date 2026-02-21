@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.NodeUtils;
@@ -106,6 +107,7 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
     @Nullable
     private CommandContext parseNodes(@NotNull CommandNode node, @NotNull ArgumentReader reader, @NotNull CommandContextBuilder builder, boolean forExecution) {
         CommandSender sender = builder.getSender();
+        if (!this.testRequirements(sender, node, forExecution)) return null;
 
         try {
             node.parse(reader, builder);
@@ -132,16 +134,6 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
                     return null;
                 }
 
-                List<CommandRequirement> requirements = child.getRequirements();
-                for (CommandRequirement requirement : requirements) {
-                    if (!requirement.test(sender)) {
-                        if (forExecution) {
-                            requirement.getMessage().withPrefix(this.plugin).send(sender);
-                        }
-                        return null;
-                    }
-                }
-
                 return this.parseNodes(child, reader, builder, forExecution);
             }
         }
@@ -155,6 +147,18 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
         }
 
         return builder.build();
+    }
+
+    private boolean testRequirements(@NonNull CommandSender sender, @NonNull CommandNode node, boolean forExecution) {
+        for (CommandRequirement requirement : node.getRequirements()) {
+            if (!requirement.test(sender)) {
+                if (forExecution) {
+                    requirement.getMessage().withPrefix(this.plugin).send(sender);
+                }
+                return false;
+            }
+        }
+        return true;
     }
 
     private void listSuggestions(@NotNull CommandNode node, @NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
@@ -180,6 +184,7 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
     private CommandContext parse(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, boolean forExecution) {
         ArgumentReader reader = ArgumentReader.forArgumentsWithLabel(label, args);
         CommandContextBuilder builder = new CommandContextBuilder(this.plugin, sender, this.root, reader.getString());
+
         return this.parseNodes(this.root, reader, builder, forExecution);
     }
     

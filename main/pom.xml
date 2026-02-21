@@ -6,7 +6,7 @@
     <parent>
         <groupId>su.nightexpress.nightcore</groupId>
         <artifactId>nightcore</artifactId>
-        <version>2.13.3</version>
+        <version>2.13.4</version>
     </parent>
 
     <artifactId>main</artifactId>
@@ -69,11 +69,6 @@
         </repository>
 
         <repository>
-            <id>techscode</id>
-            <url>https://repo.techscode.com/repository/techscode-apis/</url>
-        </repository>
-
-        <repository>
             <id>phoenix</id>
             <url>https://nexus.phoenixdevt.fr/repository/maven-public/</url>
         </repository>
@@ -128,25 +123,25 @@
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>bridge</artifactId>
-            <version>2.13.3</version>
+            <version>2.13.4</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>utils</artifactId>
-            <version>2.13.3</version>
+            <version>2.13.4</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>paper</artifactId>
-            <version>2.13.3</version>
+            <version>2.13.4</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>spigot</artifactId>
-            <version>2.13.3</version>
+            <version>2.13.4</version>
         </dependency>
 
         <dependency>
@@ -229,16 +224,9 @@
         </dependency>
 
         <dependency>
-            <groupId>me.mraxetv.beasttokens</groupId>
-            <artifactId>BeastTokens</artifactId>
-            <version>3.11.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.bencodez</groupId>
             <artifactId>votingplugin</artifactId>
-            <version>6.19</version>
+            <version>7.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -263,13 +251,6 @@
             <groupId>su.nightexpress.coinsengine</groupId>
             <artifactId>CoinsEngine</artifactId>
             <version>2.5.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>me.TechsCode</groupId>
-            <artifactId>UltraEconomyAPI</artifactId>
-            <version>1.1.2</version>
             <scope>provided</scope>
         </dependency>
 

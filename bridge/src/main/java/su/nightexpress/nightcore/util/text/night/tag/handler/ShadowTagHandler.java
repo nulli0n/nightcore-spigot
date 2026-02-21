@@ -21,7 +21,7 @@ public class ShadowTagHandler extends ClassicTagHandler {
         TagContent content = ParserUtils.parseInnerContent(tagContent);
         String alphaRaw = content.second();
 
-        Color color = ParserUtils.colorFromSchemeOrHex(tagContent);
+        Color color = ParserUtils.colorFromSchemeOrHex(content.first());
         if (color == null) return;
 
         float[] rgb = color.getRGBColorComponents(null);
