@@ -1,13 +1,12 @@
 package su.nightexpress.nightcore.util.placeholder;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+import su.nightexpress.nightcore.integration.placeholder.PAPI;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Players;
-import su.nightexpress.nightcore.util.Plugins;
 
 import java.util.function.UnaryOperator;
 
@@ -59,15 +58,13 @@ public class CommonPlaceholders {
         .with(LOCATION_WORLD, location -> location.getWorld().getName())
         .build();
 
-    @NotNull
+    @NonNull
     public static UnaryOperator<String> forPlaceholderAPI(@Nullable Player player) {
-        if (!Plugins.hasPlaceholderAPI()) return string -> string;
-
-        return s -> PlaceholderAPI.setPlaceholders(player, s);
+        return string -> setPAPIPlaceholders(player, string);
     }
 
-    @NotNull
-    public static String withoutBrackets(@NotNull String placeholder) {
+    @NonNull
+    public static String withoutBrackets(@NonNull String placeholder) {
         int length = placeholder.length();
 
         if (length > 2 && placeholder.startsWith("%") && placeholder.endsWith("%")) {
@@ -75,5 +72,13 @@ public class CommonPlaceholders {
         }
 
         return placeholder;
+    }
+    
+    public static String setPAPIPlaceholders(@Nullable Player player, @NonNull String string) {
+        return PAPI.setPlaceholders(player, string);
+    }
+
+    public static String setPAPIBracketPlaceholders(@Nullable Player player, @NonNull String string) {
+        return PAPI.setBracketPlaceholders(player, string);
     }
 }

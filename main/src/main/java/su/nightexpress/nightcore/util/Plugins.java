@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
+import su.nightexpress.nightcore.integration.placeholder.PAPI;
 
 public class Plugins {
 
@@ -13,14 +14,13 @@ public class Plugins {
     @Deprecated public static final String LUCK_PERMS      = "LuckPerms";
     @Deprecated public static final String ECONOMY_BRIDGE  = "EconomyBridge";
 
+    @Deprecated
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
     public static final String FLOODGATE       = "floodgate";
 
-    private static boolean hasPlaceholderAPI;
     private static boolean hasFloodgate;
 
     public static void detectPlugins() {
-        hasPlaceholderAPI = isInstalled(PLACEHOLDER_API);
         hasFloodgate = isInstalled(FLOODGATE);
     }
 
@@ -56,8 +56,9 @@ public class Plugins {
         return Version.isSpigot();
     }
 
+    @Deprecated
     public static boolean hasPlaceholderAPI() {
-        return hasPlaceholderAPI;
+        return PAPI.isPresent();
     }
 
     @Deprecated

@@ -1,12 +1,12 @@
 package su.nightexpress.nightcore.util;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.bridge.currency.Currency;
 import su.nightexpress.nightcore.language.tag.MessageTags;
+import su.nightexpress.nightcore.util.placeholder.CommonPlaceholders;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderList;
 import su.nightexpress.nightcore.util.text.tag.Tags;
 
@@ -129,12 +129,7 @@ public class Placeholders {
 
     @NotNull
     public static UnaryOperator<String> forPlaceholderAPI(@NotNull Player player) {
-        return str -> {
-            if (Plugins.hasPlaceholderAPI()) {
-                return PlaceholderAPI.setPlaceholders(player, str);
-            }
-            return str;
-        };
+        return CommonPlaceholders.forPlaceholderAPI(player);
     }
 
     @NotNull

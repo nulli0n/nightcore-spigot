@@ -3,12 +3,13 @@ package su.nightexpress.nightcore.integration.currency.impl;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.integration.currency.type.AbstractCurrency;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.integration.currency.CurrencyId;
+import su.nightexpress.nightcore.integration.currency.type.AbstractCurrency;
 import su.nightexpress.nightcore.util.Placeholders;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class DummyCurrency extends AbstractCurrency {
 
@@ -29,50 +30,70 @@ public class DummyCurrency extends AbstractCurrency {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getName() {
         return "Dummy";
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getFormat() {
         return Placeholders.GENERIC_AMOUNT + " [Dummy]";
     }
 
     @Override
-    @NotNull
+    @NonNull
     public ItemStack getIcon() {
         return new ItemStack(Material.BRICK);
     }
 
     @Override
-    public double getBalance(@NotNull Player player) {
+    public @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull Player player) {
+        return CompletableFuture.completedFuture(0D);
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId) {
+        return CompletableFuture.completedFuture(0D);
+    }
+
+    @Override
+    protected double queryBalanceDirect(@NonNull UUID playerId) {
         return 0;
     }
 
     @Override
-    public double getBalance(@NotNull UUID playerId) {
-        return 0;
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount) {
+        return CompletableFuture.completedFuture(false);
     }
 
     @Override
-    public void give(@NotNull Player player, double amount) {
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount) {
+        return CompletableFuture.completedFuture(false);
+    }
+
+    @Override
+    protected void depositDirect(@NonNull UUID playerId, double amount) {
 
     }
 
     @Override
-    public void give(@NotNull UUID playerId, double amount) {
-
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount) {
+        return CompletableFuture.completedFuture(false);
     }
 
     @Override
-    public void take(@NotNull Player player, double amount) {
-
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount) {
+        return CompletableFuture.completedFuture(false);
     }
 
     @Override
-    public void take(@NotNull UUID playerId, double amount) {
+    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
 
     }
 }

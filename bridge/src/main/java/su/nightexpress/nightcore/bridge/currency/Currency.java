@@ -2,38 +2,84 @@ package su.nightexpress.nightcore.bridge.currency;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 
 public interface Currency {
 
     boolean isDummy();
 
-    @NotNull UnaryOperator<String> replacePlaceholders();
+    @NonNull UnaryOperator<String> replacePlaceholders();
 
     double floorIfNeeded(double amount);
 
-    @NotNull String formatValue(double amount);
+    @NonNull String formatValue(double amount);
 
-    @NotNull String format(double amount);
+    @NonNull String format(double amount);
 
-    @NotNull String applyFormat(@NotNull String format, double amount);
+    @NonNull String applyFormat(@NonNull String format, double amount);
 
 
 
-    double getBalance(@NotNull Player player);
+    @Deprecated(forRemoval = true)
+    default double getBalance(@NonNull Player player) {
+        return this.queryBalance(player);
+    }
 
-    double getBalance(@NotNull UUID playerId);
+    @Deprecated(forRemoval = true)
+    default double getBalance(@NonNull UUID playerId) {
+        return this.queryBalance(playerId);
+    }
 
-    void give(@NotNull Player player, double amount);
+    @Deprecated(forRemoval = true)
+    default void give(@NonNull Player player, double amount) {
+        this.give(player.getUniqueId(), amount);
+    }
 
-    void give(@NotNull UUID playerId, double amount);
+    @Deprecated(forRemoval = true)
+    default void give(@NonNull UUID playerId, double amount) {
+        this.depositAsync(playerId, amount);
+    }
 
-    void take(@NotNull Player player, double amount);
+    @Deprecated(forRemoval = true)
+    default void take(@NonNull Player player, double amount) {
+        this.take(player.getUniqueId(), amount);
+    }
 
-    void take(@NotNull UUID playerId, double amount);
+    @Deprecated(forRemoval = true)
+    default void take(@NonNull UUID playerId, double amount) {
+        this.withdrawAsync(playerId, amount);
+    }
+
+
+
+
+    double queryBalance(@NonNull Player player);
+
+    double queryBalance(@NonNull UUID playerId);
+
+    @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull Player player);
+
+    @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId);
+
+    void deposit(@NonNull Player player, double amount);
+
+    void deposit(@NonNull UUID playerId, double amount);
+
+    @NonNull CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount);
+
+    @NonNull CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount);
+
+    void withdraw(@NonNull Player player, double amount);
+
+    void withdraw(@NonNull UUID playerId, double amount);
+
+    @NonNull CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount);
+
+    @NonNull CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount);
 
 
 
@@ -43,13 +89,13 @@ public interface Currency {
 
 
 
-    @NotNull String getOriginalId();
+    @NonNull String getOriginalId();
 
-    @NotNull String getInternalId();
+    @NonNull String getInternalId();
 
-    @NotNull String getName();
+    @NonNull String getName();
 
-    @NotNull String getFormat();
+    @NonNull String getFormat();
 
-    @NotNull ItemStack getIcon(); // TODO NightItem
+    @NonNull ItemStack getIcon(); // TODO NightItem
 }

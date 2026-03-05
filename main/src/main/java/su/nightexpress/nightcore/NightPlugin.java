@@ -10,7 +10,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEventHandler;
+import su.nightexpress.nightcore.bridge.placeholder.PlaceholderProvider;
+import su.nightexpress.nightcore.bridge.placeholder.PlaceholderRegistry;
 import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.command.CommandManager;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
@@ -18,19 +21,18 @@ import su.nightexpress.nightcore.commands.command.NightCommand;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.core.config.CoreLang;
+import su.nightexpress.nightcore.integration.placeholder.PAPI;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangRegistry;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
-import su.nightexpress.nightcore.util.FileUtil;
-import su.nightexpress.nightcore.util.Lists;
-import su.nightexpress.nightcore.util.Reflex;
-import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     protected FileConfig    config;
     protected PluginDetails details;
 
+    protected PlaceholderRegistry placeholderRegistry;
+
     @Override
     public void onEnable() {
         if (!this.onInit() || !this.checkVersion()) {
@@ -61,6 +65,9 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         long loadTook = System.currentTimeMillis();
         this.scheduler = Software.get().getScheduler(this);
+        if (PAPI.isPresent()) {
+            this.placeholderRegistry = new PlaceholderRegistry();
+        }
         this.onStartup();
         this.loadManagers();
         this.info("Plugin loaded in " + (System.currentTimeMillis() - loadTook) + " ms!");
@@ -90,6 +97,25 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     public void reload() {
         this.unloadManagers();
         this.loadManagers();
+    }
+
+    protected void registerGlobalPlaceholders() {
+        if (this.placeholderRegistry == null || this.placeholderRegistry.isEmpty()) return;
+
+        if (PAPI.addExpansion(this, this.placeholderRegistry, this.getPlaceholderAPIIdentifier())) {
+            this.info("Successfully registered placeholders for %s.".formatted(PAPI.NAME));
+            this.placeholderRegistry = null;
+        }
+    }
+
+    @NonNull
+    public String getPlaceholderAPIIdentifier() {
+        return LowerCase.INTERNAL.apply(this.getDescription().getName());
+    }
+
+    @NonNull
+    public Path dataPath() {
+        return this.getDataFolder().toPath();
     }
 
     @Override
@@ -202,6 +228,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.enable();              // Load the plugin.
 
         this.postLoad();            // Load some stuff that needs to be injected after the rest managers.
+        this.registerGlobalPlaceholders();
 
         if (this.rootCommand != null) this.rootCommand.register();
         this.config.saveChanges();
@@ -211,6 +238,9 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     protected void unloadManagers() {
+        if (PAPI.isPresent()) {
+            PAPI.removeExpansions(this);
+        }
         this.scheduler.cancelTasks(); // Stop all plugin tasks.
 
         this.disable();
@@ -243,6 +273,12 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     public void doReload(@NotNull CommandSender sender) {
         this.reload();
         CoreLang.PLUGIN_RELOADED.withPrefix(this).send(sender);
+    }
+
+    public void addGlobalPlaceholders(@NonNull PlaceholderProvider provider) {
+        if (this.placeholderRegistry != null) {
+            provider.addPlaceholders(this.placeholderRegistry);
+        }
     }
 
     @NotNull

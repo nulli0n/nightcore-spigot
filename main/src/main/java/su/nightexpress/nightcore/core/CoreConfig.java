@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.core;
 
 import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.integration.placeholder.PAPI;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.number.NumberShortcut;
 import su.nightexpress.nightcore.util.time.TimeFormats;
@@ -42,7 +43,7 @@ public class CoreConfig {
 
     public static final ConfigValue<Boolean> ECONOMY_PLACEHOLDERS_API_FORMAT = ConfigValue.create("Integrations.Economy.PlaceholderAPI_In_Format",
         true,
-        "Whether to apply " + Plugins.PLACEHOLDER_API + " placeholders in currency's Format setting."
+        "Whether to apply " + PAPI.NAME + " placeholders in currency's Format setting."
     );
 
     public static final ConfigValue<Set<String>> ITEMS_DISABLED_PROVIDERS = ConfigValue.create("Integrations.Items.DisabledProviders",

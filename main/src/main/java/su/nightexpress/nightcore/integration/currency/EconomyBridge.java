@@ -1,10 +1,10 @@
 package su.nightexpress.nightcore.integration.currency;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.bridge.Registries;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.currency.Currency;
+import su.nightexpress.nightcore.bridge.currency.EconomyBridgeAPI;
 import su.nightexpress.nightcore.bridge.registry.NightRegistry;
 import su.nightexpress.nightcore.integration.currency.impl.DummyCurrency;
 
@@ -15,24 +15,46 @@ import java.util.function.Consumer;
 
 public class EconomyBridge {
 
+    private static EconomyBridgeAPI api;
+
+    static void register(@NonNull EconomyBridgeAPI api) {
+        EconomyBridge.api = api;
+    }
+
+    public static boolean initialized() {
+        return api != null;
+    }
+
+    @NonNull
+    public static EconomyBridgeAPI api() {
+        if (api == null) throw new IllegalStateException("API is not initialized!");
+
+        return api;
+    }
+
+    @Deprecated(forRemoval = true)
     public static void unregisterAll() {
         registry().clear();
     }
 
-    @NotNull
+    @NonNull
+    @Deprecated(forRemoval = true)
     public static NightRegistry<String, Currency> registry() {
-        return Registries.CURRENCY;
+        throw new UnsupportedOperationException("Not supported");
     }
 
-    public static boolean hasCurrency(@NotNull String id) {
+    @Deprecated(forRemoval = true)
+    public static boolean hasCurrency(@NonNull String id) {
         return getCurrency(id) != null;
     }
 
+    @Deprecated(forRemoval = true)
     public static boolean hasEconomy() {
         return hasCurrency(CurrencyId.VAULT);
     }
 
-    public static boolean handle(@NotNull String id, @NotNull Consumer<Currency> consumer) {
+    @Deprecated(forRemoval = true)
+    public static boolean handle(@NonNull String id, @NonNull Consumer<Currency> consumer) {
         Currency currency = getCurrency(id);
         if (currency == null) return false;
 
@@ -40,110 +62,168 @@ public class EconomyBridge {
         return true;
     }
 
-    public static boolean hasEnough(@NotNull Player player, @NotNull String id, double amount) {
+    @Deprecated(forRemoval = true)
+    public static boolean hasEnough(@NonNull Player player, @NonNull String id, double amount) {
         return getBalance(player, id) >= amount;
     }
 
-    public static boolean hasEnough(@NotNull UUID playerId, @NotNull String id, double amount) {
+    @Deprecated(forRemoval = true)
+    public static boolean hasEnough(@NonNull UUID playerId, @NonNull String id, double amount) {
         return getBalance(playerId, id) >= amount;
     }
 
-    public static double getBalance(@NotNull Player player, @NotNull String id) {
+    
+    
+
+    @Deprecated(forRemoval = true)
+    public static double getBalance(@NonNull Player player, @NonNull String id) {
         Currency currency = getCurrency(id);
-        return currency == null ? 0D : currency.getBalance(player);
+        return currency == null ? 0D : currency.queryBalance(player);
     }
 
-    public static double getBalance(@NotNull UUID playerId, @NotNull String id) {
+    @Deprecated(forRemoval = true)
+    public static double getBalance(@NonNull UUID playerId, @NonNull String id) {
         Currency currency = getCurrency(id);
-        return currency == null ? 0D : currency.getBalance(playerId);
+        return currency == null ? 0D : currency.queryBalance(playerId);
     }
 
-    public static double getEconomyBalance(@NotNull Player player) {
+    @Deprecated(forRemoval = true)
+    public static double getEconomyBalance(@NonNull Player player) {
         return getEconomyBalance(player.getUniqueId());
     }
 
-    public static double getEconomyBalance(@NotNull UUID playerId) {
+    @Deprecated(forRemoval = true)
+    public static double getEconomyBalance(@NonNull UUID playerId) {
         return getBalance(playerId, CurrencyId.VAULT);
     }
 
-    public static boolean deposit(@NotNull Player player, @NotNull String id, double amount) {
-        return handle(id, currency -> currency.give(player, amount));
+    @Deprecated(forRemoval = true)
+    public static boolean deposit(@NonNull Player player, double amount) {
+        deposit(player.getUniqueId(), amount);
+        return true;
     }
 
-    public static boolean deposit(@NotNull UUID playerId, @NotNull String id, double amount) {
-        return handle(id, currency -> currency.give(playerId, amount));
+    @Deprecated(forRemoval = true)
+    public static boolean deposit(@NonNull UUID playerId, double amount) {
+        api.deposit(playerId, CurrencyId.VAULT, amount);
+        return true;
     }
 
-    public static boolean depositEconomy(@NotNull Player player, double amount) {
+    @Deprecated(forRemoval = true)
+    public static boolean deposit(@NonNull Player player, @NonNull String id, double amount) {
+        deposit(player.getUniqueId(), id, amount);
+        return true;
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean deposit(@NonNull UUID playerId, @NonNull String id, double amount) {
+        api.deposit(playerId, id, amount);
+        return true;
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean depositEconomy(@NonNull Player player, double amount) {
         return depositEconomy(player.getUniqueId(), amount);
     }
 
-    public static boolean depositEconomy(@NotNull UUID playerId, double amount) {
-        return deposit(playerId, CurrencyId.VAULT, amount);
+    @Deprecated(forRemoval = true)
+    public static boolean depositEconomy(@NonNull UUID playerId, double amount) {
+        api.deposit(playerId, CurrencyId.VAULT, amount);
+        return true;
     }
 
-    public static boolean withdraw(@NotNull Player player, @NotNull String id, double amount) {
-        return handle(id, currency -> currency.take(player, amount));
+
+
+    @Deprecated(forRemoval = true)
+    public static boolean withdraw(@NonNull Player player, double amount) {
+        return withdraw(player.getUniqueId(), amount);
     }
 
-    public static boolean withdraw(@NotNull UUID playerId, @NotNull String id, double amount) {
-        return handle(id, currency -> currency.take(playerId, amount));
+    @Deprecated(forRemoval = true)
+    public static boolean withdraw(@NonNull UUID playerId, double amount) {
+        api.withdraw(playerId, CurrencyId.VAULT, amount);
+        return true;
     }
 
-    public static boolean withdrawEconomy(@NotNull Player player, double amount) {
+    @Deprecated(forRemoval = true)
+    public static boolean withdraw(@NonNull Player player, @NonNull String id, double amount) {
+        withdraw(player.getUniqueId(), id, amount);
+        return true;
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean withdraw(@NonNull UUID playerId, @NonNull String id, double amount) {
+        api.withdraw(playerId, id, amount);
+        return true;
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean withdrawEconomy(@NonNull Player player, double amount) {
         return withdrawEconomy(player.getUniqueId(), amount);
     }
 
-    public static boolean withdrawEconomy(@NotNull UUID playerId, double amount) {
-        return withdraw(playerId, CurrencyId.VAULT, amount);
+    @Deprecated(forRemoval = true)
+    public static boolean withdrawEconomy(@NonNull UUID playerId, double amount) {
+        api.withdraw(playerId, CurrencyId.VAULT, amount);
+        return true;
     }
 
 
 
+    @Deprecated(forRemoval = true)
     public static boolean hasCurrency() {
-        return !registry().isEmpty();
+        return api.hasAnyCurrency();
     }
 
-    public static void register(@NotNull Currency currency) {
-        registry().register(currency.getInternalId(), currency);
+    @Deprecated(forRemoval = true)
+    public static void register(@NonNull Currency currency) {
+        api.register(currency);
     }
 
-    @NotNull
+    @NonNull
+    @Deprecated(forRemoval = true)
     public static Set<Currency> getCurrencies() {
-        return registry().values();
+        return api.getCurrencies();
     }
 
-    @NotNull
+    @NonNull
+    @Deprecated(forRemoval = true)
     public static Set<String> getCurrencyIds() {
-        return registry().keys();
+        return api.getCurrencyIds();
     }
 
-    @NotNull
-    public static Optional<Currency> currency(@NotNull String internalId) {
+    @NonNull
+    @Deprecated(forRemoval = true)
+    public static Optional<Currency> currency(@NonNull String internalId) {
         return Optional.ofNullable(getCurrency(internalId));
     }
 
     @Nullable
-    public static Currency getCurrency(@NotNull String internalId) {
-        return registry().byKey(internalId);
+    @Deprecated(forRemoval = true)
+    public static Currency getCurrency(@NonNull String internalId) {
+        return api.getCurrency(internalId);
     }
 
-    @NotNull
-    public static Currency getCurrencyOrDummy(@NotNull String internalId) {
-        return registry().lookup(internalId).orElse(DummyCurrency.INSTANCE);
+    @NonNull
+    @Deprecated(forRemoval = true)
+    public static Currency getCurrencyOrDummy(@NonNull String internalId) {
+        return api.getCurrencyOrDummy(internalId);
     }
 
     @Nullable
+    @Deprecated(forRemoval = true)
     public static Currency getEconomyCurrency() {
         return getCurrency(CurrencyId.VAULT);
     }
 
-    @NotNull
+    @NonNull
+    @Deprecated(forRemoval = true)
     public static Optional<Currency> economyCurrency() {
         return Optional.ofNullable(getEconomyCurrency());
     }
 
-    @NotNull
+    @NonNull
+    @Deprecated(forRemoval = true)
     public static DummyCurrency getDummyCurrency() {
         return DummyCurrency.INSTANCE;
     }

@@ -3,9 +3,8 @@ package su.nightexpress.nightcore.integration.currency.impl;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.integration.currency.CurrencyId;
 import su.nightexpress.nightcore.integration.currency.CurrencySettings;
 import su.nightexpress.nightcore.integration.currency.type.IncompleteCurrency;
@@ -15,6 +14,7 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class VaultEconomyCurrency extends IncompleteCurrency {
 
@@ -22,7 +22,7 @@ public class VaultEconomyCurrency extends IncompleteCurrency {
         super(CurrencyId.VAULT);
     }
 
-    @NotNull
+    @NonNull
     private Optional<Economy> economy() {
         return ServerUtils.serviceProvider(Economy.class);
     }
@@ -38,44 +38,67 @@ public class VaultEconomyCurrency extends IncompleteCurrency {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public CurrencySettings getDefaultSettings() {
         return new CurrencySettings("Money", "$" + Placeholders.GENERIC_AMOUNT, NightItem.fromType(Material.GOLD_NUGGET));
     }
 
     @Override
-    public double getBalance(@NotNull Player player) {
-        return this.economy().map(economy -> economy.getBalance(player)).orElse(0D);
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull Player player) {
+        return CompletableFuture.supplyAsync(() -> this.economy().map(economy -> economy.getBalance(player)).orElse(0D));
     }
 
     @Override
-    public double getBalance(@NotNull UUID playerId) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerId);
-
-        return this.economy().map(economy -> economy.getBalance(offlinePlayer)).orElse(0D);
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId) {
+        return CompletableFuture.supplyAsync(() -> this.queryBalanceDirect(playerId));
     }
 
     @Override
-    public void give(@NotNull Player player, double amount) {
-        this.economy().ifPresent(economy -> economy.depositPlayer(player, amount));
+    protected double queryBalanceDirect(@NonNull UUID playerId) {
+        return this.economy().map(economy -> economy.getBalance(Bukkit.getOfflinePlayer(playerId))).orElse(0D);
     }
 
     @Override
-    public void give(@NotNull UUID playerId, double amount) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerId);
-
-        this.economy().ifPresent(economy -> economy.depositPlayer(offlinePlayer, amount));
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount) {
+        return CompletableFuture.supplyAsync(() -> this.economy()
+            .map(economy -> economy.depositPlayer(player, amount).transactionSuccess())
+            .orElse(false));
     }
 
     @Override
-    public void take(@NotNull Player player, double amount) {
-        this.economy().ifPresent(economy -> economy.withdrawPlayer(player, amount));
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount) {
+        return CompletableFuture.supplyAsync(() -> this.economy()
+            .map(economy -> economy.depositPlayer(Bukkit.getOfflinePlayer(playerId), amount).transactionSuccess())
+            .orElse(false));
     }
 
     @Override
-    public void take(@NotNull UUID playerId, double amount) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerId);
+    protected void depositDirect(@NonNull UUID playerId, double amount) {
+        this.economy().ifPresent(economy -> economy.depositPlayer(Bukkit.getOfflinePlayer(playerId), amount));
+    }
 
-        this.economy().ifPresent(economy -> economy.withdrawPlayer(offlinePlayer, amount));
+    @Override
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount) {
+        return CompletableFuture.supplyAsync(() -> this.economy()
+            .map(economy -> economy.withdrawPlayer(player, amount).transactionSuccess())
+            .orElse(false));
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount) {
+        return CompletableFuture.supplyAsync(() -> this.economy()
+            .map(economy -> economy.withdrawPlayer(Bukkit.getOfflinePlayer(playerId), amount).transactionSuccess())
+            .orElse(false));
+    }
+
+    @Override
+    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
+        this.economy().ifPresent(economy -> economy.withdrawPlayer(Bukkit.getOfflinePlayer(playerId), amount));
     }
 }

@@ -5,6 +5,7 @@ import org.bukkit.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.integration.placeholder.PAPI;
 import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.click.ClickKey;
 import su.nightexpress.nightcore.ui.menu.item.ItemClick;
@@ -155,7 +156,7 @@ public class MenuLoader {
             "> [MenuType] : String | Represents the menu type. Allowed values: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/MenuType.html",
             "> [Title] : String | Sets menu title.",
             "> [Auto_Refresh] : Integer | Defines menu refresh rate in seconds. Set 0 to disable.",
-            "> [PlaceholderAPI -> Enabled] : Boolean | When enabled, applies " + Plugins.PLACEHOLDER_API + " placeholders for all items in the menu per player.",
+            "> [PlaceholderAPI -> Enabled] : Boolean | When enabled, applies " + PAPI.NAME + " placeholders for all items in the menu per player.",
             " ",
             "=".repeat(20) + " [SECTION] CONTENT " + "=".repeat(20),
             "You can freely edit items in this section as you wish (add, remove, modify items).",
@@ -166,7 +167,7 @@ public class MenuLoader {
             "    Slots: '0,4,9,10'",
             "> [Type] : String | Defines item click action.",
             "    [*] Available types: [" + String.join(", ", handlerMap.keySet().stream().map(str -> "'" + str + "'").toList()) + "]",
-            "> [Click_Commands] : Section | Executes commands on click with " + Plugins.PLACEHOLDER_API + " support.",
+            "> [Click_Commands] : Section | Executes commands on click with " + PAPI.NAME + " support.",
             "    [*] Works only if [Type] is not set (null).",
             "    [*] Available click types: [" + Enums.inline(ClickKey.class) + "]",
             "    [*] Use prefix '" + Players.PLAYER_COMMAND_PREFIX + "' to run command by a player.",

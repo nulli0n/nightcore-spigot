@@ -14,11 +14,9 @@ import su.nightexpress.nightcore.integration.currency.impl.*;
 import su.nightexpress.nightcore.integration.currency.listener.CurrencyListener;
 import su.nightexpress.nightcore.integration.currency.type.IncompleteCurrency;
 import su.nightexpress.nightcore.manager.AbstractManager;
-import su.nightexpress.nightcore.util.ItemTag;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Strings;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -28,20 +26,23 @@ public class CurrencyManager extends AbstractManager<NightCore> {
 
     public static final String FILE_NAME = "currencies.yml";
 
+    private final CurrencyRegistry registry;
     private final Map<String, Runnable> pluginProviders;
 
     private FileConfig config;
 
     public CurrencyManager(@NotNull NightCore plugin) {
         super(plugin);
+        this.registry = new CurrencyRegistry();
         this.pluginProviders = new HashMap<>();
     }
 
     @Override
     protected void onLoad() {
+        EconomyBridge.register(new EconomyBridgeProvider(this.registry));
+
         this.config = FileConfig.loadOrExtract(this.plugin, FILE_NAME);
 
-        this.migrateEconomyBridgeData();
         this.loadProviders();
         this.loadBuiltInCurrencies();
         this.loadItemCurrencies();
@@ -70,36 +71,12 @@ public class CurrencyManager extends AbstractManager<NightCore> {
         }
     }
 
-    private void migrateEconomyBridgeData() {
-        File dir = new File(this.plugin.getDataFolder().getParent(), "EconomyBridge");
-        if (!dir.exists()) return;
-
-        FileConfig itemConfig = new FileConfig(dir.getAbsolutePath(), "items.yml");
-        String itemsPath = "Items";
-        itemConfig.getSection(itemsPath).forEach(sId -> {
-            if (this.config.contains(itemsPath + "." + sId)) return;
-
-            ItemTag tag = ItemTag.read(itemConfig, itemsPath + "." + sId + ".Tag");
-            this.config.set(itemsPath + "." + sId + ".Tag", tag);
-        });
-
-        FileConfig curConfig = new FileConfig(dir.getAbsolutePath(), "currencies.yml");
-        String curPath = "Currencies";
-        curConfig.getSection(curPath).forEach(sId -> {
-            if (this.config.contains(curPath + "." + sId)) return;
-
-            CurrencySettings settings = CurrencySettings.load(curConfig, curPath + "." + sId);
-            String subPath = this.config.contains(itemsPath + "." + sId) ? "Items" : curPath;
-            this.config.set(subPath + "." + sId + ".Settings", settings);
-        });
-    }
-
     private void loadProviders() {
         this.addExternalLoader(CurrencyPlugins.VAULT, () -> this.loadIncompleted(VaultEconomyCurrency::new));
         this.addExternalLoader(CurrencyPlugins.PLAYER_POINTS, () -> this.loadIncompleted(PlayerPointsCurrency::new));
         this.addExternalLoader(CurrencyPlugins.VOTING_PLUGIN, () -> this.loadIncompleted(VotingPluginCurrency::new));
         this.addExternalLoader(CurrencyPlugins.ELITEMOBS, () -> this.loadIncompleted(EliteMobsCurrency::new));
-        this.addExternalLoader(CurrencyPlugins.COINS_ENGINE, () -> CoinsEngineCurrency.getCurrencies().forEach(this::register));
+        this.addExternalLoader(CurrencyPlugins.COINS_ENGINE, () -> ExcellentEconomyCurrency.getCurrencies().forEach(this::register));
 
         // Try load any provider(s) of the plugins that are already enabled aka loaded.
         this.pluginProviders.keySet().forEach(pluginName -> {
@@ -134,7 +111,7 @@ public class CurrencyManager extends AbstractManager<NightCore> {
     @Nullable
     public ItemStackCurrency createItemCurrency(@NotNull String name, @NotNull ItemStack itemStack) {
         String id = Strings.filterForVariable(name);
-        if (EconomyBridge.hasCurrency(id)) return null;
+        if (this.registry.contains(id)) return null;
 
         ItemStackCurrency currency = new ItemStackCurrency(id, itemStack);
 
@@ -172,7 +149,7 @@ public class CurrencyManager extends AbstractManager<NightCore> {
 
         if (preRegister != null) preRegister.accept(currency);
 
-        EconomyBridge.register(currency);
+        this.registry.register(currency);
         this.plugin.info("Currency registered: '" + id + "'.");
     }
 }

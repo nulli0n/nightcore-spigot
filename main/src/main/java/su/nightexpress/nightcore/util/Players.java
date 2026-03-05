@@ -10,8 +10,8 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.geysermc.floodgate.api.FloodgateApi;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.integration.permission.PermissionBridge;
@@ -33,334 +33,349 @@ public class Players {
     public static final String TEXTURES_HOST         = PlayerProfiles.TEXTURES_HOST;
     public static final String PLAYER_COMMAND_PREFIX = "player:";
 
-    @NotNull
+    @NonNull
     public static Set<Player> getOnline() {
         return new HashSet<>(Bukkit.getServer().getOnlinePlayers());
     }
 
-    @NotNull
+    @NonNull
     public static List<String> playerNames() {
         return playerNames(null);
     }
 
-    @NotNull
+    @NonNull
     public static List<String> playerNames(@Nullable Player viewer) {
         return getOnline().stream().filter(player -> viewer == null || viewer.canSee(player)).map(Player::getName).sorted(String::compareTo).toList();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static List<String> realPlayerNames() {
         return realPlayerNames(null);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static List<String> realPlayerNames(@Nullable Player viewer) {
         return playerNames(viewer, false);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static List<String> playerNames(@Nullable Player viewer, boolean includeCustom) {
         return playerNames(viewer);
     }
 
-    @NotNull
-    public static Optional<Player> find(@NotNull String nameOrNick) {
+    public static boolean isOnline(@NonNull UUID playerId) {
+        return getPlayer(playerId) != null;
+    }
+
+    @NonNull
+    @Deprecated
+    public static Optional<Player> find(@NonNull String nameOrNick) {
         return Optional.ofNullable(getPlayer(nameOrNick));
     }
 
+    @NonNull
+    public static Optional<Player> findById(@NonNull UUID playerId) {
+        return Optional.ofNullable(getPlayer(playerId));
+    }
+
+    @NonNull
+    public static Optional<Player> findByName(@NonNull String playerName) {
+        return Optional.ofNullable(getPlayer(playerName));
+    }
+
     @Nullable
-    public static Player getPlayer(@NotNull String name) {
+    public static Player getPlayer(@NonNull String name) {
         return Bukkit.getServer().getPlayer(name);
     }
 
     @Nullable
-    public static Player getPlayer(@NotNull UUID uuid) {
+    public static Player getPlayer(@NonNull UUID uuid) {
         return Bukkit.getServer().getPlayer(uuid);
     }
 
-    public static boolean isBedrock(@NotNull Player player) {
+    public static boolean isBedrock(@NonNull Player player) {
         return Plugins.hasFloodgate() && FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId());
     }
 
     @Deprecated
-    public static boolean isReal(@NotNull Player player) {
+    public static boolean isReal(@NonNull Player player) {
         return player.isOnline();
     }
 
-    public static void closeDialog(@NotNull Player player) {
+    public static void closeDialog(@NonNull Player player) {
         Software.get().closeDialog(player);
     }
 
-    @NotNull
-    public static String getDisplayNameSerialized(@NotNull Player player) {
+    @NonNull
+    public static String getDisplayNameSerialized(@NonNull Player player) {
         return Software.get().getDisplayNameSerialized(player);
     }
 
-    public static void setDisplayName(@NotNull Player player, @NotNull String name) {
+    public static void setDisplayName(@NonNull Player player, @NonNull String name) {
         setDisplayName(player, NightMessage.parse(name));
     }
 
-    public static void setDisplayName(@NotNull Player player, @NotNull NightComponent name) {
+    public static void setDisplayName(@NonNull Player player, @NonNull NightComponent name) {
         Software.get().setDisplayName(player, name);
     }
 
     @Nullable
-    public static String getPlayerListHeaderSerialized(@NotNull Player player) {
+    public static String getPlayerListHeaderSerialized(@NonNull Player player) {
         return Software.get().getPlayerListHeaderSerialized(player);
     }
 
     @Nullable
-    public static String getPlayerListFooterSerialized(@NotNull Player player) {
+    public static String getPlayerListFooterSerialized(@NonNull Player player) {
         return Software.get().getPlayerListFooterSerialized(player);
     }
 
-    public static void setPlayerListHeaderFooter(@NotNull Player player, @Nullable String header, @Nullable String footer) {
+    public static void setPlayerListHeaderFooter(@NonNull Player player, @Nullable String header, @Nullable String footer) {
         setPlayerListHeaderFooter(player, header == null ? null : NightMessage.parse(header), footer == null ? null : NightMessage.parse(footer));
     }
 
-    public static void setPlayerListHeaderFooter(@NotNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
+    public static void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
         Software.get().setPlayerListHeaderFooter(player, header, footer);
     }
 
-    @NotNull
-    public static String getPlayerListNameSerialized(@NotNull Player player) {
+    @NonNull
+    public static String getPlayerListNameSerialized(@NonNull Player player) {
         return Software.get().getPlayerListNameSerialized(player);
     }
 
-    public static void setPlayerListName(@NotNull Player player, @NotNull String name) {
+    public static void setPlayerListName(@NonNull Player player, @NonNull String name) {
         setPlayerListName(player, NightMessage.parse(name));
     }
 
-    public static void setPlayerListName(@NotNull Player player, @NotNull NightComponent name) {
+    public static void setPlayerListName(@NonNull Player player, @NonNull NightComponent name) {
         Software.get().setPlayerListName(player, name);
     }
 
-    public static void kick(@NotNull Player player, @NotNull String reason) {
+    public static void kick(@NonNull Player player, @NonNull String reason) {
         kick(player, NightMessage.parse(reason));
     }
 
-    public static void kick(@NotNull Player player, @NotNull NightComponent reason) {
+    public static void kick(@NonNull Player player, @NonNull NightComponent reason) {
         Software.get().kick(player, reason);
     }
 
-    public static void disallowLogin(@NotNull AsyncPlayerPreLoginEvent event, @NotNull AsyncPlayerPreLoginEvent.Result result, @NotNull String message) {
+    public static void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull String message) {
         disallowLogin(event, result, NightMessage.parse(message));
     }
 
-    public static void disallowLogin(@NotNull AsyncPlayerPreLoginEvent event, @NotNull AsyncPlayerPreLoginEvent.Result result, @NotNull NightComponent message) {
+    public static void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull NightComponent message) {
         Software.get().disallowLogin(event, result, message);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static NightProfile getProfile(@NotNull OfflinePlayer player) {
+    public static NightProfile getProfile(@NonNull OfflinePlayer player) {
         return PlayerProfiles.getProfile(player).query();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static NightProfile createProfile(@NotNull UUID uuid) {
+    public static NightProfile createProfile(@NonNull UUID uuid) {
         return PlayerProfiles.createProfile(uuid).query();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static NightProfile createProfile(@NotNull String name) {
+    public static NightProfile createProfile(@NonNull String name) {
         return PlayerProfiles.createProfile(name);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static NightProfile createProfile(@NotNull UUID uuid, @Nullable String name) {
+    public static NightProfile createProfile(@NonNull UUID uuid, @Nullable String name) {
         return PlayerProfiles.createProfile(uuid, name).query();
     }
 
     @Nullable
     @Deprecated
-    public static NightProfile createProfileBySkinURL(@NotNull String urlData) {
+    public static NightProfile createProfileBySkinURL(@NonNull String urlData) {
         CachedProfile profile = PlayerProfiles.createProfileBySkinURL(urlData);
         return profile == null ? null : profile.query();
     }
 
     @Nullable
     @Deprecated
-    public static String getProfileSkinURL(@NotNull NightProfile profile) {
+    public static String getProfileSkinURL(@NonNull NightProfile profile) {
         return PlayerProfiles.getProfileSkinURL(profile);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String getPermissionGroup(@NotNull Player player) {
+    public static String getPermissionGroup(@NonNull Player player) {
         return getPrimaryGroupOrDefault(player);
     }
 
     @Nullable
-    public static String getPrimaryGroup(@NotNull Player player) {
+    public static String getPrimaryGroup(@NonNull Player player) {
         return PermissionBridge.provider().map(provider -> provider.getPrimaryGroup(player)).orElse(null);
     }
 
-    @NotNull
-    public static String getPrimaryGroup(@NotNull Player player, @NotNull String fallback) {
+    @NonNull
+    public static String getPrimaryGroup(@NonNull Player player, @NonNull String fallback) {
         String group = getPrimaryGroup(player);
         return group == null ? fallback : group;
     }
 
-    @NotNull
-    public static CompletableFuture<String> getPrimaryGroup(@NotNull UUID playerId) {
+    @NonNull
+    public static CompletableFuture<String> getPrimaryGroup(@NonNull UUID playerId) {
         return PermissionBridge.provider().map(provider -> provider.getPrimaryGroup(playerId)).orElse(CompletableFuture.completedFuture(null));
     }
 
-    @NotNull
-    public static String getPrimaryGroupOrDefault(@NotNull Player player) {
+    @NonNull
+    public static String getPrimaryGroupOrDefault(@NonNull Player player) {
         return getPrimaryGroup(player, Placeholders.DEFAULT);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static Set<String> getPermissionGroups(@NotNull Player player) {
+    public static Set<String> getPermissionGroups(@NonNull Player player) {
         return getInheritanceGroupsOrDefault(player);
     }
 
-    @NotNull
-    public static Set<String> getInheritanceGroups(@NotNull Player player) {
+    @NonNull
+    public static Set<String> getInheritanceGroups(@NonNull Player player) {
         return PermissionBridge.provider().map(provider -> provider.getPermissionGroups(player)).orElse(Collections.emptySet());
     }
 
-    @NotNull
-    public static Set<String> getInheritanceGroups(@NotNull Player player, @NotNull Set<String> fallback) {
+    @NonNull
+    public static Set<String> getInheritanceGroups(@NonNull Player player, @NonNull Set<String> fallback) {
         Set<String> groups = getInheritanceGroups(player);
         return groups.isEmpty() ? fallback : groups;
     }
 
-    @NotNull
-    public static CompletableFuture<Set<String>> getInheritanceGroups(@NotNull UUID playerId) {
+    @NonNull
+    public static CompletableFuture<Set<String>> getInheritanceGroups(@NonNull UUID playerId) {
         return PermissionBridge.provider().map(provider -> provider.getPermissionGroups(playerId)).orElse(CompletableFuture.completedFuture(Collections.emptySet()));
     }
 
-    @NotNull
-    public static Set<String> getInheritanceGroupsOrDefault(@NotNull Player player) {
+    @NonNull
+    public static Set<String> getInheritanceGroupsOrDefault(@NonNull Player player) {
         return getInheritanceGroups(player, Lists.newSet(Placeholders.DEFAULT));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String getPrefix(@NotNull Player player) {
+    public static String getPrefix(@NonNull Player player) {
         return getPrefixOrEmpty(player);
     }
 
-    @NotNull
-    public static String getPrefixOrEmpty(@NotNull Player player) {
+    @NonNull
+    public static String getPrefixOrEmpty(@NonNull Player player) {
         return getPrefix(player, "");
 
     }
 
     @Nullable
-    public static String getRawPrefix(@NotNull Player player) {
+    public static String getRawPrefix(@NonNull Player player) {
         return PermissionBridge.provider().map(provider -> provider.getPrefix(player)).orElse(null);
     }
 
-    @NotNull
-    public static CompletableFuture<String> getRawPrefix(@NotNull UUID playerId) {
+    @NonNull
+    public static CompletableFuture<String> getRawPrefix(@NonNull UUID playerId) {
         return PermissionBridge.provider().map(provider -> provider.getPrefix(playerId)).orElse(CompletableFuture.completedFuture(null));
     }
 
-    @NotNull
-    public static String getPrefix(@NotNull Player player, @NotNull String fallback) {
+    @NonNull
+    public static String getPrefix(@NonNull Player player, @NonNull String fallback) {
         String prefix = getRawPrefix(player);
         return prefix == null ? fallback : prefix;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String getSuffix(@NotNull Player player) {
+    public static String getSuffix(@NonNull Player player) {
         return getSuffixOrEmpty(player);
     }
 
-    @NotNull
-    public static String getSuffixOrEmpty(@NotNull Player player) {
+    @NonNull
+    public static String getSuffixOrEmpty(@NonNull Player player) {
         return getSuffix(player, "");
     }
 
     @Nullable
-    public static String getRawSuffix(@NotNull Player player) {
+    public static String getRawSuffix(@NonNull Player player) {
         return PermissionBridge.provider().map(provider -> provider.getSuffix(player)).orElse(null);
     }
 
-    @NotNull
-    public static CompletableFuture<String> getRawSuffix(@NotNull UUID playerId) {
+    @NonNull
+    public static CompletableFuture<String> getRawSuffix(@NonNull UUID playerId) {
         return PermissionBridge.provider().map(provider -> provider.getSuffix(playerId)).orElse(CompletableFuture.completedFuture(null));
     }
 
-    @NotNull
-    public static String getSuffix(@NotNull Player player, @NotNull String fallback) {
+    @NonNull
+    public static String getSuffix(@NonNull Player player, @NonNull String fallback) {
         String suffix = getRawSuffix(player);
         return suffix == null ? fallback : suffix;
     }
 
     @Deprecated
-    public static void sendModernMessage(@NotNull CommandSender sender, @NotNull String message) {
+    public static void sendModernMessage(@NonNull CommandSender sender, @NonNull String message) {
         sendMessage(sender, message);
     }
 
-    public static void sendMessage(@NotNull CommandSender sender, @NotNull String message) {
+    public static void sendMessage(@NonNull CommandSender sender, @NonNull String message) {
         sendMessage(sender, NightMessage.parse(message));
     }
 
-    public static void sendMessage(@NotNull CommandSender sender, @NotNull NightComponent component) {
+    public static void sendMessage(@NonNull CommandSender sender, @NonNull NightComponent component) {
         Software.get().getTextComponentAdapter().send(sender, component);
     }
 
     @Deprecated
-    public static void sendActionBarText(@NotNull Player player, @NotNull String message) {
+    public static void sendActionBarText(@NonNull Player player, @NonNull String message) {
         sendActionBar(player, message);
     }
 
     @Deprecated
-    public static void sendActionBar(@NotNull Player player, @NotNull TextRoot message) {
+    public static void sendActionBar(@NonNull Player player, @NonNull TextRoot message) {
         sendActionBar(player, message.getString());
     }
 
-    public static void sendActionBar(@NotNull Player player, @NotNull String message) {
+    public static void sendActionBar(@NonNull Player player, @NonNull String message) {
         sendActionBar(player, NightMessage.parse(message));
     }
 
-    public static void sendActionBar(@NotNull Player player, @NotNull NightComponent component) {
+    public static void sendActionBar(@NonNull Player player, @NonNull NightComponent component) {
         Software.get().getTextComponentAdapter().sendActionBar(player, component);
     }
 
     @Deprecated
-    public static void sendTitle(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+    public static void sendTitle(@NonNull Player player, @NonNull String title, @NonNull String subtitle, int fadeIn, int stay, int fadeOut) {
         sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
-    public static void sendTitles(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+    public static void sendTitles(@NonNull Player player, @NonNull String title, @NonNull String subtitle, int fadeIn, int stay, int fadeOut) {
         sendTitles(player, NightMessage.parse(title), NightMessage.parse(subtitle), fadeIn, stay, fadeOut);
     }
 
-    public static void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
+    public static void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
         Software.get().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
-    public static void dispatchCommands(@NotNull Player player, @NotNull String... commands) {
+    public static void dispatchCommands(@NonNull Player player, @NonNull String... commands) {
         for (String command : commands) {
             dispatchCommand0(player, command);
         }
     }
 
-    public static void dispatchCommands(@NotNull Player player, @NotNull List<String> commands) {
+    public static void dispatchCommands(@NonNull Player player, @NonNull List<String> commands) {
         for (String command : commands) {
             dispatchCommand0(player, command);
         }
     }
 
-    public static void dispatchCommand(@NotNull Player player, @NotNull String command) {
+    public static void dispatchCommand(@NonNull Player player, @NonNull String command) {
         dispatchCommand0(player, command);
     }
 
-    private static void dispatchCommand0(@NotNull Player player, @NotNull String command) {
+    private static void dispatchCommand0(@NonNull Player player, @NonNull String command) {
         CommandSender sender = Bukkit.getConsoleSender();
         boolean usePlayer = false;
 
@@ -389,15 +404,15 @@ public class Players {
         }
     }
 
-    public static boolean hasEmptyInventory(@NotNull Player player) {
+    public static boolean hasEmptyInventory(@NonNull Player player) {
         return Stream.of(player.getInventory().getContents()).allMatch(item -> item == null || item.getType().isAir());
     }
 
-    public static boolean hasEmptyContents(@NotNull Player player) {
+    public static boolean hasEmptyContents(@NonNull Player player) {
         return Stream.of(player.getInventory().getContents()).allMatch(item -> item == null || item.getType().isAir());
     }
 
-    public static int countItemSpace(@NotNull Player player, @NotNull ItemStack item) {
+    public static int countItemSpace(@NonNull Player player, @NonNull ItemStack item) {
         int stackSize = item.getType().getMaxStackSize();
         return Stream.of(player.getInventory().getStorageContents()).mapToInt(itemHas -> {
             if (itemHas == null || itemHas.getType().isAir()) {
@@ -410,41 +425,41 @@ public class Players {
         }).sum();
     }
 
-    public static int countItem(@NotNull Player player, @NotNull Predicate<ItemStack> predicate) {
+    public static int countItem(@NonNull Player player, @NonNull Predicate<ItemStack> predicate) {
         return Stream.of(player.getInventory().getContents())
               .filter(item -> item != null && predicate.test(item))
               .mapToInt(ItemStack::getAmount).sum();
     }
 
-    public static int countItem(@NotNull Player player, @NotNull ItemStack item) {
+    public static int countItem(@NonNull Player player, @NonNull ItemStack item) {
         return countItem(player, item::isSimilar);
     }
 
-    public static int countItem(@NotNull Player player, @NotNull Material material) {
+    public static int countItem(@NonNull Player player, @NonNull Material material) {
         return countItem(player, itemHas -> itemHas.getType() == material);
     }
 
-    public static void takeItem(@NotNull Player player, @NotNull ItemStack item) {
+    public static void takeItem(@NonNull Player player, @NonNull ItemStack item) {
         takeItem(player, item, -1);
     }
 
-    public static void takeItem(@NotNull Player player, @NotNull ItemStack item, int amount) {
+    public static void takeItem(@NonNull Player player, @NonNull ItemStack item, int amount) {
         takeItem(player, itemHas -> itemHas.isSimilar(item), amount);
     }
 
-    public static void takeItem(@NotNull Player player, @NotNull Material material) {
+    public static void takeItem(@NonNull Player player, @NonNull Material material) {
         takeItem(player, material, -1);
     }
 
-    public static void takeItem(@NotNull Player player, @NotNull Material material, int amount) {
+    public static void takeItem(@NonNull Player player, @NonNull Material material, int amount) {
         takeItem(player, itemHas -> itemHas.getType() == material, amount);
     }
 
-    public static void takeItem(@NotNull Player player, @NotNull Predicate<ItemStack> predicate) {
+    public static void takeItem(@NonNull Player player, @NonNull Predicate<ItemStack> predicate) {
         takeItem(player, predicate, -1);
     }
 
-    public static void takeItem(@NotNull Player player, @NotNull Predicate<ItemStack> predicate, int amount) {
+    public static void takeItem(@NonNull Player player, @NonNull Predicate<ItemStack> predicate, int amount) {
         int takenAmount = 0;
 
         Inventory inventory = player.getInventory();
@@ -470,13 +485,13 @@ public class Players {
         }
     }
 
-    public static void addItem(@NotNull Player player, @NotNull ItemStack... items) {
+    public static void addItem(@NonNull Player player, @NonNull ItemStack... items) {
         for (ItemStack item : items) {
             addItem(player, item, item.getAmount());
         }
     }
 
-    public static void addItem(@NotNull Player player, @NotNull ItemStack itemStack, int amount) {
+    public static void addItem(@NonNull Player player, @NonNull ItemStack itemStack, int amount) {
         if (amount <= 0 || itemStack.getType().isAir()) return;
 
         ItemStack split = new ItemStack(itemStack);

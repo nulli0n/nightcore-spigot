@@ -100,6 +100,9 @@ public class NightCore extends NightPlugin {
 
         this.menuRegistry = new MenuRegistry(this);
         this.chatManager.setup();
+
+        this.currencyManager = new CurrencyManager(this);
+        this.currencyManager.setup();
     }
 
     @Override
@@ -116,9 +119,6 @@ public class NightCore extends NightPlugin {
 
         this.menuRegistry.setup();
 
-        this.currencyManager = new CurrencyManager(this);
-        this.currencyManager.setup();
-
         if (Version.isAtLeast(Version.MC_1_21_7)) {
             this.dialogWatcher = new DialogWatcher(this);
             this.dialogWatcher.setup();
@@ -133,7 +133,7 @@ public class NightCore extends NightPlugin {
         if (this.menuRegistry != null) this.menuRegistry.shutdown();
         if (this.coreManager != null) this.coreManager.shutdown();
         if (this.tagManager != null) this.tagManager.shutdown();
-        if (this.currencyManager != null) this.currencyManager.shutdown();
+
 
         UIUtils.clear();
         LangAssets.shutdown();
@@ -146,6 +146,7 @@ public class NightCore extends NightPlugin {
         PlayerBlockTracker.shutdown();
 
         this.chatManager.shutdown();
+        if (this.currencyManager != null) this.currencyManager.shutdown();
 
         CHILDRENS.clear();
         core = null;

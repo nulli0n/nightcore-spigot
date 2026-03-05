@@ -56,7 +56,6 @@ public class CoreManager extends AbstractManager<NightCore> {
         Dialog.shutdown();
         DialogManager.shutdown();
 
-        EconomyBridge.unregisterAll();
         ItemBridge.unregisterAll();
         PermissionBridge.unregisterAll();
     }

@@ -1,6 +1,5 @@
 package su.nightexpress.nightcore.language.message;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,6 +12,7 @@ import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.placeholder.CommonPlaceholders;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.sound.AbstractSound;
 import su.nightexpress.nightcore.util.text.TextRoot;
@@ -227,7 +227,7 @@ public class LangMessage {
     public TextRoot getMessage(@NotNull CommandSender sender) {
         if (!this.options.usePlaceholderAPI() || !(sender instanceof Player player)) return this.getMessage();
 
-        return this.getMessage().copy().replace(line -> PlaceholderAPI.setPlaceholders(player, line));
+        return this.getMessage().copy().replace(line -> CommonPlaceholders.setPAPIPlaceholders(player, line));
     }
 
     @NotNull

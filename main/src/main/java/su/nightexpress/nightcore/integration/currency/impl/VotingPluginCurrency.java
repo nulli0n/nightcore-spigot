@@ -3,14 +3,14 @@ package su.nightexpress.nightcore.integration.currency.impl;
 import com.bencodez.votingplugin.VotingPluginHooks;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.NightCore;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.integration.currency.CurrencyId;
 import su.nightexpress.nightcore.integration.currency.CurrencySettings;
 import su.nightexpress.nightcore.integration.currency.type.IncompleteCurrency;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class VotingPluginCurrency extends IncompleteCurrency {
 
@@ -29,38 +29,66 @@ public class VotingPluginCurrency extends IncompleteCurrency {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public CurrencySettings getDefaultSettings() {
         return CurrencySettings.createDefault("Voting Points", NightItem.fromType(Material.SUNFLOWER));
     }
 
-    @Override
-    public double getBalance(@NotNull Player player) {
-        return VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(player).getPoints();
+    @NonNull
+    private VotingPluginHooks getAPI() {
+        return VotingPluginHooks.getInstance();
     }
 
     @Override
-    public double getBalance(@NotNull UUID playerId) {
-        return VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(playerId).getPoints();
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull Player player) {
+        return this.queryBalanceAsync(player.getUniqueId());
     }
 
     @Override
-    public void give(@NotNull Player player, double amount) {
-        NightCore.get().runTaskAsync(() -> VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(player).addPoints((int) amount));
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId) {
+        return CompletableFuture.supplyAsync(() -> (double) getAPI().getUserManager().getVotingPluginUser(playerId).getPoints());
     }
 
     @Override
-    public void give(@NotNull UUID playerId, double amount) {
-        NightCore.get().runTaskAsync(() -> VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(playerId).addPoints((int) amount));
+    protected double queryBalanceDirect(@NonNull UUID playerId) {
+        return getAPI().getUserManager().getVotingPluginUser(playerId).getPoints();
     }
 
     @Override
-    public void take(@NotNull Player player, double amount) {
-        VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(player).removePoints((int) amount);
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount) {
+        return this.depositAsync(player.getUniqueId(), amount);
     }
 
     @Override
-    public void take(@NotNull UUID playerId, double amount) {
-        VotingPluginHooks.getInstance().getUserManager().getVotingPluginUser(playerId).removePoints((int) amount);
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount) {
+        this.getAPI().getUserManager().getVotingPluginUser(playerId).addPoints((int) amount, true);
+        return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    protected void depositDirect(@NonNull UUID playerId, double amount) {
+        this.getAPI().getUserManager().getVotingPluginUser(playerId).addPoints((int) amount);
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount) {
+        return this.withdrawAsync(player.getUniqueId(), amount);
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount) {
+        this.getAPI().getUserManager().getVotingPluginUser(playerId).removePoints((int) amount, true);
+        return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
+        this.getAPI().getUserManager().getVotingPluginUser(playerId).removePoints((int) amount);
     }
 }

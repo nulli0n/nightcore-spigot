@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.integration.placeholder.PAPI;
 import su.nightexpress.nightcore.menu.MenuOptions;
 import su.nightexpress.nightcore.menu.api.AutoFilled;
 import su.nightexpress.nightcore.menu.click.ClickAction;
@@ -78,8 +79,8 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
 
         boolean applyPAPI = ConfigValue.create("Settings.PlaceholderAPI.Enabled",
             this.applyPAPI,
-            "Sets whether " + Plugins.PLACEHOLDER_API + " placeholders will be applied on all items from the '" + this.itemSection + "' section of this GUI.",
-            "[*] Disable if you don't use any " + Plugins.PLACEHOLDER_API + " placeholders on your items to improve GUI performance."
+            "Sets whether " + PAPI.NAME + " placeholders will be applied on all items from the '" + this.itemSection + "' section of this GUI.",
+            "[*] Disable if you don't use any " + PAPI.NAME + " placeholders on your items to improve GUI performance."
         ).read(cfg);
 
         this.getOptions().setTitle(NightMessage.asLegacy(title));
@@ -122,7 +123,7 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
         comments.add("> Item: Item to display. Please check: " + Placeholders.WIKI_ITEMS_URL);
         comments.add("> Priority: Button priority. Better values will override other item(s) in the same slot(s).");
         comments.add("> Slots: Button slots. From [0] to [Size - 1]. Split with commas.");
-        comments.add("> Click_Commands: Execute custom commands on click. " + Plugins.PLACEHOLDER_API + " available here.");
+        comments.add("> Click_Commands: Execute custom commands on click. " + PAPI.NAME + " available here.");
         comments.add("    Available click types: " + Enums.inline(ClickType.class));
         comments.add("    Use prefix '" + Players.PLAYER_COMMAND_PREFIX + "' to run command by a player.");
         comments.add("    Click_Commands:");

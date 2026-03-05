@@ -1,12 +1,12 @@
 package su.nightexpress.nightcore.util;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.language.entry.LangItem;
+import su.nightexpress.nightcore.util.placeholder.CommonPlaceholders;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderList;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
@@ -261,7 +261,7 @@ public class ItemReplacer {
     @Deprecated
     public ItemReplacer replacePlaceholderAPI(@NotNull Player player) {
         if (Plugins.hasPlaceholderAPI()) {
-            this.cacheOperator(str -> PlaceholderAPI.setPlaceholders(player, str));
+            this.cacheOperator(str -> CommonPlaceholders.setPAPIPlaceholders(player, str));
         }
         return this;
     }

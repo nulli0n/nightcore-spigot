@@ -6,6 +6,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.user.cache.UserRepository;
@@ -92,11 +93,11 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         return this.repository;
     }
 
-    private void cacheTemporary(@NotNull U user) {
+    protected void cacheTemporary(@NotNull U user) {
         this.repository.addTemporary(user, this.settings.getCacheLifetime());
     }
 
-    private void cachePermanent(@NotNull U user) {
+    protected void cachePermanent(@NotNull U user) {
         this.repository.addPermanent(user);
     }
 
@@ -119,6 +120,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
 
         this.repository.getById(player.getUniqueId()).ifPresent(user -> {
             user.setName(player.getName());
+            this.handleJoin(user);
             this.cachePermanent(user);
         });
     }
@@ -127,6 +129,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         Player player = event.getPlayer();
 
         this.repository.getById(player.getUniqueId()).ifPresent(user -> {
+            this.handleQuit(user);
             if (user.isDirty()) {
                 this.plugin.runTaskAsync(() -> this.dataAccessor.update(user));
                 user.markClean();
@@ -137,6 +140,15 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
 
             this.cacheTemporary(user); // Cache temporary so user data is still accessible for a while.
         });
+    }
+
+    // TODO abstract
+    protected void handleJoin(@NonNull U user) {
+
+    }
+
+    protected void handleQuit(@NonNull U user) {
+
     }
 
     public void saveDirty() {

@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.integration.currency.impl;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.integration.currency.CurrencySettings;
@@ -14,17 +14,18 @@ import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class ItemStackCurrency extends IncompleteCurrency implements Writeable {
 
     private ItemStack itemStack;
 
-    public ItemStackCurrency(@NotNull String id, @NotNull ItemStack itemStack) {
+    public ItemStackCurrency(@NonNull String id, @NonNull ItemStack itemStack) {
         super(id);
         this.setItemStack(itemStack);
     }
 
-    @NotNull
+    @NonNull
     public static List<ItemStackCurrency> createDefaults() {
         return Lists.newList(
             new ItemStackCurrency("gold", new ItemStack(Material.GOLD_INGOT)),
@@ -33,8 +34,8 @@ public class ItemStackCurrency extends IncompleteCurrency implements Writeable {
         );
     }
 
-    @NotNull
-    public static ItemStackCurrency read(@NotNull FileConfig config, @NotNull String path, @NotNull String id) throws IllegalStateException {
+    @NonNull
+    public static ItemStackCurrency read(@NonNull FileConfig config, @NonNull String path, @NonNull String id) throws IllegalStateException {
         ItemTag tag = ItemTag.read(config, path + ".Tag");
         ItemStack itemStack = tag.getItemStack();
         if (itemStack == null) throw new IllegalStateException("Invalid ItemStack tag: '" + tag.getTag() + "'.");
@@ -43,7 +44,7 @@ public class ItemStackCurrency extends IncompleteCurrency implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Tag", ItemTag.of(this.itemStack));
     }
 
@@ -58,47 +59,85 @@ public class ItemStackCurrency extends IncompleteCurrency implements Writeable {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public CurrencySettings getDefaultSettings() {
         return new CurrencySettings(ItemUtil.getNameSerialized(this.itemStack), Placeholders.GENERIC_AMOUNT + "x " + Placeholders.GENERIC_NAME, NightItem.fromItemStack(this.itemStack));
     }
 
-    public void setItemStack(@NotNull ItemStack itemStack) {
+    public void setItemStack(@NonNull ItemStack itemStack) {
         this.itemStack = new ItemStack(itemStack);
     }
 
-    @NotNull
+    @NonNull
     public ItemStack getItemStack() {
         return new ItemStack(this.itemStack);
     }
 
+
     @Override
-    public double getBalance(@NotNull Player player) {
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull Player player) {
+        return CompletableFuture.completedFuture(this.countItem(player));
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId) {
+        return CompletableFuture.completedFuture(this.queryBalanceDirect(playerId));
+    }
+
+    @Override
+    protected double queryBalanceDirect(@NonNull UUID playerId) {
+        return Players.findById(playerId).map(this::countItem).orElse(0D);
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount) {
+        this.depositItem(player, amount);
+        return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount) {
+        this.depositDirect(playerId, amount);
+        return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    protected void depositDirect(@NonNull UUID playerId, double amount) {
+        Players.findById(playerId).ifPresent(player -> this.depositItem(player, amount));
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount) {
+        this.withdrawItem(player, amount);
+        return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount) {
+        this.withdrawDirect(playerId, amount);
+        return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
+        Players.findById(playerId).ifPresent(player -> this.withdrawItem(player, amount));
+    }
+
+    private double countItem(@NonNull Player player) {
         return Players.countItem(player, this.itemStack);
     }
 
-    @Override
-    public double getBalance(@NotNull UUID playerId) {
-        return 0;
-    }
-
-    @Override
-    public void give(@NotNull Player player, double amount) {
+    private void depositItem(@NonNull Player player, double amount) {
         Players.addItem(player, this.itemStack, (int) amount);
     }
 
-    @Override
-    public void give(@NotNull UUID playerId, double amount) {
-
-    }
-
-    @Override
-    public void take(@NotNull Player player, double amount) {
+    private void withdrawItem(@NonNull Player player, double amount) {
         Players.takeItem(player, this.itemStack, (int) amount);
-    }
-
-    @Override
-    public void take(@NotNull UUID playerId, double amount) {
-
     }
 }

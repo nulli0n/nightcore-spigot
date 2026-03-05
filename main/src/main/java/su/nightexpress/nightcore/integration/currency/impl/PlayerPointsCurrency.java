@@ -4,13 +4,14 @@ import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.integration.currency.CurrencyId;
 import su.nightexpress.nightcore.integration.currency.CurrencySettings;
 import su.nightexpress.nightcore.integration.currency.type.IncompleteCurrency;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class PlayerPointsCurrency extends IncompleteCurrency {
 
@@ -32,37 +33,59 @@ public class PlayerPointsCurrency extends IncompleteCurrency {
     }
 
     @Override
-    public @NotNull CurrencySettings getDefaultSettings() {
+    public @NonNull CurrencySettings getDefaultSettings() {
         return CurrencySettings.createDefault("Points", NightItem.fromType(Material.SUNFLOWER));
     }
 
+
     @Override
-    public double getBalance(@NotNull Player player) {
-        return this.getBalance(player.getUniqueId());
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull Player player) {
+        return this.queryBalanceAsync(player.getUniqueId());
     }
 
     @Override
-    public double getBalance(@NotNull UUID playerId) {
+    @NonNull
+    public CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId) {
+        return CompletableFuture.supplyAsync(() -> (double) this.api.look(playerId));
+    }
+
+    @Override
+    protected double queryBalanceDirect(@NonNull UUID playerId) {
         return this.api.look(playerId);
     }
 
     @Override
-    public void give(@NotNull Player player, double amount) {
-        this.give(player.getUniqueId(), amount);
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount) {
+        return this.depositAsync(player.getUniqueId(), amount);
     }
 
     @Override
-    public void give(@NotNull UUID playerId, double amount) {
+    @NonNull
+    public CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount) {
+        return CompletableFuture.supplyAsync(() -> this.api.give(playerId, (int) amount));
+    }
+
+    @Override
+    protected void depositDirect(@NonNull UUID playerId, double amount) {
         this.api.give(playerId, (int) amount);
     }
 
     @Override
-    public void take(@NotNull Player player, double amount) {
-        this.take(player.getUniqueId(), amount);
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount) {
+        return this.withdrawAsync(player.getUniqueId(), amount);
     }
 
     @Override
-    public void take(@NotNull UUID playerId, double amount) {
+    @NonNull
+    public CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount) {
+        return CompletableFuture.supplyAsync(() -> this.api.take(playerId, (int) amount));
+    }
+
+    @Override
+    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
         this.api.take(playerId, (int) amount);
     }
 }

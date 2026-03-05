@@ -132,9 +132,9 @@ public class Column<R> {
         }
         else if (withDefault) {
             if (this.defaultValue == null && this.nullOption == NullOption.NOT_NULL) {
-                throw new IllegalStateException("NOT NULL columns must have a DEFAULT value");
+                throw new IllegalStateException("NOT NULL columns ('%s') must have a DEFAULT value".formatted(this.name));
             }
-            builder.append(" DEFAULT").append(this.defaultValue);
+            builder.append(" DEFAULT ").append(this.defaultValue);
         }
 
         return builder.toString();
