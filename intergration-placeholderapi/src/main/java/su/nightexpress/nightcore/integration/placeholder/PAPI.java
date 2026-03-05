@@ -39,11 +39,11 @@ public class PAPI {
 
     @NonNull
     public static String setPlaceholders(@Nullable Player player, @NonNull String string) {
-        return isPresent() ? PlaceholderAPI.setPlaceholders(null, string) : string;
+        return isPresent() ? PlaceholderAPI.setPlaceholders(player, string) : string;
     }
 
     @NonNull
     public static String setBracketPlaceholders(@Nullable Player player, @NonNull String string) {
-        return isPresent() ? PlaceholderAPI.setBracketPlaceholders(null, string) : string;
+        return isPresent() ? PlaceholderAPI.setBracketPlaceholders(player, string) : string;
     }
 }
