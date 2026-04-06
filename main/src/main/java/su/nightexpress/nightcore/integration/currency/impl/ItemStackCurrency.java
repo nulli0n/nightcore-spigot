@@ -77,67 +77,59 @@ public class ItemStackCurrency extends IncompleteCurrency implements Writeable {
     @Override
     @NonNull
     public CompletableFuture<Double> queryBalanceAsync(@NonNull Player player) {
-        return CompletableFuture.completedFuture(this.countItem(player));
+        return CompletableFuture.completedFuture(this.queryBalanceDirect(player));
     }
 
     @Override
     @NonNull
     public CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId) {
-        return CompletableFuture.completedFuture(this.queryBalanceDirect(playerId));
+        return CompletableFuture.completedFuture(Players.findById(playerId).map(this::queryBalanceDirect).orElse(0D));
     }
 
     @Override
-    protected double queryBalanceDirect(@NonNull UUID playerId) {
-        return Players.findById(playerId).map(this::countItem).orElse(0D);
+    protected double queryBalanceDirect(@NonNull Player player) {
+        return Players.countItem(player, this.itemStack);
     }
 
     @Override
     @NonNull
     public CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount) {
-        this.depositItem(player, amount);
+        this.depositDirect(player, amount);
         return CompletableFuture.completedFuture(true);
     }
 
     @Override
     @NonNull
     public CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount) {
-        this.depositDirect(playerId, amount);
-        return CompletableFuture.completedFuture(true);
+        return CompletableFuture.completedFuture(Players.findById(playerId).map(player -> {
+            this.depositDirect(player, amount);
+            return true;
+        }).orElse(false));
     }
 
     @Override
-    protected void depositDirect(@NonNull UUID playerId, double amount) {
-        Players.findById(playerId).ifPresent(player -> this.depositItem(player, amount));
+    protected void depositDirect(@NonNull Player player, double amount) {
+        Players.addItem(player, this.itemStack, (int) amount);
     }
 
     @Override
     @NonNull
     public CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount) {
-        this.withdrawItem(player, amount);
+        this.withdrawDirect(player, amount);
         return CompletableFuture.completedFuture(true);
     }
 
     @Override
     @NonNull
     public CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount) {
-        this.withdrawDirect(playerId, amount);
-        return CompletableFuture.completedFuture(true);
+        return CompletableFuture.completedFuture(Players.findById(playerId).map(player -> {
+            this.withdrawDirect(player, amount);
+            return true;
+        }).orElse(false));
     }
 
     @Override
-    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
-        Players.findById(playerId).ifPresent(player -> this.withdrawItem(player, amount));
-    }
-
-    private double countItem(@NonNull Player player) {
-        return Players.countItem(player, this.itemStack);
-    }
-
-    private void depositItem(@NonNull Player player, double amount) {
-        Players.addItem(player, this.itemStack, (int) amount);
-    }
-
-    private void withdrawItem(@NonNull Player player, double amount) {
+    protected void withdrawDirect(@NonNull Player player, double amount) {
         Players.takeItem(player, this.itemStack, (int) amount);
     }
 }

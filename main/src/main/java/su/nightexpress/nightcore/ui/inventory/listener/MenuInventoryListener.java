@@ -28,7 +28,7 @@ public class MenuInventoryListener extends AbstractListener<NightCore> {
         Menu menu = this.registry.getActiveMenu(player);
         if (menu == null) return;
 
-        menu.handleClick(player, event, this.plugin);
+        menu.handleClick(player, event);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

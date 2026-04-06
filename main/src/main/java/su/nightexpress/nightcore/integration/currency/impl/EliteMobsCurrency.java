@@ -48,8 +48,8 @@ public class EliteMobsCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected double queryBalanceDirect(@NonNull UUID playerId) {
-        return EconomyHandler.checkCurrency(playerId, false);
+    protected double queryBalanceDirect(@NonNull Player player) {
+        return EconomyHandler.checkCurrency(player.getUniqueId(), false);
     }
 
     @Override
@@ -61,13 +61,13 @@ public class EliteMobsCurrency extends IncompleteCurrency {
     @Override
     @NonNull
     public CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount) {
-        this.depositDirect(playerId, amount);
+        EconomyHandler.addCurrency(playerId, amount);
         return CompletableFuture.completedFuture(true);
     }
 
     @Override
-    protected void depositDirect(@NonNull UUID playerId, double amount) {
-        EconomyHandler.addCurrency(playerId, amount);
+    protected void depositDirect(@NonNull Player player, double amount) {
+        EconomyHandler.addCurrency(player.getUniqueId(), amount);
     }
 
     @Override
@@ -79,12 +79,12 @@ public class EliteMobsCurrency extends IncompleteCurrency {
     @Override
     @NonNull
     public CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount) {
-        this.withdrawDirect(playerId, amount);
+        EconomyHandler.subtractCurrency(playerId, amount);
         return CompletableFuture.completedFuture(true);
     }
 
     @Override
-    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
-        EconomyHandler.subtractCurrency(playerId, amount);
+    protected void withdrawDirect(@NonNull Player player, double amount) {
+        EconomyHandler.subtractCurrency(player.getUniqueId(), amount);
     }
 }

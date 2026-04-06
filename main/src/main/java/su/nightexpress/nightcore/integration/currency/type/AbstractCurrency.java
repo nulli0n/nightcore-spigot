@@ -81,15 +81,15 @@ public abstract class AbstractCurrency implements Currency {
 
     @Override
     public double queryBalance(@NonNull UUID playerId) {
-        return this.queryBalanceDirect(playerId);
+        return Players.findById(playerId).map(this::queryBalanceDirect).orElse(0D);
     }
 
-    protected abstract double queryBalanceDirect(@NonNull UUID playerId);
+    protected abstract double queryBalanceDirect(@NonNull Player player);
 
     @Override
     public void deposit(@NonNull Player player, double amount) {
         if (player.isOnline()) {
-            this.depositDirect(player.getUniqueId(), amount);
+            this.depositDirect(player, amount);
             return;
         }
 
@@ -98,20 +98,21 @@ public abstract class AbstractCurrency implements Currency {
 
     @Override
     public void deposit(@NonNull UUID playerId, double amount) {
-        if (Players.isOnline(playerId)) {
-            this.depositDirect(playerId, amount);
+        Player player = Players.getPlayer(playerId);
+        if (player != null) {
+            this.depositDirect(player, amount);
             return;
         }
 
         this.depositAsync(playerId, amount);
     }
 
-    protected abstract void depositDirect(@NonNull UUID playerId, double amount);
+    protected abstract void depositDirect(@NonNull Player player, double amount);
 
     @Override
     public void withdraw(@NonNull Player player, double amount) {
         if (player.isOnline()) {
-            this.withdrawDirect(player.getUniqueId(), amount);
+            this.withdrawDirect(player, amount);
             return;
         }
 
@@ -120,15 +121,16 @@ public abstract class AbstractCurrency implements Currency {
 
     @Override
     public void withdraw(@NonNull UUID playerId, double amount) {
-        if (Players.isOnline(playerId)) {
-            this.withdrawDirect(playerId, amount);
+        Player player = Players.getPlayer(playerId);
+        if (player != null) {
+            this.withdrawDirect(player, amount);
             return;
         }
 
         this.withdrawAsync(playerId, amount);
     }
 
-    protected abstract void withdrawDirect(@NonNull UUID playerId, double amount);
+    protected abstract void withdrawDirect(@NonNull Player player, double amount);
 
     @Override
     @NotNull

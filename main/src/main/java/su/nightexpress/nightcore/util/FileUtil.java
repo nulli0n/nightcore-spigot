@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 
 import java.io.File;
@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -22,7 +21,7 @@ import java.util.stream.Stream;
 
 public class FileUtil {
 
-    public static void copy(@NotNull InputStream inputStream, @NotNull File file) {
+    public static void copy(@NonNull InputStream inputStream, @NonNull File file) {
         try {
             FileOutputStream outputStream = new FileOutputStream(file);
             byte[] array = new byte[1024];
@@ -38,7 +37,7 @@ public class FileUtil {
         }
     }
 
-    public static boolean createFileIfNotExists(@NotNull Path path) {
+    public static boolean createFileIfNotExists(@NonNull Path path) {
         if (Files.exists(path)) return false;
 
         try {
@@ -52,7 +51,7 @@ public class FileUtil {
         }
     }
 
-    public static boolean create(@NotNull File file) {
+    public static boolean create(@NonNull File file) {
         if (file.exists()) return false;
 
         File parent = file.getParentFile();
@@ -68,8 +67,8 @@ public class FileUtil {
         }
     }
 
-    @NotNull
-    public static String getNameWithoutExtension(@NotNull Path path) {
+    @NonNull
+    public static String getNameWithoutExtension(@NonNull Path path) {
         String fileName = path.getFileName().toString();
         int index = fileName.lastIndexOf('.');
         if (index == -1) return fileName;
@@ -77,28 +76,28 @@ public class FileUtil {
         return fileName.substring(0, index);
     }
 
-    @NotNull
-    public static List<File> getConfigFiles(@NotNull String path) {
+    @NonNull
+    public static List<File> getConfigFiles(@NonNull String path) {
         return getConfigFiles(path, false);
     }
 
-    @NotNull
-    public static List<File> getConfigFiles(@NotNull String path, boolean deep) {
+    @NonNull
+    public static List<File> getConfigFiles(@NonNull String path, boolean deep) {
         return getFiles(path, FileConfig.EXTENSION, deep);
     }
 
-    @NotNull
-    public static List<File> getFiles(@NotNull String path) {
+    @NonNull
+    public static List<File> getFiles(@NonNull String path) {
         return getFiles(path, false);
     }
 
-    @NotNull
-    public static List<File> getFiles(@NotNull String path, boolean deep) {
+    @NonNull
+    public static List<File> getFiles(@NonNull String path, boolean deep) {
         return getFiles(path, null, deep);
     }
 
-    @NotNull
-    public static List<File> getFiles(@NotNull String path, @Nullable String extension, boolean deep) {
+    @NonNull
+    public static List<File> getFiles(@NonNull String path, @Nullable String extension, boolean deep) {
         List<File> files = new ArrayList<>();
 
         File folder = new File(path);
@@ -118,19 +117,35 @@ public class FileUtil {
         return files;
     }
 
-    @NotNull
-    public static List<Path> findFiles(@NotNull String directoryPath) {
-        return findFiles(directoryPath, Files::isRegularFile);
+    @NonNull
+    public static List<Path> findYamlFiles(@NonNull String directoryPath) {
+        return findYamlFiles(Path.of(directoryPath));
     }
 
-    @NotNull
-    public static List<Path> findYamlFiles(@NotNull String directoryPath) {
+    @NonNull
+    public static List<Path> findFiles(@NonNull String directoryPath) {
+        return findFiles(Path.of(directoryPath));
+    }
+
+    @NonNull
+    public static List<Path> findFiles(@NonNull String directoryPath, @NonNull Predicate<Path> predicate) {
+        return findFiles(Path.of(directoryPath), predicate);
+    }
+
+
+
+    @NonNull
+    public static List<Path> findYamlFiles(@NonNull Path directoryPath) {
         return findFiles(directoryPath, path -> Files.isRegularFile(path) && path.toString().endsWith(FileConfig.EXTENSION));
     }
 
-    @NotNull
-    public static List<Path> findFiles(@NotNull String directoryPath, @NotNull Predicate<Path> predicate) {
-        Path path = Paths.get(directoryPath);
+    @NonNull
+    public static List<Path> findFiles(@NonNull Path directoryPath) {
+        return findFiles(directoryPath, Files::isRegularFile);
+    }
+
+    @NonNull
+    public static List<Path> findFiles(@NonNull Path path, @NonNull Predicate<Path> predicate) {
         if (!Files.exists(path)) return Collections.emptyList();
 
         try (Stream<Path> stream = Files.list(path)) {
@@ -142,8 +157,8 @@ public class FileUtil {
         }
     }
 
-    @NotNull
-    public static List<File> getFolders(@NotNull String path) {
+    @NonNull
+    public static List<File> getFolders(@NonNull String path) {
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles == null) return Collections.emptyList();
@@ -151,11 +166,11 @@ public class FileUtil {
         return Stream.of(listOfFiles).filter(File::isDirectory).toList();
     }
 
-    public static boolean deleteRecursive(@NotNull String path) {
+    public static boolean deleteRecursive(@NonNull String path) {
         return deleteRecursive(new File(path));
     }
 
-    public static boolean deleteRecursive(@NotNull File dir) {
+    public static boolean deleteRecursive(@NonNull File dir) {
         if (!dir.exists()) return false;
 
         File[] inside = dir.listFiles();
@@ -167,7 +182,7 @@ public class FileUtil {
         return dir.delete();
     }
 
-    public static void extractResources(@NotNull File pluginFile, @NotNull String fromPath, @NotNull File destination) {
+    public static void extractResources(@NonNull File pluginFile, @NonNull String fromPath, @NonNull File destination) {
         if (!destination.exists()) {
             if (!destination.mkdirs()) {
                 return;

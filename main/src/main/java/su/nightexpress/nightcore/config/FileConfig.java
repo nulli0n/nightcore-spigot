@@ -15,8 +15,8 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.configuration.ConfigProperty;
 import su.nightexpress.nightcore.configuration.ConfigType;
@@ -42,12 +42,12 @@ public class FileConfig extends YamlConfiguration {
     private boolean changed;
 
     @Deprecated
-    public FileConfig(@NotNull String path, @NotNull String file) {
+    public FileConfig(@NonNull String path, @NonNull String file) {
         this(new File(path, file));
     }
 
     @Deprecated
-    public FileConfig(@NotNull File file) {
+    public FileConfig(@NonNull File file) {
         this.changed = false;
         this.options().width(512);
 
@@ -56,35 +56,35 @@ public class FileConfig extends YamlConfiguration {
         this.reload();
     }
 
-    private FileConfig(@NotNull Path path) {
+    private FileConfig(@NonNull Path path) {
         this.path = path;
         this.changed = false;
         this.options().width(512);
     }
 
-    @NotNull
-    public static FileConfig load(@NotNull String path, @NotNull String file) {
+    @NonNull
+    public static FileConfig load(@NonNull String path, @NonNull String file) {
         return load(Path.of(path, file));
     }
 
-    @NotNull
-    public static FileConfig load(@NotNull Path path) {
+    @NonNull
+    public static FileConfig load(@NonNull Path path) {
         FileConfig config = new FileConfig(path);
         config.load();
         return config;
     }
 
-    public static boolean isConfig(@NotNull File file) {
+    public static boolean isConfig(@NonNull File file) {
         return file.getName().endsWith(EXTENSION);
     }
 
-    @NotNull
-    public static String withExtension(@NotNull String fileName) {
+    @NonNull
+    public static String withExtension(@NonNull String fileName) {
         return fileName + EXTENSION;
     }
 
-    @NotNull
-    public static String getName(@NotNull File file) {
+    @NonNull
+    public static String getName(@NonNull File file) {
         String name = file.getName();
 
         if (isConfig(file)) {
@@ -93,18 +93,18 @@ public class FileConfig extends YamlConfiguration {
         return name;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static FileConfig loadOrExtract(@NotNull NightCorePlugin plugin, @NotNull String path, @NotNull String file) {
+    public static FileConfig loadOrExtract(@NonNull NightCorePlugin plugin, @NonNull String path, @NonNull String file) {
         if (!path.endsWith("/")) {
             path += "/";
         }
         return loadOrExtract(plugin, path + file);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static FileConfig loadOrExtract(@NotNull NightCorePlugin plugin, @NotNull String filePath) {
+    public static FileConfig loadOrExtract(@NonNull NightCorePlugin plugin, @NonNull String filePath) {
         if (!filePath.startsWith("/")) {
             filePath = "/" + filePath;
         }
@@ -121,33 +121,33 @@ public class FileConfig extends YamlConfiguration {
         return new FileConfig(file);
     }
 
-    @NotNull
-    public static List<FileConfig> loadAll(@NotNull String path) {
+    @NonNull
+    public static List<FileConfig> loadAll(@NonNull String path) {
         return loadAll(path, false);
     }
 
-    @NotNull
-    public static List<FileConfig> loadAll(@NotNull String path, boolean deep) {
+    @NonNull
+    public static List<FileConfig> loadAll(@NonNull String path, boolean deep) {
         return FileUtil.getConfigFiles(path, deep).stream().map(FileConfig::new).toList();
     }
 
-    public void initializeOptions(@NotNull Class<?> clazz) {
+    public void initializeOptions(@NonNull Class<?> clazz) {
         initializeOptions(clazz, this);
     }
 
-    public static void initializeOptions(@NotNull Class<?> clazz, @NotNull FileConfig config) {
+    public static void initializeOptions(@NonNull Class<?> clazz, @NonNull FileConfig config) {
         for (ConfigValue<?> value : Reflex.getStaticFields(clazz, ConfigValue.class, false)) {
             value.read(config);
         }
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public File getFile() {
         return this.path.toFile();
     }
 
-    @NotNull
+    @NonNull
     public Path getPath() {
         return this.path;
     }
@@ -190,24 +190,24 @@ public class FileConfig extends YamlConfiguration {
         return true;
     }
 
-    public void edit(@NotNull Consumer<FileConfig> consumer) {
+    public void edit(@NonNull Consumer<FileConfig> consumer) {
         consumer.accept(this);
         this.saveChanges();
     }
 
-    public boolean addMissing(@NotNull String path, @Nullable Object val) {
+    public boolean addMissing(@NonNull String path, @Nullable Object val) {
         if (this.contains(path)) return false;
         this.set(path, val);
         return true;
     }
 
-    @NotNull
-    public <T> T get(@NotNull ConfigProperty<T> property) {
+    @NonNull
+    public <T> T get(@NonNull ConfigProperty<T> property) {
         return property.read(this);
     }
 
-    @NotNull
-    public <T> T get(@NotNull ConfigType<T> type, @NotNull String path, @NotNull T def, @Nullable String... comments) {
+    @NonNull
+    public <T> T get(@NonNull ConfigType<T> type, @NonNull String path, @NonNull T def, @Nullable String... comments) {
         if (!this.contains(path)) {
             type.write(this, path, def);
             this.setComments(path, comments);
@@ -215,24 +215,27 @@ public class FileConfig extends YamlConfiguration {
         return type.read(this, path, def);
     }
 
-    public void setArray(@NotNull String path, double[] array) {
+    public void setArray(@NonNull String path, double[] array) {
         this.set(path, array == null ? null : ArrayUtil.arrayToString(array));
     }
 
-    public void setArray(@NotNull String path, int[] array) {
+    public void setArray(@NonNull String path, int[] array) {
         this.set(path, array == null ? null : ArrayUtil.arrayToString(array));
     }
 
-    public void setArray(@NotNull String path, long[] array) {
+    public void setArray(@NonNull String path, long[] array) {
         this.set(path, array == null ? null : ArrayUtil.arrayToString(array));
     }
 
     @Override
-    public void set(@NotNull String path, @Nullable Object value) {
+    public void set(@NonNull String path, @Nullable Object value) {
         if (value instanceof Writeable writeable) {
             writeable.write(this, path);
             this.changed = true;
             return;
+        }
+        else if (value instanceof UUID uuid) {
+            value = uuid.toString();
         }
         else if (value instanceof String str) {
             value = LegacyColors.plainColors(str);
@@ -252,16 +255,16 @@ public class FileConfig extends YamlConfiguration {
         this.changed = true;
     }
 
-    public void setComments(@NotNull String path, @Nullable String... comments) {
+    public void setComments(@NonNull String path, @Nullable String... comments) {
         this.setComments(path, comments == null ? null : Arrays.asList(comments));
     }
 
-    public void setInlineComments(@NotNull String path, @Nullable String... comments) {
+    public void setInlineComments(@NonNull String path, @Nullable String... comments) {
         this.setInlineComments(path, comments == null ? null : Arrays.asList(comments));
     }
 
     @Override
-    public void setComments(@NotNull String path, @Nullable List<String> comments) {
+    public void setComments(@NonNull String path, @Nullable List<String> comments) {
         if (!this.areCommentsDifferent(this.getComments(path), comments)) return;
 
         super.setComments(path, comments);
@@ -269,14 +272,14 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @Override
-    public void setInlineComments(@NotNull String path, @Nullable List<String> comments) {
+    public void setInlineComments(@NonNull String path, @Nullable List<String> comments) {
         if (!this.areCommentsDifferent(this.getInlineComments(path), comments)) return;
 
         super.setInlineComments(path, comments);
         this.changed = true;
     }
 
-    private boolean areCommentsDifferent(@NotNull List<String> current, @Nullable List<String> comments) {
+    private boolean areCommentsDifferent(@NonNull List<String> current, @Nullable List<String> comments) {
         if ((comments == null || comments.isEmpty())) {
             return !current.isEmpty();
         }
@@ -284,117 +287,136 @@ public class FileConfig extends YamlConfiguration {
         return !new HashSet<>(current).equals(new HashSet<>(comments));
     }
 
-    public boolean remove(@NotNull String path) {
+    public boolean remove(@NonNull String path) {
         if (!this.contains(path)) return false;
         this.set(path, null);
         return true;
     }
 
-    @NotNull
-    public Set<String> getSection(@NotNull String path) {
+    @NonNull
+    public Set<String> getSection(@NonNull String path) {
         ConfigurationSection section = this.getConfigurationSection(path);
         return section == null ? Collections.emptySet() : section.getKeys(false);
     }
 
-    @NotNull
-    public String getStringOrEmpty(@NotNull String path) {
+    @Nullable
+    public UUID getUUID(@NonNull String path) {
+        return this.getUUID(path, null);
+    }
+
+    @Nullable
+    public UUID getUUID(@NonNull String path, @Nullable UUID def) {
+        String string = this.getString(path);
+        if (string == null) return def;
+
+        try {
+            return UUID.fromString(string);
+        }
+        catch (IllegalArgumentException exception) {
+            exception.printStackTrace();
+            return def;
+        }
+    }
+
+    @NonNull
+    public String getStringOrEmpty(@NonNull String path) {
         String str = super.getString(path);
         return str == null ? "" : str;
     }
 
     @Override
     @Nullable
-    public String getString(@NotNull String path) {
+    public String getString(@NonNull String path) {
         String str = super.getString(path);
         return str == null || str.isEmpty() ? null : str;
 //        return super.getString(path);
     }
 
     @Override
-    @NotNull
-    public String getString(@NotNull String path, @Nullable String def) {
+    @NonNull
+    public String getString(@NonNull String path, @Nullable String def) {
         String str = super.getString(path, def);
         return str == null ? "" : str;
     }
 
-    @NotNull
-    public Set<String> getStringSet(@NotNull String path) {
+    @NonNull
+    public Set<String> getStringSet(@NonNull String path) {
         return new HashSet<>(this.getStringList(path));
     }
 
     @Override
     @Nullable
     @Deprecated
-    public Location getLocation(@NotNull String path) {
+    public Location getLocation(@NonNull String path) {
         String raw = this.getString(path);
         return raw == null ? null : LocationUtil.deserialize(raw);
     }
 
     @Deprecated
-    public void setIntArray(@NotNull String path, int[] arr) {
+    public void setIntArray(@NonNull String path, int[] arr) {
         this.setArray(path, arr);
     }
 
-    public int[] getIntArray(@NotNull String path) {
+    public int[] getIntArray(@NonNull String path) {
         return getIntArray(path, new int[0]);
     }
 
-    public int[] getIntArray(@NotNull String path, int[] defaultArray) {
+    public int[] getIntArray(@NonNull String path, int[] defaultArray) {
         String str = this.getString(path);
         return str == null ? defaultArray : ArrayUtil.parseIntArray(str);
     }
 
-    public double[] getDoubleArray(@NotNull String path) {
+    public double[] getDoubleArray(@NonNull String path) {
         return getDoubleArray(path, new double[0]);
     }
 
-    public double[] getDoubleArray(@NotNull String path, double[] defaultArray) {
+    public double[] getDoubleArray(@NonNull String path, double[] defaultArray) {
         String str = this.getString(path);
         return str == null ? defaultArray : ArrayUtil.parseDoubleArray(str);
     }
 
-    public long[] getLongArray(@NotNull String path) {
+    public long[] getLongArray(@NonNull String path) {
         return getLongArray(path, new long[0]);
     }
 
-    public long[] getLongArray(@NotNull String path, long[] defaultArray) {
+    public long[] getLongArray(@NonNull String path, long[] defaultArray) {
         String str = this.getString(path);
         return str == null ? defaultArray : ArrayUtil.parseLongArray(str);
     }
 
-    @NotNull
-    public String[] getStringArray(@NotNull String path) {
+    @NonNull
+    public String[] getStringArray(@NonNull String path) {
         return this.getStringArray(path, new String[0]);
     }
 
-    @NotNull
-    public String[] getStringArray(@NotNull String path, @NotNull String[] def) {
+    @NonNull
+    public String[] getStringArray(@NonNull String path, @NonNull String[] def) {
         String str = this.getString(path);
         return str == null ? def : str.split(",");
     }
 
-    public void setStringArray(@NotNull String path, String[] arr) {
+    public void setStringArray(@NonNull String path, String[] arr) {
         this.set(path, arr == null ? null : String.join(",", arr));
     }
 
     @Nullable
-    public <T extends Enum<T>> T getEnum(@NotNull String path, @NotNull Class<T> clazz) {
+    public <T extends Enum<T>> T getEnum(@NonNull String path, @NonNull Class<T> clazz) {
         return Enums.get(this.getString(path), clazz);
     }
 
-    @NotNull
-    public <T extends Enum<T>> T getEnum(@NotNull String path, @NotNull Class<T> clazz, @NotNull T def) {
+    @NonNull
+    public <T extends Enum<T>> T getEnum(@NonNull String path, @NonNull Class<T> clazz, @NonNull T def) {
         return Enums.parse(this.getString(path), clazz).orElse(def);
     }
 
-    @NotNull
-    public <T extends Enum<T>> List<T> getEnumList(@NotNull String path, @NotNull Class<T> clazz) {
+    @NonNull
+    public <T extends Enum<T>> List<T> getEnumList(@NonNull String path, @NonNull Class<T> clazz) {
         return this.getStringSet(path).stream().map(str -> Enums.parse(str, clazz).orElse(null))
             .filter(Objects::nonNull).toList();
     }
 
-    /*@NotNull
-    public Set<FireworkEffect> getFireworkEffects(@NotNull String path) {
+    /*@NonNull
+    public Set<FireworkEffect> getFireworkEffects(@NonNull String path) {
         Set<FireworkEffect> effects = new HashSet<>();
         for (String sId : this.getSection(path)) {
             String path2 = path + "." + sId + ".";
@@ -422,48 +444,48 @@ public class FileConfig extends YamlConfiguration {
         return effects;
     }*/
 
-    @NotNull
-    public NightItem getCosmeticItem(@NotNull String path, @NotNull NightItem def) {
+    @NonNull
+    public NightItem getCosmeticItem(@NonNull String path, @NonNull NightItem def) {
         return this.contains(path) ? this.getCosmeticItem(path) : def;
     }
 
-    @NotNull
-    public NightItem getCosmeticItem(@NotNull String path) {
+    @NonNull
+    public NightItem getCosmeticItem(@NonNull String path) {
         return NightItem.read(this, path);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public NightSound getSound(@NotNull String path) {
+    public NightSound getSound(@NonNull String path) {
         return NightSound.read(this, path); // Update
     }
 
     @Nullable
-    public su.nightexpress.nightcore.bridge.wrap.NightSound readSound(@NotNull String path) {
+    public su.nightexpress.nightcore.bridge.wrap.NightSound readSound(@NonNull String path) {
         return AbstractSound.read(this, path);
     }
 
     @Nullable
-    public su.nightexpress.nightcore.bridge.wrap.NightSound readSound(@NotNull String path, @NotNull su.nightexpress.nightcore.bridge.wrap.NightSound def) {
+    public su.nightexpress.nightcore.bridge.wrap.NightSound readSound(@NonNull String path, su.nightexpress.nightcore.bridge.wrap.@NonNull NightSound def) {
         su.nightexpress.nightcore.bridge.wrap.NightSound sound = this.readSound(path);
         return sound == null ? def : sound;
     }
 
     @Deprecated
-    public void setSound(@NotNull String path, @NotNull NightSound sound) {
+    public void setSound(@NonNull String path, @NonNull NightSound sound) {
         this.set(path, sound);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemStack getItem(@NotNull String path, @Nullable ItemStack def) {
+    public ItemStack getItem(@NonNull String path, @Nullable ItemStack def) {
         ItemStack item = this.getItem(path);
         return item.getType().isAir() && def != null ? def : item;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemStack getItem(@NotNull String path) {
+    public ItemStack getItem(@NonNull String path) {
         if (!path.isEmpty() && !path.endsWith(".")) path = path + ".";
 
         Material material = BukkitThing.getMaterial(this.getString(path + "Material", BukkitThing.toString(Material.AIR)));
@@ -551,7 +573,7 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @Deprecated
-    public void setItem(@NotNull String path, @Nullable ItemStack item) {
+    public void setItem(@NonNull String path, @Nullable ItemStack item) {
         if (item == null) {
             this.set(path, null);
             return;
@@ -600,7 +622,7 @@ public class FileConfig extends YamlConfiguration {
 
     @Nullable
     @Deprecated
-    public ItemStack getItemEncoded(@NotNull String path) {
+    public ItemStack getItemEncoded(@NonNull String path) {
         String compressed = this.getString(path);
         if (compressed == null) return null;
 
@@ -608,18 +630,18 @@ public class FileConfig extends YamlConfiguration {
     }
 
     @Deprecated
-    public void setItemEncoded(@NotNull String path, @Nullable ItemStack item) {
+    public void setItemEncoded(@NonNull String path, @Nullable ItemStack item) {
         this.set(path, item == null ? null : ItemNbt.compress(item));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemStack[] getItemsEncoded(@NotNull String path) {
+    public ItemStack[] getItemsEncoded(@NonNull String path) {
         return ItemNbt.decompress(this.getStringList(path));
     }
 
     @Deprecated
-    public void setItemsEncoded(@NotNull String path, @NotNull List<ItemStack> item) {
+    public void setItemsEncoded(@NonNull String path, @NonNull List<ItemStack> item) {
         this.set(path, ItemNbt.compress(item));
     }
 }

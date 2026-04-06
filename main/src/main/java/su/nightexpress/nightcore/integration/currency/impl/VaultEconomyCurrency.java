@@ -52,12 +52,14 @@ public class VaultEconomyCurrency extends IncompleteCurrency {
     @Override
     @NonNull
     public CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId) {
-        return CompletableFuture.supplyAsync(() -> this.queryBalanceDirect(playerId));
+        return CompletableFuture.supplyAsync(() -> this.economy()
+            .map(economy -> economy.getBalance(Bukkit.getOfflinePlayer(playerId)))
+            .orElse(0D));
     }
 
     @Override
-    protected double queryBalanceDirect(@NonNull UUID playerId) {
-        return this.economy().map(economy -> economy.getBalance(Bukkit.getOfflinePlayer(playerId))).orElse(0D);
+    protected double queryBalanceDirect(@NonNull Player player) {
+        return this.economy().map(economy -> economy.getBalance(player)).orElse(0D);
     }
 
     @Override
@@ -77,8 +79,8 @@ public class VaultEconomyCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected void depositDirect(@NonNull UUID playerId, double amount) {
-        this.economy().ifPresent(economy -> economy.depositPlayer(Bukkit.getOfflinePlayer(playerId), amount));
+    protected void depositDirect(@NonNull Player player, double amount) {
+        this.economy().ifPresent(economy -> economy.depositPlayer(player, amount));
     }
 
     @Override
@@ -98,7 +100,7 @@ public class VaultEconomyCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
-        this.economy().ifPresent(economy -> economy.withdrawPlayer(Bukkit.getOfflinePlayer(playerId), amount));
+    protected void withdrawDirect(@NonNull Player player, double amount) {
+        this.economy().ifPresent(economy -> economy.withdrawPlayer(player, amount));
     }
 }

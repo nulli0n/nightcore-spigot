@@ -1,7 +1,8 @@
 package su.nightexpress.nightcore.db.statement.template;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.statement.ColumnMapping;
 import su.nightexpress.nightcore.db.statement.condition.Wheres;
 
@@ -10,23 +11,21 @@ import java.util.stream.Collectors;
 
 public final class UpdateStatement<T> extends UpsertStatement<T> {
 
-    private UpdateStatement(@NotNull List<String> columns, @NotNull List<ColumnMapping<T, ?>> columnMappings) {
+    private UpdateStatement(@NonNull List<String> columns, @NonNull List<ColumnMapping<T, ?>> columnMappings) {
         super(columns, columnMappings);
     }
 
-    @NotNull
-    public static <T> UpdateStatement.Builder<T> builder(@NotNull Class<T> type) {
+    public static <T> UpdateStatement.@NonNull Builder<T> builder(@NonNull Class<T> type) {
         return new Builder<>();
     }
 
-    @NotNull
-    public static <T> UpdateStatement.Builder<T> builder() {
+    public static <T> UpdateStatement.@NonNull Builder<T> builder() {
         return new UpdateStatement.Builder<>();
     }
 
     @Override
-    @NotNull
-    public String toSql(@NotNull String table, @Nullable Wheres<T> where) {
+    @NonNull
+    public String toSql(@NonNull DatabaseType type, @NonNull String table, @Nullable Wheres<T> where) {
         String columns = this.columns.stream().map(col -> col + " = ?").collect(Collectors.joining(","));
 
         StringBuilder builder = new StringBuilder();
@@ -43,13 +42,13 @@ public final class UpdateStatement<T> extends UpsertStatement<T> {
 
         }
 
-        @NotNull
+        @NonNull
         public UpdateStatement<T> build() {
             return new UpdateStatement<>(this.columns, this.columnMappings);
         }
 
         @Override
-        @NotNull
+        @NonNull
         protected Builder<T> getThis() {
             return this;
         }

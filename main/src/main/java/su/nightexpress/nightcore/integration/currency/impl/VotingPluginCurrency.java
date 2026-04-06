@@ -52,8 +52,8 @@ public class VotingPluginCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected double queryBalanceDirect(@NonNull UUID playerId) {
-        return getAPI().getUserManager().getVotingPluginUser(playerId).getPoints();
+    protected double queryBalanceDirect(@NonNull Player player) {
+        return getAPI().getUserManager().getVotingPluginUser(player.getUniqueId()).getPoints();
     }
 
     @Override
@@ -70,8 +70,8 @@ public class VotingPluginCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected void depositDirect(@NonNull UUID playerId, double amount) {
-        this.getAPI().getUserManager().getVotingPluginUser(playerId).addPoints((int) amount);
+    protected void depositDirect(@NonNull Player player, double amount) {
+        this.getAPI().getUserManager().getVotingPluginUser(player.getUniqueId()).addPoints((int) amount);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class VotingPluginCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
-        this.getAPI().getUserManager().getVotingPluginUser(playerId).removePoints((int) amount);
+    protected void withdrawDirect(@NonNull Player player, double amount) {
+        this.getAPI().getUserManager().getVotingPluginUser(player.getUniqueId()).removePoints((int) amount);
     }
 }

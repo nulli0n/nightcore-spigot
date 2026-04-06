@@ -25,6 +25,11 @@ public class PlaceholderRegistry {
         this.resolverMap.put(type, resolver);
     }
 
+    public void clear() {
+        this.resolverMap.clear();
+        this.handlerMap.clear();
+    }
+
     @SuppressWarnings("unchecked")
     @Nullable
     public <T> PayloadResolver<T> resolver(@NonNull Class<T> type) {

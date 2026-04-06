@@ -5,6 +5,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 
 import java.util.Optional;
@@ -17,6 +18,11 @@ public class PaperProfile implements NightProfile {
 
     public PaperProfile(@NotNull PlayerProfile backend) {
         this.backend = backend;
+    }
+
+    @NonNull
+    public PlayerProfile getBackend() {
+        return this.backend;
     }
 
     @Override

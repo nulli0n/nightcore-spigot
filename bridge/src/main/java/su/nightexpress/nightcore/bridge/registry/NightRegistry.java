@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Deprecated
 public class NightRegistry<K, V> {
 
     private final Map<K, V> byKey;

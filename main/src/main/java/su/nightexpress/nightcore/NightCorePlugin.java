@@ -19,6 +19,7 @@ import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangElement;
+import su.nightexpress.nightcore.ui.dialog.wrap.DialogRegistry;
 import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
 import su.nightexpress.nightcore.util.wrapper.UniTask;
 
@@ -117,6 +118,8 @@ public interface NightCorePlugin extends Plugin {
     }
 
     @NotNull AdaptedScheduler scheduler();
+
+    @NotNull DialogRegistry dialogRegistry();
 
     @NotNull PluginManager getPluginManager();
 

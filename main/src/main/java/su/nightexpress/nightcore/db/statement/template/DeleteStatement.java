@@ -1,7 +1,8 @@
 package su.nightexpress.nightcore.db.statement.template;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.statement.PropertyAccessor;
 import su.nightexpress.nightcore.db.statement.condition.Wheres;
 import su.nightexpress.nightcore.db.statement.type.BatchStatement;
@@ -12,8 +13,8 @@ import java.sql.SQLException;
 public final class DeleteStatement<T> implements BatchStatement<T> {
 
     @Override
-    @NotNull
-    public String toSql(@NotNull String table, @Nullable Wheres<T> where) {
+    @NonNull
+    public String toSql(@NonNull DatabaseType type, @NonNull String table, @Nullable Wheres<T> where) {
         StringBuilder builder = new StringBuilder();
         builder.append("DELETE FROM ").append(table);
 
@@ -24,7 +25,7 @@ public final class DeleteStatement<T> implements BatchStatement<T> {
     }
 
     @Override
-    public void prepare(@NotNull PreparedStatement statement, @NotNull T entity, @Nullable Wheres<T> where) throws SQLException {
+    public void prepare(@NonNull PreparedStatement statement, @NonNull T entity, @Nullable Wheres<T> where) throws SQLException {
         int paramCount = 1;
 
         if (where != null && !where.isEmpty()) {

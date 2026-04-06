@@ -3,12 +3,13 @@ package su.nightexpress.nightcore.ui.inventory.menu;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.MenuType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.api.event.MenuOpenEvent;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -16,37 +17,36 @@ import su.nightexpress.nightcore.configuration.ConfigProperty;
 import su.nightexpress.nightcore.configuration.ConfigTypes;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.core.config.CoreLang;
+import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.ui.inventory.Menu;
-import su.nightexpress.nightcore.ui.inventory.action.ActionRegistry;
-import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
-import su.nightexpress.nightcore.ui.inventory.action.MenuItemActions;
-import su.nightexpress.nightcore.ui.inventory.condition.ConditionRegistry;
+import su.nightexpress.nightcore.ui.inventory.MenuDataRegistry;
+import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
+import su.nightexpress.nightcore.ui.inventory.action.*;
 import su.nightexpress.nightcore.ui.inventory.condition.ItemStateCondition;
 import su.nightexpress.nightcore.ui.inventory.condition.ItemStateConditions;
-import su.nightexpress.nightcore.ui.inventory.item.ItemState;
-import su.nightexpress.nightcore.ui.inventory.item.MenuItem;
+import su.nightexpress.nightcore.ui.inventory.condition.NamedCondition;
+import su.nightexpress.nightcore.ui.inventory.display.CompositeDisplayModifier;
+import su.nightexpress.nightcore.ui.inventory.display.DisplayModifiers;
+import su.nightexpress.nightcore.ui.inventory.display.NamedDisplayModifier;
+import su.nightexpress.nightcore.ui.inventory.item.*;
 import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
 import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
-import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
-import su.nightexpress.nightcore.util.BukkitThing;
-import su.nightexpress.nightcore.util.Placeholders;
-import su.nightexpress.nightcore.util.Strings;
+import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
-import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
+import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Consumer;
 
-public abstract class AbstractMenuBase implements Menu {
+public abstract class AbstractMenuBase implements Menu, LangContainer {
 
-    protected final ActionRegistry    actionRegistry;
-    protected final ConditionRegistry conditionRegistry;
+    protected NightPlugin plugin;
+    protected final MenuDataRegistry dataRegistry;
 
     protected final Map<String, MenuItem> defaultButtons;
     protected final Map<String, MenuItem> configButtons;
-    protected final Map<String, MenuItem> defaultItems;
-    protected final Map<String, MenuItem> configItems;
 
     protected final Map<UUID, MenuViewer> viewers;
 
@@ -58,14 +58,17 @@ public abstract class AbstractMenuBase implements Menu {
     protected long autoRefreshIn;
     protected boolean configured;
 
-    public AbstractMenuBase(@NotNull MenuType defaultType, @NotNull String  defaultTitle) {
-        this.actionRegistry = new ActionRegistry();
-        this.conditionRegistry = new ConditionRegistry();
+    @Deprecated
+    public AbstractMenuBase(@NonNull MenuType defaultType, @NonNull String  defaultTitle) {
+        this(null, defaultType, defaultTitle);
+    }
+
+    public AbstractMenuBase(@Nullable NightPlugin plugin, @NonNull MenuType defaultType, @NonNull String  defaultTitle) {
+        this.plugin = plugin;
+        this.dataRegistry = new MenuDataRegistry();
 
         this.defaultButtons = new LinkedHashMap<>();
-        this.configButtons = new HashMap<>();
-        this.defaultItems = new LinkedHashMap<>();
-        this.configItems = new HashMap<>();
+        this.configButtons = new LinkedHashMap<>();
 
         this.viewers = new HashMap<>();
 
@@ -74,13 +77,14 @@ public abstract class AbstractMenuBase implements Menu {
         this.autoRefreshInterval = ConfigProperty.of(ConfigTypes.INT, "Settings.AutoRefresh.Interval", 0);
         this.papiIntegration = ConfigProperty.of(ConfigTypes.BOOLEAN, "Settings.PlaceholderAPI.Enabled", false);
 
-        this.registerAction("page_next", MenuItemActions.NEXT_PAGE);
-        this.registerAction("page_previous", MenuItemActions.PREVIOUS_PAGE);
-        this.registerAction("close", MenuItemActions.CLOSE);
-        // TODO Return
+        this.dataRegistry.registerAction(MenuItemActions.NEXT_PAGE);
+        this.dataRegistry.registerAction(MenuItemActions.PREVIOUS_PAGE);
+        this.dataRegistry.registerAction(MenuItemActions.CLOSE);
 
-        this.registerCondition("can_move_forward", ItemStateConditions.NEXT_PAGE);
-        this.registerCondition("can_move_backward", ItemStateConditions.PREVIOUS_PAGE);
+        this.dataRegistry.registerCondition(ItemStateConditions.NEXT_PAGE);
+        this.dataRegistry.registerCondition(ItemStateConditions.PREVIOUS_PAGE);
+
+        this.dataRegistry.registerDisplayModifier(DisplayModifiers.VIEWER_SKULL);
     }
 
     public abstract void registerActions();
@@ -89,47 +93,117 @@ public abstract class AbstractMenuBase implements Menu {
 
     public abstract void defineDefaultLayout();
 
-    public void load(@NotNull NightPlugin plugin) {
+    @Deprecated
+    public void load(@NonNull NightPlugin plugin) {
         this.load(plugin, null);
     }
 
-    public void load(@NotNull NightPlugin plugin, @Nullable FileConfig config) {
+    @Deprecated
+    public void load(@NonNull NightPlugin plugin, @Nullable FileConfig config) {
+        this.plugin = plugin;
+        this.load0(config);
+    }
+
+    @Override
+    public void load() {
+        this.load0(null);
+    }
+
+    @Override
+    public void load(@NonNull Path path) {
+        this.load(FileConfig.load(path));
+    }
+
+    @Override
+    public void load(@NonNull FileConfig config) {
+        this.load0(config);
+    }
+
+    private void load0(@Nullable FileConfig config) {
+        this.plugin.injectLang(this);
         this.registerActions();
         this.registerConditions();
         this.defineDefaultLayout();
 
         if (config != null) {
-            this.loadFromConfig(plugin, config);
+            this.loadFromConfig(config);
         }
     }
 
-    private void loadFromConfig(@NotNull NightPlugin plugin, @NotNull FileConfig config) {
-        this.menuType.read(config);
-        this.menuTitle.read(config);
-        this.autoRefreshInterval.read(config);
-        this.papiIntegration.read(config);
+    private void loadFromConfig(@NonNull FileConfig config) {
+        this.menuType.loadWithDefaults(config);
+        this.menuTitle.loadWithDefaults(config);
+        this.autoRefreshInterval.loadWithDefaults(config);
+        this.papiIntegration.loadWithDefaults(config);
 
-        this.loadButtons(plugin, config, "Buttons");
-        this.loadItems(plugin, config, "Items");
+        this.updateLayout(config, "Items");
+        this.updateLayout(config, "Content");
+        this.loadItems(config, "Buttons");
         this.onLoad(config);
-
-        // TODO item commands
 
         config.saveChanges();
         this.configured = true;
     }
 
-    private void loadButtons(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String path) {
-        this.defaultButtons.forEach((id, menuItem) -> {
-            String itemPath = path + "." + id;
+    private void updateLayout(@NonNull FileConfig config, @NonNull String contentPath) {
+        if (!config.contains(contentPath)) return;
 
-            if (config.contains(itemPath)) return;
+        Map<String, MenuItem> oldButtons = new LinkedHashMap<>();
 
-            menuItem.getAllStates().forEach(state -> {
-                this.writeItemState(config, itemPath + ".States." + state.getName(), state);
+        config.getSection(contentPath).forEach(sId -> {
+            String itemPath = contentPath + "." + sId;
+
+            NightItem item = config.getCosmeticItem(itemPath + ".Item");
+            int[] slots = config.getIntArray(itemPath + ".Slots");
+            String type = config.getString(itemPath + ".Type");
+
+            if (type != null) {
+                String validType;
+                if (type.equalsIgnoreCase("page_next")) validType = "next_page";
+                else if (type.equalsIgnoreCase("page_previous")) validType = "previous_page";
+                else if (type.equalsIgnoreCase("return")) validType = "back";
+                else if (type.isBlank() || type.equalsIgnoreCase("null")) validType = sId;
+                else validType = type;
+
+                oldButtons.put(validType, MenuItem.button().defaultState(item).slots(slots).build());
+                return;
+            }
+
+            for (String sType : config.getSection(itemPath + ".Click_Commands")) {
+                ClickType clickType = Enums.get(sType, ClickType.class);
+                if (clickType == null) continue;
+
+                List<String> commands = config.getStringList(itemPath + ".Click_Commands." + sType);
+                if (commands.isEmpty()) continue;
+
+                config.set("Buttons." + sId + ".States.default.Click-Commands." + sType, commands);
+            }
+
+            oldButtons.put(sId, MenuItem.custom().defaultState(item).slots(slots).build());
+        });
+
+        oldButtons.forEach((id, menuItem) -> {
+            String itemPath = "Buttons." + id;
+
+            menuItem.getStates().forEach((stateId, state) -> {
+                config.set(itemPath + ".States." + stateId + ".Icon", state.getIcon());
             });
 
             config.setArray(itemPath + ".Slots", menuItem.getSlots());
+        });
+    }
+
+    private void loadItems(@NonNull FileConfig config, @NonNull String path) {
+        boolean hasSection = !config.getSection(path).isEmpty();
+
+        this.defaultButtons.forEach((itemId, defaultItem) -> {
+            ItemType type = defaultItem.getType();
+            String itemPath = path + "." + itemId;
+
+            if (!hasSection || (!config.contains(itemPath) && type.isPersistent())) {
+                // Set basic data only. States will be set further.
+                config.setArray(itemPath + ".Slots", defaultItem.getSlots());
+            }
         });
 
         config.getSection(path).forEach(sId -> {
@@ -140,44 +214,42 @@ public abstract class AbstractMenuBase implements Menu {
             }
 
             MenuItem defaultItem = this.defaultButtons.get(itemId);
-            if (defaultItem == null) {
-                plugin.warn("Unknown button '%s' in %s'".formatted(sId, config.getPath()));
-                return;
-            }
+            ItemType type = defaultItem == null ? ItemTypes.CUSTOM : defaultItem.getType();
+            String itemPath = path + "." + itemId;
 
-            MenuItem.Builder itemBuilder = MenuItem.builder();
-
-            Map<String, ItemState> defaultStates = new LinkedHashMap<>();
-            defaultItem.getAllStates().forEach(state -> defaultStates.put(state.getName(), state));
-
-            String itemPath = path + "." + sId;
-
-            this.loadItemStates(plugin, config, itemPath + ".States", defaultStates).forEach(state -> {
-                if (state.getName().equalsIgnoreCase("default")) {
-                    itemBuilder.defaultState(state);
-                }
-                else {
-                    itemBuilder.state(state);
-                }
-            });
-
-            int[] slots = config.getIntArray(itemPath + ".Slots");
-
-            itemBuilder.slots(slots);
-
-            this.configButtons.put(itemId, itemBuilder.build());
+            MenuItem parsed = this.loadItem(config, itemPath, defaultItem, type);
+            this.configButtons.put(itemId, parsed);
         });
     }
 
-    @NotNull
-    private List<ItemState> loadItemStates(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String path, @NotNull Map<String, ItemState> defaultStates) {
-        List<ItemState> states = new ArrayList<>();
+    @NonNull
+    private MenuItem loadItem(@NonNull FileConfig config, @NonNull String path, @Nullable MenuItem defaultItem, @NonNull ItemType type) {
+        MenuItem.Builder builder = MenuItem.builder(type);
 
-        defaultStates.forEach((stateId, defaultState) -> {
-            if (config.contains(path + "." + stateId)) return;
+        this.loadItemStates(config, path + ".States", builder, defaultItem, type);
 
-            this.writeItemState(config, path + "." + stateId, defaultState);
-        });
+        builder.slots(config.get(ConfigTypes.INT_ARRAY, path + ".Slots", defaultItem == null ? new int[0] : defaultItem.getSlots()));
+
+        return builder.build();
+    }
+
+    private void loadItemStates(@NonNull FileConfig config,
+                                @NonNull String path,
+                                MenuItem.@NonNull Builder builder,
+                                @Nullable MenuItem defaultItem,
+                                @NonNull ItemType type) {
+
+        boolean hasSection = !config.getSection(path).isEmpty();
+
+        if (defaultItem != null) {
+            defaultItem.getStates().forEach((stateId, defaultState) -> {
+                String statePath = path + "." + stateId;
+
+                if (!hasSection || (!config.contains(statePath) && type.isStatesLocked())) {
+                    config.set(statePath + ".Icon", defaultState.getIcon());
+                }
+            });
+        }
 
         config.getSection(path).forEach(stateName -> {
             String stateId = Strings.varStyle(stateName).orElse(null);
@@ -186,57 +258,124 @@ public abstract class AbstractMenuBase implements Menu {
                 return;
             }
 
-            ItemState defaultState = defaultStates.get(stateId);
-            if (defaultState == null) {
+            ItemState defaultState = defaultItem == null ? null : defaultItem.getState(stateId);
+            if (defaultState == null && type.isStatesLocked()) {
                 plugin.warn("Unknown item state '%s' in '%s'".formatted(stateId, config.getPath()));
                 return;
             }
 
-            Replacer defaultReplacer = defaultState.getIcon().getReplacer();
+            String statePath = path + "." + stateName;
 
-            NightItem configIcon = config.getCosmeticItem(path + "." + stateName + ".Icon").setReplacer(defaultReplacer);
-            ItemState configState = new ItemState(defaultState.getName(), configIcon, defaultState.getAction(), defaultState.getCondition(), defaultState.getDisplayModifier());
+            ItemState.Builder stateBuilder = ItemState.builder();
 
-            states.add(configState);
+            stateBuilder.icon(config.get(ConfigTypes.NIGHT_ITEM, statePath + ".Icon", defaultState == null ? NightItem.fromType(Material.STONE) : defaultState.getIcon())).build();
+
+            this.loadStateActions(config, statePath + ".Actions", stateBuilder, defaultState, type);
+            this.loadStateConditions(config, statePath + ".Condition", stateBuilder, defaultState, type);
+            this.loadStateDisplayModifiers(config, statePath + ".DisplayModifier", stateBuilder, defaultState, type);
+
+            builder.state(stateId, stateBuilder.build());
         });
-
-        return states;
     }
 
-    private void writeItemState(@NotNull FileConfig config, @NotNull String path, @NotNull ItemState defaultState) {
-        config.set(path + ".Icon", defaultState.getIcon());
-    }
+    private void loadStateActions(@NonNull FileConfig config,
+                                  @NonNull String path,
+                                  ItemState.@NonNull Builder builder,
+                                  @Nullable ItemState defaultState,
+                                  @NonNull ItemType type) {
 
-    private void loadItems(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String path) {
-        if (!config.contains(path)) {
-            this.defaultItems.forEach((id, menuItem) -> {
-                String itemPath = path + "." + id;
+        if (type.isActionLocked()) {
+            MenuItemAction defaultAction = defaultState == null ? null : defaultState.getAction();
+            builder.action(defaultAction);
+            if (defaultAction instanceof NamedAction namedAction) {
+                config.set(path + ".Base", namedAction.name());
+            }
+            else config.remove(path + ".Base");
 
-                config.set(itemPath + ".Item", menuItem.getDefaultState().getIcon());
-                config.setArray(itemPath + ".Slots", menuItem.getSlots());
-            });
+            return;
         }
 
-        config.getSection(path).forEach(sId -> {
-            String itemPath = path + "." + sId;
+        String actionName = config.getString(path + ".Base");
+        if (actionName != null) {
+            builder.action(this.dataRegistry.getAction(actionName));
+            return;
+        }
 
-            NightItem item = config.getCosmeticItem(itemPath + ".Item");
-            int[] slots = config.getIntArray(itemPath + ".Slots");
+        if (type.isClickCommandsAllowed()) {
+            Map<ClickType, List<String>> commandMap = new HashMap<>();
+            for (String sType : config.getSection(path + ".Click-Commands")) {
+                ClickType clickType = Enums.get(sType, ClickType.class);
+                if (clickType == null) continue;
 
-            this.configItems.put(sId, MenuItem.builder().defaultState(item).slots(slots).build());
+                List<String> commands = config.getStringList(path + ".Click-Commands." + sType);
+                if (commands.isEmpty()) continue;
+
+                commandMap.put(clickType, commands);
+            }
+
+            if (!commandMap.isEmpty()) {
+                builder.action(new CommandsAction(commandMap));
+            }
+        }
+    }
+
+    private void loadStateConditions(@NonNull FileConfig config,
+                                     @NonNull String path,
+                                     ItemState.@NonNull Builder builder,
+                                     @Nullable ItemState defaultState,
+                                     @NonNull ItemType type) {
+
+        ItemStateCondition condition = null;
+        ItemStateCondition defaultCondition = defaultState == null ? null : defaultState.getCondition();
+        if (type.isConditionLocked()) {
+            condition = defaultCondition;
+            if (defaultCondition instanceof NamedCondition namedCondition) {
+                config.set(path, namedCondition.name());
+            }
+            else config.remove(path);
+        }
+        else {
+            String conditionName = config.getString(path);
+            if (conditionName != null) {
+                condition = this.dataRegistry.getCondition(conditionName);
+            }
+        }
+
+        builder.condition(condition);
+    }
+
+    private void loadStateDisplayModifiers(@NonNull FileConfig config,
+                                           @NonNull String path,
+                                           ItemState.@NonNull Builder builder,
+                                           @Nullable ItemState defaultState,
+                                           @NonNull ItemType type) {
+
+        List<DisplayModifier> modifiers = new ArrayList<>();
+
+        DisplayModifier defaultModifier = defaultState == null ? null : defaultState.getDisplayModifier();
+        if (type.isDisplayModifierLocked()) {
+            if (defaultModifier instanceof NamedDisplayModifier namedDisplayModifier) {
+                config.set(path + ".Base", namedDisplayModifier.name());
+            }
+            else config.remove(path + ".Base");
+
+            if (defaultModifier != null) {
+                modifiers.add(defaultModifier);
+            }
+        }
+
+        config.getStringList(path + ".Extras").forEach(modifierName -> {
+            DisplayModifier displayModifier = this.dataRegistry.getDisplayModifier(modifierName);
+            if (displayModifier != null) {
+                modifiers.add(displayModifier);
+            }
         });
+
+        builder.displayModifier(modifiers.isEmpty() ? null : new CompositeDisplayModifier(modifiers));
     }
 
-    protected void registerAction(@NotNull String id, @NotNull MenuItemAction action) {
-        this.actionRegistry.register(id, action);
-    }
-
-    protected void registerCondition(@NotNull String id, @NotNull ItemStateCondition condition) {
-        this.conditionRegistry.register(id, condition);
-    }
-
-    @NotNull
-    protected String getRawTitle(@NotNull ViewerContext context) {
+    @NonNull
+    protected String getRawTitle(@NonNull ViewerContext context) {
         String title = this.menuTitle.get();
 
         if (this.isPlaceholderIntegrationEnabled()) {
@@ -247,18 +386,18 @@ public abstract class AbstractMenuBase implements Menu {
     }
 
     @Override
-    @NotNull
-    public NightComponent getTitle(@NotNull ViewerContext context) {
+    @NonNull
+    public NightComponent getTitle(@NonNull ViewerContext context) {
         return NightMessage.parse(this.getRawTitle(context));
     }
 
     @Override
-    @NotNull
-    public MenuType getType(@NotNull MenuViewer viewer) {
+    @NonNull
+    public MenuType getType(@NonNull MenuViewer viewer) {
         return this.menuType.get();
     }
 
-    protected final boolean showMenu(@NotNull MenuRegistry registry, @NotNull Player player, @Nullable Object object) {
+    protected final boolean showMenu(@NonNull MenuRegistry registry, @NonNull Player player, @Nullable Consumer<MenuViewer> preRender) {
         if (player.isSleeping()) {
             this.close(player);
             return false;
@@ -272,19 +411,20 @@ public abstract class AbstractMenuBase implements Menu {
         }
 
         MenuViewer viewer = this.getOrCreateViewer(player);
-        viewer.setCurrentObject(object);
-        viewer.renderMenu(this, object);
+        if (preRender != null) preRender.accept(viewer);
+        //viewer.setCurrentObject(object);
+        viewer.renderMenu(this/*, object*/);
         registry.registerViewer(player, this);
         return true;
     }
 
-    protected abstract void onLoad(@NotNull FileConfig config);
+    protected abstract void onLoad(@NonNull FileConfig config);
 
-    protected abstract void onClick(@NotNull ViewerContext context, @NotNull InventoryClickEvent event);
+    protected abstract void onClick(@NonNull ViewerContext context, @NonNull InventoryClickEvent event);
 
-    protected abstract void onDrag(@NotNull ViewerContext context, @NotNull InventoryDragEvent event);
+    protected abstract void onDrag(@NonNull ViewerContext context, @NonNull InventoryDragEvent event);
 
-    protected abstract void onClose(@NotNull ViewerContext context, @NotNull InventoryCloseEvent event);
+    protected abstract void onClose(@NonNull ViewerContext context, @NonNull InventoryCloseEvent event);
 
     @Override
     public void tick() {
@@ -306,7 +446,7 @@ public abstract class AbstractMenuBase implements Menu {
     }
 
     @Override
-    public void refresh(@NotNull Player player) {
+    public void refresh(@NonNull Player player) {
         MenuViewer viewer = this.getViewer(player);
         if (viewer == null) return;
 
@@ -319,12 +459,12 @@ public abstract class AbstractMenuBase implements Menu {
     }
 
     @Override
-    public void close(@NotNull Player player) {
+    public void close(@NonNull Player player) {
         this.close(player.getUniqueId());
     }
 
     @Override
-    public void close(@NotNull UUID playerId) {
+    public void close(@NonNull UUID playerId) {
         MenuViewer viewer = this.getViewer(playerId);
         if (viewer == null) return;
 
@@ -332,7 +472,7 @@ public abstract class AbstractMenuBase implements Menu {
     }
 
     @Override
-    public void handleClick(@NotNull Player player, @NotNull InventoryClickEvent event, @NotNull NightPlugin plugin) {
+    public void handleClick(@NonNull Player player, @NonNull InventoryClickEvent event) {
         MenuViewer viewer = this.getViewer(player);
         if (viewer == null) return;
 
@@ -351,7 +491,7 @@ public abstract class AbstractMenuBase implements Menu {
     }
 
     @Override
-    public void handleDrag(@NotNull Player player, @NotNull InventoryDragEvent event) {
+    public void handleDrag(@NonNull Player player, @NonNull InventoryDragEvent event) {
         MenuViewer viewer = this.getViewer(player);
         if (viewer == null) return;
 
@@ -363,7 +503,7 @@ public abstract class AbstractMenuBase implements Menu {
     }
 
     @Override
-    public void handleClose(@NotNull Player player, @NotNull InventoryCloseEvent event, @NotNull MenuRegistry menuRegistry) {
+    public void handleClose(@NonNull Player player, @NonNull InventoryCloseEvent event, @NonNull MenuRegistry menuRegistry) {
         MenuViewer viewer = this.viewers.get(player.getUniqueId());
         if (viewer == null || viewer.isRefreshing()) return;
 
@@ -382,41 +522,53 @@ public abstract class AbstractMenuBase implements Menu {
     }
 
     @Override
-    public boolean isViewer(@NotNull Player player) {
+    public boolean isViewer(@NonNull Player player) {
         return this.getViewer(player) != null;
     }
 
     @Override
-    public boolean isViewer(@NotNull UUID playerId) {
+    public boolean isViewer(@NonNull UUID playerId) {
         return this.getViewer(playerId) != null;
     }
 
-    @NotNull
-    protected MenuViewer getOrCreateViewer(@NotNull Player player) {
+    @NonNull
+    protected MenuViewer getOrCreateViewer(@NonNull Player player) {
         return this.viewers.computeIfAbsent(player.getUniqueId(), k -> new MenuViewer(player));
     }
 
     @Override
     @Nullable
-    public MenuViewer getViewer(@NotNull Player player) {
+    public MenuViewer getViewer(@NonNull Player player) {
         return this.getViewer(player.getUniqueId());
     }
 
     @Override
     @Nullable
-    public MenuViewer getViewer(@NotNull UUID playerId) {
+    public MenuViewer getViewer(@NonNull UUID playerId) {
         return this.viewers.get(playerId);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Set<MenuViewer> getViewers() {
         return Set.copyOf(this.viewers.values());
     }
 
-    protected void addNextPageItem(@NotNull Material material, int... slots) {
-        this.addDefaultButton("next_page", MenuItem.builder()
-            .defaultState(ItemState.defaultBuilder()
+    protected void addBackButton(@NonNull MenuItemAction action, int... slots) {
+        this.addDefaultButton("back", MenuItem.button()
+            .defaultState(ItemState.builder()
+                .icon(NightItem.fromType(Material.SPECTRAL_ARROW).localized(CoreLang.MENU_ICON_BACK).hideAllComponents())
+                .action(action)
+                .build()
+            )
+            .slots(slots)
+            .build()
+        );
+    }
+
+    protected void addNextPageButton(int... slots) {
+        this.addDefaultButton("next_page", MenuItem.button()
+            .defaultState(ItemState.builder()
                 .icon(NightItem.fromType(Material.ARROW).localized(CoreLang.MENU_ICON_NEXT_PAGE).hideAllComponents())
                 .action(MenuItemActions.NEXT_PAGE)
                 .condition(ItemStateConditions.NEXT_PAGE)
@@ -427,9 +579,9 @@ public abstract class AbstractMenuBase implements Menu {
         );
     }
 
-    protected void addPreviousPageItem(@NotNull Material material, int... slots) {
-        this.addDefaultButton("previous_page", MenuItem.builder()
-            .defaultState(ItemState.defaultBuilder()
+    protected void addPreviousPageButton(int... slots) {
+        this.addDefaultButton("previous_page", MenuItem.button()
+            .defaultState(ItemState.builder()
                 .icon(NightItem.fromType(Material.ARROW).localized(CoreLang.MENU_ICON_PREVIOUS_PAGE).hideAllComponents())
                 .action(MenuItemActions.PREVIOUS_PAGE)
                 .condition(ItemStateConditions.PREVIOUS_PAGE)
@@ -440,71 +592,78 @@ public abstract class AbstractMenuBase implements Menu {
         );
     }
 
-    protected void addBackgroundItem(@NotNull Material material, int... slots) {
-        this.addDefaultItem(BukkitThing.getValue(material) + "_" + UUID.randomUUID().toString().substring(0, 5), MenuItem.builder()
+    @Deprecated
+    protected void addNextPageItem(@NonNull Material material, int... slots) {
+        this.addNextPageButton(slots);
+    }
+
+    @Deprecated
+    protected void addPreviousPageItem(@NonNull Material material, int... slots) {
+        this.addPreviousPageButton(slots);
+    }
+
+    protected void addBackgroundItem(@NonNull Material material, int... slots) {
+        this.addDefaultButton(BukkitThing.getValue(material) + "_" + UUID.randomUUID().toString().substring(0, 5), MenuItem.custom()
             .defaultState(NightItem.fromType(material).hideAllComponents().setHideTooltip(true))
             .slots(slots)
             .build()
         );
     }
 
-    protected void addDefaultButton(@NotNull String id, @NotNull MenuItem menuItem) {
+    protected void addDefaultButton(@NonNull String id, @NonNull MenuItem menuItem) {
         this.defaultButtons.put(id, menuItem);
     }
 
-    protected void addDefaultItem(@NotNull String id, @NotNull MenuItem menuItem) {
-        this.defaultItems.put(id, menuItem);
+    @Deprecated
+    protected void addDefaultItem(@NonNull String id, @NonNull MenuItem menuItem) {
+        this.addDefaultButton(id, menuItem);
     }
 
     @Override
-    @NotNull
-    public ActionRegistry getActionRegistry() {
-        return this.actionRegistry;
+    @NonNull
+    public MenuDataRegistry getDataRegistry() {
+        return this.dataRegistry;
     }
 
     @Override
-    @NotNull
-    public ConditionRegistry getConditionRegistry() {
-        return this.conditionRegistry;
-    }
-
-    @Override
-    @NotNull
+    @NonNull
     public Map<String, MenuItem> getItemsToDisplay() {
         Map<String, MenuItem> items = new LinkedHashMap<>();
         if (this.configured) {
-            items.putAll(this.configItems);
+            //items.putAll(this.configItems);
             items.putAll(this.configButtons);
         }
         else {
-            items.putAll(this.defaultItems);
+            //items.putAll(this.defaultItems);
             items.putAll(this.defaultButtons);
         }
         return items;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Map<String, MenuItem> getDefaultButtons() {
         return this.defaultButtons;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Map<String, MenuItem> getConfigButtons() {
         return this.configButtons;
     }
 
     @Override
-    @NotNull
+    @NonNull
+    @Deprecated
     public Map<String, MenuItem> getDefaultItems() {
-        return this.defaultItems;
+        return this.getDefaultButtons();
     }
 
     @Override
-    @NotNull
+    @NonNull
+    @Deprecated
     public Map<String, MenuItem> getConfigItems() {
-        return this.configItems;
+        return this.getConfigButtons();
     }
 
     @Override

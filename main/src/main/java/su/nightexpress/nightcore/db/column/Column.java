@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.db.column;
 
 import com.google.gson.Gson;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 
 import java.sql.ResultSet;
@@ -19,14 +19,16 @@ public class Column<R> {
 
     private final boolean primaryKey;
     private final boolean autoIncrement;
+    private final boolean unique;
 
-    public Column(@NotNull String name,
-                  @NotNull ColumnDataType dataType,
-                  @NotNull ColumnDataReader<R> dataReader,
-                  @NotNull NullOption nullOption,
+    public Column(@NonNull String name,
+                  @NonNull ColumnDataType dataType,
+                  @NonNull ColumnDataReader<R> dataReader,
+                  @NonNull NullOption nullOption,
                   @Nullable String  defaultValue,
                   boolean primaryKey,
-                  boolean autoIncrement) {
+                  boolean autoIncrement,
+                  boolean unique) {
         this.name = name;
         this.dataType = dataType;
         this.dataReader = dataReader;
@@ -34,153 +36,175 @@ public class Column<R> {
         this.defaultValue = defaultValue;
         this.primaryKey = primaryKey;
         this.autoIncrement = autoIncrement;
+        this.unique = unique;
     }
 
-    @NotNull
-    public static <T> Builder<T> builder(@NotNull String name, @NotNull ColumnDataType dataType, @NotNull ColumnDataReader<T> dataReader) {
+    @NonNull
+    public static <T> Builder<T> builder(@NonNull String name, @NonNull ColumnDataType dataType, @NonNull ColumnDataReader<T> dataReader) {
         return new Builder<>(name, dataType, dataReader);
     }
 
-    @NotNull
-    public static Builder<Boolean> booleanType(@NotNull String name) {
+    @NonNull
+    public static Builder<Boolean> booleanType(@NonNull String name) {
         return builder(name, ColumnDataType.BOOLEAN, ColumnDataReader.BOOLEAN);
     }
 
-    @NotNull
-    public static Builder<Integer> intType(@NotNull String name) {
+    @NonNull
+    public static Builder<Integer> intType(@NonNull String name) {
         return builder(name, ColumnDataType.INTEGER, ColumnDataReader.INTEGER);
     }
 
-    @NotNull
-    public static Builder<Long> longType(@NotNull String name) {
+    @NonNull
+    public static Builder<Long> longType(@NonNull String name) {
         return builder(name, ColumnDataType.LONG, ColumnDataReader.LONG);
     }
 
-    @NotNull
-    public static Builder<Float> floatType(@NotNull String name) {
+    @NonNull
+    public static Builder<Float> floatType(@NonNull String name) {
         return builder(name, ColumnDataType.FLOAT, ColumnDataReader.FLOAT);
     }
 
-    @NotNull
-    public static Builder<Double> doubleType(@NotNull String name) {
+    @NonNull
+    public static Builder<Double> doubleType(@NonNull String name) {
         return builder(name, ColumnDataType.DOUBLE, ColumnDataReader.DOUBLE);
     }
 
-    @NotNull
-    public static Builder<String> stringType(@NotNull String name, int length) {
+    @NonNull
+    public static Builder<String> stringType(@NonNull String name, int length) {
         return builder(name, ColumnDataType.string(length), ColumnDataReader.STRING);
     }
 
-    @NotNull
-    public static Builder<UUID> uuidType(@NotNull String name) {
+    @NonNull
+    public static Builder<UUID> uuidType(@NonNull String name) {
         return builder(name, ColumnDataType.UUID, ColumnDataReader.UUID);
     }
 
-    @NotNull
-    public static Builder<String> tinyText(@NotNull String name) {
+    @NonNull
+    public static Builder<String> tinyText(@NonNull String name) {
         return builder(name, ColumnDataType.TINY_TEXT, ColumnDataReader.STRING);
     }
 
-    @NotNull
-    public static Builder<String> mediumText(@NotNull String name) {
+    @NonNull
+    public static Builder<String> mediumText(@NonNull String name) {
         return builder(name, ColumnDataType.MEDIUM_TEXT, ColumnDataReader.STRING);
     }
 
-    @NotNull
-    public static Builder<String> longText(@NotNull String name) {
+    @NonNull
+    public static Builder<String> longText(@NonNull String name) {
         return builder(name, ColumnDataType.LONG_TEXT, ColumnDataReader.STRING);
     }
 
-    @NotNull
-    public static <R> Builder<R> json(@NotNull String name, @NotNull ColumnDataReader<R> dataReader) {
+    @NonNull
+    public static <R> Builder<R> json(@NonNull String name, @NonNull ColumnDataReader<R> dataReader) {
         return builder(name, ColumnDataType.JSON, dataReader);
     }
 
-    @NotNull
-    public static <K, V> Builder<Map<K, V>> jsonMap(@NotNull String name, @NotNull Gson gson, @NotNull Class<K> keyType, @NotNull Class<V> valType) {
+    @NonNull
+    public static <K, V> Builder<Map<K, V>> jsonMap(@NonNull String name, @NonNull Gson gson, @NonNull Class<K> keyType, @NonNull Class<V> valType) {
         return json(name, ColumnDataReader.jsonMap(gson, keyType, valType));
     }
 
-    @NotNull
-    public static <V> Builder<List<V>> jsonList(@NotNull String name, @NotNull Gson gson, @NotNull Class<V> valType) {
+    @NonNull
+    public static <V> Builder<List<V>> jsonList(@NonNull String name, @NonNull Gson gson, @NonNull Class<V> valType) {
         return json(name, ColumnDataReader.jsonList(gson, valType));
     }
 
-    @NotNull
-    public static <V> Builder<Set<V>> jsonSet(@NotNull String name, @NotNull Gson gson, @NotNull Class<V> valType) {
+    @NonNull
+    public static <V> Builder<Set<V>> jsonSet(@NonNull String name, @NonNull Gson gson, @NonNull Class<V> valType) {
         return json(name, ColumnDataReader.jsonSet(gson, valType));
     }
 
 
 
-    @NotNull
-    public String toSql(@NotNull DatabaseType type) {
+    @NonNull
+    public String toSqlNameType(@NonNull DatabaseType type) {
         return this.name + " " + this.dataType.toSql(type, this.nullOption);
     }
 
-    @NotNull
-    private String toSql(@NotNull DatabaseType type, boolean withKey, boolean withDefault) {
-        StringBuilder builder = new StringBuilder(this.toSql(type));
+    @NonNull
+    public String toSqlWithKey(@NonNull DatabaseType type) {
+        StringBuilder builder = new StringBuilder(this.toSqlNameType(type));
 
-        if (withKey) {
-            if (this.primaryKey) {
-                builder.append(" PRIMARY KEY");
-                if (this.autoIncrement) {
-                    builder.append(type == DatabaseType.SQLITE ? " AUTOINCREMENT" : " AUTO_INCREMENT");
-                }
+        if (this.unique && !this.primaryKey) {
+            builder.append(" UNIQUE");
+        }
+
+        if (this.defaultValue != null) {
+            builder.append(" DEFAULT ").append(this.defaultValue);
+        }
+
+        if (this.autoIncrement) {
+            if (!this.primaryKey) {
+                throw new IllegalStateException("Column '" + this.name + "' cannot be AUTO_INCREMENT unless it is also the PRIMARY KEY.");
+            }
+
+            // SQLite requires the primary key to be defined inline if it auto-increments
+            if (type == DatabaseType.SQLITE) {
+                builder.append(" PRIMARY KEY AUTOINCREMENT");
+            }
+            // MySQL only needs the auto-increment flag inline
+            else if (type == DatabaseType.MYSQL) {
+                builder.append(" AUTO_INCREMENT");
             }
         }
-        else if (withDefault) {
-            if (this.defaultValue == null && this.nullOption == NullOption.NOT_NULL) {
-                throw new IllegalStateException("NOT NULL columns ('%s') must have a DEFAULT value".formatted(this.name));
-            }
+
+        return builder.toString();
+    }
+
+    @NonNull
+    public String toSqlWithDefault(@NonNull DatabaseType type) {
+        StringBuilder builder = new StringBuilder(this.toSqlNameType(type));
+
+        if (this.unique && !this.primaryKey) {
+            builder.append(" UNIQUE");
+        }
+
+        // Don't throw the missing default exception if the column is an auto-incrementing PK
+        boolean requiresDefault = this.defaultValue == null
+            && this.nullOption == NullOption.NOT_NULL
+            && !this.autoIncrement;
+
+        if (requiresDefault) {
+            throw new IllegalStateException("NOT NULL columns ('%s') must have a DEFAULT value".formatted(this.name));
+        }
+        if (this.defaultValue != null) {
             builder.append(" DEFAULT ").append(this.defaultValue);
         }
 
         return builder.toString();
     }
 
-    @NotNull
-    public String toSqlWithKey(@NotNull DatabaseType type) {
-        return this.toSql(type, true, false);
-    }
-
-    @NotNull
-    public String toSqlWithDefault(@NotNull DatabaseType type) {
-        return this.toSql(type, false, true);
-    }
-
-    @NotNull
-    public Optional<R> read(@NotNull ResultSet resultSet) throws SQLException {
+    @NonNull
+    public Optional<R> read(@NonNull ResultSet resultSet) throws SQLException {
         return this.dataReader.read(resultSet, this.name);
     }
 
-    @NotNull
-    public R readOrThrow(@NotNull ResultSet resultSet) throws SQLException {
+    @NonNull
+    public R readOrThrow(@NonNull ResultSet resultSet) throws SQLException {
         return this.read(resultSet).orElseThrow();
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return this.name;
     }
 
-    @NotNull
+    @NonNull
     public String getQuotedName() {
         return "`" + this.name + "`";
     }
 
-    @NotNull
+    @NonNull
     public ColumnDataType getDataType() {
         return this.dataType;
     }
 
-    @NotNull
+    @NonNull
     public ColumnDataReader<R> getDataReader() {
         return this.dataReader;
     }
 
-    @NotNull
+    @NonNull
     public NullOption getNullOption() {
         return this.nullOption;
     }
@@ -198,6 +222,10 @@ public class Column<R> {
         return this.autoIncrement;
     }
 
+    public boolean isUnique() {
+        return this.unique;
+    }
+
     public static class Builder<R> {
 
         private final String              name;
@@ -208,46 +236,54 @@ public class Column<R> {
         private String defaultValue;
         private boolean    primaryKey;
         private boolean    autoIncrement;
+        private boolean unqiue;
 
-        public Builder(@NotNull String name, @NotNull ColumnDataType dataType, @NotNull ColumnDataReader<R> dataReader) {
+        public Builder(@NonNull String name, @NonNull ColumnDataType dataType, @NonNull ColumnDataReader<R> dataReader) {
             this.name = name;
             this.dataType = dataType;
             this.dataReader = dataReader;
             this.nullOption = NullOption.NOT_NULL;
             this.primaryKey = false;
             this.autoIncrement = false;
+            this.unqiue = false;
         }
 
-        @NotNull
+        @NonNull
         public Column<R> build() {
-            return new Column<>(this.name, this.dataType, this.dataReader, this.nullOption, this.defaultValue, this.primaryKey, this.autoIncrement);
+            return new Column<>(this.name, this.dataType, this.dataReader, this.nullOption, this.defaultValue, this.primaryKey, this.autoIncrement, this.unqiue);
         }
 
-        @NotNull
-        public Builder<R> defaultValue(@NotNull String string) {
+        @NonNull
+        public Builder<R> defaultValue(@NonNull String string) {
             this.defaultValue = "'" + string + "'";
             return this;
         }
 
-        @NotNull
-        public Builder<R> defaultValue(@NotNull Number number) {
+        @NonNull
+        public Builder<R> defaultValue(@NonNull Number number) {
             this.defaultValue = String.valueOf(number);
             return this;
         }
 
-        @NotNull
-        public Builder<R> defaultValue(@NotNull Boolean b) {
+        @NonNull
+        public Builder<R> defaultValue(@NonNull Boolean b) {
             this.defaultValue = b ? "1" : "0";
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder<R> primaryKey() {
             this.primaryKey = true;
             return this;
         }
 
-        @NotNull
+        @NonNull
+        public Builder<R> unique() {
+            this.unqiue = true;
+            return this;
+        }
+
+        @NonNull
         public Builder<R> autoIncrement() {
             if (this.dataType != ColumnDataType.INTEGER) throw new IllegalStateException("Auto increment is for int only");
 
@@ -255,7 +291,7 @@ public class Column<R> {
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder<R> nullable() {
             this.nullOption = NullOption.NULLABLE;
             return this;

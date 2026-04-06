@@ -59,7 +59,7 @@ public class DummyCurrency extends AbstractCurrency {
     }
 
     @Override
-    protected double queryBalanceDirect(@NonNull UUID playerId) {
+    protected double queryBalanceDirect(@NonNull Player player) {
         return 0;
     }
 
@@ -76,7 +76,7 @@ public class DummyCurrency extends AbstractCurrency {
     }
 
     @Override
-    protected void depositDirect(@NonNull UUID playerId, double amount) {
+    protected void depositDirect(@NonNull Player player, double amount) {
 
     }
 
@@ -93,7 +93,7 @@ public class DummyCurrency extends AbstractCurrency {
     }
 
     @Override
-    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
+    protected void withdrawDirect(@NonNull Player player, double amount) {
 
     }
 }

@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.ui.inventory.item;
 
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.ui.inventory.action.ActionContext;
 import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
 import su.nightexpress.nightcore.ui.inventory.condition.ItemStateCondition;
@@ -11,39 +11,56 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 public class ItemState {
 
+    @Deprecated
     public static final String ID_DEFAULT = "default";
-    public static final ItemState INVISIBLE = new ItemState("_invisible_", NightItem.fromType(Material.AIR), null, context -> false, null);
 
-    private final String             name;
+    public static final ItemState INVISIBLE = new ItemState(NightItem.fromType(Material.AIR), null, context -> false, null);
+
     private final NightItem          icon;
     private final MenuItemAction     action;
     private final ItemStateCondition condition;
-    private final DisplayModifier displayModifier;
+    private final DisplayModifier    displayModifier;
 
-    public ItemState(@NotNull String name, @NotNull NightItem icon, @Nullable MenuItemAction action, @Nullable ItemStateCondition condition, @Nullable DisplayModifier displayModifier) {
+    @Deprecated
+    private String name;
+
+    @Deprecated
+    public ItemState(@NonNull String name, @NonNull NightItem icon, @Nullable MenuItemAction action, @Nullable ItemStateCondition condition, @Nullable DisplayModifier displayModifier) {
+        this(icon, action, condition, displayModifier);
         this.name = name;
+    }
+
+    public ItemState(@NonNull NightItem icon, @Nullable MenuItemAction action, @Nullable ItemStateCondition condition, @Nullable DisplayModifier displayModifier) {
         this.icon = icon;
         this.action = action;
-        this.condition = condition == null ? context -> true : condition;
+        this.condition = condition;
         this.displayModifier = displayModifier;
     }
 
-    @NotNull
-    public static ItemState defaultState(@NotNull NightItem icon, @Nullable MenuItemAction action, @Nullable ItemStateCondition condition, @Nullable DisplayModifier displayModifier) {
-        return new ItemState(ID_DEFAULT, icon, action, condition, displayModifier);
+    @NonNull
+    @Deprecated(forRemoval = true)
+    public static ItemState defaultState(@NonNull NightItem icon, @Nullable MenuItemAction action, @Nullable ItemStateCondition condition, @Nullable DisplayModifier displayModifier) {
+        return new ItemState(icon, action, condition, displayModifier);
     }
 
-    @NotNull
+    @NonNull
+    @Deprecated(forRemoval = true)
     public static Builder defaultBuilder() {
         return builder(ID_DEFAULT);
     }
 
-    @NotNull
-    public static Builder builder(@NotNull String name) {
+    @NonNull
+    @Deprecated(forRemoval = true)
+    public static Builder builder(@NonNull String name) {
         return new Builder(name);
     }
 
-    public void performAction(@NotNull ActionContext context) {
+    @NonNull
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public void performAction(@NonNull ActionContext context) {
         if (this.action != null) {
             this.action.execute(context);
         }
@@ -57,22 +74,23 @@ public class ItemState {
         return this != INVISIBLE;
     }
 
-    public boolean isVisibleFor(@NotNull ViewerContext context) {
-        return this.isVisible() && this.condition.canSeenBy(context);
+    public boolean isVisibleFor(@NonNull ViewerContext context) {
+        return this.isVisible() && (this.condition == null || this.condition.canSeenBy(context));
     }
 
-    public void modifyDisplay(@NotNull ViewerContext context, @NotNull NightItem item) {
+    public void modifyDisplay(@NonNull ViewerContext context, @NonNull NightItem item) {
         if (this.displayModifier != null) {
             this.displayModifier.modify(context, item);
         }
     }
 
-    @NotNull
+    @Nullable
+    @Deprecated
     public String getName() {
         return this.name;
     }
 
-    @NotNull
+    @NonNull
     public NightItem getIcon() {
         return this.icon.copy();
     }
@@ -82,7 +100,7 @@ public class ItemState {
         return this.action;
     }
 
-    @NotNull
+    @Nullable
     public ItemStateCondition getCondition() {
         return this.condition;
     }
@@ -94,42 +112,47 @@ public class ItemState {
 
     public static class Builder {
 
-        private final String name;
+        private String name;
 
         private NightItem          icon;
         private MenuItemAction     action;
         private ItemStateCondition condition;
         private DisplayModifier displayModifier;
 
-        Builder(@NotNull String name) {
+        @Deprecated
+        Builder(@NonNull String name) {
             this.name = name;
         }
 
-        @NotNull
-        public Builder icon(@NotNull NightItem icon) {
+        Builder() {
+
+        }
+
+        @NonNull
+        public Builder icon(@NonNull NightItem icon) {
             this.icon = icon;
             return this;
         }
 
-        @NotNull
-        public Builder action(@NotNull MenuItemAction action) {
+        @NonNull
+        public Builder action(@Nullable MenuItemAction action) {
             this.action = action;
             return this;
         }
 
-        @NotNull
-        public Builder condition(@NotNull ItemStateCondition condition) {
+        @NonNull
+        public Builder condition(@Nullable ItemStateCondition condition) {
             this.condition = condition;
             return this;
         }
 
-        @NotNull
-        public Builder displayModifier(@NotNull DisplayModifier displayModifier) {
+        @NonNull
+        public Builder displayModifier(@Nullable DisplayModifier displayModifier) {
             this.displayModifier = displayModifier;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public ItemState build() {
             return new ItemState(this.name, this.icon, this.action, this.condition, this.displayModifier);
         }

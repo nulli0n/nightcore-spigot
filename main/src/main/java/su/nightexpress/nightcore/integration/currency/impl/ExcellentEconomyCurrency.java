@@ -118,8 +118,8 @@ public class ExcellentEconomyCurrency extends AbstractCurrency {
     }
 
     @Override
-    protected double queryBalanceDirect(@NonNull UUID playerId) {
-        return getAPI().getCachedUserData(playerId).map(user -> user.getBalance().get(this.originalId)).orElse(0D);
+    protected double queryBalanceDirect(@NonNull Player player) {
+        return getAPI().getCachedUserData(player).getBalance().get(this.originalId);
     }
 
 
@@ -137,8 +137,8 @@ public class ExcellentEconomyCurrency extends AbstractCurrency {
     }
 
     @Override
-    protected void depositDirect(@NonNull UUID playerId, double amount) {
-        getAPI().getCachedUserData(playerId).ifPresent(user -> user.getBalance().add(this.originalId, amount));
+    protected void depositDirect(@NonNull Player player, double amount) {
+        getAPI().deposit(player, this.originalId, amount, context);
     }
 
 
@@ -155,7 +155,7 @@ public class ExcellentEconomyCurrency extends AbstractCurrency {
     }
 
     @Override
-    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
-        getAPI().getCachedUserData(playerId).ifPresent(user -> user.getBalance().remove(this.originalId, amount));
+    protected void withdrawDirect(@NonNull Player player, double amount) {
+        getAPI().withdraw(player, this.originalId, amount, context);
     }
 }

@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.db.connection;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.db.config.DatabaseConfig;
 import su.nightexpress.nightcore.db.config.DatabaseType;
@@ -15,11 +15,13 @@ import java.sql.SQLException;
 public abstract class AbstractConnector {
 
     protected final NightPlugin  plugin;
+    protected final DatabaseType type;
     protected final HikariConfig config;
     protected final HikariDataSource dataSource;
 
-    public AbstractConnector(@NotNull NightPlugin plugin, @NotNull DatabaseConfig config) {
+    public AbstractConnector(@NonNull NightPlugin plugin, @NonNull DatabaseConfig config) {
         this.plugin = plugin;
+        this.type = config.getStorageType();
 
         this.config = new HikariConfig();
         this.config.setJdbcUrl(this.getURL(config));
@@ -31,21 +33,26 @@ public abstract class AbstractConnector {
         this.dataSource = new HikariDataSource(this.config);
     }
 
-    @NotNull
-    public static AbstractConnector create(@NotNull NightPlugin plugin, @NotNull DatabaseConfig config) {
+    @NonNull
+    public static AbstractConnector create(@NonNull NightPlugin plugin, @NonNull DatabaseConfig config) {
         return config.getStorageType() == DatabaseType.SQLITE ? new SQLiteConnector(plugin, config) : new MySQLConnector(plugin, config);
     }
 
-    protected abstract String getURL(@NotNull DatabaseConfig config);
+    protected abstract String getURL(@NonNull DatabaseConfig config);
 
-    protected abstract void setupConfig(@NotNull DatabaseConfig config);
+    protected abstract void setupConfig(@NonNull DatabaseConfig config);
 
     public void close() {
         this.dataSource.close();
     }
 
-    @NotNull
+    @NonNull
     public final Connection getConnection() throws SQLException {
         return this.dataSource.getConnection();
+    }
+
+    @NonNull
+    public DatabaseType getType() {
+        return this.type;
     }
 }

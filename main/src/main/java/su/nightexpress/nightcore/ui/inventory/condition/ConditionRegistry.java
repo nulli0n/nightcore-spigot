@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+@Deprecated
 public class ConditionRegistry {
 
     private final Map<String, ItemStateCondition> conditionMap;

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.db.statement.template;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.column.Column;
 import su.nightexpress.nightcore.db.statement.ColumnMapping;
 import su.nightexpress.nightcore.db.statement.ParameterBinder;
@@ -20,13 +20,13 @@ public abstract class UpsertStatement<T> implements BatchStatement<T> {
     protected final List<String>              columns;
     protected final List<ColumnMapping<T, ?>> columnMappings;
 
-    protected UpsertStatement(@NotNull List<String> columns, @NotNull List<ColumnMapping<T, ?>> columnMappings) {
+    protected UpsertStatement(@NonNull List<String> columns, @NonNull List<ColumnMapping<T, ?>> columnMappings) {
         this.columns = columns;
         this.columnMappings = columnMappings;
     }
 
     @Override
-    public void prepare(@NotNull PreparedStatement statement, @NotNull T entity, @Nullable Wheres<T> where) throws SQLException {
+    public void prepare(@NonNull PreparedStatement statement, @NonNull T entity, @Nullable Wheres<T> where) throws SQLException {
         int paramCount = 1;
 
         for (ColumnMapping<T, ?> columnMapping : this.columnMappings) {
@@ -44,105 +44,110 @@ public abstract class UpsertStatement<T> implements BatchStatement<T> {
 
         protected final List<String>              columns;
         protected final List<ColumnMapping<T, ?>> columnMappings;
+        protected final List<String>              autoDetectedConflictKeys;
 
         AbstractBuilder() {
             this.columns = new ArrayList<>();
             this.columnMappings = new ArrayList<>();
+            this.autoDetectedConflictKeys = new ArrayList<>();
         }
 
-        @NotNull
+        @NonNull
         public abstract S build();
 
-        @NotNull
+        @NonNull
         protected abstract B getThis();
 
-        @NotNull
-        public B setInt(@NotNull Column<?> column, @NotNull PropertyAccessor<T, Integer> accessor) {
+        @NonNull
+        public B setInt(@NonNull Column<?> column, @NonNull PropertyAccessor<T, Integer> accessor) {
             return this.set(column, accessor, ParameterBinder.INT);
         }
 
-        @NotNull
-        public B setInt(@NotNull String column, @NotNull PropertyAccessor<T, Integer> accessor) {
+        @NonNull
+        public B setInt(@NonNull String column, @NonNull PropertyAccessor<T, Integer> accessor) {
             return this.set(column, accessor, ParameterBinder.INT);
         }
 
-        @NotNull
-        public B setLong(@NotNull Column<?> column, @NotNull PropertyAccessor<T, Long> accessor) {
+        @NonNull
+        public B setLong(@NonNull Column<?> column, @NonNull PropertyAccessor<T, Long> accessor) {
             return this.set(column, accessor, ParameterBinder.LONG);
         }
 
-        @NotNull
-        public B setLong(@NotNull String column, @NotNull PropertyAccessor<T, Long> accessor) {
+        @NonNull
+        public B setLong(@NonNull String column, @NonNull PropertyAccessor<T, Long> accessor) {
             return this.set(column, accessor, ParameterBinder.LONG);
         }
 
-        @NotNull
-        public B setDouble(@NotNull Column<?> column, @NotNull PropertyAccessor<T, Double> accessor) {
+        @NonNull
+        public B setDouble(@NonNull Column<?> column, @NonNull PropertyAccessor<T, Double> accessor) {
             return this.set(column, accessor, ParameterBinder.DOUBLE);
         }
 
-        @NotNull
-        public B setDouble(@NotNull String column, @NotNull PropertyAccessor<T, Double> accessor) {
+        @NonNull
+        public B setDouble(@NonNull String column, @NonNull PropertyAccessor<T, Double> accessor) {
             return this.set(column, accessor, ParameterBinder.DOUBLE);
         }
 
-        @NotNull
-        public B setFloat(@NotNull Column<?> column, @NotNull PropertyAccessor<T, Float> accessor) {
+        @NonNull
+        public B setFloat(@NonNull Column<?> column, @NonNull PropertyAccessor<T, Float> accessor) {
             return this.set(column, accessor, ParameterBinder.FLOAT);
         }
 
-        @NotNull
-        public B setFloat(@NotNull String column, @NotNull PropertyAccessor<T, Float> accessor) {
+        @NonNull
+        public B setFloat(@NonNull String column, @NonNull PropertyAccessor<T, Float> accessor) {
             return this.set(column, accessor, ParameterBinder.FLOAT);
         }
 
-        @NotNull
-        public B setBoolean(@NotNull Column<?> column, @NotNull PropertyAccessor<T, Boolean> accessor) {
+        @NonNull
+        public B setBoolean(@NonNull Column<?> column, @NonNull PropertyAccessor<T, Boolean> accessor) {
             return this.set(column, accessor, ParameterBinder.BOOLEAN);
         }
 
-        @NotNull
-        public B setBoolean(@NotNull String column, @NotNull PropertyAccessor<T, Boolean> accessor) {
+        @NonNull
+        public B setBoolean(@NonNull String column, @NonNull PropertyAccessor<T, Boolean> accessor) {
             return this.set(column, accessor, ParameterBinder.BOOLEAN);
         }
 
-        @NotNull
-        public B setString(@NotNull Column<?> column, @NotNull PropertyAccessor<T, String> accessor) {
+        @NonNull
+        public B setString(@NonNull Column<?> column, @NonNull PropertyAccessor<T, String> accessor) {
             return this.set(column, accessor, ParameterBinder.STRING);
         }
 
-        @NotNull
-        public B setString(@NotNull String column, @NotNull PropertyAccessor<T, String> accessor) {
+        @NonNull
+        public B setString(@NonNull String column, @NonNull PropertyAccessor<T, String> accessor) {
             return this.set(column, accessor, ParameterBinder.STRING);
         }
 
-        @NotNull
-        public B setUUID(@NotNull Column<?> column, @NotNull PropertyAccessor<T, UUID> accessor) {
+        @NonNull
+        public B setUUID(@NonNull Column<?> column, @NonNull PropertyAccessor<T, UUID> accessor) {
             return this.set(column, accessor, ParameterBinder.UUID);
         }
 
-        @NotNull
-        public B setUUID(@NotNull String column, @NotNull PropertyAccessor<T, UUID> accessor) {
+        @NonNull
+        public B setUUID(@NonNull String column, @NonNull PropertyAccessor<T, UUID> accessor) {
             return this.set(column, accessor, ParameterBinder.UUID);
         }
 
-        @NotNull
-        public B setObject(@NotNull Column<?> column, @NotNull PropertyAccessor<T, Object> accessor) {
+        @NonNull
+        public B setObject(@NonNull Column<?> column, @NonNull PropertyAccessor<T, Object> accessor) {
             return this.set(column, accessor, ParameterBinder.GENERIC);
         }
 
-        @NotNull
-        public B setObject(@NotNull String column, @NotNull PropertyAccessor<T, Object> accessor) {
+        @NonNull
+        public B setObject(@NonNull String column, @NonNull PropertyAccessor<T, Object> accessor) {
             return this.set(column, accessor, ParameterBinder.GENERIC);
         }
 
-        @NotNull
-        public <R> B set(@NotNull Column<?> column, @NotNull PropertyAccessor<T, R> accessor, @NotNull ParameterBinder<R> binder) {
+        @NonNull
+        public <R> B set(@NonNull Column<?> column, @NonNull PropertyAccessor<T, R> accessor, @NonNull ParameterBinder<R> binder) {
+            if (column.isPrimaryKey() || column.isUnique()) {
+                this.autoDetectedConflictKeys.add(column.getQuotedName());
+            }
             return this.set(column.getQuotedName(), accessor, binder);
         }
 
-        @NotNull
-        public <R> B set(@NotNull String column, @NotNull PropertyAccessor<T, R> accessor, @NotNull ParameterBinder<R> binder) {
+        @NonNull
+        private <R> B set(@NonNull String column, @NonNull PropertyAccessor<T, R> accessor, @NonNull ParameterBinder<R> binder) {
             this.columns.add(column);
             this.columnMappings.add(new ColumnMapping<>(accessor, binder));
             return this.getThis();

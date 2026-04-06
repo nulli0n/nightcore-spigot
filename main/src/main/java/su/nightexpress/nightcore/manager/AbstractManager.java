@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.manager;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.ui.menu.Menu;
@@ -8,6 +8,7 @@ import su.nightexpress.nightcore.ui.menu.data.ConfigBased;
 import su.nightexpress.nightcore.util.bukkit.NightTask;
 import su.nightexpress.nightcore.util.wrapper.UniTask;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,11 +17,11 @@ import java.util.Set;
 public abstract class AbstractManager<P extends NightCorePlugin> extends SimpleManager<P> {
 
     protected final Set<SimpeListener> listeners;
-    protected final Set<Menu> menus;
+    @Deprecated protected final Set<Menu> menus;
     @Deprecated protected final List<UniTask>   tasks;
     protected final List<NightTask> taskList;
 
-    public AbstractManager(@NotNull P plugin) {
+    public AbstractManager(@NonNull P plugin) {
         super(plugin);
         this.listeners = new HashSet<>();
         this.menus = new HashSet<>();
@@ -41,49 +42,68 @@ public abstract class AbstractManager<P extends NightCorePlugin> extends SimpleM
         super.shutdown();
     }
 
-    protected void addListener(@NotNull SimpeListener listener) {
+    protected void addListener(@NonNull SimpeListener listener) {
         if (this.listeners.add(listener)) {
             listener.registerListeners();
         }
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    protected <T extends Menu> T addMenu(@NotNull T menu) {
+    protected <T extends Menu> T addMenu(@NonNull T menu) {
         this.menus.add(menu);
         return menu;
     }
 
-    @NotNull
-    protected <T extends Menu & ConfigBased> T addMenu(@NotNull T menu, @NotNull String path, @NotNull String file) {
+    @NonNull
+    @Deprecated
+    protected <T extends Menu & ConfigBased> T addMenu(@NonNull T menu, @NonNull String path, @NonNull String file) {
         this.menus.add(menu);
         menu.load(FileConfig.loadOrExtract(this.plugin, path, file));
         return menu;
     }
 
-    protected void addTask(@NotNull Runnable runnable, int interval) {
+    @NonNull
+    protected <T extends su.nightexpress.nightcore.ui.inventory.Menu> T initMenu(@NonNull T menu) {
+        menu.load();
+        return menu;
+    }
+
+    @NonNull
+    protected <T extends su.nightexpress.nightcore.ui.inventory.Menu> T initMenu(@NonNull T menu, @NonNull Path path) {
+        menu.load(path);
+        return menu;
+    }
+    
+    @NonNull
+    protected <T extends su.nightexpress.nightcore.ui.inventory.Menu> T initMenu(@NonNull T menu, @NonNull FileConfig config) {
+        menu.load(config);
+        return menu;
+    }
+
+    protected void addTask(@NonNull Runnable runnable, int interval) {
         this.addTask(NightTask.create(plugin, runnable, interval));
     }
 
-    protected void addTask(@NotNull Runnable runnable, long interval) {
+    protected void addTask(@NonNull Runnable runnable, long interval) {
         this.addTask(NightTask.create(plugin, runnable, interval));
     }
 
-    protected void addAsyncTask(@NotNull Runnable runnable, int interval) {
+    protected void addAsyncTask(@NonNull Runnable runnable, int interval) {
         this.addTask(NightTask.createAsync(plugin, runnable, interval));
     }
 
-    protected void addAsyncTask(@NotNull Runnable runnable, long interval) {
+    protected void addAsyncTask(@NonNull Runnable runnable, long interval) {
         this.addTask(NightTask.createAsync(plugin, runnable, interval));
     }
 
     @Deprecated
-    protected void addTask(@NotNull UniTask task) {
+    protected void addTask(@NonNull UniTask task) {
         this.tasks.add(task);
         task.start();
     }
 
-    protected void addTask(@NotNull NightTask task) {
+    protected void addTask(@NonNull NightTask task) {
         if (task.isValid()) {
             this.taskList.add(task);
         }

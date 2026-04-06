@@ -35,6 +35,8 @@ public class ConfigTypes {
     public static final ConfigType<Long>   LONG       = ConfigType.of(FileConfig::getLong);
     public static final ConfigType<long[]> LONG_ARRAY = ConfigType.of(FileConfig::getLongArray, FileConfig::setArray);
 
+    public static final ConfigType<UUID> UUID = ConfigType.of(FileConfig::getUUID, FileConfig::set);
+
     public static final ConfigType<String>       STRING          = ConfigType.of(FileConfig::getString);
     public static final ConfigType<String>       STRING_OR_EMPTY = ConfigType.of(FileConfig::getStringOrEmpty);
     public static final ConfigType<String[]>     STRING_ARRAY    = ConfigType.of(FileConfig::getStringArray, FileConfig::setStringArray);

@@ -1,8 +1,9 @@
 package su.nightexpress.nightcore.db.statement;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.column.Column;
+import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.connection.AbstractConnector;
 import su.nightexpress.nightcore.db.statement.condition.Wheres;
 import su.nightexpress.nightcore.db.statement.type.BatchStatement;
@@ -18,7 +19,7 @@ import java.util.function.Predicate;
 
 public class SQLStatements {
 
-    public static boolean hasTable(@NotNull AbstractConnector connector, @NotNull String table) {
+    public static boolean hasTable(@NonNull AbstractConnector connector, @NonNull String table) {
         try (Connection connection = connector.getConnection()) {
 
             boolean has;
@@ -34,15 +35,15 @@ public class SQLStatements {
         }
     }
 
-    public static boolean hasColumn(@NotNull AbstractConnector connector, @NotNull Table table, @NotNull Column<?> column) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector, @NonNull Table table, @NonNull Column<?> column) {
         return hasColumn(connector, table.getName(), column.getName());
     }
 
-    public static boolean hasColumn(@NotNull AbstractConnector connector, @NotNull String table, @NotNull Column<?> column) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector, @NonNull String table, @NonNull Column<?> column) {
         return hasColumn(connector, table, column.getName());
     }
 
-    public static boolean hasColumn(@NotNull AbstractConnector connector, @NotNull String table, @NotNull String columnName) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector, @NonNull String table, @NonNull String columnName) {
         String sql = "SELECT * FROM " + table;
         try (Connection connection = connector.getConnection();
              Statement statement = connection.createStatement()) {
@@ -63,7 +64,41 @@ public class SQLStatements {
         }
     }
 
-    public static void executeUpdate(@NotNull AbstractConnector connector, @NotNull String sql) {
+    public static boolean hasIndex(@NonNull AbstractConnector connector, @NonNull DatabaseType type, @NonNull String tableName, @NonNull String indexName) {
+        String query;
+
+        if (type == DatabaseType.SQLITE) {
+            query = "SELECT 1 FROM sqlite_master WHERE type = 'index' AND name = ?";
+        }
+        else {
+            query = "SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS " +
+                "WHERE table_schema = DATABASE() " +
+                "AND table_name = ? " +
+                "AND index_name = ?";
+        }
+
+        try (Connection connection = connector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            if (type == DatabaseType.SQLITE) {
+                statement.setString(1, indexName);
+            }
+            else {
+                statement.setString(1, tableName);
+                statement.setString(2, indexName);
+            }
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next(); // true if the index was found
+            }
+        }
+        catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void executeUpdate(@NonNull AbstractConnector connector, @NonNull String sql) {
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -74,10 +109,10 @@ public class SQLStatements {
         }
     }
     
-    @NotNull
-    public static <R> List<R> select(@NotNull AbstractConnector connector,
-                                     @NotNull String table,
-                                     @NotNull QueryStatement<R> query,
+    @NonNull
+    public static <R> List<R> select(@NonNull AbstractConnector connector,
+                                     @NonNull String table,
+                                     @NonNull QueryStatement<R> query,
                                      @Nullable Wheres<Object> where,
                                      @Nullable Integer limit) {
         ArrayList<R> results = new ArrayList<>();
@@ -111,37 +146,37 @@ public class SQLStatements {
         return results;
     }
 
-    @NotNull
-    public static <R> List<R> selectAny(@NotNull AbstractConnector connector, @NotNull String table, @NotNull QueryStatement<R> query) {
+    @NonNull
+    public static <R> List<R> selectAny(@NonNull AbstractConnector connector, @NonNull String table, @NonNull QueryStatement<R> query) {
         return select(connector, table, query, null, null);
     }
 
-    @NotNull
-    public static <R> Optional<R> selectFirst(@NotNull AbstractConnector connector, @NotNull String table, @NotNull QueryStatement<R> query, @NotNull Wheres<Object> where) {
+    @NonNull
+    public static <R> Optional<R> selectFirst(@NonNull AbstractConnector connector, @NonNull String table, @NonNull QueryStatement<R> query, @NonNull Wheres<Object> where) {
         return Optional.of(select(connector, table, query, where, 1)).filter(Predicate.not(List::isEmpty)).map(List::getFirst);
     }
 
-    @NotNull
-    public static <R> Optional<R> selectAnyFirst(@NotNull AbstractConnector connector, @NotNull String table, @NotNull QueryStatement<R> query) {
+    @NonNull
+    public static <R> Optional<R> selectAnyFirst(@NonNull AbstractConnector connector, @NonNull String table, @NonNull QueryStatement<R> query) {
         return Optional.of(select(connector, table, query, null, 1)).filter(Predicate.not(List::isEmpty)).map(List::getFirst);
     }
 
-    public static <T> void executeBatch(@NotNull AbstractConnector connector,
-                                        @NotNull String table,
-                                        @NotNull BatchStatement<T> query,
-                                        @NotNull T entity,
+    public static <T> void executeBatch(@NonNull AbstractConnector connector,
+                                        @NonNull String table,
+                                        @NonNull BatchStatement<T> query,
+                                        @NonNull T entity,
                                         @Nullable Wheres<T> where) {
         executeBatch(connector, table, query, List.of(entity), where);
     }
 
-    public static <T> void executeBatch(@NotNull AbstractConnector connector,
-                                        @NotNull String table,
-                                        @NotNull BatchStatement<T> query,
-                                        @NotNull Collection<T> entities,
+    public static <T> void executeBatch(@NonNull AbstractConnector connector,
+                                        @NonNull String table,
+                                        @NonNull BatchStatement<T> query,
+                                        @NonNull Collection<T> entities,
                                         @Nullable Wheres<T> where) {
         if (entities.isEmpty()) return;
 
-        String sql = query.toSql(table, where);
+        String sql = query.toSql(connector.getType(), table, where);
 
         try (Connection connection = connector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

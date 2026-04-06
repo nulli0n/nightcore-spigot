@@ -42,7 +42,7 @@ public record ItemPopulator<T>(int[] slots,
         int count = 0;
         for (T object : list) {
             NightItem item = this.itemProvider.apply(context, object);
-            MenuItem menuItem = MenuItem.builder()
+            MenuItem menuItem = MenuItem.custom()
                 .defaultState(item, this.actionProvider.apply(object))
                 .slots(this.slots[count++])
                 .build();

@@ -154,6 +154,8 @@ public final class CoreLang implements LangContainer {
 
     public static final ButtonLocale DIALOG_BUTTON_OK     = LangEntry.builder("Dialog.Button.OK").button(GREEN.wrap("✔") + " OK");
     public static final ButtonLocale DIALOG_BUTTON_CANCEL = LangEntry.builder("Dialog.Button.Cancel").button(RED.wrap("✘") + " Cancel");
+    public static final ButtonLocale DIALOG_BUTTON_APPLY  = LangEntry.builder("Dialog.Button.Apply").button(GREEN.wrap("✔") + " Apply");
+    public static final ButtonLocale DIALOG_BUTTON_RESET  = LangEntry.builder("Dialog.Button.Reset").button(RED.wrap("✘") + " Reset");
     public static final ButtonLocale DIALOG_BUTTON_BACK   = LangEntry.builder("Dialog.Button.Back").button(SOFT_YELLOW.wrap("←") + " Back");
 
     @NotNull

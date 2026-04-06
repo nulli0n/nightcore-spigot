@@ -51,8 +51,8 @@ public class PlayerPointsCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected double queryBalanceDirect(@NonNull UUID playerId) {
-        return this.api.look(playerId);
+    protected double queryBalanceDirect(@NonNull Player player) {
+        return this.api.look(player.getUniqueId());
     }
 
     @Override
@@ -68,8 +68,8 @@ public class PlayerPointsCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected void depositDirect(@NonNull UUID playerId, double amount) {
-        this.api.give(playerId, (int) amount);
+    protected void depositDirect(@NonNull Player player, double amount) {
+        this.api.give(player.getUniqueId(), (int) amount);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class PlayerPointsCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
-        this.api.take(playerId, (int) amount);
+    protected void withdrawDirect(@NonNull Player player, double amount) {
+        this.api.take(player.getUniqueId(), (int) amount);
     }
 }

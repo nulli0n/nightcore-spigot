@@ -26,6 +26,7 @@ import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangRegistry;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
+import su.nightexpress.nightcore.ui.dialog.wrap.DialogRegistry;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.bridge.Software;
@@ -54,6 +55,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     protected FileConfig    config;
     protected PluginDetails details;
 
+    protected DialogRegistry      dialogRegistry;
     protected PlaceholderRegistry placeholderRegistry;
 
     @Override
@@ -65,6 +67,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         long loadTook = System.currentTimeMillis();
         this.scheduler = Software.get().getScheduler(this);
+        this.dialogRegistry = new DialogRegistry(this);
         if (PAPI.isPresent()) {
             this.placeholderRegistry = new PlaceholderRegistry();
         }
@@ -104,7 +107,6 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         if (PAPI.addExpansion(this, this.placeholderRegistry, this.getPlaceholderAPIIdentifier())) {
             this.info("Successfully registered placeholders for %s.".formatted(PAPI.NAME));
-            this.placeholderRegistry = null;
         }
     }
 
@@ -240,6 +242,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     protected void unloadManagers() {
         if (PAPI.isPresent()) {
             PAPI.removeExpansions(this);
+            this.placeholderRegistry.clear();
         }
         this.scheduler.cancelTasks(); // Stop all plugin tasks.
 
@@ -254,6 +257,8 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         if (this.langRegistry != null) this.langRegistry.shutdown();
         if (this.langManager != null) this.langManager.shutdown();
         this.details = null;                           // Reset so it will use default ones on config read.
+
+        this.dialogRegistry.clear();
     }
 
     protected void postLoad() {
@@ -390,6 +395,12 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     @NotNull
     public AdaptedScheduler scheduler() {
         return this.scheduler;
+    }
+
+    @Override
+    @NotNull
+    public DialogRegistry dialogRegistry() {
+        return this.dialogRegistry;
     }
 
     @Override

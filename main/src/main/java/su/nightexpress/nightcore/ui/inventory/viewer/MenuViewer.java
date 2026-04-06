@@ -32,17 +32,16 @@ public class MenuViewer {
     private long nextClickIn;
     private boolean isRefreshing;
 
-    public MenuViewer(@NotNull Player player/*, @Nullable Object currentObject*/) {
+    public MenuViewer(@NotNull Player player) {
         this.player = player;
-        //this.currentObject = currentObject;
         this.currentDisplay = new HashMap<>();
         this.setCurrentPage(1);
         this.setTotalPages(1);
     }
 
-    public void renderMenu(@NotNull Menu menu, @Nullable Object data) {
+    public void renderMenu(@NotNull Menu menu/*, @Nullable Object data*/) {
         this.currentMenu = menu;
-        this.currentObject = data;
+        //this.currentObject = data;
         this.currentDisplay.clear();
         this.isRefreshing = false;
 
@@ -114,7 +113,7 @@ public class MenuViewer {
         if (this.currentMenu == null) return;
 
         this.flushView(); // Render inventory from scratch.
-        this.renderMenu(this.currentMenu, this.currentObject);
+        this.renderMenu(this.currentMenu/*, this.currentObject*/);
     }
 
     public void closeMenu() {
@@ -216,5 +215,10 @@ public class MenuViewer {
 
     public void setTotalPages(int totalPages) {
         this.totalPages = Math.max(1, totalPages);
+    }
+
+    @Nullable
+    public ItemState getResolvedItemState(int slot) {
+        return this.currentDisplay.get(slot);
     }
 }

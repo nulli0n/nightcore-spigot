@@ -48,8 +48,8 @@ public class XPLevelsCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected double queryBalanceDirect(@NonNull UUID playerId) {
-        return Players.findById(playerId).map(this::queryLevel).orElse(0D);
+    protected double queryBalanceDirect(@NonNull Player player) {
+        return this.queryLevel(player);
     }
 
     @Override
@@ -65,8 +65,8 @@ public class XPLevelsCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected void depositDirect(@NonNull UUID playerId, double amount) {
-        Players.findById(playerId).ifPresent(player -> this.depositLevel(player, amount));
+    protected void depositDirect(@NonNull Player player, double amount) {
+        this.depositLevel(player, amount);
     }
 
     @Override
@@ -82,8 +82,8 @@ public class XPLevelsCurrency extends IncompleteCurrency {
     }
 
     @Override
-    protected void withdrawDirect(@NonNull UUID playerId, double amount) {
-        Players.findById(playerId).ifPresent(player -> this.withdrawLevel(player, amount));
+    protected void withdrawDirect(@NonNull Player player, double amount) {
+        this.withdrawLevel(player, amount);
     }
 
     private double queryLevel(@NonNull Player player) {
