@@ -1,4 +1,4 @@
-package su.nightexpress.nightcore.api.event;
+package su.nightexpress.nightcore.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

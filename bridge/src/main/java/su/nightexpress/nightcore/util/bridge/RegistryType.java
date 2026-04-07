@@ -1,16 +1,31 @@
 package su.nightexpress.nightcore.util.bridge;
 
-import io.papermc.paper.datacomponent.DataComponentType;
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
-import org.bukkit.*;
+import java.util.function.Function;
+import org.bukkit.Art;
+import org.bukkit.Bukkit;
+import org.bukkit.Fluid;
+import org.bukkit.GameEvent;
+import org.bukkit.JukeboxSong;
+import org.bukkit.Keyed;
+import org.bukkit.Material;
+import org.bukkit.MusicInstrument;
+import org.bukkit.Particle;
+import org.bukkit.Registry;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
 import org.bukkit.block.BlockType;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Cat;
+import org.bukkit.entity.Chicken;
+import org.bukkit.entity.Cow;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Frog;
+import org.bukkit.entity.Pig;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.entity.memory.MemoryKey;
 import org.bukkit.generator.structure.Structure;
 import org.bukkit.generator.structure.StructureType;
@@ -21,10 +36,11 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.map.MapCursor;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import su.nightexpress.nightcore.util.Version;
-
-import java.util.function.Function;
 
 public interface RegistryType<T extends Keyed> {
 
@@ -76,20 +92,20 @@ public interface RegistryType<T extends Keyed> {
         public static final RegistryType<Wolf.SoundVariant> WOLF_SOUND_VARIANT  = type(isSpigot -> forPaper(RegistryKey.WOLF_SOUND_VARIANT));
     }
 
-    @NotNull Registry<@NotNull T> getRegistry();
+    @NonNull Registry<@NonNull T> getRegistry();
 
-    private static <T extends Keyed> RegistryType<T> type(@NotNull Function<Boolean, Registry<@NotNull T>> function) {
+    private static <T extends Keyed> RegistryType<T> type(@NonNull Function<Boolean, Registry<@NonNull T>> function) {
         var registry = function.apply(Version.isSpigot());
 
         return () -> registry;
     }
 
     @SuppressWarnings("deprecation")
-    private static <T extends Keyed> Registry<@NotNull T> forSpigot(@NotNull Class<T> clazz) {
+    private static <T extends Keyed> Registry<@NonNull T> forSpigot(@NonNull Class<T> clazz) {
         return Bukkit.getRegistry(clazz);
     }
 
-    private static <T extends Keyed> Registry<@NotNull T> forPaper(@NotNull RegistryKey<T> key) {
+    private static <T extends Keyed> Registry<T> forPaper(RegistryKey<T> key) {
         return RegistryAccess.registryAccess().getRegistry(key);
     }
 }

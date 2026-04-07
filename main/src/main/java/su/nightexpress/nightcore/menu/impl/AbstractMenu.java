@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
-import su.nightexpress.nightcore.api.event.PlayerOpenMenuEvent;
+import su.nightexpress.nightcore.event.PlayerOpenMenuEvent;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.menu.MenuSize;
 import su.nightexpress.nightcore.menu.api.Menu;
