@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.text.event;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 
@@ -10,17 +10,16 @@ public class NightClickEvent {
     private final Action         action;
     private final WrappedPayload payload;
 
-    public NightClickEvent(@NotNull NightClickEvent.Action action, @NotNull WrappedPayload payload) {
+    public NightClickEvent(NightClickEvent.@NonNull Action action, @NonNull WrappedPayload payload) {
         this.action = action;
         this.payload = payload;
     }
 
-    @NotNull
-    public NightClickEvent.Action action() {
+    public NightClickEvent.@NonNull Action action() {
         return this.action;
     }
 
-    @NotNull
+    @NonNull
     public WrappedPayload payload() {
         return this.payload;
     }
@@ -54,7 +53,7 @@ public class NightClickEvent {
 
         private final String name;
 
-        Action(@NotNull String name) {
+        Action(@NonNull String name) {
             this.name = name;
         }
 

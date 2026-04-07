@@ -3,7 +3,6 @@ package su.nightexpress.nightcore.util.nbt;
 import com.mojang.serialization.DynamicOps;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.util.Reflex;
-import su.nightexpress.nightcore.util.Version;
 
 import java.lang.reflect.Method;
 
@@ -11,7 +10,7 @@ public class NbtOps {
 
     private static final Class<?> CLS_NBT_OPS = Reflex.safeClass("net.minecraft.nbt", "NbtOps", "DynamicOpsNBT");
 
-    private static final Method CONVERT_TO = Version.isBehind(Version.MC_1_21_7) ? null : Reflex.safeMethod(CLS_NBT_OPS, "convertTo", DynamicOps.class, Object.class);
+    private static final Method CONVERT_TO = Reflex.safeMethod(CLS_NBT_OPS, "convertTo", DynamicOps.class, Object.class);
 
     public static final Object INSTANCE = Reflex.getFieldValue(CLS_NBT_OPS, "INSTANCE", "a");
 

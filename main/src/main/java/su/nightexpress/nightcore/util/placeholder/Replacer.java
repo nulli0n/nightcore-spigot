@@ -6,7 +6,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nightcore.integration.placeholder.PAPI;
 import su.nightexpress.nightcore.util.ItemUtil;
-import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.text.NightMessage;
 import su.nightexpress.nightcore.util.text.TextRoot;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
@@ -128,7 +127,7 @@ public class Replacer {
     public ItemMeta apply(@NotNull ItemMeta meta) {
         List<String> lore = meta.getLore();
 
-        if (Version.isAtLeast(Version.MC_1_21) && meta.hasItemName()) {
+        if (meta.hasItemName()) {
             meta.setItemName(this.apply(meta.getItemName()));
         }
         if (meta.hasDisplayName()) {

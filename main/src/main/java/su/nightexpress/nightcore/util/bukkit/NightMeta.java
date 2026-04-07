@@ -11,8 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.Engine;
-import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
@@ -21,6 +19,7 @@ import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.locale.entry.IconLocale;
 import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderContext;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
@@ -29,7 +28,6 @@ import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class NightMeta implements Writeable {
 
@@ -120,20 +118,11 @@ public class NightMeta implements Writeable {
         displayMeta.setUnbreakable(meta.isUnbreakable());
         displayMeta.setPlayerProfile(ItemUtil.getOwnerProfile(itemStack));
         displayMeta.setCustomModelData(ItemUtil.getCustomModelData(meta));
-        if (Version.isAtLeast(Version.MC_1_21)) {
-            displayMeta.setEnchantGlint((meta.hasEnchantmentGlintOverride() && meta.getEnchantmentGlintOverride())/* || meta.hasEnchants()*/);
-            displayMeta.setHideTooltip(meta.isHideTooltip());
-        }
-        if (Version.isAtLeast(Version.MC_1_21_3)) {
-            displayMeta.setModelPath(meta.getItemModel());
-            displayMeta.setTooltipStyle(meta.getTooltipStyle());
-        }
-        if (Version.isAtLeast(Version.MC_1_21_5)) {
-            displayMeta.setHiddenComponents(Engine.software().getHiddenComponents(itemStack));
-        }
-        else {
-            displayMeta.setHiddenComponents(meta.getItemFlags().stream().map(Enum::name).collect(Collectors.toSet()));
-        }
+        displayMeta.setEnchantGlint((meta.hasEnchantmentGlintOverride() && meta.getEnchantmentGlintOverride())/* || meta.hasEnchants()*/);
+        displayMeta.setHideTooltip(meta.isHideTooltip());
+        displayMeta.setModelPath(meta.getItemModel());
+        displayMeta.setTooltipStyle(meta.getTooltipStyle());
+        displayMeta.setHiddenComponents(Software.get().getHiddenComponents(itemStack));
 
         switch (meta) {
             case LeatherArmorMeta armorMeta -> displayMeta.setColor(armorMeta.getColor());
@@ -244,7 +233,7 @@ public class NightMeta implements Writeable {
         displayMeta.setHideTooltip(config.getBoolean(path + ".Hide_Tooltip", false));
 
         if (config.getBoolean(path + ".Hide_Components", false)) {
-            displayMeta.setHiddenComponents(Engine.software().getCommonComponentsToHide());
+            displayMeta.setHiddenComponents(Software.get().getCommonComponentsToHide());
         }
 
         String rawColor = config.getString(path + ".Color");
@@ -292,7 +281,7 @@ public class NightMeta implements Writeable {
 
                 ItemUtil.setCustomName(meta, name);
             }
-            if (this.itemName != null && Version.isAtLeast(Version.MC_1_21)) {
+            if (this.itemName != null) {
                 String name;
 
                 if (this.placeholderContext != null) {
@@ -322,14 +311,10 @@ public class NightMeta implements Writeable {
 
             meta.setUnbreakable(this.unbreakable);
 
-            if (Version.isAtLeast(Version.MC_1_21)) {
-                if (this.enchantGlint) meta.setEnchantmentGlintOverride(true);
-                if (this.hideTooltip) meta.setHideTooltip(true);
-            }
-            if (Version.isAtLeast(Version.MC_1_21_3)) {
-                if (this.modelPath != null) meta.setItemModel(this.modelPath);
-                if (this.tooltipStyle != null) meta.setTooltipStyle(this.tooltipStyle);
-            }
+            if (this.enchantGlint) meta.setEnchantmentGlintOverride(true);
+            if (this.hideTooltip) meta.setHideTooltip(true);
+            if (this.modelPath != null) meta.setItemModel(this.modelPath);
+            if (this.tooltipStyle != null) meta.setTooltipStyle(this.tooltipStyle);
 
             if (this.damage != null && meta instanceof Damageable damageable) {
                 damageable.setDamage(this.damage);
@@ -346,12 +331,7 @@ public class NightMeta implements Writeable {
         });
 
         if (this.hiddenComponents != null && !this.hiddenComponents.isEmpty() && !this.hideTooltip) {
-            if (Version.isAtLeast(Version.MC_1_21_5)) {
-                Engine.software().hideComponents(itemStack, this.hiddenComponents);
-            }
-            else {
-                SpigotBridge.hideComponentsByName(itemStack, this.hiddenComponents);
-            }
+            Software.get().hideComponents(itemStack, this.hiddenComponents);
         }
     }
 
@@ -505,7 +485,7 @@ public class NightMeta implements Writeable {
     }
 
     public NightMeta hideAllComponents() {
-        this.setHiddenComponents(Engine.software().getCommonComponentsToHide());
+        this.setHiddenComponents(Software.get().getCommonComponentsToHide());
         return this;
     }
 

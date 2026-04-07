@@ -140,11 +140,8 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
                 builder.decoration(this.adaptTextDecoration(nightDecoration), this.adaptTextDecorationState(nightState));
             });
 
-            if (Version.isAtLeast(Version.MC_1_21_6)) {
-                Compat.setShadowColor(builder, shadowColor);
-            }
-
             builder
+                .shadowColor(shadowColor == null ? null : ShadowColor.shadowColor(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), shadowColor.getAlpha()))
                 .font(font == null ? null : Key.key(font.namespace(), font.value()))
                 .color(color == null ? null : TextColor.color(color.getRed(), color.getGreen(), color.getBlue()))
                 .clickEvent(clickEvent == null ? null : this.adaptClickEvent(clickEvent))
@@ -216,13 +213,5 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
             .append(this.adaptComponents(component.children()))
             .contents(PaperObjectContantsAdapter.get().adaptContents(component.contents()))
             .build();
-    }
-
-    // Quick fix for <1.21.4 loading.
-    static class Compat {
-
-        static void setShadowColor(@NotNull Style.Builder builder, @Nullable Color shadowColor) {
-            builder.shadowColor(shadowColor == null ? null : ShadowColor.shadowColor(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), shadowColor.getAlpha()));
-        }
     }
 }

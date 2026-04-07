@@ -195,29 +195,7 @@ public class ItemUtil {
 
     @Deprecated
     public static void hideAttributes(@NotNull ItemStack itemStack) {
-        if (Version.isAtLeast(Version.MC_1_21_5)) {
-            Software.get().hideComponents(itemStack);
-            return;
-        }
-
-        editMeta(itemStack, meta -> hideAttributes(meta, itemStack.getType()));
-    }
-
-    @Deprecated
-    private static void hideAttributes(@NotNull ItemMeta meta, @NotNull Material material) {
-        if (Version.isBehind(Version.MC_1_21_5)) {
-            if (material.isItem()) {
-                EquipmentSlot slot = material.getEquipmentSlot();
-                material.getDefaultAttributeModifiers(slot).forEach((attribute, modifier) -> {
-                    var modifiers = meta.getAttributeModifiers() == null ? null : meta.getAttributeModifiers(attribute);
-                    if (modifiers == null || modifiers.isEmpty() || !meta.getAttributeModifiers().containsKey(attribute)) {
-                        meta.addAttributeModifier(attribute, modifier);
-                    }
-                });
-            }
-        }
-
-        meta.addItemFlags(ItemFlag.values());
+        Software.get().hideComponents(itemStack);
     }
 
     public static void setCustomModelData(@NotNull ItemStack itemStack, float data) {
@@ -225,14 +203,9 @@ public class ItemUtil {
     }
 
     public static void setCustomModelData(@NotNull ItemMeta meta, float data) {
-        if (Version.isAtLeast(Version.MC_1_21_5)) {
-            CustomModelDataComponent component = meta.getCustomModelDataComponent();
-            component.setFloats(Lists.newList(data));
-            meta.setCustomModelDataComponent(component);
-        }
-        else {
-            meta.setCustomModelData((int) data);
-        }
+        CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        component.setFloats(Lists.newList(data));
+        meta.setCustomModelDataComponent(component);
     }
 
     @Nullable
@@ -243,11 +216,8 @@ public class ItemUtil {
 
     @Nullable
     public static Float getCustomModelData(@NotNull ItemMeta meta) {
-        if (Version.isAtLeast(Version.MC_1_21_5)) {
-            List<Float> floats = meta.getCustomModelDataComponent().getFloats();
-            return floats.isEmpty() ? null : floats.getFirst();
-        }
-        return meta.hasCustomModelData() ? (float) meta.getCustomModelData() : null;
+        List<Float> floats = meta.getCustomModelDataComponent().getFloats();
+        return floats.isEmpty() ? null : floats.getFirst();
     }
 
     @NotNull

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util;
 
 import org.bukkit.Bukkit;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -14,17 +14,19 @@ public enum Version {
     @Deprecated V1_20_R3("1.20.4", 3700, Status.DROPPED),
     @Deprecated MC_1_20_6("1.20.6", 3839, Status.DROPPED),
     @Deprecated MC_1_21_0("1.21", 3953, Status.DROPPED),
-    MC_1_21("1.21.1", 3955, Status.OUTDATED),
-    MC_1_21_2("1.21.2", 4080, Status.OUTDATED),
-    MC_1_21_3("1.21.3", 4082, Status.OUTDATED),
-    MC_1_21_4("1.21.4", 4189),
-    MC_1_21_5("1.21.5", 4325, Status.OUTDATED),
-    MC_1_21_6("1.21.6", 4435, Status.OUTDATED),
-    MC_1_21_7("1.21.7", 4438, Status.OUTDATED),
+    @Deprecated MC_1_21("1.21.1", 3955, Status.DROPPED),
+    @Deprecated MC_1_21_2("1.21.2", 4080, Status.DROPPED),
+    @Deprecated MC_1_21_3("1.21.3", 4082, Status.DROPPED),
+    @Deprecated MC_1_21_4("1.21.4", 4189, Status.DROPPED),
+    @Deprecated MC_1_21_5("1.21.5", 4325, Status.DROPPED),
+    @Deprecated MC_1_21_6("1.21.6", 4435, Status.DROPPED),
+    @Deprecated MC_1_21_7("1.21.7", 4438, Status.DROPPED),
     MC_1_21_8("1.21.8", 4440),
     MC_1_21_9("1.21.9", 4554, Status.OUTDATED),
-    MC_1_21_10("1.21.10", 4556),
+    MC_1_21_10("1.21.10", 4556, Status.OUTDATED),
     MC_1_21_11("1.21.11", 4671),
+    MC_26_1("26.1", 4786, Status.DROPPED),
+    MC_26_1_1("26.1.1", 4788),
     UNKNOWN("Unknown", 10000),
     ;
 
@@ -36,11 +38,11 @@ public enum Version {
     private final int    dataVersion;
     private final String localized;
 
-    Version(@NotNull String localized, int dataVersion) {
+    Version(@NonNull String localized, int dataVersion) {
         this(localized, dataVersion, Status.SUPPORTED);
     }
 
-    Version(@NotNull String localized, int dataVersion, @NotNull Status status) {
+    Version(@NonNull String localized, int dataVersion, @NonNull Status status) {
         this.localized = localized;
         this.dataVersion = dataVersion;
         this.status = status;
@@ -52,9 +54,9 @@ public enum Version {
         DROPPED
     }
 
-    @NotNull
+    @NonNull
     public static Version detect() {
-        String bukkitVersion = Bukkit.getServer().getBukkitVersion();
+        String bukkitVersion = isSpigot() ? Bukkit.getServer().getBukkitVersion() : Bukkit.getServer().getVersion();
         String exact = bukkitVersion.split("-")[0];
 
         current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
@@ -62,15 +64,16 @@ public enum Version {
         return current;
     }
 
-    @NotNull
+    @NonNull
     public static Version getCurrent() {
         if (current == null) throw new IllegalStateException("Version is not initialized!");
 
         return current;
     }
 
+    @Deprecated
     public static boolean withDialogs() {
-        return isAtLeast(MC_1_21_7);
+        return true;
     }
 
     public static boolean withCopperAge() {
@@ -101,7 +104,7 @@ public enum Version {
         return this.status == Status.SUPPORTED;
     }
 
-    @NotNull
+    @NonNull
     public Status getStatus() {
         return this.status;
     }
@@ -110,32 +113,32 @@ public enum Version {
         return this.dataVersion;
     }
 
-    @NotNull
+    @NonNull
     public String getLocalized() {
         return this.localized;
     }
 
-    public boolean isLower(@NotNull Version version) {
+    public boolean isLower(@NonNull Version version) {
         return this.ordinal() < version.ordinal();
     }
 
-    public boolean isHigher(@NotNull Version version) {
+    public boolean isHigher(@NonNull Version version) {
         return this.ordinal() > version.ordinal();
     }
 
-    public static boolean isAtLeast(@NotNull Version version) {
+    public static boolean isAtLeast(@NonNull Version version) {
         return version.isCurrent() || getCurrent().isHigher(version);
     }
 
-    public static boolean isAbove(@NotNull Version version) {
+    public static boolean isAbove(@NonNull Version version) {
         return getCurrent().isHigher(version);
     }
 
-    public static boolean isBehind(@NotNull Version version) {
+    public static boolean isBehind(@NonNull Version version) {
         return getCurrent().isLower(version);
     }
 
-    public static boolean isBehindOrEqual(@NotNull Version version){
+    public static boolean isBehindOrEqual(@NonNull Version version){
         return getCurrent().isLower(version) || getCurrent() == version;
     }
 

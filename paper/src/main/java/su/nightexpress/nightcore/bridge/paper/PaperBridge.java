@@ -85,21 +85,16 @@ public class PaperBridge implements Software {
     @Override
     public boolean initialize() {
         this.textComponentAdapter = new PaperTextComponentAdapter(this);
+        this.dialogAdapter = new PaperDialogAdapter(this);
 
-        if (Version.isAtLeast(Version.MC_1_21_7)) {
-            this.dialogAdapter = new PaperDialogAdapter(this);
-        }
-
-        if (Version.isAtLeast(Version.MC_1_21_5)) {
-            this.commonComponentsToHide = BukkitThing.getAll(RegistryType.Paper.DATA_COMPONENT_TYPE);
-            this.commonComponentsToHide.remove(DataComponentTypes.LORE);
-            this.commonComponentsToHide.remove(DataComponentTypes.ITEM_NAME);
-            this.commonComponentsToHide.remove(DataComponentTypes.ITEM_MODEL);
-            this.commonComponentsToHide.remove(DataComponentTypes.CUSTOM_NAME);
-            this.commonComponentsToHide.remove(DataComponentTypes.CUSTOM_MODEL_DATA);
-            this.commonComponentsToHide.remove(DataComponentTypes.TOOLTIP_DISPLAY);
-            this.commonComponentsToHide.remove(DataComponentTypes.TOOLTIP_STYLE);
-        }
+        this.commonComponentsToHide = BukkitThing.getAll(RegistryType.Paper.DATA_COMPONENT_TYPE);
+        this.commonComponentsToHide.remove(DataComponentTypes.LORE);
+        this.commonComponentsToHide.remove(DataComponentTypes.ITEM_NAME);
+        this.commonComponentsToHide.remove(DataComponentTypes.ITEM_MODEL);
+        this.commonComponentsToHide.remove(DataComponentTypes.CUSTOM_NAME);
+        this.commonComponentsToHide.remove(DataComponentTypes.CUSTOM_MODEL_DATA);
+        this.commonComponentsToHide.remove(DataComponentTypes.TOOLTIP_DISPLAY);
+        this.commonComponentsToHide.remove(DataComponentTypes.TOOLTIP_STYLE);
 
         this.eventAdapter = new PaperEventAdapter(this.textComponentAdapter);
         return true;
@@ -226,12 +221,7 @@ public class PaperBridge implements Software {
     @Override
     @NotNull
     public InventoryView createView(@NotNull MenuType menuType, @NotNull NightComponent title, @NotNull Player player) {
-        if (Version.isAtLeast(Version.MC_1_21_4)) {
-            return menuType.typed().builder().title(adaptComponent(title)).build(player);
-        }
-        else {
-            return menuType.typed().create(player, adaptComponent(title));
-        }
+        return menuType.typed().builder().title(adaptComponent(title)).build(player);
     }
 
     @Override
@@ -353,24 +343,13 @@ public class PaperBridge implements Software {
     @Override
     @Nullable
     public String getCustomName(@NotNull ItemMeta meta) {
-        Component component;
-        if (Version.isBehind(Version.MC_1_21_5)) {
-            component = meta.displayName();
-        }
-        else {
-            component = meta.customName();
-        }
+        Component component = meta.customName();
         return component == null ? null : serializeComponent(component);
     }
 
     @Override
     public void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name) {
-        if (Version.isBehind(Version.MC_1_21_5)) {
-            meta.displayName(name == null ? null : this.adaptComponent(name));
-        }
-        else {
-            meta.customName(name == null ? null : this.adaptComponent(name));
-        }
+        meta.customName(name == null ? null : this.adaptComponent(name));
     }
 
     @Override

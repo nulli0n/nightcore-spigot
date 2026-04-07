@@ -16,16 +16,6 @@ public class CoreConfig {
 
     public static final String DIR_UI = "/ui/";
 
-    @Deprecated
-    public static final ConfigValue<Integer> DATA_FIXER_MISSING_VERSION = ConfigValue.create("DataFixer.MissingVersion",
-        Version.MC_1_21_4.getDataVersion()
-    );
-
-    @Deprecated
-    public static final ConfigValue<Integer> DATA_FIXER_UNKNOWN_VERSION = ConfigValue.create("DataFixer.UnknownVersion",
-        10000
-    );
-
     public static final ConfigValue<String> GENERAL_DATE_TIME_FORMAT = ConfigValue.create("General.DateTimeFormat",
         "dd/MM/yyyy HH:mm"
     ).whenRead(TimeFormats::setDateTimeFormatter);

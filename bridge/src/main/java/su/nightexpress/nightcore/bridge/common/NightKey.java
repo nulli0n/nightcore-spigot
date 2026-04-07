@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.common;
 
 import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.Strings;
 
 import java.util.Objects;
@@ -14,7 +14,7 @@ public class NightKey {
     private final String namespace;
     private final String value;
 
-    private NightKey(@NotNull String namespace, @NotNull String value) {
+    private NightKey(@NonNull String namespace, @NonNull String value) {
         if (!parseableNamespace(namespace)) throw new IllegalArgumentException("Invalid namespace: '" + namespace + "'");
         if (!parseableValue(value)) throw new IllegalArgumentException("Invalid value: '" + value + "'");
 
@@ -22,13 +22,13 @@ public class NightKey {
         this.value = value;
     }
 
-    @NotNull
-    public static NightKey of(@NotNull String namespace, @NotNull String value) {
+    @NonNull
+    public static NightKey of(@NonNull String namespace, @NonNull String value) {
         return new NightKey(namespace, value);
     }
 
-    @NotNull
-    public static Optional<NightKey> parse(@NotNull String string) {
+    @NonNull
+    public static Optional<NightKey> parse(@NonNull String string) {
         try {
             return Optional.of(key(string));
         }
@@ -37,8 +37,8 @@ public class NightKey {
         }
     }
 
-    @NotNull
-    public static Optional<NightKey> parse(@NotNull String namespace, @NotNull String value) {
+    @NonNull
+    public static Optional<NightKey> parse(@NonNull String namespace, @NonNull String value) {
         try {
             return Optional.of(key(namespace, value));
         }
@@ -47,13 +47,13 @@ public class NightKey {
         }
     }
 
-    @NotNull
-    public static NightKey key(@NotNull String string) {
+    @NonNull
+    public static NightKey key(@NonNull String string) {
         return key(string, DELIMITER);
     }
 
-    @NotNull
-    public static NightKey key(@NotNull String string, char character) {
+    @NonNull
+    public static NightKey key(@NonNull String string, char character) {
         int index = string.indexOf(character);
         String namespace = index >= 1 ? string.substring(0, index) : NamespacedKey.MINECRAFT;
         String value = index >= 0 ? string.substring(index + 1) : string;
@@ -61,26 +61,26 @@ public class NightKey {
         return key(namespace, value);
     }
 
-    @NotNull
-    public static NightKey key(@NotNull String namespace, @NotNull String value) {
+    @NonNull
+    public static NightKey key(@NonNull String namespace, @NonNull String value) {
         String namespaceFiltered = Strings.varStyle(namespace, NightKey::allowedInNamespace).orElseThrow(() -> new IllegalStateException("Invalid namespace: " + namespace));
         String valueFiltered = Strings.varStyle(value, NightKey::allowedInValue).orElseThrow(() -> new IllegalStateException("Invalid value: " + value));
 
         return of(namespaceFiltered, valueFiltered);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static NightKey fromString(@NotNull String string) {
+    public static NightKey fromString(@NonNull String string) {
         return key(string);
     }
 
-    @NotNull
-    public static NightKey fromBukkit(@NotNull NamespacedKey key) {
+    @NonNull
+    public static NightKey fromBukkit(@NonNull NamespacedKey key) {
         return of(key.getNamespace(), key.getKey());
     }
 
-    public static boolean parseable(@NotNull String string) {
+    public static boolean parseable(@NonNull String string) {
         int index = string.indexOf(DELIMITER);
         String namespace = index >= 1 ? string.substring(0, index) : NamespacedKey.MINECRAFT;
         String value = index >= 0 ? string.substring(index + 1) : string;
@@ -88,7 +88,7 @@ public class NightKey {
         return parseableNamespace(namespace) && parseableValue(value);
     }
 
-    public static boolean parseableNamespace(@NotNull String namespace) {
+    public static boolean parseableNamespace(@NonNull String namespace) {
         for (int index = 0, length = namespace.length(); index < length; index++) {
             if (!allowedInNamespace(namespace.charAt(index))) {
                 return false;
@@ -97,7 +97,7 @@ public class NightKey {
         return true;
     }
 
-    public static boolean parseableValue(@NotNull String value) {
+    public static boolean parseableValue(@NonNull String value) {
         for (int index = 0, length = value.length(); index < length; index++) {
             if (!allowedInValue(value.charAt(index))) {
                 return false;
@@ -114,28 +114,28 @@ public class NightKey {
         return allowedInNamespace(character) || character == '/';
     }
 
-    @NotNull
+    @NonNull
     public String namespace() {
         return this.namespace;
     }
 
-    @NotNull
+    @NonNull
     public String value() {
         return this.value;
     }
 
-    @NotNull
+    @NonNull
     public String asString() {
         return this.namespace + DELIMITER + this.value;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public NamespacedKey asBukkit() {
         return this.toBukkit();
     }
 
-    @NotNull
+    @NonNull
     public NamespacedKey toBukkit() {
         return new NamespacedKey(this.namespace, this.value);
     }

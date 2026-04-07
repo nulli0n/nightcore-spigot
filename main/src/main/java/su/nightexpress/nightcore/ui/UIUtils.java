@@ -6,7 +6,6 @@ import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.ui.menu.confirmation.ConfirmMenu;
 import su.nightexpress.nightcore.ui.menu.confirmation.Confirmation;
-import su.nightexpress.nightcore.util.Version;
 
 @Deprecated
 public class UIUtils {
@@ -14,9 +13,7 @@ public class UIUtils {
     private static ConfirmMenu confirmMenu;
 
     public static void load(@NotNull NightCore plugin) {
-        if (Version.isAtLeast(Version.MC_1_21)) {
-            confirmMenu = new ConfirmMenu(plugin);
-        }
+        confirmMenu = new ConfirmMenu(plugin);
     }
 
     public static void clear() {

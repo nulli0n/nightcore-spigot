@@ -79,7 +79,7 @@ public interface RegistryType<T extends Keyed> {
     @NotNull Registry<@NotNull T> getRegistry();
 
     private static <T extends Keyed> RegistryType<T> type(@NotNull Function<Boolean, Registry<@NotNull T>> function) {
-        var registry = function.apply(Version.isSpigot() || Version.isBehind(Version.MC_1_21));
+        var registry = function.apply(Version.isSpigot());
 
         return () -> registry;
     }

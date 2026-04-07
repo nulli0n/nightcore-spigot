@@ -27,7 +27,6 @@ import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightTranslatableComponent;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Lists;
-import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 import java.awt.*;
@@ -70,6 +69,7 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
         Color shadowColor = nightStyle.shadowColor();
 
         ComponentStyleBuilder builder = ComponentStyle.builder()
+            .shadowColor(shadowColor)
             .font(font == null ? null : font.toString())
             .color(color == null ? null : ChatColor.of(color))
             .bold(nightStyle.decoration(NightTextDecoration.BOLD).bool())
@@ -77,10 +77,6 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
             .obfuscated(nightStyle.decoration(NightTextDecoration.OBFUSCATED).bool())
             .strikethrough(nightStyle.decoration(NightTextDecoration.STRIKETHROUGH).bool())
             .underlined(nightStyle.decoration(NightTextDecoration.UNDERLINED).bool());
-
-        if (Version.isAtLeast(Version.MC_1_21_7)) {
-            builder.shadowColor(shadowColor);
-        }
 
         return builder.build();
     }

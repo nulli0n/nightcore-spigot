@@ -31,9 +31,7 @@ public class LangAssets {
         String assetsCode = downloadAssets(core, langCode);
         config = FileConfig.loadOrExtract(core, LangManager.DIR_LANG, getFileName(assetsCode));
 
-        if (Version.isAtLeast(Version.MC_1_21)) {
-            loadDamageTypes();
-        }
+        loadDamageTypes();
     }
 
     public static void shutdown() {

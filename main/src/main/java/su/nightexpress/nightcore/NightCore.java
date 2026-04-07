@@ -119,10 +119,8 @@ public class NightCore extends NightPlugin {
 
         this.menuRegistry.setup();
 
-        if (Version.isAtLeast(Version.MC_1_21_7)) {
-            this.dialogWatcher = new DialogWatcher(this);
-            this.dialogWatcher.setup();
-        }
+        this.dialogWatcher = new DialogWatcher(this);
+        this.dialogWatcher.setup();
 
         this.loadCommands();
     }

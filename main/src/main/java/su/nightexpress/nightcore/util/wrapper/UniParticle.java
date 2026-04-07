@@ -8,9 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
-import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.StringUtil;
-import su.nightexpress.nightcore.util.Version;
 
 public class UniParticle implements Writeable {
 
@@ -34,27 +32,22 @@ public class UniParticle implements Writeable {
 
     @NotNull
     public static UniParticle itemCrack(@NotNull ItemStack item) {
-        Particle var = Version.isBehind(Version.MC_1_21_3) ? Particle.valueOf("ITEM_CRACK") : BukkitThing.getParticle("item");
-        return new UniParticle(var, new ItemStack(item));
+        return new UniParticle(Particle.ITEM, new ItemStack(item));
     }
 
     @NotNull
     public static UniParticle itemCrack(@NotNull Material material) {
-        Particle var = Version.isBehind(Version.MC_1_21_3) ? Particle.valueOf("ITEM_CRACK") : BukkitThing.getParticle("item");
-        return new UniParticle(var, new ItemStack(material));
+        return new UniParticle(Particle.ITEM, new ItemStack(material));
     }
 
     @NotNull
     public static UniParticle blockCrack(@NotNull Material material) {
-        Particle var = Version.isBehind(Version.MC_1_21_3) ? Particle.valueOf("BLOCK_CRACK") : BukkitThing.getParticle("block");
-        return new UniParticle(var, material.createBlockData());
+        return new UniParticle(Particle.BLOCK, material.createBlockData());
     }
 
     @NotNull
     public static UniParticle blockDust(@NotNull Material material) {
         return blockCrack(material);
-//        Particle var = Version.isAtLeast(Version.MC_1_21_3) ? Particle.valueOf("BLOCK_DUST") : BukkitThing.getParticle("dust");
-//        return new UniParticle(Particle.DUST, material.createBlockData());
     }
 
     @NotNull

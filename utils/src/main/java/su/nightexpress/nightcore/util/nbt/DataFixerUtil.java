@@ -18,7 +18,7 @@ public class DataFixerUtil {
     private static final Method GET_DATA_FIXER = Reflex.safeMethod(CLS_DATA_FIXERS, "getDataFixer", "a");
 
     private static final DataFixer         DATA_FIXER           = (DataFixer) Reflex.invokeMethod(GET_DATA_FIXER, CLS_DATA_FIXERS);
-    private static final DSL.TypeReference ITEM_STACK_REFERENCE = (DSL.TypeReference) Reflex.getFieldValue(CLS_REFERENCES, "ITEM_STACK", Version.isAtLeast(Version.MC_1_21_6) ? "u" : "t");
+    private static final DSL.TypeReference ITEM_STACK_REFERENCE = (DSL.TypeReference) Reflex.getFieldValue(CLS_REFERENCES, "ITEM_STACK", "u");
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @NotNull

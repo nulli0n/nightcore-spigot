@@ -67,26 +67,21 @@ public class SpigotBridge implements Software {
     @Override
     public boolean initialize() {
         this.textComponentAdapter = new SpigotTextComponentAdapter(this);
-
-        if (Version.isAtLeast(Version.MC_1_21_7)) {
-            this.dialogAdapter = new SpigotDialogAdapter(this);
-        }
+        this.dialogAdapter = new SpigotDialogAdapter(this);
 
         loadCommandMap();
         loadEntityCounter();
 
-        if (Version.isAtLeast(Version.MC_1_21_5)) {
-            this.commonFlagsToHide = Lists.newSet(
-                ItemFlag.HIDE_ATTRIBUTES,
-                ItemFlag.HIDE_UNBREAKABLE,
-                ItemFlag.HIDE_ENCHANTS,
-                ItemFlag.HIDE_PLACED_ON,
-                ItemFlag.HIDE_DESTROYS,
-                ItemFlag.HIDE_DYE,
-                ItemFlag.HIDE_ARMOR_TRIM,
-                ItemFlag.HIDE_ADDITIONAL_TOOLTIP
-            );
-        }
+        this.commonFlagsToHide = Lists.newSet(
+            ItemFlag.HIDE_ATTRIBUTES,
+            ItemFlag.HIDE_UNBREAKABLE,
+            ItemFlag.HIDE_ENCHANTS,
+            ItemFlag.HIDE_PLACED_ON,
+            ItemFlag.HIDE_DESTROYS,
+            ItemFlag.HIDE_DYE,
+            ItemFlag.HIDE_ARMOR_TRIM,
+            ItemFlag.HIDE_ADDITIONAL_TOOLTIP
+        );
 
         this.eventAdapter = new SpigotEventAdapter();
         return true;
@@ -222,14 +217,9 @@ public class SpigotBridge implements Software {
     public InventoryView createView(@NotNull MenuType menuType, @NotNull NightComponent title, @NotNull Player player) {
         String legacy = title.toLegacy();//NightMessage.asLegacy(title);
 
-        if (Version.isAtLeast(Version.MC_1_21_4)) {
-            var builder = menuType.typed().builder();
-            Reflex.setFieldValue(builder, "title", legacy);
-            return builder.build(player);
-        }
-        else {
-            return menuType.typed().create(player, legacy);
-        }
+        var builder = menuType.typed().builder();
+        Reflex.setFieldValue(builder, "title", legacy);
+        return builder.build(player);
     }
 
 
