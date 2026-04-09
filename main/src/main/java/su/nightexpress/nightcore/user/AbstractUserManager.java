@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 public abstract class AbstractUserManager<P extends NightPlugin, U extends UserTemplate> extends AbstractManager<P> {
 
     protected final UserDataAccessor<U> dataAccessor;
-    protected final UserRepository<U>   repository;
-    protected final UserDataSettings    settings;
+    protected final UserRepository<U> repository;
+    protected final UserDataSettings settings;
 
     public AbstractUserManager(@NotNull P plugin, @NotNull UserDataAccessor<U> dataAccessor) {
         super(plugin);
@@ -45,7 +45,9 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         this.addAsyncTask(this.repository::cleanExpired, this.settings.getCacheCleanupInterval());
 
         this.plugin.runTaskAsync(() -> {
-            this.dataAccessor.loadProfiles().forEach(userInfo -> this.repository.addNameIdMapping(userInfo.name(), userInfo.id()));
+            this.dataAccessor
+                    .loadProfiles()
+                    .forEach(userInfo -> this.repository.addNameIdMapping(userInfo.name(), userInfo.id()));
         });
 
         this.plugin.onPostLoad(() -> {
@@ -61,7 +63,12 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
     }
 
     private void loadOnline() {
-        Players.getOnline().stream().map(Entity::getUniqueId).map(this::getOrFetch).filter(Optional::isPresent).map(Optional::get).forEach(this::cachePermanent);
+        Players.stream()
+                .map(Entity::getUniqueId)
+                .map(this::getOrFetch)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .forEach(this::cachePermanent);
     }
 
     private void synchronizeUserData(@NotNull U user) {
@@ -133,8 +140,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
             if (user.isDirty()) {
                 this.plugin.runTaskAsync(() -> this.dataAccessor.update(user));
                 user.markClean();
-            }
-            else {
+            } else {
                 this.plugin.runTaskAsync(() -> this.dataAccessor.tinyUpdate(user));
             }
 
@@ -143,16 +149,15 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
     }
 
     // TODO abstract
-    protected void handleJoin(@NonNull U user) {
+    protected void handleJoin(@NonNull U user) {}
 
-    }
-
-    protected void handleQuit(@NonNull U user) {
-
-    }
+    protected void handleQuit(@NonNull U user) {}
 
     public void saveDirty() {
-        Set<U> users = this.repository.getAll().stream().filter(UserTemplate::isDirty).peek(UserTemplate::markClean).collect(Collectors.toSet());
+        Set<U> users = this.repository.getAll().stream()
+                .filter(UserTemplate::isDirty)
+                .peek(UserTemplate::markClean)
+                .collect(Collectors.toSet());
         if (users.isEmpty()) return;
 
         this.dataAccessor.update(users);
@@ -172,7 +177,9 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
             return fromDb;
         }
 
-        InetAddress address = Optional.ofNullable(player.getAddress()).map(InetSocketAddress::getAddress).orElse(null);
+        InetAddress address = Optional.ofNullable(player.getAddress())
+                .map(InetSocketAddress::getAddress)
+                .orElse(null);
         if (address == null) throw new IllegalStateException("%s is not a real player?".formatted(player));
 
         return this.create(uuid, player.getName(), address);
@@ -180,7 +187,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
 
     @NotNull
     public final Optional<U> getOrFetch(@NotNull String name) {
-        Player player = Players.getPlayer(name);
+        Player player = Players.getExactPlayer(name);
         if (player != null) return this.getOrFetch(player.getUniqueId());
 
         Optional<U> byName = this.repository.getByName(name);
@@ -209,7 +216,6 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         return Optional.empty();
     }
 
-
     @NotNull
     public final CompletableFuture<Optional<U>> loadByIdAsync(@NotNull UUID uuid) {
         return CompletableFuture.supplyAsync(() -> this.getOrFetch(uuid));
@@ -227,7 +233,9 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
     @NotNull
     public Set<U> getAll() {
         Set<U> users = this.repository.getAll();
-        this.dataAccessor.loadAll().stream().filter(user -> !this.repository.contains(user.getId())).forEach(users::add);
+        this.dataAccessor.loadAll().stream()
+                .filter(user -> !this.repository.contains(user.getId()))
+                .forEach(users::add);
         return users;
     }
 }
