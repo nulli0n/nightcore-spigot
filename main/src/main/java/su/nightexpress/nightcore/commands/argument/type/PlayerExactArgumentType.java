@@ -14,21 +14,19 @@ import su.nightexpress.nightcore.commands.exceptions.CommandSyntaxException;
 import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.util.Players;
 
-public class PlayerArgumentType implements ArgumentType<Player>, SuggestionsProvider {
+public class PlayerExactArgumentType implements ArgumentType<Player>, SuggestionsProvider {
 
     @Override
-    @NonNull
-    public Player parse(@NonNull CommandContextBuilder contextBuilder, @NonNull String string)
+    public @NonNull Player parse(@NonNull CommandContextBuilder contextBuilder, @NonNull String string)
             throws CommandSyntaxException {
-        Player player = Players.getPlayer(string);
+        Player player = Players.getExactPlayer(string);
         if (player == null) throw CommandSyntaxException.custom(CoreLang.ERROR_INVALID_PLAYER);
 
         return player;
     }
 
     @Override
-    @NonNull
-    public List<String> suggest(@NonNull ArgumentReader reader, @NonNull CommandContext context) {
+    public @NonNull List<String> suggest(@NonNull ArgumentReader reader, @NonNull CommandContext context) {
         return context.getSender() instanceof Player player ? Players.playerNames(player) : Players.playerNames();
     }
 }

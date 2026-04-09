@@ -30,8 +30,14 @@ import java.util.stream.Stream;
 public class Players {
 
     @Deprecated
-    public static final String TEXTURES_HOST         = PlayerProfiles.TEXTURES_HOST;
+    public static final String TEXTURES_HOST = PlayerProfiles.TEXTURES_HOST;
+
     public static final String PLAYER_COMMAND_PREFIX = "player:";
+
+    @NonNull
+    public static Stream<? extends Player> stream() {
+        return Bukkit.getServer().getOnlinePlayers().stream();
+    }
 
     @NonNull
     public static Set<Player> getOnline() {
@@ -45,7 +51,11 @@ public class Players {
 
     @NonNull
     public static List<String> playerNames(@Nullable Player viewer) {
-        return getOnline().stream().filter(player -> viewer == null || viewer.canSee(player)).map(Player::getName).sorted(String::compareTo).toList();
+        return getOnline().stream()
+                .filter(player -> viewer == null || viewer.canSee(player))
+                .map(Player::getName)
+                .sorted(String::compareTo)
+                .toList();
     }
 
     @NonNull
@@ -92,6 +102,11 @@ public class Players {
     }
 
     @Nullable
+    public static Player getExactPlayer(@NonNull String name) {
+        return Bukkit.getServer().getPlayerExact(name);
+    }
+
+    @Nullable
     public static Player getPlayer(@NonNull UUID uuid) {
         return Bukkit.getServer().getPlayer(uuid);
     }
@@ -132,11 +147,16 @@ public class Players {
         return Software.get().getPlayerListFooterSerialized(player);
     }
 
-    public static void setPlayerListHeaderFooter(@NonNull Player player, @Nullable String header, @Nullable String footer) {
-        setPlayerListHeaderFooter(player, header == null ? null : NightMessage.parse(header), footer == null ? null : NightMessage.parse(footer));
+    public static void setPlayerListHeaderFooter(
+            @NonNull Player player, @Nullable String header, @Nullable String footer) {
+        setPlayerListHeaderFooter(
+                player,
+                header == null ? null : NightMessage.parse(header),
+                footer == null ? null : NightMessage.parse(footer));
     }
 
-    public static void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
+    public static void setPlayerListHeaderFooter(
+            @NonNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
         Software.get().setPlayerListHeaderFooter(player, header, footer);
     }
 
@@ -161,11 +181,17 @@ public class Players {
         Software.get().kick(player, reason);
     }
 
-    public static void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull String message) {
+    public static void disallowLogin(
+            @NonNull AsyncPlayerPreLoginEvent event,
+            AsyncPlayerPreLoginEvent.@NonNull Result result,
+            @NonNull String message) {
         disallowLogin(event, result, NightMessage.parse(message));
     }
 
-    public static void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull NightComponent message) {
+    public static void disallowLogin(
+            @NonNull AsyncPlayerPreLoginEvent event,
+            AsyncPlayerPreLoginEvent.@NonNull Result result,
+            @NonNull NightComponent message) {
         Software.get().disallowLogin(event, result, message);
     }
 
@@ -214,7 +240,9 @@ public class Players {
 
     @Nullable
     public static String getPrimaryGroup(@NonNull Player player) {
-        return PermissionBridge.provider().map(provider -> provider.getPrimaryGroup(player)).orElse(null);
+        return PermissionBridge.provider()
+                .map(provider -> provider.getPrimaryGroup(player))
+                .orElse(null);
     }
 
     @NonNull
@@ -225,7 +253,9 @@ public class Players {
 
     @NonNull
     public static CompletableFuture<String> getPrimaryGroup(@NonNull UUID playerId) {
-        return PermissionBridge.provider().map(provider -> provider.getPrimaryGroup(playerId)).orElse(CompletableFuture.completedFuture(null));
+        return PermissionBridge.provider()
+                .map(provider -> provider.getPrimaryGroup(playerId))
+                .orElse(CompletableFuture.completedFuture(null));
     }
 
     @NonNull
@@ -241,7 +271,9 @@ public class Players {
 
     @NonNull
     public static Set<String> getInheritanceGroups(@NonNull Player player) {
-        return PermissionBridge.provider().map(provider -> provider.getPermissionGroups(player)).orElse(Collections.emptySet());
+        return PermissionBridge.provider()
+                .map(provider -> provider.getPermissionGroups(player))
+                .orElse(Collections.emptySet());
     }
 
     @NonNull
@@ -252,7 +284,9 @@ public class Players {
 
     @NonNull
     public static CompletableFuture<Set<String>> getInheritanceGroups(@NonNull UUID playerId) {
-        return PermissionBridge.provider().map(provider -> provider.getPermissionGroups(playerId)).orElse(CompletableFuture.completedFuture(Collections.emptySet()));
+        return PermissionBridge.provider()
+                .map(provider -> provider.getPermissionGroups(playerId))
+                .orElse(CompletableFuture.completedFuture(Collections.emptySet()));
     }
 
     @NonNull
@@ -269,17 +303,20 @@ public class Players {
     @NonNull
     public static String getPrefixOrEmpty(@NonNull Player player) {
         return getPrefix(player, "");
-
     }
 
     @Nullable
     public static String getRawPrefix(@NonNull Player player) {
-        return PermissionBridge.provider().map(provider -> provider.getPrefix(player)).orElse(null);
+        return PermissionBridge.provider()
+                .map(provider -> provider.getPrefix(player))
+                .orElse(null);
     }
 
     @NonNull
     public static CompletableFuture<String> getRawPrefix(@NonNull UUID playerId) {
-        return PermissionBridge.provider().map(provider -> provider.getPrefix(playerId)).orElse(CompletableFuture.completedFuture(null));
+        return PermissionBridge.provider()
+                .map(provider -> provider.getPrefix(playerId))
+                .orElse(CompletableFuture.completedFuture(null));
     }
 
     @NonNull
@@ -301,12 +338,16 @@ public class Players {
 
     @Nullable
     public static String getRawSuffix(@NonNull Player player) {
-        return PermissionBridge.provider().map(provider -> provider.getSuffix(player)).orElse(null);
+        return PermissionBridge.provider()
+                .map(provider -> provider.getSuffix(player))
+                .orElse(null);
     }
 
     @NonNull
     public static CompletableFuture<String> getRawSuffix(@NonNull UUID playerId) {
-        return PermissionBridge.provider().map(provider -> provider.getSuffix(playerId)).orElse(CompletableFuture.completedFuture(null));
+        return PermissionBridge.provider()
+                .map(provider -> provider.getSuffix(playerId))
+                .orElse(CompletableFuture.completedFuture(null));
     }
 
     @NonNull
@@ -347,15 +388,33 @@ public class Players {
     }
 
     @Deprecated
-    public static void sendTitle(@NonNull Player player, @NonNull String title, @NonNull String subtitle, int fadeIn, int stay, int fadeOut) {
+    public static void sendTitle(
+            @NonNull Player player,
+            @NonNull String title,
+            @NonNull String subtitle,
+            int fadeIn,
+            int stay,
+            int fadeOut) {
         sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
-    public static void sendTitles(@NonNull Player player, @NonNull String title, @NonNull String subtitle, int fadeIn, int stay, int fadeOut) {
+    public static void sendTitles(
+            @NonNull Player player,
+            @NonNull String title,
+            @NonNull String subtitle,
+            int fadeIn,
+            int stay,
+            int fadeOut) {
         sendTitles(player, NightMessage.parse(title), NightMessage.parse(subtitle), fadeIn, stay, fadeOut);
     }
 
-    public static void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
+    public static void sendTitles(
+            @NonNull Player player,
+            @NonNull NightComponent title,
+            @NonNull NightComponent subtitle,
+            int fadeIn,
+            int stay,
+            int fadeOut) {
         Software.get().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
@@ -392,43 +451,46 @@ public class Players {
                 CommandSender playerSender = sender;
                 String playerCommand = command;
                 NightCore.get().runTask(player, () -> Bukkit.dispatchCommand(playerSender, playerCommand));
-            }
-            else {
+            } else {
                 CommandSender consoleSender = sender;
                 String consoleCommand = command;
                 NightCore.get().runTask(() -> Bukkit.dispatchCommand(consoleSender, consoleCommand));
             }
-        }
-        else {
+        } else {
             Bukkit.dispatchCommand(sender, command);
         }
     }
 
     public static boolean hasEmptyInventory(@NonNull Player player) {
-        return Stream.of(player.getInventory().getContents()).allMatch(item -> item == null || item.getType().isAir());
+        return Stream.of(player.getInventory().getContents())
+                .allMatch(item -> item == null || item.getType().isAir());
     }
 
     public static boolean hasEmptyContents(@NonNull Player player) {
-        return Stream.of(player.getInventory().getContents()).allMatch(item -> item == null || item.getType().isAir());
+        return Stream.of(player.getInventory().getContents())
+                .allMatch(item -> item == null || item.getType().isAir());
     }
 
     public static int countItemSpace(@NonNull Player player, @NonNull ItemStack item) {
         int stackSize = item.getType().getMaxStackSize();
-        return Stream.of(player.getInventory().getStorageContents()).mapToInt(itemHas -> {
-            if (itemHas == null || itemHas.getType().isAir()) {
-                return stackSize;
-            }
-            if (itemHas.isSimilar(item)) {
-                return (stackSize - itemHas.getAmount());
-            }
-            return 0;
-        }).sum();
+        return Stream.of(player.getInventory().getStorageContents())
+                .mapToInt(itemHas -> {
+                    if (itemHas == null || itemHas.getType().isAir()) {
+                        return stackSize;
+                    }
+                    if (itemHas.isSimilar(item)) {
+                        return (stackSize - itemHas.getAmount());
+                    }
+                    return 0;
+                })
+                .sum();
     }
 
     public static int countItem(@NonNull Player player, @NonNull Predicate<ItemStack> predicate) {
         return Stream.of(player.getInventory().getContents())
-              .filter(item -> item != null && predicate.test(item))
-              .mapToInt(ItemStack::getAmount).sum();
+                .filter(item -> item != null && predicate.test(item))
+                .mapToInt(ItemStack::getAmount)
+                .sum();
     }
 
     public static int countItem(@NonNull Player player, @NonNull ItemStack item) {
@@ -502,9 +564,11 @@ public class Players {
         ItemStack copy = split.clone();
         World world = player.getWorld();
         if (Version.isFolia()) {
-            NightCore.get().runTask(player, () -> player.getInventory().addItem(copy).values().forEach(left -> world.dropItem(player.getLocation(), left)));
-        }
-        else {
+            NightCore.get().runTask(player, () -> player.getInventory()
+                    .addItem(copy)
+                    .values()
+                    .forEach(left -> world.dropItem(player.getLocation(), left)));
+        } else {
             player.getInventory().addItem(copy).values().forEach(left -> world.dropItem(player.getLocation(), left));
         }
 
