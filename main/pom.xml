@@ -118,38 +118,38 @@
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>bridge</artifactId>
-            <version>2.15.1</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>utils</artifactId>
-            <version>2.15.1</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>paper</artifactId>
-            <version>2.15.1</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>spigot</artifactId>
-            <version>2.15.1</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.21.8-R0.1-SNAPSHOT</version>
+            <version>1.21.11-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>intergration-placeholderapi</artifactId>
-            <version>2.15.1</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
