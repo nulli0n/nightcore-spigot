@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.ui.dialog.build;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
 import su.nightexpress.nightcore.core.config.CoreLang;
@@ -21,6 +21,11 @@ public class DialogButtons {
     @NonNull
     public static WrappedActionButton apply() {
         return action(CoreLang.DIALOG_BUTTON_APPLY).action(DialogActions.customClick(DialogActions.APPLY)).build();
+    }
+
+    @NonNull
+    public static WrappedActionButton confirm() {
+        return action(CoreLang.DIALOG_BUTTON_CONFIRM).action(DialogActions.customClick(DialogActions.CONFIRM)).build();
     }
 
     @NonNull

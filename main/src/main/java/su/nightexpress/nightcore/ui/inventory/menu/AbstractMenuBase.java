@@ -42,7 +42,7 @@ import java.util.function.Consumer;
 
 public abstract class AbstractMenuBase implements Menu, LangContainer {
 
-    protected NightPlugin plugin;
+    protected NightPlugin            plugin;
     protected final MenuDataRegistry dataRegistry;
 
     protected final Map<String, MenuItem> defaultButtons;
@@ -55,15 +55,15 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
     protected final ConfigProperty<Integer>  autoRefreshInterval;
     protected final ConfigProperty<Boolean>  papiIntegration;
 
-    protected long autoRefreshIn;
+    protected long    autoRefreshIn;
     protected boolean configured;
 
     @Deprecated
-    public AbstractMenuBase(@NonNull MenuType defaultType, @NonNull String  defaultTitle) {
+    public AbstractMenuBase(@NonNull MenuType defaultType, @NonNull String defaultTitle) {
         this(null, defaultType, defaultTitle);
     }
 
-    public AbstractMenuBase(@Nullable NightPlugin plugin, @NonNull MenuType defaultType, @NonNull String  defaultTitle) {
+    public AbstractMenuBase(@Nullable NightPlugin plugin, @NonNull MenuType defaultType, @NonNull String defaultTitle) {
         this.plugin = plugin;
         this.dataRegistry = new MenuDataRegistry();
 
@@ -191,6 +191,8 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
 
             config.setArray(itemPath + ".Slots", menuItem.getSlots());
         });
+
+        config.remove(contentPath);
     }
 
     private void loadItems(@NonNull FileConfig config, @NonNull String path) {
@@ -228,16 +230,13 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
 
         this.loadItemStates(config, path + ".States", builder, defaultItem, type);
 
-        builder.slots(config.get(ConfigTypes.INT_ARRAY, path + ".Slots", defaultItem == null ? new int[0] : defaultItem.getSlots()));
+        builder.slots(config.get(ConfigTypes.INT_ARRAY, path + ".Slots", defaultItem == null ? new int[0] : defaultItem
+            .getSlots()));
 
         return builder.build();
     }
 
-    private void loadItemStates(@NonNull FileConfig config,
-                                @NonNull String path,
-                                MenuItem.@NonNull Builder builder,
-                                @Nullable MenuItem defaultItem,
-                                @NonNull ItemType type) {
+    private void loadItemStates(@NonNull FileConfig config, @NonNull String path, MenuItem.@NonNull Builder builder, @Nullable MenuItem defaultItem, @NonNull ItemType type) {
 
         boolean hasSection = !config.getSection(path).isEmpty();
 
@@ -268,7 +267,8 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
 
             ItemState.Builder stateBuilder = ItemState.builder();
 
-            stateBuilder.icon(config.get(ConfigTypes.NIGHT_ITEM, statePath + ".Icon", defaultState == null ? NightItem.fromType(Material.STONE) : defaultState.getIcon())).build();
+            stateBuilder.icon(config.get(ConfigTypes.NIGHT_ITEM, statePath + ".Icon", defaultState == null ? NightItem
+                .fromType(Material.STONE) : defaultState.getIcon())).build();
 
             this.loadStateActions(config, statePath + ".Actions", stateBuilder, defaultState, type);
             this.loadStateConditions(config, statePath + ".Condition", stateBuilder, defaultState, type);
@@ -278,11 +278,7 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         });
     }
 
-    private void loadStateActions(@NonNull FileConfig config,
-                                  @NonNull String path,
-                                  ItemState.@NonNull Builder builder,
-                                  @Nullable ItemState defaultState,
-                                  @NonNull ItemType type) {
+    private void loadStateActions(@NonNull FileConfig config, @NonNull String path, ItemState.@NonNull Builder builder, @Nullable ItemState defaultState, @NonNull ItemType type) {
 
         if (type.isActionLocked()) {
             MenuItemAction defaultAction = defaultState == null ? null : defaultState.getAction();
@@ -319,11 +315,7 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         }
     }
 
-    private void loadStateConditions(@NonNull FileConfig config,
-                                     @NonNull String path,
-                                     ItemState.@NonNull Builder builder,
-                                     @Nullable ItemState defaultState,
-                                     @NonNull ItemType type) {
+    private void loadStateConditions(@NonNull FileConfig config, @NonNull String path, ItemState.@NonNull Builder builder, @Nullable ItemState defaultState, @NonNull ItemType type) {
 
         ItemStateCondition condition = null;
         ItemStateCondition defaultCondition = defaultState == null ? null : defaultState.getCondition();
@@ -344,11 +336,7 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         builder.condition(condition);
     }
 
-    private void loadStateDisplayModifiers(@NonNull FileConfig config,
-                                           @NonNull String path,
-                                           ItemState.@NonNull Builder builder,
-                                           @Nullable ItemState defaultState,
-                                           @NonNull ItemType type) {
+    private void loadStateDisplayModifiers(@NonNull FileConfig config, @NonNull String path, ItemState.@NonNull Builder builder, @Nullable ItemState defaultState, @NonNull ItemType type) {
 
         List<DisplayModifier> modifiers = new ArrayList<>();
 
@@ -557,7 +545,8 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
     protected void addBackButton(@NonNull MenuItemAction action, int... slots) {
         this.addDefaultButton("back", MenuItem.button()
             .defaultState(ItemState.builder()
-                .icon(NightItem.fromType(Material.SPECTRAL_ARROW).localized(CoreLang.MENU_ICON_BACK).hideAllComponents())
+                .icon(NightItem.fromType(Material.SPECTRAL_ARROW).localized(CoreLang.MENU_ICON_BACK)
+                    .hideAllComponents())
                 .action(action)
                 .build()
             )
@@ -582,7 +571,8 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
     protected void addPreviousPageButton(int... slots) {
         this.addDefaultButton("previous_page", MenuItem.button()
             .defaultState(ItemState.builder()
-                .icon(NightItem.fromType(Material.ARROW).localized(CoreLang.MENU_ICON_PREVIOUS_PAGE).hideAllComponents())
+                .icon(NightItem.fromType(Material.ARROW).localized(CoreLang.MENU_ICON_PREVIOUS_PAGE)
+                    .hideAllComponents())
                 .action(MenuItemActions.PREVIOUS_PAGE)
                 .condition(ItemStateConditions.PREVIOUS_PAGE)
                 .build()
@@ -603,10 +593,11 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
     }
 
     protected void addBackgroundItem(@NonNull Material material, int... slots) {
-        this.addDefaultButton(BukkitThing.getValue(material) + "_" + UUID.randomUUID().toString().substring(0, 5), MenuItem.custom()
-            .defaultState(NightItem.fromType(material).hideAllComponents().setHideTooltip(true))
-            .slots(slots)
-            .build()
+        this.addDefaultButton(BukkitThing.getValue(material) + "_" + UUID.randomUUID().toString().substring(0, 5),
+            MenuItem.custom()
+                .defaultState(NightItem.fromType(material).hideAllComponents().setHideTooltip(true))
+                .slots(slots)
+                .build()
         );
     }
 

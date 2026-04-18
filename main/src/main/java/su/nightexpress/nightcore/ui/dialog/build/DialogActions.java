@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.ui.dialog.build;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogCommandTemplateAction;
@@ -10,11 +10,12 @@ import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 
 public class DialogActions {
 
-    public static final String OK     = "ok";
-    public static final String CANCEL = "cancel";
-    public static final String APPLY  = "apply";
-    public static final String RESET  = "reset";
-    public static final String BACK   = "back";
+    public static final String OK      = "ok";
+    public static final String APPLY   = "apply";
+    public static final String CONFIRM = "confirm";
+    public static final String CANCEL  = "cancel";
+    public static final String RESET   = "reset";
+    public static final String BACK    = "back";
 
     @NonNull
     public static WrappedDialogStaticAction staticAction(@NonNull NightClickEvent event) {

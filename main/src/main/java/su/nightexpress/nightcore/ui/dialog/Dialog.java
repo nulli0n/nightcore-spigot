@@ -1,18 +1,19 @@
 package su.nightexpress.nightcore.ui.dialog;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.language.entry.LangString;
 import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.util.text.TextRoot;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Deprecated
 public class Dialog {
@@ -26,19 +27,15 @@ public class Dialog {
     private final boolean       suggestionAutoRun;
 
     private Menu lastMenu;
-    private int lastPage;
-    private int lifetime;
+    private int  lastPage;
+    private int  lifetime;
 
-    public Dialog(@NotNull Player player,
-                  @NotNull String prompt,
-                  @NotNull DialogHandler handler,
-                  @Nullable List<String> suggestions,
-                  boolean suggestionAutoRun,
-                  int lifetime) {
+    public Dialog(@NonNull Player player, @NonNull String prompt, @NonNull DialogHandler handler, @Nullable List<String> suggestions, boolean suggestionAutoRun, int lifetime) {
         this.player = player;
         this.prompt = prompt;
         this.handler = handler;
-        this.suggestions = suggestions == null ? null : suggestions.stream().sorted(String::compareTo).collect(Collectors.toCollection(ArrayList::new));
+        this.suggestions = suggestions == null ? null : suggestions.stream().sorted(String::compareTo).collect(
+            Collectors.toCollection(ArrayList::new));
         this.suggestionAutoRun = suggestionAutoRun;
         this.lifetime = lifetime;
     }
@@ -51,17 +48,17 @@ public class Dialog {
         return this.lifetime <= 0;
     }
 
-    @NotNull
+    @NonNull
     public Player getPlayer() {
         return this.player;
     }
 
-    @NotNull
+    @NonNull
     public DialogHandler getHandler() {
         return this.handler;
     }
 
-    @NotNull
+    @NonNull
     public String getPrompt() {
         return this.prompt;
     }
@@ -71,7 +68,7 @@ public class Dialog {
         return this.lastMenu;
     }
 
-    @NotNull
+    @NonNull
     public Dialog setLastMenu(@Nullable Menu lastMenu) {
         this.lastMenu = lastMenu;
         return this;
@@ -108,60 +105,60 @@ public class Dialog {
         return this.getLifetime() * 1000L;
     }
 
-    @NotNull
-    public static Builder builder(@NotNull MenuViewer viewer, @NotNull LangString prompt, @NotNull DialogHandler handler) {
+    @NonNull
+    public static Builder builder(@NonNull MenuViewer viewer, @NonNull LangString prompt, @NonNull DialogHandler handler) {
         return builder(viewer.getPlayer(), prompt, handler);
     }
 
-    @NotNull
-    public static Builder builder(@NotNull MenuViewer viewer, @NotNull String prompt, @NotNull DialogHandler handler) {
+    @NonNull
+    public static Builder builder(@NonNull MenuViewer viewer, @NonNull String prompt, @NonNull DialogHandler handler) {
         return builder(viewer.getPlayer(), prompt, handler);
     }
 
-    @NotNull
-    public static Builder builder(@NotNull Player player, @NotNull LangString prompt, @NotNull DialogHandler handler) {
+    @NonNull
+    public static Builder builder(@NonNull Player player, @NonNull LangString prompt, @NonNull DialogHandler handler) {
         return builder(player, handler).setPrompt(prompt);
     }
 
-    @NotNull
-    public static Builder builder(@NotNull Player player, @NotNull String prompt, @NotNull DialogHandler handler) {
+    @NonNull
+    public static Builder builder(@NonNull Player player, @NonNull String prompt, @NonNull DialogHandler handler) {
         return builder(player, handler).setPrompt(prompt);
     }
 
-    @NotNull
-    public static Builder builder(@NotNull MenuViewer viewer, @NotNull DialogHandler handler) {
+    @NonNull
+    public static Builder builder(@NonNull MenuViewer viewer, @NonNull DialogHandler handler) {
         return builder(viewer.getPlayer(), handler);
     }
 
-    @NotNull
-    public static Builder builder(@NotNull Player player, @NotNull DialogHandler handler) {
+    @NonNull
+    public static Builder builder(@NonNull Player player, @NonNull DialogHandler handler) {
         return new Builder(player, handler);
     }
 
     @Deprecated
     public static class Builder {
 
-        private final Player player;
+        private final Player        player;
         private final DialogHandler handler;
 
-        private String prompt;
+        private String       prompt;
         private List<String> suggestions;
-        private boolean suggestionAutoRun;
-        private int timeout;
+        private boolean      suggestionAutoRun;
+        private int          timeout;
 
-        public Builder(@NotNull Player player, @NotNull DialogHandler handler) {
+        public Builder(@NonNull Player player, @NonNull DialogHandler handler) {
             this.player = player;
             this.handler = handler;
             this.setPrompt(CoreLang.DIALOG_DEFAULT_PROMPT.getString());
             this.setTimeout(DEFAULT_TIMEOUT);
         }
 
-        @NotNull
+        @NonNull
         public Player getPlayer() {
             return this.player;
         }
 
-        @NotNull
+        @NonNull
         public Dialog build() {
             return new Dialog(this.player, this.prompt, this.handler, this.suggestions, this.suggestionAutoRun, this.timeout);
         }
@@ -170,20 +167,20 @@ public class Dialog {
             DialogManager.startDialog(this);
         }
 
-        public Builder setPrompt(@NotNull TextRoot text) {
+        public Builder setPrompt(@NonNull TextRoot text) {
             return this.setPrompt(text.getString());
         }
 
-        public Builder setPrompt(@NotNull LangString text) {
+        public Builder setPrompt(@NonNull LangString text) {
             return this.setPrompt(text.getString());
         }
 
-        public Builder setPrompt(@NotNull String prompt) {
+        public Builder setPrompt(@NonNull String prompt) {
             this.prompt = prompt;
             return this;
         }
 
-        public Builder setSuggestions(@NotNull Collection<String> suggestions, boolean autoRun) {
+        public Builder setSuggestions(@NonNull Collection<String> suggestions, boolean autoRun) {
             this.suggestions = new ArrayList<>(suggestions);
             this.suggestionAutoRun = autoRun;
             return this;

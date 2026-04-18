@@ -4,13 +4,17 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.units.qual.N;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEventHandler;
 import su.nightexpress.nightcore.bridge.placeholder.PlaceholderProvider;
 import su.nightexpress.nightcore.bridge.placeholder.PlaceholderRegistry;
@@ -26,6 +30,7 @@ import su.nightexpress.nightcore.language.LangManager;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangRegistry;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
+import su.nightexpress.nightcore.ui.dialog.wrap.DialogKey;
 import su.nightexpress.nightcore.ui.dialog.wrap.DialogRegistry;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.util.*;
@@ -47,7 +52,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     protected NightCommand   rootCommand;
     protected List<Runnable> postLoaders;
 
-    protected LangRegistry langRegistry;
+    protected LangRegistry   langRegistry;
     protected LangManager    langManager;
     protected CommandManager commandManager;
 
@@ -366,17 +371,20 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
         if (current == Version.UNKNOWN) {
             this.warn("WARNING: This plugin is not supposed to run on this server version!");
-            this.warn("If server version is newer than " + Version.values()[Version.values().length - 2].getLocalized() + ", then wait for an update please.");
+            this.warn("If server version is newer than " + Version.values()[Version.values().length - 2]
+                .getLocalized() + ", then wait for an update please.");
             this.warn("The plugin may not work properly.");
         }
         else if (current.isDeprecated()) {
             this.warn("WARNING: You're running an outdated server version (" + current.getLocalized() + ")!");
             this.warn("This version will no longer be supported in future relases.");
-            this.warn("Please upgrade your server to " + Lists.next(current, (Version::isSupported)).getLocalized() + ".");
+            this.warn("Please upgrade your server to " + Lists.next(current, (Version::isSupported)).getLocalized() +
+                ".");
         }
         else if (current.isDropped()) {
             this.error("ERROR: You're running an unsupported server version (" + current.getLocalized() + ")!");
-            this.error("Please upgrade your server to " + Lists.next(current, (Version::isSupported)).getLocalized() + ".");
+            this.error("Please upgrade your server to " + Lists.next(current, (Version::isSupported)).getLocalized() +
+                ".");
         }
 
         this.warn("ABSOLUTELY NO DISCORD SUPPORT WILL BE PROVIDED");
@@ -407,6 +415,10 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     @NotNull
     public su.nightexpress.nightcore.ui.inventory.MenuRegistry getMenuRegistry() {
         return NightCore.get().getMenuRegistry();
+    }
+
+    public <T> void showDialog(@NonNull Player player, @NonNull DialogKey<T> key, @NonNull T data, @Nullable Runnable callback) {
+        this.dialogRegistry.show(player, key, data, callback);
     }
 
     @Override

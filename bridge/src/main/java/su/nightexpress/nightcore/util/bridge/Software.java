@@ -1,5 +1,11 @@
 package su.nightexpress.nightcore.util.bridge;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Consumer;
+
 import org.bukkit.Material;
 import org.bukkit.Nameable;
 import org.bukkit.OfflinePlayer;
@@ -17,8 +23,9 @@ import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
@@ -32,12 +39,6 @@ import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Consumer;
-
 public interface Software {
 
     Holder INSTANCE = new Holder();
@@ -46,14 +47,14 @@ public interface Software {
 
         private Software software;
 
-        public void load(@NotNull Software software) {
+        public void load(@NonNull Software software) {
             if (this.software != null) throw new IllegalStateException("Software is already initialized!");
 
             this.software = software;
             this.software.initialize();
         }
 
-        @NotNull
+        @NonNull
         public Software get() {
             if (this.software == null) throw new IllegalStateException("Software is not yet initialized!");
 
@@ -61,126 +62,153 @@ public interface Software {
         }
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     static Software instance() {
         return get();
     }
 
-    @NotNull
+    @NonNull
     static Software get() {
         return INSTANCE.get();
     }
 
     boolean initialize();
 
-    @NotNull String getName();
+    @NonNull
+    String getName();
 
     boolean isPaper();
 
     int nextEntityId();
 
-    @NotNull EventAdapter eventAdapter();
+    @NonNull
+    EventAdapter eventAdapter();
 
-    @NotNull Listener createChatListener(@NotNull UniversalChatListenerCallback callback);
+    @NonNull
+    Listener createChatListener(@NonNull UniversalChatListenerCallback callback);
 
-    @NotNull Listener createDialogListener(@NotNull DialogClickHandler handler);
+    @NonNull
+    Listener createDialogListener(@NonNull DialogClickHandler handler);
 
-    @NotNull AdaptedScheduler getScheduler(@NotNull JavaPlugin plugin);
+    @NonNull
+    AdaptedScheduler getScheduler(@NonNull JavaPlugin plugin);
 
-    void disallowLogin(@NotNull AsyncPlayerPreLoginEvent event, @NotNull AsyncPlayerPreLoginEvent.Result result, @NotNull NightComponent message);
+    void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull NightComponent message);
 
-    void closeDialog(@NotNull Player player);
+    void closeDialog(@NonNull Player player);
 
-    void showDialog(@NotNull Player player, @NotNull WrappedDialog dialog);
+    void showDialog(@NonNull Player player, @NonNull WrappedDialog dialog);
 
-    @NotNull TextComponentAdapter<?> getTextComponentAdapter();
+    @NonNull
+    TextComponentAdapter<?> getTextComponentAdapter();
 
-    @NotNull SimpleCommandMap getCommandMap();
+    @NonNull
+    SimpleCommandMap getCommandMap();
 
-    @NotNull Map<String, Command> getKnownCommands(@NotNull SimpleCommandMap commandMap);
+    @NonNull
+    Map<String, Command> getKnownCommands(@NonNull SimpleCommandMap commandMap);
 
-    @NotNull InventoryView createView(@NotNull MenuType menuType, @NotNull NightComponent title, @NotNull Player player);
-
-
-    @NotNull NightProfile createProfile(@NotNull UUID uuid);
-
-    @NotNull NightProfile createProfile(@NotNull String name);
-
-    @NotNull NightProfile createProfile(@Nullable UUID uuid, @Nullable String name);
-
-    @NotNull NightProfile getProfile(@NotNull OfflinePlayer player);
-
-
-    void sendTitles(@NotNull Player player, @NotNull NightComponent title, @NotNull NightComponent subtitle, int fadeIn, int stay, int fadeOut);
+    @NonNull
+    InventoryView createView(@NonNull MenuType menuType, @NonNull NightComponent title, @NonNull Player player);
 
 
-    @NotNull Set<String> getCommonComponentsToHide();
+    @NonNull
+    NightProfile createProfile(@NonNull UUID uuid);
 
-    @NotNull Set<String> getHiddenComponents(@NotNull ItemStack itemStack);
+    @NonNull
+    NightProfile createProfile(@NonNull String name);
 
+    @NonNull
+    NightProfile createProfile(@Nullable UUID uuid, @Nullable String name);
 
-    @NotNull String getTranslationKey(@NotNull Material material);
-
-    @NotNull String getTranslationKey(@NotNull Attribute attribute);
-
-    @NotNull String getTranslationKey(@NotNull Enchantment enchantment);
-
-    @NotNull String getTranslationKey(@NotNull EntityType entityType);
-
-    @NotNull String getTranslationKey(@NotNull PotionEffectType effectType);
+    @NonNull
+    NightProfile getProfile(@NonNull OfflinePlayer player);
 
 
-    @NotNull String getDisplayNameSerialized(@NotNull Player player);
-
-    void setDisplayName(@NotNull Player player, @NotNull NightComponent component);
-
-    @Nullable String getPlayerListHeaderSerialized(@NotNull Player player);
-
-    @Nullable String getPlayerListFooterSerialized(@NotNull Player player);
-
-    void setPlayerListHeaderFooter(@NotNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer);
-
-    @NotNull String getPlayerListNameSerialized(@NotNull Player player);
-
-    void setPlayerListName(@NotNull Player player, @NotNull NightComponent name);
-
-    void kick(@NotNull Player player, @Nullable NightComponent component);
+    void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle, int fadeIn, int stay, int fadeOut);
 
 
-    void setCustomName(@NotNull Nameable entity, @Nullable NightComponent component);
+    @NonNull
+    Set<String> getCommonComponentsToHide();
 
-    @Nullable String getCustomName(@NotNull Nameable entity);
-
-
-    @NotNull ItemStack setType(@NotNull ItemStack itemStack, @NotNull Material material);
-
-    void editMeta(@NotNull ItemStack itemStack, @NotNull Consumer<ItemMeta> consumer);
-
-    <T extends ItemMeta> void editMeta(@NotNull ItemStack itemStack, @NotNull Class<T> clazz, @NotNull Consumer<T> consumer);
-
-    @Nullable String getCustomName(@NotNull ItemMeta meta);
-
-    void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name);
-
-    @Nullable String getItemName(@NotNull ItemMeta meta);
-
-    void setItemName(@NotNull ItemMeta meta, @NotNull NightComponent name);
-
-    @Nullable List<String> getLore(@NotNull ItemMeta meta);
-
-    void setLore(@NotNull ItemMeta meta, @Nullable List<NightComponent> lore);
-
-    @Nullable NightProfile getOwnerProfile(@NotNull ItemStack itemStack);
-
-    void hideComponents(@NotNull ItemStack itemStack);
-
-    void hideComponents(@NotNull ItemStack itemStack, @NotNull Set<String> componentNames);
+    @NonNull
+    Set<String> getHiddenComponents(@NonNull ItemStack itemStack);
 
 
+    @NonNull
+    String getTranslationKey(@NonNull Material material);
+
+    @NonNull
+    String getTranslationKey(@NonNull Attribute attribute);
+
+    @NonNull
+    String getTranslationKey(@NonNull Enchantment enchantment);
+
+    @NonNull
+    String getTranslationKey(@NonNull EntityType entityType);
+
+    @NonNull
+    String getTranslationKey(@NonNull PotionEffectType effectType);
 
 
+    @NonNull
+    String getDisplayNameSerialized(@NonNull Player player);
+
+    void setDisplayName(@NonNull Player player, @Nullable NightComponent component);
+
+    @Nullable
+    String getPlayerListHeaderSerialized(@NonNull Player player);
+
+    @Nullable
+    String getPlayerListFooterSerialized(@NonNull Player player);
+
+    void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer);
+
+    @NonNull
+    String getPlayerListNameSerialized(@NonNull Player player);
+
+    void setPlayerListName(@NonNull Player player, @NonNull NightComponent name);
+
+    void kick(@NonNull Player player, @Nullable NightComponent component);
 
 
-    @NotNull NightBossBar createBossBar(@NotNull NightComponent title, @NotNull NightBarColor barColor, @NotNull NightBarOverlay barOverlay, @NotNull NightBarFlag... barFlags);
+    void setCustomName(@NonNull Nameable entity, @Nullable NightComponent component);
+
+    @Nullable
+    String getCustomName(@NonNull Nameable entity);
+
+
+    @NonNull
+    ItemStack setType(@NonNull ItemStack itemStack, @NonNull Material material);
+
+    void editMeta(@NonNull ItemStack itemStack, @NonNull Consumer<ItemMeta> consumer);
+
+    <T extends ItemMeta> void editMeta(@NonNull ItemStack itemStack, @NonNull Class<T> clazz, @NonNull Consumer<T> consumer);
+
+    @Nullable
+    String getCustomName(@NonNull ItemMeta meta);
+
+    void setCustomName(@NonNull ItemMeta meta, @Nullable NightComponent name);
+
+    @Nullable
+    String getItemName(@NonNull ItemMeta meta);
+
+    void setItemName(@NonNull ItemMeta meta, @NonNull NightComponent name);
+
+    @Nullable
+    List<String> getLore(@NonNull ItemMeta meta);
+
+    void setLore(@NonNull ItemMeta meta, @Nullable List<NightComponent> lore);
+
+    @Nullable
+    NightProfile getOwnerProfile(@NonNull ItemStack itemStack);
+
+    void hideComponents(@NonNull ItemStack itemStack);
+
+    void hideComponents(@NonNull ItemStack itemStack, @NonNull Set<String> componentNames);
+
+
+    @NonNull
+    NightBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor, @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags);
 }

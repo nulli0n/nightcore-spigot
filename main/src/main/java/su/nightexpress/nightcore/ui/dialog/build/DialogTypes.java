@@ -1,59 +1,61 @@
 package su.nightexpress.nightcore.ui.dialog.build;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.util.List;
+
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
-import su.nightexpress.nightcore.bridge.dialog.wrap.type.*;
+import su.nightexpress.nightcore.bridge.dialog.wrap.type.WrappedConfirmationType;
+import su.nightexpress.nightcore.bridge.dialog.wrap.type.WrappedDialogListType;
+import su.nightexpress.nightcore.bridge.dialog.wrap.type.WrappedMultiActionType;
+import su.nightexpress.nightcore.bridge.dialog.wrap.type.WrappedNoticeType;
+import su.nightexpress.nightcore.bridge.dialog.wrap.type.WrappedServerLinksType;
 import su.nightexpress.nightcore.locale.LangDefaults;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
-import java.util.List;
-
 public class DialogTypes {
 
-    @NotNull
-    public static WrappedConfirmationType confirmation(@NotNull WrappedActionButton yesButton, @NotNull WrappedActionButton noButton) {
+    @NonNull
+    public static WrappedConfirmationType confirmation(@NonNull WrappedActionButton yesButton, @NonNull WrappedActionButton noButton) {
         return new WrappedConfirmationType(yesButton, noButton);
     }
 
-    @NotNull
-    public static WrappedDialogListType dialogList(@NotNull List<WrappedDialog> dialogs, @Nullable WrappedActionButton exitAction, int columns, int buttonWidth) {
+    @NonNull
+    public static WrappedDialogListType dialogList(@NonNull List<WrappedDialog> dialogs, @Nullable WrappedActionButton exitAction, int columns, int buttonWidth) {
         return dialogList(dialogs).exitAction(exitAction).columns(columns).buttonWidth(buttonWidth).build();
     }
 
-    @NotNull
-    public static WrappedDialogListType.Builder dialogList(@NotNull List<WrappedDialog> dialogs) {
+    public static WrappedDialogListType.@NonNull Builder dialogList(@NonNull List<WrappedDialog> dialogs) {
         return new WrappedDialogListType.Builder(dialogs);
     }
 
-    @NotNull
-    public static WrappedMultiActionType.Builder multiAction(@NotNull WrappedActionButton... actions) {
+    public static WrappedMultiActionType.@NonNull Builder multiAction(@NonNull WrappedActionButton... actions) {
         return multiAction(Lists.newList(actions));
     }
 
-    @NotNull
-    public static WrappedMultiActionType.Builder multiAction(@NotNull List<WrappedActionButton> actions) {
+    public static WrappedMultiActionType.@NonNull Builder multiAction(@NonNull List<WrappedActionButton> actions) {
         return new WrappedMultiActionType.Builder(actions);
     }
 
-    @NotNull
+    @NonNull
     public static WrappedNoticeType notice() {
         return notice(DialogButtons.action(TagWrappers.LANG.apply(LangDefaults.GAME_GUI_OK)).build());
     }
 
-    @NotNull
-    public static WrappedNoticeType notice(@NotNull WrappedActionButton action) {
+    @NonNull
+    public static WrappedNoticeType notice(@NonNull WrappedActionButton action) {
         return new WrappedNoticeType(action);
     }
 
-    @NotNull
+    @NonNull
     public WrappedServerLinksType serverLinks(int columns, int buttonWidth) {
         return serverLinks(null, columns, buttonWidth);
     }
 
-    @NotNull
+    @NonNull
     public WrappedServerLinksType serverLinks(@Nullable WrappedActionButton exitAction, int columns, int buttonWidth) {
         return new WrappedServerLinksType(exitAction, columns, buttonWidth);
     }

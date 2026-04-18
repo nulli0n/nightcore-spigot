@@ -1,28 +1,29 @@
 package su.nightexpress.nightcore.configuration;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.config.FileConfig;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.config.FileConfig;
 
 public class AbstractConfig {
 
     protected final List<ConfigProperty<?>> properties = new ArrayList<>();
 
-    @NotNull
-    protected final <T> ConfigProperty<T> addProperty(@NotNull ConfigType<T> type, @NotNull String path, @NotNull T defaultValue, @Nullable String... description) {
+    @NonNull
+    protected final <T> ConfigProperty<T> addProperty(@NonNull ConfigType<T> type, @NonNull String path, @NonNull T defaultValue, @Nullable String... description) {
         return this.addProperty(ConfigProperty.of(type, path, defaultValue, description));
     }
 
-    @NotNull
-    protected final <T> ConfigProperty<T> addProperty(@NotNull ConfigProperty<T> property) {
+    @NonNull
+    protected final <T> ConfigProperty<T> addProperty(@NonNull ConfigProperty<T> property) {
         this.properties.add(property);
         return property;
     }
 
-    public void load(@NotNull FileConfig config) {
+    public void load(@NonNull FileConfig config) {
         this.properties.forEach(configProperty -> configProperty.loadWithDefaults(config));
     }
 }

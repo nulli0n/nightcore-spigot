@@ -1,7 +1,7 @@
-/.idea/
 .gradle
-**/build/
-!src/**/build/
-**/target/
-!src/**/target/
+.vscode
+**/build/*
+!src/**/build/*
+**/target/*
+!src/**/target/*
 **/pom.xml.versionsBackup

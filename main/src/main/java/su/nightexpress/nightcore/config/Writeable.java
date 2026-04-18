@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.config;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public interface Writeable {
 
-    void write(@NotNull FileConfig config, @NotNull String path);
+    void write(@NonNull FileConfig config, @NonNull String path);
 }

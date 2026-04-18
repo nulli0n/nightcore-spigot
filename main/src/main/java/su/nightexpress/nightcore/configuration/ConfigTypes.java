@@ -1,5 +1,18 @@
 package su.nightexpress.nightcore.configuration;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -9,7 +22,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.MenuType;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.wrap.NightSound;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.BukkitThing;
@@ -17,10 +31,6 @@ import su.nightexpress.nightcore.util.Enums;
 import su.nightexpress.nightcore.util.LowerCase;
 import su.nightexpress.nightcore.util.RankTable;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
-
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ConfigTypes {
 
@@ -65,8 +75,8 @@ public class ConfigTypes {
     /**
      * Creates a {@link ConfigType} for any {@link Enum}.
      */
-    @NotNull
-    public static <E extends Enum<E>> ConfigType<E> forEnum(@NotNull Class<E> type) {
+    @NonNull
+    public static <E extends Enum<E>> ConfigType<E> forEnum(@NonNull Class<E> type) {
         ConfigType.Loader<E> reader = (config, path) -> config.getEnum(path, type);
         ConfigType.Writer<E> writer = (config, path, value) -> config.set(path, value.name());
 
@@ -76,8 +86,8 @@ public class ConfigTypes {
     /**
      * Creates a {@link ConfigType} for any {@link org.bukkit.Keyed}.
      */
-    @NotNull
-    public static <T extends Keyed> ConfigType<T> forNamespaced(@NotNull Function<String, T> fromString) {
+    @NonNull
+    public static <T extends Keyed> ConfigType<T> forNamespaced(@NonNull Function<String, T> fromString) {
         return ConfigType.of(
             (config, path) -> Optional.ofNullable(config.getString(path)).map(fromString).orElse(null),
             (config, path, value) -> config.set(path, BukkitThing.getAsString(value))
@@ -90,8 +100,8 @@ public class ConfigTypes {
      * @param fromString A function to convert a String from the config into V.
      * @param toString   A function to convert V into a String for saving.
      */
-    @NotNull
-    public static <V> ConfigType<Set<V>> forSet(@NotNull Function<String, V> fromString, @NotNull Function<V, String> toString) {
+    @NonNull
+    public static <V> ConfigType<Set<V>> forSet(@NonNull Function<String, V> fromString, @NonNull Function<V, String> toString) {
         return ConfigType.of(
             (config, path) -> config.getStringSet(path).stream()
                 .map(fromString)
@@ -102,8 +112,8 @@ public class ConfigTypes {
         );
     }
 
-    @NotNull
-    public static <V> ConfigType<List<V>> forList(@NotNull Function<String, V> fromString, @NotNull Function<V, String> toString) {
+    @NonNull
+    public static <V> ConfigType<List<V>> forList(@NonNull Function<String, V> fromString, @NonNull Function<V, String> toString) {
         return ConfigType.of(
             (config, path) -> config.getStringList(path).stream()
                 .map(fromString)
@@ -114,13 +124,13 @@ public class ConfigTypes {
         );
     }
 
-    @NotNull
-    public static <V extends Keyed> ConfigType<Set<V>> forNamespacedSet(@NotNull Function<String, V> fromString) {
+    @NonNull
+    public static <V extends Keyed> ConfigType<Set<V>> forNamespacedSet(@NonNull Function<String, V> fromString) {
         return forSet(fromString, BukkitThing::getAsString);
     }
 
-    @NotNull
-    public static <V extends Enum<V>> ConfigType<EnumSet<V>> forEnumSet(@NotNull Class<V> type) {
+    @NonNull
+    public static <V extends Enum<V>> ConfigType<EnumSet<V>> forEnumSet(@NonNull Class<V> type) {
         return ConfigType.of(
             (config, path) -> config.getStringSet(path).stream()
                 .map(string -> Enums.get(string, type))
@@ -137,18 +147,18 @@ public class ConfigTypes {
      * @param type The ConfigType for the *value* (V). This tells
      * the map how to read/write each sub-object.
      */
-    @NotNull
-    public static <V> ConfigType<Map<String, V>> forMap(@NotNull ConfigType<V> type) {
+    @NonNull
+    public static <V> ConfigType<Map<String, V>> forMap(@NonNull ConfigType<V> type) {
         return forMap(s -> s, s -> s, type);
     }
 
-    @NotNull
-    public static <V> ConfigType<Map<String, V>> forMapWithLowerKeys(@NotNull ConfigType<V> type) {
+    @NonNull
+    public static <V> ConfigType<Map<String, V>> forMapWithLowerKeys(@NonNull ConfigType<V> type) {
         return forMap(LowerCase.INTERNAL::apply, key -> key, type);
     }
 
-    @NotNull
-    public static <K, V> ConfigType<Map<K, V>> forMap(@NotNull Function<String, K> strToKey, @NotNull Function<K, String> keyToStr, @NotNull ConfigType<V> valType) {
+    @NonNull
+    public static <K, V> ConfigType<Map<K, V>> forMap(@NonNull Function<String, K> strToKey, @NonNull Function<K, String> keyToStr, @NonNull ConfigType<V> valType) {
         return ConfigType.of(
             (config, path) -> {
                 Map<K, V> map = new LinkedHashMap<>();
@@ -170,13 +180,13 @@ public class ConfigTypes {
 
 
 
-    @NotNull
-    public static <V> ConfigType<Map<String, V>> forMap(@NotNull ConfigType<V> type, @NotNull Function<V, String> idExtract) {
+    @NonNull
+    public static <V> ConfigType<Map<String, V>> forMap(@NonNull ConfigType<V> type, @NonNull Function<V, String> idExtract) {
         return forMap(type, idExtract, key -> key);
     }
 
-    @NotNull
-    public static <K, V> ConfigType<Map<K, V>> forMap(@NotNull ConfigType<V> valType, @NotNull Function<V, K> idExtract, @NotNull Function<K, String> keyToStr) {
+    @NonNull
+    public static <K, V> ConfigType<Map<K, V>> forMap(@NonNull ConfigType<V> valType, @NonNull Function<V, K> idExtract, @NonNull Function<K, String> keyToStr) {
         return ConfigType.of(
             (config, path) -> {
                 Map<K, V> map = new LinkedHashMap<>();
