@@ -27,6 +27,8 @@ public enum Version {
     MC_1_21_11("1.21.11", 4671),
     MC_26_1("26.1", 4786, Status.DROPPED),
     MC_26_1_1("26.1.1", 4788),
+    MC_26_1_2("26.1.2", 4790),
+    MC_26_2("26.2", 4890), // TODO Predicted from snapshot 3
     UNKNOWN("Unknown", 10000),
     ;
 
@@ -34,9 +36,9 @@ public enum Version {
     private static final boolean isFolia = checkFolia();
 
     private static Version current;
-    private final Status status;
-    private final int    dataVersion;
-    private final String localized;
+    private final Status   status;
+    private final int      dataVersion;
+    private final String   localized;
 
     Version(@NonNull String localized, int dataVersion) {
         this(localized, dataVersion, Status.SUPPORTED);
@@ -59,7 +61,8 @@ public enum Version {
         String bukkitVersion = isSpigot() ? Bukkit.getServer().getBukkitVersion() : Bukkit.getServer().getVersion();
         String exact = bukkitVersion.split("-")[0];
 
-        current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version.getLocalized())).findFirst().orElse(UNKNOWN);
+        current = Stream.of(values()).sorted(Comparator.reverseOrder()).filter(version -> exact.equalsIgnoreCase(version
+            .getLocalized())).findFirst().orElse(UNKNOWN);
 
         return current;
     }
@@ -138,7 +141,7 @@ public enum Version {
         return getCurrent().isLower(version);
     }
 
-    public static boolean isBehindOrEqual(@NonNull Version version){
+    public static boolean isBehindOrEqual(@NonNull Version version) {
         return getCurrent().isLower(version) || getCurrent() == version;
     }
 
