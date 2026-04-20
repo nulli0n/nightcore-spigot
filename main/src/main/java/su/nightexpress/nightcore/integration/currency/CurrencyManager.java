@@ -26,7 +26,7 @@ public class CurrencyManager extends AbstractManager<NightCore> {
 
     public static final String FILE_NAME = "currencies.yml";
 
-    private final CurrencyRegistry registry;
+    private final CurrencyRegistry      registry;
     private final Map<String, Runnable> pluginProviders;
 
     private FileConfig config;
@@ -76,7 +76,15 @@ public class CurrencyManager extends AbstractManager<NightCore> {
         this.addExternalLoader(CurrencyPlugins.PLAYER_POINTS, () -> this.loadIncompleted(PlayerPointsCurrency::new));
         this.addExternalLoader(CurrencyPlugins.VOTING_PLUGIN, () -> this.loadIncompleted(VotingPluginCurrency::new));
         this.addExternalLoader(CurrencyPlugins.ELITEMOBS, () -> this.loadIncompleted(EliteMobsCurrency::new));
-        this.addExternalLoader(CurrencyPlugins.COINS_ENGINE, () -> ExcellentEconomyCurrency.getCurrencies().forEach(this::register));
+        this.addExternalLoader(CurrencyPlugins.COINS_ENGINE, () -> ExcellentEconomyCurrency
+            .getCurrencies(CurrencyId::forCoinsEngine).forEach(this::register));
+
+        // Two variants for compatibility.
+        this.addExternalLoader(CurrencyPlugins.EXCELLENT_ECONOMY, () -> {
+            ExcellentEconomyCurrency.getCurrencies(CurrencyId::forCoinsEngine).forEach(this::register);
+            ExcellentEconomyCurrency.getCurrencies(CurrencyId::forExcellentEconomy).forEach(this::register);
+        });
+
 
         // Try load any provider(s) of the plugins that are already enabled aka loaded.
         this.pluginProviders.keySet().forEach(pluginName -> {
@@ -95,7 +103,8 @@ public class CurrencyManager extends AbstractManager<NightCore> {
         String path = "Items";
 
         if (!this.config.contains(path)) {
-            ItemStackCurrency.createDefaults().forEach(currency -> this.config.set(path + "." + currency.getInternalId(), currency));
+            ItemStackCurrency.createDefaults().forEach(currency -> this.config.set(path + "." + currency
+                .getInternalId(), currency));
         }
 
         this.config.getSection(path).forEach(sId -> {
@@ -134,7 +143,8 @@ public class CurrencyManager extends AbstractManager<NightCore> {
     public <T extends IncompleteCurrency> void loadIncompleted(@NotNull Supplier<T> supplier) {
         this.register(supplier.get(), currency -> {
             String path = currency instanceof ItemStackCurrency ? "Items" : "Currencies";
-            CurrencySettings settings = ConfigValue.create(path + "." + currency.getInternalId() + ".Settings", CurrencySettings::load, currency.getDefaultSettings()).read(this.config);
+            CurrencySettings settings = ConfigValue.create(path + "." + currency.getInternalId() + ".Settings",
+                CurrencySettings::load, currency.getDefaultSettings()).read(this.config);
             currency.setSettings(settings);
         });
     }

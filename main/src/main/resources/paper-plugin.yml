@@ -25,16 +25,10 @@ dependencies:
     CoinsEngine:
       load: AFTER
       required: false
-    BeastTokens:
-      load: AFTER
-      required: false
-    EliteMobs:
+    ExcellentEconomy:
       load: AFTER
       required: false
     PlayerPoints:
-      load: AFTER
-      required: false
-    UltraEconomy:
       load: AFTER
       required: false
     VotingPlugin:

@@ -1,21 +1,5 @@
 package su.nightexpress.nightcore.integration.currency.impl;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.jspecify.annotations.NonNull;
-import su.nightexpress.excellenteconomy.api.ExcellentEconomyAPI;
-import su.nightexpress.excellenteconomy.api.currency.ExcellentCurrency;
-import su.nightexpress.excellenteconomy.api.currency.operation.NotificationTarget;
-import su.nightexpress.excellenteconomy.api.currency.operation.OperationContext;
-import su.nightexpress.excellenteconomy.api.currency.operation.OperationResult;
-import su.nightexpress.nightcore.integration.currency.CurrencyId;
-import su.nightexpress.nightcore.integration.currency.type.AbstractCurrency;
-import su.nightexpress.nightcore.util.Placeholders;
-import su.nightexpress.nightcore.util.ServerUtils;
-import su.nightexpress.nightcore.util.bukkit.NightItem;
-import su.nightexpress.nightcore.util.placeholder.PlaceholderContext;
-
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -24,29 +8,47 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.excellenteconomy.api.ExcellentEconomyAPI;
+import su.nightexpress.excellenteconomy.api.currency.ExcellentCurrency;
+import su.nightexpress.excellenteconomy.api.currency.operation.NotificationTarget;
+import su.nightexpress.excellenteconomy.api.currency.operation.OperationContext;
+import su.nightexpress.excellenteconomy.api.currency.operation.OperationResult;
+import su.nightexpress.nightcore.integration.currency.type.AbstractCurrency;
+import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.ServerUtils;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderContext;
+
 public class ExcellentEconomyCurrency extends AbstractCurrency {
 
     private static ExcellentEconomyAPI api;
-    private static OperationContext context;
+    private static OperationContext    context;
 
-    public ExcellentEconomyCurrency(@NonNull String id) {
-        super(id, CurrencyId.forCoinsEngine(id));
+    public ExcellentEconomyCurrency(@NonNull String originalId, @NonNull String internalId) {
+        super(originalId, internalId);
     }
 
     @NonNull
     private static ExcellentEconomyAPI getAPI() {
         if (api == null) {
-            api = ServerUtils.serviceProvider(ExcellentEconomyAPI.class).orElseThrow(() -> new IllegalStateException("No ExcellentEconomy API service found"));
-            context = OperationContext.custom("NightCore - EconomyBridge").silentFor(NotificationTarget.EXECUTOR, NotificationTarget.USER, NotificationTarget.CONSOLE_LOGGER);
+            api = ServerUtils.serviceProvider(ExcellentEconomyAPI.class).orElseThrow(
+                () -> new IllegalStateException("No ExcellentEconomy API service found"));
+            context = OperationContext.custom("NightCore - EconomyBridge").silentFor(NotificationTarget.EXECUTOR,
+                NotificationTarget.USER, NotificationTarget.CONSOLE_LOGGER);
         }
         return api;
     }
 
     @NonNull
-    public static Set<ExcellentEconomyCurrency> getCurrencies() {
+    public static Set<ExcellentEconomyCurrency> getCurrencies(@NonNull UnaryOperator<String> idMapper) {
         Set<ExcellentEconomyCurrency> currencies = new HashSet<>();
         getAPI().currencyRegistry().stream().filter(Predicate.not(ExcellentCurrency::isPrimary)).forEach(currency -> {
-            currencies.add(new ExcellentEconomyCurrency(currency.getId()));
+            currencies.add(new ExcellentEconomyCurrency(currency.getId(), idMapper.apply(currency.getId())));
         });
         return currencies;
     }
@@ -100,9 +102,9 @@ public class ExcellentEconomyCurrency extends AbstractCurrency {
     @Override
     @NonNull
     public ItemStack getIcon() {
-        return this.currency().map(ExcellentCurrency::icon).orElse(NightItem.fromType(Material.GOLD_NUGGET)).getItemStack();
+        return this.currency().map(ExcellentCurrency::icon).orElse(NightItem.fromType(Material.GOLD_NUGGET))
+            .getItemStack();
     }
-
 
 
     @Override
@@ -121,7 +123,6 @@ public class ExcellentEconomyCurrency extends AbstractCurrency {
     protected double queryBalanceDirect(@NonNull Player player) {
         return getAPI().getCachedUserData(player).getBalance().get(this.originalId);
     }
-
 
 
     @Override
