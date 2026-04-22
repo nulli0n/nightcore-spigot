@@ -1,7 +1,15 @@
 package su.nightexpress.nightcore.core.tag;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.bridge.text.NightTextDecoration;
 import su.nightexpress.nightcore.config.ConfigValue;
@@ -10,11 +18,22 @@ import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.night.tag.TagHandlerRegistry;
 import su.nightexpress.nightcore.util.text.night.tag.TagShortNames;
-import su.nightexpress.nightcore.util.text.night.tag.handler.*;
+import su.nightexpress.nightcore.util.text.night.tag.handler.ClickTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.ColorTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.DecorationTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.FontTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.GradientTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.HeadTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.HoverTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.InsertionTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.KeybindTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.LangTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.PlaceholderTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.ResetTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.ShadowOffTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.ShadowTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.SpriteTagHandler;
 import su.nightexpress.nightcore.util.text.tag.Tags;
-
-import java.io.File;
-import java.util.*;
 
 public class TagManager extends AbstractManager<NightCore> {
 
@@ -24,7 +43,7 @@ public class TagManager extends AbstractManager<NightCore> {
 
     private ColorScheme colorScheme;
 
-    public TagManager(@NotNull NightCore plugin) {
+    public TagManager(@NonNull NightCore plugin) {
         super(plugin);
         this.colorSchemeByIdMap = new HashMap<>();
     }
@@ -50,8 +69,10 @@ public class TagManager extends AbstractManager<NightCore> {
         TagHandlerRegistry.register(ColorTagHandler::new, TagShortNames.COLOR, "color", "colour");
         TagHandlerRegistry.register(GradientTagHandler::new, TagShortNames.GRADIENT);
         TagHandlerRegistry.register(ShadowTagHandler::new, TagShortNames.SHADOW_COLOR);
+        TagHandlerRegistry.register(ShadowOffTagHandler::new, TagShortNames.ANTI_SHADOW);
         TagHandlerRegistry.register(FontTagHandler::new, TagShortNames.FONT);
-        TagHandlerRegistry.register(LangTagHandler::new, TagShortNames.LANG, TagShortNames.LANG_OR, "tr", "translate", "tr_or", "translate_or");
+        TagHandlerRegistry.register(LangTagHandler::new, TagShortNames.LANG, TagShortNames.LANG_OR, "tr", "translate",
+            "tr_or", "translate_or");
         TagHandlerRegistry.register(HoverTagHandler::new, TagShortNames.HOVER);
         TagHandlerRegistry.register(ClickTagHandler::new, TagShortNames.CLICK);
         TagHandlerRegistry.register(ResetTagHandler::new, TagShortNames.RESET, "reset");
@@ -60,17 +81,27 @@ public class TagManager extends AbstractManager<NightCore> {
         TagHandlerRegistry.register(SpriteTagHandler::new, TagShortNames.SPRITE);
         TagHandlerRegistry.register(HeadTagHandler::new, TagShortNames.HEAD);
 
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.BOLD, true), TagShortNames.BOLD, "bold");
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.ITALIC, true), TagShortNames.ITALIC, "italic", "em");
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.OBFUSCATED, true), TagShortNames.OBFUSCATED, "obfuscated");
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.STRIKETHROUGH, true), TagShortNames.STRIKETHROUGH, "strikethrough");
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.UNDERLINED, true), TagShortNames.UNDERLINED, "underlined");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.BOLD, true),
+            TagShortNames.BOLD, "bold");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.ITALIC, true),
+            TagShortNames.ITALIC, "italic", "em");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.OBFUSCATED, true),
+            TagShortNames.OBFUSCATED, "obfuscated");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.STRIKETHROUGH, true),
+            TagShortNames.STRIKETHROUGH, "strikethrough");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.UNDERLINED, true),
+            TagShortNames.UNDERLINED, "underlined");
 
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.BOLD, false), TagShortNames.UNBOLD, "!bold");
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.ITALIC, false), TagShortNames.UNITALIC, "!italic", "!em");
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.OBFUSCATED, false), TagShortNames.UNOBFUSCATED, "!obfuscated");
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.STRIKETHROUGH, false), TagShortNames.UNSTRIKETHROUGH, "!strikethrough");
-        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.UNDERLINED, false), TagShortNames.UNUNDERLINED, "!underlined");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.BOLD, false),
+            TagShortNames.UNBOLD, "!bold");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.ITALIC, false),
+            TagShortNames.UNITALIC, "!italic", "!em");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.OBFUSCATED, false),
+            TagShortNames.UNOBFUSCATED, "!obfuscated");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.STRIKETHROUGH, false),
+            TagShortNames.UNSTRIKETHROUGH, "!strikethrough");
+        TagHandlerRegistry.register(() -> DecorationTagHandler.normal(NightTextDecoration.UNDERLINED, false),
+            TagShortNames.UNUNDERLINED, "!underlined");
 
         TagHandlerRegistry.register(() -> new PlaceholderTagHandler("\n"), TagShortNames.BR, "newline");
     }
@@ -109,11 +140,12 @@ public class TagManager extends AbstractManager<NightCore> {
         this.setColorScheme(schemeId);
     }
 
-    public void setColorScheme(@NotNull String name) {
+    public void setColorScheme(@NonNull String name) {
         ColorScheme scheme = this.getColorScheme(name);
         if (scheme == null) {
             if (!name.equalsIgnoreCase(ColorScheme.DEFAULT)) {
-                this.plugin.error("Color scheme '" + name + "' not found. Try fallback to the '" + ColorScheme.DEFAULT + "' one...");
+                this.plugin.error("Color scheme '" + name + "' not found. Try fallback to the '" + ColorScheme.DEFAULT +
+                    "' one...");
                 this.setColorScheme(ColorScheme.DEFAULT);
             }
             else {
@@ -126,7 +158,7 @@ public class TagManager extends AbstractManager<NightCore> {
         this.plugin.info("Using '" + this.colorScheme.getId() + "' color scheme.");
     }
 
-    private void migrateOldSettings(@NotNull FileConfig target) {
+    private void migrateOldSettings(@NonNull FileConfig target) {
         File fromFile = new File(this.plugin.getDataFolder(), "colors.yml");
         if (!fromFile.exists()) return;
 
@@ -136,29 +168,30 @@ public class TagManager extends AbstractManager<NightCore> {
         ColorScheme scheme = ColorScheme.read(from, "", ColorScheme.CUSTOM);
 
         scheme.getColors().forEach(code -> {
-            target.set("ColorSchemes." + scheme.getId() + ".Colors." + code.name(), ParserUtils.colorToHexString(code.color()));
+            target.set("ColorSchemes." + scheme.getId() + ".Colors." + code.name(), ParserUtils.colorToHexString(code
+                .color()));
         });
 
         //scheme.write(target, "ColorSchemes." + scheme.getId());
         fromFile.renameTo(new File(this.plugin.getDataFolder(), "colors.old"));
     }
 
-    @NotNull
+    @NonNull
     public Map<String, ColorScheme> getColorSchemeByIdMap() {
         return this.colorSchemeByIdMap;
     }
 
     @Nullable
-    public ColorScheme getColorScheme(@NotNull String id) {
+    public ColorScheme getColorScheme(@NonNull String id) {
         return this.colorSchemeByIdMap.get(id.toLowerCase());
     }
 
-    @NotNull
+    @NonNull
     public Set<ColorScheme> getColorSchemes() {
         return new HashSet<>(this.colorSchemeByIdMap.values());
     }
 
-    @NotNull
+    @NonNull
     public Optional<ColorScheme> getColorScheme() {
         return Optional.ofNullable(this.colorScheme);
     }

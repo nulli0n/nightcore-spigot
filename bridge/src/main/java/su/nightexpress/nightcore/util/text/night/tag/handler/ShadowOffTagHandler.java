@@ -1,23 +1,19 @@
 package su.nightexpress.nightcore.util.text.night.tag.handler;
 
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.night.entry.EntryGroup;
 
-public class InsertionTagHandler extends ClassicTagHandler {
+public class ShadowOffTagHandler extends ClassicTagHandler {
 
     @Override
     protected void onHandleOpen(@NonNull EntryGroup group, @Nullable String tagContent) {
-        if (tagContent == null) return;
 
-        String insetion = ParserUtils.unquoted(tagContent);
-        group.setStyle(style -> style.insertion(insetion));
     }
 
     @Override
     protected void onHandleClose(@NonNull EntryGroup group) {
-
+        group.setStyle(nightStyle -> nightStyle.shadowColor(0, 0, 0, 0));
     }
 }

@@ -1,14 +1,14 @@
 package su.nightexpress.nightcore.util.text.night.tag;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public class TagContent {
 
     private final String first;
     private final String second;
 
-    public TagContent(@NotNull String first, @Nullable String second) {
+    public TagContent(@NonNull String first, @Nullable String second) {
         this.first = first;
         this.second = second;
     }
@@ -17,7 +17,7 @@ public class TagContent {
         return this.second != null;
     }
 
-    @NotNull
+    @NonNull
     public String first() {
         return this.first;
     }

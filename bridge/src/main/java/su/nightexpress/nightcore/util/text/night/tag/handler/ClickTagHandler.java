@@ -1,7 +1,8 @@
 package su.nightexpress.nightcore.util.text.night.tag.handler;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 import su.nightexpress.nightcore.util.Enums;
 import su.nightexpress.nightcore.util.Numbers;
@@ -13,7 +14,7 @@ import su.nightexpress.nightcore.util.text.night.tag.TagContent;
 public class ClickTagHandler extends ClassicTagHandler {
 
     @Override
-    protected void onHandleOpen(@NotNull EntryGroup group, @Nullable String tagContent) {
+    protected void onHandleOpen(@NonNull EntryGroup group, @Nullable String tagContent) {
         if (tagContent == null) return;
 
         TagContent content = ParserUtils.parseInnerContent(tagContent);
@@ -40,7 +41,7 @@ public class ClickTagHandler extends ClassicTagHandler {
     }
 
     @Override
-    protected void onHandleClose(@NotNull EntryGroup group) {
+    protected void onHandleClose(@NonNull EntryGroup group) {
 
     }
 }

@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.util.text.night;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.util.LegacyColors;
 import su.nightexpress.nightcore.util.LowerCase;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
@@ -16,9 +17,9 @@ public class TextParser {
 
     public static final String ROOT_NAME = "root";
 
-    private final TagPool tagPool;
+    private final TagPool    tagPool;
     private final ParserMode mode;
-    private final boolean legacyMode;
+    private final boolean    legacyMode;
 
     private String        string;
     private EntryGroup    currentGroup;
@@ -26,7 +27,7 @@ public class TextParser {
 
     private NightComponent component;
 
-    TextParser(@NotNull String string, @NotNull ParserMode mode, @NotNull TagPool tagPool) {
+    TextParser(@NonNull String string, @NonNull ParserMode mode, @NonNull TagPool tagPool) {
         this.mode = mode;
         this.tagPool = tagPool;
         this.legacyMode = true;// TODO CoreConfig.LEGACY_COLOR_SUPPORT.get();
@@ -36,34 +37,34 @@ public class TextParser {
         this.currentGroup = new EntryGroup(ROOT_NAME);
     }
 
-    @NotNull
-    public static NightComponent parse(@NotNull String string) {
+    @NonNull
+    public static NightComponent parse(@NonNull String string) {
         return parse(string, TagPool.ALL);
     }
 
-    @NotNull
-    public static NightComponent parse(@NotNull String string, @NotNull TagPool tagPool) {
+    @NonNull
+    public static NightComponent parse(@NonNull String string, @NonNull TagPool tagPool) {
         return runParser(string, ParserMode.PARSE, tagPool).component;
     }
 
-    @NotNull
-    public static String strip(@NotNull String string) {
+    @NonNull
+    public static String strip(@NonNull String string) {
         return strip(string, TagPool.NONE);
     }
 
-    @NotNull
-    public static String strip(@NotNull String string, @NotNull TagPool tagPool) {
+    @NonNull
+    public static String strip(@NonNull String string, @NonNull TagPool tagPool) {
         return runParser(string, ParserMode.STRIP, tagPool).eater.toString();
     }
 
-    @NotNull
-    private static TextParser runParser(@NotNull String string, @NotNull ParserMode mode, @NotNull TagPool tagPool) {
+    @NonNull
+    private static TextParser runParser(@NonNull String string, @NonNull ParserMode mode, @NonNull TagPool tagPool) {
         TextParser parser = new TextParser(string, mode, tagPool);
         parser.run();
         return parser;
     }
 
-    private void setString(@NotNull String string) {
+    private void setString(@NonNull String string) {
         if (this.legacyMode) {
             string = LegacyColors.plainColors(string); // Translate legacy colors to plain values: '§a' -> '&a', '§x§f§f§f§f§f§f' -> '#ffffff'.
             string = ParserUtils.wrapHexCodesAsTags(string); // Wrap HEX colors in tags: '#ffffff' -> '<#ffffff>'.
@@ -72,8 +73,8 @@ public class TextParser {
         this.string = string;
     }
 
-    @NotNull
-    public EntryGroup downward(@NotNull String childrenName) {
+    @NonNull
+    public EntryGroup downward(@NonNull String childrenName) {
         this.consumeEaten();
         this.currentGroup = this.currentGroup.downward(childrenName);
         return this.currentGroup;
@@ -84,21 +85,21 @@ public class TextParser {
         this.upward(); // To the root group from children.
     }
 
-    @NotNull
-    public EntryGroup backTo(@NotNull String parentName) {
+    @NonNull
+    public EntryGroup backTo(@NonNull String parentName) {
         this.consumeEaten();
         this.currentGroup = this.currentGroup.backTo(parentName);
         return this.currentGroup;
     }
 
-    @NotNull
-    public EntryGroup upward(@NotNull String parentName) {
+    @NonNull
+    public EntryGroup upward(@NonNull String parentName) {
         this.consumeEaten();
         this.currentGroup = this.currentGroup.upward(parentName);
         return this.currentGroup;
     }
 
-    @NotNull
+    @NonNull
     public EntryGroup upward() {
         this.consumeEaten();
         this.currentGroup = this.currentGroup.upward();
@@ -118,7 +119,7 @@ public class TextParser {
         this.eater.append(c);
     }
 
-    private void eat(@NotNull String string) {
+    private void eat(@NonNull String string) {
         this.eater.append(string);
     }
 
@@ -170,7 +171,8 @@ public class TextParser {
                     }
 
                     // There is no closing brackets at all, skip.
-                    tagEndIndex = ParserUtils.findUnescapedUnquotedUnprecededByChar(this.string, ParserUtils.CLOSE_BRACKET, ParserUtils.OPEN_BRACKET, index + 1);
+                    tagEndIndex = ParserUtils.findUnescapedUnquotedUnprecededByChar(this.string,
+                        ParserUtils.CLOSE_BRACKET, ParserUtils.OPEN_BRACKET, index + 1);
                     if (tagEndIndex == -1) {
                         this.eat(letter);
                         continue;
@@ -237,7 +239,8 @@ public class TextParser {
             }
             else if (this.tagPool.isGoodTag(handler)) {
                 if (this.mode == ParserMode.STRIP) {
-                    this.eat(isTagClosing ? TagWrapper.simple(tagName).closing() : TagWrapper.simple(bracketsContent).opening());
+                    this.eat(isTagClosing ? TagWrapper.simple(tagName).closing() : TagWrapper.simple(bracketsContent)
+                        .opening());
                 }
                 else if (this.mode == ParserMode.PARSE) {
                     String groupName = LowerCase.INTERNAL.apply(tagName);
@@ -289,12 +292,12 @@ public class TextParser {
         this.currentGroup = null;
     }
 
-    @NotNull
+    @NonNull
     public String getString() {
         return this.string;
     }
 
-    @NotNull
+    @NonNull
     public EntryGroup getCurrentGroup() {
         return this.currentGroup;
     }

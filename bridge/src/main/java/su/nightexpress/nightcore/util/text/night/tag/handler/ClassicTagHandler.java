@@ -1,29 +1,30 @@
 package su.nightexpress.nightcore.util.text.night.tag.handler;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.text.night.tag.TagHandler;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.util.text.night.entry.EntryGroup;
+import su.nightexpress.nightcore.util.text.night.tag.TagHandler;
 
 public abstract class ClassicTagHandler implements TagHandler {
 
-    public ClassicTagHandler() {
+    protected ClassicTagHandler() {
 
     }
 
     @Override
-    public void handleOpen(@NotNull EntryGroup group, @Nullable String tagContent) {
+    public void handleOpen(@NonNull EntryGroup group, @Nullable String tagContent) {
         this.onHandleOpen(group, tagContent);
     }
 
     @Override
-    public void handleClose(@NotNull EntryGroup group) {
+    public void handleClose(@NonNull EntryGroup group) {
         this.onHandleClose(group);
     }
 
-    protected abstract void onHandleOpen(@NotNull EntryGroup group, @Nullable String tagContent);
+    protected abstract void onHandleOpen(@NonNull EntryGroup group, @Nullable String tagContent);
 
-    protected abstract void onHandleClose(@NotNull EntryGroup group);
+    protected abstract void onHandleClose(@NonNull EntryGroup group);
 
     @Override
     public boolean canBeClosed() {

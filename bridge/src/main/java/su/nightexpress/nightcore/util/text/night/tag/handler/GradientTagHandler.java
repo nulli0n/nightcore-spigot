@@ -1,14 +1,19 @@
 package su.nightexpress.nightcore.util.text.night.tag.handler;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.text.night.ParserUtils;
-import su.nightexpress.nightcore.util.text.night.entry.*;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.util.text.night.ParserUtils;
+import su.nightexpress.nightcore.util.text.night.entry.ChildEntry;
+import su.nightexpress.nightcore.util.text.night.entry.Entry;
+import su.nightexpress.nightcore.util.text.night.entry.EntryGroup;
+import su.nightexpress.nightcore.util.text.night.entry.LangEntry;
+import su.nightexpress.nightcore.util.text.night.entry.TextEntry;
 
 public class GradientTagHandler extends ClassicTagHandler {
 
@@ -51,26 +56,18 @@ public class GradientTagHandler extends ClassicTagHandler {
             this.colorIndex = 0;
         }
 
-        /*public Color[] getColors() {
-            return this.colors;
-        }
-
-        public Color getLatestColor() {
-            return this.colors[this.colors.length - 1];
-        }*/
-
         public boolean hasNextColor() {
             return this.colorIndex < this.colors.length;
         }
 
-        @NotNull
+        @NonNull
         public Color nextColor() {
             return this.colors[this.colorIndex++];
         }
     }
 
     @Override
-    protected void onHandleOpen(@NotNull EntryGroup group, @Nullable String tagContent) {
+    protected void onHandleOpen(@NonNull EntryGroup group, @Nullable String tagContent) {
         if (tagContent == null) return;
         String[] split = tagContent.split(String.valueOf(ParserUtils.DELIMITER));
 
@@ -88,7 +85,7 @@ public class GradientTagHandler extends ClassicTagHandler {
     }
 
     @Override
-    protected void onHandleClose(@NotNull EntryGroup group) {
+    protected void onHandleClose(@NonNull EntryGroup group) {
         AtomicInteger textLength = new AtomicInteger(0);
         List<ChildEntry> gradientEntries = new ArrayList<>();
 
@@ -102,7 +99,8 @@ public class GradientTagHandler extends ClassicTagHandler {
         gradientEntries.forEach(childEntry -> this.decorate(childEntry, gradient));
     }
 
-    private void splitGroup(@NotNull EntryGroup group, @NotNull AtomicInteger textLength, @NotNull List<ChildEntry> gradientEntries, boolean root) {
+    private void splitGroup(@NonNull EntryGroup group, @NonNull AtomicInteger textLength,
+                            @NonNull List<ChildEntry> gradientEntries, boolean root) {
         List<Entry> childrens = new ArrayList<>();
         List<Entry> oldChildrens = new ArrayList<>(group.getChildrens());
         group.getChildrens().clear();
@@ -144,7 +142,7 @@ public class GradientTagHandler extends ClassicTagHandler {
         group.setChildrens(childrens);
     }
 
-    private void decorate(@NotNull ChildEntry entry, @NotNull Gradient gradient) {
+    private void decorate(@NonNull ChildEntry entry, @NonNull Gradient gradient) {
         if (!gradient.hasNextColor()) return;
 
         entry.getParent().setStyle(style -> style.color(gradient.nextColor()));

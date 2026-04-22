@@ -1,16 +1,16 @@
 package su.nightexpress.nightcore.util.text.night.entry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public abstract class ChildEntry implements Entry {
 
     protected final EntryGroup parent;
 
-    public ChildEntry(@NotNull EntryGroup parent) {
+    protected ChildEntry(@NonNull EntryGroup parent) {
         this.parent = parent;
     }
 
-    @NotNull
+    @NonNull
     public EntryGroup getParent() {
         return this.parent;
     }

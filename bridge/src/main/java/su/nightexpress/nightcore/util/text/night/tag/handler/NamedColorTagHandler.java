@@ -1,38 +1,39 @@
 package su.nightexpress.nightcore.util.text.night.tag.handler;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.text.night.entry.EntryGroup;
+import java.awt.Color;
 
-import java.awt.*;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.util.text.night.entry.EntryGroup;
 
 public class NamedColorTagHandler extends ClassicTagHandler {
 
     private final String colorName;
     private final Color  color;
 
-    public NamedColorTagHandler(@NotNull String colorName, @NotNull Color color) {
+    public NamedColorTagHandler(@NonNull String colorName, @NonNull Color color) {
         this.colorName = colorName;
         this.color = color;
     }
 
-    @NotNull
+    @NonNull
     public String getColorName() {
         return this.colorName;
     }
 
-    @NotNull
+    @NonNull
     public Color getColor() {
         return this.color;
     }
 
     @Override
-    protected void onHandleOpen(@NotNull EntryGroup group, @Nullable String tagContent) {
+    protected void onHandleOpen(@NonNull EntryGroup group, @Nullable String tagContent) {
         group.setStyle(style -> style.color(this.color));
     }
 
     @Override
-    protected void onHandleClose(@NotNull EntryGroup group) {
+    protected void onHandleClose(@NonNull EntryGroup group) {
 
     }
 }

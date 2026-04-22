@@ -4,10 +4,11 @@ public class TagShortNames {
 
     public static final String COLOR        = "c";
     public static final String SHADOW_COLOR = "shadow";
+    public static final String ANTI_SHADOW  = "!shadow";
     public static final String GRADIENT     = "gradient";
     public static final String FONT         = "font";
 
-    public static final String BR       = "br";
+    public static final String BR      = "br";
     public static final String NEWLINE = "newline";
 
     public static final String RESET     = "r";
@@ -32,8 +33,8 @@ public class TagShortNames {
     public static final String UNSTRIKETHROUGH = "!st";
     public static final String UNUNDERLINED    = "!u";
 
-    public static final String BLACK        = "black";
-    public static final String WHITE        = "white";
+    public static final String BLACK = "black";
+    public static final String WHITE = "white";
 
     public static final String DARK_RED    = "dark_red";
     public static final String DARK_GREEN  = "dark_green";

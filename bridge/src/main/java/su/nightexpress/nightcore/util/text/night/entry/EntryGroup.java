@@ -1,14 +1,15 @@
 package su.nightexpress.nightcore.util.text.night.entry;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.UnaryOperator;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import su.nightexpress.nightcore.bridge.text.NightStyle;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.night.ParserResolvers;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 
 public class EntryGroup implements Entry {
 
@@ -20,7 +21,7 @@ public class EntryGroup implements Entry {
     private NightStyle style;
     private boolean    styleLocked;
 
-    public EntryGroup(@NotNull String name) {
+    public EntryGroup(@NonNull String name) {
         this.name = name;
         this.childrens = new ArrayList<>();
         this.resolvers = new ParserResolvers();
@@ -28,15 +29,10 @@ public class EntryGroup implements Entry {
     }
 
     public void closeResolvers() {
-        //System.out.println("closing resolvers for " + this.name + " [parent: " + this.parentName() + "]");
         this.resolvers.removeAll().forEach(resolver -> resolver.handleClose(this));
     }
 
-/*    private String parentName() {
-        return this.parent == null ? null : this.parent.getName();
-    }*/
-
-    @NotNull
+    @NonNull
     public List<EntryGroup> getChildGroups() {
         List<EntryGroup> groups = new ArrayList<>();
         groups.add(this);
@@ -50,16 +46,16 @@ public class EntryGroup implements Entry {
         return groups;
     }
 
-    @NotNull
-    public EntryGroup downward(@NotNull String name) {
+    @NonNull
+    public EntryGroup downward(@NonNull String name) {
         EntryGroup group = new EntryGroup(name);
         group.parent = this;
         group.style = this.style;
         return this.addChildren(group);
     }
 
-    @NotNull
-    public EntryGroup upward(@NotNull String parentName) {
+    @NonNull
+    public EntryGroup upward(@NonNull String parentName) {
         EntryGroup upperGroup = this.parent;
         while (upperGroup != null && !upperGroup.name.equalsIgnoreCase(parentName)) {
             upperGroup = upperGroup.parent;
@@ -68,59 +64,58 @@ public class EntryGroup implements Entry {
         return upperGroup == null ? this : upperGroup;
     }
 
-    @NotNull
-    public EntryGroup backTo(@NotNull String parentName) {
+    @NonNull
+    public EntryGroup backTo(@NonNull String parentName) {
         if (this.name.equalsIgnoreCase(parentName)) return this;
 
         return this.upward(parentName);
     }
 
-    @NotNull
+    @NonNull
     public EntryGroup upward() {
         return this.parent == null ? this : this.parent;
     }
 
-    @NotNull
-    public TextEntry appendTextEntry(@NotNull String text) {
-        //System.out.println("append text '" + text + "' to the '" + this.name + "' group");
+    @NonNull
+    public TextEntry appendTextEntry(@NonNull String text) {
         return this.addChildren(new TextEntry(this, text));
     }
 
-    @NotNull
-    public LangEntry appendLangEntry(@NotNull String key, @Nullable String fallback) {
+    @NonNull
+    public LangEntry appendLangEntry(@NonNull String key, @Nullable String fallback) {
         return this.addChildren(new LangEntry(this, key, fallback));
     }
 
-    @NotNull
-    public KeybindEntry appendKeybindEntry(@NotNull String key) {
+    @NonNull
+    public KeybindEntry appendKeybindEntry(@NonNull String key) {
         return this.addChildren(new KeybindEntry(this, key));
     }
 
-    @NotNull
-    public <T extends ChildEntry> T appendEntry(@NotNull T entry) {
+    @NonNull
+    public <T extends ChildEntry> T appendEntry(@NonNull T entry) {
         return this.addChildren(entry);
     }
 
-    @NotNull
-    private <T extends Entry> T addChildren(@NotNull T child) {
+    @NonNull
+    private <T extends Entry> T addChildren(@NonNull T child) {
         this.childrens.add(child);
         return child;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightComponent toComponent() {
         List<NightComponent> children = this.childrens.stream().map(Entry::toComponent).toList();
 
         return NightComponent.empty().children(children);
     }
 
-    @NotNull
+    @NonNull
     public ParserResolvers getResolvers() {
         return this.resolvers;
     }
 
-    @NotNull
+    @NonNull
     public String name() {
         return this.name;
     }
@@ -130,18 +125,18 @@ public class EntryGroup implements Entry {
         return this.parent;
     }
 
-    @NotNull
+    @NonNull
     public NightStyle style() {
         return this.style;
     }
 
-    public void setStyle(@NotNull NightStyle style) {
+    public void setStyle(@NonNull NightStyle style) {
         if (this.styleLocked) return;
 
         this.style = style;
     }
 
-    public void setStyle(@NotNull Function<NightStyle, NightStyle> consumer) {
+    public void setStyle(@NonNull UnaryOperator<NightStyle> consumer) {
         if (this.styleLocked) return;
 
         this.setStyle(consumer.apply(this.style()));
@@ -155,12 +150,12 @@ public class EntryGroup implements Entry {
         this.styleLocked = styleLocked;
     }
 
-    @NotNull
+    @NonNull
     public List<Entry> getChildrens() {
         return this.childrens;
     }
 
-    public void setChildrens(@NotNull List<Entry> childrens) {
+    public void setChildrens(@NonNull List<Entry> childrens) {
         this.childrens.clear();
         this.childrens.addAll(childrens);
     }

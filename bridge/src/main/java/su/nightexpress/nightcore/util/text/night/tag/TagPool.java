@@ -1,9 +1,14 @@
 package su.nightexpress.nightcore.util.text.night.tag;
 
-import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.text.night.tag.handler.*;
-
 import java.util.function.Predicate;
+
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.util.text.night.tag.handler.ColorTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.DecorationTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.GradientTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.NamedColorTagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.handler.ShadowTagHandler;
 
 public interface TagPool extends Predicate<TagHandler> {
 
@@ -20,7 +25,7 @@ public interface TagPool extends Predicate<TagHandler> {
     Predicate<TagHandler> BASE_COLORS_AND_DECORATIONS = BASE_COLORS.and(DECORATIONS);
     Predicate<TagHandler> ALL_COLORS_AND_DECORATIONS  = ALL_COLORS.and(DECORATIONS);
 
-    default boolean isGoodTag(@NotNull TagHandler handler) {
+    default boolean isGoodTag(@NonNull TagHandler handler) {
         return this.test(handler);
     }
 }

@@ -1,7 +1,13 @@
 package su.nightexpress.nightcore.util.text.night;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.util.text.night.tag.TagContent;
 import su.nightexpress.nightcore.util.text.night.tag.TagHandler;
 import su.nightexpress.nightcore.util.text.night.tag.TagHandlerRegistry;
@@ -9,35 +15,30 @@ import su.nightexpress.nightcore.util.text.night.tag.handler.NamedColorTagHandle
 import su.nightexpress.nightcore.util.text.night.wrapper.SimpleTagWrapper;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class ParserUtils {
 
     public static final char ESCAPE        = '\\';
     public static final char OPEN_BRACKET  = '<';
     public static final char CLOSE_BRACKET = '>';
-    public static final char CLOSE_SLASH = '/';
-    public static final char DELIMITER   = ':';
-    public static final char QUOTE       = '\'';
+    public static final char CLOSE_SLASH   = '/';
+    public static final char DELIMITER     = ':';
+    public static final char QUOTE         = '\'';
     public static final char DOUBLE_QUOTE  = '"';
 
     @Deprecated
     private static final String[] LINE_SPLITTERS = {TagWrappers.BR, TagWrappers.NEWLINE};
 
     @Deprecated
-    public static String[] breakDownLineSplitters(@NotNull String string) {
+    public static String[] breakDownLineSplitters(@NonNull String string) {
         for (String alias : LINE_SPLITTERS) {
             string = string.replace(alias, "\n");
         }
         return string.split("\n");
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> breakDownLineSplitters(@NotNull List<String> list) {
+    public static List<String> breakDownLineSplitters(@NonNull List<String> list) {
         List<String> segmented = new ArrayList<>();
 
         list.forEach(line -> {
@@ -51,7 +52,8 @@ public class ParserUtils {
         return findUnescapedUnquotedUnprecededByChar(input, target, null, fromIndex);
     }
 
-    public static int findUnescapedUnquotedUnprecededByChar(String input, char target, @Nullable Character precede, int fromIndex) {
+    public static int findUnescapedUnquotedUnprecededByChar(String input, char target, @Nullable Character precede,
+                                                            int fromIndex) {
         if (fromIndex >= input.length()) return -1;
 
         boolean inSingleQuotes = false;
@@ -101,18 +103,19 @@ public class ParserUtils {
         return -1; // Not found
     }
 
-    @NotNull
-    public static TagContent parseInnerContent(@NotNull String tagContent) {
+    @NonNull
+    public static TagContent parseInnerContent(@NonNull String tagContent) {
         int index = ParserUtils.findUnescapedUnquotedChar(tagContent, ParserUtils.DELIMITER, 0);
 
         String first = index < 0 ? tagContent : ParserUtils.unquoted(tagContent.substring(0, index));
-        String second = index < 0 ? null : index >= tagContent.length() ? null : ParserUtils.unquoted(tagContent.substring(index + 1));
+        String second = index < 0 ? null : index >= tagContent.length() ? null : ParserUtils.unquoted(tagContent
+            .substring(index + 1));
 
         return new TagContent(first, second);
     }
 
     @Nullable
-    public static Color colorFromSchemeOrHex(@NotNull String string) {
+    public static Color colorFromSchemeOrHex(@NonNull String string) {
         if (string.startsWith("#") && string.length() == 7) {
             return colorFromHexString(string);
         }
@@ -121,7 +124,7 @@ public class ParserUtils {
     }
 
     @Nullable
-    public static Color findColorFromScheme(@NotNull String name) {
+    public static Color findColorFromScheme(@NonNull String name) {
         TagHandler handler = TagHandlerRegistry.create(name);
         if (handler instanceof NamedColorTagHandler colorHandler) {
             return colorHandler.getColor();
@@ -129,13 +132,13 @@ public class ParserUtils {
         return null;
     }
 
-    @NotNull
-    public static Color colorFromHexString(@NotNull String string) {
+    @NonNull
+    public static Color colorFromHexString(@NonNull String string) {
         return colorFromHexString(string, Color.WHITE);
     }
 
-    @NotNull
-    public static Color colorFromHexString(@NotNull String string, @NotNull Color fallback) {
+    @NonNull
+    public static Color colorFromHexString(@NonNull String string, @NonNull Color fallback) {
         if (string.charAt(0) != '#') string = "#" + string;
 
         try {
@@ -147,18 +150,18 @@ public class ParserUtils {
         }
     }
 
-    @NotNull
-    public static String colorToHexString(@NotNull Color color) {
+    @NonNull
+    public static String colorToHexString(@NonNull Color color) {
         return "#" + Integer.toHexString(color.getRGB()).substring(2);
     }
 
-    @NotNull
-    public static String quoted(@NotNull String content) {
+    @NonNull
+    public static String quoted(@NonNull String content) {
         return DOUBLE_QUOTE + escapeQuotes(content) + DOUBLE_QUOTE;
     }
 
-    @NotNull
-    public static String unquoted(@NotNull String str) {
+    @NonNull
+    public static String unquoted(@NonNull String str) {
         String dQuote = String.valueOf(DOUBLE_QUOTE);
         String sQuote = String.valueOf(QUOTE);
 
@@ -171,8 +174,8 @@ public class ParserUtils {
         return str.replace("\\", "");
     }
 
-    @NotNull
-    public static String escapeQuotes(@NotNull String content) {
+    @NonNull
+    public static String escapeQuotes(@NonNull String content) {
         return content.replace(String.valueOf(QUOTE), "\\'").replace(String.valueOf(DOUBLE_QUOTE), "\\\"");
     }
 
@@ -205,8 +208,8 @@ public class ParserUtils {
         };
     }
 
-    @NotNull
-    public static String wrapHexCodesAsTags(@NotNull String str) {
+    @NonNull
+    public static String wrapHexCodesAsTags(@NonNull String str) {
         StringBuilder builder = new StringBuilder(str);
 
         int index;

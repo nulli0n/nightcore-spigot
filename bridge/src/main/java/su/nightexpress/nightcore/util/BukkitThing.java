@@ -1,6 +1,18 @@
 package su.nightexpress.nightcore.util;
 
-import org.bukkit.*;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Keyed;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Registry;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockType;
 import org.bukkit.enchantments.Enchantment;
@@ -10,23 +22,18 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.MenuType;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.util.bridge.RegistryType;
-
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class BukkitThing {
 
     @Deprecated
     public static final char DEFAULT_SEPARATOR = ':';
 
-    @NotNull
+    @NonNull
     public static List<String> worldNames() {
         return Bukkit.getServer().getWorlds().stream().map(WorldInfo::getName).toList();
     }
@@ -41,9 +48,9 @@ public class BukkitThing {
         return isValidNamespaceChar(c) || c == '/';
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    private static String validateNamespaceOrValue(@NotNull String str, @NotNull Predicate<Character> predicate) {
+    private static String validateNamespaceOrValue(@NonNull String str, @NonNull Predicate<Character> predicate) {
         char[] chars = LowerCase.INTERNAL.apply(str).toCharArray();
 
         StringBuilder builder = new StringBuilder();
@@ -61,44 +68,44 @@ public class BukkitThing {
         return builder.toString();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String validateNamespace(@NotNull String namespace) {
+    public static String validateNamespace(@NonNull String namespace) {
         return validateNamespaceOrValue(namespace, BukkitThing::isValidNamespaceChar);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String validateValue(@NotNull String value) {
+    public static String validateValue(@NonNull String value) {
         return validateNamespaceOrValue(value, BukkitThing::isValidKeyChar);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static NamespacedKey parseKey(@NotNull String string) {
+    public static NamespacedKey parseKey(@NonNull String string) {
         return NightKey.key(string).toBukkit();
 
         /*int index = string.indexOf(DEFAULT_SEPARATOR);
         String namespace = index >= 1 ? string.substring(0, index) : NamespacedKey.MINECRAFT;
         String value = index >= 0 ? string.substring(index + 1) : string;
-
+        
         return parseKey(namespace, value);*/
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static NamespacedKey parseKey(@NotNull String namespace, @NotNull String value) {
+    public static NamespacedKey parseKey(@NonNull String namespace, @NonNull String value) {
         return NightKey.key(namespace, value).toBukkit();
 
         /*namespace = BukkitThing.validateNamespace(namespace);
         value = BukkitThing.validateValue(value);
-
+        
         return new NamespacedKey(namespace, value);*/
     }
 
     @Nullable
     @Deprecated
-    public static <T extends Keyed> T fromRegistry(@NotNull Registry<@NotNull T> registry, @NotNull String key) {
+    public static <T extends Keyed> T fromRegistry(@NonNull Registry<@NonNull T> registry, @NonNull String key) {
         return registry.get(parseKey(key));
 
         //return fromRegistry(registry, NamespacedKey.MINECRAFT, key);
@@ -106,195 +113,193 @@ public class BukkitThing {
 
     @Nullable
     @Deprecated
-    public static <T extends Keyed> T fromRegistry(@NotNull Registry<@NotNull T> registry, @NotNull String namespace, @NotNull String key) {
+    public static <T extends Keyed> T fromRegistry(@NonNull Registry<@NonNull T> registry, @NonNull String namespace,
+                                                   @NonNull String key) {
         return registry.get(parseKey(namespace, key));
 
-//        try {
-//            NamespacedKey namespacedKey = new NamespacedKey(namespace.toLowerCase(), key.toLowerCase());
-//            return registry.get(namespacedKey);
-//        }
-//        catch (IllegalArgumentException exception) {
-//            return null;
-//        }
+        //        try {
+        //            NamespacedKey namespacedKey = new NamespacedKey(namespace.toLowerCase(), key.toLowerCase());
+        //            return registry.get(namespacedKey);
+        //        }
+        //        catch (IllegalArgumentException exception) {
+        //            return null;
+        //        }
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static <T extends Keyed> Set<T> allFromRegistry(@NotNull Registry<@NotNull T> registry) {
+    public static <T extends Keyed> Set<T> allFromRegistry(@NonNull Registry<@NonNull T> registry) {
         return registry.stream().collect(Collectors.toSet());
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static <T extends Keyed> List<String> getNames(@NotNull Registry<@NotNull T> registry) {
+    public static <T extends Keyed> List<String> getNames(@NonNull Registry<@NonNull T> registry) {
         if (Version.isBehind(Version.V1_20_R2)) {
             return StreamSupport.stream(registry.spliterator(), false).map(BukkitThing::toString).toList();
         }
         return registry.stream().map(BukkitThing::toString).toList();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String toString(@NotNull Keyed keyed) {
+    public static String toString(@NonNull Keyed keyed) {
         return keyed.getKey().getKey();
     }
 
     @Nullable
-    public static <T extends Keyed> T getByString(@NotNull RegistryType<T> registryKey, @NotNull String string) {
+    public static <T extends Keyed> T getByString(@NonNull RegistryType<T> registryKey, @NonNull String string) {
         return NightKey.parse(string).map(key -> getByKey(registryKey, key)).orElse(null);
     }
 
     @Nullable
-    public static <T extends Keyed> T getByNamespaceValue(@NotNull RegistryType<T> registryKey, @NotNull String namespace, @NotNull String value) {
+    public static <T extends Keyed> T getByNamespaceValue(@NonNull RegistryType<T> registryKey,
+                                                          @NonNull String namespace, @NonNull String value) {
         return NightKey.parse(namespace, value).map(key -> getByKey(registryKey, key)).orElse(null);
     }
 
     @Nullable
-    public static <T extends Keyed> T getByKey(@NotNull RegistryType<T> registryType, @NotNull NightKey key) {
+    public static <T extends Keyed> T getByKey(@NonNull RegistryType<T> registryType, @NonNull NightKey key) {
         return getByKey(registryType, key.toBukkit());
     }
 
     @Nullable
-    public static <T extends Keyed> T getByKey(@NotNull RegistryType<T> registryType, @NotNull NamespacedKey key) {
+    public static <T extends Keyed> T getByKey(@NonNull RegistryType<T> registryType, @NonNull NamespacedKey key) {
         return registryType.getRegistry().get(key);
     }
 
-    @NotNull
-    public static <T extends Keyed> Set<T> getAll(@NotNull RegistryType<T> registryType) {
+    @NonNull
+    public static <T extends Keyed> Set<T> getAll(@NonNull RegistryType<T> registryType) {
         return registryType.getRegistry().stream().collect(Collectors.toSet());
     }
 
-    @NotNull
-    public static <T extends Keyed> List<NamespacedKey> getKeys(@NotNull RegistryType<T> registryType) {
+    @NonNull
+    public static <T extends Keyed> List<NamespacedKey> getKeys(@NonNull RegistryType<T> registryType) {
         var registry = registryType.getRegistry();
 
         return Version.isPaper() ? registry.keyStream().toList() : registry.stream().map(Keyed::getKey).toList();
     }
 
-    @NotNull
-    public static <T extends Keyed> List<String> getValues(@NotNull RegistryType<T> registryType) {
+    @NonNull
+    public static <T extends Keyed> List<String> getValues(@NonNull RegistryType<T> registryType) {
         return registryType.getRegistry().stream().map(BukkitThing::getValue).toList();
     }
 
-    @NotNull
-    public static <T extends Keyed> List<String> getAsStrings(@NotNull RegistryType<T> registryType) {
+    @NonNull
+    public static <T extends Keyed> List<String> getAsStrings(@NonNull RegistryType<T> registryType) {
         return getKeys(registryType).stream().map(BukkitThing::getAsString).toList();
     }
 
-    @NotNull
-    public static String getNamespace(@NotNull Keyed keyed) {
+    @NonNull
+    public static String getNamespace(@NonNull Keyed keyed) {
         return keyed.getKey().getNamespace();
     }
 
-    @NotNull
-    public static String getValue(@NotNull Keyed keyed) {
+    @NonNull
+    public static String getValue(@NonNull Keyed keyed) {
         return keyed.getKey().getKey();
     }
 
-    @NotNull
-    public static String getAsString(@NotNull Keyed keyed) {
+    @NonNull
+    public static String getAsString(@NonNull Keyed keyed) {
         return getAsString(keyed.getKey());
     }
 
-    @NotNull
-    public static String getAsString(@NotNull NamespacedKey key) {
+    @NonNull
+    public static String getAsString(@NonNull NamespacedKey key) {
         return Version.isPaper() ? key.asString() : key.getNamespace() + NightKey.DELIMITER + key.getKey();
     }
 
 
-
-    @NotNull
+    @NonNull
     public static Set<Material> getMaterials() {
         return getAll(RegistryType.MATERIAL);
     }
 
-    @NotNull
+    @NonNull
     public static Set<Enchantment> getEnchantments() {
         return getAll(RegistryType.ENCHANTMENT);
     }
 
-    @NotNull
+    @NonNull
     public static Set<Attribute> getAttributes() {
         return getAll(RegistryType.ATTRIBUTE);
     }
 
-    @NotNull
+    @NonNull
     public static Set<ItemType> getItemTypes() {
         return getAll(RegistryType.MC_1_21.ITEM);
     }
 
-    @NotNull
+    @NonNull
     public static Set<BlockType> getBlockTypes() {
         return getAll(RegistryType.MC_1_21.BLOCK);
     }
 
-    @NotNull
+    @NonNull
     public static Set<PotionEffectType> getEffectTypes() {
         return getAll(RegistryType.MOB_EFFECT);
     }
 
 
-
-
-
     @Nullable
-    public static Material getMaterial(@NotNull String name) {
+    public static Material getMaterial(@NonNull String name) {
         return getByString(RegistryType.MATERIAL, name);
     }
 
     @Nullable
-    public static ItemType getItemType(@NotNull String name) {
+    public static ItemType getItemType(@NonNull String name) {
         return getByString(RegistryType.MC_1_21.ITEM, name);
     }
 
     @Nullable
-    public static BlockType getBlockType(@NotNull String name) {
+    public static BlockType getBlockType(@NonNull String name) {
         return getByString(RegistryType.MC_1_21.BLOCK, name);
     }
 
     @Nullable
-    public static Enchantment getEnchantment(@NotNull String name) {
+    public static Enchantment getEnchantment(@NonNull String name) {
         return getByString(RegistryType.ENCHANTMENT, name);
     }
 
     @Nullable
-    public static EntityType getEntityType(@NotNull String name) {
+    public static EntityType getEntityType(@NonNull String name) {
         return getByString(RegistryType.ENTITY_TYPE, name);
     }
 
     @Nullable
-    public static Attribute getAttribute(@NotNull String name) {
+    public static Attribute getAttribute(@NonNull String name) {
         return getByString(RegistryType.ATTRIBUTE, name);
     }
 
     @Nullable
     @Deprecated
-    public static PotionEffectType getPotionEffect(@NotNull String name) {
+    public static PotionEffectType getPotionEffect(@NonNull String name) {
         return getEffectType(name);
     }
 
     @Nullable
-    public static PotionEffectType getEffectType(@NotNull String name) {
+    public static PotionEffectType getEffectType(@NonNull String name) {
         return getByString(RegistryType.MOB_EFFECT, name);
     }
 
     @Nullable
-    public static PotionType getPotionType(@NotNull String name) {
+    public static PotionType getPotionType(@NonNull String name) {
         return getByString(RegistryType.POTION, name);
     }
 
     @Nullable
-    public static Sound getSound(@NotNull String name) {
+    public static Sound getSound(@NonNull String name) {
         return getByString(RegistryType.SOUND, name);
     }
 
     @Nullable
-    public static Particle getParticle(@NotNull String name) {
+    public static Particle getParticle(@NonNull String name) {
         return getByString(RegistryType.PARTICLE_TYPE, name);
     }
 
     @Nullable
-    public static MenuType getMenuType(@NotNull String name) {
+    public static MenuType getMenuType(@NonNull String name) {
         return getByString(RegistryType.MC_1_21.MENU, name);
     }
 }

@@ -1,24 +1,25 @@
 package su.nightexpress.nightcore.util.text.night.wrapper;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 
 public class SimpleTagWrapper implements TagWrapper {
 
-    private final String tag;
+    private final String   tag;
     private final String[] arguments;
 
-    public SimpleTagWrapper(@NotNull String tag, String[] arguments) {
+    public SimpleTagWrapper(@NonNull String tag, String[] arguments) {
         this.tag = tag;
         this.arguments = arguments;
     }
 
-    @NotNull
+    @NonNull
     public String opening() {
         return ParserUtils.OPEN_BRACKET + this.openingNoBrackets() + ParserUtils.CLOSE_BRACKET;
     }
 
-    @NotNull
+    @NonNull
     public String openingNoBrackets() {
         StringBuilder builder = new StringBuilder();
         builder.append(this.tag);
@@ -29,14 +30,15 @@ public class SimpleTagWrapper implements TagWrapper {
         return builder.toString();
     }
 
-    @NotNull
+    @NonNull
     public String closing() {
-        return String.valueOf(ParserUtils.OPEN_BRACKET) + ParserUtils.CLOSE_SLASH + this.tag + ParserUtils.CLOSE_BRACKET;
+        return String.valueOf(
+            ParserUtils.OPEN_BRACKET) + ParserUtils.CLOSE_SLASH + this.tag + ParserUtils.CLOSE_BRACKET;
     }
 
     @Override
-    @NotNull
-    public String wrap(@NotNull String string) {
+    @NonNull
+    public String wrap(@NonNull String string) {
         return this.opening() + string + this.closing();
     }
 }

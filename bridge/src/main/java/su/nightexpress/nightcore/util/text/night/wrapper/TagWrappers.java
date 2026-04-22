@@ -1,15 +1,16 @@
 package su.nightexpress.nightcore.util.text.night.wrapper;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.night.tag.TagShortNames;
-
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class TagWrappers {
 
@@ -19,45 +20,92 @@ public class TagWrappers {
     public static final SimpleTagWrapper STRIKETHROUGH = TagWrapper.simple(TagShortNames.STRIKETHROUGH);
     public static final SimpleTagWrapper UNDERLINED    = TagWrapper.simple(TagShortNames.UNDERLINED);
 
-    public static final OneArgument<SimpleTagWrapper>   COLOR        = hex -> TagWrapper.withArguments(TagShortNames.COLOR, hex);
-    public static final OneArgument<SimpleTagWrapper>   SHADOW       = hex -> TagWrapper.withArguments(TagShortNames.SHADOW_COLOR, hex);
-    public static final OneArgument<SimpleTagWrapper>   SHADOW_1_0       = hex -> TagWrapper.withArguments(TagShortNames.SHADOW_COLOR, hex, String.valueOf(1f));
-    public static final TwoArgument<SimpleTagWrapper>   SHADOW_ALPHA = (hex, alpha) -> TagWrapper.withArguments(TagShortNames.SHADOW_COLOR, hex, alpha);
-    public static final TwoArgument<SimpleTagWrapper>   GRADIENT     = (first, second) -> TagWrapper.withArguments(TagShortNames.GRADIENT, first, second);
-    public static final ThreeArgument<SimpleTagWrapper> GRADIENT_3   = (first, second, third) -> TagWrapper.withArguments(TagShortNames.GRADIENT, first, second, third);
+    public static final OneArgument<SimpleTagWrapper> COLOR = hex -> TagWrapper.withArguments(
+        TagShortNames.COLOR, hex);
+
+    public static final OneArgument<SimpleTagWrapper> SHADOW = hex -> TagWrapper.withArguments(
+        TagShortNames.SHADOW_COLOR, hex);
+
+    public static final OneArgument<SimpleTagWrapper> SHADOW_1_0 = hex -> TagWrapper.withArguments(
+        TagShortNames.SHADOW_COLOR, hex, String.valueOf(1f));
+
+    public static final TwoArgument<SimpleTagWrapper> SHADOW_ALPHA = (hex, alpha) -> TagWrapper.withArguments(
+        TagShortNames.SHADOW_COLOR, hex, alpha);
+
+    public static final TwoArgument<SimpleTagWrapper> GRADIENT = (first, second) -> TagWrapper.withArguments(
+        TagShortNames.GRADIENT, first, second);
+
+    public static final ThreeArgument<SimpleTagWrapper> GRADIENT_3 = (first, second, third) -> TagWrapper
+        .withArguments(TagShortNames.GRADIENT, first, second, third);
 
     public static final String BR      = TagWrapper.simple(TagShortNames.BR).opening();
     public static final String NEWLINE = TagWrapper.simple(TagShortNames.NEWLINE).opening();
 
-    public static final OneArgument<SimpleTagWrapper> FONT      = font -> TagWrapper.withArguments(TagShortNames.FONT, font);
-    public static final Function<String, String>      KEY       = key -> TagWrapper.withArguments(TagShortNames.KEYBIND, key).opening();
-    public static final OneArgument<SimpleTagWrapper> INSERTION = text -> TagWrapper.withArguments(TagShortNames.INSERTION, text);
+    public static final OneArgument<SimpleTagWrapper> FONT = font -> TagWrapper.withArguments(TagShortNames.FONT, font);
 
-    public static final BiFunction<String, String, String> SPRITE          = (atlas, sprite) -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted(atlas), ParserUtils.quoted(sprite)).opening();
+    public static final Function<String, String> KEY = key -> TagWrapper.withArguments(TagShortNames.KEYBIND, key)
+        .opening();
+
+    public static final OneArgument<SimpleTagWrapper> INSERTION = text -> TagWrapper.withArguments(
+        TagShortNames.INSERTION, text);
+
+    public static final BiFunction<String, String, String> SPRITE = (atlas, sprite) -> TagWrapper
+        .withArguments(TagShortNames.SPRITE, ParserUtils.quoted(atlas), ParserUtils.quoted(sprite)).opening();
+
     @Deprecated
-    public static final Function<String, String>           SPRITE_NO_ATLAS = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted(sprite)).opening();
-    public static final Function<String, String>           SPRITE_BLOCKS   = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("blocks"), ParserUtils.quoted(sprite)).opening();
-    public static final Function<String, String>           SPRITE_ITEMS    = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("items"), ParserUtils.quoted(sprite)).opening();
-    public static final Function<String, String>           SPRITE_GUI    = sprite -> TagWrapper.withArguments(TagShortNames.SPRITE, ParserUtils.quoted("gui"), ParserUtils.quoted(sprite)).opening();
+    public static final Function<String, String> SPRITE_NO_ATLAS = sprite -> TagWrapper.withArguments(
+        TagShortNames.SPRITE, ParserUtils.quoted(sprite)).opening();
 
-    public static final Function<Material, String> SPRITE_BLOCK = blockType -> SPRITE_BLOCKS.apply("block/" + BukkitThing.getValue(blockType));
-    public static final Function<Material, String> SPRITE_ITEM  = itemType -> SPRITE_ITEMS.apply("item/" + BukkitThing.getValue(itemType));
+    public static final Function<String, String> SPRITE_BLOCKS = sprite -> TagWrapper.withArguments(
+        TagShortNames.SPRITE, ParserUtils.quoted("blocks"), ParserUtils.quoted(sprite)).opening();
 
-    public static final BiFunction<String, Boolean, String> HEAD     = (data, hat) -> TagWrapper.withArguments(TagShortNames.HEAD, ParserUtils.quoted(data), String.valueOf(hat)).opening();
-    public static final Function<String, String>            HEAD_HAT = data -> TagWrapper.withArguments(TagShortNames.HEAD, ParserUtils.quoted(data)).opening();
+    public static final Function<String, String> SPRITE_ITEMS = sprite -> TagWrapper.withArguments(
+        TagShortNames.SPRITE, ParserUtils.quoted("items"), ParserUtils.quoted(sprite)).opening();
 
-    public static final Function<String, String>           LANG    = key -> TagWrapper.withArguments(TagShortNames.LANG, ParserUtils.quoted(key)).opening();
-    public static final BiFunction<String, String, String> LANG_OR = (key, fallback) -> TagWrapper.withArguments(TagShortNames.LANG_OR, ParserUtils.quoted(key), ParserUtils.quoted(fallback)).opening();
+    public static final Function<String, String> SPRITE_GUI = sprite -> TagWrapper.withArguments(
+        TagShortNames.SPRITE, ParserUtils.quoted("gui"), ParserUtils.quoted(sprite)).opening();
 
-    public static final OneArgument<SimpleTagWrapper> SHOW_TEXT = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_TEXT.name(), ParserUtils.quoted(ParserUtils.escapeQuotes(text)));
-    public static final OneArgument<SimpleTagWrapper> SHOW_ITEM = text -> TagWrapper.withArguments(TagShortNames.HOVER, NightHoverEvent.Action.SHOW_ITEM.name(), ParserUtils.quoted(ParserUtils.escapeQuotes(text)));
+    public static final Function<Material, String> SPRITE_BLOCK = blockType -> SPRITE_BLOCKS.apply("block/" +
+        BukkitThing.getValue(blockType));
 
-    public static final OneArgument<SimpleTagWrapper> SUGGEST_COMMAND   = command -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.SUGGEST_COMMAND.toString(), ParserUtils.quoted(command));
-    public static final OneArgument<SimpleTagWrapper> RUN_COMMAND       = command -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.RUN_COMMAND.toString(), ParserUtils.quoted(command));
-    public static final OneArgument<SimpleTagWrapper> OPEN_FILE         = filePath -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.OPEN_FILE.toString(), ParserUtils.quoted(filePath));
-    public static final OneArgument<SimpleTagWrapper> OPEN_URL          = url -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.OPEN_URL.toString(), ParserUtils.quoted(url));
-    public static final OneArgument<SimpleTagWrapper> CHANGE_PAGE       = page -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.CHANGE_PAGE.toString(), ParserUtils.quoted(page));
-    public static final OneArgument<SimpleTagWrapper> COPY_TO_CLIPBOARD = text -> TagWrapper.withArguments(TagShortNames.CLICK, NightClickEvent.Action.COPY_TO_CLIPBOARD.toString(), ParserUtils.quoted(text));
+    public static final Function<Material, String> SPRITE_ITEM = itemType -> SPRITE_ITEMS.apply("item/" + BukkitThing
+        .getValue(itemType));
+
+    public static final BiFunction<String, Boolean, String> HEAD = (data, hat) -> TagWrapper.withArguments(
+        TagShortNames.HEAD, ParserUtils.quoted(data), String.valueOf(hat)).opening();
+
+    public static final Function<String, String> HEAD_HAT = data -> TagWrapper.withArguments(
+        TagShortNames.HEAD, ParserUtils.quoted(data)).opening();
+
+    public static final Function<String, String> LANG = key -> TagWrapper.withArguments(TagShortNames.LANG,
+        ParserUtils.quoted(key)).opening();
+
+    public static final BiFunction<String, String, String> LANG_OR = (key, fallback) -> TagWrapper.withArguments(
+        TagShortNames.LANG_OR, ParserUtils.quoted(key), ParserUtils.quoted(fallback)).opening();
+
+    public static final OneArgument<SimpleTagWrapper> SHOW_TEXT = text -> TagWrapper.withArguments(TagShortNames.HOVER,
+        NightHoverEvent.Action.SHOW_TEXT.name(), ParserUtils.quoted(ParserUtils.escapeQuotes(text)));
+
+    public static final OneArgument<SimpleTagWrapper> SHOW_ITEM = text -> TagWrapper.withArguments(TagShortNames.HOVER,
+        NightHoverEvent.Action.SHOW_ITEM.name(), ParserUtils.quoted(ParserUtils.escapeQuotes(text)));
+
+    public static final OneArgument<SimpleTagWrapper> SUGGEST_COMMAND = command -> TagWrapper.withArguments(
+        TagShortNames.CLICK, NightClickEvent.Action.SUGGEST_COMMAND.toString(), ParserUtils.quoted(command));
+
+    public static final OneArgument<SimpleTagWrapper> RUN_COMMAND = command -> TagWrapper.withArguments(
+        TagShortNames.CLICK, NightClickEvent.Action.RUN_COMMAND.toString(), ParserUtils.quoted(command));
+
+    public static final OneArgument<SimpleTagWrapper> OPEN_FILE = filePath -> TagWrapper.withArguments(
+        TagShortNames.CLICK, NightClickEvent.Action.OPEN_FILE.toString(), ParserUtils.quoted(filePath));
+
+    public static final OneArgument<SimpleTagWrapper> OPEN_URL = url -> TagWrapper.withArguments(
+        TagShortNames.CLICK, NightClickEvent.Action.OPEN_URL.toString(), ParserUtils.quoted(url));
+
+    public static final OneArgument<SimpleTagWrapper> CHANGE_PAGE = page -> TagWrapper.withArguments(
+        TagShortNames.CLICK, NightClickEvent.Action.CHANGE_PAGE.toString(), ParserUtils.quoted(page));
+
+    public static final OneArgument<SimpleTagWrapper> COPY_TO_CLIPBOARD = text -> TagWrapper.withArguments(
+        TagShortNames.CLICK, NightClickEvent.Action.COPY_TO_CLIPBOARD.toString(), ParserUtils.quoted(text));
 
     public static final SimpleTagWrapper RESET = TagWrapper.simple(TagShortNames.RESET);
 
@@ -103,16 +151,19 @@ public class TagWrappers {
 
     public interface OneArgument<T extends TagWrapper> {
 
-        @NotNull T with(@NotNull String arg);
+        @NonNull
+        T with(@NonNull String arg);
     }
 
     public interface TwoArgument<T extends TagWrapper> {
 
-        @NotNull T with(@NotNull String first, @NotNull String second);
+        @NonNull
+        T with(@NonNull String first, @NonNull String second);
     }
 
     public interface ThreeArgument<T extends TagWrapper> {
 
-        @NotNull T with(@NotNull String first, @NotNull String second, @NotNull String third);
+        @NonNull
+        T with(@NonNull String first, @NonNull String second, @NonNull String third);
     }
 }

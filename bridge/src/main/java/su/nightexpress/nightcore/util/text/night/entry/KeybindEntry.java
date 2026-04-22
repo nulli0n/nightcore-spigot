@@ -1,13 +1,14 @@
 package su.nightexpress.nightcore.util.text.night.entry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 public class KeybindEntry extends ChildEntry {
 
     private final String key;
 
-    public KeybindEntry(@NotNull EntryGroup parent, @NotNull String key) {
+    public KeybindEntry(@NonNull EntryGroup parent, @NonNull String key) {
         super(parent);
         this.key = key;
     }
@@ -18,7 +19,7 @@ public class KeybindEntry extends ChildEntry {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightComponent toComponent() {
         return NightComponent.keybind(this.key, this.parent.style());
     }

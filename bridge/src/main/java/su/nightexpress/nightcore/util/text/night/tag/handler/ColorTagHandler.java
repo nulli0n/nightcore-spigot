@@ -1,16 +1,17 @@
 package su.nightexpress.nightcore.util.text.night.tag.handler;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.awt.Color;
+
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.night.entry.EntryGroup;
-
-import java.awt.*;
 
 public class ColorTagHandler extends ClassicTagHandler {
 
     @Override
-    protected void onHandleOpen(@NotNull EntryGroup group, @Nullable String tagContent) {
+    protected void onHandleOpen(@NonNull EntryGroup group, @Nullable String tagContent) {
         if (tagContent == null) return;
 
         Color color = ParserUtils.colorFromSchemeOrHex(tagContent);
@@ -20,7 +21,7 @@ public class ColorTagHandler extends ClassicTagHandler {
     }
 
     @Override
-    protected void onHandleClose(@NotNull EntryGroup group) {
+    protected void onHandleClose(@NonNull EntryGroup group) {
 
     }
 }

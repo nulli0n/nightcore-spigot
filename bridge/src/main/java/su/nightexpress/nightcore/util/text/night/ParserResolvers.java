@@ -1,15 +1,16 @@
 package su.nightexpress.nightcore.util.text.night;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.LowerCase;
-import su.nightexpress.nightcore.util.text.night.tag.TagHandler;
-import su.nightexpress.nightcore.util.text.night.tag.TagHandlerRegistry;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.util.LowerCase;
+import su.nightexpress.nightcore.util.text.night.tag.TagHandler;
+import su.nightexpress.nightcore.util.text.night.tag.TagHandlerRegistry;
 
 public class ParserResolvers {
 
@@ -22,8 +23,8 @@ public class ParserResolvers {
             this.resolvers = new ArrayList<>();
         }
 
-        @NotNull
-        public TagHandler add(@NotNull TagHandler resolver) {
+        @NonNull
+        public TagHandler add(@NonNull TagHandler resolver) {
             this.resolvers.add(resolver);
             return resolver;
         }
@@ -44,7 +45,7 @@ public class ParserResolvers {
         this.indexes.clear();
     }
 
-    @NotNull
+    @NonNull
     public List<TagHandler> removeAll() {
         List<TagHandler> resolvers = this.indexes.values().stream().flatMap(index -> index.resolvers.stream()).toList();
         this.clear();
@@ -52,7 +53,7 @@ public class ParserResolvers {
     }
 
     @Nullable
-    public TagHandler createFor(@NotNull String tagName) {
+    public TagHandler createFor(@NonNull String tagName) {
         String name = LowerCase.INTERNAL.apply(tagName);
 
         TagHandler resolver = TagHandlerRegistry.create(name);
@@ -64,7 +65,7 @@ public class ParserResolvers {
     }
 
     @Nullable
-    public TagHandler removeFor(@NotNull String tagName) {
+    public TagHandler removeFor(@NonNull String tagName) {
         String name = LowerCase.INTERNAL.apply(tagName);
 
         Index index = this.indexes.get(name);

@@ -1,18 +1,19 @@
 package su.nightexpress.nightcore.util.text.night.entry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 public class TextEntry extends ChildEntry {
 
     private final String text;
 
-    public TextEntry(@NotNull EntryGroup parent, @NotNull String text) {
+    public TextEntry(@NonNull EntryGroup parent, @NonNull String text) {
         super(parent);
         this.text = text;
     }
 
-    @NotNull
+    @NonNull
     public String text() {
         return this.text;
     }
@@ -31,7 +32,7 @@ public class TextEntry extends ChildEntry {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightComponent toComponent() {
         return NightComponent.text(this.text, this.parent.style());
     }

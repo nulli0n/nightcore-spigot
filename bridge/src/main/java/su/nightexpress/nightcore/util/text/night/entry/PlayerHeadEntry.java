@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.util.text.night.entry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.text.contents.NightPlayerHeadObjectContents;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
@@ -8,7 +9,7 @@ public class PlayerHeadEntry extends ChildEntry {
 
     private final NightPlayerHeadObjectContents contents;
 
-    public PlayerHeadEntry(@NotNull EntryGroup parent, @NotNull NightPlayerHeadObjectContents contents) {
+    public PlayerHeadEntry(@NonNull EntryGroup parent, @NonNull NightPlayerHeadObjectContents contents) {
         super(parent);
         this.contents = contents;
     }
@@ -19,7 +20,7 @@ public class PlayerHeadEntry extends ChildEntry {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightComponent toComponent() {
         return NightComponent.object(this.parent.style(), this.contents);
     }
