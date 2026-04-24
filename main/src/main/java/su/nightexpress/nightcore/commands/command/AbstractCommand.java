@@ -127,13 +127,6 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
 
         if (reader.canMoveForward()) {
             for (CommandNode child : node.getRelevantNodes(reader)) {
-                if (!child.hasPermission(sender)) {
-                    if (forExecution) {
-                        CoreLang.ERROR_NO_PERMISSION.withPrefix(this.plugin).send(sender);
-                    }
-                    return null;
-                }
-
                 return this.parseNodes(child, reader, builder, forExecution);
             }
         }
@@ -150,6 +143,13 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
     }
 
     private boolean testRequirements(@NonNull CommandSender sender, @NonNull CommandNode node, boolean forExecution) {
+        if (!node.hasPermission(sender)) {
+            if (forExecution) {
+                CoreLang.ERROR_NO_PERMISSION.withPrefix(this.plugin).send(sender);
+            }
+            return false;
+        }
+
         for (CommandRequirement requirement : node.getRequirements()) {
             if (!requirement.test(sender)) {
                 if (forExecution) {

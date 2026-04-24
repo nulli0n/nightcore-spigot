@@ -82,7 +82,12 @@ public class HubNode extends ExecutableNode {
 
     @Override
     public void suggests(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
-        suggestions.setSuggestions(new ArrayList<>(this.children.keySet()));
+        CommandSender sender = context.getSender();
+
+        suggestions.setSuggestions(this.children.values().stream()
+            .filter(child -> child.hasPermission(sender))
+            .map(CommandNode::getName)
+            .toList());
     }
 
     @Override
