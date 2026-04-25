@@ -9,8 +9,11 @@ import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 
 import java.math.RoundingMode;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 public class CoreConfig {
 
@@ -34,6 +37,24 @@ public class CoreConfig {
     public static final ConfigValue<Boolean> ECONOMY_PLACEHOLDERS_API_FORMAT = ConfigValue.create("Integrations.Economy.PlaceholderAPI_In_Format",
         true,
         "Whether to apply " + PAPI.NAME + " placeholders in currency's Format setting."
+    );
+
+    public static final ConfigValue<Optional<UUID>> VAULT_DEBIT_ACCOUNT = ConfigValue.create(
+        "Integrations.Economy.Vault.DebitAccount",
+        (config, path) -> {
+            String raw = config.getString(path);
+            if (raw == null || raw.isBlank()) return Optional.empty();
+            try {
+                return Optional.of(UUID.fromString(raw.trim()));
+            } catch (IllegalArgumentException ignored) {
+                return Optional.empty();
+            }
+        },
+        (config, path, value) -> config.set(path, value.map(UUID::toString).orElse("")),
+        (Supplier<Optional<UUID>>) Optional::empty,
+        "Optional Vault account (UUID) to debit from instead of the payer when processing economy payments.",
+        "Leave empty to charge the payer as usual. Uses UUID only; do not use player names.",
+        "When set, the plugin that performs the payment should check this account's balance (e.g. hasEnough) before depositing and is responsible for notifying players if insufficient."
     );
 
     public static final ConfigValue<Set<String>> ITEMS_DISABLED_PROVIDERS = ConfigValue.create("Integrations.Items.DisabledProviders",
