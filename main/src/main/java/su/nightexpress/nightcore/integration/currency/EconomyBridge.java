@@ -117,21 +117,6 @@ public class EconomyBridge {
 
     @Deprecated(forRemoval = true)
     public static boolean deposit(@NonNull UUID playerId, @NonNull String id, double amount) {
-        if (CurrencyId.VAULT.equals(id)) {
-            Optional<UUID> debitAccountId = getVaultDebitAccountId();
-            if (debitAccountId.isPresent()) {
-                Currency currency = getCurrency(id);
-                if (currency == null) return false;
-
-                UUID debitId = debitAccountId.get();
-                if (getBalance(debitId, id) < amount) return false;
-
-                currency.take(debitId, amount);
-                currency.give(playerId, amount);
-                return true;
-            }
-        }
-
         api.deposit(playerId, id, amount);
         return true;
     }
