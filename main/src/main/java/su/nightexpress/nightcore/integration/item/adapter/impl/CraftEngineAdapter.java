@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.integration.item.adapter.impl;
 
 import net.momirealms.craftengine.bukkit.api.CraftEngineItems;
-import net.momirealms.craftengine.core.item.CustomItem;
+import net.momirealms.craftengine.bukkit.item.BukkitItemDefinition;
 import net.momirealms.craftengine.core.util.Key;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,8 @@ public class CraftEngineAdapter extends IdentifiableItemAdapter {
     @Override
     @Nullable
     public ItemStack createItem(@NotNull String itemId) {
-        CustomItem<ItemStack> customItem = CraftEngineItems.byId(Key.of(itemId));
-        return customItem != null ? customItem.buildItemStack() : null;
+        BukkitItemDefinition customItem = CraftEngineItems.byId(Key.of(itemId));
+        return customItem != null ? customItem.buildBukkitItem() : null;
     }
 
     @Override
