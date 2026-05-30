@@ -5,7 +5,7 @@ import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.NumberUtil;
@@ -23,23 +23,23 @@ public class ChunkPos implements Writeable {
         this.z = z;
     }
 
-    @NotNull
-    public static ChunkPos read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static ChunkPos read(@NonNull FileConfig config, @NonNull String path) {
         return deserialize(String.valueOf(config.getString(path)));
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path, this.serialize());
     }
 
-    @NotNull
+    @NonNull
     public String serialize() {
         return this.x + "," + this.z;
     }
 
-    @NotNull
-    public static ChunkPos deserialize(@NotNull String str) {
+    @NonNull
+    public static ChunkPos deserialize(@NonNull String str) {
         String[] split = str.split(",");
         if (split.length < 2) return empty();
 
@@ -50,43 +50,42 @@ public class ChunkPos implements Writeable {
     }
 
 
-
-    @NotNull
+    @NonNull
     public static ChunkPos empty() {
         return new ChunkPos(0, 0);
     }
 
-    @NotNull
-    public static ChunkPos from(@NotNull Location location) {
+    @NonNull
+    public static ChunkPos from(@NonNull Location location) {
         return from(location.getBlockX(), location.getBlockZ());
     }
 
-    @NotNull
-    public static ChunkPos from(@NotNull Block block) {
+    @NonNull
+    public static ChunkPos from(@NonNull Block block) {
         return from(block.getX(), block.getZ());
     }
 
-    @NotNull
-    public static ChunkPos from(@NotNull BlockPos blockPos) {
+    @NonNull
+    public static ChunkPos from(@NonNull BlockPos blockPos) {
         return from(blockPos.getX(), blockPos.getZ());
     }
 
-    @NotNull
-    public static ChunkPos from(@NotNull ExactPos blockPos) {
+    @NonNull
+    public static ChunkPos from(@NonNull ExactPos blockPos) {
         return from((int) blockPos.getX(), (int) blockPos.getZ());
     }
 
-    @NotNull
-    public static ChunkPos from(@NotNull ChunkSnapshot snapshot) {
+    @NonNull
+    public static ChunkPos from(@NonNull ChunkSnapshot snapshot) {
         return new ChunkPos(snapshot.getX(), snapshot.getZ());
     }
 
-    @NotNull
-    public static ChunkPos from(@NotNull Chunk chunk) {
+    @NonNull
+    public static ChunkPos from(@NonNull Chunk chunk) {
         return new ChunkPos(chunk.getX(), chunk.getZ());
     }
 
-    @NotNull
+    @NonNull
     public static ChunkPos from(int x, int z) {
         int chunkX = GeoUtils.shiftToChunk(x);
         int chunkZ = GeoUtils.shiftToChunk(z);
@@ -95,18 +94,17 @@ public class ChunkPos implements Writeable {
     }
 
 
-
-    public boolean isLoaded(@NotNull World world) {
+    public boolean isLoaded(@NonNull World world) {
         return world.isChunkLoaded(this.x, this.z);
     }
 
-    @NotNull
-    public Chunk getChunk(@NotNull World world) {
+    @NonNull
+    public Chunk getChunk(@NonNull World world) {
         return world.getChunkAt(this.x, this.z, false);
     }
 
 
-    @NotNull
+    @NonNull
     public ChunkPos copy() {
         return new ChunkPos(this.x, this.z);
     }

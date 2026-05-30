@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database.sql;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.database.AbstractConnector;
 import su.nightexpress.nightcore.database.sql.query.UpdateEntity;
 import su.nightexpress.nightcore.database.sql.query.UpdateQuery;
@@ -12,7 +12,7 @@ import java.util.function.Function;
 @Deprecated
 public class SQLQueries {
 
-    public static boolean hasTable(@NotNull AbstractConnector connector, @NotNull String table) {
+    public static boolean hasTable(@NonNull AbstractConnector connector, @NonNull String table) {
         try (Connection connection = connector.getConnection()) {
 
             boolean has;
@@ -28,13 +28,14 @@ public class SQLQueries {
         }
     }
 
-    public static boolean hasColumn(@NotNull AbstractConnector connector,
-                                    @NotNull String table,
-                                    @NotNull SQLColumn column) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector,
+                                    @NonNull String table,
+                                    @NonNull SQLColumn column) {
         String sql = "SELECT * FROM " + table;
         String columnName = column.getName();
-        try (Connection connection = connector.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (
+            Connection connection = connector.getConnection();
+            Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(sql);
             ResultSetMetaData metaData = resultSet.getMetaData();
@@ -52,24 +53,25 @@ public class SQLQueries {
         }
     }
 
-    public static void executeStatement(@NotNull AbstractConnector connector,
-                                        @NotNull String sql) {
+    public static void executeStatement(@NonNull AbstractConnector connector,
+                                        @NonNull String sql) {
         executeStatement(connector, sql, Collections.emptySet());
     }
 
-    public static void executeStatement(@NotNull AbstractConnector connector,
-                                        @NotNull String sql,
-                                        @NotNull Collection<String> values1) {
+    public static void executeStatement(@NonNull AbstractConnector connector,
+                                        @NonNull String sql,
+                                        @NonNull Collection<String> values1) {
         executeStatement(connector, sql, values1, Collections.emptySet());
     }
 
-    public static void executeStatement(@NotNull AbstractConnector connector,
-                                        @NotNull String sql,
-                                        @NotNull Collection<String> values1,
-                                        @NotNull Collection<String> values2) {
+    public static void executeStatement(@NonNull AbstractConnector connector,
+                                        @NonNull String sql,
+                                        @NonNull Collection<String> values1,
+                                        @NonNull Collection<String> values2) {
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             int count = 1;
             for (String columnName : values1) {
@@ -86,11 +88,11 @@ public class SQLQueries {
         }
     }
 
-    public static void executeUpdate(@NotNull AbstractConnector connector, @NotNull UpdateQuery query) {
+    public static void executeUpdate(@NonNull AbstractConnector connector, @NonNull UpdateQuery query) {
         executeUpdates(connector, query);
     }
 
-    public static void executeUpdates(@NotNull AbstractConnector connector, @NotNull UpdateQuery query) {
+    public static void executeUpdates(@NonNull AbstractConnector connector, @NonNull UpdateQuery query) {
         if (query.isEmpty()) return;
 
         List<UpdateEntity> entities = query.getEntities();
@@ -98,33 +100,34 @@ public class SQLQueries {
 
         //if (queries.isEmpty()) return;
 
-//        try (Connection connection = connector.getConnection()) {
-//            for (UpdateQuery query : queries) {
-//                try (PreparedStatement statement = connection.prepareStatement(query.getSQL())) {
-//
-//                    int count = 1;
-//                    for (String columnValue : query.getValues()) {
-//                        statement.setString(count++, columnValue);
-//                    }
-//                    for (String conditionValue : query.getWheres()) {
-//                        statement.setString(count++, conditionValue);
-//                    }
-//
-//                    statement.executeUpdate();
-//                }
-//                catch (SQLException exception) {
-//                    exception.printStackTrace();
-//                }
-//            }
-//        }
-//        catch (SQLException exception) {
-//            exception.printStackTrace();
-//        }
+        //        try (Connection connection = connector.getConnection()) {
+        //            for (UpdateQuery query : queries) {
+        //                try (PreparedStatement statement = connection.prepareStatement(query.getSQL())) {
+        //
+        //                    int count = 1;
+        //                    for (String columnValue : query.getValues()) {
+        //                        statement.setString(count++, columnValue);
+        //                    }
+        //                    for (String conditionValue : query.getWheres()) {
+        //                        statement.setString(count++, conditionValue);
+        //                    }
+        //
+        //                    statement.executeUpdate();
+        //                }
+        //                catch (SQLException exception) {
+        //                    exception.printStackTrace();
+        //                }
+        //            }
+        //        }
+        //        catch (SQLException exception) {
+        //            exception.printStackTrace();
+        //        }
 
         String sql = query.getSQL();//queries.get(0).getSQL();
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             int entityCount = 0;
             for (UpdateEntity entity : entities) {
@@ -149,16 +152,17 @@ public class SQLQueries {
         }
     }
 
-    @NotNull
-    public static <T> List<@NotNull T> executeQuery(@NotNull AbstractConnector connector,
-                                                    @NotNull String sql,
-                                                    @NotNull Collection<String> values,
-                                                    @NotNull Function<ResultSet, T> dataFunction,
+    @NonNull
+    public static <T> List<@NonNull T> executeQuery(@NonNull AbstractConnector connector,
+                                                    @NonNull String sql,
+                                                    @NonNull Collection<String> values,
+                                                    @NonNull Function<ResultSet, T> dataFunction,
                                                     int amount) {
 
         List<T> list = new ArrayList<>();
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             int count = 1;
             for (String wValue : values) {

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.util.number.CompactNumber;
 import su.nightexpress.nightcore.util.number.NumberShortcut;
@@ -18,12 +18,12 @@ public class NumberUtil {
     //private final static TreeMap<Integer, Supplier<String>> NUMERIC_MAP = new TreeMap<>();
 
     static {
-//        NUMERIC_MAP.put(0, () -> "");
-//        NUMERIC_MAP.put(1, CoreLang.NUMBER_SHORT_THOUSAND::getString);
-//        NUMERIC_MAP.put(2, CoreLang.NUMBER_SHORT_MILLION::getString);
-//        NUMERIC_MAP.put(3, CoreLang.NUMBER_SHORT_BILLION::getString);
-//        NUMERIC_MAP.put(4, CoreLang.NUMBER_SHORT_TRILLION::getString);
-//        NUMERIC_MAP.put(5, CoreLang.NUMBER_SHORT_QUADRILLION::getString);
+        //        NUMERIC_MAP.put(0, () -> "");
+        //        NUMERIC_MAP.put(1, CoreLang.NUMBER_SHORT_THOUSAND::getString);
+        //        NUMERIC_MAP.put(2, CoreLang.NUMBER_SHORT_MILLION::getString);
+        //        NUMERIC_MAP.put(3, CoreLang.NUMBER_SHORT_BILLION::getString);
+        //        NUMERIC_MAP.put(4, CoreLang.NUMBER_SHORT_TRILLION::getString);
+        //        NUMERIC_MAP.put(5, CoreLang.NUMBER_SHORT_QUADRILLION::getString);
 
         ROMAN_MAP.put(1000, "M");
         ROMAN_MAP.put(900, "CM");
@@ -40,14 +40,15 @@ public class NumberUtil {
         ROMAN_MAP.put(1, "I");
     }
 
-    @NotNull
+    @NonNull
     public static UniFormatter getNumberFormat() {
         return CoreConfig.NUMBER_FORMAT.get();
     }
 
-    @NotNull
+    @NonNull
     public static List<NumberShortcut> getNumberShortcuts() {
-        return CoreConfig.NUMBER_SHORTCUT_LIST.get().values().stream().sorted(Comparator.comparing(NumberShortcut::getMagnitude)).toList();
+        return CoreConfig.NUMBER_SHORTCUT_LIST.get().values().stream().sorted(Comparator.comparing(
+            NumberShortcut::getMagnitude)).toList();
     }
 
     public static double round(double value) {
@@ -58,23 +59,23 @@ public class NumberUtil {
         return new BigDecimal(value).setScale(scale, getNumberFormat().getRounding()).doubleValue();
     }
 
-    @NotNull
+    @NonNull
     public static String format(double value) {
         return getNumberFormat().format(value);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static String compact(double value) {
         return formatCompact(value);
     }
 
-    @NotNull
+    @NonNull
     public static String formatCompact(double value) {
         return asCompact(value).format();
     }
 
-    @NotNull
+    @NonNull
     public static CompactNumber asCompact(double value) {
         boolean negative = value < 0;
         value = Math.abs(value);
@@ -95,34 +96,34 @@ public class NumberUtil {
         return new CompactNumber(result, shortcut);
     }
 
-    public static double getDoubleCompact(@NotNull String input) {
+    public static double getDoubleCompact(@NonNull String input) {
         return parseCompact(input).orElse(0D);
     }
 
-    public static double getDoubleCompactAbs(@NotNull String input) {
+    public static double getDoubleCompactAbs(@NonNull String input) {
         return Math.abs(getDoubleCompact(input));
     }
 
-    @NotNull
-    public static Optional<Double> parseDecimalCompact(@NotNull String input) {
+    @NonNull
+    public static Optional<Double> parseDecimalCompact(@NonNull String input) {
         return parseCompact(input);
     }
 
-    public static double getIntCompact(@NotNull String input) {
+    public static double getIntCompact(@NonNull String input) {
         return parseIntCompact(input).orElse(0);
     }
 
-    public static double getIntCompactAbs(@NotNull String input) {
+    public static double getIntCompactAbs(@NonNull String input) {
         return Math.abs(getIntCompact(input));
     }
 
-    @NotNull
-    public static Optional<Integer> parseIntCompact(@NotNull String input) {
+    @NonNull
+    public static Optional<Integer> parseIntCompact(@NonNull String input) {
         return parseCompact(input).map(Double::intValue);
     }
 
-    @NotNull
-    public static Optional<Double> parseCompact(@NotNull String input) {
+    @NonNull
+    public static Optional<Double> parseCompact(@NonNull String input) {
         input = input.toLowerCase();
         double multiplier = 1D;
 
@@ -146,7 +147,7 @@ public class NumberUtil {
         return Optional.of(value);
     }
 
-    @NotNull
+    @NonNull
     public static String toRoman(int number) {
         if (number <= 0) return String.valueOf(number);
 
@@ -183,90 +184,90 @@ public class NumberUtil {
     }
 
     @Deprecated
-    public static double getDouble(@NotNull String input) {
+    public static double getDouble(@NonNull String input) {
         return getDoubleAbs(input);
     }
 
     @Deprecated
-    public static double getDouble(@NotNull String input, double defaultValue) {
+    public static double getDouble(@NonNull String input, double defaultValue) {
         return getDoubleAbs(input, defaultValue);
     }
 
     @Deprecated
-    public static double getDoubleAbs(@NotNull String input) {
+    public static double getDoubleAbs(@NonNull String input) {
         return getDoubleAbs(input, 0D);
     }
 
     @Deprecated
-    public static double getDoubleAbs(@NotNull String input, double defaultValue) {
+    public static double getDoubleAbs(@NonNull String input, double defaultValue) {
         return Math.abs(getAnyDouble(input, defaultValue));
     }
 
     @Deprecated
-    public static double getAnyDouble(@NotNull String input, double defaultValue) {
+    public static double getAnyDouble(@NonNull String input, double defaultValue) {
         return parseDouble(input).orElse(defaultValue);
     }
 
     @Deprecated
-    public static float getFloatAbs(@NotNull String input) {
+    public static float getFloatAbs(@NonNull String input) {
         return getFloatAbs(input, 0f);
     }
 
     @Deprecated
-    public static float getFloatAbs(@NotNull String input, float defaultValue) {
+    public static float getFloatAbs(@NonNull String input, float defaultValue) {
         return Math.abs(getFloat(input, defaultValue));
     }
 
     @Deprecated
-    public static float getFloat(@NotNull String input, float defaultValue) {
+    public static float getFloat(@NonNull String input, float defaultValue) {
         return parseFloat(input).orElse(defaultValue);
     }
 
     @Deprecated
-    public static int getInteger(@NotNull String input) {
+    public static int getInteger(@NonNull String input) {
         return getIntegerAbs(input);
     }
 
     @Deprecated
-    public static int getInteger(@NotNull String input, int defaultValue) {
+    public static int getInteger(@NonNull String input, int defaultValue) {
         return getIntegerAbs(input, defaultValue);
     }
 
     @Deprecated
-    public static int getIntegerAbs(@NotNull String input) {
+    public static int getIntegerAbs(@NonNull String input) {
         return getIntegerAbs(input, 0);
     }
 
     @Deprecated
-    public static int getIntegerAbs(@NotNull String input, int defaultValue) {
+    public static int getIntegerAbs(@NonNull String input, int defaultValue) {
         return Math.abs(getAnyInteger(input, defaultValue));
     }
 
     @Deprecated
-    public static int getAnyInteger(@NotNull String input, int defaultValue) {
+    public static int getAnyInteger(@NonNull String input, int defaultValue) {
         return parseInteger(input).orElse(defaultValue);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static Optional<Integer> parseInteger(@NotNull String input) {
+    public static Optional<Integer> parseInteger(@NonNull String input) {
         return Numbers.parseInteger(input);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static Optional<Double> parseDouble(@NotNull String input) {
+    public static Optional<Double> parseDouble(@NonNull String input) {
         return Numbers.parseDouble(input);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static Optional<Float> parseFloat(@NotNull String input) {
+    public static Optional<Float> parseFloat(@NonNull String input) {
         return Numbers.parseFloat(input);
     }
 
     @Deprecated
-    public static int[] getIntArray(@NotNull String string) {
+    public static int[] getIntArray(@NonNull String string) {
         return ArrayUtil.parseIntArray(string);
     }
 }

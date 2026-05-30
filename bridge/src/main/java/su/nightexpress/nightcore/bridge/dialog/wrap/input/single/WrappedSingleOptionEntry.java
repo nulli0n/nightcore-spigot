@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input.single;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
-public record WrappedSingleOptionEntry(@NotNull String id, @NotNull String display, boolean initial) {
+public record WrappedSingleOptionEntry(@NonNull String id, @NonNull String display, boolean initial) {
 
 }

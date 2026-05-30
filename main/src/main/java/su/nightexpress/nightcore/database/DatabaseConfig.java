@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -11,7 +11,8 @@ import java.util.stream.Stream;
 @Deprecated
 public class DatabaseConfig {
 
-    @Deprecated private final int          saveInterval;
+    @Deprecated
+    private final int          saveInterval;
     private final int          syncInterval;
     private final DatabaseType databaseType;
     private final String       tablePrefix;
@@ -27,20 +28,20 @@ public class DatabaseConfig {
     private final String filename;
 
     public DatabaseConfig(
-        int saveInterval,
-        int syncInterval,
-        @NotNull DatabaseType databaseType,
-        @NotNull String tablePrefix,
-        boolean purgeEnabled,
-        int purgePeriod,
+                          int saveInterval,
+                          int syncInterval,
+                          @NonNull DatabaseType databaseType,
+                          @NonNull String tablePrefix,
+                          boolean purgeEnabled,
+                          int purgePeriod,
 
-        @NotNull String username,
-        @NotNull String password,
-        @NotNull String host,
-        @NotNull String database,
-        @NotNull String urlOptions,
+                          @NonNull String username,
+                          @NonNull String password,
+                          @NonNull String host,
+                          @NonNull String database,
+                          @NonNull String urlOptions,
 
-        @NotNull String filename
+                          @NonNull String filename
     ) {
         this.saveInterval = saveInterval;
         this.syncInterval = syncInterval;
@@ -58,19 +59,20 @@ public class DatabaseConfig {
         this.filename = filename;
     }
 
-    @NotNull
-    public static DatabaseConfig read(@NotNull NightCorePlugin plugin) {
+    @NonNull
+    public static DatabaseConfig read(@NonNull NightCorePlugin plugin) {
         String defPrefix = StringUtil.lowerCaseUnderscore(plugin.getName());
         return read(plugin.getConfig(), defPrefix);
     }
 
-    @NotNull
-    public static DatabaseConfig read(@NotNull FileConfig config, @NotNull String defaultPrefix) {
+    @NonNull
+    public static DatabaseConfig read(@NonNull FileConfig config, @NonNull String defaultPrefix) {
         return read(config, defaultPrefix, "data.db");
     }
 
-    @NotNull
-    public static DatabaseConfig read(@NotNull FileConfig config, @NotNull String defaultPrefix, @NotNull String defFileName) {
+    @NonNull
+    public static DatabaseConfig read(@NonNull FileConfig config, @NonNull String defaultPrefix,
+                                      @NonNull String defFileName) {
         String path = "Database.";
 
         DatabaseType databaseType = ConfigValue.create(path + "Type", DatabaseType.class, DatabaseType.SQLITE,
@@ -133,9 +135,7 @@ public class DatabaseConfig {
             .read(config);
 
         return new DatabaseConfig(
-            saveInterval, syncInterval,
-            databaseType, tablePrefix,
-            purgeEnabled, purgePeriod,
+            saveInterval, syncInterval, databaseType, tablePrefix, purgeEnabled, purgePeriod,
 
             mysqlUser, mysqlPassword, mysqlHost, mysqlBase, urlOptions,
 
@@ -143,12 +143,12 @@ public class DatabaseConfig {
         );
     }
 
-    @NotNull
+    @NonNull
     public DatabaseType getStorageType() {
         return databaseType;
     }
 
-    @NotNull
+    @NonNull
     public String getTablePrefix() {
         return tablePrefix;
     }
@@ -170,32 +170,32 @@ public class DatabaseConfig {
         return purgePeriod;
     }
 
-    @NotNull
+    @NonNull
     public String getUsername() {
         return username;
     }
 
-    @NotNull
+    @NonNull
     public String getPassword() {
         return password;
     }
 
-    @NotNull
+    @NonNull
     public String getHost() {
         return host;
     }
 
-    @NotNull
+    @NonNull
     public String getDatabase() {
         return database;
     }
 
-    @NotNull
+    @NonNull
     public String getUrlOptions() {
         return urlOptions;
     }
 
-    @NotNull
+    @NonNull
     public String getFilename() {
         return filename;
     }

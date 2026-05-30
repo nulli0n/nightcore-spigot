@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.command.experimental;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.argument.CommandArgument;
 import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
 
@@ -23,7 +23,7 @@ public class TabContext {
 
     private int lastCommandIndex;
 
-    public TabContext(@NotNull CommandSender sender, @NotNull String label, String[] args, int lastCommandIndex) {
+    public TabContext(@NonNull CommandSender sender, @NonNull String label, String[] args, int lastCommandIndex) {
         this.sender = sender;
         this.player = sender instanceof Player user ? user : null;
         this.label = label;
@@ -38,44 +38,44 @@ public class TabContext {
         return this.args.length;
     }
 
-    public boolean hasCachedArgument(@NotNull CommandArgument<?> argument) {
+    public boolean hasCachedArgument(@NonNull CommandArgument<?> argument) {
         return this.argumentCache.containsKey(argument.getName());
     }
 
-    public boolean hasCachedFlag(@NotNull CommandFlag flag) {
+    public boolean hasCachedFlag(@NonNull CommandFlag flag) {
         return this.flagCache.containsKey(flag.getName());
     }
 
-    public void cacheArgument(@NotNull CommandArgument<?> argument, @NotNull String value) {
+    public void cacheArgument(@NonNull CommandArgument<?> argument, @NonNull String value) {
         this.argumentCache.put(argument.getName(), value);
     }
 
-    public void cacheFlag(@NotNull CommandFlag flag, @NotNull String value) {
+    public void cacheFlag(@NonNull CommandFlag flag, @NonNull String value) {
         this.flagCache.put(flag.getName(), value);
     }
 
-    public void appendArgumentCache(@NotNull CommandArgument<?> argument, @NotNull String value) {
+    public void appendArgumentCache(@NonNull CommandArgument<?> argument, @NonNull String value) {
         String cached = this.getCachedArgument(argument.getName());
         cached = cached == null ? value : cached + " " + value;
         this.cacheArgument(argument, cached);
     }
 
     @Nullable
-    public String getCachedArgument(@NotNull String name) {
+    public String getCachedArgument(@NonNull String name) {
         return this.argumentCache.get(name.toLowerCase());
     }
 
     @Nullable
-    public String getCachedFlag(@NotNull String name) {
+    public String getCachedFlag(@NonNull String name) {
         return this.flagCache.get(name.toLowerCase());
     }
 
-    @NotNull
+    @NonNull
     public String getArg(int index) {
         return this.args[index];
     }
 
-    @NotNull
+    @NonNull
     public CommandSender getSender() {
         return this.sender;
     }
@@ -85,19 +85,19 @@ public class TabContext {
         return this.player;
     }
 
-    @NotNull
+    @NonNull
     public Player getPlayerOrThrow() {
         if (this.player != null) return this.player;
 
         throw new IllegalStateException("TabContext is not bound to a player!");
     }
 
-    @NotNull
+    @NonNull
     public String getLabel() {
         return this.label;
     }
 
-    @NotNull
+    @NonNull
     public String[] getArgs() {
         return this.args;
     }
@@ -129,12 +129,12 @@ public class TabContext {
         return this.args[this.args.length - 1];
     }
 
-    @NotNull
+    @NonNull
     public Map<String, String> getArgumentCache() {
         return this.argumentCache;
     }
 
-    @NotNull
+    @NonNull
     public Map<String, String> getFlagCache() {
         return this.flagCache;
     }

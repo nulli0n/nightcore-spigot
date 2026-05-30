@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.util;
 
 import org.bukkit.Color;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderEntry;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderResolver;
 import su.nightexpress.nightcore.util.random.Rnd;
@@ -18,25 +18,26 @@ import java.util.regex.Pattern;
 
 public class StringUtil {
 
-    private static final Pattern ID_PATTERN = Pattern.compile("[<>\\%\\$\\!\\@\\#\\^\\&\\*\\(\\)\\,\\.\\'\\:\\;\\\"\\}\\]\\{\\[\\=\\+\\`\\~\\\\]");
-    private static final Pattern ID_STRICT_PATTERN = Pattern.compile("[^a-zA-Zа-яА-Я_0-9]");
-    private static final String[] DELIMITERS = {TagWrappers.BR, TagWrappers.NEWLINE, "\n"};
+    private static final Pattern  ID_PATTERN        = Pattern.compile(
+        "[<>\\%\\$\\!\\@\\#\\^\\&\\*\\(\\)\\,\\.\\'\\:\\;\\\"\\}\\]\\{\\[\\=\\+\\`\\~\\\\]");
+    private static final Pattern  ID_STRICT_PATTERN = Pattern.compile("[^a-zA-Zа-яА-Я_0-9]");
+    private static final String[] DELIMITERS        = {TagWrappers.BR, TagWrappers.NEWLINE, "\n"};
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String oneSpace(@NotNull String str) {
+    public static String oneSpace(@NonNull String str) {
         return str.trim().replaceAll("\\s+", " ");
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String noSpace(@NotNull String str) {
+    public static String noSpace(@NonNull String str) {
         return str.trim().replaceAll("\\s+", "");
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String replaceEach(@NotNull String text, @NotNull List<Pair<String, Supplier<String>>> replacements) {
+    public static String replaceEach(@NonNull String text, @NonNull List<Pair<String, Supplier<String>>> replacements) {
         if (text.isEmpty() || replacements.isEmpty()) {
             return text;
         }
@@ -109,9 +110,10 @@ public class StringUtil {
         return buf.toString();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static <T> String replaceEach(@NotNull String text, @NotNull List<PlaceholderEntry<T>> replacements, @NotNull T source) {
+    public static <T> String replaceEach(@NonNull String text, @NonNull List<PlaceholderEntry<T>> replacements,
+                                         @NonNull T source) {
         if (text.isEmpty() || replacements.isEmpty()) {
             return text;
         }
@@ -184,8 +186,8 @@ public class StringUtil {
         return buf.toString();
     }
 
-    @NotNull
-    public static String replacePlaceholders(@NotNull String string, @NotNull PlaceholderResolver resolver) {
+    @NonNull
+    public static String replacePlaceholders(@NonNull String string, @NonNull PlaceholderResolver resolver) {
         if (string.isBlank()) return string;
 
         // OPTIMIZATION: Fail-Fast
@@ -229,7 +231,7 @@ public class StringUtil {
     }
 
     @Nullable
-    public static String parseQuotedContent(@NotNull String string) {
+    public static String parseQuotedContent(@NonNull String string) {
         char quote = string.charAt(0);
         if (quote != '\'' && quote != '"') return null;
         if (string.length() < 3) return null;
@@ -251,20 +253,20 @@ public class StringUtil {
         return builder.toString();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static <T extends Enum<T>> Optional<T> getEnum(String str, @NotNull Class<T> clazz) {
+    public static <T extends Enum<T>> Optional<T> getEnum(String str, @NonNull Class<T> clazz) {
         return Enums.parse(str, clazz);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String inlineEnum(@NotNull Class<? extends Enum<?>> clazz, @NotNull String delimiter) {
+    public static String inlineEnum(@NonNull Class<? extends Enum<?>> clazz, @NonNull String delimiter) {
         return Enums.inline(clazz, delimiter);
     }
 
-    @NotNull
-    public static Color getColor(@NotNull String str) {
+    @NonNull
+    public static Color getColor(@NonNull String str) {
         String[] rgb = str.split(",");
         int red = NumberUtil.getIntegerAbs(rgb[0]);
         if (red < 0) red = Rnd.get(255);
@@ -278,44 +280,44 @@ public class StringUtil {
         return Color.fromRGB(red, green, blue);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String transformForID(@NotNull String str) {
+    public static String transformForID(@NonNull String str) {
         return transformForID(str, -1);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String transformForID(@NotNull String str, int length) {
+    public static String transformForID(@NonNull String str, int length) {
         return Strings.filterForVariable(str, length);
     }
 
-    @NotNull
-    public static String lowerCaseUnderscore(@NotNull String str) {
+    @NonNull
+    public static String lowerCaseUnderscore(@NonNull String str) {
         return LowerCase.INTERNAL.apply(str).replace(' ', '_');
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String lowerCaseUnderscore(@NotNull String str, int length) {
+    public static String lowerCaseUnderscore(@NonNull String str, int length) {
         return lowerCaseAndClean(str, ID_PATTERN, length);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String lowerCaseUnderscoreStrict(@NotNull String str) {
+    public static String lowerCaseUnderscoreStrict(@NonNull String str) {
         return lowerCaseUnderscoreStrict(str, -1);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String lowerCaseUnderscoreStrict(@NotNull String str, int length) {
+    public static String lowerCaseUnderscoreStrict(@NonNull String str, int length) {
         return lowerCaseAndClean(str, ID_STRICT_PATTERN, length);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    private static String lowerCaseAndClean(@NotNull String str, @NotNull Pattern pattern, int length) {
+    private static String lowerCaseAndClean(@NonNull String str, @NonNull Pattern pattern, int length) {
         String clean = LowerCase.INTERNAL.apply(NightMessage.stripTags(str)).replace(" ", "_");
         if (length > 0 && clean.length() > length) {
             clean = clean.substring(0, length);
@@ -325,18 +327,18 @@ public class StringUtil {
         return matcher.replaceAll("");
     }
 
-    @NotNull
-    public static String capitalizeUnderscored(@NotNull String str) {
+    @NonNull
+    public static String capitalizeUnderscored(@NonNull String str) {
         return capitalizeFully(str.replace("_", " "));
     }
 
-    @NotNull
-    public static String capitalizeFully(@NotNull String str) {
+    @NonNull
+    public static String capitalizeFully(@NonNull String str) {
         return capitalize(LowerCase.USER_LOCALE.apply(str));
     }
 
-    @NotNull
-    public static String capitalize(@NotNull String str) {
+    @NonNull
+    public static String capitalize(@NonNull String str) {
         if (str.isEmpty()) return str;
 
         int length = str.length();
@@ -360,13 +362,13 @@ public class StringUtil {
         return builder.toString();
     }
 
-    @NotNull
-    public static String capitalizeFirstLetter(@NotNull String original) {
+    @NonNull
+    public static String capitalizeFirstLetter(@NonNull String original) {
         if (original.isEmpty()) return original;
         return original.substring(0, 1).toUpperCase() + original.substring(1);
     }
 
-    public static void splitDelimiters(@NotNull String string, @NotNull Consumer<String> result) {
+    public static void splitDelimiters(@NonNull String string, @NonNull Consumer<String> result) {
         if (string.isBlank()) {
             result.accept(string);
             return;
@@ -397,7 +399,8 @@ public class StringUtil {
                 // Just use the original 'string' object to avoid new String allocation.
                 if (cursor == 0) {
                     result.accept(string);
-                } else {
+                }
+                else {
                     result.accept(string.substring(cursor));
                 }
                 break;

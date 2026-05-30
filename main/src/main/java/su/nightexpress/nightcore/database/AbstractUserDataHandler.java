@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.database;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
@@ -30,14 +30,14 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
 
     protected final String tableUsers;
 
-    protected final Set<UUID> existIDs;
+    protected final Set<UUID>   existIDs;
     protected final Set<String> existNames;
 
-    public AbstractUserDataHandler(@NotNull P plugin) {
+    public AbstractUserDataHandler(@NonNull P plugin) {
         this(plugin, getDataConfig(plugin));
     }
 
-    public AbstractUserDataHandler(@NotNull P plugin, @NotNull DatabaseConfig config) {
+    public AbstractUserDataHandler(@NonNull P plugin, @NonNull DatabaseConfig config) {
         super(plugin, config);
         this.tableUsers = this.getTablePrefix() + "_users";
         this.existIDs = new HashSet<>();
@@ -100,71 +100,74 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
             return null;
         };
 
-        this.load(this.tableUsers, function, Arrays.asList(COLUMN_USER_ID, COLUMN_USER_NAME), Collections.emptyList(), -1);
+        this.load(this.tableUsers, function, Arrays.asList(COLUMN_USER_ID, COLUMN_USER_NAME), Collections.emptyList(),
+            -1);
     }
 
-    @NotNull
+    @NonNull
     protected abstract List<SQLColumn> getExtraColumns();
 
-    @NotNull
+    @NonNull
     protected List<SQLColumn> getReadColumns() {
         return Collections.emptyList();
     }
 
-    @NotNull
-    protected abstract List<SQLValue> getSaveColumns(@NotNull U user);
+    @NonNull
+    protected abstract List<SQLValue> getSaveColumns(@NonNull U user);
 
-    @NotNull
+    @NonNull
     protected abstract Function<ResultSet, U> getUserFunction();
 
-    @NotNull
+    @NonNull
     public List<U> getUsers() {
         return this.load(this.tableUsers, this.getUserFunction(), Collections.emptyList(), Collections.emptyList(), -1);
     }
 
     @Nullable
-    public U getUser(@NotNull Player player) {
+    public U getUser(@NonNull Player player) {
         return this.getUser(player.getUniqueId());
     }
 
     @Nullable
-    public final U getUser(@NotNull String name) {
+    public final U getUser(@NonNull String name) {
         return this.load(this.tableUsers, this.getUserFunction(), this.getReadColumns(),
             Collections.singletonList(SQLCondition.equal(COLUMN_USER_NAME.asLowerCase().toValue(name.toLowerCase())))
         ).orElse(null);
     }
 
     @Nullable
-    public final U getUser(@NotNull UUID uuid) {
+    public final U getUser(@NonNull UUID uuid) {
         return this.load(this.tableUsers, this.getUserFunction(), this.getReadColumns(),
             Collections.singletonList(SQLCondition.equal(COLUMN_USER_ID.toValue(uuid)))
         ).orElse(null);
     }
 
-    public boolean isUserExists(@NotNull String name) {
+    public boolean isUserExists(@NonNull String name) {
         if (this.isNameIdCacheEnabled()) {
             return this.existNames.contains(name.toLowerCase());
         }
-        return this.contains(this.tableUsers, Collections.singletonList(COLUMN_USER_NAME), SQLCondition.equal(COLUMN_USER_NAME.asLowerCase().toValue(name.toLowerCase())));
+        return this.contains(this.tableUsers, Collections.singletonList(COLUMN_USER_NAME), SQLCondition.equal(
+            COLUMN_USER_NAME.asLowerCase().toValue(name.toLowerCase())));
     }
 
-    public boolean isUserExists(@NotNull UUID uuid) {
+    public boolean isUserExists(@NonNull UUID uuid) {
         if (this.isNameIdCacheEnabled()) {
             return this.existIDs.contains(uuid);
         }
-        return this.contains(this.tableUsers, Collections.singletonList(COLUMN_USER_ID), SQLCondition.equal(COLUMN_USER_ID.toValue(uuid)));
+        return this.contains(this.tableUsers, Collections.singletonList(COLUMN_USER_ID), SQLCondition.equal(
+            COLUMN_USER_ID.toValue(uuid)));
     }
 
-    public void saveUser(@NotNull U user) {
+    public void saveUser(@NonNull U user) {
         this.executeUpdate(UpdateQuery.create(this.tableUsers, this.createUpdateEntity(user)));
     }
 
-    public void saveUsers(@NotNull Collection<U> users) {
+    public void saveUsers(@NonNull Collection<U> users) {
         this.executeUpdate(UpdateQuery.create(this.tableUsers, users.stream().map(this::createUpdateEntity).toList()));
     }
 
-    @NotNull
-    public UpdateEntity createUpdateEntity(@NotNull U user) {
+    @NonNull
+    public UpdateEntity createUpdateEntity(@NonNull U user) {
         List<SQLValue> values = new ArrayList<>();
         values.add(COLUMN_USER_NAME.toValue(user.getName()));
         values.add(COLUMN_USER_DATE_CREATED.toValue(user.getDateCreated()));
@@ -178,7 +181,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
         return this.createUpdateEntity(values, conditions);
     }
 
-    public void addUser(@NotNull U user) {
+    public void addUser(@NonNull U user) {
         List<SQLValue> values = new ArrayList<>();
         values.add(COLUMN_USER_ID.toValue(user.getId()));
         values.add(COLUMN_USER_NAME.toValue(user.getName()));
@@ -192,7 +195,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
         this.existNames.add(user.getName());
     }
 
-    public void deleteUser(@NotNull UUID uuid) {
+    public void deleteUser(@NonNull UUID uuid) {
         this.delete(this.tableUsers, SQLCondition.equal(COLUMN_USER_ID.toValue(uuid)));
 
         this.existIDs.clear();
@@ -200,7 +203,7 @@ public abstract class AbstractUserDataHandler<P extends NightDataPlugin<U>, U ex
         this.cacheNamesAndIds();
     }
 
-    public void deleteUser(@NotNull DataUser user) {
+    public void deleteUser(@NonNull DataUser user) {
         this.delete(this.tableUsers, SQLCondition.equal(COLUMN_USER_ID.toValue(user.getId())));
 
         this.existIDs.remove(user.getId());

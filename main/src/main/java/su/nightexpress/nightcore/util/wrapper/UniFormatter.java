@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.wrapper;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
@@ -18,7 +18,7 @@ public class UniFormatter implements Writeable {
     private final RoundingMode rounding;
     private final Locale       locale;
 
-    private UniFormatter(@NotNull String format, @NotNull RoundingMode rounding, @NotNull Locale locale) {
+    private UniFormatter(@NonNull String format, @NonNull RoundingMode rounding, @NonNull Locale locale) {
         this.format = format;
         this.rounding = rounding;
         this.locale = locale;
@@ -26,20 +26,21 @@ public class UniFormatter implements Writeable {
         this.formatter.setRoundingMode(rounding);
     }
 
-    @NotNull
-    public static UniFormatter of(@NotNull String format, @NotNull RoundingMode rounding) {
+    @NonNull
+    public static UniFormatter of(@NonNull String format, @NonNull RoundingMode rounding) {
         return of(format, rounding, Locale.US);
     }
 
-    @NotNull
-    public static UniFormatter of(@NotNull String format, @NotNull RoundingMode rounding, @NotNull Locale locale) {
+    @NonNull
+    public static UniFormatter of(@NonNull String format, @NonNull RoundingMode rounding, @NonNull Locale locale) {
         return new UniFormatter(format, rounding, locale);
     }
 
-    @NotNull
-    public static UniFormatter read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static UniFormatter read(@NonNull FileConfig config, @NonNull String path) {
         String format = ConfigValue.create(path + ".Format", "#,###.##").read(config);
-        RoundingMode rounding = ConfigValue.create(path + ".Rounding", RoundingMode.class, RoundingMode.HALF_EVEN).read(config);
+        RoundingMode rounding = ConfigValue.create(path + ".Rounding", RoundingMode.class, RoundingMode.HALF_EVEN).read(
+            config);
         String lang = ConfigValue.create(path + ".Locale", Locale.US.toLanguageTag()).read(config);
         Locale locale = Locale.forLanguageTag(lang);
 
@@ -47,28 +48,28 @@ public class UniFormatter implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Format", this.format);
         config.set(path + ".Rounding", this.rounding.name());
         config.set(path + ".Locale", this.locale.toLanguageTag());
     }
 
-    @NotNull
+    @NonNull
     public String format(double value) {
         return this.formatter.format(value);
     }
 
-    @NotNull
+    @NonNull
     public String getFormat() {
         return this.format;
     }
 
-    @NotNull
+    @NonNull
     public RoundingMode getRounding() {
         return this.rounding;
     }
 
-    @NotNull
+    @NonNull
     public Locale getLocale() {
         return this.locale;
     }

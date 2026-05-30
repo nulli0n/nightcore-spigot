@@ -140,7 +140,8 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    public void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull NightComponent message) {
+    public void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result,
+                              @NonNull NightComponent message) {
         event.disallow(result, message.toLegacy());
     }
 
@@ -223,7 +224,8 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    public void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
+    public void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle,
+                           int fadeIn, int stay, int fadeOut) {
         player.sendTitle(title.toLegacy(), subtitle.toLegacy(), fadeIn, stay, fadeOut);
     }
 
@@ -300,7 +302,8 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    public void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
+    public void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header,
+                                          @Nullable NightComponent footer) {
         player.setPlayerListHeaderFooter(header == null ? null : header.toLegacy(), footer == null ? null : footer
             .toLegacy());
     }
@@ -345,7 +348,8 @@ public class SpigotBridge implements Software {
         editItemMeta(item, ItemMeta.class, consumer);
     }
 
-    public <T extends ItemMeta> void editMeta(@NonNull ItemStack item, @NonNull Class<T> clazz, @NonNull Consumer<T> consumer) {
+    public <T extends ItemMeta> void editMeta(@NonNull ItemStack item, @NonNull Class<T> clazz,
+                                              @NonNull Consumer<T> consumer) {
         editItemMeta(item, clazz, consumer);
     }
 
@@ -437,7 +441,8 @@ public class SpigotBridge implements Software {
         editItemMeta(item, ItemMeta.class, consumer);
     }
 
-    private static <T extends ItemMeta> void editItemMeta(@NonNull ItemStack item, @NonNull Class<T> clazz, @NonNull Consumer<T> consumer) {
+    private static <T extends ItemMeta> void editItemMeta(@NonNull ItemStack item, @NonNull Class<T> clazz,
+                                                          @NonNull Consumer<T> consumer) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         if (!clazz.isAssignableFrom(meta.getClass())) return;
@@ -450,7 +455,8 @@ public class SpigotBridge implements Software {
 
     @Override
     @NonNull
-    public SpigotBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor, @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags) {
+    public SpigotBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor,
+                                       @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags) {
         BarColor color = SpigotBossBarAdapter.adaptColor(barColor);
         BarStyle overlay = SpigotBossBarAdapter.adaptOverlay(barOverlay);
 

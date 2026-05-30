@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.placeholder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.HashMap;
@@ -13,35 +13,35 @@ public class TypedPlaceholder<T> {
 
     private final Map<String, Function<T, String>> entries;
 
-    private TypedPlaceholder(@NotNull Map<String, Function<T, String>> entries) {
+    private TypedPlaceholder(@NonNull Map<String, Function<T, String>> entries) {
         this.entries = new LinkedHashMap<>(entries);
     }
 
-    @NotNull
+    @NonNull
     public static <T> Builder<T> builder() {
         return new Builder<>();
     }
 
-    @NotNull
-    public static <T> Builder<T> builder(@NotNull Class<T> type) {
+    @NonNull
+    public static <T> Builder<T> builder(@NonNull Class<T> type) {
         return new Builder<>();
     }
 
-    @NotNull
+    @NonNull
     public Map<String, Function<T, String>> getEntries() {
         return Map.copyOf(this.entries);
     }
 
-    @NotNull
-    public PlaceholderResolver resolver(@NotNull T source) {
+    @NonNull
+    public PlaceholderResolver resolver(@NonNull T source) {
         return key -> {
             var func = this.entries.get(key);
             return func == null ? null : func.apply(source);
         };
     }
 
-    @NotNull
-    public UnaryOperator<String> replacer(@NotNull T source) {
+    @NonNull
+    public UnaryOperator<String> replacer(@NonNull T source) {
         return str -> StringUtil.replacePlaceholders(str, this.resolver(source));
     }
 
@@ -49,24 +49,23 @@ public class TypedPlaceholder<T> {
 
         private final Map<String, Function<T, String>> entries = new HashMap<>();
 
-        @NotNull
+        @NonNull
         public TypedPlaceholder<T> build() {
             return new TypedPlaceholder<>(this.entries);
         }
 
-        @NotNull
-        public Builder<T> include(@NotNull TypedPlaceholder<? super T> parent) {
+        @NonNull
+        public Builder<T> include(@NonNull TypedPlaceholder<? super T> parent) {
             parent.getEntries().forEach((key, fun) -> {
-                @SuppressWarnings("unchecked")
-                Function<T, String> adaptedFunction = (Function<T, String>) fun;
+                @SuppressWarnings("unchecked") Function<T, String> adaptedFunction = (Function<T, String>) fun;
 
                 this.entries.putIfAbsent(key, adaptedFunction);
             });
             return this;
         }
 
-        @NotNull
-        public Builder<T> with(@NotNull String key, @NotNull Function<T, String> function) {
+        @NonNull
+        public Builder<T> with(@NonNull String key, @NonNull Function<T, String> function) {
             this.entries.put(key, function);
             return this;
         }

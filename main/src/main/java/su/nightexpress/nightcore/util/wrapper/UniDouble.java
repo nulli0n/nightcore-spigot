@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.wrapper;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.random.Rnd;
@@ -15,25 +15,25 @@ public final class UniDouble implements Writeable {
         this.maxInclusive = max;
     }
 
-    @NotNull
+    @NonNull
     public static UniDouble of(double min, double max) {
         return new UniDouble(min, max);
     }
 
-    @NotNull
-    public static UniDouble read(@NotNull FileConfig cfg, @NotNull String path) {
+    @NonNull
+    public static UniDouble read(@NonNull FileConfig cfg, @NonNull String path) {
         double min = cfg.getDouble(path + ".Min");
         double max = cfg.getDouble(path + ".Max");
         return of(min, max);
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Min", this.getMinValue());
         config.set(path + ".Max", this.getMaxValue());
     }
 
-    @NotNull
+    @NonNull
     public UniInt asInt() {
         return UniInt.of((int) this.getMinValue(), (int) this.getMaxValue());
     }

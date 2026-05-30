@@ -1,13 +1,17 @@
 package su.nightexpress.nightcore.menu.click;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Deprecated
 public enum ClickType {
 
-    LEFT, RIGHT, SHIFT_LEFT, SHIFT_RIGHT,
-    DROP_KEY, SWAP_KEY,
+    LEFT,
+    RIGHT,
+    SHIFT_LEFT,
+    SHIFT_RIGHT,
+    DROP_KEY,
+    SWAP_KEY,
     NUMBER_1,
     NUMBER_2,
     NUMBER_3,
@@ -19,8 +23,8 @@ public enum ClickType {
     NUMBER_9,
     ;
 
-    @NotNull
-    public static ClickType from(@NotNull InventoryClickEvent event) {
+    @NonNull
+    public static ClickType from(@NonNull InventoryClickEvent event) {
         if (event.getClick() == org.bukkit.event.inventory.ClickType.DROP) return DROP_KEY;
         if (event.getClick() == org.bukkit.event.inventory.ClickType.SWAP_OFFHAND) return SWAP_KEY;
         if (event.getHotbarButton() >= 0) {

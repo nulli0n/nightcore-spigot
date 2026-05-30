@@ -4,8 +4,8 @@ import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.item.template.MMOItemTemplate;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.integration.item.data.ItemIdData;
 import su.nightexpress.nightcore.integration.item.adapter.IdentifiableItemAdapter;
 
@@ -16,13 +16,13 @@ public class MMOItemsAdapter extends IdentifiableItemAdapter {
     }
 
     @Override
-    public boolean canHandle(@NotNull ItemStack itemStack) {
+    public boolean canHandle(@NonNull ItemStack itemStack) {
         return MMOItems.getType(itemStack) != null && MMOItems.getID(itemStack) != null;
     }
 
     @Override
     @Nullable
-    public ItemStack createItem(@NotNull String itemId) {
+    public ItemStack createItem(@NonNull String itemId) {
         String[] split = itemId.split(":");
 
         Type type = Type.get(split[0]);
@@ -39,7 +39,7 @@ public class MMOItemsAdapter extends IdentifiableItemAdapter {
     }
 
     @Override
-    public boolean canHandle(@NotNull ItemIdData data) {
+    public boolean canHandle(@NonNull ItemIdData data) {
         String[] split = data.getItemId().split(":");
 
         Type type = Type.get(split[0]);
@@ -53,7 +53,7 @@ public class MMOItemsAdapter extends IdentifiableItemAdapter {
 
     @Override
     @Nullable
-    public String getItemId(@NotNull ItemStack itemStack) {
+    public String getItemId(@NonNull ItemStack itemStack) {
         String type = MMOItems.getTypeName(itemStack);
         String id = MMOItems.getID(itemStack);
         if (type == null || id == null) return null;

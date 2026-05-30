@@ -1,65 +1,66 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.util.Strings;
 
 import java.util.function.UnaryOperator;
 
-public record WrappedNumberRangeDialogInput(@NotNull String key,
-                                            @NotNull String label,
-                                            @NotNull String labelFormat,
+public record WrappedNumberRangeDialogInput(@NonNull String key,
+                                            @NonNull String label,
+                                            @NonNull String labelFormat,
                                             int width,
                                             float start, float end,
                                             @Nullable Float initial,
                                             @Nullable Float step) implements WrappedDialogInput {
 
     @Override
-    @NotNull
-    public <I> I adapt(@NotNull DialogInputAdapter<I> adapter) {
+    @NonNull
+    public <I> I adapt(@NonNull DialogInputAdapter<I> adapter) {
         return adapter.adaptInput(this);
     }
 
     @Override
-    @NotNull
-    public WrappedNumberRangeDialogInput replace(@NotNull UnaryOperator<String> operator) {
-        return new WrappedNumberRangeDialogInput(this.key, operator.apply(this.label), this.labelFormat,  this.width, this.start, this.end, this.initial, this.step);
+    @NonNull
+    public WrappedNumberRangeDialogInput replace(@NonNull UnaryOperator<String> operator) {
+        return new WrappedNumberRangeDialogInput(this.key, operator.apply(
+            this.label), this.labelFormat, this.width, this.start, this.end, this.initial, this.step);
     }
 
     public static final class Builder {
 
-        private final String    key;
+        private final String key;
         private final String label;
-        private final float     start;
-        private final float     end;
+        private final float  start;
+        private final float  end;
 
         private int    width       = DialogDefaults.DEFAULT_NUMBER_INPUT_WIDTH;
         private String labelFormat = "options.generic_value";
         private Float  initial     = null;
         private Float  step        = null;
 
-        public Builder(@NotNull String key, @NotNull String label, float start, float end) {
+        public Builder(@NonNull String key, @NonNull String label, float start, float end) {
             this.key = Strings.filterForVariable(key);
             this.label = label;
             this.start = start;
             this.end = end;
         }
 
-        @NotNull
+        @NonNull
         public Builder width(int width) {
             this.width = DialogDefaults.clampWidth(width);
             return this;
         }
 
-        @NotNull
-        public Builder labelFormat(@NotNull String labelFormat) {
+        @NonNull
+        public Builder labelFormat(@NonNull String labelFormat) {
             this.labelFormat = labelFormat;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder initial(@Nullable Float initial) {
             if (initial != null) {
                 initial = Math.clamp(initial, this.start, this.end);
@@ -69,13 +70,13 @@ public record WrappedNumberRangeDialogInput(@NotNull String key,
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder step(@Nullable Float step) {
             this.step = step == null ? null : Math.max(step, 0.01F);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public WrappedNumberRangeDialogInput build() {
             return new WrappedNumberRangeDialogInput(this.key, this.label, this.labelFormat, this.width, this.start, this.end, this.initial, this.step);
         }

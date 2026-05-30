@@ -1,27 +1,28 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.util.Strings;
 
 import java.util.function.UnaryOperator;
 
-public record WrappedBooleanDialogInput(@NotNull String key,
-                                        @NotNull String label,
+public record WrappedBooleanDialogInput(@NonNull String key,
+                                        @NonNull String label,
                                         boolean initial,
-                                        @NotNull String onTrue,
-                                        @NotNull String onFalse) implements WrappedDialogInput {
+                                        @NonNull String onTrue,
+                                        @NonNull String onFalse) implements WrappedDialogInput {
 
     @Override
-    @NotNull
-    public <I> I adapt(@NotNull DialogInputAdapter<I> adapter) {
+    @NonNull
+    public <I> I adapt(@NonNull DialogInputAdapter<I> adapter) {
         return adapter.adaptInput(this);
     }
 
     @Override
-    @NotNull
-    public WrappedBooleanDialogInput replace(@NotNull UnaryOperator<String> operator) {
-        return new WrappedBooleanDialogInput(this.key, operator.apply(this.label), this.initial, this.onTrue, this.onFalse);
+    @NonNull
+    public WrappedBooleanDialogInput replace(@NonNull UnaryOperator<String> operator) {
+        return new WrappedBooleanDialogInput(this.key, operator.apply(
+            this.label), this.initial, this.onTrue, this.onFalse);
     }
 
     public static final class Builder {
@@ -33,30 +34,30 @@ public record WrappedBooleanDialogInput(@NotNull String key,
         private String  onTrue  = "true";
         private String  onFalse = "false";
 
-        public Builder(@NotNull String key, @NotNull String label) {
+        public Builder(@NonNull String key, @NonNull String label) {
             this.key = Strings.filterForVariable(key);
             this.label = label;
         }
 
-        @NotNull
+        @NonNull
         public Builder initial(boolean initial) {
             this.initial = initial;
             return this;
         }
 
-        @NotNull
-        public Builder onTrue(@NotNull String onTrue) {
+        @NonNull
+        public Builder onTrue(@NonNull String onTrue) {
             this.onTrue = onTrue;
             return this;
         }
 
-        @NotNull
-        public Builder onFalse(@NotNull String onFalse) {
+        @NonNull
+        public Builder onFalse(@NonNull String onFalse) {
             this.onFalse = onFalse;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public WrappedBooleanDialogInput build() {
             return new WrappedBooleanDialogInput(this.key, this.label, this.initial, this.onTrue, this.onFalse);
         }

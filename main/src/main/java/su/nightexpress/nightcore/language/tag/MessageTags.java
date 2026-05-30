@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.language.tag;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.language.tag.impl.NoPrefixTag;
 import su.nightexpress.nightcore.language.tag.impl.OutputTag;
 import su.nightexpress.nightcore.language.tag.impl.PlaceholderTag;
@@ -24,25 +24,25 @@ public class MessageTags {
         registerTags(NO_PREFIX, OUTPUT, SOUND, PLACEHOLDER);
     }
 
-    public static void registerTags(@NotNull MessageTag... tags) {
+    public static void registerTags(@NonNull MessageTag... tags) {
         for (MessageTag tag : tags) {
             registerTag(tag);
         }
     }
 
-    public static void registerTag(@NotNull MessageTag tag, @NotNull String... aliases) {
+    public static void registerTag(@NonNull MessageTag tag, @NonNull String... aliases) {
         REGISTRY.put(tag.getName(), tag);
         for (String alias : aliases) {
             REGISTRY.put(alias, tag);
         }
     }
 
-    @NotNull
+    @NonNull
     public static Collection<MessageTag> getTags() {
         return REGISTRY.values();
     }
 
-    public static MessageTag getTag(@NotNull String name) {
+    public static MessageTag getTag(@NonNull String name) {
         return REGISTRY.get(name.toLowerCase());
     }
 }

@@ -5,7 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.manager.AbstractListener;
 import su.nightexpress.nightcore.user.AbstractUserManager;
@@ -15,7 +15,7 @@ public class UserListener<P extends NightPlugin, U extends UserTemplate> extends
 
     private final AbstractUserManager<P, U> manager;
 
-    public UserListener(@NotNull P plugin, @NotNull AbstractUserManager<P, U> manager) {
+    public UserListener(@NonNull P plugin, @NonNull AbstractUserManager<P, U> manager) {
         super(plugin);
         this.manager = manager;
     }

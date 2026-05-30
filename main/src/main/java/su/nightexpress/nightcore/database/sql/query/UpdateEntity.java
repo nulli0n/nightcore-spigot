@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database.sql.query;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLValue;
 
@@ -16,23 +16,23 @@ public class UpdateEntity {
     private final List<String> whereColumns;
     private final List<String> wheres;
 
-    private UpdateEntity(@NotNull List<String> columnNames,
-                         @NotNull List<String> values,
-                         @NotNull List<String> whereColumns,
-                         @NotNull List<String> wheres) {
+    private UpdateEntity(@NonNull List<String> columnNames,
+                         @NonNull List<String> values,
+                         @NonNull List<String> whereColumns,
+                         @NonNull List<String> wheres) {
         this.columnNames = columnNames;
         this.values = values;
         this.whereColumns = whereColumns;
         this.wheres = wheres;
     }
 
-    @NotNull
-    public static UpdateEntity create(@NotNull List<SQLValue> values) {
+    @NonNull
+    public static UpdateEntity create(@NonNull List<SQLValue> values) {
         return create(values, Collections.emptyList());
     }
 
-    @NotNull
-    public static UpdateEntity create(@NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+    @NonNull
+    public static UpdateEntity create(@NonNull List<SQLValue> values, @NonNull List<SQLCondition> conditions) {
         List<String> columnNames = new ArrayList<>();
         List<String> columnValues = new ArrayList<>();
         List<String> whereColumns = new ArrayList<>();
@@ -51,8 +51,8 @@ public class UpdateEntity {
         return new UpdateEntity(columnNames, columnValues, whereColumns, whereValues);
     }
 
-    @NotNull
-    public String createSQL(@NotNull String table) {
+    @NonNull
+    public String createSQL(@NonNull String table) {
         StringBuilder builder = new StringBuilder();
         builder.append("UPDATE ").append(table);
         builder.append(" SET ").append(String.join(",", this.columnNames));
@@ -62,22 +62,22 @@ public class UpdateEntity {
         return builder.toString();
     }
 
-    @NotNull
+    @NonNull
     public List<String> getColumnNames() {
         return columnNames;
     }
 
-    @NotNull
+    @NonNull
     public List<String> getValues() {
         return values;
     }
 
-    @NotNull
+    @NonNull
     public List<String> getWhereColumns() {
         return whereColumns;
     }
 
-    @NotNull
+    @NonNull
     public List<String> getWheres() {
         return wheres;
     }

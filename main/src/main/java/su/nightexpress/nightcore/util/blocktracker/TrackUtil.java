@@ -2,11 +2,11 @@ package su.nightexpress.nightcore.util.blocktracker;
 
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class TrackUtil {
 
-    public static long getChunkKey(@NotNull Chunk chunk) {
+    public static long getChunkKey(@NonNull Chunk chunk) {
         return getChunkKey(chunk.getX(), chunk.getZ());
     }
 
@@ -14,11 +14,11 @@ public class TrackUtil {
         return (long) chunkX & 0xFFFFFFFFL | ((long) chunkZ & 0xFFFFFFFFL) << 32;
     }
 
-    public static long getChunkKeyOfBlock(@NotNull Block block) {
+    public static long getChunkKeyOfBlock(@NonNull Block block) {
         return getChunkKey(block.getX() >> 4, block.getZ() >> 4);
     }
 
-    public static int getRelativeChunkPosition(@NotNull Block block) {
+    public static int getRelativeChunkPosition(@NonNull Block block) {
         final int relX = (block.getX() % 16 + 16) % 16;
         final int relZ = (block.getZ() % 16 + 16) % 16;
         final int relY = block.getY();

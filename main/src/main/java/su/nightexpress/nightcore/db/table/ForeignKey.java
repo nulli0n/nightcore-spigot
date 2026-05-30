@@ -1,17 +1,18 @@
 package su.nightexpress.nightcore.db.table;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.column.Column;
 
-public record ForeignKey(@NotNull String columnName, @NotNull String refTable, @NotNull String refColumn) {
+public record ForeignKey(@NonNull String columnName, @NonNull String refTable, @NonNull String refColumn) {
 
-    @NotNull
-    public static ForeignKey of(@NotNull Column<?> column, @NotNull Table table, @NotNull Column<?> ref) {
+    @NonNull
+    public static ForeignKey of(@NonNull Column<?> column, @NonNull Table table, @NonNull Column<?> ref) {
         return new ForeignKey(column.getQuotedName(), table.getName(), ref.getQuotedName());
     }
 
-    @NotNull
+    @NonNull
     public String toSql() {
-        return "FOREIGN KEY (%s) REFERENCES %s(%s) ON DELETE CASCADE".formatted(this.columnName, this.refTable, this.refColumn);
+        return "FOREIGN KEY (%s) REFERENCES %s(%s) ON DELETE CASCADE".formatted(this.columnName, this.refTable,
+            this.refColumn);
     }
 }

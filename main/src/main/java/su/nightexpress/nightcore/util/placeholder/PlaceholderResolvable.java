@@ -1,9 +1,10 @@
 package su.nightexpress.nightcore.util.placeholder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @FunctionalInterface
 public interface PlaceholderResolvable {
 
-    @NotNull PlaceholderResolver placeholders();
+    @NonNull
+    PlaceholderResolver placeholders();
 }

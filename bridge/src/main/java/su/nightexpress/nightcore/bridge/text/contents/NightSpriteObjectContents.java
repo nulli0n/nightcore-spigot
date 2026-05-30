@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.bridge.text.contents;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.text.adapter.ObjectContentsAdapter;
 
@@ -13,23 +13,23 @@ public class NightSpriteObjectContents implements NightObjectContents {
     private final NightKey atlas;
     private final NightKey sprite;
 
-    NightSpriteObjectContents(@NotNull NightKey atlas, @NotNull NightKey sprite) {
+    NightSpriteObjectContents(@NonNull NightKey atlas, @NonNull NightKey sprite) {
         this.atlas = atlas;
         this.sprite = sprite;
     }
 
     @Override
-    @NotNull
-    public <T> T adapt(@NotNull ObjectContentsAdapter<T> adapter) {
+    @NonNull
+    public <T> T adapt(@NonNull ObjectContentsAdapter<T> adapter) {
         return adapter.adaptContents(this);
     }
 
-    @NotNull
+    @NonNull
     public NightKey atlas() {
         return this.atlas;
     }
 
-    @NotNull
+    @NonNull
     public NightKey sprite() {
         return this.sprite;
     }

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.command.experimental.flag;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ArgumentParser;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArgument;
@@ -15,41 +15,42 @@ public class ContentFlag<T> extends CommandFlag {
     private final ArgumentParser<T> parser;
     private final String            sample;
 
-    public ContentFlag(@NotNull String name, @NotNull ArgumentParser<T> parser, @Nullable String sample, @Nullable String permission) {
+    public ContentFlag(@NonNull String name, @NonNull ArgumentParser<T> parser, @Nullable String sample,
+                       @Nullable String permission) {
         super(name, permission);
         this.parser = parser;
         this.sample = sample == null ? "" : sample;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static <T> ContentFlagBuilder<T> builder(@NotNull String name, @NotNull Function<String , T> parser) {
-//        return new ContentFlagBuilder<>(name, parser);
+    public static <T> ContentFlagBuilder<T> builder(@NonNull String name, @NonNull Function<String, T> parser) {
+        //        return new ContentFlagBuilder<>(name, parser);
         return builder(name, (string, context) -> parser.apply(string));
     }
 
-    @NotNull
-    public static <T> ContentFlagBuilder<T> builder(@NotNull String name, @NotNull ArgumentParser<T> parser) {
+    @NonNull
+    public static <T> ContentFlagBuilder<T> builder(@NonNull String name, @NonNull ArgumentParser<T> parser) {
         return new ContentFlagBuilder<>(name, parser);
     }
 
     @Nullable
-    public ParsedArgument<T> parse(@NotNull String str, @NotNull CommandContext context) {
+    public ParsedArgument<T> parse(@NonNull String str, @NonNull CommandContext context) {
         T result = this.parser.parse(str, context);
         return result == null ? null : new ParsedArgument<>(result);
     }
 
-    @NotNull
+    @NonNull
     public String getSampled() {
         return this.getPrefixed() + DELIMITER + this.getSample();
     }
 
-    @NotNull
+    @NonNull
     public ArgumentParser<T> getParser() {
         return parser;
     }
 
-    @NotNull
+    @NonNull
     public String getSample() {
         return sample;
     }

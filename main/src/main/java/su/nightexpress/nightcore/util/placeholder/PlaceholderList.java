@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.placeholder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.*;
@@ -17,28 +17,28 @@ public class PlaceholderList<T> {
         this(new ArrayList<>());
     }
 
-    public PlaceholderList(@NotNull PlaceholderList<T> other) {
+    public PlaceholderList(@NonNull PlaceholderList<T> other) {
         this(other.getEntries());
     }
 
-    public PlaceholderList(@NotNull List<PlaceholderEntry<T>> entries) {
+    public PlaceholderList(@NonNull List<PlaceholderEntry<T>> entries) {
         //this.entries = new ArrayList<>(entries);
         this(fromList(entries));
     }
 
-    public PlaceholderList(@NotNull Map<String, PlaceholderEntry<T>> entries) {
+    public PlaceholderList(@NonNull Map<String, PlaceholderEntry<T>> entries) {
         this.entries = new LinkedHashMap<>(entries);
     }
 
-    @NotNull
-    public static <T> PlaceholderList<T> create(@NotNull Consumer<PlaceholderList<T>> consumer) {
+    @NonNull
+    public static <T> PlaceholderList<T> create(@NonNull Consumer<PlaceholderList<T>> consumer) {
         PlaceholderList<T> placeholderList = new PlaceholderList<>();
         consumer.accept(placeholderList);
         return placeholderList;
     }
 
-    @NotNull
-    private static <T> Map<String, PlaceholderEntry<T>> fromList(@NotNull List<PlaceholderEntry<T>> entries) {
+    @NonNull
+    private static <T> Map<String, PlaceholderEntry<T>> fromList(@NonNull List<PlaceholderEntry<T>> entries) {
         Map<String, PlaceholderEntry<T>> map = new HashMap<>();
 
         entries.forEach(entry -> map.put(entry.getKey().toLowerCase(), entry));
@@ -46,13 +46,13 @@ public class PlaceholderList<T> {
         return map;
     }
 
-    @NotNull
+    @NonNull
     public List<PlaceholderEntry<T>> getEntries() {
         return new ArrayList<>(this.entries.values());
     }
 
-    @NotNull
-    public PlaceholderList<T> add(@NotNull PlaceholderList<? super T> other) {
+    @NonNull
+    public PlaceholderList<T> add(@NonNull PlaceholderList<? super T> other) {
         other.getEntries().forEach(entry -> {
             this.add(entry.getKey(), entry::get);
         });
@@ -60,25 +60,25 @@ public class PlaceholderList<T> {
         return this;
     }
 
-    @NotNull
-    public PlaceholderList<T> add(@NotNull String key, @NotNull String replacer) {
+    @NonNull
+    public PlaceholderList<T> add(@NonNull String key, @NonNull String replacer) {
         this.add(key, source -> replacer);
         return this;
     }
 
-    @NotNull
-    public PlaceholderList<T> add(@NotNull String key, @NotNull Supplier<String> replacer) {
+    @NonNull
+    public PlaceholderList<T> add(@NonNull String key, @NonNull Supplier<String> replacer) {
         this.add(key, source -> replacer.get());
         return this;
     }
 
-    @NotNull
-    public PlaceholderList<T> add(@NotNull String key, @NotNull Function<T, String> replacer) {
+    @NonNull
+    public PlaceholderList<T> add(@NonNull String key, @NonNull Function<T, String> replacer) {
         this.entries.put(key.toLowerCase(), new PlaceholderEntry<>(key, replacer));
         return this;
     }
 
-    public boolean remove(@NotNull String key) {
+    public boolean remove(@NonNull String key) {
         return this.entries.remove(key.toLowerCase()) != null;
     }
 
@@ -86,13 +86,13 @@ public class PlaceholderList<T> {
         this.entries.clear();
     }
 
-    @NotNull
-    public UnaryOperator<String> replacer(@NotNull T source) {
+    @NonNull
+    public UnaryOperator<String> replacer(@NonNull T source) {
         return str -> StringUtil.replaceEach(str, this.getEntries(), source);
     }
 
-    @NotNull
-    public String apply(@NotNull String str, @NotNull T source) {
+    @NonNull
+    public String apply(@NonNull String str, @NonNull T source) {
         return this.replacer(source).apply(str);
     }
 }

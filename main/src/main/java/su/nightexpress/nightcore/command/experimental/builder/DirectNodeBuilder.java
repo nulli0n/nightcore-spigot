@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.command.experimental.builder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.experimental.argument.CommandArgument;
 import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
@@ -20,48 +20,48 @@ public class DirectNodeBuilder extends NodeBuilder<DirectNode, DirectNodeBuilder
 
     private DirectExecutor executor;
 
-    public DirectNodeBuilder(@NotNull NightCorePlugin plugin, @NotNull String... aliases) {
+    public DirectNodeBuilder(@NonNull NightCorePlugin plugin, @NonNull String... aliases) {
         super(plugin, aliases);
         this.arguments = new ArrayList<>();
         this.flags = new HashMap<>();
     }
 
     @Override
-    @NotNull
+    @NonNull
     protected DirectNodeBuilder getThis() {
         return this;
     }
 
-    @NotNull
-    public DirectNodeBuilder withArgument(@NotNull ArgumentBuilder<?> builder) {
+    @NonNull
+    public DirectNodeBuilder withArgument(@NonNull ArgumentBuilder<?> builder) {
         return this.withArgument(builder.build());
     }
 
-    @NotNull
-    public DirectNodeBuilder withArgument(@NotNull CommandArgument<?> argument) {
+    @NonNull
+    public DirectNodeBuilder withArgument(@NonNull CommandArgument<?> argument) {
         this.arguments.add(argument);
         return this;
     }
 
-    @NotNull
-    public DirectNodeBuilder withFlag(@NotNull FlagBuilder<?, ?> builder) {
+    @NonNull
+    public DirectNodeBuilder withFlag(@NonNull FlagBuilder<?, ?> builder) {
         return this.withFlag(builder.build());
     }
 
-    @NotNull
-    public DirectNodeBuilder withFlag(@NotNull CommandFlag flag) {
+    @NonNull
+    public DirectNodeBuilder withFlag(@NonNull CommandFlag flag) {
         this.flags.put(flag.getName(), flag);
         return this;
     }
 
-    @NotNull
+    @NonNull
     public DirectNodeBuilder executes(DirectExecutor executor) {
         this.executor = executor;
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public DirectNode build() {
         return new DirectNode(this.plugin, this.name, this.aliases, this.description, this.permission, this.playerOnly, this.arguments, this.flags, this.executor);
     }

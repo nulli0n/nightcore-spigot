@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.bridge.text;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
 import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
@@ -24,54 +24,54 @@ public abstract class NightAbstractComponent implements NightComponent {
 
     protected final NightStyle style;
 
-    protected NightAbstractComponent(@NotNull List<? extends NightComponent> children, @NotNull NightStyle style) {
+    protected NightAbstractComponent(@NonNull List<? extends NightComponent> children, @NonNull NightStyle style) {
         this.children = new ArrayList<>(children);
         this.style = style;
     }
 
-    @NotNull
-    public <T> T adapt(@NotNull TextComponentAdapter<T> adapter) {
+    @NonNull
+    public <T> T adapt(@NonNull TextComponentAdapter<T> adapter) {
         return adapter.adaptComponent(this);
     }
 
     @Override
-    @NotNull
-    public NightComponent append(@NotNull List<? extends NightComponent> components) {
+    @NonNull
+    public NightComponent append(@NonNull List<? extends NightComponent> components) {
         var children = new ArrayList<>(this.children());
         children.addAll(components);
 
         return this.children(children);
     }
 
-    @NotNull
+    @NonNull
     public final List<NightComponent> children() {
         return this.children;
     }
 
-    @NotNull
+    @NonNull
     public final NightStyle style() {
         return this.style;
     }
 
-    @NotNull
+    @NonNull
     public NightComponent appendNewline() {
         return this.append(NightComponent.newline());
     }
 
-    @NotNull
+    @NonNull
     public NightComponent appendSpace() {
         return this.append(NightComponent.space());
     }
 
     @Override
-    @NotNull
-    public NightComponent append(@NotNull NightComponent... components) {
+    @NonNull
+    public NightComponent append(@NonNull NightComponent... components) {
         return this.append(Lists.newList(components));
     }
 
     @Override
-    @NotNull
-    public NightComponent append(@NotNull NightComponent component) {
+    @NonNull
+    public NightComponent append(@NonNull NightComponent component) {
         return this.append(new NightComponent[]{component});
     }
 
@@ -80,7 +80,7 @@ public abstract class NightAbstractComponent implements NightComponent {
         return this.style().font();
     }
 
-    @NotNull
+    @NonNull
     public NightComponent font(@Nullable NightKey key) {
         return this.style(this.style().font(key));
     }
@@ -95,41 +95,41 @@ public abstract class NightAbstractComponent implements NightComponent {
         return this.style().shadowColor();
     }
 
-    @NotNull
+    @NonNull
     public NightComponent color(@Nullable Color color) {
         return this.style(this.style().color(color));
     }
 
-    @NotNull
+    @NonNull
     public NightComponent shadowColor(@Nullable Color color) {
         return this.style(this.style().shadowColor(color));
     }
-    
-    public boolean hasDecoration(@NotNull NightTextDecoration decoration) {
+
+    public boolean hasDecoration(@NonNull NightTextDecoration decoration) {
         return this.decoration(decoration) == NightTextDecoration.State.TRUE;
     }
 
-    @NotNull
-    public NightComponent decorate(@NotNull NightTextDecoration decoration) {
+    @NonNull
+    public NightComponent decorate(@NonNull NightTextDecoration decoration) {
         return this.style(this.style().decoration(decoration, NightTextDecoration.State.TRUE));
     }
 
-    @NotNull
-    public NightTextDecoration.State decoration(@NotNull NightTextDecoration decoration) {
+    public NightTextDecoration.@NonNull State decoration(@NonNull NightTextDecoration decoration) {
         return this.style().decoration(decoration);
     }
 
-    @NotNull
-    public NightComponent decoration(@NotNull NightTextDecoration decoration, boolean flag) {
+    @NonNull
+    public NightComponent decoration(@NonNull NightTextDecoration decoration, boolean flag) {
         return this.style(this.style().decoration(decoration, NightTextDecoration.State.byBoolean(flag)));
     }
 
-    @NotNull
-    public NightComponent decoration(@NotNull NightTextDecoration decoration, @NotNull NightTextDecoration.State state) {
+    @NonNull
+    public NightComponent decoration(@NonNull NightTextDecoration decoration,
+                                     NightTextDecoration.@NonNull State state) {
         return this.style(this.style().decoration(decoration, state));
     }
 
-    @NotNull
+    @NonNull
     public Map<NightTextDecoration, NightTextDecoration.State> decorations() {
         return this.style().decorations();
     }
@@ -139,7 +139,7 @@ public abstract class NightAbstractComponent implements NightComponent {
         return this.style().clickEvent();
     }
 
-    @NotNull
+    @NonNull
     public NightComponent clickEvent(@Nullable NightClickEvent event) {
         return this.style(this.style().clickEvent(event));
     }
@@ -149,7 +149,7 @@ public abstract class NightAbstractComponent implements NightComponent {
         return this.style().hoverEvent();
     }
 
-    @NotNull
+    @NonNull
     public NightComponent hoverEvent(@Nullable NightHoverEvent<?> hoverEvent) {
         return this.style(this.style().hoverEvent(hoverEvent));
     }
@@ -159,39 +159,40 @@ public abstract class NightAbstractComponent implements NightComponent {
         return this.style().insertion();
     }
 
-    @NotNull
+    @NonNull
     public NightComponent insertion(@Nullable String insertion) {
         return this.style(this.style().insertion(insertion));
     }
-    
+
     public boolean hasStyling() {
         return !this.style().isEmpty();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String toJson() {
         return Software.instance().getTextComponentAdapter().toJson(this);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String toLegacy() {
         return Software.instance().getTextComponentAdapter().toLegacy(this);
     }
 
     @Override
-    public void send(@NotNull CommandSender sender) {
+    public void send(@NonNull CommandSender sender) {
         Software.instance().getTextComponentAdapter().send(sender, this);
     }
 
     @Override
-    public void sendActionBar(@NotNull Player player) {
+    public void sendActionBar(@NonNull Player player) {
         Software.instance().getTextComponentAdapter().sendActionBar(player, this);
     }
 
     @Override
     public boolean isEmpty() {
-        return this instanceof NightTextComponent textComponent && textComponent.content().isEmpty() && textComponent.children().isEmpty();
+        return this instanceof NightTextComponent textComponent && textComponent.content().isEmpty() && textComponent
+            .children().isEmpty();
     }
 }

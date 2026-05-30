@@ -1,10 +1,12 @@
 package su.nightexpress.nightcore.util.problem;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public interface Problem {
 
-    @NotNull String description();
+    @NonNull
+    String description();
 
-    record ChildReport(@NotNull String description, @NotNull ProblemReporter reporter) implements Problem {}
+    record ChildReport(@NonNull String description, @NonNull ProblemReporter reporter) implements Problem {
+    }
 }

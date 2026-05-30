@@ -4,8 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.api.NightCommand;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
@@ -22,20 +22,20 @@ public abstract class PluginCommand<P extends NightCorePlugin> extends AbstractC
     private Command      backend;
     private NightCommand defaultCommand;
 
-    public PluginCommand(@NotNull P plugin, @NotNull String[] aliases) {
+    public PluginCommand(@NonNull P plugin, @NonNull String[] aliases) {
         this(plugin, aliases, (String) null);
     }
 
-    public PluginCommand(@NotNull P plugin, @NotNull String[] aliases, @Nullable Permission permission) {
+    public PluginCommand(@NonNull P plugin, @NonNull String[] aliases, @Nullable Permission permission) {
         super(plugin, aliases, permission);
     }
 
-    public PluginCommand(@NotNull P plugin, @NotNull String[] aliases, @Nullable String permission) {
+    public PluginCommand(@NonNull P plugin, @NonNull String[] aliases, @Nullable String permission) {
         super(plugin, aliases, permission);
     }
 
     @Override
-    public void addDefaultCommand(@NotNull NightCommand command) {
+    public void addDefaultCommand(@NonNull NightCommand command) {
         this.addChildren(command);
         this.defaultCommand = command;
     }
@@ -52,13 +52,13 @@ public abstract class PluginCommand<P extends NightCorePlugin> extends AbstractC
     }
 
     @Override
-    public void setBackend(@NotNull Command backend) {
+    public void setBackend(@NonNull Command backend) {
         this.backend = backend;
     }
 
     //@Override
-    @NotNull
-    private NightCommand findChildren(@NotNull String[] args) {
+    @NonNull
+    private NightCommand findChildren(@NonNull String[] args) {
         NightCommand command = this;//.defaultCommand;
         int childCount = 0;
         while (args.length > childCount) {
@@ -70,20 +70,20 @@ public abstract class PluginCommand<P extends NightCorePlugin> extends AbstractC
         return command;
     }
 
-    /*private int countChildren(@NotNull String[] args) {
+    /*private int countChildren(@NonNull String[] args) {
         AbstractCommand<P> command = this;
         int childCount = 0;
         while (args.length > childCount) {
             AbstractCommand<P> child = command.getChildren(args[childCount]);
             if (child == null) break;
-
+    
             command = child;
             childCount++;
         }
         return childCount;
     }*/
 
-    /*private String[] insertArg(@NotNull String arg, int index, String[] args) {
+    /*private String[] insertArg(@NonNull String arg, int index, String[] args) {
         List<String> list = new ArrayList<>(Arrays.asList(args));
         if (index >= list.size()) {
             list.add(arg);
@@ -93,7 +93,8 @@ public abstract class PluginCommand<P extends NightCorePlugin> extends AbstractC
     }*/
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+    public boolean onCommand(@NonNull CommandSender sender, @NonNull Command cmd, @NonNull String label,
+                             String[] args) {
         NightCommand command = this.findChildren(args);
         if (command instanceof NightPluginCommand pluginCommand) {
             if (pluginCommand.getDefaultCommand() != null) {
@@ -106,8 +107,8 @@ public abstract class PluginCommand<P extends NightCorePlugin> extends AbstractC
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
-                                      @NotNull String label, String[] args) {
+    public List<String> onTabComplete(@NonNull CommandSender sender, @NonNull Command cmd,
+                                      @NonNull String label, String[] args) {
 
         if (!(sender instanceof Player player) || args.length == 0) return Collections.emptyList();
 

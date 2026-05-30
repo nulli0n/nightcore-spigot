@@ -1,7 +1,21 @@
 package su.nightexpress.nightcore.db.statement;
 
-import org.jetbrains.annotations.Nullable;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.db.column.Column;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.connection.AbstractConnector;
@@ -10,14 +24,10 @@ import su.nightexpress.nightcore.db.statement.type.BatchStatement;
 import su.nightexpress.nightcore.db.statement.type.QueryStatement;
 import su.nightexpress.nightcore.db.table.Table;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-
 public class SQLStatements {
+
+    private SQLStatements() {
+    }
 
     public static boolean hasTable(@NonNull AbstractConnector connector, @NonNull String table) {
         try (Connection connection = connector.getConnection()) {
@@ -35,18 +45,23 @@ public class SQLStatements {
         }
     }
 
-    public static boolean hasColumn(@NonNull AbstractConnector connector, @NonNull Table table, @NonNull Column<?> column) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector,
+                                    @NonNull Table table,
+                                    @NonNull Column<?> column) {
         return hasColumn(connector, table.getName(), column.getName());
     }
 
-    public static boolean hasColumn(@NonNull AbstractConnector connector, @NonNull String table, @NonNull Column<?> column) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector,
+                                    @NonNull String table,
+                                    @NonNull Column<?> column) {
         return hasColumn(connector, table, column.getName());
     }
 
-    public static boolean hasColumn(@NonNull AbstractConnector connector, @NonNull String table, @NonNull String columnName) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector,
+                                    @NonNull String table,
+                                    @NonNull String columnName) {
         String sql = "SELECT * FROM " + table;
-        try (Connection connection = connector.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Connection connection = connector.getConnection(); Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(sql);
             ResultSetMetaData metaData = resultSet.getMetaData();
@@ -64,7 +79,10 @@ public class SQLStatements {
         }
     }
 
-    public static boolean hasIndex(@NonNull AbstractConnector connector, @NonNull DatabaseType type, @NonNull String tableName, @NonNull String indexName) {
+    public static boolean hasIndex(@NonNull AbstractConnector connector,
+                                   @NonNull DatabaseType type,
+                                   @NonNull String tableName,
+                                   @NonNull String indexName) {
         String query;
 
         if (type == DatabaseType.SQLITE) {
@@ -77,8 +95,10 @@ public class SQLStatements {
                 "AND index_name = ?";
         }
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection
+                .prepareStatement(query)) {
 
             if (type == DatabaseType.SQLITE) {
                 statement.setString(1, indexName);
@@ -99,8 +119,10 @@ public class SQLStatements {
     }
 
     public static void executeUpdate(@NonNull AbstractConnector connector, @NonNull String sql) {
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection
+                .prepareStatement(sql)) {
 
             statement.executeUpdate();
         }
@@ -108,20 +130,21 @@ public class SQLStatements {
             exception.printStackTrace();
         }
     }
-    
-    @NonNull
-    public static <R> List<R> select(@NonNull AbstractConnector connector,
-                                     @NonNull String table,
-                                     @NonNull QueryStatement<R> query,
-                                     @Nullable Wheres<Object> where,
-                                     @Nullable Integer limit) {
+
+    public static <R> @NonNull List<R> select(@NonNull AbstractConnector connector,
+                                              @NonNull String table,
+                                              @NonNull QueryStatement<R> query,
+                                              @Nullable Wheres<Object> where,
+                                              @Nullable Integer limit) {
         ArrayList<R> results = new ArrayList<>();
         Object entity = new Object(); // dummy object to get WHERE values.
 
         String sql = query.toSql(table, where, limit);
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection
+                .prepareStatement(sql)) {
 
             if (where != null) {
                 List<PropertyAccessor<Object, Object>> params = where.getParameters();
@@ -146,19 +169,25 @@ public class SQLStatements {
         return results;
     }
 
-    @NonNull
-    public static <R> List<R> selectAny(@NonNull AbstractConnector connector, @NonNull String table, @NonNull QueryStatement<R> query) {
+    public static <R> @NonNull List<R> selectAny(@NonNull AbstractConnector connector,
+                                                 @NonNull String table,
+                                                 @NonNull QueryStatement<R> query) {
         return select(connector, table, query, null, null);
     }
 
-    @NonNull
-    public static <R> Optional<R> selectFirst(@NonNull AbstractConnector connector, @NonNull String table, @NonNull QueryStatement<R> query, @NonNull Wheres<Object> where) {
-        return Optional.of(select(connector, table, query, where, 1)).filter(Predicate.not(List::isEmpty)).map(List::getFirst);
+    public static <R> @NonNull Optional<R> selectFirst(@NonNull AbstractConnector connector,
+                                                       @NonNull String table,
+                                                       @NonNull QueryStatement<R> query,
+                                                       @NonNull Wheres<Object> where) {
+        return Optional.of(select(connector, table, query, where, 1)).filter(Predicate.not(List::isEmpty)).map(
+            List::getFirst);
     }
 
-    @NonNull
-    public static <R> Optional<R> selectAnyFirst(@NonNull AbstractConnector connector, @NonNull String table, @NonNull QueryStatement<R> query) {
-        return Optional.of(select(connector, table, query, null, 1)).filter(Predicate.not(List::isEmpty)).map(List::getFirst);
+    public static <R> @NonNull Optional<R> selectAnyFirst(@NonNull AbstractConnector connector,
+                                                          @NonNull String table,
+                                                          @NonNull QueryStatement<R> query) {
+        return Optional.of(select(connector, table, query, null, 1)).filter(Predicate.not(List::isEmpty)).map(
+            List::getFirst);
     }
 
     public static <T> void executeBatch(@NonNull AbstractConnector connector,
@@ -178,8 +207,9 @@ public class SQLStatements {
 
         String sql = query.toSql(connector.getType(), table, where);
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             int entityCount = 0;
             int batchSize = 500;

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.language.entry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -18,21 +18,23 @@ public class LangUIButton implements LangElement {
 
     private Details details;
 
-    protected LangUIButton(@NotNull String path, @NotNull Details defaults) {
+    protected LangUIButton(@NonNull String path, @NonNull Details defaults) {
         this.path = path;
         this.defaults = defaults;
         this.details = defaults;
     }
 
-    @NotNull
-    public static Builder builder(@NotNull String path, @NotNull String name) {
+    @NonNull
+    public static Builder builder(@NonNull String path, @NonNull String name) {
         return new Builder(path, name);
     }
 
-    protected record Details(String name, List<String> description, boolean formatted, Map<String, String> currentInfo, Map<ClickKey, String> clickActions){}
+    protected record Details(String name, List<String> description, boolean formatted, Map<String, String> currentInfo,
+                             Map<ClickKey, String> clickActions) {
+    }
 
     @Override
-    public void write(@NotNull FileConfig config) {
+    public void write(@NonNull FileConfig config) {
         config.set(this.path + ".Name", this.defaults.name);
         config.set(this.path + ".Description", this.defaults.description);
         config.set(this.path + ".Formatted", this.defaults.formatted);
@@ -41,22 +43,25 @@ public class LangUIButton implements LangElement {
         this.defaults.currentInfo.forEach((name, value) -> config.set(this.path + ".CurrentInfo." + name, value));
 
         config.remove(this.path + ".ClickActions");
-        this.defaults.clickActions.forEach((key, action) -> config.set(this.path + ".ClickActions." + key.name(), action));
+        this.defaults.clickActions.forEach((key, action) -> config.set(this.path + ".ClickActions." + key.name(),
+            action));
     }
 
     @Override
-    public void load(@NotNull NightCorePlugin plugin) {
+    public void load(@NonNull NightCorePlugin plugin) {
         this.load(plugin.getLang());
     }
 
     @Override
-    public void load(@NotNull FileConfig config) {
-        if (!config.contains(this.path) || (!config.contains(this.path + ".ClickActions") && !this.defaults.clickActions.isEmpty())) {
+    public void load(@NonNull FileConfig config) {
+        if (!config.contains(this.path) || (!config.contains(this.path + ".ClickActions") && !this.defaults.clickActions
+            .isEmpty())) {
             this.write(config);
         }
 
         String name = ConfigValue.create(this.path + ".Name", this.defaults.name).read(config);
-        List<String> description = ConfigValue.create(this.path + ".Description", this.defaults.description).read(config);
+        List<String> description = ConfigValue.create(this.path + ".Description", this.defaults.description).read(
+            config);
         boolean formatted = ConfigValue.create(this.path + ".Formatted", this.defaults.formatted).read(config);
 
         Map<String, String> currentInfo = new LinkedHashMap<>();
@@ -81,12 +86,12 @@ public class LangUIButton implements LangElement {
         this.details = new Details(name, description, formatted, currentInfo, clickActions);
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return this.details.name;
     }
 
-    @NotNull
+    @NonNull
     public List<String> getDescription() {
         return this.details.description;
     }
@@ -95,12 +100,12 @@ public class LangUIButton implements LangElement {
         return this.details.formatted;
     }
 
-    @NotNull
+    @NonNull
     public Map<String, String> getCurrentInfo() {
         return this.details.currentInfo;
     }
 
-    @NotNull
+    @NonNull
     public Map<ClickKey, String> getClickActions() {
         return this.details.clickActions;
     }
@@ -113,10 +118,10 @@ public class LangUIButton implements LangElement {
         private final Map<String, String>   currentInfo;
         private final Map<ClickKey, String> clickActions;
 
-        private String name;
+        private String  name;
         private boolean formatted;
 
-        public Builder(@NotNull String path, @NotNull String name) {
+        public Builder(@NonNull String path, @NonNull String name) {
             this.path = path;
             this.name = name;
             this.formatted = true;
@@ -125,82 +130,82 @@ public class LangUIButton implements LangElement {
             this.clickActions = new LinkedHashMap<>();
         }
 
-        @NotNull
+        @NonNull
         public LangUIButton build() {
             return new LangUIButton(this.path, new Details(this.name, new ArrayList<>(this.description), this.formatted, this.currentInfo, new HashMap<>(this.clickActions)));
         }
 
-        @NotNull
-        public Builder name(@NotNull String name) {
+        @NonNull
+        public Builder name(@NonNull String name) {
             this.name = name;
             return this;
         }
 
-        @NotNull
-        public Builder description(@NotNull String... text) {
+        @NonNull
+        public Builder description(@NonNull String... text) {
             this.description.addAll(Arrays.asList(text));
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder formatted(boolean formatted) {
             this.formatted = formatted;
             return this;
         }
 
-        @NotNull
-        public Builder current(@NotNull String value) {
+        @NonNull
+        public Builder current(@NonNull String value) {
             return this.current(CoreLang.EDITOR_BUTTON_CURRENT_DEFAULT_NAME.getString(), value);
         }
 
-        @NotNull
-        public Builder current(@NotNull String name, @NotNull String value) {
+        @NonNull
+        public Builder current(@NonNull String name, @NonNull String value) {
             this.currentInfo.put(name, value);
             return this;
         }
 
-        @NotNull
-        public Builder click(@NotNull String action) {
+        @NonNull
+        public Builder click(@NonNull String action) {
             return this.leftClick(action);
         }
 
-        @NotNull
-        public Builder leftClick(@NotNull String action) {
+        @NonNull
+        public Builder leftClick(@NonNull String action) {
             return this.click(ClickKey.LEFT, action);
         }
 
-        @NotNull
-        public Builder rightClick(@NotNull String action) {
+        @NonNull
+        public Builder rightClick(@NonNull String action) {
             return this.click(ClickKey.RIGHT, action);
         }
 
-        @NotNull
-        public Builder shiftLeft(@NotNull String action) {
+        @NonNull
+        public Builder shiftLeft(@NonNull String action) {
             return this.click(ClickKey.SHIFT_LEFT, action);
         }
 
-        @NotNull
-        public Builder shiftRight(@NotNull String action) {
+        @NonNull
+        public Builder shiftRight(@NonNull String action) {
             return this.click(ClickKey.SHIFT_RIGHT, action);
         }
 
-        @NotNull
-        public Builder dropKey(@NotNull String action) {
+        @NonNull
+        public Builder dropKey(@NonNull String action) {
             return this.click(ClickKey.DROP_KEY, action);
         }
 
-        @NotNull
-        public Builder swapKey(@NotNull String action) {
+        @NonNull
+        public Builder swapKey(@NonNull String action) {
             return this.click(ClickKey.SWAP_KEY, action);
         }
 
-        @NotNull
-        public Builder dragAndDrop(@NotNull String action) {
+        @NonNull
+        public Builder dragAndDrop(@NonNull String action) {
             return this.click(ClickKey.DRAG_N_DROP, action);
         }
 
-        @NotNull
-        public Builder click(@NotNull ClickKey click, @NotNull String action) {
+        @NonNull
+        public Builder click(@NonNull ClickKey click, @NonNull String action) {
             this.clickActions.put(click, action);
             return this;
         }

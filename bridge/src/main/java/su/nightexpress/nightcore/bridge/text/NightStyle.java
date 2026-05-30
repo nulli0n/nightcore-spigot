@@ -1,15 +1,16 @@
 package su.nightexpress.nightcore.bridge.text;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.bridge.common.NightKey;
-import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
-import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import su.nightexpress.nightcore.bridge.common.NightKey;
+import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
+import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
 
 public class NightStyle {
 
@@ -25,13 +26,13 @@ public class NightStyle {
     private final String             insertion;
 
     NightStyle(
-        @Nullable NightKey font,
-        @Nullable Color color,
-        @Nullable Color shadowColor,
-        @NotNull Map<NightTextDecoration, NightTextDecoration.State> decorations,
-        @Nullable NightClickEvent clickEvent,
-        @Nullable NightHoverEvent<?> hoverEvent,
-        @Nullable String insertion
+               @Nullable NightKey font,
+               @Nullable Color color,
+               @Nullable Color shadowColor,
+               @NonNull Map<NightTextDecoration, NightTextDecoration.State> decorations,
+               @Nullable NightClickEvent clickEvent,
+               @Nullable NightHoverEvent<?> hoverEvent,
+               @Nullable String insertion
     ) {
         this.font = font;
         this.color = color;
@@ -51,7 +52,7 @@ public class NightStyle {
         return this.font;
     }
 
-    @NotNull
+    @NonNull
     public NightStyle font(@Nullable NightKey font) {
         if (Objects.equals(this.font, font)) return this;
 
@@ -63,19 +64,19 @@ public class NightStyle {
         return this.color;
     }
 
-    @NotNull
+    @NonNull
     public NightStyle color(@Nullable Color color) {
         if (Objects.equals(this.color, color)) return this;
 
         return new NightStyle(this.font, color, this.shadowColor, this.decorations, this.clickEvent, this.hoverEvent, this.insertion);
     }
 
-    @NotNull
+    @NonNull
     public NightStyle color(int red, int green, int blue) {
         return this.color(new Color(red, green, blue));
     }
 
-    @NotNull
+    @NonNull
     public NightStyle color(int red, int green, int blue, int alpha) {
         return this.color(new Color(red, green, blue, alpha));
     }
@@ -85,35 +86,34 @@ public class NightStyle {
         return this.shadowColor;
     }
 
-    @NotNull
+    @NonNull
     public NightStyle shadowColor(@Nullable Color color) {
         if (Objects.equals(this.shadowColor, color)) return this;
 
         return new NightStyle(this.font, this.color, color, this.decorations, this.clickEvent, this.hoverEvent, this.insertion);
     }
 
-    @NotNull
+    @NonNull
     public NightStyle shadowColor(int red, int green, int blue) {
         return this.shadowColor(new Color(red, green, blue));
     }
 
-    @NotNull
+    @NonNull
     public NightStyle shadowColor(int red, int green, int blue, int alpha) {
         return this.shadowColor(new Color(red, green, blue, alpha));
     }
 
-    @NotNull
-    public NightTextDecoration.State decoration(@NotNull NightTextDecoration decoration) {
+    public NightTextDecoration.@NonNull State decoration(@NonNull NightTextDecoration decoration) {
         return this.decorations.getOrDefault(decoration, NightTextDecoration.State.NOT_SET);
     }
 
-    @NotNull
-    public NightStyle decoration(@NotNull NightTextDecoration decoration, boolean state) {
+    @NonNull
+    public NightStyle decoration(@NonNull NightTextDecoration decoration, boolean state) {
         return this.decoration(decoration, NightTextDecoration.State.byBoolean(state));
     }
 
-    @NotNull
-    public NightStyle decoration(@NotNull NightTextDecoration decoration, @NotNull NightTextDecoration.State state) {
+    @NonNull
+    public NightStyle decoration(@NonNull NightTextDecoration decoration, NightTextDecoration.@NonNull State state) {
         if (this.decoration(decoration) == state) return this;
 
         var newDecorations = new HashMap<>(this.decorations);
@@ -122,7 +122,7 @@ public class NightStyle {
         return new NightStyle(this.font, this.color, this.shadowColor, newDecorations, this.clickEvent, this.hoverEvent, this.insertion);
     }
 
-    @NotNull
+    @NonNull
     public Map<NightTextDecoration, NightTextDecoration.State> decorations() {
         return this.decorations;
     }
@@ -132,7 +132,7 @@ public class NightStyle {
         return this.clickEvent;
     }
 
-    @NotNull
+    @NonNull
     public NightStyle clickEvent(@Nullable NightClickEvent event) {
         return new NightStyle(this.font, this.color, this.shadowColor, this.decorations, event, this.hoverEvent, this.insertion);
     }
@@ -142,7 +142,7 @@ public class NightStyle {
         return this.hoverEvent;
     }
 
-    @NotNull
+    @NonNull
     public NightStyle hoverEvent(@Nullable NightHoverEvent<?> hoverEvent) {
         return new NightStyle(this.font, this.color, this.shadowColor, this.decorations, this.clickEvent, hoverEvent, this.insertion);
     }
@@ -152,7 +152,7 @@ public class NightStyle {
         return this.insertion;
     }
 
-    @NotNull
+    @NonNull
     public NightStyle insertion(@Nullable String insertion) {
         if (Objects.equals(this.insertion, insertion)) return this;
 

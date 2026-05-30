@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.integration.currency;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.currency.Currency;
 import su.nightexpress.nightcore.bridge.currency.EconomyBridgeAPI;
@@ -72,8 +72,6 @@ public class EconomyBridge {
         return getBalance(playerId, id) >= amount;
     }
 
-    
-    
 
     @Deprecated(forRemoval = true)
     public static double getBalance(@NonNull Player player, @NonNull String id) {
@@ -133,7 +131,6 @@ public class EconomyBridge {
     }
 
 
-
     @Deprecated(forRemoval = true)
     public static boolean withdraw(@NonNull Player player, double amount) {
         return withdraw(player.getUniqueId(), amount);
@@ -167,7 +164,6 @@ public class EconomyBridge {
         api.withdraw(playerId, CurrencyId.VAULT, amount);
         return true;
     }
-
 
 
     @Deprecated(forRemoval = true)

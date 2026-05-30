@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.base;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogBaseAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.body.WrappedDialogBody;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedDialogInput;
@@ -11,22 +11,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public record WrappedDialogBase(@NotNull String title,
+public record WrappedDialogBase(@NonNull String title,
                                 @Nullable String externalTitle,
                                 boolean canCloseWithEscape,
                                 boolean pause,
-                                @NotNull WrappedDialogAfterAction afterAction,
-                                @NotNull List<WrappedDialogBody> body,
-                                @NotNull List<WrappedDialogInput> inputs) {
+                                @NonNull WrappedDialogAfterAction afterAction,
+                                @NonNull List<WrappedDialogBody> body,
+                                @NonNull List<WrappedDialogInput> inputs) {
 
-    @NotNull
-    public <B> B adapt(@NotNull DialogBaseAdapter<B> adapter) {
+    @NonNull
+    public <B> B adapt(@NonNull DialogBaseAdapter<B> adapter) {
         return adapter.adaptBase(this);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public WrappedDialogBase replace(@NotNull UnaryOperator<String> operator) {
+    public WrappedDialogBase replace(@NonNull UnaryOperator<String> operator) {
         String title = operator.apply(this.title);
         String externalTitle = this.externalTitle == null ? null : operator.apply(this.externalTitle);
         List<WrappedDialogBody> bodyReplaced = this.body.stream().map(other -> other.replace(operator)).toList();
@@ -39,67 +39,67 @@ public record WrappedDialogBase(@NotNull String title,
 
         private final String title;
 
-        private String externalTitle;
-        private boolean canCloseWithEscape = true;
-        private boolean                  pause = false;
+        private String                   externalTitle;
+        private boolean                  canCloseWithEscape = true;
+        private boolean                  pause              = false;
         private WrappedDialogAfterAction afterAction;
         private List<WrappedDialogBody>  body;
         private List<WrappedDialogInput> inputs;
 
-        public Builder(@NotNull String title) {
+        public Builder(@NonNull String title) {
             this.afterAction = WrappedDialogAfterAction.CLOSE;
             this.body = Collections.emptyList();
             this.inputs = Collections.emptyList();
             this.title = title;
         }
 
-        @NotNull
+        @NonNull
         public Builder externalTitle(@Nullable String externalTitle) {
             this.externalTitle = externalTitle;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder canCloseWithEscape(boolean canCloseWithEscape) {
             this.canCloseWithEscape = canCloseWithEscape;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder pause(boolean pause) {
             this.pause = pause;
             return this;
         }
 
-        @NotNull
-        public Builder afterAction(@NotNull WrappedDialogAfterAction afterAction) {
+        @NonNull
+        public Builder afterAction(@NonNull WrappedDialogAfterAction afterAction) {
             this.afterAction = afterAction;
             return this;
         }
 
-        @NotNull
-        public Builder body(@NotNull WrappedDialogBody... body) {
+        @NonNull
+        public Builder body(@NonNull WrappedDialogBody... body) {
             return this.body(Lists.newList(body));
         }
 
-        @NotNull
-        public Builder body(@NotNull List<WrappedDialogBody> body) {
+        @NonNull
+        public Builder body(@NonNull List<WrappedDialogBody> body) {
             this.body = List.copyOf(body);
             return this;
         }
 
-        @NotNull
-        public Builder inputs(@NotNull WrappedDialogInput... inputs) {
+        @NonNull
+        public Builder inputs(@NonNull WrappedDialogInput... inputs) {
             return this.inputs(Lists.newList(inputs));
         }
 
-        @NotNull
-        public Builder inputs(@NotNull List<WrappedDialogInput> inputs) {
+        @NonNull
+        public Builder inputs(@NonNull List<WrappedDialogInput> inputs) {
             this.inputs = List.copyOf(inputs);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public WrappedDialogBase build() {
             return new WrappedDialogBase(this.title, this.externalTitle, this.canCloseWithEscape, this.pause, this.afterAction, this.body, this.inputs);
         }

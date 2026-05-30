@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.query.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.sql.column.Column;
 import su.nightexpress.nightcore.db.sql.query.type.ConditionalQuery;
 import su.nightexpress.nightcore.db.sql.util.WhereOperator;
@@ -20,7 +20,7 @@ public class SelectQuery<T> extends ConditionalQuery<SelectQuery<T>, ArrayList<T
 
     private int amount;
 
-    public SelectQuery(@NotNull Function<ResultSet, T> dataFunction) {
+    public SelectQuery(@NonNull Function<ResultSet, T> dataFunction) {
         this.columns = new ArrayList<>();
         this.dataFunction = dataFunction;
         this.amount = -1;
@@ -37,8 +37,8 @@ public class SelectQuery<T> extends ConditionalQuery<SelectQuery<T>, ArrayList<T
     }
 
     @Override
-    @NotNull
-    protected String buildSQL(@NotNull String table) {
+    @NonNull
+    protected String buildSQL(@NonNull String table) {
         String columns = String.join(",", this.columns);
         String wheres = this.buildWhereSQLPart();
 
@@ -46,7 +46,7 @@ public class SelectQuery<T> extends ConditionalQuery<SelectQuery<T>, ArrayList<T
     }
 
     @Override
-    public void onExecute(@NotNull PreparedStatement statement, @NotNull ArrayList<T> list) throws SQLException {
+    public void onExecute(@NonNull PreparedStatement statement, @NonNull ArrayList<T> list) throws SQLException {
         int paramCount = 1;
 
         for (int index = 0; index < this.countWhereColumns(); index++) {
@@ -64,36 +64,37 @@ public class SelectQuery<T> extends ConditionalQuery<SelectQuery<T>, ArrayList<T
         resultSet.close();
     }
 
-    @NotNull
+    @NonNull
     public SelectQuery<T> limit(int amount) {
         this.amount = Math.abs(amount);
         return this;
     }
 
-    @NotNull
+    @NonNull
     public SelectQuery<T> all() {
         this.columns.clear();
         this.columns.add("*");
         return this;
     }
 
-    @NotNull
-    public SelectQuery<T> column(@NotNull Column column) {
+    @NonNull
+    public SelectQuery<T> column(@NonNull Column column) {
         this.columns.add(column.getNameEscaped());
         return this;
     }
 
-    @NotNull
-    public SelectQuery<T> where(@NotNull Column column, @NotNull WhereOperator operator, @NotNull String value) {
+    @NonNull
+    public SelectQuery<T> where(@NonNull Column column, @NonNull WhereOperator operator, @NonNull String value) {
         return super.where(column, operator, obj -> value);
     }
 
-    @NotNull
-    public SelectQuery<T> whereIgnoreCase(@NotNull Column column, @NotNull WhereOperator operator, @NotNull String value) {
+    @NonNull
+    public SelectQuery<T> whereIgnoreCase(@NonNull Column column, @NonNull WhereOperator operator,
+                                          @NonNull String value) {
         return super.whereIgnoreCase(column, operator, obj -> value);
     }
 
-    @NotNull
+    @NonNull
     public String getWhereValue(int index) {
         return this.whereColumns.get(index).getStatementPart(null);
     }

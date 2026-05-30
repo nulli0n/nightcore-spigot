@@ -1,10 +1,11 @@
 package su.nightexpress.nightcore.config;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public interface ReadFunction<V> {
 
-    @Nullable V read(@NotNull FileConfig config, @NotNull String path, @NotNull String id);
+    @Nullable
+    V read(@NonNull FileConfig config, @NonNull String path, @NonNull String id);
 
 }

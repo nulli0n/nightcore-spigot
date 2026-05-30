@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.text;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public enum NightTextDecoration {
 
@@ -21,12 +21,12 @@ public enum NightTextDecoration {
             return this == TRUE;
         }
 
-        @NotNull
+        @NonNull
         public static State byBoolean(boolean flag) {
             return flag ? TRUE : FALSE;
         }
 
-        @NotNull
+        @NonNull
         public static State byBoolean(@Nullable Boolean flag) {
             return flag == null ? NOT_SET : byBoolean(flag.booleanValue());
         }

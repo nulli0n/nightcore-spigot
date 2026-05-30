@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickResult;
@@ -20,7 +20,7 @@ public class PaperDialogListener implements Listener {
 
     private final DialogClickHandler handler;
 
-    public PaperDialogListener(@NotNull DialogClickHandler handler) {
+    public PaperDialogListener(@NonNull DialogClickHandler handler) {
         this.handler = handler;
     }
 

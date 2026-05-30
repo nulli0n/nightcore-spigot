@@ -3,15 +3,15 @@ package su.nightexpress.nightcore.bridge.spigot.bossbar;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
 
 public class SpigotBossBarAdapter {
 
-    @NotNull
-    public static BarColor adaptColor(@NotNull NightBarColor nightColor) {
+    @NonNull
+    public static BarColor adaptColor(@NonNull NightBarColor nightColor) {
         return switch (nightColor) {
             case RED -> BarColor.RED;
             case BLUE -> BarColor.BLUE;
@@ -23,8 +23,8 @@ public class SpigotBossBarAdapter {
         };
     }
 
-    @NotNull
-    public static NightBarColor wrapColor(@NotNull BarColor color) {
+    @NonNull
+    public static NightBarColor wrapColor(@NonNull BarColor color) {
         return switch (color) {
             case YELLOW -> NightBarColor.YELLOW;
             case PURPLE -> NightBarColor.PURPLE;
@@ -36,8 +36,8 @@ public class SpigotBossBarAdapter {
         };
     }
 
-    @NotNull
-    public static BarStyle adaptOverlay(@NotNull NightBarOverlay nightOverlay) {
+    @NonNull
+    public static BarStyle adaptOverlay(@NonNull NightBarOverlay nightOverlay) {
         return switch (nightOverlay) {
             case PROGRESS -> BarStyle.SOLID;
             case NOTCHED_6 -> BarStyle.SEGMENTED_6;
@@ -47,8 +47,8 @@ public class SpigotBossBarAdapter {
         };
     }
 
-    @NotNull
-    public static NightBarOverlay wrapOverlay(@NotNull BarStyle overlay) {
+    @NonNull
+    public static NightBarOverlay wrapOverlay(@NonNull BarStyle overlay) {
         return switch (overlay) {
             case SEGMENTED_20 -> NightBarOverlay.NOTCHED_20;
             case SEGMENTED_12 -> NightBarOverlay.NOTCHED_12;
@@ -58,8 +58,8 @@ public class SpigotBossBarAdapter {
         };
     }
 
-    @NotNull
-    public static BarFlag adaptFlag(@NotNull NightBarFlag nightFlag) {
+    @NonNull
+    public static BarFlag adaptFlag(@NonNull NightBarFlag nightFlag) {
         return switch (nightFlag) {
             case DARKEN_SCREEN -> BarFlag.DARKEN_SKY;
             case PLAY_BOSS_MUSIC -> BarFlag.PLAY_BOSS_MUSIC;
@@ -67,8 +67,8 @@ public class SpigotBossBarAdapter {
         };
     }
 
-    @NotNull
-    public static NightBarFlag wrapFlag(@NotNull BarFlag flag) {
+    @NonNull
+    public static NightBarFlag wrapFlag(@NonNull BarFlag flag) {
         return switch (flag) {
             case CREATE_FOG -> NightBarFlag.CREATE_WORLD_FOG;
             case PLAY_BOSS_MUSIC -> NightBarFlag.PLAY_BOSS_MUSIC;

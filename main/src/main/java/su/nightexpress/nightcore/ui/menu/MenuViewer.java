@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.ui.menu;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 
 import java.util.HashSet;
@@ -24,7 +24,7 @@ public class MenuViewer {
 
     private boolean rebuildMenu;
 
-    public MenuViewer(@NotNull Menu menu, @NotNull Player player) {
+    public MenuViewer(@NonNull Menu menu, @NonNull Player player) {
         this.menu = menu;
         this.player = player;
         this.items = new HashSet<>();
@@ -32,7 +32,7 @@ public class MenuViewer {
         this.setPages(1);
     }
 
-    public void assignInventory(@NotNull InventoryView view) {
+    public void assignInventory(@NonNull InventoryView view) {
         this.view = view;
     }
 
@@ -40,19 +40,19 @@ public class MenuViewer {
         return this.getLastClickTime() == 0 || (System.currentTimeMillis() - this.getLastClickTime()) > cooldown;
     }
 
-    public boolean isMenu(@NotNull Menu menu) {
+    public boolean isMenu(@NonNull Menu menu) {
         return this.menu == menu;
     }
 
-    public void addItem(@NotNull MenuItem menuItem) {
+    public void addItem(@NonNull MenuItem menuItem) {
         this.items.add(menuItem);
     }
 
-    public void removeItem(@NotNull MenuItem menuItem) {
+    public void removeItem(@NonNull MenuItem menuItem) {
         this.items.remove(menuItem);
     }
 
-    public boolean hasItem(@NotNull MenuItem menuItem) {
+    public boolean hasItem(@NonNull MenuItem menuItem) {
         return this.items.contains(menuItem);
     }
 
@@ -60,17 +60,17 @@ public class MenuViewer {
         this.items.clear();
     }
 
-    @NotNull
+    @NonNull
     public Menu getMenu() {
         return this.menu;
     }
 
-    @NotNull
+    @NonNull
     public Player getPlayer() {
         return this.player;
     }
 
-    @NotNull
+    @NonNull
     public Set<MenuItem> getItems() {
         return this.items;
     }

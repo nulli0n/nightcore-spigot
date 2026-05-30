@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.integration.item.adapter;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.item.ItemAdapter;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.integration.item.impl.AdaptedItemStack;
@@ -12,15 +12,15 @@ public abstract class AbstractItemAdapter<T> implements ItemAdapter<T> {
 
     protected final String name;
 
-    public AbstractItemAdapter(@NotNull String name) {
+    public AbstractItemAdapter(@NonNull String name) {
         this.name = LowerCase.INTERNAL.apply(name);
     }
 
     @Nullable
-    public abstract AdaptedItemStack<T> readItem(@NotNull FileConfig config, @NotNull String path);
+    public abstract AdaptedItemStack<T> readItem(@NonNull FileConfig config, @NonNull String path);
 
     @Override
-    @NotNull
+    @NonNull
     public String getName() {
         return this.name;
     }

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.locale.message.impl;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.locale.message.LangMessage;
 import su.nightexpress.nightcore.locale.message.MessageData;
 
@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class SilentMessage extends LangMessage {
 
-    public SilentMessage(@NotNull String text, @NotNull MessageData data) {
+    public SilentMessage(@NonNull String text, @NonNull MessageData data) {
         super(text, data);
     }
 
@@ -19,7 +19,7 @@ public class SilentMessage extends LangMessage {
     }
 
     @Override
-    protected void send(@NotNull Collection<? extends CommandSender> receivers, @NotNull String text) {
+    protected void send(@NonNull Collection<? extends CommandSender> receivers, @NonNull String text) {
 
     }
 }

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util;
 
 import net.md_5.bungee.api.ChatColor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.regex.TimedMatcher;
 
 import java.util.List;
@@ -13,42 +13,43 @@ import java.util.stream.Collectors;
 @Deprecated
 public class Colorizer {
 
-    @Deprecated public static final Pattern PATTERN_HEX      = Pattern.compile("#([A-Fa-f0-9]{6})");
-
-    @NotNull
     @Deprecated
-    public static String apply(@NotNull String str) {
+    public static final Pattern PATTERN_HEX = Pattern.compile("#([A-Fa-f0-9]{6})");
+
+    @NonNull
+    @Deprecated
+    public static String apply(@NonNull String str) {
         return hex(legacy(str));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> apply(@NotNull List<String> list) {
+    public static List<String> apply(@NonNull List<String> list) {
         list.replaceAll(Colorizer::apply);
         return list;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static Set<String> apply(@NotNull Set<String> set) {
+    public static Set<String> apply(@NonNull Set<String> set) {
         return set.stream().map(Colorizer::apply).collect(Collectors.toSet());
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String legacyHex(@NotNull String str) {
+    public static String legacyHex(@NonNull String str) {
         return hex(legacy(str));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String legacy(@NotNull String str) {
+    public static String legacy(@NonNull String str) {
         return ChatColor.translateAlternateColorCodes('&', str);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String hex(@NotNull String str) {
+    public static String hex(@NonNull String str) {
         TimedMatcher timedMatcher = TimedMatcher.create(PATTERN_HEX, str);
         //Matcher matcher = PATTERN_HEX.matcher(str);
         StringBuilder buffer = new StringBuilder(str.length() + 4 * 8);
@@ -64,50 +65,50 @@ public class Colorizer {
         return timedMatcher.getMatcher().appendTail(buffer).toString();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String plain(@NotNull String str) {
+    public static String plain(@NonNull String str) {
         return LegacyColors.plainColors(str);
         //return plainLegacy(plainHex(str));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String plainLegacy(@NotNull String str) {
+    public static String plainLegacy(@NonNull String str) {
         return LegacyColors.plainDefaultColors(str);
         //return str.replace(ChatColor.COLOR_CHAR, '&');
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String plainHex(@NotNull String str) {
+    public static String plainHex(@NonNull String str) {
         return LegacyColors.plainHEXColors(str);
-//        StringBuilder builder = new StringBuilder(str);
-//
-//        int index;
-//        while ((index = builder.toString().indexOf(ChatColor.COLOR_CHAR + "x")) >= 0) {
-//            int count = 0;
-//            builder.replace(index, index + 2, "#");
-//
-//            for (int point = index + 1; count < 6; point += 1) {
-//                builder.deleteCharAt(point);
-//                count++;
-//            }
-//        }
-//
-//        return builder.toString();
+        //        StringBuilder builder = new StringBuilder(str);
+        //
+        //        int index;
+        //        while ((index = builder.toString().indexOf(ChatColor.COLOR_CHAR + "x")) >= 0) {
+        //            int count = 0;
+        //            builder.replace(index, index + 2, "#");
+        //
+        //            for (int point = index + 1; count < 6; point += 1) {
+        //                builder.deleteCharAt(point);
+        //                count++;
+        //            }
+        //        }
+        //
+        //        return builder.toString();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String strip(@NotNull String str) {
+    public static String strip(@NonNull String str) {
         String stripped = ChatColor.stripColor(str);
         return stripped == null ? "" : stripped;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String restrip(@NotNull String str) {
+    public static String restrip(@NonNull String str) {
         return strip(apply(str));
     }
 }

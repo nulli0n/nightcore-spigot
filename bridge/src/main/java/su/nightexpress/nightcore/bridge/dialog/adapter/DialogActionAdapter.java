@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.bridge.dialog.adapter;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogAction;
 import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogCommandTemplateAction;
 import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogCustomAction;
@@ -8,11 +9,15 @@ import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogStaticAc
 
 public interface DialogActionAdapter<A> {
 
-    @NotNull A adaptAction(@NotNull WrappedDialogAction action);
+    @NonNull
+    A adaptAction(@NonNull WrappedDialogAction action);
 
-    @NotNull A adaptAction(@NotNull WrappedDialogStaticAction action);
+    @NonNull
+    A adaptAction(@NonNull WrappedDialogStaticAction action);
 
-    @NotNull A adaptAction(@NotNull WrappedDialogCustomAction action);
+    @NonNull
+    A adaptAction(@NonNull WrappedDialogCustomAction action);
 
-    @NotNull A adaptAction(@NotNull WrappedDialogCommandTemplateAction action);
+    @NonNull
+    A adaptAction(@NonNull WrappedDialogCommandTemplateAction action);
 }

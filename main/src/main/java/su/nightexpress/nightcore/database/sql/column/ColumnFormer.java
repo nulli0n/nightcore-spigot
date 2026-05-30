@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database.sql.column;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.database.DatabaseType;
 
 @Deprecated
@@ -32,5 +32,6 @@ public interface ColumnFormer {
         return storageType == DatabaseType.SQLITE ? "INTEGER NOT NULL" : "tinyint(1) NOT NULL";
     };
 
-    @NotNull String build(@NotNull DatabaseType databaseType, int length);
+    @NonNull
+    String build(@NonNull DatabaseType databaseType, int length);
 }

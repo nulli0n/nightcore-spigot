@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.query.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.sql.column.Column;
 import su.nightexpress.nightcore.db.sql.query.type.AbstractQuery;
 import su.nightexpress.nightcore.db.sql.query.QueryValue;
@@ -28,7 +28,7 @@ public class InsertQuery<T> extends AbstractQuery<T> implements ValuedQuery<Inse
     }
 
     @Override
-    public void onExecute(@NotNull PreparedStatement statement, @NotNull T entity) throws SQLException {
+    public void onExecute(@NonNull PreparedStatement statement, @NonNull T entity) throws SQLException {
         int paramCount = 1;
 
         for (int index = 0; index < this.countValues(); index++) {
@@ -37,8 +37,8 @@ public class InsertQuery<T> extends AbstractQuery<T> implements ValuedQuery<Inse
     }
 
     @Override
-    @NotNull
-    protected String buildSQL(@NotNull String table) {
+    @NonNull
+    protected String buildSQL(@NonNull String table) {
         String columns = this.columns.stream().map(QueryValue::getSQLPart).collect(Collectors.joining(","));
         String values = this.columns.stream().map(value -> "?").collect(Collectors.joining(","));
 
@@ -46,8 +46,8 @@ public class InsertQuery<T> extends AbstractQuery<T> implements ValuedQuery<Inse
     }
 
     @Override
-    @NotNull
-    public InsertQuery<T> setValue(@NotNull Column column, @NotNull Function<T, String> function) {
+    @NonNull
+    public InsertQuery<T> setValue(@NonNull Column column, @NonNull Function<T, String> function) {
         this.columns.add(new QueryValue<>(column.getNameEscaped(), function));
         return this;
     }
@@ -56,8 +56,8 @@ public class InsertQuery<T> extends AbstractQuery<T> implements ValuedQuery<Inse
         return this.columns.size();
     }
 
-    @NotNull
-    public String getValue(@NotNull T entity, int index) {
+    @NonNull
+    public String getValue(@NonNull T entity, int index) {
         return this.columns.get(index).getStatementPart(entity);
     }
 }

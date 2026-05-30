@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.integration.currency;
 
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
@@ -14,20 +14,20 @@ public class CurrencySettings implements Writeable {
     private final String    format;
     private final NightItem icon;
 
-    public CurrencySettings(@NotNull String name, @NotNull String format, @NotNull NightItem icon) {
+    public CurrencySettings(@NonNull String name, @NonNull String format, @NonNull NightItem icon) {
         this.name = name;
         this.format = format;
         this.icon = icon.copy();
     }
 
-    @NotNull
-    public static CurrencySettings createDefault(@NotNull String name, @NotNull NightItem icon) {
+    @NonNull
+    public static CurrencySettings createDefault(@NonNull String name, @NonNull NightItem icon) {
         String format = Placeholders.GENERIC_AMOUNT + " " + Placeholders.GENERIC_NAME;
         return new CurrencySettings(name, format, icon);
     }
 
-    @NotNull
-    public static CurrencySettings load(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static CurrencySettings load(@NonNull FileConfig config, @NonNull String path) {
         String name = ConfigValue.create(path + ".Name", "Null").read(config);
         String format = ConfigValue.create(path + ".Format", Placeholders.GENERIC_AMOUNT).read(config);
         NightItem icon = ConfigValue.create(path + ".Icon", NightItem.fromType(Material.SUNFLOWER)).read(config);
@@ -36,23 +36,23 @@ public class CurrencySettings implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Name", this.name);
         config.set(path + ".Format", this.format);
         config.set(path + ".Icon", this.icon);
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return this.name;
     }
 
-    @NotNull
+    @NonNull
     public String getFormat() {
         return this.format;
     }
 
-    @NotNull
+    @NonNull
     public NightItem getIcon() {
         return this.icon.copy();
     }

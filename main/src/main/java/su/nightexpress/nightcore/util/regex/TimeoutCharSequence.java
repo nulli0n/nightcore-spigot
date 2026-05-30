@@ -1,14 +1,14 @@
 package su.nightexpress.nightcore.util.regex;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class TimeoutCharSequence implements CharSequence {
 
     private final CharSequence chars;
-    private final long timeout;
-    private final long maxTime;
+    private final long         timeout;
+    private final long         maxTime;
 
-    public TimeoutCharSequence(@NotNull CharSequence chars, long timeout) {
+    public TimeoutCharSequence(@NonNull CharSequence chars, long timeout) {
         this.chars = chars;
         this.timeout = timeout;
         this.maxTime = (System.currentTimeMillis() + timeout);
@@ -28,13 +28,13 @@ public class TimeoutCharSequence implements CharSequence {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public CharSequence subSequence(int start, int end) {
         return new TimeoutCharSequence(this.chars.subSequence(start, end), this.timeout);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String toString() {
         return this.chars.toString();
     }

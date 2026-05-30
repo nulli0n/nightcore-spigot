@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.language.entry;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -17,38 +17,39 @@ public class LangText extends LangEntry {
 
     private LangMessage message;
 
-    public LangText(@NotNull String path, @NotNull String... defaultText) {
+    public LangText(@NonNull String path, @NonNull String... defaultText) {
         super(path, String.join("\n", defaultText));
-        this.setMessage(LangMessage.parse(String.join(Placeholders.TAG_LINE_BREAK, this.getDefaultText()), Engine.core().getPrefix()));
+        this.setMessage(LangMessage.parse(String.join(Placeholders.TAG_LINE_BREAK, this.getDefaultText()), Engine.core()
+            .getPrefix()));
     }
 
-    @NotNull
-    public static LangText of(@NotNull String path, @NotNull String defaultText) {
+    @NonNull
+    public static LangText of(@NonNull String path, @NonNull String defaultText) {
         return new LangText(path, defaultText);
     }
 
-    @NotNull
-    public static LangText of(@NotNull String path, @NotNull String... defaultText) {
+    @NonNull
+    public static LangText of(@NonNull String path, @NonNull String... defaultText) {
         return new LangText(path, defaultText);
     }
 
     @Override
-    public void write(@NotNull FileConfig config) {
+    public void write(@NonNull FileConfig config) {
         String[] textSplit = this.defaultText.split("\n");
         config.set(this.path, textSplit.length > 1 ? Arrays.asList(textSplit) : this.defaultText);
     }
 
     @Override
-    public void load(@NotNull NightCorePlugin plugin) {
+    public void load(@NonNull NightCorePlugin plugin) {
         this.load(plugin.getLang(), plugin.getPrefix());
     }
 
     @Override
-    public void load(@NotNull FileConfig config) {
+    public void load(@NonNull FileConfig config) {
         this.load(config, null);
     }
 
-    public void load(@NotNull FileConfig config, @Nullable String defaultPrefix) {
+    public void load(@NonNull FileConfig config, @Nullable String defaultPrefix) {
         if (!config.contains(this.path)) {
             this.write(config);
         }
@@ -61,17 +62,17 @@ public class LangText extends LangEntry {
         this.setMessage(LangMessage.parse(String.join(Placeholders.TAG_LINE_BREAK, text), defaultPrefix));
     }
 
-    @NotNull
+    @NonNull
     public LangMessage getMessage() {
         return this.message;
     }
 
-    @NotNull
-    public LangMessage getMessage(@NotNull NightCorePlugin plugin) {
+    @NonNull
+    public LangMessage getMessage(@NonNull NightCorePlugin plugin) {
         return this.message.setPrefix(plugin);
     }
 
-    public void setMessage(@NotNull LangMessage message) {
+    public void setMessage(@NonNull LangMessage message) {
         this.message = message;
     }
 }

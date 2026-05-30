@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.bridge.text.adapter;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.text.impl.NightKeybindComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightObjectComponent;
 import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
@@ -11,21 +11,28 @@ import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 public interface TextComponentAdapter<C> {
 
-    void send(@NotNull CommandSender sender, @NotNull NightComponent component);
+    void send(@NonNull CommandSender sender, @NonNull NightComponent component);
 
-    void sendActionBar(@NotNull Player player, @NotNull NightComponent component);
+    void sendActionBar(@NonNull Player player, @NonNull NightComponent component);
 
-    @NotNull String toJson(@NotNull NightComponent component);
+    @NonNull
+    String toJson(@NonNull NightComponent component);
 
-    @NotNull String toLegacy(@NotNull NightComponent component);
+    @NonNull
+    String toLegacy(@NonNull NightComponent component);
 
-    @NotNull C adaptComponent(@NotNull NightComponent component);
+    @NonNull
+    C adaptComponent(@NonNull NightComponent component);
 
-    @NotNull C adaptComponent(@NotNull NightTextComponent component);
+    @NonNull
+    C adaptComponent(@NonNull NightTextComponent component);
 
-    @NotNull C adaptComponent(@NotNull NightKeybindComponent component);
+    @NonNull
+    C adaptComponent(@NonNull NightKeybindComponent component);
 
-    @NotNull C adaptComponent(@NotNull NightTranslatableComponent component);
+    @NonNull
+    C adaptComponent(@NonNull NightTranslatableComponent component);
 
-    @NotNull C adaptComponent(@NotNull NightObjectComponent component);
+    @NonNull
+    C adaptComponent(@NonNull NightObjectComponent component);
 }

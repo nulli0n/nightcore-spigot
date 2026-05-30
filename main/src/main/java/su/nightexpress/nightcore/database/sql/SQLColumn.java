@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database.sql;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.database.DatabaseType;
 import su.nightexpress.nightcore.database.sql.column.ColumnType;
 
@@ -12,28 +12,28 @@ public class SQLColumn {
     private final ColumnType type;
     private final int        length;
 
-    public SQLColumn(@NotNull String name, @NotNull ColumnType type, int length) {
+    public SQLColumn(@NonNull String name, @NonNull ColumnType type, int length) {
         this(name, "`" + name + "`", type, length);
     }
 
-    public SQLColumn(@NotNull String name, @NotNull String nameEscaped, @NotNull ColumnType type, int length) {
+    public SQLColumn(@NonNull String name, @NonNull String nameEscaped, @NonNull ColumnType type, int length) {
         this.name = name;
         this.nameEscaped = nameEscaped;
         this.type = type;
         this.length = length;
     }
 
-    @NotNull
-    public static SQLColumn of(@NotNull String name, @NotNull ColumnType type) {
+    @NonNull
+    public static SQLColumn of(@NonNull String name, @NonNull ColumnType type) {
         return SQLColumn.of(name, type, -1);
     }
 
-    @NotNull
-    public static SQLColumn of(@NotNull String name, @NotNull ColumnType type, int length) {
+    @NonNull
+    public static SQLColumn of(@NonNull String name, @NonNull ColumnType type, int length) {
         return new SQLColumn(name, type, length);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public SQLColumn asLowerCase() {
         String name = "LOWER(" + this.getName() + ")";
@@ -41,23 +41,23 @@ public class SQLColumn {
         return new SQLColumn(name, name, this.getType(), this.getLength());
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return name;
     }
 
-    @NotNull
+    @NonNull
     public String getNameEscaped() {
         return this.nameEscaped;
     }
 
-    @NotNull
+    @NonNull
     public String getNameLowercase() {
         return "LOWER(" + this.getName() + ")";
     }
 
 
-    @NotNull
+    @NonNull
     public ColumnType getType() {
         return type;
     }
@@ -66,13 +66,13 @@ public class SQLColumn {
         return length;
     }
 
-    @NotNull
-    public String formatType(@NotNull DatabaseType databaseType) {
+    @NonNull
+    public String formatType(@NonNull DatabaseType databaseType) {
         return this.getType().getFormer().build(databaseType, this.getLength());
     }
 
-    @NotNull
-    public SQLValue toValue(@NotNull Object value) {
+    @NonNull
+    public SQLValue toValue(@NonNull Object value) {
         return SQLValue.of(this, String.valueOf(value));
     }
 }

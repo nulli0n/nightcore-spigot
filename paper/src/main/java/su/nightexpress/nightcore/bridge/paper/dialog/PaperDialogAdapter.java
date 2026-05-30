@@ -16,7 +16,7 @@ import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.DialogKeys;
 import su.nightexpress.nightcore.bridge.dialog.adapter.*;
@@ -46,34 +46,27 @@ import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.List;
 
-public class PaperDialogAdapter implements
-    DialogAdapter<Dialog>,
-    DialogActionAdapter<DialogAction>,
-    DialogBaseAdapter<DialogBase>,
-    DialogBodyAdapter<DialogBody>,
-    DialogButtonAdapter<ActionButton>,
-    DialogInputAdapter<DialogInput>,
-    DialogTypeAdapter<DialogType> {
+public class PaperDialogAdapter implements DialogAdapter<Dialog>, DialogActionAdapter<DialogAction>, DialogBaseAdapter<DialogBase>, DialogBodyAdapter<DialogBody>, DialogButtonAdapter<ActionButton>, DialogInputAdapter<DialogInput>, DialogTypeAdapter<DialogType> {
 
     private final PaperBridge bridge;
 
-    public PaperDialogAdapter(@NotNull PaperBridge bridge) {
+    public PaperDialogAdapter(@NonNull PaperBridge bridge) {
         this.bridge = bridge;
     }
 
-    @NotNull
-    private Component adaptComponent(@NotNull String component) {
+    @NonNull
+    private Component adaptComponent(@NonNull String component) {
         return this.adaptComponent(NightMessage.parse(component));
     }
 
-    @NotNull
-    private Component adaptComponent(@NotNull NightComponent component) {
+    @NonNull
+    private Component adaptComponent(@NonNull NightComponent component) {
         return this.bridge.getTextComponentAdapter().adaptComponent(component);
     }
 
     @Override
-    @NotNull
-    public Dialog adaptDialog(@NotNull WrappedDialog wrappedDialog) {
+    @NonNull
+    public Dialog adaptDialog(@NonNull WrappedDialog wrappedDialog) {
         WrappedDialogBase wrappedBase = wrappedDialog.base();
         WrappedDialogType wrappedType = wrappedDialog.type();
 
@@ -84,21 +77,19 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogAction adaptAction(@NotNull WrappedDialogAction action) {
+    @NonNull
+    public DialogAction adaptAction(@NonNull WrappedDialogAction action) {
         return action.adapt(this);
     }
 
     @Override
-    @NotNull
-    public DialogAction.StaticAction adaptAction(@NotNull WrappedDialogStaticAction action) {
+    public DialogAction.@NonNull StaticAction adaptAction(@NonNull WrappedDialogStaticAction action) {
         ClickEvent clickEvent = this.bridge.getTextComponentAdapter().adaptClickEvent(action.clickEvent());
         return DialogAction.staticAction(clickEvent);
     }
 
     @Override
-    @NotNull
-    public DialogAction.CustomClickAction adaptAction(@NotNull WrappedDialogCustomAction action) {
+    public DialogAction.@NonNull CustomClickAction adaptAction(@NonNull WrappedDialogCustomAction action) {
         NightNbtHolder nbtHolder = action.nbt();
         BinaryTagHolder additions = nbtHolder == null ? null : BinaryTagHolder.binaryTagHolder(nbtHolder.asString());
 
@@ -106,15 +97,11 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogAction.CommandTemplateAction adaptAction(@NotNull WrappedDialogCommandTemplateAction action) {
+    public DialogAction.@NonNull CommandTemplateAction adaptAction(@NonNull WrappedDialogCommandTemplateAction action) {
         return DialogAction.commandTemplate(action.template());
     }
 
-
-
-    @NotNull
-    private DialogBase.DialogAfterAction adaptAfterAction(@NotNull WrappedDialogAfterAction action) {
+    private DialogBase.@NonNull DialogAfterAction adaptAfterAction(@NonNull WrappedDialogAfterAction action) {
         return switch (action) {
             case NONE -> DialogBase.DialogAfterAction.NONE;
             case CLOSE -> DialogBase.DialogAfterAction.CLOSE;
@@ -123,8 +110,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogBase adaptBase(@NotNull WrappedDialogBase base) {
+    @NonNull
+    public DialogBase adaptBase(@NonNull WrappedDialogBase base) {
         Component title = this.adaptComponent(base.title());
         Component externalTitle = base.externalTitle() == null ? null : this.adaptComponent(base.externalTitle());
         boolean canCloseWithEscape = base.canCloseWithEscape();
@@ -137,14 +124,14 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogBody adaptBody(@NotNull WrappedDialogBody body) {
+    @NonNull
+    public DialogBody adaptBody(@NonNull WrappedDialogBody body) {
         return body.adapt(this);
     }
 
     @Override
-    @NotNull
-    public ItemDialogBody adaptBody(@NotNull WrappedItemDialogBody body) {
+    @NonNull
+    public ItemDialogBody adaptBody(@NonNull WrappedItemDialogBody body) {
         ItemStack item = body.item();
         WrappedPlainMessageDialogBody description = body.description();
         boolean showDecorations = body.showDecorations();
@@ -158,8 +145,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public PlainMessageDialogBody adaptBody(@NotNull WrappedPlainMessageDialogBody body) {
+    @NonNull
+    public PlainMessageDialogBody adaptBody(@NonNull WrappedPlainMessageDialogBody body) {
         Component contents = this.adaptComponent(body.contents());
         int width = body.width();
 
@@ -167,8 +154,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public ActionButton adaptButton(@NotNull WrappedActionButton wrappedButton) {
+    @NonNull
+    public ActionButton adaptButton(@NonNull WrappedActionButton wrappedButton) {
         WrappedDialogAction wrappedAction = wrappedButton.action();
 
         Component label = this.adaptComponent(wrappedButton.label());
@@ -182,14 +169,14 @@ public class PaperDialogAdapter implements
 
 
     @Override
-    @NotNull
-    public DialogInput adaptInput(@NotNull WrappedDialogInput input) {
+    @NonNull
+    public DialogInput adaptInput(@NonNull WrappedDialogInput input) {
         return input.adapt(this);
     }
 
     @Override
-    @NotNull
-    public TextDialogInput adaptInput(@NotNull WrappedTextDialogInput input) {
+    @NonNull
+    public TextDialogInput adaptInput(@NonNull WrappedTextDialogInput input) {
         String key = input.key();
         int width = input.width();
         Component label = this.adaptComponent(input.label());
@@ -198,13 +185,13 @@ public class PaperDialogAdapter implements
         int maxLength = input.maxLength();
         WrappedMultilineOptions wrappedMultiline = input.multiline();
 
-        TextDialogInput.MultilineOptions multilineOptions = wrappedMultiline == null ? null : TextDialogInput.MultilineOptions.create(wrappedMultiline.maxLines(), wrappedMultiline.height());
+        TextDialogInput.MultilineOptions multilineOptions = wrappedMultiline == null ? null : TextDialogInput.MultilineOptions
+            .create(wrappedMultiline.maxLines(), wrappedMultiline.height());
 
         return DialogInput.text(key, width, label, labelVisible, initial, maxLength, multilineOptions);
     }
 
-    @NotNull
-    private SingleOptionDialogInput.OptionEntry adaptEntry(@NotNull WrappedSingleOptionEntry wrappedEntry) {
+    private SingleOptionDialogInput.@NonNull OptionEntry adaptEntry(@NonNull WrappedSingleOptionEntry wrappedEntry) {
         String id = wrappedEntry.id();
         Component display = this.adaptComponent(wrappedEntry.display());
         boolean initial = wrappedEntry.initial();
@@ -213,8 +200,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public SingleOptionDialogInput adaptInput(@NotNull WrappedSingleOptionDialogInput input) {
+    @NonNull
+    public SingleOptionDialogInput adaptInput(@NonNull WrappedSingleOptionDialogInput input) {
         String key = input.key();
         int width = input.width();
         List<SingleOptionDialogInput.OptionEntry> entries = Lists.modify(input.entries(), this::adaptEntry);
@@ -225,8 +212,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public BooleanDialogInput adaptInput(@NotNull WrappedBooleanDialogInput input) {
+    @NonNull
+    public BooleanDialogInput adaptInput(@NonNull WrappedBooleanDialogInput input) {
         String key = input.key();
         Component label = this.adaptComponent(input.label());
         boolean initial = input.initial();
@@ -237,8 +224,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public NumberRangeDialogInput adaptInput(@NotNull WrappedNumberRangeDialogInput input) {
+    @NonNull
+    public NumberRangeDialogInput adaptInput(@NonNull WrappedNumberRangeDialogInput input) {
         String key = input.key();
         int width = input.width();
         Component label = this.adaptComponent(input.label());
@@ -252,14 +239,14 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogType adaptType(@NotNull WrappedDialogType type) {
+    @NonNull
+    public DialogType adaptType(@NonNull WrappedDialogType type) {
         return type.adapt(this);
     }
 
     @Override
-    @NotNull
-    public ConfirmationType adaptType(@NotNull WrappedConfirmationType type) {
+    @NonNull
+    public ConfirmationType adaptType(@NonNull WrappedConfirmationType type) {
         WrappedActionButton wrappedYes = type.yesButton();
         WrappedActionButton wrappedNo = type.noButton();
 
@@ -267,8 +254,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogListType adaptType(@NotNull WrappedDialogListType type) {
+    @NonNull
+    public DialogListType adaptType(@NonNull WrappedDialogListType type) {
         List<WrappedDialog> wrappedDialogs = type.dialogs();
         WrappedActionButton exitAction = type.exitAction();
         int buttonWidth = type.buttonWidth();
@@ -282,8 +269,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public MultiActionType adaptType(@NotNull WrappedMultiActionType type) {
+    @NonNull
+    public MultiActionType adaptType(@NonNull WrappedMultiActionType type) {
         List<WrappedActionButton> wrappedActions = type.actions();
         WrappedActionButton wrappedExit = type.exitAction();
 
@@ -295,8 +282,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public NoticeType adaptType(@NotNull WrappedNoticeType type) {
+    @NonNull
+    public NoticeType adaptType(@NonNull WrappedNoticeType type) {
         WrappedActionButton wrappedAction = type.action();
         ActionButton action = this.adaptButton(wrappedAction);
 
@@ -304,8 +291,8 @@ public class PaperDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public ServerLinksType adaptType(@NotNull WrappedServerLinksType type) {
+    @NonNull
+    public ServerLinksType adaptType(@NonNull WrappedServerLinksType type) {
         WrappedActionButton wrappedExit = type.exitAction();
 
         ActionButton exitAction = wrappedExit == null ? null : this.adaptButton(wrappedExit);

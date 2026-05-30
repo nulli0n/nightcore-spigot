@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
@@ -14,64 +14,64 @@ public class ColorTag extends SimpleTag implements ColorDecorator {
 
     private final Color color;
 
-    public ColorTag(@NotNull String name, @NotNull String hex) {
+    public ColorTag(@NonNull String name, @NonNull String hex) {
         this(name, new String[0], hex);
     }
 
-    public ColorTag(@NotNull String name, @NotNull String[] aliases, @NotNull String hex) {
+    public ColorTag(@NonNull String name, @NonNull String[] aliases, @NonNull String hex) {
         this(name, aliases, ParserUtils.colorFromHexString(hex));
     }
 
     @Deprecated
-    public ColorTag(@NotNull Color color) {
+    public ColorTag(@NonNull Color color) {
         this(color, new String[0]);
     }
 
     @Deprecated
-    public ColorTag(@NotNull Color color, @NotNull String[] aliases) {
+    public ColorTag(@NonNull Color color, @NonNull String[] aliases) {
         this(ParserUtils.colorToHexString(color).substring(1), aliases, color);
     }
 
-    public ColorTag(@NotNull String name, @NotNull Color color) {
+    public ColorTag(@NonNull String name, @NonNull Color color) {
         this(name, new String[0], color);
     }
 
-    public ColorTag(@NotNull String name, @NotNull String[] aliases, @NotNull Color color) {
+    public ColorTag(@NonNull String name, @NonNull String[] aliases, @NonNull Color color) {
         super(name, aliases);
         this.color = color;
     }
 
-    @NotNull
+    @NonNull
     public Color getColor() {
         return this.color;
     }
 
-    @NotNull
+    @NonNull
     public String getHex() {
         return ParserUtils.colorToHexString(this.color);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String wrapHex(@NotNull String string) {
+    public String wrapHex(@NonNull String string) {
         String hex = this.getHex();
 
         return TagUtils.brackets(hex) + string + TagUtils.closedBrackets(hex);
     }
 
     @Override
-    @NotNull
-    public NightComponent decorate(@NotNull NightComponent component) {
+    @NonNull
+    public NightComponent decorate(@NonNull NightComponent component) {
         return component.color(this.color);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String encloseHex(@NotNull String string) {
+    public String encloseHex(@NonNull String string) {
         return this.wrapHex(string);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public String toHexString() {
         return this.getHex();//TagUtils.colorToHexString(this.color);

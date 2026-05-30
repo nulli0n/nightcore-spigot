@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.core.tag;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.Lists;
@@ -14,18 +14,18 @@ import java.util.List;
 public class ColorScheme implements Writeable {
 
     public static final String DEFAULT = "default";
-    public static final String CUSTOM = "custom";
+    public static final String CUSTOM  = "custom";
 
-    private final String id;
+    private final String          id;
     private final List<ColorCode> colors;
 
-    public ColorScheme(@NotNull String id, @NotNull List<ColorCode> colors) {
+    public ColorScheme(@NonNull String id, @NonNull List<ColorCode> colors) {
         this.id = id.toLowerCase();
         this.colors = colors;
     }
 
-    @NotNull
-    public static ColorScheme read(@NotNull FileConfig config, @NotNull String path, @NotNull String id) {
+    @NonNull
+    public static ColorScheme read(@NonNull FileConfig config, @NonNull String path, @NonNull String id) {
         List<ColorCode> colors = new ArrayList<>();
 
         config.getSection(path + ".Colors").forEach(name -> {
@@ -39,7 +39,7 @@ public class ColorScheme implements Writeable {
         return new ColorScheme(id, colors);
     }
 
-    @NotNull
+    @NonNull
     public static List<ColorScheme> getDefaultSchemes() {
         ColorScheme vanilla = new ColorScheme(DEFAULT, Lists.newList(
             new ColorCode(TagShortNames.BLACK, new Color(0, 0, 0)),
@@ -149,17 +149,18 @@ public class ColorScheme implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.remove(path + ".Colors");
-        this.colors.forEach(code -> config.set(path + ".Colors." + code.name(), ParserUtils.colorToHexString(code.color())));
+        this.colors.forEach(code -> config.set(path + ".Colors." + code.name(), ParserUtils.colorToHexString(code
+            .color())));
     }
 
-    @NotNull
+    @NonNull
     public String getId() {
         return this.id;
     }
 
-    @NotNull
+    @NonNull
     public List<ColorCode> getColors() {
         return this.colors;
     }

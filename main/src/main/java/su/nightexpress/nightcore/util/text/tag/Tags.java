@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.core.tag.ColorScheme;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
 import su.nightexpress.nightcore.util.text.tag.impl.*;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Deprecated
 public class Tags {
 
-/*    public static final String FILE_NAME = "colors.yml";
+    /*    public static final String FILE_NAME = "colors.yml";
     private static final String COLORS_PATH = "Colors";*/
 
     private static final Map<String, Tag> REGISTRY = new HashMap<>();
@@ -64,11 +64,11 @@ public class Tags {
     public static final ColorTag LIGHT_PINK   = new ColorTag("lpink", new String[]{"light_pink"}, "#fd8ddb");
 
     static {
-/*        registerTags(
+        /*        registerTags(
             Tags.BLACK, Tags.WHITE, Tags.GRAY, Tags.GREEN,
             Tags.YELLOW, Tags.ORANGE, Tags.RED,
             Tags.BLUE, Tags.CYAN, Tags.PURPLE, Tags.PINK,
-
+        
             Tags.DARK_GRAY, Tags.LIGHT_GRAY, Tags.LIGHT_GREEN,
             Tags.LIGHT_YELLOW, Tags.LIGHT_ORANGE, Tags.LIGHT_RED,
             Tags.LIGHT_BLUE, Tags.LIGHT_CYAN, Tags.LIGHT_PURPLE, Tags.LIGHT_PINK
@@ -82,7 +82,7 @@ public class Tags {
         registerTags(Tags.GRADIENT, Tags.LINE_BREAK, Tags.FONT, Tags.HOVER, Tags.CLICK,
             Tags.RESET, Tags.HEX_COLOR, Tags.HEX_COLOR_SHORT, Tags.TRANSLATE);
 
-/*        registerTag(MinecraftColors.DARK_BLUE);
+        /*        registerTag(MinecraftColors.DARK_BLUE);
         registerTag(MinecraftColors.DARK_GREEN);
         registerTag(MinecraftColors.DARK_AQUA);
         registerTag(MinecraftColors.DARK_RED);
@@ -91,56 +91,56 @@ public class Tags {
         registerTag(MinecraftColors.AQUA);*/
     }
 
-    public static void registerFromScheme(@NotNull ColorScheme scheme) {
+    public static void registerFromScheme(@NonNull ColorScheme scheme) {
         scheme.getColors().forEach(code -> {
             registerTag(new ColorTag(code.name(), code.color()));
         });
     }
 
-/*    @Deprecated
-    public static void loadColorsFromFile(@NotNull NightCore core) {
+    /*    @Deprecated
+    public static void loadColorsFromFile(@NonNull NightCore core) {
         FileConfig config = FileConfig.loadOrExtract(core, FILE_NAME);
-
+    
         if (config.getSection(COLORS_PATH).isEmpty()) {
             getTags().forEach(tag -> {
                 if (!(tag instanceof ColorTag colorTag)) return;
-
+    
                 for (String alias : colorTag.getAliases()) {
                     config.set(COLORS_PATH + "." + alias, colorTag.getHex());
                 }
             });
         }
-
+    
         config.getSection(COLORS_PATH).forEach(name -> {
             String hex = config.getString(COLORS_PATH + "." + name);
             if (hex == null) return;
-
+    
             Color color = ParserUtils.colorFromHexString(hex);
             registerTag(new ColorTag(name, color));
         });
-
+    
         config.saveChanges();
     }*/
 
-    @NotNull
+    @NonNull
     public static Collection<Tag> getTags() {
         return REGISTRY.values();
     }
 
-    public static void registerTags(@NotNull Tag... tags) {
+    public static void registerTags(@NonNull Tag... tags) {
         for (Tag tag : tags) {
             registerTag(tag);
         }
     }
 
-    public static void registerTag(@NotNull Tag tag) {
+    public static void registerTag(@NonNull Tag tag) {
         for (String alias : tag.getAliases()) {
             REGISTRY.put(alias, tag);
         }
     }
 
     @Nullable
-    public static Tag getTag(@NotNull String name) {
+    public static Tag getTag(@NonNull String name) {
         return REGISTRY.get(name.toLowerCase());
     }
 }

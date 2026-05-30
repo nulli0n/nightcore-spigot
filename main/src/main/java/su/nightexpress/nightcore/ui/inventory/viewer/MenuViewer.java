@@ -1,22 +1,28 @@
 package su.nightexpress.nightcore.ui.inventory.viewer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.ui.inventory.item.ItemState;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import su.nightexpress.nightcore.ui.inventory.Menu;
 import su.nightexpress.nightcore.ui.inventory.action.ActionContext;
+import su.nightexpress.nightcore.ui.inventory.display.DisplayModifiers;
+import su.nightexpress.nightcore.ui.inventory.item.ItemState;
 import su.nightexpress.nightcore.ui.inventory.item.MenuItem;
 import su.nightexpress.nightcore.util.TimeUtil;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
-
-import java.util.*;
 
 public class MenuViewer {
 
@@ -28,18 +34,18 @@ public class MenuViewer {
     private InventoryView currentView;
     private int           currentPage;
 
-    private int totalPages;
-    private long nextClickIn;
+    private int     totalPages;
+    private long    nextClickIn;
     private boolean isRefreshing;
 
-    public MenuViewer(@NotNull Player player) {
+    public MenuViewer(@NonNull Player player) {
         this.player = player;
         this.currentDisplay = new HashMap<>();
         this.setCurrentPage(1);
         this.setTotalPages(1);
     }
 
-    public void renderMenu(@NotNull Menu menu/*, @Nullable Object data*/) {
+    public void renderMenu(@NonNull Menu menu/*, @Nullable Object data*/) {
         this.currentMenu = menu;
         //this.currentObject = data;
         this.currentDisplay.clear();
@@ -66,11 +72,11 @@ public class MenuViewer {
 
             NightItem icon = itemState.getIcon();
 
-            if (menu.isPlaceholderIntegrationEnabled()) {
-                icon.replacement(replacer -> replacer.replacePlaceholderAPI(this.player));
-            }
-
             itemState.modifyDisplay(context, icon);
+
+            if (menu.isPlaceholderIntegrationEnabled()) {
+                DisplayModifiers.PAPI.modify(context, icon);
+            }
 
             ItemStack itemStack = icon.getItemStack();
 
@@ -122,14 +128,14 @@ public class MenuViewer {
         this.player.closeInventory();
     }
 
-    public void handleClose(@NotNull InventoryCloseEvent event) {
+    public void handleClose(@NonNull InventoryCloseEvent event) {
         this.currentMenu = null;
         this.currentObject = null;
         this.currentView = null;
         this.currentDisplay.clear();
     }
 
-    public void handleClick(@NotNull InventoryClickEvent event) {
+    public void handleClick(@NonNull InventoryClickEvent event) {
         if (this.currentMenu == null) return;
 
         int slot = event.getRawSlot();
@@ -172,12 +178,12 @@ public class MenuViewer {
         this.nextClickIn = nextClickIn;
     }
 
-    @NotNull
+    @NonNull
     public ViewerContext createContext() {
         return new ViewerContext(this, this.currentObject);
     }
 
-    @NotNull
+    @NonNull
     public Player getPlayer() {
         return this.player;
     }
@@ -187,7 +193,7 @@ public class MenuViewer {
         return this.currentMenu;
     }
 
-    @NotNull
+    @NonNull
     public Optional<Menu> menu() {
         return Optional.ofNullable(this.currentMenu);
     }

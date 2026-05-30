@@ -1,24 +1,28 @@
 package su.nightexpress.nightcore.bridge.item;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
 public interface ItemAdapter<T> {
 
-    @NotNull String getName();
+    @NonNull
+    String getName();
 
-    boolean canHandle(@NotNull ItemStack itemStack);
+    boolean canHandle(@NonNull ItemStack itemStack);
 
-    boolean canHandle(@NotNull T data);
+    boolean canHandle(@NonNull T data);
 
-    @NotNull Optional<? extends AdaptedItem> adapt(@NotNull ItemStack itemStack);
+    @NonNull
+    Optional<? extends AdaptedItem> adapt(@NonNull ItemStack itemStack);
 
-    @Nullable ItemStack toItemStack(@NotNull T data);
+    @Nullable
+    ItemStack toItemStack(@NonNull T data);
 
-    @Nullable T fromItemStack(@NotNull ItemStack itemStack);
+    @Nullable
+    T fromItemStack(@NonNull ItemStack itemStack);
 
     boolean isVanilla();
 

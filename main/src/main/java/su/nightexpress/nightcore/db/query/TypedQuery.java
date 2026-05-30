@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.db.query;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.db.connection.AbstractConnector;
 import su.nightexpress.nightcore.db.query.data.Values;
 import su.nightexpress.nightcore.db.query.data.Wheres;
@@ -21,19 +21,20 @@ public abstract class TypedQuery<T> implements Query {
     @Nullable
     protected abstract Wheres<T> statementWheres();
 
-    public void execute(@NotNull AbstractConnector connector, @NotNull String table, @NotNull T entity) {
+    public void execute(@NonNull AbstractConnector connector, @NonNull String table, @NonNull T entity) {
         this.execute(connector, table, Lists.newList(entity));
     }
 
-    public void execute(@NotNull AbstractConnector connector, @NotNull String table, @NotNull Collection<T> entities) {
+    public void execute(@NonNull AbstractConnector connector, @NonNull String table, @NonNull Collection<T> entities) {
         if (this.isEmpty()) return;
 
         String sql = this.toSQL(table).trim();
         Values<T> values = this.statementValues();
         Wheres<T> wheres = this.statementWheres();
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             int entityCount = 0;
             for (T entity : entities) {

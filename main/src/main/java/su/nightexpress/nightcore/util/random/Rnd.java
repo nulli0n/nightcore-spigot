@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.random;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.Randomizer;
 
 import java.util.*;
@@ -30,8 +30,8 @@ public class Rnd {
         return min + (max - min) * RANDOM.nextDouble();
     }
 
-    @NotNull
-    public static <E> E get(@NotNull E[] list) {
+    @NonNull
+    public static <E> E get(@NonNull E[] list) {
         return list[get(list.length)];
     }
 
@@ -39,27 +39,27 @@ public class Rnd {
         return list[get(list.length)];
     }
 
-    @NotNull
-    public static <E> E get(@NotNull List<E> list) {
+    @NonNull
+    public static <E> E get(@NonNull List<E> list) {
         if (list.isEmpty()) throw new NoSuchElementException("Empty list provided!");
 
         return list.get(get(list.size()));
     }
 
-    @NotNull
-    public static <E> E get(@NotNull Set<E> list) {
+    @NonNull
+    public static <E> E get(@NonNull Set<E> list) {
         return get(new ArrayList<>(list));
     }
 
-    @NotNull
-    public static <T> T getByWeight(@NotNull Map<T, Double> itemsMap) {
+    @NonNull
+    public static <T> T getByWeight(@NonNull Map<T, Double> itemsMap) {
         List<WeightedItem<T>> items = new ArrayList<>();
         itemsMap.forEach((item, weight) -> items.add(WeightedItem.of(item, weight)));
         return getByWeight(items);
     }
 
-    @NotNull
-    public static <T> T getByWeight(@NotNull List<WeightedItem<T>> items) {
+    @NonNull
+    public static <T> T getByWeight(@NonNull List<WeightedItem<T>> items) {
         double totalWeight = items.stream().mapToDouble(WeightedItem::getWeight).sum();
         double randomValue = Randomizer.nextDouble(totalWeight);
 
@@ -77,7 +77,7 @@ public class Rnd {
             roll -= items.get(index).getWeight();
             if (roll <= 0D) break;
         }
-
+        
         return items.get(index).getItem();*/
     }
 

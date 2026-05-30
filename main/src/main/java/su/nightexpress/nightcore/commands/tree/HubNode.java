@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.commands.tree;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.Commands;
 import su.nightexpress.nightcore.commands.NodeExecutor;
@@ -22,10 +22,10 @@ public class HubNode extends ExecutableNode {
 
     private String localizedName;
 
-    public HubNode(@NotNull String name,
-                   @NotNull String description,
+    public HubNode(@NonNull String name,
+                   @NonNull String description,
                    @Nullable String permission,
-                   @NotNull List<CommandRequirement> requirements,
+                   @NonNull List<CommandRequirement> requirements,
                    @Nullable NodeExecutor executor,
                    @Nullable String localizedName,
                    boolean useHelpCommand) {
@@ -45,8 +45,8 @@ public class HubNode extends ExecutableNode {
     }
 
     @Override
-    @NotNull
-    public Collection<? extends CommandNode> getRelevantNodes(@NotNull ArgumentReader reader) {
+    @NonNull
+    public Collection<? extends CommandNode> getRelevantNodes(@NonNull ArgumentReader reader) {
         if (!this.children.isEmpty()) {
             String arg = reader.getCursorArgument();
             CommandNode literalNode = this.children.get(LowerCase.USER_LOCALE.apply(arg));
@@ -56,7 +56,7 @@ public class HubNode extends ExecutableNode {
         return Collections.emptyList();
     }
 
-    public void addBranch(@NotNull ExecutableNode node) {
+    public void addBranch(@NonNull ExecutableNode node) {
         /*if ((node instanceof ArgumentCommandNode<?>)) {
             throw new UnsupportedOperationException("Could not add ArgumentCommandNode to the ChainCommandNode!");
         }*/
@@ -64,7 +64,7 @@ public class HubNode extends ExecutableNode {
     }
 
     @Override
-    public boolean run(@NotNull CommandContext context) {
+    public boolean run(@NonNull CommandContext context) {
         if (this.executor != null) {
             this.executor.run(context, context.getArguments());
             return true;
@@ -75,13 +75,15 @@ public class HubNode extends ExecutableNode {
     }
 
     @Override
-    public void parse(@NotNull ArgumentReader reader, @NotNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
+    public void parse(@NonNull ArgumentReader reader,
+                      @NonNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
         contextBuilder.withNode(this, reader.getCursor());
         contextBuilder.withExecutor(this);
     }
 
     @Override
-    public void suggests(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
+    public void suggests(@NonNull ArgumentReader reader, @NonNull CommandContext context,
+                         @NonNull Suggestions suggestions) {
         CommandSender sender = context.getSender();
 
         suggestions.setSuggestions(this.children.values().stream()
@@ -91,23 +93,24 @@ public class HubNode extends ExecutableNode {
     }
 
     @Override
-    protected void provideSuggestions(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
+    protected void provideSuggestions(@NonNull ArgumentReader reader, @NonNull CommandContext context,
+                                      @NonNull Suggestions suggestions) {
 
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getUsage() {
         return this.name;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getLocalizedName() {
         return this.localizedName != null ? this.localizedName : this.getName();
     }
 
-    private boolean sendCommandList(@NotNull CommandContext context) {
+    private boolean sendCommandList(@NonNull CommandContext context) {
         CommandSender sender = context.getSender();
 
         CoreLang.HELP_PAGE_GENERAL.message().send(sender, replacer -> replacer
@@ -118,7 +121,8 @@ public class HubNode extends ExecutableNode {
                     if (!(children instanceof ExecutableNode executable)) return;
 
                     list.add(CoreLang.HELP_PAGE_ENTRY.text()
-                        .replace(Placeholders.GENERIC_COMMAND, (NodeUtils.formatLabel(this, context) + " " + executable.getUsage()).trim())
+                        .replace(Placeholders.GENERIC_COMMAND, (NodeUtils.formatLabel(this, context) + " " + executable
+                            .getUsage()).trim())
                         .replace(Placeholders.GENERIC_DESCRIPTION, executable.getDescription())
                     );
                 });

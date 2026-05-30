@@ -30,8 +30,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 
@@ -134,7 +134,8 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    public void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull NightComponent message) {
+    public void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result,
+                              @NonNull NightComponent message) {
         event.disallow(result, this.textComponentAdapter.adaptComponent(message));
     }
 
@@ -212,7 +213,8 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    public void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
+    public void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle,
+                           int fadeIn, int stay, int fadeOut) {
         Component titleComp = adaptComponent(title);
         Component subComp = adaptComponent(subtitle);
 
@@ -290,7 +292,8 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    public void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
+    public void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header,
+                                          @Nullable NightComponent footer) {
         Component paperHeader = header == null ? Component.empty() : this.adaptComponent(header);
         Component paperFooter = footer == null ? Component.empty() : this.adaptComponent(footer);
 
@@ -338,7 +341,8 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    public <T extends ItemMeta> void editMeta(@NonNull ItemStack itemStack, @NonNull Class<T> clazz, @NonNull Consumer<T> consumer) {
+    public <T extends ItemMeta> void editMeta(@NonNull ItemStack itemStack, @NonNull Class<T> clazz,
+                                              @NonNull Consumer<T> consumer) {
         itemStack.editMeta(clazz, consumer);
     }
 
@@ -405,9 +409,6 @@ public class PaperBridge implements Software {
 
     @Override
     public void hideComponents(@NonNull ItemStack itemStack) {
-        //        TooltipDisplay tooltipDisplay = TooltipDisplay.tooltipDisplay().hiddenComponents(this.commonComponentsToHide).build();
-        //        itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, tooltipDisplay);
-        //
         if (commonComponentsToHide == null) return;
 
         hidePaperComponents(itemStack, this.commonComponentsToHide);
@@ -423,7 +424,8 @@ public class PaperBridge implements Software {
         hidePaperComponents(itemStack, componentTypes);
     }
 
-    public static void hidePaperComponents(@NonNull ItemStack itemStack, @NonNull Set<DataComponentType> componentTypes) {
+    public static void hidePaperComponents(@NonNull ItemStack itemStack,
+                                           @NonNull Set<DataComponentType> componentTypes) {
         try {
             TooltipDisplay tooltipDisplay = TooltipDisplay.tooltipDisplay().hiddenComponents(componentTypes).build();
             itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, tooltipDisplay);
@@ -435,7 +437,8 @@ public class PaperBridge implements Software {
 
     @Override
     @NonNull
-    public PaperBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor, @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags) {
+    public PaperBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor,
+                                      @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags) {
         Component name = this.textComponentAdapter.adaptComponent(title);
         BossBar.Color color = PaperBossBarAdapter.adaptColor(barColor);
         BossBar.Overlay overlay = PaperBossBarAdapter.adaptOverlay(barOverlay);

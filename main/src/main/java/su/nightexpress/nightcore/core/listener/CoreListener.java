@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.manager.AbstractListener;
@@ -15,7 +15,7 @@ import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 
 public class CoreListener extends AbstractListener<NightCore> {
 
-    public CoreListener(@NotNull NightCore plugin) {
+    public CoreListener(@NonNull NightCore plugin) {
         super(plugin);
     }
 

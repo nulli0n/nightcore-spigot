@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.bridge.paper.text;
 import net.kyori.adventure.text.object.ObjectContents;
 import net.kyori.adventure.text.object.PlayerHeadObjectContents;
 import net.kyori.adventure.text.object.SpriteObjectContents;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.text.adapter.ObjectContentsAdapter;
 import su.nightexpress.nightcore.bridge.text.contents.NightObjectContents;
 import su.nightexpress.nightcore.bridge.text.contents.NightPlayerHeadObjectContents;
@@ -16,7 +16,7 @@ public class PaperObjectContantsAdapter extends PaperAdapter implements ObjectCo
 
     private static PaperObjectContantsAdapter instance;
 
-    @NotNull
+    @NonNull
     public static PaperObjectContantsAdapter get() {
         if (instance == null) {
             instance = new PaperObjectContantsAdapter();
@@ -25,20 +25,20 @@ public class PaperObjectContantsAdapter extends PaperAdapter implements ObjectCo
     }
 
     @Override
-    @NotNull
-    public ObjectContents adaptContents(@NotNull NightObjectContents contents) {
+    @NonNull
+    public ObjectContents adaptContents(@NonNull NightObjectContents contents) {
         return contents.adapt(this);
     }
 
     @Override
-    @NotNull
-    public SpriteObjectContents adaptContents(@NotNull NightSpriteObjectContents contents) {
+    @NonNull
+    public SpriteObjectContents adaptContents(@NonNull NightSpriteObjectContents contents) {
         return ObjectContents.sprite(this.adaptKey(contents.atlas()), this.adaptKey(contents.sprite()));
     }
 
     @Override
-    @NotNull
-    public PlayerHeadObjectContents adaptContents(@NotNull NightPlayerHeadObjectContents contents) {
+    @NonNull
+    public PlayerHeadObjectContents adaptContents(@NonNull NightPlayerHeadObjectContents contents) {
         return ObjectContents.playerHead()
             .name(contents.name())
             .id(contents.id())
@@ -48,8 +48,7 @@ public class PaperObjectContantsAdapter extends PaperAdapter implements ObjectCo
             .build();
     }
 
-    @NotNull
-    private PlayerHeadObjectContents.ProfileProperty adaptProfilePropery(@NotNull NightPlayerHeadObjectContents.NightProfileProperty property) {
+    private PlayerHeadObjectContents.@NonNull ProfileProperty adaptProfilePropery(NightPlayerHeadObjectContents.@NonNull NightProfileProperty property) {
         return PlayerHeadObjectContents.property(property.name(), property.value(), property.signature());
     }
 }

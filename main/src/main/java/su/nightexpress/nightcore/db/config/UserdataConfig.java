@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.config;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -16,7 +16,8 @@ public class UserdataConfig implements Writeable {
     private final double saveDelay;
     private final int    saveSyncPause;
 
-    public UserdataConfig(long cacheLifetime, int cacheCleanupInterval, long saveInterval, double saveDelay, int saveSyncPause) {
+    public UserdataConfig(long cacheLifetime, int cacheCleanupInterval, long saveInterval, double saveDelay,
+                          int saveSyncPause) {
         this.cacheLifetime = cacheLifetime;
         this.cacheCleanupInterval = cacheCleanupInterval;
         this.saveInterval = saveInterval;
@@ -24,8 +25,8 @@ public class UserdataConfig implements Writeable {
         this.saveSyncPause = saveSyncPause;
     }
 
-    @NotNull
-    public static UserdataConfig read(@NotNull NightPlugin plugin) {
+    @NonNull
+    public static UserdataConfig read(@NonNull NightPlugin plugin) {
         FileConfig config = plugin.getConfig();
         FileConfig engineConf = plugin.getEngineConfig();
 
@@ -40,8 +41,8 @@ public class UserdataConfig implements Writeable {
         return read(engineConf, "UserData");
     }
 
-    @NotNull
-    public static UserdataConfig read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static UserdataConfig read(@NonNull FileConfig config, @NonNull String path) {
         long cacheLifetime = ConfigValue.create(path + ".Cache.LifeTime",
             300L,
             "Sets cache lifetime for player's data.",
@@ -98,7 +99,7 @@ public class UserdataConfig implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Cache.LifeTime", this.cacheLifetime);
         config.set(path + ".Cache.CleanUp_Interval", this.cacheCleanupInterval);
         config.set(path + ".Scheduled_Save_Interval", this.saveInterval);

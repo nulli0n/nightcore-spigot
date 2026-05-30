@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.language.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.language.message.MessageOptions;
 import su.nightexpress.nightcore.language.message.OutputType;
 import su.nightexpress.nightcore.language.tag.MessageTag;
@@ -15,31 +15,31 @@ public class OutputTag extends MessageTag {
         super("output");
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull OutputType type) {
+    public String enclose(@NonNull OutputType type) {
         //String prefix = type.name().toLowerCase();
 
         return this.wrap(type);//this.enclose(prefix);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public String enclose(int fade, int stay) {
-//        String prefix = OutputType.TITLES.name().toLowerCase();
-//        String content = prefix + ":" + fade + ":" + stay + ":" + fade;
+        //        String prefix = OutputType.TITLES.name().toLowerCase();
+        //        String content = prefix + ":" + fade + ":" + stay + ":" + fade;
 
         return this.wrap(fade, stay);//this.enclose(content);
     }
 
-    @NotNull
-    public String wrap(@NotNull OutputType type) {
+    @NonNull
+    public String wrap(@NonNull OutputType type) {
         String prefix = type.name().toLowerCase();
 
         return this.wrap(prefix);
     }
 
-    @NotNull
+    @NonNull
     public String wrap(int fade, int stay) {
         String prefix = OutputType.TITLES.name().toLowerCase();
         String content = prefix + ":" + fade + ":" + stay + ":" + fade;
@@ -48,7 +48,7 @@ public class OutputTag extends MessageTag {
     }
 
     @Override
-    public void apply(@NotNull MessageOptions options, @Nullable String tagContent) {
+    public void apply(@NonNull MessageOptions options, @Nullable String tagContent) {
         if (tagContent == null) return;
 
         String[] split = tagContent.split(":");

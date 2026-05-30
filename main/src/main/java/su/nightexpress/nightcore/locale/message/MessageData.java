@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.locale.message;
 
 import org.bukkit.Sound;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.wrap.NightSound;
 import su.nightexpress.nightcore.util.Enums;
 import su.nightexpress.nightcore.util.NumberUtil;
@@ -17,12 +17,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean replacePlaceholders, @Nullable NightSound sound, int[] titleTimes) {
+public record MessageData(@NonNull MessageType type, boolean usePrefix, boolean replacePlaceholders,
+                          @Nullable NightSound sound, int[] titleTimes) {
 
-    public static final MessageData CHAT_DEFAULT   = chat().build();
+    public static final MessageData CHAT_DEFAULT = chat().build();
     public static final MessageData CHAT_NO_PREFIX = chat().usePrefix(false).build();
-    public static final MessageData ACTION_BAR     = actionBar().build();
-    public static final MessageData TITLES         = titles().build();
+    public static final MessageData ACTION_BAR = actionBar().build();
+    public static final MessageData TITLES = titles().build();
 
     private static final Pattern ENTRY_PATTERN = Pattern.compile("(\\w+)=\"([^\"]*)\"");
     private static final Pattern LEGACY_TAG_PATTERN = Pattern.compile("<(\\w+)(?:\\s*:\\s*\"([^\"]*)\")?>");
@@ -38,7 +39,7 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
         TYPE
     }
 
-    @NotNull
+    @NonNull
     public String serialize() {
         Map<Option, String> values = new HashMap<>();
         if (this.type == MessageType.CHAT) {
@@ -50,7 +51,8 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
             values.put(Option.SOUND, this.sound.serialize());
         }
         if (this.titleTimes != null && this.titleTimes.length == 3 && this.type == MessageType.TITLE) {
-            values.put(Option.TITLE_TIMES, IntStream.of(this.titleTimes).mapToObj(String::valueOf).collect(Collectors.joining(":")));
+            values.put(Option.TITLE_TIMES, IntStream.of(this.titleTimes).mapToObj(String::valueOf).collect(Collectors
+                .joining(":")));
         }
         if (this.type != MessageType.CHAT) {
             values.put(Option.TYPE, this.type.name().toLowerCase());
@@ -67,28 +69,28 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
         return OPEN_BRACKET + serialized + CLOSE_BRACKET;
     }
 
-    @NotNull
+    @NonNull
     public static Builder builder() {
         return new Builder();
     }
 
-    @NotNull
+    @NonNull
     public static Builder chat() {
         return builder().type(MessageType.CHAT);
     }
 
-    @NotNull
+    @NonNull
     public static Builder actionBar() {
         return builder().type(MessageType.ACTION_BAR);
     }
 
-    @NotNull
+    @NonNull
     public static Builder titles() {
         return builder().type(MessageType.TITLE).titleTimes(20, 60, 20);
     }
 
-    @NotNull
-    public static String extractAndParse(@NotNull String string, @NotNull Builder builder) {
+    @NonNull
+    public static String extractAndParse(@NonNull String string, @NonNull Builder builder) {
         if (!string.startsWith(OPEN_BRACKET)) return string;
 
         int endIndex = string.indexOf(CLOSE_BRACKET);
@@ -111,12 +113,13 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
         return text.trim();
     }
 
-    public static boolean hasLegacyData(@NotNull String string) {
-        return string.startsWith("<sound:") || string.startsWith("<papi>") || string.startsWith("<noprefix>") || string.startsWith("<output:");
+    public static boolean hasLegacyData(@NonNull String string) {
+        return string.startsWith("<sound:") || string.startsWith("<papi>") || string.startsWith("<noprefix>") || string
+            .startsWith("<output:");
     }
 
-    @NotNull
-    public static String extractAndParseOld(@NotNull String string, @NotNull Builder builder) {
+    @NonNull
+    public static String extractAndParseOld(@NonNull String string, @NonNull Builder builder) {
         Matcher matcher = LEGACY_TAG_PATTERN.matcher(string);
         StringBuilder remainderBuffer = new StringBuilder();
 
@@ -161,7 +164,7 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
         return remainderBuffer.toString().trim();
     }
 
-    private static void parseOption(@NotNull Option option, @NotNull String value, @NotNull Builder builder) {
+    private static void parseOption(@NonNull Option option, @NonNull String value, @NonNull Builder builder) {
         switch (option) {
             case TYPE -> builder.type(Enums.parse(value, MessageType.class).orElse(MessageType.CHAT));
             case TITLE_TIMES -> {
@@ -179,7 +182,7 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String toString() {
         return "MessageData{" +
             //"text='" + text + '\'' +
@@ -205,41 +208,41 @@ public record MessageData(@NotNull MessageType type, boolean usePrefix, boolean 
             this.replacePlaceholders = false;
         }
 
-        @NotNull
+        @NonNull
         public MessageData build() {
             return new MessageData(this.type, this.usePrefix, this.replacePlaceholders, this.sound, this.titleTimes);
         }
 
-        @NotNull
-        public Builder type(@NotNull MessageType type) {
+        @NonNull
+        public Builder type(@NonNull MessageType type) {
             this.type = type;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder usePrefix(boolean usePrefix) {
             this.usePrefix = usePrefix;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder replacePlaceholders(boolean replacePlaceholders) {
             this.replacePlaceholders = replacePlaceholders;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder sound(@Nullable Sound sound) {
             return this.sound(sound == null ? null : VanillaSound.of(sound));
         }
 
-        @NotNull
+        @NonNull
         public Builder sound(@Nullable NightSound sound) {
             this.sound = sound;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder titleTimes(int fadeIn, int stay, int fadeOut) {
             this.titleTimes = new int[]{fadeIn, stay, fadeOut};
             return this;

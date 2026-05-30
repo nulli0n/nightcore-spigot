@@ -2,19 +2,21 @@ package su.nightexpress.nightcore.bridge.wrap;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public interface NightSound {
 
     boolean isSilent();
 
-    void play(@NotNull Player player);
+    void play(@NonNull Player player);
 
-    void play(@NotNull Location location);
+    void play(@NonNull Location location);
 
-    @NotNull String serialize();
+    @NonNull
+    String serialize();
 
-    @NotNull String getName();
+    @NonNull
+    String getName();
 
     float getVolume();
 

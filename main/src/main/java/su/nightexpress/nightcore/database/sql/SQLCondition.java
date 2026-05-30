@@ -1,59 +1,60 @@
 package su.nightexpress.nightcore.database.sql;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Deprecated
 public class SQLCondition {
 
     private final SQLValue value;
-    private final Type      type;
+    private final Type     type;
 
-    public SQLCondition(@NotNull SQLValue value, @NotNull Type type) {
+    public SQLCondition(@NonNull SQLValue value, @NonNull Type type) {
         this.value = value;
         this.type = type;
     }
 
-    @NotNull
-    public static SQLCondition of(@NotNull SQLValue value, @NotNull Type type) {
+    @NonNull
+    public static SQLCondition of(@NonNull SQLValue value, @NonNull Type type) {
         return new SQLCondition(value, type);
     }
 
-    @NotNull
-    public static SQLCondition equal(@NotNull SQLValue value) {
+    @NonNull
+    public static SQLCondition equal(@NonNull SQLValue value) {
         return of(value, Type.EQUAL);
     }
 
-    @NotNull
-    public static SQLCondition not(@NotNull SQLValue value) {
+    @NonNull
+    public static SQLCondition not(@NonNull SQLValue value) {
         return of(value, Type.NOT_EQUAL);
     }
 
-    @NotNull
-    public static SQLCondition smaller(@NotNull SQLValue value) {
+    @NonNull
+    public static SQLCondition smaller(@NonNull SQLValue value) {
         return of(value, Type.SMALLER);
     }
 
-    @NotNull
-    public static SQLCondition greater(@NotNull SQLValue value) {
+    @NonNull
+    public static SQLCondition greater(@NonNull SQLValue value) {
         return of(value, Type.GREATER);
     }
 
-    @NotNull
+    @NonNull
     public Type getType() {
         return type;
     }
 
-    @NotNull
+    @NonNull
     public SQLValue getValue() {
         return value;
     }
 
-    @NotNull
+    @NonNull
     public SQLColumn getColumn() {
         return this.getValue().getColumn();
     }
 
     public enum Type {
+
         GREATER(">"),
         SMALLER("<"),
         EQUAL("="),
@@ -61,11 +62,11 @@ public class SQLCondition {
 
         private final String operator;
 
-        Type(@NotNull String operator) {
+        Type(@NonNull String operator) {
             this.operator = operator;
         }
 
-        @NotNull
+        @NonNull
         public String getOperator() {
             return operator;
         }

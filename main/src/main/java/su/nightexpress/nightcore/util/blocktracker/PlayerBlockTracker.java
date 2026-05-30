@@ -7,8 +7,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
 
 import java.util.*;
@@ -16,8 +16,8 @@ import java.util.function.Predicate;
 
 public final class PlayerBlockTracker {
 
-    public static final  Set<Predicate<Block>>   BLOCK_FILTERS     = new HashSet<>();
-    public static final  NamespacedKey           TRACKED_DATA_KEY  = NamespacedKey.minecraft("tracked_chunk_data");
+    public static final Set<Predicate<Block>>    BLOCK_FILTERS     = new HashSet<>();
+    public static final NamespacedKey            TRACKED_DATA_KEY  = NamespacedKey.minecraft("tracked_chunk_data");
     private static final Map<UUID, TrackedWorld> TRACKED_WORLD_MAP = new Object2ObjectOpenHashMap<>();
 
     private static TrackListener<?> listener;
@@ -38,7 +38,7 @@ public final class PlayerBlockTracker {
         }
     }
 
-    public static void initWorld(@NotNull World world) {
+    public static void initWorld(@NonNull World world) {
         TrackedWorld trackedWorld = new TrackedWorld();
         for (Chunk loadedChunk : world.getLoadedChunks()) {
             trackedWorld.initChunk(loadedChunk);
@@ -46,7 +46,7 @@ public final class PlayerBlockTracker {
         TRACKED_WORLD_MAP.put(world.getUID(), trackedWorld);
     }
 
-    public static void terminateWorld(@NotNull World world) {
+    public static void terminateWorld(@NonNull World world) {
         TrackedWorld trackedWorld = TRACKED_WORLD_MAP.remove(world.getUID());
         if (trackedWorld == null) {
             return;
@@ -56,7 +56,7 @@ public final class PlayerBlockTracker {
         }
     }
 
-    public static void initChunk(@NotNull Chunk chunk) {
+    public static void initChunk(@NonNull Chunk chunk) {
         TrackedWorld trackedWorld = getTrackedWorldOf(chunk);
         if (trackedWorld == null) {
             return;
@@ -64,7 +64,7 @@ public final class PlayerBlockTracker {
         trackedWorld.initChunk(chunk);
     }
 
-    public static void terminateChunk(@NotNull Chunk chunk) {
+    public static void terminateChunk(@NonNull Chunk chunk) {
         TrackedWorld trackedWorld = getTrackedWorldOf(chunk);
         if (trackedWorld == null) {
             return;
@@ -80,7 +80,7 @@ public final class PlayerBlockTracker {
         Bukkit.getWorlds().forEach(PlayerBlockTracker::terminateWorld);
     }
 
-    public static boolean isTracked(@NotNull Block block) {
+    public static boolean isTracked(@NonNull Block block) {
         TrackedWorld trackedWorld = getTrackedWorldOf(block);
         if (trackedWorld == null) {
             return false;
@@ -88,12 +88,12 @@ public final class PlayerBlockTracker {
         return trackedWorld.isTracked(block);
     }
 
-    public static void track(@NotNull Block block) {
+    public static void track(@NonNull Block block) {
         if (BLOCK_FILTERS.stream().noneMatch(filter -> filter.test(block))) return;
         trackForce(block);
     }
 
-    public static void trackForce(@NotNull Block block) {
+    public static void trackForce(@NonNull Block block) {
         TrackedWorld trackedWorld = getTrackedWorldOf(block);
         if (trackedWorld == null) {
             return;
@@ -101,7 +101,7 @@ public final class PlayerBlockTracker {
         trackedWorld.add(block);
     }
 
-    public static void unTrack(@NotNull Block block) {
+    public static void unTrack(@NonNull Block block) {
         TrackedWorld trackedWorld = getTrackedWorldOf(block);
         if (trackedWorld == null) {
             return;
@@ -109,15 +109,15 @@ public final class PlayerBlockTracker {
         trackedWorld.remove(block);
     }
 
-    public static void track(@NotNull Collection<Block> trackedBlocks) {
+    public static void track(@NonNull Collection<Block> trackedBlocks) {
         trackedBlocks.forEach(PlayerBlockTracker::trackForce);
     }
 
-    public static void unTrack(@NotNull Collection<Block> trackedBlocks) {
+    public static void unTrack(@NonNull Collection<Block> trackedBlocks) {
         trackedBlocks.forEach(PlayerBlockTracker::unTrack);
     }
 
-    public static void shift(@NotNull BlockFace direction, @NotNull List<Block> blocks) {
+    public static void shift(@NonNull BlockFace direction, @NonNull List<Block> blocks) {
         //unTrack(blocks);
         //track(blocks.stream().map(block -> block.getRelative(direction)).toList());
 
@@ -137,18 +137,18 @@ public final class PlayerBlockTracker {
         toUntrack.forEach(PlayerBlockTracker::unTrack);
     }
 
-    public static void move(@NotNull Block from, @NotNull Block to) {
+    public static void move(@NonNull Block from, @NonNull Block to) {
         unTrack(from);
         track(to);
     }
 
     @Nullable
-    private static TrackedWorld getTrackedWorldOf(@NotNull Block block) {
+    private static TrackedWorld getTrackedWorldOf(@NonNull Block block) {
         return TRACKED_WORLD_MAP.get(block.getWorld().getUID());
     }
 
     @Nullable
-    private static TrackedWorld getTrackedWorldOf(@NotNull Chunk chunk) {
+    private static TrackedWorld getTrackedWorldOf(@NonNull Chunk chunk) {
         return TRACKED_WORLD_MAP.get(chunk.getWorld().getUID());
     }
 }

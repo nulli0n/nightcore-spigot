@@ -1,5 +1,10 @@
 package su.nightexpress.nightcore;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -8,19 +13,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.N;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEventHandler;
+import su.nightexpress.nightcore.bridge.permission.PermissionNamespace;
 import su.nightexpress.nightcore.bridge.placeholder.PlaceholderProvider;
 import su.nightexpress.nightcore.bridge.placeholder.PlaceholderRegistry;
 import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.command.CommandManager;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
+import su.nightexpress.nightcore.commands.CommandProvider;
+import su.nightexpress.nightcore.commands.Commands;
 import su.nightexpress.nightcore.commands.command.NightCommand;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.PluginDetails;
@@ -33,19 +40,21 @@ import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 import su.nightexpress.nightcore.ui.dialog.wrap.DialogKey;
 import su.nightexpress.nightcore.ui.dialog.wrap.DialogRegistry;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
-import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.userdata.UserDataManager;
+import su.nightexpress.nightcore.util.FileUtil;
+import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.LowerCase;
+import su.nightexpress.nightcore.util.Reflex;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin {
 
     public static final String CONFIG_FILE = "config.yml";
     public static final String ENGINE_FILE = "engine.yml";
+
+    protected final List<CommandProvider> commandProviders;
 
     protected AdaptedScheduler scheduler;
 
@@ -62,6 +71,10 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
 
     protected DialogRegistry      dialogRegistry;
     protected PlaceholderRegistry placeholderRegistry;
+
+    protected NightPlugin() {
+        this.commandProviders = new ArrayList<>();
+    }
 
     @Override
     public void onEnable() {
@@ -126,23 +139,23 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
     }
 
     @Override
-    @NotNull
+    @NonNull
     public final FileConfig getConfig() {
         return this.config;
     }
 
-    @NotNull
+    @NonNull
     public FileConfig getEngineConfig() {
         return this.engineConf;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public final FileConfig getLang() {
         return this.langManager.getConfig();
     }
 
-    @NotNull
+    @NonNull
     @Override
     public PluginDetails getDetails() {
         if (this.details == null) throw new IllegalStateException("Plugin is not yet initialized!");
@@ -151,10 +164,11 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         //return this.details == null ? this.getDefaultDetails() : this.details;
     }
 
-    @NotNull
+    @NonNull
     protected abstract PluginDetails getDefaultDetails();
 
-    public void registerPermissions(@NotNull Class<?> clazz) {
+    @Deprecated
+    public void registerPermissions(@NonNull Class<?> clazz) {
         Reflex.getStaticFields(clazz, UniPermission.class, false).forEach(permission -> {
             if (this.getPluginManager().getPermission(permission.getName()) == null) {
                 this.getPluginManager().addPermission(permission);
@@ -205,11 +219,34 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         }
     }
 
+    @Deprecated
     protected void setupPermissions() {
         Class<?> clazz = this.details.getPermissionsClass();
         if (clazz == null) return;
 
         this.registerPermissions(clazz);
+    }
+
+    private void registerCorePermissions() {
+        PermissionNamespace namespace = this.getCorePermissions();
+        if (namespace == null) return;
+
+        Permission reloadPerm = namespace.create("reload");
+
+        this.addCommandProvider(root -> root.branch(Commands.literal("reload")
+            .permission(reloadPerm)
+            .description(CoreLang.COMMAND_RELOAD_DESC)
+            .executes((context, arguments) -> {
+                this.doReload(context.getSender());
+                return true;
+            })
+        ));
+
+        this.registerPermissions(namespace);
+    }
+
+    public void registerPermissions(@NonNull PermissionNamespace namespace) {
+        namespace.register(this.getPluginManager());
     }
 
     protected boolean disableCommandManager() {
@@ -231,13 +268,21 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.setupLanguage();       // Load legacy language.
         this.setupPermissions();    // Register plugin permissions.
         this.setupCommands();       // Register plugin commands.
+        this.registerCorePermissions();
 
         this.enable();              // Load the plugin.
 
         this.postLoad();            // Load some stuff that needs to be injected after the rest managers.
         this.registerGlobalPlaceholders();
 
-        if (this.rootCommand != null) this.rootCommand.register();
+        if (this.rootCommand != null) {
+            this.rootCommand.register();
+        }
+        else {
+            this.registerCommands();
+        }
+
+
         this.config.saveChanges();
         if (this.langManager != null) this.getLang().saveChanges();
         if (this.langRegistry != null) this.langRegistry.complete();
@@ -257,7 +302,10 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         MenuRegistry.closeAll();
         HandlerList.unregisterAll(this);        // Unregister all plugin listeners.
 
-        if (this.rootCommand != null) this.rootCommand.unregister();
+        if (this.rootCommand != null) {
+            this.rootCommand.unregister();
+            this.rootCommand = null;
+        }
         if (this.commandManager != null) this.commandManager.shutdown();
         if (this.langRegistry != null) this.langRegistry.shutdown();
         if (this.langManager != null) this.langManager.shutdown();
@@ -273,16 +321,27 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.postLoaders = null; // Prevent from adding post-load code during runtime.
     }
 
-    public void onPostLoad(@NotNull Runnable runnable) {
+    public void onPostLoad(@NonNull Runnable runnable) {
         if (this.postLoaders == null) {
             throw new IllegalStateException("Can't inject post loading code during runtime.");
         }
         this.postLoaders.add(runnable);
     }
 
-    public void doReload(@NotNull CommandSender sender) {
+    public void doReload(@NonNull CommandSender sender) {
         this.reload();
         CoreLang.PLUGIN_RELOADED.withPrefix(this).send(sender);
+    }
+
+    private void registerCommands() {
+        this.rootCommand = NightCommand.forPlugin(this, builder -> {
+            this.commandProviders.forEach(provider -> provider.provideCommands(builder));
+        });
+        this.rootCommand.register();
+    }
+
+    public void addCommandProvider(CommandProvider provider) {
+        this.commandProviders.add(provider);
     }
 
     public void addGlobalPlaceholders(@NonNull PlaceholderProvider provider) {
@@ -291,65 +350,65 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         }
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public final NightPluginCommand getBaseCommand() {
         return this.commandManager.getMainCommand();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public final LangManager getLangManager() {
         return this.langManager;
     }
 
-    @NotNull
+    @NonNull
     public final LangRegistry getLangRegistry() {
         return this.langRegistry;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public final CommandManager getCommandManager() {
         return this.commandManager;
     }
 
     @Override
-    public void registerListener(@NotNull Listener listener) {
+    public void registerListener(@NonNull Listener listener) {
         this.getPluginManager().registerEvents(listener, this);
     }
 
     @Override
-    public void addChatHandler(@NotNull EventPriority priority, @NotNull UniversalChatEventHandler handler) {
+    public void addChatHandler(@NonNull EventPriority priority, @NonNull UniversalChatEventHandler handler) {
         NightCore.get().addChatHandler(priority, handler);
     }
 
     @Override
-    public void removeChatHandler(@NotNull UniversalChatEventHandler handler) {
+    public void removeChatHandler(@NonNull UniversalChatEventHandler handler) {
         NightCore.get().removeChatHandler(handler);
     }
 
-    public void registerLang(@NotNull Class<? extends LangContainer> clazz) {
+    public void registerLang(@NonNull Class<? extends LangContainer> clazz) {
         this.langRegistry.register(clazz);
     }
 
     @Override
-    public void injectLang(@NotNull Class<? extends LangContainer> langClass) {
+    public void injectLang(@NonNull Class<? extends LangContainer> langClass) {
         this.langRegistry.inject(langClass);
     }
 
     @Override
-    public void injectLang(@NotNull LangContainer langContainer) {
+    public void injectLang(@NonNull LangContainer langContainer) {
         this.langRegistry.inject(langContainer);
     }
 
     @Override
-    public void extractResources(@NotNull String jarPath) {
+    public void extractResources(@NonNull String jarPath) {
         this.extractResources(jarPath, this.getDataFolder() + jarPath);
     }
 
     @Override
-    public void extractResources(@NotNull String jarPath, @NotNull String targetPath) {
+    public void extractResources(@NonNull String jarPath, @NonNull String targetPath) {
         File destination = new File(targetPath);
         if (destination.exists()) return;
 
@@ -393,76 +452,85 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         return !current.isDropped();
     }
 
+    public PermissionNamespace getCorePermissions() {
+        return null;
+    }
+
     @Override
-    @NotNull
+    @NonNull
     public PluginManager getPluginManager() {
         return this.getServer().getPluginManager();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public AdaptedScheduler scheduler() {
         return this.scheduler;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public DialogRegistry dialogRegistry() {
         return this.dialogRegistry;
     }
 
     @Override
-    @NotNull
-    public su.nightexpress.nightcore.ui.inventory.MenuRegistry getMenuRegistry() {
+
+    public su.nightexpress.nightcore.ui.inventory.@NonNull MenuRegistry getMenuRegistry() {
         return NightCore.get().getMenuRegistry();
     }
 
-    public <T> void showDialog(@NonNull Player player, @NonNull DialogKey<T> key, @NonNull T data, @Nullable Runnable callback) {
+    public @NonNull UserDataManager getUserDataManager() {
+        return NightCore.get().getUserDataManager();
+    }
+
+    public <T> void showDialog(@NonNull Player player, @NonNull DialogKey<T> key, @NonNull T data,
+                               @Nullable Runnable callback) {
         this.dialogRegistry.show(player, key, data, callback);
     }
 
     @Override
-    public void runTask(@NotNull Runnable consumer) {
+    public void runTask(@NonNull Runnable consumer) {
         this.scheduler.runTask(consumer);
     }
 
     @Override
-    public void runTask(@NotNull Entity entity, @NotNull Runnable runnable) {
+    public void runTask(@NonNull Entity entity, @NonNull Runnable runnable) {
         this.scheduler.runTask(entity, runnable);
     }
 
     @Override
-    public void runTask(@NotNull Location location, @NotNull Runnable runnable) {
+    public void runTask(@NonNull Location location, @NonNull Runnable runnable) {
         this.scheduler.runTask(location, runnable);
     }
 
     @Override
-    public void runTask(@NotNull Chunk chunk, @NotNull Runnable runnable) {
+    public void runTask(@NonNull Chunk chunk, @NonNull Runnable runnable) {
         this.scheduler.runTask(chunk, runnable);
     }
 
     @Override
-    public void runTaskAsync(@NotNull Runnable consumer) {
+    public void runTaskAsync(@NonNull Runnable consumer) {
         this.scheduler.runTaskAsync(consumer);
     }
 
     @Override
-    public void runTaskLater(@NotNull Runnable consumer, long delay) {
+    public void runTaskLater(@NonNull Runnable consumer, long delay) {
         this.scheduler.runTaskLater(consumer, delay);
     }
 
     @Override
-    public void runTaskLaterAsync(@NotNull Runnable consumer, long delay) {
+    public void runTaskLaterAsync(@NonNull Runnable consumer, long delay) {
         this.scheduler.runTaskLaterAsync(consumer, delay);
     }
 
     @Override
-    public void runTaskTimer(@NotNull Runnable consumer, long delay, long interval) {
+    public void runTaskTimer(@NonNull Runnable consumer, long delay, long interval) {
         this.scheduler.runTaskTimer(consumer, delay, interval);
     }
 
     @Override
-    public void runTaskTimerAsync(@NotNull Runnable consumer, long delay, long interval) {
+    public void runTaskTimerAsync(@NonNull Runnable consumer, long delay, long interval) {
         this.scheduler.runTaskTimerAsync(consumer, delay, interval);
     }
 }

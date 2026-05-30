@@ -1,14 +1,16 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.type;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogTypeAdapter;
 
 import java.util.function.UnaryOperator;
 
 public interface WrappedDialogType {
 
-    @NotNull <T> T adapt(@NotNull DialogTypeAdapter<T> factory);
+    @NonNull
+    <T> T adapt(@NonNull DialogTypeAdapter<T> factory);
 
     @Deprecated
-    @NotNull WrappedDialogType replace(@NotNull UnaryOperator<String> operator);
+    @NonNull
+    WrappedDialogType replace(@NonNull UnaryOperator<String> operator);
 }

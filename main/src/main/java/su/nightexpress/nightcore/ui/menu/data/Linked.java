@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.ui.menu.data;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.locale.entry.IconLocale;
@@ -19,73 +19,82 @@ import java.util.function.Consumer;
 @Deprecated
 public interface Linked<T> extends Menu {
 
-    boolean open(@NotNull Player player, @NotNull T obj);
+    boolean open(@NonNull Player player, @NonNull T obj);
 
-    boolean open(@NotNull Player player, @NotNull T obj, @NotNull Consumer<MenuViewer> onViewSet);
+    boolean open(@NonNull Player player, @NonNull T obj, @NonNull Consumer<MenuViewer> onViewSet);
 
-    @NotNull LinkCache<T> getCache();
+    @NonNull
+    LinkCache<T> getCache();
 
-    boolean isCached(@NotNull Player player);
+    boolean isCached(@NonNull Player player);
 
-    T getLink(@NotNull MenuViewer viewer);
+    T getLink(@NonNull MenuViewer viewer);
 
-    T getLink(@NotNull Player player);
+    T getLink(@NonNull Player player);
 
-    ItemClick manageLink(@NotNull LinkHandler<T> handler);
-
-    @Deprecated
-    void addItem(@NotNull Material material, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler);
+    ItemClick manageLink(@NonNull LinkHandler<T> handler);
 
     @Deprecated
-    void addItem(@NotNull Material material, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull Material material, @NonNull LangItem locale, int slot, @NonNull LinkHandler<T> handler);
 
     @Deprecated
-    void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler);
+    void addItem(@NonNull Material material, @NonNull LangItem locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
     @Deprecated
-    void addItem(@NotNull ItemStack itemStack, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull ItemStack itemStack, @NonNull LangItem locale, int slot, @NonNull LinkHandler<T> handler);
 
     @Deprecated
-    void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler);
+    void addItem(@NonNull ItemStack itemStack, @NonNull LangItem locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
     @Deprecated
-    void addItem(@NotNull NightItem item, @NotNull LangItem locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull NightItem item, @NonNull LangItem locale, int slot, @NonNull LinkHandler<T> handler);
+
+    @Deprecated
+    void addItem(@NonNull NightItem item, @NonNull LangItem locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
 
     @Deprecated
-    void addItem(@NotNull Material material, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler);
+    void addItem(@NonNull Material material, @NonNull LangUIButton locale, int slot, @NonNull LinkHandler<T> handler);
 
     @Deprecated
-    void addItem(@NotNull Material material, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull Material material, @NonNull LangUIButton locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
     @Deprecated
-    void addItem(@NotNull ItemStack itemStack, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler);
+    void addItem(@NonNull ItemStack itemStack, @NonNull LangUIButton locale, int slot, @NonNull LinkHandler<T> handler);
 
     @Deprecated
-    void addItem(@NotNull ItemStack itemStack, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull ItemStack itemStack, @NonNull LangUIButton locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
     @Deprecated
-    void addItem(@NotNull NightItem item, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler);
+    void addItem(@NonNull NightItem item, @NonNull LangUIButton locale, int slot, @NonNull LinkHandler<T> handler);
 
     @Deprecated
-    void addItem(@NotNull NightItem item, @NotNull LangUIButton locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull NightItem item, @NonNull LangUIButton locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
 
+    void addItem(@NonNull Material material, @NonNull IconLocale locale, int slot, @NonNull LinkHandler<T> handler);
 
-    void addItem(@NotNull Material material, @NotNull IconLocale locale, int slot, @NotNull LinkHandler<T> handler);
+    void addItem(@NonNull Material material, @NonNull IconLocale locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
-    void addItem(@NotNull Material material, @NotNull IconLocale locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull ItemStack itemStack, @NonNull IconLocale locale, int slot, @NonNull LinkHandler<T> handler);
 
-    void addItem(@NotNull ItemStack itemStack, @NotNull IconLocale locale, int slot, @NotNull LinkHandler<T> handler);
+    void addItem(@NonNull ItemStack itemStack, @NonNull IconLocale locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
-    void addItem(@NotNull ItemStack itemStack, @NotNull IconLocale locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull NightItem item, @NonNull IconLocale locale, int slot, @NonNull LinkHandler<T> handler);
 
-    void addItem(@NotNull NightItem item, @NotNull IconLocale locale, int slot, @NotNull LinkHandler<T> handler);
+    void addItem(@NonNull NightItem item, @NonNull IconLocale locale, int slot, @NonNull LinkHandler<T> handler,
+                 @Nullable ItemOptions options);
 
-    void addItem(@NotNull NightItem item, @NotNull IconLocale locale, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
 
+    void addItem(@NonNull NightItem item, int slot, @NonNull LinkHandler<T> handler);
 
-    void addItem(@NotNull NightItem item, int slot, @NotNull LinkHandler<T> handler);
-
-    void addItem(@NotNull NightItem item, int slot, @NotNull LinkHandler<T> handler, @Nullable ItemOptions options);
+    void addItem(@NonNull NightItem item, int slot, @NonNull LinkHandler<T> handler, @Nullable ItemOptions options);
 }

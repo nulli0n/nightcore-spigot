@@ -1,11 +1,11 @@
 package su.nightexpress.nightcore.bridge.bossbar;
 
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.UnmodifiableView;
-import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
-
 import java.util.Set;
+
+import org.bukkit.entity.Player;
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 public interface NightBossBar {
 
@@ -13,41 +13,52 @@ public interface NightBossBar {
 
     float MAX_PROGRESS = 1f;
 
-    //@NotNull NightComponent getName();
-
-    @NotNull NightBossBar setName(@NotNull NightComponent name);
+    @NonNull
+    NightBossBar setName(@NonNull NightComponent name);
 
     float getProgress();
-    
-    @NotNull NightBossBar setProgress(float progress);
 
-    @NotNull NightBarColor getColor();
+    @NonNull
+    NightBossBar setProgress(float progress);
 
-    @NotNull NightBossBar setColor(@NotNull NightBarColor color);
+    @NonNull
+    NightBarColor getColor();
 
-    @NotNull NightBarOverlay getOverlay();
-    
-    @NotNull NightBossBar setOverlay(@NotNull NightBarOverlay overlay);
+    @NonNull
+    NightBossBar setColor(@NonNull NightBarColor color);
 
-    @UnmodifiableView
-    @NotNull Set<NightBarFlag> getFlags();
-    
-    @NotNull NightBossBar setFlags(@NotNull Set<NightBarFlag> flags);
+    @NonNull
+    NightBarOverlay getOverlay();
 
-    boolean hasFlag(@NotNull NightBarFlag flag);
-    
-    @NotNull NightBossBar addFlag(@NotNull NightBarFlag flag);
-    
-    @NotNull NightBossBar removeFlag(@NotNull NightBarFlag flag);
+    @NonNull
+    NightBossBar setOverlay(@NonNull NightBarOverlay overlay);
 
-    @NotNull NightBossBar addFlags(@NotNull NightBarFlag... flags);
-    
-    @UnmodifiableView
-    @NotNull Set<Player> getViewers();
-    
-    @NotNull NightBossBar addViewer(@NotNull Player viewer);
+    @NonNull
+    Set<NightBarFlag> getFlags();
 
-    @NotNull NightBossBar removeViewer(@NotNull Player viewer);
+    @NonNull
+    NightBossBar setFlags(@NonNull Set<NightBarFlag> flags);
 
-    @NotNull NightBossBar removeViewers();
+    boolean hasFlag(@NonNull NightBarFlag flag);
+
+    @NonNull
+    NightBossBar addFlag(@NonNull NightBarFlag flag);
+
+    @NonNull
+    NightBossBar removeFlag(@NonNull NightBarFlag flag);
+
+    @NonNull
+    NightBossBar addFlags(@NonNull NightBarFlag... flags);
+
+    @NonNull
+    Set<Player> getViewers();
+
+    @NonNull
+    NightBossBar addViewer(@NonNull Player viewer);
+
+    @NonNull
+    NightBossBar removeViewer(@NonNull Player viewer);
+
+    @NonNull
+    NightBossBar removeViewers();
 }

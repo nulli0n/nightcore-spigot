@@ -1,20 +1,32 @@
 package su.nightexpress.nightcore.util;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Consumer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
@@ -23,26 +35,21 @@ import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.function.Consumer;
-
 public class ItemUtil {
 
     public static final String TEXTURES_HOST = "http://textures.minecraft.net/texture/";
 
-    public static void editMeta(@NotNull ItemStack item, @NotNull Consumer<ItemMeta> consumer) {
+    public static void editMeta(@NonNull ItemStack item, @NonNull Consumer<ItemMeta> consumer) {
         Software.get().editMeta(item, consumer);
     }
 
-    public static <T extends ItemMeta> void editMeta(@NotNull ItemStack item, @NotNull Class<T> clazz, @NotNull Consumer<T> consumer) {
+    public static <T extends ItemMeta> void editMeta(@NonNull ItemStack item, @NonNull Class<T> clazz,
+                                                     @NonNull Consumer<T> consumer) {
         Software.get().editMeta(item, clazz, consumer);
     }
 
-    @NotNull
-    public static String getNameSerialized(@NotNull ItemStack itemStack) {
+    @NonNull
+    public static String getNameSerialized(@NonNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         String metaName = meta == null ? null : getNameSerialized(meta);
         if (metaName != null) return metaName;
@@ -51,7 +58,7 @@ public class ItemUtil {
     }
 
     @Nullable
-    public static String getDisplayNameSerialized(@NotNull ItemStack itemStack) {
+    public static String getDisplayNameSerialized(@NonNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return null;
 
@@ -59,183 +66,183 @@ public class ItemUtil {
     }
 
     @Nullable
-    public static String getNameSerialized(@NotNull ItemMeta meta) {
+    public static String getNameSerialized(@NonNull ItemMeta meta) {
         String customName = getCustomNameSerialized(meta);
         if (customName != null) return customName;
 
         return getItemNameSerialized(meta);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String getItemName(@NotNull ItemStack item) {
+    public static String getItemName(@NonNull ItemStack item) {
         return getNameSerialized(item);
     }
 
     @Nullable
     @Deprecated
-    public static String getItemName(@NotNull ItemMeta meta) {
+    public static String getItemName(@NonNull ItemMeta meta) {
         return getNameSerialized(meta);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String getSerializedName(@NotNull ItemStack item) {
+    public static String getSerializedName(@NonNull ItemStack item) {
         return getNameSerialized(item);
     }
 
     @Nullable
     @Deprecated
-    public static String getSerializedName(@NotNull ItemMeta meta) {
+    public static String getSerializedName(@NonNull ItemMeta meta) {
         return getNameSerialized(meta);
     }
 
     @Nullable
     @Deprecated
-    public static String getSerializedDisplayName(@NotNull ItemMeta meta) {
+    public static String getSerializedDisplayName(@NonNull ItemMeta meta) {
         return getCustomNameSerialized(meta);
     }
 
     @Nullable
     @Deprecated
-    public static String getSerializedItemName(@NotNull ItemMeta meta) {
+    public static String getSerializedItemName(@NonNull ItemMeta meta) {
         return getItemNameSerialized(meta);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> getSerializedLore(@NotNull ItemStack item) {
+    public static List<String> getSerializedLore(@NonNull ItemStack item) {
         return getLoreSerialized(item);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> getSerializedLore(@NotNull ItemMeta meta) {
+    public static List<String> getSerializedLore(@NonNull ItemMeta meta) {
         return getLoreSerialized(meta);
     }
 
     @Deprecated
-    public static void setDisplayName(@NotNull ItemMeta meta, @NotNull String name) {
+    public static void setDisplayName(@NonNull ItemMeta meta, @NonNull String name) {
         setCustomName(meta, name);
     }
 
     @Nullable
-    public static String getCustomNameSerialized(@NotNull ItemStack itemStack) {
+    public static String getCustomNameSerialized(@NonNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         return meta == null ? null : getCustomNameSerialized(meta);
     }
 
     @Nullable
-    public static String getCustomNameSerialized(@NotNull ItemMeta meta) {
+    public static String getCustomNameSerialized(@NonNull ItemMeta meta) {
         return Software.get().getCustomName(meta);
     }
 
-    public static void setCustomName(@NotNull ItemStack itemStack, @NotNull String name) {
+    public static void setCustomName(@NonNull ItemStack itemStack, @NonNull String name) {
         editMeta(itemStack, meta -> setCustomName(meta, name));
     }
 
-    public static void setCustomName(@NotNull ItemMeta meta, @NotNull String name) {
+    public static void setCustomName(@NonNull ItemMeta meta, @NonNull String name) {
         Software.get().setCustomName(meta, NightMessage.parse(name));
     }
 
-    public static void setCustomName(@NotNull ItemMeta meta, @Nullable NightComponent name) {
+    public static void setCustomName(@NonNull ItemMeta meta, @Nullable NightComponent name) {
         Software.get().setCustomName(meta, name);
     }
 
     @Nullable
-    public static String getItemNameSerialized(@NotNull ItemStack itemStack) {
+    public static String getItemNameSerialized(@NonNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         return meta == null ? null : getItemNameSerialized(meta);
     }
 
     @Nullable
-    public static String getItemNameSerialized(@NotNull ItemMeta meta) {
+    public static String getItemNameSerialized(@NonNull ItemMeta meta) {
         return Software.get().getItemName(meta);
     }
 
-    public static void setItemName(@NotNull ItemStack itemStack, @NotNull String name) {
+    public static void setItemName(@NonNull ItemStack itemStack, @NonNull String name) {
         editMeta(itemStack, meta -> setItemName(meta, name));
     }
 
-    public static void setItemName(@NotNull ItemMeta meta, @NotNull String name) {
+    public static void setItemName(@NonNull ItemMeta meta, @NonNull String name) {
         Software.get().setItemName(meta, NightMessage.parse(name));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> getLore(@NotNull ItemStack item) {
+    public static List<String> getLore(@NonNull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         return (meta == null || meta.getLore() == null) ? new ArrayList<>() : meta.getLore();
     }
 
-    @NotNull
-    public static List<String> getLoreSerialized(@NotNull ItemStack itemStack) {
+    @NonNull
+    public static List<String> getLoreSerialized(@NonNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         return meta == null ? new ArrayList<>() : getLoreSerialized(meta);
     }
 
-    @NotNull
-    public static List<String> getLoreSerialized(@NotNull ItemMeta meta) {
+    @NonNull
+    public static List<String> getLoreSerialized(@NonNull ItemMeta meta) {
         List<String> lore = Software.get().getLore(meta);
         return lore == null ? new ArrayList<>() : lore;
     }
 
-    public static void setLore(@NotNull ItemStack itemStack, @NotNull List<String> lore) {
+    public static void setLore(@NonNull ItemStack itemStack, @NonNull List<String> lore) {
         editMeta(itemStack, meta -> setLore(meta, lore));
     }
 
-    public static void setLore(@NotNull ItemMeta meta, @NotNull List<String> lore) {
+    public static void setLore(@NonNull ItemMeta meta, @NonNull List<String> lore) {
         // It seems that direct '\n' usage is not supported for item meta anymore since ~1.21.7.
         setItemLore(meta, Lists.modify(ParserUtils.breakDownLineSplitters(lore), NightMessage::parse));
     }
 
-    public static void setItemLore(@NotNull ItemMeta meta, @NotNull List<NightComponent> lore) {
+    public static void setItemLore(@NonNull ItemMeta meta, @NonNull List<NightComponent> lore) {
         Software.get().setLore(meta, lore);
     }
 
     @Deprecated
-    public static void hideAttributes(@NotNull ItemStack itemStack) {
+    public static void hideAttributes(@NonNull ItemStack itemStack) {
         Software.get().hideComponents(itemStack);
     }
 
-    public static void setCustomModelData(@NotNull ItemStack itemStack, float data) {
+    public static void setCustomModelData(@NonNull ItemStack itemStack, float data) {
         ItemUtil.editMeta(itemStack, meta -> setCustomModelData(meta, data));
     }
 
-    public static void setCustomModelData(@NotNull ItemMeta meta, float data) {
+    public static void setCustomModelData(@NonNull ItemMeta meta, float data) {
         CustomModelDataComponent component = meta.getCustomModelDataComponent();
         component.setFloats(Lists.newList(data));
         meta.setCustomModelDataComponent(component);
     }
 
     @Nullable
-    public static Float getCustomModelData(@NotNull ItemStack itemStack) {
+    public static Float getCustomModelData(@NonNull ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         return meta == null ? null : getCustomModelData(meta);
     }
 
     @Nullable
-    public static Float getCustomModelData(@NotNull ItemMeta meta) {
+    public static Float getCustomModelData(@NonNull ItemMeta meta) {
         List<Float> floats = meta.getCustomModelDataComponent().getFloats();
         return floats.isEmpty() ? null : floats.getFirst();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static ItemStack createCustomHead(@NotNull String texture) {
+    public static ItemStack createCustomHead(@NonNull String texture) {
         ItemStack item = new ItemStack(Material.PLAYER_HEAD);
         setSkullTexture(item, texture);
         return item;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static ItemStack getSkinHead(@NotNull String texture) {
+    public static ItemStack getSkinHead(@NonNull String texture) {
         return getCustomHead(texture);
     }
 
-    @NotNull
-    public static ItemStack getCustomHead(@NotNull String texture) {
+    @NonNull
+    public static ItemStack getCustomHead(@NonNull String texture) {
         ItemStack item = new ItemStack(Material.PLAYER_HEAD);
         setProfileBySkinURL(item, texture);
         return item;
@@ -243,7 +250,7 @@ public class ItemUtil {
 
     @Nullable
     @Deprecated
-    public static PlayerProfile createSkinProfile(@NotNull String urlData) {
+    public static PlayerProfile createSkinProfile(@NonNull String urlData) {
         if (urlData.isBlank()) return null;
 
         String name = urlData.substring(0, 16);
@@ -270,30 +277,35 @@ public class ItemUtil {
     }
 
     @Deprecated
-    public static void setHeadSkin(@NotNull ItemStack item, @NotNull String urlData) {
+    public static void setHeadSkin(@NonNull ItemStack item, @NonNull String urlData) {
         setProfileBySkinURL(item, urlData);
     }
 
     @Nullable
     @Deprecated
-    public static String getHeadSkin(@NotNull ItemStack item) {
+    public static String getHeadSkin(@NonNull ItemStack item) {
         return getProfileSkinURL(item);
     }
 
     @Nullable
-    public static NightProfile getOwnerProfile(@NotNull ItemStack itemStack) {
+    public static NightProfile getOwnerProfile(@NonNull ItemStack itemStack) {
         return Software.get().getOwnerProfile(itemStack);
     }
 
     @Nullable
-    public static String getProfileSkinURL(@NotNull ItemStack itemStack) {
+    public static String getProfileSkinURL(@NonNull ItemStack itemStack) {
         NightProfile profile = getOwnerProfile(itemStack);
         if (profile == null) return null;
 
         return PlayerProfiles.getProfileSkinURL(profile);
     }
 
-    public static void setProfileBySkinURL(@NotNull ItemStack itemStack, @NotNull String urlData) {
+    public static void setSkinURL(@NonNull ItemStack itemStack, @NonNull String urlData) {
+        editMeta(itemStack, SkullMeta.class,
+            skullMeta -> PlayerProfiles.createStaticTexturedProfile(urlData).apply(skullMeta));
+    }
+
+    public static void setProfileBySkinURL(@NonNull ItemStack itemStack, @NonNull String urlData) {
         CachedProfile profile = PlayerProfiles.createProfileBySkinURL(urlData);
         if (profile == null) return;
 
@@ -301,7 +313,7 @@ public class ItemUtil {
     }
 
     @Deprecated
-    public static void setSkullTexture(@NotNull ItemStack item, @NotNull String value) {
+    public static void setSkullTexture(@NonNull ItemStack item, @NonNull String value) {
         if (item.getType() != Material.PLAYER_HEAD) return;
 
         try {
@@ -309,7 +321,8 @@ public class ItemUtil {
             String decodedStr = new String(decoded, StandardCharsets.UTF_8);
             JsonElement element = JsonParser.parseString(decodedStr);
 
-            String url = element.getAsJsonObject().getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
+            String url = element.getAsJsonObject().getAsJsonObject("textures").getAsJsonObject("SKIN").get("url")
+                .getAsString();
             url = url.substring(ItemUtil.TEXTURES_HOST.length());
 
             setProfileBySkinURL(item, url);
@@ -319,101 +332,101 @@ public class ItemUtil {
         }
     }
 
-    public static boolean isTool(@NotNull ItemStack item) {
+    public static boolean isTool(@NonNull ItemStack item) {
         return isAxe(item) || isHoe(item) || isPickaxe(item) || isShovel(item);
     }
 
-    public static boolean isArmor(@NotNull ItemStack item) {
+    public static boolean isArmor(@NonNull ItemStack item) {
         return isHelmet(item) || isChestplate(item) || isLeggings(item) || isBoots(item);
     }
 
-    public static boolean isBow(@NotNull ItemStack item) {
+    public static boolean isBow(@NonNull ItemStack item) {
         return item.getType() == Material.BOW || item.getType() == Material.CROSSBOW;
     }
 
-    public static boolean isSword(@NotNull ItemStack item) {
+    public static boolean isSword(@NonNull ItemStack item) {
         return Tag.ITEMS_SWORDS.isTagged(item.getType());
     }
 
-    public static boolean isAxe(@NotNull ItemStack item) {
+    public static boolean isAxe(@NonNull ItemStack item) {
         return Tag.ITEMS_AXES.isTagged(item.getType());
     }
 
     @Deprecated
-    public static boolean isTrident(@NotNull ItemStack item) {
+    public static boolean isTrident(@NonNull ItemStack item) {
         return item.getType() == Material.TRIDENT;
     }
 
-    public static boolean isPickaxe(@NotNull ItemStack item) {
+    public static boolean isPickaxe(@NonNull ItemStack item) {
         return Tag.ITEMS_PICKAXES.isTagged(item.getType());
     }
 
-    public static boolean isShovel(@NotNull ItemStack item) {
+    public static boolean isShovel(@NonNull ItemStack item) {
         return Tag.ITEMS_SHOVELS.isTagged(item.getType());
     }
 
-    public static boolean isHoe(@NotNull ItemStack item) {
+    public static boolean isHoe(@NonNull ItemStack item) {
         return Tag.ITEMS_HOES.isTagged(item.getType());
     }
 
     @Deprecated
-    public static boolean isElytra(@NotNull ItemStack item) {
+    public static boolean isElytra(@NonNull ItemStack item) {
         return item.getType() == Material.ELYTRA;
     }
 
     @Deprecated
-    public static boolean isFishingRod(@NotNull ItemStack item) {
+    public static boolean isFishingRod(@NonNull ItemStack item) {
         return item.getType() == Material.FISHING_ROD;
     }
 
-    public static boolean isHelmet(@NotNull ItemStack item) {
+    public static boolean isHelmet(@NonNull ItemStack item) {
         return getEquipmentSlot(item) == EquipmentSlot.HEAD;
     }
 
-    public static boolean isChestplate(@NotNull ItemStack item) {
+    public static boolean isChestplate(@NonNull ItemStack item) {
         return getEquipmentSlot(item) == EquipmentSlot.CHEST;
     }
 
-    public static boolean isLeggings(@NotNull ItemStack item) {
+    public static boolean isLeggings(@NonNull ItemStack item) {
         return getEquipmentSlot(item) == EquipmentSlot.LEGS;
     }
 
-    public static boolean isBoots(@NotNull ItemStack item) {
+    public static boolean isBoots(@NonNull ItemStack item) {
         return getEquipmentSlot(item) == EquipmentSlot.FEET;
     }
 
-    @NotNull
-    public static EquipmentSlot getEquipmentSlot(@NotNull ItemStack item) {
+    @NonNull
+    public static EquipmentSlot getEquipmentSlot(@NonNull ItemStack item) {
         Material material = item.getType();
         return material.isItem() ? material.getEquipmentSlot() : EquipmentSlot.HAND;
     }
 
     @Nullable
     @Deprecated
-    public static String compress(@NotNull ItemStack item) {
+    public static String compress(@NonNull ItemStack item) {
         return ItemNbt.compress(item);
     }
 
     @Nullable
     @Deprecated
-    public static ItemStack decompress(@NotNull String compressed) {
+    public static ItemStack decompress(@NonNull String compressed) {
         return ItemNbt.decompress(compressed);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> compress(@NotNull ItemStack[] items) {
+    public static List<String> compress(@NonNull ItemStack[] items) {
         return ItemNbt.compress(Arrays.asList(items));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> compress(@NotNull List<ItemStack> items) {
+    public static List<String> compress(@NonNull List<ItemStack> items) {
         return new ArrayList<>(items.stream().map(ItemNbt::compress).filter(Objects::nonNull).toList());
     }
 
     @Deprecated
-    public static ItemStack[] decompress(@NotNull List<String> list) {
+    public static ItemStack[] decompress(@NonNull List<String> list) {
         List<ItemStack> items = list.stream().map(ItemNbt::decompress).filter(Objects::nonNull).toList();
         return items.toArray(new ItemStack[list.size()]);
     }

@@ -1,9 +1,9 @@
 package su.nightexpress.nightcore.dialog;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Deprecated
 public interface DialogHandler {
 
-    boolean onInput(@NotNull Dialog dialog, @NotNull WrappedInput input);
+    boolean onInput(@NonNull Dialog dialog, @NonNull WrappedInput input);
 }

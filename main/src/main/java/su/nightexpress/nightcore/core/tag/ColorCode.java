@@ -1,13 +1,13 @@
 package su.nightexpress.nightcore.core.tag;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.text.night.tag.handler.NamedColorTagHandler;
 
 import java.awt.*;
 
-public record ColorCode(@NotNull String name, @NotNull Color color) {
+public record ColorCode(@NonNull String name, @NonNull Color color) {
 
-    @NotNull
+    @NonNull
     public NamedColorTagHandler createHandler() {
         return new NamedColorTagHandler(this.name, this.color);
     }

@@ -1,22 +1,22 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.type;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogTypeAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
 
 import java.util.function.UnaryOperator;
 
-public record WrappedNoticeType(@NotNull WrappedActionButton action) implements WrappedDialogType {
+public record WrappedNoticeType(@NonNull WrappedActionButton action) implements WrappedDialogType {
 
     @Override
-    @NotNull
-    public <T> T adapt(@NotNull DialogTypeAdapter<T> factory) {
+    @NonNull
+    public <T> T adapt(@NonNull DialogTypeAdapter<T> factory) {
         return factory.adaptType(this);
     }
 
     @Override
-    @NotNull
-    public WrappedNoticeType replace(@NotNull UnaryOperator<String> operator) {
+    @NonNull
+    public WrappedNoticeType replace(@NonNull UnaryOperator<String> operator) {
         return new WrappedNoticeType(this.action.replace(operator));
     }
 }

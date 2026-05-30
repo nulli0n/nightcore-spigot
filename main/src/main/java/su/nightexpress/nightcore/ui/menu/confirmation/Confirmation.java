@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.ui.menu.confirmation;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.ui.menu.item.ItemClick;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
@@ -11,23 +11,24 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 public class Confirmation {
 
     private final ItemClick onAccept;
-    private final     ItemClick onReturn;
-    private final     NightItem icon;
-    private final     boolean   returnOnAccept;
+    private final ItemClick onReturn;
+    private final NightItem icon;
+    private final boolean   returnOnAccept;
 
-    public Confirmation(@Nullable ItemClick onAccept, @Nullable ItemClick onReturn, @Nullable NightItem icon, boolean returnOnAccept) {
+    public Confirmation(@Nullable ItemClick onAccept, @Nullable ItemClick onReturn, @Nullable NightItem icon,
+                        boolean returnOnAccept) {
         this.onAccept = onAccept;
         this.onReturn = onReturn;
         this.icon = icon;
         this.returnOnAccept = returnOnAccept;
     }
 
-    @NotNull
+    @NonNull
     public static Builder builder() {
         return new Builder();
     }
 
-    public void handleAccept(@NotNull MenuViewer viewer, @NotNull InventoryClickEvent event) {
+    public void handleAccept(@NonNull MenuViewer viewer, @NonNull InventoryClickEvent event) {
         if (this.onAccept == null) return;
 
         this.onAccept.onClick(viewer, event);
@@ -37,7 +38,7 @@ public class Confirmation {
         }
     }
 
-    public void handleReturn(@NotNull MenuViewer viewer, @NotNull InventoryClickEvent event) {
+    public void handleReturn(@NonNull MenuViewer viewer, @NonNull InventoryClickEvent event) {
         if (this.onReturn == null) return;
 
         this.onReturn.onClick(viewer, event);
@@ -53,32 +54,32 @@ public class Confirmation {
         private ItemClick onAccept;
         private ItemClick onReturn;
         private NightItem icon;
-        private boolean returnOnAccept;
+        private boolean   returnOnAccept;
 
-        @NotNull
+        @NonNull
         public Confirmation build() {
             return new Confirmation(this.onAccept, this.onReturn, this.icon, this.returnOnAccept);
         }
 
-        @NotNull
+        @NonNull
         public Builder onAccept(@Nullable ItemClick onAccept) {
             this.onAccept = onAccept;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder onReturn(@Nullable ItemClick onReturn) {
             this.onReturn = onReturn;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder setIcon(@Nullable NightItem icon) {
             this.icon = icon;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder returnOnAccept(boolean returnOnAccept) {
             this.returnOnAccept = returnOnAccept;
             return this;

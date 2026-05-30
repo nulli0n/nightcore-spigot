@@ -1,24 +1,31 @@
 package su.nightexpress.nightcore.db.column;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @FunctionalInterface
 public interface ColumnDataReader<R> {
 
-    ColumnDataReader<Boolean> BOOLEAN = ResultSet::getBoolean;
-    ColumnDataReader<Integer> INTEGER = ResultSet::getInt;
-    ColumnDataReader<Long>    LONG    = ResultSet::getLong;
-    ColumnDataReader<Float>   FLOAT   = ResultSet::getFloat;
-    ColumnDataReader<Double>  DOUBLE  = ResultSet::getDouble;
-    ColumnDataReader<String>  STRING  = ResultSet::getString;
+    ColumnDataReader<Boolean>   BOOLEAN   = ResultSet::getBoolean;
+    ColumnDataReader<Integer>   INTEGER   = ResultSet::getInt;
+    ColumnDataReader<Long>      LONG      = ResultSet::getLong;
+    ColumnDataReader<Float>     FLOAT     = ResultSet::getFloat;
+    ColumnDataReader<Double>    DOUBLE    = ResultSet::getDouble;
+    ColumnDataReader<String>    STRING    = ResultSet::getString;
+    ColumnDataReader<Timestamp> TIMESTAMP = ResultSet::getTimestamp;
 
     ColumnDataReader<UUID> UUID = (resultSet, column) -> {
         String raw = resultSet.getString(column);
@@ -32,8 +39,8 @@ public interface ColumnDataReader<R> {
         }
     };
 
-    @NotNull
-    static <V> ColumnDataReader<V> jsonObject(@NotNull Gson gson, @NotNull Class<V> type) {
+    @NonNull
+    static <V> ColumnDataReader<V> jsonObject(@NonNull Gson gson, @NonNull Class<V> type) {
         return (resultSet, column) -> {
             String jsonString = resultSet.getString(column);
 
@@ -45,8 +52,9 @@ public interface ColumnDataReader<R> {
         };
     }
 
-    @NotNull
-    static <K, V> ColumnDataReader<Map<K, V>> jsonMap(@NotNull Gson gson, @NotNull Class<K> keyType, @NotNull Class<V> valType) {
+    @NonNull
+    static <K, V> ColumnDataReader<Map<K, V>> jsonMap(@NonNull Gson gson, @NonNull Class<K> keyType,
+                                                      @NonNull Class<V> valType) {
         return (resultSet, column) -> {
             String jsonString = resultSet.getString(column);
 
@@ -59,8 +67,8 @@ public interface ColumnDataReader<R> {
         };
     }
 
-    @NotNull
-    static <V> ColumnDataReader<List<V>> jsonList(@NotNull Gson gson, @NotNull Class<V> valType) {
+    @NonNull
+    static <V> ColumnDataReader<List<V>> jsonList(@NonNull Gson gson, @NonNull Class<V> valType) {
         return (resultSet, column) -> {
             String jsonString = resultSet.getString(column);
 
@@ -73,8 +81,8 @@ public interface ColumnDataReader<R> {
         };
     }
 
-    @NotNull
-    static <V> ColumnDataReader<Set<V>> jsonSet(@NotNull Gson gson, @NotNull Class<V> valType) {
+    @NonNull
+    static <V> ColumnDataReader<Set<V>> jsonSet(@NonNull Gson gson, @NonNull Class<V> valType) {
         return (resultSet, column) -> {
             String jsonString = resultSet.getString(column);
 
@@ -87,9 +95,11 @@ public interface ColumnDataReader<R> {
         };
     }
 
-    @Nullable R readPrimitive(@NotNull ResultSet resultSet, @NotNull String column) throws SQLException;
+    @Nullable
+    R readPrimitive(@NonNull ResultSet resultSet, @NonNull String column) throws SQLException;
 
-    @NotNull default Optional<R> read(@NotNull ResultSet resultSet, @NotNull String column) throws SQLException {
+    @NonNull
+    default Optional<R> read(@NonNull ResultSet resultSet, @NonNull String column) throws SQLException {
         R primitive = this.readPrimitive(resultSet, column);
         return primitive == null || resultSet.wasNull() ? Optional.empty() : Optional.of(primitive);
     }

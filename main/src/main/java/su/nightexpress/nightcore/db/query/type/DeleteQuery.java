@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.db.query.type;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.db.query.TypedQuery;
 import su.nightexpress.nightcore.db.query.data.Values;
 import su.nightexpress.nightcore.db.query.data.Wheres;
@@ -20,8 +20,8 @@ public class DeleteQuery<T> extends TypedQuery<T> {
     }
 
     @Override
-    @NotNull
-    public String toSQL(@NotNull String table) {
+    @NonNull
+    public String toSQL(@NonNull String table) {
         return "DELETE FROM " + table + " " + this.wheres.toSQL();
     }
 
@@ -42,24 +42,27 @@ public class DeleteQuery<T> extends TypedQuery<T> {
         return null;
     }
 
-    @NotNull
-    public DeleteQuery<T> where(@NotNull Column column, @NotNull WhereOperator operator, @NotNull String string) {
+    @NonNull
+    public DeleteQuery<T> where(@NonNull Column column, @NonNull WhereOperator operator, @NonNull String string) {
         return this.where(column, operator, o -> string);
     }
 
-    @NotNull
-    public DeleteQuery<T> where(@NotNull Column column, @NotNull WhereOperator operator, @NotNull Function<T, String> function) {
+    @NonNull
+    public DeleteQuery<T> where(@NonNull Column column, @NonNull WhereOperator operator,
+                                @NonNull Function<T, String> function) {
         this.wheres.where(column, operator, function);
         return this;
     }
 
-    @NotNull
-    public DeleteQuery<T> whereIgnoreCase(@NotNull Column column, @NotNull WhereOperator operator, @NotNull String string) {
+    @NonNull
+    public DeleteQuery<T> whereIgnoreCase(@NonNull Column column, @NonNull WhereOperator operator,
+                                          @NonNull String string) {
         return this.whereIgnoreCase(column, operator, o -> string);
     }
 
-    @NotNull
-    public DeleteQuery<T> whereIgnoreCase(@NotNull Column column, @NotNull WhereOperator operator, @NotNull Function<T, String> function) {
+    @NonNull
+    public DeleteQuery<T> whereIgnoreCase(@NonNull Column column, @NonNull WhereOperator operator,
+                                          @NonNull Function<T, String> function) {
         this.wheres.whereIgnoreCase(column, operator, function);
         return this;
     }

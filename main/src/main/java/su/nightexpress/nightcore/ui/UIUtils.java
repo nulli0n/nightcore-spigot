@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.ui;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.ui.menu.confirmation.ConfirmMenu;
@@ -12,7 +12,7 @@ public class UIUtils {
 
     private static ConfirmMenu confirmMenu;
 
-    public static void load(@NotNull NightCore plugin) {
+    public static void load(@NonNull NightCore plugin) {
         confirmMenu = new ConfirmMenu(plugin);
     }
 
@@ -23,7 +23,7 @@ public class UIUtils {
         }
     }
 
-    public static void openConfirmation(@NotNull Player player, @NotNull Confirmation confirmation) {
+    public static void openConfirmation(@NonNull Player player, @NonNull Confirmation confirmation) {
         if (confirmMenu == null) {
             Engine.core().error("[UIUtils] Unsupported server version.");
             return;

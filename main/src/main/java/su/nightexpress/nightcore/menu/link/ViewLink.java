@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.menu.link;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.menu.MenuViewer;
 
 import java.util.Map;
@@ -16,27 +16,27 @@ public class ViewLink<T> {
         this.map = new WeakHashMap<>();
     }
 
-    public void set(@NotNull MenuViewer viewer, @NotNull T object) {
+    public void set(@NonNull MenuViewer viewer, @NonNull T object) {
         this.set(viewer.getPlayer(), object);
     }
 
-    public void set(@NotNull Player viewer, @NotNull T object) {
+    public void set(@NonNull Player viewer, @NonNull T object) {
         this.map.put(viewer, object);
     }
 
-    public T get(@NotNull MenuViewer viewer) {
+    public T get(@NonNull MenuViewer viewer) {
         return this.get(viewer.getPlayer());
     }
 
-    public T get(@NotNull Player viewer) {
+    public T get(@NonNull Player viewer) {
         return this.map.get(viewer);
     }
 
-    public void clear(@NotNull MenuViewer viewer) {
+    public void clear(@NonNull MenuViewer viewer) {
         this.clear(viewer.getPlayer());
     }
 
-    public void clear(@NotNull Player viewer) {
+    public void clear(@NonNull Player viewer) {
         this.map.remove(viewer);
     }
 }

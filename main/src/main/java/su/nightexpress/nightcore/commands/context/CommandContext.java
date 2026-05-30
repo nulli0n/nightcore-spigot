@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.commands.context;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.commands.NodeUtils;
 import su.nightexpress.nightcore.commands.tree.CommandNode;
@@ -27,19 +27,19 @@ public class CommandContext {
     private final String                  input;
     private final ExecutableNode          executor;
     private final ParsedArguments         arguments;
-    private final List<String> flags;
+    private final List<String>            flags;
     private final List<ParsedCommandNode> nodes;
 
     private final Player player;
 
-    public CommandContext(@NotNull NightPlugin plugin,
-                          @NotNull CommandSender sender,
-                          @NotNull CommandNode root,
-                          @NotNull String input,
-                          @NotNull ParsedArguments arguments,
-                          @NotNull List<String> flags,
+    public CommandContext(@NonNull NightPlugin plugin,
+                          @NonNull CommandSender sender,
+                          @NonNull CommandNode root,
+                          @NonNull String input,
+                          @NonNull ParsedArguments arguments,
+                          @NonNull List<String> flags,
                           @Nullable ExecutableNode executor,
-                          @NotNull List<ParsedCommandNode> nodes) {
+                          @NonNull List<ParsedCommandNode> nodes) {
         this.plugin = plugin;
         this.sender = sender;
         this.root = root;
@@ -52,19 +52,19 @@ public class CommandContext {
         this.player = sender instanceof Player user ? user : null;
     }
 
-    public void send(@NotNull MessageLocale locale) {
+    public void send(@NonNull MessageLocale locale) {
         this.send(locale, null);
     }
 
-    public void send(@NotNull MessageLocale locale, @Nullable Consumer<Replacer> consumer) {
+    public void send(@NonNull MessageLocale locale, @Nullable Consumer<Replacer> consumer) {
         this.send(locale.message(), consumer);
     }
 
-    public void send(@NotNull LangMessage message) {
+    public void send(@NonNull LangMessage message) {
         this.send(message, null);
     }
 
-    public void send(@NotNull LangMessage message, @Nullable Consumer<Replacer> consumer) {
+    public void send(@NonNull LangMessage message, @Nullable Consumer<Replacer> consumer) {
         message.send(this.sender, consumer);
     }
 
@@ -88,15 +88,15 @@ public class CommandContext {
             .replace(Placeholders.GENERIC_DESCRIPTION, this.executor.getDescription()));
     }
 
-    public boolean hasPermission(@NotNull Permission permission) {
+    public boolean hasPermission(@NonNull Permission permission) {
         return this.sender.hasPermission(permission);
     }
 
-    public boolean hasPermission(@NotNull String permission) {
+    public boolean hasPermission(@NonNull String permission) {
         return this.sender.hasPermission(permission);
     }
 
-    public boolean hasFlag(@NotNull String name) {
+    public boolean hasFlag(@NonNull String name) {
         return this.flags.contains(name);
     }
 
@@ -105,7 +105,7 @@ public class CommandContext {
         return this.player;
     }
 
-    @NotNull
+    @NonNull
     public Player getPlayerOrThrow() {
         if (this.isPlayer()) return this.player;
 
@@ -125,38 +125,38 @@ public class CommandContext {
         return this.executor;
     }
 
-    @NotNull
+    @NonNull
     public CommandSender getSender() {
         return this.sender;
     }
 
-    @NotNull
+    @NonNull
     public String getInput() {
         return this.input;
     }
 
-    @NotNull
+    @NonNull
     public CommandNode getRoot() {
         return this.root;
     }
 
-    @NotNull
+    @NonNull
     public ParsedArguments getArguments() {
         return this.arguments;
     }
 
-    @NotNull
+    @NonNull
     public List<String> getFlags() {
         return this.flags;
     }
 
-    @NotNull
+    @NonNull
     public List<ParsedCommandNode> getNodes() {
         return this.nodes;
     }
 
-    @NotNull
-    public List<CommandNode> getNodesPriorTo(@NotNull CommandNode target) {
+    @NonNull
+    public List<CommandNode> getNodesPriorTo(@NonNull CommandNode target) {
         return NodeUtils.getNodesPriorTo(Lists.modify(this.nodes, ParsedCommandNode::getNode), target);
     }
 }

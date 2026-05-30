@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.integration.currency.command;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.commands.Arguments;
 import su.nightexpress.nightcore.commands.Commands;
@@ -19,7 +19,7 @@ public class CurrencyCommands {
 
     private static NightCommand command;
 
-    public static void load(@NotNull NightCore core) {
+    public static void load(@NonNull NightCore core) {
         command = NightCommand.hub(core, "ecobridge", hub -> hub
             .permission(CorePerms.COMMAND_ECONOMY_BRIDGE)
             .branch(Commands.literal("fromitem")
@@ -39,7 +39,8 @@ public class CurrencyCommands {
         }
     }
 
-    private static boolean createFromItem(@NotNull NightCore plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+    private static boolean createFromItem(@NonNull NightCore plugin, @NonNull CommandContext context,
+                                          @NonNull ParsedArguments arguments) {
         Player player = context.getPlayerOrThrow();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (itemStack.getType().isAir()) {
@@ -54,7 +55,8 @@ public class CurrencyCommands {
             return false;
         }
 
-        CoreLang.ECONOMY_BRIDGE_FROM_ITEM_CREATED.message().send(player, replacer -> replacer.replace(currency.replacePlaceholders()));
+        CoreLang.ECONOMY_BRIDGE_FROM_ITEM_CREATED.message().send(player, replacer -> replacer.replace(currency
+            .replacePlaceholders()));
         return true;
     }
 }

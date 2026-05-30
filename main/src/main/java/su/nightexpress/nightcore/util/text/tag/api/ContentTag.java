@@ -1,11 +1,12 @@
 package su.nightexpress.nightcore.util.text.tag.api;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
 
 @Deprecated
 public interface ContentTag {
 
-    @Nullable Decorator parse(@NotNull String str);
+    @Nullable
+    Decorator parse(@NonNull String str);
 }

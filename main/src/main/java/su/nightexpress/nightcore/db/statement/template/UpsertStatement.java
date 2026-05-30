@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.statement.template;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.column.Column;
 import su.nightexpress.nightcore.db.statement.ColumnMapping;
@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.db.statement.type.BatchStatement;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,7 +27,9 @@ public abstract class UpsertStatement<T> implements BatchStatement<T> {
     }
 
     @Override
-    public void prepare(@NonNull PreparedStatement statement, @NonNull T entity, @Nullable Wheres<T> where) throws SQLException {
+    public void prepare(@NonNull PreparedStatement statement,
+                        @NonNull T entity,
+                        @Nullable Wheres<T> where) throws SQLException {
         int paramCount = 1;
 
         for (ColumnMapping<T, ?> columnMapping : this.columnMappings) {
@@ -129,6 +132,11 @@ public abstract class UpsertStatement<T> implements BatchStatement<T> {
         }
 
         @NonNull
+        public B setTimestamp(@NonNull Column<?> column, @NonNull PropertyAccessor<T, Timestamp> accessor) {
+            return this.set(column, accessor, ParameterBinder.TIMESTAMP);
+        }
+
+        @NonNull
         public B setObject(@NonNull Column<?> column, @NonNull PropertyAccessor<T, Object> accessor) {
             return this.set(column, accessor, ParameterBinder.GENERIC);
         }
@@ -139,7 +147,8 @@ public abstract class UpsertStatement<T> implements BatchStatement<T> {
         }
 
         @NonNull
-        public <R> B set(@NonNull Column<?> column, @NonNull PropertyAccessor<T, R> accessor, @NonNull ParameterBinder<R> binder) {
+        public <R> B set(@NonNull Column<?> column, @NonNull PropertyAccessor<T, R> accessor,
+                         @NonNull ParameterBinder<R> binder) {
             if (column.isPrimaryKey() || column.isUnique()) {
                 this.autoDetectedConflictKeys.add(column.getQuotedName());
             }
@@ -147,7 +156,9 @@ public abstract class UpsertStatement<T> implements BatchStatement<T> {
         }
 
         @NonNull
-        private <R> B set(@NonNull String column, @NonNull PropertyAccessor<T, R> accessor, @NonNull ParameterBinder<R> binder) {
+        private <R> B set(@NonNull String column,
+                          @NonNull PropertyAccessor<T, R> accessor,
+                          @NonNull ParameterBinder<R> binder) {
             this.columns.add(column);
             this.columnMappings.add(new ColumnMapping<>(accessor, binder));
             return this.getThis();

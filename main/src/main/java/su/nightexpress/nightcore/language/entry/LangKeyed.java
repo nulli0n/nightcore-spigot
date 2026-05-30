@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.language.entry;
 
 import org.bukkit.Keyed;
 import org.bukkit.Registry;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -19,28 +19,28 @@ public class LangKeyed<E extends Keyed> implements LangElement {
     private final Registry<E>         registry;
     private final Map<String, String> localeMap;
 
-    public LangKeyed(@NotNull String path, @NotNull Registry<E> registry) {
+    public LangKeyed(@NonNull String path, @NonNull Registry<E> registry) {
         this.path = path;
         this.registry = registry;
         this.localeMap = new HashMap<>();
     }
 
-    @NotNull
-    public static <E extends Keyed> LangKeyed<E> of(@NotNull String path, @NotNull Registry<E> registry) {
+    @NonNull
+    public static <E extends Keyed> LangKeyed<E> of(@NonNull String path, @NonNull Registry<E> registry) {
         return new LangKeyed<>(path, registry);
     }
 
     @Override
-    public void write(@NotNull FileConfig config) {
+    public void write(@NonNull FileConfig config) {
 
     }
 
-    public void load(@NotNull NightCorePlugin plugin) {
+    public void load(@NonNull NightCorePlugin plugin) {
         this.load(plugin.getLang());
     }
 
     @Override
-    public void load(@NotNull FileConfig config) {
+    public void load(@NonNull FileConfig config) {
         BukkitThing.allFromRegistry(this.registry).forEach(keyed -> {
             String namespace = BukkitThing.toString(keyed);
             String localized = StringUtil.capitalizeUnderscored(namespace);
@@ -50,8 +50,8 @@ public class LangKeyed<E extends Keyed> implements LangElement {
         });
     }
 
-    @NotNull
-    public String getLocalized(@NotNull E keyed) {
+    @NonNull
+    public String getLocalized(@NonNull E keyed) {
         String key = BukkitThing.toString(keyed);
 
         return this.localeMap.getOrDefault(key, key);

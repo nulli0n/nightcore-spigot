@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.command.impl;
 
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
@@ -19,17 +19,18 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
     protected final TabCompleter    tabCompleter;
 
     @Deprecated
-    public WrappedCommand(@NotNull Plugin plugin, @NotNull NightPluginCommand command) {
-        this(plugin, command, command, command.getAliases(), command.getDescription(), command.getUsage(), command.getPermission());
+    public WrappedCommand(@NonNull Plugin plugin, @NonNull NightPluginCommand command) {
+        this(plugin, command, command, command.getAliases(), command.getDescription(), command.getUsage(), command
+            .getPermission());
         //this.setPermission(command.getPermission());
     }
 
-    public WrappedCommand(@NotNull Plugin plugin,
-                          @NotNull CommandExecutor executor,
-                          @NotNull TabCompleter tabCompleter,
-                          @NotNull String[] aliases,
-                          @NotNull String description,
-                          @NotNull String usage,
+    public WrappedCommand(@NonNull Plugin plugin,
+                          @NonNull CommandExecutor executor,
+                          @NonNull TabCompleter tabCompleter,
+                          @NonNull String[] aliases,
+                          @NonNull String description,
+                          @NonNull String usage,
                           @Nullable String permission) {
         /*super(aliases[0], description, usage, Arrays.asList(aliases));
         this.plugin = plugin;
@@ -38,13 +39,13 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
         this(plugin, executor, tabCompleter, aliases[0], aliases, description, usage, permission);
     }
 
-    public WrappedCommand(@NotNull Plugin plugin,
-                          @NotNull CommandExecutor executor,
-                          @NotNull TabCompleter tabCompleter,
-                          @NotNull String name,
-                          @NotNull String[] aliases,
-                          @NotNull String description,
-                          @NotNull String usage,
+    public WrappedCommand(@NonNull Plugin plugin,
+                          @NonNull CommandExecutor executor,
+                          @NonNull TabCompleter tabCompleter,
+                          @NonNull String name,
+                          @NonNull String[] aliases,
+                          @NonNull String description,
+                          @NonNull String usage,
                           @Nullable String permission) {
         super(name, NightMessage.stripTags(description), NightMessage.stripTags(usage), Arrays.asList(aliases));
         this.plugin = plugin;
@@ -54,19 +55,19 @@ public class WrappedCommand extends Command implements PluginIdentifiableCommand
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Plugin getPlugin() {
         return this.plugin;
     }
 
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NonNull CommandSender sender, @NonNull String label, @NonNull String[] args) {
         return this.executor.onCommand(sender, this, label, args);
     }
 
     @Override
-    @NotNull
-    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+    @NonNull
+    public List<String> tabComplete(@NonNull CommandSender sender, @NonNull String alias, @NonNull String[] args) {
         List<String> list = this.tabCompleter.onTabComplete(sender, this, alias, args);
         return list == null ? Collections.emptyList() : list;
     }

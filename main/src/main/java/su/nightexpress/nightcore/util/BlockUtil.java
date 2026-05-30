@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.util;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -75,36 +75,36 @@ public class BlockUtil {
         FUNCTIONAL.add(Material.TRIPWIRE_HOOK);
     }
 
-    public static boolean isFunctional(@NotNull Block block) {
+    public static boolean isFunctional(@NonNull Block block) {
         return isFunctional(block.getType());
     }
 
-    public static boolean isFunctional(@NotNull Material material) {
+    public static boolean isFunctional(@NonNull Material material) {
         return FUNCTIONAL.contains(material);
     }
 
-    public static boolean isPressurePlate(@NotNull Material material) {
+    public static boolean isPressurePlate(@NonNull Material material) {
         return Tag.PRESSURE_PLATES.isTagged(material);
     }
 
-    public static boolean isButtonLever(@NotNull Material material) {
+    public static boolean isButtonLever(@NonNull Material material) {
         return Tag.BUTTONS.isTagged(material) || material == Material.LEVER;
         //return material.createBlockData() instanceof Switch;
     }
 
-    public static boolean isDoor(@NotNull Material material) {
+    public static boolean isDoor(@NonNull Material material) {
         return Tag.DOORS.isTagged(material) || Tag.TRAPDOORS.isTagged(material) || Tag.FENCE_GATES.isTagged(material);
     }
 
-    public static boolean isTramplable(@NotNull Material material) {
+    public static boolean isTramplable(@NonNull Material material) {
         return material == Material.TURTLE_EGG;
     }
 
-    public static boolean isTripwire(@NotNull Material material) {
+    public static boolean isTripwire(@NonNull Material material) {
         return material == Material.TRIPWIRE;
     }
 
-    public static boolean isPhysicalInteractionBlock(@NotNull Material material) {
+    public static boolean isPhysicalInteractionBlock(@NonNull Material material) {
         return isPressurePlate(material) || isTramplable(material) || isTripwire(material);
     }
 }

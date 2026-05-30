@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.commands.builder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.commands.tree.HubNode;
 import su.nightexpress.nightcore.commands.tree.ExecutableNode;
 import su.nightexpress.nightcore.locale.entry.TextLocale;
@@ -16,20 +16,20 @@ public class HubNodeBuilder extends ExecutableNodeBuilder<HubNode, HubNodeBuilde
     private String  localizedName;
     private boolean useHelpCommand;
 
-    public HubNodeBuilder(@NotNull String name) {
+    public HubNodeBuilder(@NonNull String name) {
         super(name);
         this.branches = new ArrayList<>();
         this.useHelpCommand = true;
     }
 
     @Override
-    @NotNull
+    @NonNull
     protected HubNodeBuilder getThis() {
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public HubNode build() {
         HubNode result = new HubNode(this.name, this.description, this.permission, this.requirements, this.executor, this.localizedName, this.useHelpCommand);
 
@@ -38,32 +38,32 @@ public class HubNodeBuilder extends ExecutableNodeBuilder<HubNode, HubNodeBuilde
         return result;
     }
 
-    @NotNull
-    public HubNodeBuilder branch(@NotNull ExecutableNodeBuilder<?, ?>... branches) {
+    @NonNull
+    public HubNodeBuilder branch(@NonNull ExecutableNodeBuilder<?, ?>... branches) {
         for (ExecutableNodeBuilder<?, ?> builder : branches) {
             this.branches.add(builder.build());
         }
         return this.getThis();
     }
 
-    @NotNull
-    public HubNodeBuilder branch(@NotNull ExecutableNode... branches) {
+    @NonNull
+    public HubNodeBuilder branch(@NonNull ExecutableNode... branches) {
         this.branches.addAll(Arrays.asList(branches));
         return this.getThis();
     }
 
-    @NotNull
-    public HubNodeBuilder localized(@NotNull TextLocale locale) {
+    @NonNull
+    public HubNodeBuilder localized(@NonNull TextLocale locale) {
         return this.localized(locale.text());
     }
 
-    @NotNull
-    public HubNodeBuilder localized(@NotNull String localizedName) {
+    @NonNull
+    public HubNodeBuilder localized(@NonNull String localizedName) {
         this.localizedName = localizedName;
         return this.getThis();
     }
 
-    @NotNull
+    @NonNull
     public HubNodeBuilder withHelpCommand(boolean useHelpCommand) {
         this.useHelpCommand = useHelpCommand;
         return this.getThis();

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.wrapper;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.bridge.scheduler.AdaptedTask;
 
@@ -10,30 +10,30 @@ import java.util.concurrent.ConcurrentHashMap;
 @Deprecated
 public class UniTask {
 
-    private final NightCorePlugin plugin;
+    private final NightCorePlugin  plugin;
     private final Runnable         runnable;
     private final Set<AdaptedTask> taskIdSet;
 
     private long    interval;
     private boolean async;
 
-    public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable) {
+    public UniTask(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable) {
         this(plugin, runnable, 0L);
     }
 
-    public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, int interval) {
+    public UniTask(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable, int interval) {
         this(plugin, runnable, interval, false);
     }
 
-    public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, int interval, boolean async) {
+    public UniTask(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable, int interval, boolean async) {
         this(plugin, runnable, interval * 20L, async);
     }
 
-    public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval) {
+    public UniTask(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable, long interval) {
         this(plugin, runnable, interval, false);
     }
 
-    public UniTask(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval, boolean async) {
+    public UniTask(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable, long interval, boolean async) {
         this.plugin = plugin;
         this.runnable = runnable;
         this.taskIdSet = ConcurrentHashMap.newKeySet();
@@ -77,7 +77,8 @@ public class UniTask {
 
         if (this.async) {
             this.taskIdSet.add(plugin.scheduler().runTaskTimerAsync(runnable, 0L, interval));
-        } else {
+        }
+        else {
             this.taskIdSet.add(plugin.scheduler().runTaskTimer(runnable, 0L, interval));
         }
         return this;

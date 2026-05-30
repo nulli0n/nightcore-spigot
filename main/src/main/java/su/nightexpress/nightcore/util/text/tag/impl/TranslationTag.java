@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
@@ -15,13 +15,13 @@ public class TranslationTag extends Tag {
         super(NAME, new String[]{"lang_or", "tr", "tr_or", "translation", "translation_or", "translate", "translate_or"});
     }
 
-    @NotNull
-    public String wrap(@NotNull String translationKey) {
+    @NonNull
+    public String wrap(@NonNull String translationKey) {
         return this.wrap(translationKey, null);
     }
 
-    @NotNull
-    public String wrap(@NotNull String translationKey, @Nullable String fallback) {
+    @NonNull
+    public String wrap(@NonNull String translationKey, @Nullable String fallback) {
         String full = this.getName() + ParserUtils.DELIMITER + ParserUtils.quoted(translationKey);
         if (fallback != null) {
             full += ParserUtils.DELIMITER + ParserUtils.quoted(fallback);

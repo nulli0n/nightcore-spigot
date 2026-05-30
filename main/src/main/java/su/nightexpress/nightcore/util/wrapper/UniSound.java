@@ -4,8 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.BukkitThing;
@@ -14,34 +14,34 @@ import su.nightexpress.nightcore.util.BukkitThing;
 public class UniSound {
 
     private final String soundName;
-    private final Sound soundType;
-    private final float volume;
-    private final float pitch;
+    private final Sound  soundType;
+    private final float  volume;
+    private final float  pitch;
 
-    public UniSound(@NotNull String soundName, @Nullable Sound soundType, float volume, float pitch) {
+    public UniSound(@NonNull String soundName, @Nullable Sound soundType, float volume, float pitch) {
         this.soundName = soundName.toLowerCase();
         this.soundType = soundType;
         this.volume = volume;
         this.pitch = pitch;
     }
 
-    @NotNull
-    public static UniSound of(@NotNull Sound sound) {
+    @NonNull
+    public static UniSound of(@NonNull Sound sound) {
         return of(sound, 0.8F);
     }
 
-    @NotNull
-    public static UniSound of(@NotNull Sound sound, float volume) {
+    @NonNull
+    public static UniSound of(@NonNull Sound sound, float volume) {
         return of(sound, volume, 1F);
     }
 
-    @NotNull
-    public static UniSound of(@NotNull Sound sound, float volume, float pitch) {
+    @NonNull
+    public static UniSound of(@NonNull Sound sound, float volume, float pitch) {
         return new UniSound(BukkitThing.toString(sound), sound, volume, pitch);
     }
 
-    @NotNull
-    public static UniSound read(@NotNull FileConfig cfg, @NotNull String path) {
+    @NonNull
+    public static UniSound read(@NonNull FileConfig cfg, @NonNull String path) {
         String soundName = ConfigValue.create(path + ".Name", "null",
             "Sound name. You can use Spigot sound names, or ones from your resource pack.",
             "Spigot Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html"
@@ -60,7 +60,7 @@ public class UniSound {
         return new UniSound(soundName, soundType, volume, pitch);
     }
 
-    public void write(@NotNull FileConfig cfg, @NotNull String path) {
+    public void write(@NonNull FileConfig cfg, @NonNull String path) {
         cfg.set(path + ".Name", this.getSoundName());
         cfg.set(path + ".Volume", this.getVolume());
         cfg.set(path + ".Pitch", this.getPitch());
@@ -70,7 +70,7 @@ public class UniSound {
         return this.getVolume() <= 0F || this.getSoundName().isEmpty();
     }
 
-    public void play(@NotNull Player player) {
+    public void play(@NonNull Player player) {
         if (this.isEmpty()) return;
 
         Location location = player.getLocation();
@@ -82,7 +82,7 @@ public class UniSound {
         }
     }
 
-    public void play(@NotNull Location location) {
+    public void play(@NonNull Location location) {
         if (this.isEmpty()) return;
 
         World world = location.getWorld();
@@ -96,7 +96,7 @@ public class UniSound {
         }
     }
 
-    @NotNull
+    @NonNull
     public String getSoundName() {
         return soundName;
     }

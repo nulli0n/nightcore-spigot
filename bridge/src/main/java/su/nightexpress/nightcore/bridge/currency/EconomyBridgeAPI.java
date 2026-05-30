@@ -23,73 +23,111 @@ public interface EconomyBridgeAPI {
 
     boolean unregister(@NonNull String id);
 
-    @NonNull Set<Currency> getCurrencies();
+    @NonNull
+    Set<Currency> getCurrencies();
 
-    @NonNull Set<String> getCurrencyIds();
+    @NonNull
+    Set<String> getCurrencyIds();
 
-    @NonNull Optional<Currency> currency(@NonNull String internalId);
+    @NonNull
+    Optional<Currency> currency(@NonNull String internalId);
 
-    @Nullable Currency getCurrency(@NonNull String internalId);
+    @Nullable
+    Currency getCurrency(@NonNull String internalId);
 
-    @NonNull Currency getCurrencyOrDummy(@NonNull String internalId);
+    @NonNull
+    Currency getCurrencyOrDummy(@NonNull String internalId);
 
-    @Nullable Currency getVaultCurrency();
+    @Nullable
+    Currency getVaultCurrency();
 
-    @NonNull Optional<Currency> vaultCurrency();
+    @NonNull
+    Optional<Currency> vaultCurrency();
 
-    @NonNull Currency getDummyCurrency();
+    @NonNull
+    Currency getDummyCurrency();
 
+
+    boolean canAfford(@NonNull Player player, double amount);
+
+    boolean canAfford(@NonNull UUID playerId, double amount);
+
+    @NonNull
+    CompletableFuture<Boolean> canAffordAsync(@NonNull Player player, double amount);
+
+    @NonNull
+    CompletableFuture<Boolean> canAffordAsync(@NonNull UUID playerId, double amount);
+
+    boolean canAfford(@NonNull Player player, @NonNull String id, double amount);
+
+    boolean canAfford(@NonNull UUID playerId, @NonNull String id, double amount);
+
+    @NonNull
+    CompletableFuture<Boolean> canAffordAsync(@NonNull Player player, @NonNull String id, double amount);
+
+    @NonNull
+    CompletableFuture<Boolean> canAffordAsync(@NonNull UUID playerId, @NonNull String id, double amount);
 
 
     double queryBalance(@NonNull Player player);
 
     double queryBalance(@NonNull UUID playerId);
 
-    @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull Player player);
+    @NonNull
+    CompletableFuture<Double> queryBalanceAsync(@NonNull Player player);
 
-    @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId);
+    @NonNull
+    CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId);
 
     double queryBalance(@NonNull Player player, @NonNull String id);
 
     double queryBalance(@NonNull UUID playerId, @NonNull String id);
 
-    @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull Player player, @NonNull String id);
+    @NonNull
+    CompletableFuture<Double> queryBalanceAsync(@NonNull Player player, @NonNull String id);
 
-    @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId, @NonNull String id);
-
+    @NonNull
+    CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId, @NonNull String id);
 
 
     void deposit(@NonNull Player player, double amount);
 
     void deposit(@NonNull UUID playerId, double amount);
 
-    @NonNull CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount);
+    @NonNull
+    CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount);
 
-    @NonNull CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount);
+    @NonNull
+    CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount);
 
     void deposit(@NonNull Player player, @NonNull String id, double amount);
 
     void deposit(@NonNull UUID playerId, @NonNull String id, double amount);
 
-    @NonNull CompletableFuture<Boolean> depositAsync(@NonNull Player player, @NonNull String id, double amount);
+    @NonNull
+    CompletableFuture<Boolean> depositAsync(@NonNull Player player, @NonNull String id, double amount);
 
-    @NonNull CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, @NonNull String id, double amount);
-
+    @NonNull
+    CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, @NonNull String id, double amount);
 
 
     void withdraw(@NonNull Player player, double amount);
 
     void withdraw(@NonNull UUID playerId, double amount);
 
-    @NonNull CompletableFuture<Boolean> withdrawsync(@NonNull Player player, double amount);
+    @NonNull
+    CompletableFuture<Boolean> withdrawsync(@NonNull Player player, double amount);
 
-    @NonNull CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount);
+    @NonNull
+    CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount);
 
     void withdraw(@NonNull Player player, @NonNull String id, double amount);
 
     void withdraw(@NonNull UUID playerId, @NonNull String id, double amount);
 
-    @NonNull CompletableFuture<Boolean> withdrawsync(@NonNull Player player, @NonNull String id, double amount);
+    @NonNull
+    CompletableFuture<Boolean> withdrawsync(@NonNull Player player, @NonNull String id, double amount);
 
-    @NonNull CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, @NonNull String id, double amount);
+    @NonNull
+    CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, @NonNull String id, double amount);
 }

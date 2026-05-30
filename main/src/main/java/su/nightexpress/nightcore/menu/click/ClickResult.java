@@ -1,14 +1,14 @@
 package su.nightexpress.nightcore.menu.click;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @Deprecated
 public class ClickResult {
 
-    private final int slot;
+    private final int       slot;
     private final ItemStack itemStack;
-    private final boolean isMenu;
+    private final boolean   isMenu;
 
     public ClickResult(int slot, @Nullable ItemStack itemStack, boolean isMenu) {
         this.slot = slot;

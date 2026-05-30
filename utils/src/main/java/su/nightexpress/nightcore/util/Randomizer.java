@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Set;
@@ -22,9 +22,10 @@ public class Randomizer {
         }
     }
 
-    private Randomizer() {}
+    private Randomizer() {
+    }
 
-    @NotNull
+    @NonNull
     public static RandomGenerator getSource() {
         return GENERATOR.get();
     }
@@ -48,7 +49,6 @@ public class Randomizer {
     }
 
 
-
     public static long nextLong() {
         return GENERATOR.get().nextLong();
     }
@@ -60,7 +60,6 @@ public class Randomizer {
     public static long nextLong(long origin, long bound) {
         return GENERATOR.get().nextLong(origin, bound);
     }
-
 
 
     public static double nextDouble() {
@@ -76,7 +75,6 @@ public class Randomizer {
     }
 
 
-
     public static float nextFloat() {
         return GENERATOR.get().nextFloat();
     }
@@ -88,7 +86,6 @@ public class Randomizer {
     public static float nextFloat(float origin, float bound) {
         return GENERATOR.get().nextFloat(origin, bound);
     }
-
 
 
     public static boolean checkChance(double chance) {
@@ -108,8 +105,7 @@ public class Randomizer {
     }
 
 
-
-    @NotNull
+    @NonNull
     public static <E> E pick(E[] source) {
         if (source.length == 0) throw new IllegalStateException("Array must not be empty");
 
@@ -122,15 +118,15 @@ public class Randomizer {
         return source[nextInt(source.length)];
     }
 
-    @NotNull
-    public static <E> E pick(@NotNull List<E> list) {
+    @NonNull
+    public static <E> E pick(@NonNull List<E> list) {
         if (list.isEmpty()) throw new IllegalStateException("List must not be empty");
 
         return list.get(nextInt(list.size()));
     }
 
-    @NotNull
-    public static <E> E pick(@NotNull Set<E> set) {
+    @NonNull
+    public static <E> E pick(@NonNull Set<E> set) {
         if (set.isEmpty()) throw new IllegalStateException("Set must not be empty");
 
         return set.stream().skip(nextInt(set.size())).findFirst().orElseThrow();

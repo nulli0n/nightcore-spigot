@@ -10,36 +10,36 @@ import org.jspecify.annotations.NonNull;
 
 public class Enums {
 
-    private static final String DEFAULT_DELIMITER = ", ";
+    public static final String DEFAULT_DELIMITER = ", ";
 
-    @NonNull
-    public static <T extends Enum<T>> Optional<@Nullable T> parse(String str, @NonNull Class<T> clazz) {
+    private Enums() {
+    }
+
+    public static <T extends Enum<T>> @NonNull Optional<T> parse(String str, @NonNull Class<T> type) {
         try {
-            return str == null ? Optional.empty() : Optional.of(Enum.valueOf(clazz, str.toUpperCase()));
+            return str == null ? Optional.empty() : Optional.of(Enum.valueOf(type, str.toUpperCase()));
         }
         catch (Exception exception) {
             return Optional.empty();
         }
     }
 
-    @Nullable
-    public static <T extends Enum<T>> T get(String str, @NonNull Class<T> clazz) {
-        return parse(str, clazz).orElse(null);
+    public static <T extends Enum<T>> @Nullable T get(@NonNull String str, @NonNull Class<T> type) {
+        return parse(str, type).orElse(null);
     }
 
-    @NonNull
-    public static String inline(@NonNull Class<? extends Enum<?>> clazz) {
-        return inline(clazz, DEFAULT_DELIMITER);
+    public static @NonNull String inline(@NonNull Class<? extends Enum<?>> type) {
+        return inline(type, DEFAULT_DELIMITER);
     }
 
-    @NonNull
-    public static String inline(@NonNull Class<? extends Enum<?>> clazz, @NonNull String delimiter) {
-        return String.join(delimiter, Enums.getNames(clazz));
+    public static @NonNull String inline(@NonNull Class<? extends Enum<?>> type, @NonNull String delimiter) {
+        return String.join(delimiter, Enums.getNames(type));
     }
 
-    @NonNull
-    public static List<String> getNames(@NonNull Class<? extends Enum<?>> clazz) {
-        return Stream.of(clazz.getEnumConstants()).sorted(Comparator.comparingInt(Enum::ordinal)).map(Object::toString)
+    public static @NonNull List<String> getNames(@NonNull Class<? extends Enum<?>> type) {
+        return Stream.of(type.getEnumConstants())
+            .sorted(Comparator.comparingInt(Enum::ordinal))
+            .map(Object::toString)
             .toList();
     }
 }

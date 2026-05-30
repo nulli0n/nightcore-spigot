@@ -3,28 +3,37 @@ package su.nightexpress.nightcore.bridge.scheduler;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public interface AdaptedScheduler {
 
     void cancelTasks();
 
-    @NotNull AdaptedTask runTask(@NotNull Runnable runnable);
+    @NonNull
+    AdaptedTask runTask(@NonNull Runnable runnable);
 
-    @Nullable AdaptedTask runTask(@NotNull Entity entity, @NotNull Runnable runnable);
+    @Nullable
+    AdaptedTask runTask(@NonNull Entity entity, @NonNull Runnable runnable);
 
-    @NotNull AdaptedTask runTask(@NotNull Location location, @NotNull Runnable runnable);
+    @NonNull
+    AdaptedTask runTask(@NonNull Location location, @NonNull Runnable runnable);
 
-    @NotNull AdaptedTask runTask(@NotNull Chunk chunk, @NotNull Runnable runnable);
+    @NonNull
+    AdaptedTask runTask(@NonNull Chunk chunk, @NonNull Runnable runnable);
 
-    @NotNull AdaptedTask runTaskAsync(@NotNull Runnable runnable);
+    @NonNull
+    AdaptedTask runTaskAsync(@NonNull Runnable runnable);
 
-    @NotNull AdaptedTask runTaskLater(@NotNull Runnable runnable, long delay);
+    @NonNull
+    AdaptedTask runTaskLater(@NonNull Runnable runnable, long delay);
 
-    @NotNull AdaptedTask runTaskLaterAsync(@NotNull Runnable runnable, long delay);
+    @NonNull
+    AdaptedTask runTaskLaterAsync(@NonNull Runnable runnable, long delay);
 
-    @NotNull AdaptedTask runTaskTimer(@NotNull Runnable runnable, long delay, long period);
+    @NonNull
+    AdaptedTask runTaskTimer(@NonNull Runnable runnable, long delay, long period);
 
-    @NotNull AdaptedTask runTaskTimerAsync(@NotNull Runnable runnable, long delay, long period);
+    @NonNull
+    AdaptedTask runTaskTimerAsync(@NonNull Runnable runnable, long delay, long period);
 }

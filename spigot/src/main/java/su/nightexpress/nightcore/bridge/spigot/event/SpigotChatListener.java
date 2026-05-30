@@ -4,7 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 
@@ -13,7 +13,7 @@ public class SpigotChatListener implements Listener {
     private final SpigotBridge                  bridge;
     private final UniversalChatListenerCallback callback;
 
-    public SpigotChatListener(@NotNull SpigotBridge bridge, @NotNull UniversalChatListenerCallback callback) {
+    public SpigotChatListener(@NonNull SpigotBridge bridge, @NonNull UniversalChatListenerCallback callback) {
         this.bridge = bridge;
         this.callback = callback;
     }
@@ -48,7 +48,7 @@ public class SpigotChatListener implements Listener {
         this.handleChat(EventPriority.MONITOR, event);
     }
 
-    private void handleChat(@NotNull EventPriority eventPriority, @NotNull AsyncPlayerChatEvent event) {
+    private void handleChat(@NonNull EventPriority eventPriority, @NonNull AsyncPlayerChatEvent event) {
         this.callback.run(eventPriority, () -> new SpigotChatEvent(this.bridge, event));
     }
 }

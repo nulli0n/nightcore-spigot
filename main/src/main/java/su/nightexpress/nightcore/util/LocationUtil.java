@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.Engine;
 
 import java.util.ArrayList;
@@ -17,22 +17,23 @@ public class LocationUtil {
 
     @Nullable
     @Deprecated
-    public static String serialize(@NotNull Location location) {
+    public static String serialize(@NonNull Location location) {
         World world = location.getWorld();
         if (world == null) return null;
 
-        return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getPitch() + "," + location.getYaw() + "," + world.getName();
+        return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getPitch() + "," +
+            location.getYaw() + "," + world.getName();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> serialize(@NotNull Collection<Location> list) {
+    public static List<String> serialize(@NonNull Collection<Location> list) {
         return new ArrayList<>(list.stream().map(LocationUtil::serialize).filter(Objects::nonNull).toList());
     }
 
     @Nullable
     @Deprecated
-    public static Location deserialize(@NotNull String raw) {
+    public static Location deserialize(@NonNull String raw) {
         String[] split = raw.split(",");
         if (split.length != 6) return null;
 
@@ -51,42 +52,42 @@ public class LocationUtil {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<Location> deserialize(@NotNull Collection<String> list) {
+    public static List<Location> deserialize(@NonNull Collection<String> list) {
         return new ArrayList<>(list.stream().map(LocationUtil::deserialize).filter(Objects::nonNull).toList());
     }
 
-    @NotNull
-    public static String getWorldName(@NotNull Location location) {
+    @NonNull
+    public static String getWorldName(@NonNull Location location) {
         World world = location.getWorld();
         return world == null ? "null" : world.getName();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static Location getCenter(@NotNull Location location) {
+    public static Location getCenter(@NonNull Location location) {
         return setCenter3D(location);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static Location getCenter(@NotNull Location location, boolean doVertical) {
+    public static Location getCenter(@NonNull Location location, boolean doVertical) {
         return setCenter(location, doVertical);
     }
 
-    @NotNull
-    public static Location setCenter2D(@NotNull Location location) {
+    @NonNull
+    public static Location setCenter2D(@NonNull Location location) {
         return setCenter(location, false);
     }
 
-    @NotNull
-    public static Location setCenter3D(@NotNull Location location) {
+    @NonNull
+    public static Location setCenter3D(@NonNull Location location) {
         return setCenter(location, true);
     }
 
-    @NotNull
-    public static Location setCenter(@NotNull Location location, boolean is3D) {
+    @NonNull
+    public static Location setCenter(@NonNull Location location, boolean is3D) {
         //Location centered = location.clone();
         location.setX(location.getBlockX() + 0.5);
         location.setY(location.getBlockY() + (is3D ? 0.5 : 0));
@@ -94,8 +95,8 @@ public class LocationUtil {
         return location;
     }
 
-    @NotNull
-    public static Vector getDirection(@NotNull Location from, @NotNull Location to) {
+    @NonNull
+    public static Vector getDirection(@NonNull Location from, @NonNull Location to) {
         Location origin = from.clone();
         origin.setDirection(to.toVector().subtract(origin.toVector()));
         return origin.getDirection();

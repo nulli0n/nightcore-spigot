@@ -94,7 +94,8 @@ public interface Software {
     @NonNull
     AdaptedScheduler getScheduler(@NonNull JavaPlugin plugin);
 
-    void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull NightComponent message);
+    void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result,
+                       @NonNull NightComponent message);
 
     void closeDialog(@NonNull Player player);
 
@@ -126,7 +127,8 @@ public interface Software {
     NightProfile getProfile(@NonNull OfflinePlayer player);
 
 
-    void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle, int fadeIn, int stay, int fadeOut);
+    void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle, int fadeIn,
+                    int stay, int fadeOut);
 
 
     @NonNull
@@ -163,7 +165,8 @@ public interface Software {
     @Nullable
     String getPlayerListFooterSerialized(@NonNull Player player);
 
-    void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer);
+    void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header,
+                                   @Nullable NightComponent footer);
 
     @NonNull
     String getPlayerListNameSerialized(@NonNull Player player);
@@ -184,7 +187,8 @@ public interface Software {
 
     void editMeta(@NonNull ItemStack itemStack, @NonNull Consumer<ItemMeta> consumer);
 
-    <T extends ItemMeta> void editMeta(@NonNull ItemStack itemStack, @NonNull Class<T> clazz, @NonNull Consumer<T> consumer);
+    <T extends ItemMeta> void editMeta(@NonNull ItemStack itemStack, @NonNull Class<T> clazz,
+                                       @NonNull Consumer<T> consumer);
 
     @Nullable
     String getCustomName(@NonNull ItemMeta meta);
@@ -210,5 +214,6 @@ public interface Software {
 
 
     @NonNull
-    NightBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor, @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags);
+    NightBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor,
+                               @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags);
 }

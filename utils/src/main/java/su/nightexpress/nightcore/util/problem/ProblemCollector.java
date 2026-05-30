@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.problem;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class ProblemCollector implements ProblemReporter {
     private final List<Problem>             problems;
     private final List<Problem.ChildReport> children;
 
-    public ProblemCollector(@NotNull String subject, @NotNull String path) {
+    public ProblemCollector(@NonNull String subject, @NonNull String path) {
         this.subject = subject;
         this.path = path;
         this.problems = new ArrayList<>();
@@ -31,7 +31,8 @@ public class ProblemCollector implements ProblemReporter {
 
     @Override
     public int countProblems() {
-        return this.problems.size() + this.children.stream().mapToInt(childReport -> childReport.reporter().countProblems()).sum();
+        return this.problems.size() + this.children.stream().mapToInt(childReport -> childReport.reporter()
+            .countProblems()).sum();
     }
 
     @Override
@@ -40,29 +41,29 @@ public class ProblemCollector implements ProblemReporter {
     }
 
     @Override
-    public void report(@NotNull String problem) {
+    public void report(@NonNull String problem) {
         this.report(() -> problem);
     }
 
     @Override
-    public void report(@NotNull Problem problem) {
+    public void report(@NonNull Problem problem) {
         this.problems.add(problem);
     }
 
     @Override
-    public void children(@NotNull String description, @NotNull ProblemReporter reporter) {
+    public void children(@NonNull String description, @NonNull ProblemReporter reporter) {
         this.children.add(new Problem.ChildReport(description, reporter));
     }
 
     @Override
-    public void print(@NotNull Logger logger) {
+    public void print(@NonNull Logger logger) {
         if (!this.isEmpty()) {
             logger.warning(this.getReport());
         }
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getReport() {
         StringBuilder builder = new StringBuilder();
         builder.append("\n");
@@ -77,7 +78,8 @@ public class ProblemCollector implements ProblemReporter {
         return builder.toString();
     }
 
-    private static void appendTree(@NotNull ProblemReporter root, @NotNull StringBuilder builder, @NotNull String prefix) {
+    private static void appendTree(@NonNull ProblemReporter root, @NonNull StringBuilder builder,
+                                   @NonNull String prefix) {
         List<String> entries = new ArrayList<>();
         List<Problem> problems = root.getProblems();
         List<Problem.ChildReport> children = root.getChildren();
@@ -110,30 +112,30 @@ public class ProblemCollector implements ProblemReporter {
         }
     }
 
-    @NotNull
-    private static String color(@NotNull String code, @NotNull String text) {
+    @NonNull
+    private static String color(@NonNull String code, @NonNull String text) {
         return USE_COLORS ? code + text + RESET : text;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getSubject() {
         return this.subject;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getPath() {
         return this.path;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public List<Problem> getProblems() {
         return this.problems;
     }
 
-    @NotNull
+    @NonNull
     public List<Problem.ChildReport> getChildren() {
         return this.children;
     }

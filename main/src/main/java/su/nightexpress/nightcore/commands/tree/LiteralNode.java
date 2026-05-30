@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.commands.tree;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.NodeExecutor;
 import su.nightexpress.nightcore.commands.NodeUtils;
@@ -17,26 +17,26 @@ public class LiteralNode extends ExecutableNode /*implements ArgumentTree*/ {
 
     private final Map<String, FlagNode> flags;
 
-    public LiteralNode(@NotNull String name,
-                       @NotNull String description,
+    public LiteralNode(@NonNull String name,
+                       @NonNull String description,
                        @Nullable String permission,
-                       @NotNull List<CommandRequirement> requirements,
+                       @NonNull List<CommandRequirement> requirements,
                        @Nullable NodeExecutor executor) {
         super(name, description, permission, requirements, executor);
         this.flags = new LinkedHashMap<>();
     }
 
     @Override
-    @NotNull
-    public Collection<? extends CommandNode> getRelevantNodes(@NotNull ArgumentReader reader) {
+    @NonNull
+    public Collection<? extends CommandNode> getRelevantNodes(@NonNull ArgumentReader reader) {
         return this.getChildren(); // No validation required because LiteralCommandNode holds only one (or none) children argument.
     }
 
-    public void setArguments(@NotNull CommandNode... arguments) {
+    public void setArguments(@NonNull CommandNode... arguments) {
         this.setArguments(Arrays.asList(arguments));
     }
 
-    public void setArguments(@NotNull List<? extends CommandNode> arguments) {
+    public void setArguments(@NonNull List<? extends CommandNode> arguments) {
         CommandNode parent = this;
 
         while (!arguments.isEmpty()) {
@@ -55,12 +55,12 @@ public class LiteralNode extends ExecutableNode /*implements ArgumentTree*/ {
         }
     }
 
-    /*public void setFlags(@NotNull List<FlagNode> flags) {
+    /*public void setFlags(@NonNull List<FlagNode> flags) {
         flags.forEach(this::addChildren);
     }*/
 
     @Override
-    public boolean run(@NotNull CommandContext context) {
+    public boolean run(@NonNull CommandContext context) {
         if (this.executor != null) {
             this.executor.run(context, context.getArguments());
             return true;
@@ -69,28 +69,30 @@ public class LiteralNode extends ExecutableNode /*implements ArgumentTree*/ {
     }
 
     @Override
-    public void parse(@NotNull ArgumentReader reader, @NotNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
+    public void parse(@NonNull ArgumentReader reader,
+                      @NonNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
         contextBuilder.withNode(this, reader.getCursor());
         contextBuilder.withExecutor(this);
     }
 
     @Override
-    protected void provideSuggestions(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
+    protected void provideSuggestions(@NonNull ArgumentReader reader, @NonNull CommandContext context,
+                                      @NonNull Suggestions suggestions) {
         suggestions.setSuggestions(List.of(this.name));
     }
 
-    @NotNull
+    @NonNull
     public List<CommandNode> getArguments() {
         return NodeUtils.getArguments(this);
     }
 
-    @NotNull
+    @NonNull
     public List<FlagNode> getFlags() {
         return new ArrayList<>(this.flags.values());
     }
 
     @Nullable
-    public FlagNode getFlag(@NotNull String name) {
+    public FlagNode getFlag(@NonNull String name) {
         return this.flags.get(name);
     }
 
@@ -100,7 +102,7 @@ public class LiteralNode extends ExecutableNode /*implements ArgumentTree*/ {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getUsage() {
         StringBuilder builder = new StringBuilder().append(this.name);
 

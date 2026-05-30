@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.NumberUtil;
@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class BlockPos implements Writeable {
 
-    private final int x,y,z;
+    private final int x, y, z;
 
     public BlockPos(int x, int y, int z) {
         this.x = x;
@@ -21,24 +21,24 @@ public class BlockPos implements Writeable {
         this.z = z;
     }
 
-    @NotNull
-    public static BlockPos read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static BlockPos read(@NonNull FileConfig config, @NonNull String path) {
         String str = config.getString(path, "");
         return deserialize(str);
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path, this.serialize());
     }
 
-    @NotNull
+    @NonNull
     public String serialize() {
         return this.x + "," + this.y + "," + this.z;
     }
 
-    @NotNull
-    public static BlockPos deserialize(@NotNull String str) {
+    @NonNull
+    public static BlockPos deserialize(@NonNull String str) {
         String[] split = str.split(",");
         if (split.length < 3) return empty();
 
@@ -50,57 +50,54 @@ public class BlockPos implements Writeable {
     }
 
 
-
     public boolean isEmpty() {
         return this.x == 0 && this.y == 0 && this.z == 0;
     }
 
-    @NotNull
+    @NonNull
     public static BlockPos empty() {
         return new BlockPos(0, 0, 0);
     }
 
-    @NotNull
-    public static BlockPos from(@NotNull Block block) {
+    @NonNull
+    public static BlockPos from(@NonNull Block block) {
         return new BlockPos(block.getX(), block.getY(), block.getZ());
     }
 
-    @NotNull
-    public static BlockPos from(@NotNull Location location) {
+    @NonNull
+    public static BlockPos from(@NonNull Location location) {
         return new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
-    @NotNull
-    public static BlockPos from(@NotNull ExactPos pos) {
+    @NonNull
+    public static BlockPos from(@NonNull ExactPos pos) {
         return new BlockPos((int) pos.getX(), (int) pos.getY(), (int) pos.getZ());
     }
 
 
-
-    @NotNull
-    public Block toBlock(@NotNull World world) {
+    @NonNull
+    public Block toBlock(@NonNull World world) {
         return world.getBlockAt(this.x, this.y, this.z);
     }
 
-    @NotNull
-    public Location toLocation(@NotNull World world) {
+    @NonNull
+    public Location toLocation(@NonNull World world) {
         return new Location(world, this.x, this.y, this.z);
     }
 
-    @NotNull
+    @NonNull
     public ChunkPos toChunkPos() {
         return ChunkPos.from(this);
     }
 
-    @NotNull
-    public Chunk toChunk(@NotNull World world) {
+    @NonNull
+    public Chunk toChunk(@NonNull World world) {
         return this.toChunkPos().getChunk(world);
     }
 
-    public boolean isChunkLoaded(@NotNull World world) {
+    public boolean isChunkLoaded(@NonNull World world) {
         return this.toChunkPos().isLoaded(world);
     }
-
 
 
     public int getX() {
@@ -115,7 +112,7 @@ public class BlockPos implements Writeable {
         return this.z;
     }
 
-    @NotNull
+    @NonNull
     public BlockPos copy() {
         return new BlockPos(this.x, this.y, this.z);
     }

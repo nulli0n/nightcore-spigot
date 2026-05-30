@@ -1,24 +1,24 @@
 package su.nightexpress.nightcore.db.connection.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.db.config.DatabaseConfig;
 import su.nightexpress.nightcore.db.connection.AbstractConnector;
 
 public class SQLiteConnector extends AbstractConnector {
 
-    public SQLiteConnector(@NotNull NightPlugin plugin, @NotNull DatabaseConfig config) {
+    public SQLiteConnector(@NonNull NightPlugin plugin, @NonNull DatabaseConfig config) {
         super(plugin, config);
     }
 
     @Override
-    protected String getURL(@NotNull DatabaseConfig config) {
+    protected String getURL(@NonNull DatabaseConfig config) {
         String filePath = plugin.getDataFolder().getAbsolutePath() + "/" + config.getFilename();
         return "jdbc:sqlite:" + filePath;
     }
 
     @Override
-    protected void setupConfig(@NotNull DatabaseConfig config) {
+    protected void setupConfig(@NonNull DatabaseConfig config) {
         this.config.setMaximumPoolSize(1);
     }
 }

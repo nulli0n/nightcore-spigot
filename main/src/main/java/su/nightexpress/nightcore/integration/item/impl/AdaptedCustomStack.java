@@ -1,14 +1,14 @@
 package su.nightexpress.nightcore.integration.item.impl;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.item.ItemAdapter;
 import su.nightexpress.nightcore.integration.item.data.ItemIdData;
 
 public class AdaptedCustomStack extends AdaptedItemStack<ItemIdData> {
 
-    public AdaptedCustomStack(@NotNull ItemAdapter<ItemIdData> adapter, @NotNull ItemIdData data) {
+    public AdaptedCustomStack(@NonNull ItemAdapter<ItemIdData> adapter, @NonNull ItemIdData data) {
         super(adapter, data);
     }
 
@@ -29,7 +29,7 @@ public class AdaptedCustomStack extends AdaptedItemStack<ItemIdData> {
     }
 
     @Override
-    public boolean isSimilar(@NotNull ItemIdData other) {
+    public boolean isSimilar(@NonNull ItemIdData other) {
         return this.data.getItemId().equalsIgnoreCase(other.getItemId());
     }
 }

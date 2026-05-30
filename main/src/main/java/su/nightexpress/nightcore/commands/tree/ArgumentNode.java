@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.commands.tree;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.commands.Arguments;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.NodeUtils;
@@ -24,15 +24,15 @@ import java.util.List;
 public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
 
     private final ArgumentType<T> type;
-    private final boolean required;
+    private final boolean         required;
 
-    private String localizedName;
+    private String              localizedName;
     private SuggestionsProvider customSuggestions;
 
-    public ArgumentNode(@NotNull String name,
-                        @NotNull ArgumentType<T> type,
+    public ArgumentNode(@NonNull String name,
+                        @NonNull ArgumentType<T> type,
                         @Nullable String permission,
-                        @NotNull List<CommandRequirement> requirements,
+                        @NonNull List<CommandRequirement> requirements,
                         boolean required,
                         @Nullable String localizedName,
                         @Nullable SuggestionsProvider customSuggestions) {
@@ -52,13 +52,14 @@ public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
     }
 
     @Override
-    @NotNull
-    public Collection<? extends CommandNode> getRelevantNodes(@NotNull ArgumentReader reader) {
+    @NonNull
+    public Collection<? extends CommandNode> getRelevantNodes(@NonNull ArgumentReader reader) {
         return this.getChildren(); // Only one (or none) children node is expected.
     }
 
     @Override
-    public void parse(@NotNull ArgumentReader reader, @NotNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
+    public void parse(@NonNull ArgumentReader reader,
+                      @NonNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
         int cursor = reader.getCursor();
         StringBuilder string = new StringBuilder(reader.getCursorArgument());
 
@@ -78,7 +79,8 @@ public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
     }
 
     @Override
-    public void provideSuggestions(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
+    public void provideSuggestions(@NonNull ArgumentReader reader, @NonNull CommandContext context,
+                                   @NonNull Suggestions suggestions) {
         SuggestionsProvider provider = this.customSuggestions == null && this.type instanceof SuggestionsProvider typeSuggestions ? typeSuggestions : this.customSuggestions;
         if (provider == null) {
             suggestions.setSuggestions(Collections.emptyList());
@@ -90,7 +92,7 @@ public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
         suggestions.setSuggestions(Lists.getSequentialMatches(values, input));
     }
 
-    @NotNull
+    @NonNull
     private List<CommandNode> getArguments() {
         return NodeUtils.getArguments(this);
     }
@@ -101,25 +103,26 @@ public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getUsage() {
-        String format = (this.isRequired() ? CoreLang.COMMAND_USAGE_REQUIRED_ARGUMENT : CoreLang.COMMAND_USAGE_OPTIONAL_ARGUMENT).text();
+        String format = (this
+            .isRequired() ? CoreLang.COMMAND_USAGE_REQUIRED_ARGUMENT : CoreLang.COMMAND_USAGE_OPTIONAL_ARGUMENT).text();
 
         return format.replace(Placeholders.GENERIC_NAME, this.getLocalizedName());
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getLocalizedName() {
         return this.localizedName != null ? this.localizedName : this.getName();
     }
 
-    @NotNull
+    @NonNull
     public ArgumentType<T> getType() {
         return this.type;
     }
 
-    @NotNull
+    @NonNull
     public SuggestionsProvider getCustomSuggestions() {
         return this.customSuggestions;
     }

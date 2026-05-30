@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.integration.permission.PermissionBridge;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
 import su.nightexpress.nightcore.util.bridge.Software;
@@ -10,25 +10,25 @@ import java.util.Set;
 @Deprecated
 public class Engine {
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static Set<NightPlugin> getChildrens() {
         return NightCore.CHILDRENS;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static NightCore core() {
         return NightCore.get();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static Software software() {
         return Software.instance();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static PermissionProvider getPermissions() {
         return PermissionBridge.getProvider();

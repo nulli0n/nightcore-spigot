@@ -3,13 +3,13 @@ package su.nightexpress.nightcore.bridge.scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class DefaultBukkitTask implements AdaptedTask {
 
     private final BukkitTask backend;
 
-    public DefaultBukkitTask(@NotNull BukkitTask backend) {
+    public DefaultBukkitTask(@NonNull BukkitTask backend) {
         this.backend = backend;
     }
 
@@ -24,7 +24,7 @@ public class DefaultBukkitTask implements AdaptedTask {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Plugin getOwningPlugin() {
         return this.backend.getOwner();
     }

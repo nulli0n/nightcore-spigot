@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
@@ -12,7 +12,7 @@ public class LangNode extends TextChildren {
     private final String key;
     private final String fallback;
 
-    public LangNode(@NotNull TextGroup parent, @NotNull String key, @Nullable String fallback) {
+    public LangNode(@NonNull TextGroup parent, @NonNull String key, @Nullable String fallback) {
         super(parent);
         this.key = key;
         this.fallback = fallback;
@@ -24,7 +24,7 @@ public class LangNode extends TextChildren {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightComponent toComponent() {
         ColorDecorator colorDecorator = this.parent.getColor();
         NightComponent component = NightComponent.translatable(this.key, this.fallback);

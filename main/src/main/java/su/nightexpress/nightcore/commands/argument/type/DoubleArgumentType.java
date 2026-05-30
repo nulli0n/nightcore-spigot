@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.commands.argument.type;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.commands.SuggestionsProvider;
 import su.nightexpress.nightcore.commands.argument.ArgumentReader;
 import su.nightexpress.nightcore.commands.argument.ArgumentType;
@@ -18,8 +18,8 @@ public class DoubleArgumentType implements ArgumentType<Double>, SuggestionsProv
 
     private static final List<String> EXAMPLES = Arrays.asList("0", "1.2", ".5", "-1", "-.5", "-1234.56");
 
-    private final double minimum;
-    private final double maximum;
+    private final double  minimum;
+    private final double  maximum;
     private final boolean allowCompacts;
 
     public DoubleArgumentType(double minimum, double maximum, boolean allowCompacts) {
@@ -29,8 +29,9 @@ public class DoubleArgumentType implements ArgumentType<Double>, SuggestionsProv
     }
 
     @Override
-    @NotNull
-    public Double parse(@NotNull CommandContextBuilder contextBuilder, @NotNull String string) throws CommandSyntaxException {
+    @NonNull
+    public Double parse(@NonNull CommandContextBuilder contextBuilder,
+                        @NonNull String string) throws CommandSyntaxException {
         Optional<Double> parse;
         if (this.allowCompacts) {
             parse = NumberUtil.parseDecimalCompact(string);
@@ -39,19 +40,22 @@ public class DoubleArgumentType implements ArgumentType<Double>, SuggestionsProv
             parse = NumberUtil.parseDouble(string);
         }
 
-        double result = parse.orElseThrow(() -> CommandSyntaxException.custom(CoreLang.COMMAND_SYNTAX_NUMBER_NOT_DECIMAL));
+        double result = parse.orElseThrow(() -> CommandSyntaxException.custom(
+            CoreLang.COMMAND_SYNTAX_NUMBER_NOT_DECIMAL));
         if (result < this.minimum) {
-            throw CommandSyntaxException.dynamic(CoreLang.COMMAND_SYNTAX_NUMBER_BELOW_MIN, NumberUtil.format(this.minimum));
+            throw CommandSyntaxException.dynamic(CoreLang.COMMAND_SYNTAX_NUMBER_BELOW_MIN, NumberUtil.format(
+                this.minimum));
         }
         if (result > this.maximum) {
-            throw CommandSyntaxException.dynamic(CoreLang.COMMAND_SYNTAX_NUMBER_ABOVE_MAX, NumberUtil.format(this.maximum));
+            throw CommandSyntaxException.dynamic(CoreLang.COMMAND_SYNTAX_NUMBER_ABOVE_MAX, NumberUtil.format(
+                this.maximum));
         }
         return result;
     }
 
     @Override
-    @NotNull
-    public List<String> suggest(@NotNull ArgumentReader reader, @NotNull CommandContext context) {
+    @NonNull
+    public List<String> suggest(@NonNull ArgumentReader reader, @NonNull CommandContext context) {
         return EXAMPLES;
     }
 

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.bridge.dialog.adapter;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedBooleanDialogInput;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedDialogInput;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedNumberRangeDialogInput;
@@ -9,13 +9,18 @@ import su.nightexpress.nightcore.bridge.dialog.wrap.input.text.WrappedTextDialog
 
 public interface DialogInputAdapter<I> {
 
-    @NotNull I adaptInput(@NotNull WrappedDialogInput input);
+    @NonNull
+    I adaptInput(@NonNull WrappedDialogInput input);
 
-    @NotNull I adaptInput(@NotNull WrappedTextDialogInput input);
+    @NonNull
+    I adaptInput(@NonNull WrappedTextDialogInput input);
 
-    @NotNull I adaptInput(@NotNull WrappedSingleOptionDialogInput input);
+    @NonNull
+    I adaptInput(@NonNull WrappedSingleOptionDialogInput input);
 
-    @NotNull I adaptInput(@NotNull WrappedBooleanDialogInput input);
+    @NonNull
+    I adaptInput(@NonNull WrappedBooleanDialogInput input);
 
-    @NotNull I adaptInput(@NotNull WrappedNumberRangeDialogInput input);
+    @NonNull
+    I adaptInput(@NonNull WrappedNumberRangeDialogInput input);
 }

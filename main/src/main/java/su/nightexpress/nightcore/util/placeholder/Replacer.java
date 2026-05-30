@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.util.placeholder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.integration.placeholder.PAPI;
 import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.text.NightMessage;
@@ -28,12 +28,12 @@ public class Replacer {
         this.replacers = new ArrayList<>();
     }
 
-    public Replacer(@NotNull Replacer other) {
+    public Replacer(@NonNull Replacer other) {
         this.placeholders = new PlaceholderList<>(other.placeholders);
         this.replacers = new ArrayList<>(other.replacers);
     }
 
-    @NotNull
+    @NonNull
     public static Replacer create() {
         return new Replacer();
     }
@@ -43,7 +43,7 @@ public class Replacer {
         this.replacers.clear();
     }
 
-    @NotNull
+    @NonNull
     public List<UnaryOperator<String>> getReplacers() {
         List<UnaryOperator<String>> replacers = new ArrayList<>();
         replacers.add(this.placeholders.replacer(this));
@@ -51,53 +51,54 @@ public class Replacer {
         return replacers;
     }
 
-    @NotNull
+    @NonNull
     public UnaryOperator<String> chained() {
-        return this.getReplacers().stream().reduce((l, r) -> (string) -> l.andThen(r).apply(string)).orElseGet(UnaryOperator::identity);
+        return this.getReplacers().stream().reduce((l, r) -> (string) -> l.andThen(r).apply(string)).orElseGet(
+            UnaryOperator::identity);
     }
 
-    @NotNull
-    public Replacer and(@NotNull Consumer<Replacer> consumer) {
+    @NonNull
+    public Replacer and(@NonNull Consumer<Replacer> consumer) {
         consumer.accept(this);
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public TextRoot getReplaced(@NotNull String source) {
+    public TextRoot getReplaced(@NonNull String source) {
         return this.getReplaced(NightMessage.from(source));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public TextRoot getReplaced(@NotNull TextRoot source) {
-//        TextRoot root = source.copy();
-//        this.getReplacers().forEach(root::replace);
-//        return root;
+    public TextRoot getReplaced(@NonNull TextRoot source) {
+        //        TextRoot root = source.copy();
+        //        this.getReplacers().forEach(root::replace);
+        //        return root;
         return this.apply(source);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public TextRoot apply(@NotNull TextRoot source) {
+    public TextRoot apply(@NonNull TextRoot source) {
         TextRoot root = source.copy();
         this.getReplacers().forEach(root::replace);
         return root;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String getReplacedRaw(@NotNull String source) {
-//        String result = source;
-//        for (UnaryOperator<String> operator : this.getReplacers()) {
-//            result = operator.apply(result);
-//        }
-//        return result;
+    public String getReplacedRaw(@NonNull String source) {
+        //        String result = source;
+        //        for (UnaryOperator<String> operator : this.getReplacers()) {
+        //            result = operator.apply(result);
+        //        }
+        //        return result;
         return this.apply(source);
     }
 
-    @NotNull
-    public String apply(@NotNull String source) {
+    @NonNull
+    public String apply(@NonNull String source) {
         String result = source;
         for (UnaryOperator<String> operator : this.getReplacers()) {
             result = operator.apply(result);
@@ -105,8 +106,8 @@ public class Replacer {
         return result;
     }
 
-    @NotNull
-    public List<String> apply(@NotNull List<String> list) {
+    @NonNull
+    public List<String> apply(@NonNull List<String> list) {
         List<String> result = new ArrayList<>(list);
         for (UnaryOperator<String> operator : this.getReplacers()) {
             result = replaceList(result, operator);
@@ -115,16 +116,16 @@ public class Replacer {
         return result;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemStack apply(@NotNull ItemStack itemStack) {
+    public ItemStack apply(@NonNull ItemStack itemStack) {
         ItemUtil.editMeta(itemStack, this::apply);
         return itemStack;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemMeta apply(@NotNull ItemMeta meta) {
+    public ItemMeta apply(@NonNull ItemMeta meta) {
         List<String> lore = meta.getLore();
 
         if (meta.hasItemName()) {
@@ -140,8 +141,8 @@ public class Replacer {
         return meta;
     }
 
-    @NotNull
-    private static List<String> replaceList(@NotNull List<String> lore, @NotNull UnaryOperator<String> operator) {
+    @NonNull
+    private static List<String> replaceList(@NonNull List<String> lore, @NonNull UnaryOperator<String> operator) {
         List<String> replaced = new ArrayList<>();
         for (String line : lore) {
             if (!line.isBlank()) {
@@ -155,60 +156,60 @@ public class Replacer {
         return replaced;
     }
 
-    @NotNull
-    public Replacer replacePlaceholderAPI(@NotNull Player player) {
+    @NonNull
+    public Replacer replacePlaceholderAPI(@NonNull Player player) {
         if (!PAPI.isPresent()) return this;
 
         return this.replaceOperator(line -> CommonPlaceholders.setPAPIPlaceholders(player, line));
     }
 
-    @NotNull
-    public Replacer replace(@NotNull String key, @NotNull Consumer<List<String>> replacer) {
+    @NonNull
+    public Replacer replace(@NonNull String key, @NonNull Consumer<List<String>> replacer) {
         List<String> list = new ArrayList<>();
         replacer.accept(list);
 
         return this.replace(key, list);
     }
 
-    @NotNull
-    public Replacer replace(@NotNull String key, @NotNull List<String> replacer) {
+    @NonNull
+    public Replacer replace(@NonNull String key, @NonNull List<String> replacer) {
         return this.replacePlaceholder(key, () -> String.join(TagWrappers.BR, replacer));
     }
 
-    @NotNull
-    public <T> Replacer replace(@NotNull T source, @NotNull PlaceholderList<T> placeholders) {
+    @NonNull
+    public <T> Replacer replace(@NonNull T source, @NonNull PlaceholderList<T> placeholders) {
         return this.replaceOperator(placeholders.replacer(source));
     }
 
-    @NotNull
-    public Replacer replace(@NotNull String key, @NotNull Supplier<String> value) {
+    @NonNull
+    public Replacer replace(@NonNull String key, @NonNull Supplier<String> value) {
         return this.replacePlaceholder(key, value);
     }
 
-    @NotNull
-    public Replacer replace(@NotNull String key, @NotNull Object value) {
+    @NonNull
+    public Replacer replace(@NonNull String key, @NonNull Object value) {
         return this.replacePlaceholder(key, value);
     }
 
-    @NotNull
-    public Replacer replace(@NotNull UnaryOperator<String> replacer) {
+    @NonNull
+    public Replacer replace(@NonNull UnaryOperator<String> replacer) {
         return this.replaceOperator(replacer);
     }
 
-    @NotNull
-    private Replacer replacePlaceholder(@NotNull String key, @NotNull Supplier<String> value) {
+    @NonNull
+    private Replacer replacePlaceholder(@NonNull String key, @NonNull Supplier<String> value) {
         this.placeholders.add(key, value);
         return this;
     }
 
-    @NotNull
-    private Replacer replacePlaceholder(@NotNull String key, @NotNull Object value) {
+    @NonNull
+    private Replacer replacePlaceholder(@NonNull String key, @NonNull Object value) {
         this.placeholders.add(key, String.valueOf(value));
         return this;
     }
 
-    @NotNull
-    private Replacer replaceOperator(@NotNull UnaryOperator<String> replacer) {
+    @NonNull
+    private Replacer replaceOperator(@NonNull UnaryOperator<String> replacer) {
         this.replacers.add(replacer);
         return this;
     }

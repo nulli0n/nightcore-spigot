@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.commands.tree;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.NodeExecutor;
 import su.nightexpress.nightcore.commands.context.CommandContext;
@@ -13,19 +13,19 @@ public abstract class ExecutableNode extends CommandNode {
     protected final String       description;
     protected final NodeExecutor executor;
 
-    public ExecutableNode(@NotNull String name,
-                          @NotNull String description,
+    public ExecutableNode(@NonNull String name,
+                          @NonNull String description,
                           @Nullable String permission,
-                          @NotNull List<CommandRequirement> requirements,
+                          @NonNull List<CommandRequirement> requirements,
                           @Nullable NodeExecutor executor) {
         super(name, permission, requirements);
         this.description = description;
         this.executor = executor;
     }
 
-    public abstract boolean run(@NotNull CommandContext context);
+    public abstract boolean run(@NonNull CommandContext context);
 
-    @NotNull
+    @NonNull
     public String getDescription() {
         return this.description;
     }

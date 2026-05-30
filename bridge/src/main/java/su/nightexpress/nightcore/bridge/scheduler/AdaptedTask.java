@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.scheduler;
 
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public interface AdaptedTask {
 
@@ -9,7 +9,8 @@ public interface AdaptedTask {
 
     boolean isCancelled();
 
-    @NotNull Plugin getOwningPlugin();
+    @NonNull
+    Plugin getOwningPlugin();
 
     boolean isCurrentlyRunning();
 

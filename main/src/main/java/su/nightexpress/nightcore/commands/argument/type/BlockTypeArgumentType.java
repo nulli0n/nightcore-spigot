@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.commands.argument.type;
 
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.commands.SuggestionsProvider;
 import su.nightexpress.nightcore.commands.argument.ArgumentReader;
 import su.nightexpress.nightcore.commands.argument.ArgumentType;
@@ -15,20 +15,23 @@ import java.util.List;
 
 public class BlockTypeArgumentType implements ArgumentType<Material>, SuggestionsProvider {
 
-    private static final List<String> EXAMPLES = BukkitThing.getMaterials().stream().filter(Material::isBlock).map(BukkitThing::getValue).toList();
+    private static final List<String> EXAMPLES = BukkitThing.getMaterials().stream().filter(Material::isBlock).map(
+        BukkitThing::getValue).toList();
 
     @Override
-    @NotNull
-    public Material parse(@NotNull CommandContextBuilder contextBuilder, @NotNull String string) throws CommandSyntaxException {
+    @NonNull
+    public Material parse(@NonNull CommandContextBuilder contextBuilder,
+                          @NonNull String string) throws CommandSyntaxException {
         Material material = BukkitThing.getMaterial(string);
-        if (material == null || !material.isBlock()) throw CommandSyntaxException.custom(CoreLang.COMMAND_SYNTAX_INVALID_BLOCK);
+        if (material == null || !material.isBlock()) throw CommandSyntaxException.custom(
+            CoreLang.COMMAND_SYNTAX_INVALID_BLOCK);
 
         return material;
     }
 
     @Override
-    @NotNull
-    public List<String> suggest(@NotNull ArgumentReader reader, @NotNull CommandContext context) {
+    @NonNull
+    public List<String> suggest(@NonNull ArgumentReader reader, @NonNull CommandContext context) {
         return EXAMPLES;
     }
 }

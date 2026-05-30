@@ -1,23 +1,21 @@
 package su.nightexpress.nightcore.locale;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 
 public interface LangElement {
 
     @Deprecated
-    default void load(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull String langCode) {
+    default void load(@NonNull NightPlugin plugin, @NonNull FileConfig config, @NonNull String langCode) {
         this.load(plugin, config);
     }
 
-    void load(@NotNull NightPlugin plugin, @NotNull FileConfig config/*, @NotNull String langCode*/);
+    void load(@NonNull NightPlugin plugin, @NonNull FileConfig config);
 
-    //boolean isSupportedLocale(@NotNull String locale);
+    @NonNull
+    String getPath();
 
-    @NotNull String getPath();
-
-    //@NotNull Set<String> getSupportedLocales();
-
-    @NotNull LangValue getDefaultValue(/*@NotNull String langCode*/);
+    @NonNull
+    LangValue getDefaultValue();
 }

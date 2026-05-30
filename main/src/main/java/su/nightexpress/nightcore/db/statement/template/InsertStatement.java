@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.statement.template;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.statement.ColumnMapping;
@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 public final class InsertStatement<T> extends UpsertStatement<T> {
 
-    private final boolean ignoreDuplications;
-    private final boolean updateOnConflict;
+    private final boolean      ignoreDuplications;
+    private final boolean      updateOnConflict;
     private final List<String> conflictKeys;
 
     private String sqlTemplate;
@@ -57,7 +57,8 @@ public final class InsertStatement<T> extends UpsertStatement<T> {
             }
             else if (this.updateOnConflict) {
                 // Filter out the conflict keys
-                List<String> columnsToUpdate = this.columns.stream().filter(col -> !this.conflictKeys.contains(col)).toList();
+                List<String> columnsToUpdate = this.columns.stream().filter(col -> !this.conflictKeys.contains(col))
+                    .toList();
 
                 if (columnsToUpdate.isEmpty()) {
                     throw new IllegalStateException("No columns left to update after filtering out conflict keys!");
@@ -81,7 +82,8 @@ public final class InsertStatement<T> extends UpsertStatement<T> {
                 }
             }
 
-            this.sqlTemplate = "INSERT" + prefixModifier + " INTO %s (" + columns + ") VALUES (" + values + ")" + postfixModifier;
+            this.sqlTemplate = "INSERT" + prefixModifier + " INTO %s (" + columns + ") VALUES (" + values + ")" +
+                postfixModifier;
         }
         return this.sqlTemplate.formatted(table);
     }
@@ -89,7 +91,7 @@ public final class InsertStatement<T> extends UpsertStatement<T> {
     public static class Builder<T> extends AbstractBuilder<Builder<T>, InsertStatement<T>, T> {
 
         private boolean ignoreDuplications = false;
-        private boolean updateOnConflict = false;
+        private boolean updateOnConflict   = false;
 
         Builder() {
 

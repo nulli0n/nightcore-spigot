@@ -1,15 +1,16 @@
 package su.nightexpress.nightcore.util.placeholder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.UnaryOperator;
 
 @Deprecated
 public interface Placeholder {
 
-    @NotNull PlaceholderMap getPlaceholders();
+    @NonNull
+    PlaceholderMap getPlaceholders();
 
-    @NotNull
+    @NonNull
     default UnaryOperator<String> replacePlaceholders() {
         return this.getPlaceholders().replacer();
     }

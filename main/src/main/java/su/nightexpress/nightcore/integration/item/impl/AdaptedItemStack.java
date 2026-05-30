@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.integration.item.impl;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.item.AdaptedItem;
 import su.nightexpress.nightcore.bridge.item.ItemAdapter;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -17,13 +17,13 @@ public abstract class AdaptedItemStack<T> implements AdaptedItem, Writeable {
     protected final ItemAdapter<T> adapter;
     protected final T              data;
 
-    public AdaptedItemStack(@NotNull ItemAdapter<T> adapter, @NotNull T data) {
+    public AdaptedItemStack(@NonNull ItemAdapter<T> adapter, @NonNull T data) {
         this.adapter = adapter;
         this.data = data;
     }
 
     @Nullable
-    public static AdaptedItemStack<?> read(@NotNull FileConfig config, @NotNull String path) {
+    public static AdaptedItemStack<?> read(@NonNull FileConfig config, @NonNull String path) {
         String name = config.getString(path + ".Provider", "null");
         AbstractItemAdapter<?> adapter = (AbstractItemAdapter<?>) ItemBridge.getAdapter(name); // Need FileConfig bridge
         if (adapter == null) return null;
@@ -32,30 +32,30 @@ public abstract class AdaptedItemStack<T> implements AdaptedItem, Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Provider", this.adapter.getName());
         config.set(path + ".Data", this.data);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public ItemAdapter<T> getAdapter() {
         return this.adapter;
     }
 
-    @NotNull
+    @NonNull
     public T getData() {
         return this.data;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Optional<ItemStack> itemStack() {
         return Optional.ofNullable(this.getItemStack());
     }
 
     @Override
-    public boolean isSimilar(@NotNull ItemStack other) {
+    public boolean isSimilar(@NonNull ItemStack other) {
         ItemAdapter<?> otherAdapter = ItemBridge.getAdapter(other);
         if (otherAdapter != this.adapter) return false;
 
@@ -63,5 +63,5 @@ public abstract class AdaptedItemStack<T> implements AdaptedItem, Writeable {
         return data != null && this.isSimilar(data);
     }
 
-    public abstract boolean isSimilar(@NotNull T other);
+    public abstract boolean isSimilar(@NonNull T other);
 }

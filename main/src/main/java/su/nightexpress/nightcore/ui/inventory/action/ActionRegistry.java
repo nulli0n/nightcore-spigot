@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.ui.inventory.action;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.LowerCase;
 
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class ActionRegistry {
         this.actionMap = new HashMap<>();
     }
 
-    public void register(@NotNull String name, @NotNull MenuItemAction action) {
+    public void register(@NonNull String name, @NonNull MenuItemAction action) {
         String id = LowerCase.INTERNAL.apply(name);
         if (this.actionMap.containsKey(id)) {
             // TODO Warn or exception
@@ -27,12 +27,12 @@ public class ActionRegistry {
     }
 
     @Nullable
-    public MenuItemAction getById(@NotNull String id) {
+    public MenuItemAction getById(@NonNull String id) {
         return this.actionMap.get(LowerCase.INTERNAL.apply(id));
     }
 
-    @NotNull
-    public Optional<MenuItemAction> byId(@NotNull String id) {
+    @NonNull
+    public Optional<MenuItemAction> byId(@NonNull String id) {
         return Optional.ofNullable(this.getById(id));
     }
 }

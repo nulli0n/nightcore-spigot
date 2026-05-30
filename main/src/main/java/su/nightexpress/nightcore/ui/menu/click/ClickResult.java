@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.ui.menu.click;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @Deprecated
 public class ClickResult {

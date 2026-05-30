@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.core;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.bridge.item.ItemAdapter;
 import su.nightexpress.nightcore.core.listener.CoreListener;
@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 
 public class CoreManager extends AbstractManager<NightCore> {
 
-    public CoreManager(@NotNull NightCore core) {
+    public CoreManager(@NonNull NightCore core) {
         super(core);
     }
 
@@ -69,7 +69,7 @@ public class CoreManager extends AbstractManager<NightCore> {
         }
     }
 
-    private void registerPermissionProvider(@NotNull PermissionProvider provider) {
+    private void registerPermissionProvider(@NonNull PermissionProvider provider) {
         PermissionBridge.register(provider);
         this.plugin.info("Registered permissions provider: " + provider.getName());
     }
@@ -87,13 +87,14 @@ public class CoreManager extends AbstractManager<NightCore> {
         this.registerExternalItemProvider(ItemPlugins.CRAFT_ENGINE, CraftEngineAdapter::new);
     }
 
-    private <T> boolean registerExternalItemProvider(@NotNull String pluginName, @NotNull Supplier<ItemAdapter<T>> supplier) {
+    private <T> boolean registerExternalItemProvider(@NonNull String pluginName,
+                                                     @NonNull Supplier<ItemAdapter<T>> supplier) {
         if (!Plugins.isInstalled(pluginName)) return false;
 
         return registerItemProvider(supplier.get());
     }
 
-    private <T> boolean registerItemProvider(@NotNull ItemAdapter<T> provider) {
+    private <T> boolean registerItemProvider(@NonNull ItemAdapter<T> provider) {
         String name = provider.getName();
         if (CoreConfig.ITEMS_DISABLED_PROVIDERS.get().contains(name)) {
             return false;

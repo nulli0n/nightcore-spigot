@@ -1,22 +1,22 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class LegacyColors {
 
     private static final char   COLOR_CHAR     = '§';
-    public static final char   ALT_COLOR_CHAR = '&';
+    public static final char    ALT_COLOR_CHAR = '&';
     private static final String ALL_CODES      = "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx";
 
-    @NotNull
-    public static String plainColors(@NotNull String string) {
+    @NonNull
+    public static String plainColors(@NonNull String string) {
         string = plainHEXColors(string);
         string = plainDefaultColors(string);
         return string;
     }
 
-    @NotNull
-    public static String plainDefaultColors(@NotNull String string) {
+    @NonNull
+    public static String plainDefaultColors(@NonNull String string) {
         char[] b = string.toCharArray();
         for (int i = 0; i < b.length - 1; i++) {
             if (b[i] == COLOR_CHAR && ALL_CODES.indexOf(b[i + 1]) > -1) {
@@ -27,8 +27,8 @@ public class LegacyColors {
         return new String(b);
     }
 
-    @NotNull
-    public static String plainHEXColors(@NotNull String str) {
+    @NonNull
+    public static String plainHEXColors(@NonNull String str) {
         StringBuilder builder = new StringBuilder(str);
 
         int index;

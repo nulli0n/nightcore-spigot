@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.command.base;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.impl.AbstractCommand;
 import su.nightexpress.nightcore.command.CommandResult;
@@ -16,13 +16,13 @@ import java.util.Set;
 @Deprecated
 public class HelpSubCommand extends AbstractCommand<NightCorePlugin> {
 
-    public HelpSubCommand(@NotNull NightCorePlugin plugin) {
+    public HelpSubCommand(@NonNull NightCorePlugin plugin) {
         super(plugin, new String[]{"help"});
         this.setDescription(CoreLang.COMMAND_HELP_DESC);
     }
 
     @Override
-    protected void onExecute(@NotNull CommandSender sender, @NotNull CommandResult result) {
+    protected void onExecute(@NonNull CommandSender sender, @NonNull CommandResult result) {
         NightCommand parent = this.getParent();
         if (parent == null) return;
 

@@ -1,17 +1,17 @@
 package su.nightexpress.nightcore.manager;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 
 public abstract class SimpleManager<P extends NightCorePlugin> {
 
     protected final P plugin;
 
-    public SimpleManager(@NotNull P plugin) {
+    public SimpleManager(@NonNull P plugin) {
         this.plugin = plugin;
     }
 
-    @NotNull
+    @NonNull
     public P plugin() {
         return this.plugin;
     }

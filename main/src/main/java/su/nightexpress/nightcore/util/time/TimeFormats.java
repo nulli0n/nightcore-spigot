@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.time;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.locale.entry.TextLocale;
 import su.nightexpress.nightcore.util.NumberUtil;
@@ -28,32 +28,32 @@ public class TimeFormats {
 
     private static DateTimeFormatter dateTimeFormatter;
 
-    public static void setDateTimeFormatter(@NotNull String pattern) {
+    public static void setDateTimeFormatter(@NonNull String pattern) {
         TimeFormats.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
     }
 
-    @NotNull
+    @NonNull
     public static String formatDateTime(long millis) {
         return formatDateTime(TimeUtil.getLocalDateTimeOf(millis));
     }
 
-    @NotNull
-    public static String formatDateTime(@NotNull LocalDateTime time) {
+    @NonNull
+    public static String formatDateTime(@NonNull LocalDateTime time) {
         return dateTimeFormatter.format(time);
     }
 
-    @NotNull
-    public static String formatDuration(long until, @NotNull TimeFormatType formatType) {
+    @NonNull
+    public static String formatDuration(long until, @NonNull TimeFormatType formatType) {
         return formatAmount(until - System.currentTimeMillis(), formatType);
     }
 
-    @NotNull
-    public static String formatSince(long since, @NotNull TimeFormatType formatType) {
+    @NonNull
+    public static String formatSince(long since, @NonNull TimeFormatType formatType) {
         return formatAmount(System.currentTimeMillis() - since, formatType);
     }
 
-    @NotNull
-    public static String formatAmount(long millis, @NotNull TimeFormatType formatType) {
+    @NonNull
+    public static String formatAmount(long millis, @NonNull TimeFormatType formatType) {
         return switch (formatType) {
             case LITERAL -> toLiteral(millis);
             case DIGITAL -> toDigital(millis);
@@ -61,33 +61,32 @@ public class TimeFormats {
         };
     }
 
-    @NotNull
+    @NonNull
     public static String toSeconds(long millis) {
         long whole = TimeUnit.MILLISECONDS.toSeconds(millis);
 
         return whole > 0 ? String.valueOf(whole) : NumberUtil.format(millis / 1000D);
     }
 
-    @NotNull
+    @NonNull
     public static String toDigital(long millis) {
         return DIGITAL_FULL_FORMATTER.format(TimeUtil.getLocalTimeOf(millis));
     }
 
-    @NotNull
+    @NonNull
     public static String toDigitalShort(long millis) {
         return DIGITAL_SHORT_FORMATTER.format(TimeUtil.getLocalTimeOf(millis));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String toFormat(long millis, @NotNull DateTimeFormatter formatter) {
+    public static String toFormat(long millis, @NonNull DateTimeFormatter formatter) {
         return formatter.format(TimeUtil.getLocalTimeOf(millis));
         //return TimeUtil.getLocalTimeOf(millis).format(formatter);
     }
 
 
-
-    @NotNull
+    @NonNull
     public static String toLiteral(long millis) {
         StringBuilder str = new StringBuilder();
         String delimiter = CoreLang.TIME_DELIMITER.text();

@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.ui.dialog;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
@@ -28,7 +28,7 @@ public class DialogManager {
         DIALOG_MAP.clear();
     }
 
-    @NotNull
+    @NonNull
     public static Set<Dialog> getDialogs() {
         return new HashSet<>(DIALOG_MAP.values());
     }
@@ -37,7 +37,7 @@ public class DialogManager {
         getDialogs().forEach(DialogManager::tickDialog);
     }
 
-    private static void tickDialog(@NotNull Dialog dialog) {
+    private static void tickDialog(@NonNull Dialog dialog) {
         if (dialog.isExpired()) {
             stopDialog(dialog);
             return;
@@ -47,29 +47,30 @@ public class DialogManager {
         dialog.tick();
     }
 
-    private static void displayPrompt(@NotNull Dialog dialog, int fade) {
+    private static void displayPrompt(@NonNull Dialog dialog, int fade) {
         Player player = dialog.getPlayer();
-        String title = /*NightMessage.asLegacy(*/CoreLang.DIALOG_HEADER.getString().replace(Placeholders.GENERIC_TIME, TimeFormats.toLiteral(dialog.getLifetimeMillis()));
+        String title = /*NightMessage.asLegacy(*/CoreLang.DIALOG_HEADER.getString().replace(Placeholders.GENERIC_TIME,
+            TimeFormats.toLiteral(dialog.getLifetimeMillis()));
         String sub = /*NightMessage.asLegacy(*/dialog.getPrompt();
 
         //player.sendTitle(title, sub, fade, 40, 20);
         Players.sendTitles(player, title, sub, fade, 40, 20);
     }
 
-    public static boolean isInDialog(@NotNull Player player) {
+    public static boolean isInDialog(@NonNull Player player) {
         return getDialog(player) != null;
     }
 
     @Nullable
-    public static Dialog getDialog(@NotNull Player player) {
+    public static Dialog getDialog(@NonNull Player player) {
         return DIALOG_MAP.get(player.getUniqueId());
     }
 
-    public static void startDialog(@NotNull Dialog.Builder builder) {
+    public static void startDialog(Dialog.@NonNull Builder builder) {
         startDialog(builder.build());
     }
 
-    public static void startDialog(@NotNull Dialog dialog) {
+    public static void startDialog(@NonNull Dialog dialog) {
         Player player = dialog.getPlayer();
 
         MenuViewer viewer = MenuRegistry.getViewer(player);
@@ -85,14 +86,14 @@ public class DialogManager {
         CoreLang.DIALOG_INFO_EXIT.getMessage().send(player);
     }
 
-    public static void stopDialog(@NotNull Player player) {
+    public static void stopDialog(@NonNull Player player) {
         Dialog dialog = getDialog(player);
         if (dialog == null) return;
 
         stopDialog(dialog);
     }
 
-    public static void stopDialog(@NotNull Dialog dialog) {
+    public static void stopDialog(@NonNull Dialog dialog) {
         Player player = dialog.getPlayer();
         Menu menu = dialog.getLastMenu();
         if (menu != null) {
@@ -102,7 +103,7 @@ public class DialogManager {
         DIALOG_MAP.remove(player.getUniqueId());
     }
 
-    public static void displaySuggestions(@NotNull Dialog dialog, int page) {
+    public static void displaySuggestions(@NonNull Dialog dialog, int page) {
         List<String> suggestions = dialog.getSuggestions();
         if (suggestions == null || suggestions.isEmpty()) return;
 
@@ -127,7 +128,8 @@ public class DialogManager {
             String hoverHint = GRAY.enclose("Click me to select " + CYAN.enclose(element) + ".");
             String clickCommand = element.charAt(0) == '/' ? element : '/' + element;
 
-            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.wrapShowText(CLICK.wrap(element, action, clickCommand), hoverHint)));
+            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.wrapShowText(CLICK.wrap(element, action,
+                clickCommand), hoverHint)));
             builder.append(Placeholders.TAG_LINE_BREAK);
         });
 
@@ -137,7 +139,8 @@ public class DialogManager {
             builder.append(GRAY.enclose("[<]"));
         }
         else {
-            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[<]", "/" + VALUES + " " + (page - 1)), GRAY.enclose("Previous Page"))));
+            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[<]", "/" + VALUES + " " +
+                (page - 1)), GRAY.enclose("Previous Page"))));
         }
 
         builder.append(YELLOW.enclose(" " + page));
@@ -148,7 +151,8 @@ public class DialogManager {
             builder.append(GRAY.enclose("[>]"));
         }
         else {
-            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[>]", "/" + VALUES + " " + (page + 1)), GRAY.enclose("Next Page"))));
+            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[>]", "/" + VALUES + " " +
+                (page + 1)), GRAY.enclose("Next Page"))));
 
         }
 

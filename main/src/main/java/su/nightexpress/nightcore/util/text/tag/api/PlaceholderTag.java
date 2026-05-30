@@ -1,9 +1,10 @@
 package su.nightexpress.nightcore.util.text.tag.api;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Deprecated
 public interface PlaceholderTag {
 
-    @NotNull String getValue();
+    @NonNull
+    String getValue();
 }

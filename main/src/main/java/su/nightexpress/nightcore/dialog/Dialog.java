@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.dialog;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.impl.AbstractMenu;
@@ -22,20 +22,20 @@ import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 @Deprecated
 public class Dialog {
 
-    private static final Map<UUID, Dialog> DIALOG_MAP = new ConcurrentHashMap<>();
-    private static final int DEFAULT_TIMEOUT = 60;
+    private static final Map<UUID, Dialog> DIALOG_MAP      = new ConcurrentHashMap<>();
+    private static final int               DEFAULT_TIMEOUT = 60;
 
-    public static final String EXIT       = "#exit";
-    public static final String VALUES     = "#values";
+    public static final String EXIT   = "#exit";
+    public static final String VALUES = "#values";
 
     private final Player        player;
     private final DialogHandler handler;
 
-    private Menu lastMenu;
+    private Menu         lastMenu;
     private List<String> suggestions;
-    private long timeoutDate;
+    private long         timeoutDate;
 
-    public Dialog(@NotNull Player player, @NotNull DialogHandler handler) {
+    public Dialog(@NonNull Player player, @NonNull DialogHandler handler) {
         this.player = player;
         this.handler = handler;
         this.suggestions = new ArrayList<>();
@@ -46,12 +46,12 @@ public class Dialog {
         return this.timeoutDate > 0 && System.currentTimeMillis() >= this.timeoutDate;
     }
 
-    @NotNull
+    @NonNull
     public Player getPlayer() {
         return player;
     }
 
-    @NotNull
+    @NonNull
     public DialogHandler getHandler() {
         return handler;
     }
@@ -61,20 +61,21 @@ public class Dialog {
         return lastMenu;
     }
 
-    @NotNull
+    @NonNull
     public Dialog setLastMenu(@Nullable Menu lastMenu) {
         this.lastMenu = lastMenu;
         return this;
     }
 
-    @NotNull
+    @NonNull
     public List<String> getSuggestions() {
         return suggestions;
     }
 
-    @NotNull
-    public Dialog setSuggestions(@NotNull Collection<String> suggestions, boolean autoRun) {
-        this.suggestions = suggestions.stream().sorted(String::compareTo).collect(Collectors.toCollection(ArrayList::new));
+    @NonNull
+    public Dialog setSuggestions(@NonNull Collection<String> suggestions, boolean autoRun) {
+        this.suggestions = suggestions.stream().sorted(String::compareTo).collect(Collectors.toCollection(
+            ArrayList::new));
         this.displaySuggestions(autoRun, 1);
         return this;
     }
@@ -110,7 +111,8 @@ public class Dialog {
             String hoverHint = GRAY.enclose("Click me to select " + CYAN.enclose(element) + ".");
             String clickCommand = element.charAt(0) == '/' ? element : '/' + element;
 
-            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.wrapShowText(CLICK.enclose(element, action, clickCommand), hoverHint)));
+            builder.append(DARK_GRAY.enclose("> ")).append(GREEN.enclose(HOVER.wrapShowText(CLICK.enclose(element,
+                action, clickCommand), hoverHint)));
             builder.append(Placeholders.TAG_LINE_BREAK);
         });
 
@@ -120,7 +122,8 @@ public class Dialog {
             builder.append(GRAY.enclose("[<]"));
         }
         else {
-            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[<]", "/" + VALUES + " " + (page - 1) + " " + autoRun), GRAY.enclose("Previous Page"))));
+            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[<]", "/" + VALUES + " " +
+                (page - 1) + " " + autoRun), GRAY.enclose("Previous Page"))));
         }
 
         builder.append(YELLOW.enclose(" " + page));
@@ -131,7 +134,8 @@ public class Dialog {
             builder.append(GRAY.enclose("[>]"));
         }
         else {
-            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[>]", "/" + VALUES + " " + (page + 1) + " " + autoRun), GRAY.enclose("Next Page"))));
+            builder.append(LIGHT_RED.enclose(HOVER.wrapShowText(CLICK.wrapRunCommand("[>]", "/" + VALUES + " " +
+                (page + 1) + " " + autoRun), GRAY.enclose("Next Page"))));
 
         }
 
@@ -141,33 +145,33 @@ public class Dialog {
     }
 
     @Deprecated
-    public void prompt(@NotNull String text) {
+    public void prompt(@NonNull String text) {
         this.sendInfo(CoreLang.EDITOR_INPUT_HEADER_MAIN.getMessage().toLegacy(), NightMessage.asLegacy(text));
     }
 
-    public void prompt(@NotNull TextRoot text) {
+    public void prompt(@NonNull TextRoot text) {
         this.info(CoreLang.EDITOR_INPUT_HEADER_MAIN.getMessage(), text);
     }
 
     @Deprecated
-    public void error(@NotNull String text) {
+    public void error(@NonNull String text) {
         this.sendInfo(CoreLang.EDITOR_INPUT_HEADER_ERROR.getMessage().toLegacy(), NightMessage.asLegacy(text));
     }
 
-    public void error(@NotNull TextRoot text) {
+    public void error(@NonNull TextRoot text) {
         this.info(CoreLang.EDITOR_INPUT_HEADER_ERROR.getMessage(), text);
     }
 
-    public void info(@NotNull TextRoot title, @NotNull TextRoot text) {
+    public void info(@NonNull TextRoot title, @NonNull TextRoot text) {
         this.sendInfo(title.toLegacy(), text.toLegacy());
     }
 
     @Deprecated
-    public void info(@NotNull String title, @NotNull String text) {
+    public void info(@NonNull String title, @NonNull String text) {
         this.sendInfo(NightMessage.asLegacy(title), NightMessage.asLegacy(text));
     }
 
-    private void sendInfo(@NotNull String title, @NotNull String text) {
+    private void sendInfo(@NonNull String title, @NonNull String text) {
         this.getPlayer().sendTitle(title, text, 20, Short.MAX_VALUE, 20);
     }
 
@@ -179,8 +183,8 @@ public class Dialog {
         });
     }
 
-    @NotNull
-    public static Dialog create(@NotNull Player player, @NotNull DialogHandler handler) {
+    @NonNull
+    public static Dialog create(@NonNull Player player, @NonNull DialogHandler handler) {
         Dialog dialog = new Dialog(player, handler)
             .setLastMenu(AbstractMenu.getMenu(player));
 
@@ -190,11 +194,11 @@ public class Dialog {
     }
 
     @Nullable
-    public static Dialog get(@NotNull Player player) {
+    public static Dialog get(@NonNull Player player) {
         return DIALOG_MAP.get(player.getUniqueId());
     }
 
-    public static void stop(@NotNull Player player) {
+    public static void stop(@NonNull Player player) {
         Dialog dialog = DIALOG_MAP.remove(player.getUniqueId());
         if (dialog == null) return;
 
@@ -202,14 +206,14 @@ public class Dialog {
         if (menu != null) {
             menu.open(player);
         }
-        player.sendTitle("", "", 1,  1, 1);
+        player.sendTitle("", "", 1, 1, 1);
     }
 
     public static void shutdown() {
         DIALOG_MAP.clear();
     }
 
-    public static boolean contains(@NotNull Player player) {
+    public static boolean contains(@NonNull Player player) {
         return get(player) != null;
     }
 }

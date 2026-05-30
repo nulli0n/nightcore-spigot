@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.text.contents;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.text.adapter.ObjectContentsAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
@@ -11,65 +11,68 @@ import java.util.UUID;
 
 public interface NightObjectContents {
 
-    @NotNull <T> T adapt(@NotNull ObjectContentsAdapter<T> adapter);
+    @NonNull
+    <T> T adapt(@NonNull ObjectContentsAdapter<T> adapter);
 
-    @NotNull
-    static NightSpriteObjectContents sprite(@NotNull NightKey atlas, @NotNull NightKey sprite) {
+    @NonNull
+    static NightSpriteObjectContents sprite(@NonNull NightKey atlas, @NonNull NightKey sprite) {
         return new NightSpriteObjectContents(atlas, sprite);
     }
 
-    @NotNull
-    static NightSpriteObjectContents sprite(@NotNull NightKey sprite) {
+    @NonNull
+    static NightSpriteObjectContents sprite(@NonNull NightKey sprite) {
         return new NightSpriteObjectContents(NightSpriteObjectContents.DEFAULT_ATLAS, sprite);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull String name) {
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull String name) {
         return playerHead(name, true);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull String name, boolean hat) {
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull String name, boolean hat) {
         return new NightPlayerHeadObjectContents(name, null, Collections.emptyList(), hat, null);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull UUID id) {
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull UUID id) {
         return playerHead(id, true);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull UUID id, boolean hat) {
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull UUID id, boolean hat) {
         return new NightPlayerHeadObjectContents(null, id, Collections.emptyList(), hat, null);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull NightKey texture) {
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull NightKey texture) {
         return playerHead(texture, true);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull NightKey texture, boolean hat) {
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull NightKey texture, boolean hat) {
         return new NightPlayerHeadObjectContents(null, null, Collections.emptyList(), hat, texture);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull NightProfile profile) {
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull NightProfile profile) {
         return playerHead(profile, true);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull NightProfile profile, boolean hat) {
-        return new NightPlayerHeadObjectContents(profile.getName(), profile.getId(), Collections.emptyList(), hat, null);
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull NightProfile profile, boolean hat) {
+        return new NightPlayerHeadObjectContents(profile.getName(), profile.getId(), Collections
+            .emptyList(), hat, null);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull Player player) {
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull Player player) {
         return playerHead(player, true);
     }
 
-    @NotNull
-    static NightPlayerHeadObjectContents playerHead(@NotNull Player player, boolean hat) {
-        return new NightPlayerHeadObjectContents(player.getName(), player.getUniqueId(), Collections.emptyList(), hat, null);
+    @NonNull
+    static NightPlayerHeadObjectContents playerHead(@NonNull Player player, boolean hat) {
+        return new NightPlayerHeadObjectContents(player.getName(), player.getUniqueId(), Collections
+            .emptyList(), hat, null);
     }
 }

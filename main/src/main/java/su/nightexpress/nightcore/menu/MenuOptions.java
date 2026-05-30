@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.menu;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.function.UnaryOperator;
@@ -19,33 +19,33 @@ public class MenuOptions {
     private long lastAutoRefresh;
 
     @Deprecated
-    public MenuOptions(@NotNull String title, int size, @NotNull InventoryType type) {
+    public MenuOptions(@NonNull String title, int size, @NonNull InventoryType type) {
         this(title, size, type, 0);
     }
 
-    public MenuOptions(@NotNull String title, @NotNull MenuSize size) {
+    public MenuOptions(@NonNull String title, @NonNull MenuSize size) {
         this(title, size.getSize(), InventoryType.CHEST, 0);
     }
 
-    public MenuOptions(@NotNull String title, @NotNull InventoryType type) {
+    public MenuOptions(@NonNull String title, @NonNull InventoryType type) {
         this(title, 27, type, 0);
     }
 
-    public MenuOptions(@NotNull String title, int size, @NotNull InventoryType type, int autoRefresh) {
+    public MenuOptions(@NonNull String title, int size, @NonNull InventoryType type, int autoRefresh) {
         this.setTitle(title);
         this.setSize(size);
         this.setType(type);
         this.setAutoRefresh(autoRefresh);
     }
 
-    public MenuOptions(@NotNull MenuOptions options) {
+    public MenuOptions(@NonNull MenuOptions options) {
         this(options.getTitle(), options.getSize(), options.getType(), options.getAutoRefresh());
         this.size = options.getSize();
         this.autoRefresh = options.getAutoRefresh();
         this.lastAutoRefresh = 0L;
     }
 
-    @NotNull
+    @NonNull
     public Inventory createInventory() {
         if (this.getType() == InventoryType.CHEST) {
             return Bukkit.getServer().createInventory(null, this.getSize(), this.getTitleFormatted());
@@ -55,21 +55,21 @@ public class MenuOptions {
         }
     }
 
-    @NotNull
+    @NonNull
     public String getTitle() {
         return title;
     }
 
-    @NotNull
+    @NonNull
     public String getTitleFormatted() {
         return NightMessage.asLegacy(this.getTitle());
     }
 
-    public void setTitle(@NotNull String title) {
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
-    public void editTitle(@NotNull UnaryOperator<String> function) {
+    public void editTitle(@NonNull UnaryOperator<String> function) {
         this.setTitle(function.apply(this.getTitle()));
     }
 
@@ -82,12 +82,12 @@ public class MenuOptions {
         this.size = size;
     }
 
-    @NotNull
+    @NonNull
     public InventoryType getType() {
         return type;
     }
 
-    public void setType(@NotNull InventoryType type) {
+    public void setType(@NonNull InventoryType type) {
         this.type = type;
     }
 
@@ -108,6 +108,7 @@ public class MenuOptions {
     }
 
     public boolean isReadyToRefresh() {
-        return this.getAutoRefresh() > 0 && System.currentTimeMillis() - this.getLastAutoRefresh() >= this.getAutoRefresh();
+        return this.getAutoRefresh() > 0 && System.currentTimeMillis() - this.getLastAutoRefresh() >= this
+            .getAutoRefresh();
     }
 }

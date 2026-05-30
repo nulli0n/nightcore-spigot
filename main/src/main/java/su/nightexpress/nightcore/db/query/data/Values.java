@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.query.data;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.query.TypedValue;
 import su.nightexpress.nightcore.db.sql.column.Column;
 
@@ -15,22 +15,22 @@ public class Values<T> {
     private final List<TypedValue<T>>      values;
     private final Function<Column, String> columnMapper;
 
-    Values(@NotNull Function<Column, String> columnMapper) {
+    Values(@NonNull Function<Column, String> columnMapper) {
         this.values = new ArrayList<>();
         this.columnMapper = columnMapper;
     }
 
-    @NotNull
+    @NonNull
     public static <T> Values<T> forInsert() {
         return new Values<>(Column::getNameEscaped);
     }
 
-    @NotNull
+    @NonNull
     public static <T> Values<T> forUpdate() {
         return new Values<>(column -> column.getNameEscaped() + " = ?");
     }
 
-    @NotNull
+    @NonNull
     public String toSQL() {
         return this.values.stream().map(TypedValue::toSQL).collect(Collectors.joining(","));
     }
@@ -39,13 +39,13 @@ public class Values<T> {
         return this.values.size();
     }
 
-    @NotNull
-    public String getValue(@NotNull T entity, int index) {
+    @NonNull
+    public String getValue(@NonNull T entity, int index) {
         return this.values.get(index).extract(entity);
     }
 
-    @NotNull
-    public Values<T> setValue(@NotNull Column column, @NotNull Function<T, String> function) {
+    @NonNull
+    public Values<T> setValue(@NonNull Column column, @NonNull Function<T, String> function) {
         this.values.add(new TypedValue<>(this.columnMapper.apply(column), function));
         return this;
     }

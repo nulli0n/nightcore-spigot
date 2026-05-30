@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.db.column;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.db.config.DatabaseType;
 
 @FunctionalInterface
@@ -16,17 +17,20 @@ public interface ColumnDataType {
     ColumnDataType LONG_TEXT   = type -> type == DatabaseType.SQLITE ? "TEXT" : "LONGTEXT";
     ColumnDataType JSON        = type -> type == DatabaseType.SQLITE ? "TEXT" : "JSON";
     ColumnDataType UUID        = type -> type == DatabaseType.SQLITE ? "TEXT" : "VARCHAR(36)";
+    ColumnDataType TIMESTAMP   = type -> "TIMESTAMP(6) NOT NULL";
 
-    @NotNull
+    @NonNull
     static ColumnDataType string(int length) {
         if (length <= 0) throw new IllegalArgumentException("Length must be > 0");
 
         return type -> type == DatabaseType.SQLITE ? "TEXT" : "VARCHAR(" + length + ") CHARACTER SET utf8mb4";
     }
 
-    @NotNull String toSql(@NotNull DatabaseType type);
+    @NonNull
+    String toSql(@NonNull DatabaseType type);
 
-    @NotNull default String toSql(@NotNull DatabaseType type, @NotNull NullOption nullOption) {
+    @NonNull
+    default String toSql(@NonNull DatabaseType type, @NonNull NullOption nullOption) {
         String sql = this.toSql(type);
         return nullOption == NullOption.NULLABLE ? sql : sql + " NOT NULL";
     }

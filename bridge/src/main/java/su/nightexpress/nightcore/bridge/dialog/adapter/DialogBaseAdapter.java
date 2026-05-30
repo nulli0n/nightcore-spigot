@@ -1,9 +1,11 @@
 package su.nightexpress.nightcore.bridge.dialog.adapter;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.dialog.wrap.base.WrappedDialogBase;
 
 public interface DialogBaseAdapter<B> {
 
-    @NotNull B adaptBase(@NotNull WrappedDialogBase base);
+    @NonNull
+    B adaptBase(@NonNull WrappedDialogBase base);
 }

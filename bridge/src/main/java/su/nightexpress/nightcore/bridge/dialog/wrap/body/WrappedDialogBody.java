@@ -1,14 +1,16 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.body;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogBodyAdapter;
 
 import java.util.function.UnaryOperator;
 
 public interface WrappedDialogBody {
 
-    @NotNull <D> D adapt(@NotNull DialogBodyAdapter<D> adapter);
+    @NonNull
+    <D> D adapt(@NonNull DialogBodyAdapter<D> adapter);
 
     @Deprecated
-    @NotNull WrappedDialogBody replace(@NotNull UnaryOperator<String> operator);
+    @NonNull
+    WrappedDialogBody replace(@NonNull UnaryOperator<String> operator);
 }

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.query.type;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.sql.util.SQLUtils;
 import su.nightexpress.nightcore.db.sql.column.Column;
 import su.nightexpress.nightcore.db.sql.query.QueryValue;
@@ -22,20 +22,22 @@ public abstract class ConditionalQuery<Q extends ConditionalQuery<Q, T>, T> exte
 
     protected abstract Q getThis();
 
-    @NotNull
+    @NonNull
     protected String buildWhereSQLPart() {
         return this.whereColumns.stream().map(QueryValue::getSQLPart).collect(Collectors.joining(" AND "));
     }
 
-    @NotNull
-    public Q where(@NotNull Column column, @NotNull WhereOperator operator, @NotNull Function<T, String> function) {
+    @NonNull
+    public Q where(@NonNull Column column, @NonNull WhereOperator operator, @NonNull Function<T, String> function) {
         this.whereColumns.add(new QueryValue<>(SQLUtils.forWhere(column, operator), function));
         return this.getThis();
     }
 
-    @NotNull
-    public Q whereIgnoreCase(@NotNull Column column, @NotNull WhereOperator operator, @NotNull Function<T, String> function) {
-        this.whereColumns.add(new QueryValue<>(SQLUtils.forWhereLowercase(column, operator), function.andThen(String::toLowerCase)));
+    @NonNull
+    public Q whereIgnoreCase(@NonNull Column column, @NonNull WhereOperator operator,
+                             @NonNull Function<T, String> function) {
+        this.whereColumns.add(new QueryValue<>(SQLUtils.forWhereLowercase(column, operator), function.andThen(
+            String::toLowerCase)));
         return this.getThis();
     }
 
@@ -43,8 +45,8 @@ public abstract class ConditionalQuery<Q extends ConditionalQuery<Q, T>, T> exte
         return this.whereColumns.size();
     }
 
-    @NotNull
-    public String getWhereValue(@NotNull T entity, int index) {
+    @NonNull
+    public String getWhereValue(@NonNull T entity, int index) {
         return this.whereColumns.get(index).getStatementPart(entity);
     }
 }

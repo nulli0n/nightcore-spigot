@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.NumberUtil;
@@ -13,8 +13,8 @@ import java.util.Objects;
 
 public class ExactPos implements Writeable {
 
-    private final double x,y,z;
-    private final float yaw, pitch;
+    private final double x, y, z;
+    private final float  yaw, pitch;
 
     public ExactPos(double x, double y, double z, float yaw, float pitch) {
         this.x = x;
@@ -24,23 +24,23 @@ public class ExactPos implements Writeable {
         this.pitch = pitch;
     }
 
-    @NotNull
-    public static ExactPos read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static ExactPos read(@NonNull FileConfig config, @NonNull String path) {
         return deserialize(String.valueOf(config.getString(path)));
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path, this.serialize());
     }
 
-    @NotNull
+    @NonNull
     public String serialize() {
         return this.x + "," + this.y + "," + this.z + "," + this.pitch + "," + this.yaw;
     }
 
-    @NotNull
-    public static ExactPos deserialize(@NotNull String str) {
+    @NonNull
+    public static ExactPos deserialize(@NonNull String str) {
         String[] split = str.split(",");
         if (split.length < 3) return empty();
 
@@ -54,65 +54,63 @@ public class ExactPos implements Writeable {
     }
 
 
-
     public boolean isEmpty() {
         return this.x == 0 && this.y == 0 && this.z == 0 && this.pitch == 0 && this.yaw == 0;
     }
 
-    @NotNull
+    @NonNull
     public static ExactPos empty() {
         return new ExactPos(0, 0, 0, 0F, 0F);
     }
 
-    @NotNull
-    public static ExactPos from(@NotNull Block block) {
+    @NonNull
+    public static ExactPos from(@NonNull Block block) {
         return new ExactPos(block.getX(), block.getY(), block.getZ(), 0F, 0F);
     }
 
-    @NotNull
-    public static ExactPos from(@NotNull BlockPos pos) {
+    @NonNull
+    public static ExactPos from(@NonNull BlockPos pos) {
         return new ExactPos(pos.getX(), pos.getY(), pos.getZ(), 0F, 0F);
     }
 
-    @NotNull
-    public static ExactPos from(@NotNull Location location) {
-        return new ExactPos(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getYaw(), location.getPitch());
+    @NonNull
+    public static ExactPos from(@NonNull Location location) {
+        return new ExactPos(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location
+            .getYaw(), location.getPitch());
     }
 
 
-
-    @NotNull
-    public Block toBlock(@NotNull World world) {
+    @NonNull
+    public Block toBlock(@NonNull World world) {
         return this.toBlockPos().toBlock(world);
     }
 
-    @NotNull
-    public Location toLocation(@NotNull World world) {
+    @NonNull
+    public Location toLocation(@NonNull World world) {
         Location location = new Location(world, this.x, this.y, this.z);
         location.setPitch(this.pitch);
         location.setYaw(this.yaw);
         return location;
     }
 
-    @NotNull
+    @NonNull
     public BlockPos toBlockPos() {
         return new BlockPos((int) this.x, (int) this.y, (int) this.z);
     }
 
-    @NotNull
+    @NonNull
     public ChunkPos toChunkPos() {
         return ChunkPos.from(this);
     }
 
-    @NotNull
-    public Chunk toChunk(@NotNull World world) {
+    @NonNull
+    public Chunk toChunk(@NonNull World world) {
         return this.toChunkPos().getChunk(world);
     }
 
-    public boolean isChunkLoaded(@NotNull World world) {
+    public boolean isChunkLoaded(@NonNull World world) {
         return this.toChunkPos().isLoaded(world);
     }
-
 
 
     public double getX() {
@@ -135,7 +133,7 @@ public class ExactPos implements Writeable {
         return this.pitch;
     }
 
-    @NotNull
+    @NonNull
     public ExactPos copy() {
         return new ExactPos(this.x, this.y, this.z, this.yaw, this.pitch);
     }
@@ -144,7 +142,8 @@ public class ExactPos implements Writeable {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof ExactPos other)) return false;
-        return x == other.x && y == other.y && z == other.z && Float.compare(yaw, other.yaw) == 0 && Float.compare(pitch, other.pitch) == 0;
+        return x == other.x && y == other.y && z == other.z && Float.compare(yaw, other.yaw) == 0 && Float.compare(
+            pitch, other.pitch) == 0;
     }
 
     @Override

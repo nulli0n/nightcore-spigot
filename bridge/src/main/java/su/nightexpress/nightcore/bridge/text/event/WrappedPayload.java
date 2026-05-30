@@ -1,38 +1,39 @@
 package su.nightexpress.nightcore.bridge.text.event;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 
 public interface WrappedPayload {
 
-    record Text(@NotNull String value) implements WrappedPayload {}
+    record Text(@NonNull String value) implements WrappedPayload {
+    }
 
-    record Int(int integer) implements WrappedPayload {}
+    record Int(int integer) implements WrappedPayload {
+    }
 
-    record Custom(@NotNull NightKey key, @NotNull NightNbtHolder nbt) implements WrappedPayload {}
+    record Custom(@NonNull NightKey key, @NonNull NightNbtHolder nbt) implements WrappedPayload {
+    }
 
-    record Dialog(@NotNull WrappedDialog dialog) implements WrappedPayload {}
+    record Dialog(@NonNull WrappedDialog dialog) implements WrappedPayload {
+    }
 
-    @NotNull
-    static WrappedPayload.Text string(@NotNull String value) {
+    static WrappedPayload.@NonNull Text string(@NonNull String value) {
         return new Text(value);
     }
 
-    @NotNull
-    static WrappedPayload.Int integer(int integer) {
+    static WrappedPayload.@NonNull Int integer(int integer) {
         return new Int(integer);
     }
 
-    @NotNull
-    static WrappedPayload.Dialog dialog(@NotNull WrappedDialog dialog) {
+    static WrappedPayload.@NonNull Dialog dialog(@NonNull WrappedDialog dialog) {
         return new Dialog(dialog);
     }
 
     // BinaryTagHolder nbt
-    @NotNull
-    static WrappedPayload.Custom custom(@NotNull NightKey key, @NotNull NightNbtHolder nbt) {
+    static WrappedPayload.@NonNull Custom custom(@NonNull NightKey key, @NonNull NightNbtHolder nbt) {
         return new Custom(key, nbt);
     }
 }

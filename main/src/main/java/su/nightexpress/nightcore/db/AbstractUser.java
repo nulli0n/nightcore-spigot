@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.db;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.util.UUID;
@@ -17,11 +17,11 @@ public abstract class AbstractUser {
     protected String name;
     protected long   dateCreated;
     protected long   lastOnline;
-    protected long cacheExpireTime;
-    protected long autoSaveTime;
-    protected long autoSyncTime;
+    protected long   cacheExpireTime;
+    protected long   autoSaveTime;
+    protected long   autoSyncTime;
 
-    public AbstractUser(@NotNull UUID uuid, @NotNull String name, long dateCreated, long lastOnline) {
+    public AbstractUser(@NonNull UUID uuid, @NonNull String name, long dateCreated, long lastOnline) {
         this.uuid = uuid;
         this.name = name;
         this.setDateCreated(dateCreated);
@@ -103,12 +103,12 @@ public abstract class AbstractUser {
     }
 
 
-    @NotNull
+    @NonNull
     public final UUID getId() {
         return this.uuid;
     }
 
-    @NotNull
+    @NonNull
     public final String getName() {
         return this.name;
     }
@@ -137,7 +137,7 @@ public abstract class AbstractUser {
         return this.getPlayer() != null;
     }
 
-    @NotNull
+    @NonNull
     public final OfflinePlayer getOfflinePlayer() {
         return Bukkit.getOfflinePlayer(this.getId());
     }

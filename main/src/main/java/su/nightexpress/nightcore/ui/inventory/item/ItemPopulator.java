@@ -1,36 +1,39 @@
 package su.nightexpress.nightcore.ui.inventory.item;
 
-import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
-import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
-import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
-import su.nightexpress.nightcore.util.bukkit.NightItem;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public record ItemPopulator<T>(int[] slots,
-                               @NotNull BiFunction<ViewerContext, T, NightItem> itemProvider,
-                               @NotNull Function<T, MenuItemAction> actionProvider) {
+import org.jspecify.annotations.NonNull;
 
-    @NotNull
-    public static <T> Builder<T> builder() {
+import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
+import su.nightexpress.nightcore.ui.inventory.item.populator.SlotProvider;
+import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
+import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
+
+public record ItemPopulator<T>(@NonNull SlotProvider slotProvider,
+                               @NonNull BiFunction<ViewerContext, T, NightItem> itemProvider,
+                               @NonNull Function<T, MenuItemAction> actionProvider) {
+
+    public static <T> @NonNull Builder<T> builder() {
         return new Builder<>();
     }
 
-    @NotNull
-    public static <T> Builder<T> builder(@NotNull Class<T> type) {
+    public static <T> @NonNull Builder<T> builder(@NonNull Class<T> type) {
         return new Builder<>();
     }
 
-    public void populateTo(@NotNull ViewerContext context, @NotNull Collection<T> items, @NotNull List<MenuItem> targetItems) {
+    public void populateTo(@NonNull ViewerContext context, @NonNull Collection<T> items,
+                           @NonNull List<MenuItem> targetItems) {
         MenuViewer viewer = context.getViewer();
 
-        int limit = this.slots.length;
-        int pages = (int) Math.ceil((double) items.size() / (double) limit);
+        int itemsSize = items.size();
+        int[] slots = this.slotProvider.getSlots(itemsSize);
+        int limit = slots.length;
+        int pages = (int) Math.ceil((double) itemsSize / (double) limit);
 
         viewer.setTotalPages(pages);
         viewer.setCurrentPage(Math.min(viewer.getCurrentPage(), viewer.getTotalPages()));
@@ -44,7 +47,7 @@ public record ItemPopulator<T>(int[] slots,
             NightItem item = this.itemProvider.apply(context, object);
             MenuItem menuItem = MenuItem.custom()
                 .defaultState(item, this.actionProvider.apply(object))
-                .slots(this.slots[count++])
+                .slots(slots[count++])
                 .build();
 
             targetItems.add(menuItem);
@@ -53,7 +56,7 @@ public record ItemPopulator<T>(int[] slots,
 
     public static class Builder<T> {
 
-        private int[]                                   slots;
+        private SlotProvider                            slotProvider;
         private BiFunction<ViewerContext, T, NightItem> itemProvider;
         private Function<T, MenuItemAction>             actionProvider;
 
@@ -61,29 +64,29 @@ public record ItemPopulator<T>(int[] slots,
 
         }
 
-        @NotNull
-        public ItemPopulator<T> build() {
-            Objects.requireNonNull(this.slots, "No slots defined");
+        public @NonNull ItemPopulator<T> build() {
+            Objects.requireNonNull(this.slotProvider, "No slots defined");
             Objects.requireNonNull(this.itemProvider, "No item provider defined");
             Objects.requireNonNull(this.actionProvider, "No action provider defined");
 
-            return new ItemPopulator<>(this.slots, this.itemProvider, this.actionProvider);
+            return new ItemPopulator<>(this.slotProvider, this.itemProvider, this.actionProvider);
         }
 
-        @NotNull
-        public Builder<T> slots(int... slots) {
-            this.slots = slots;
+        public @NonNull Builder<T> slots(int... slots) {
+            return this.slots(size -> slots);
+        }
+
+        public @NonNull Builder<T> slots(@NonNull SlotProvider slotProvider) {
+            this.slotProvider = slotProvider;
             return this;
         }
 
-        @NotNull
-        public Builder<T> itemProvider(@NotNull BiFunction<ViewerContext, T, NightItem> itemProvider) {
+        public @NonNull Builder<T> itemProvider(@NonNull BiFunction<ViewerContext, T, NightItem> itemProvider) {
             this.itemProvider = itemProvider;
             return this;
         }
 
-        @NotNull
-        public Builder<T> actionProvider(@NotNull Function<T, MenuItemAction> actionProvider) {
+        public @NonNull Builder<T> actionProvider(@NonNull Function<T, MenuItemAction> actionProvider) {
             this.actionProvider = actionProvider;
             return this;
         }

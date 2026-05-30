@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.MenuType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.api.event.MenuOpenEvent;
@@ -58,12 +58,14 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
     protected long    autoRefreshIn;
     protected boolean configured;
 
-    @Deprecated
-    public AbstractMenuBase(@NonNull MenuType defaultType, @NonNull String defaultTitle) {
+    @Deprecated(forRemoval = true)
+    protected AbstractMenuBase(@NonNull MenuType defaultType, @NonNull String defaultTitle) {
         this(null, defaultType, defaultTitle);
     }
 
-    public AbstractMenuBase(@Nullable NightPlugin plugin, @NonNull MenuType defaultType, @NonNull String defaultTitle) {
+    protected AbstractMenuBase(@Nullable NightPlugin plugin,
+                               @NonNull MenuType defaultType,
+                               @NonNull String defaultTitle) {
         this.plugin = plugin;
         this.dataRegistry = new MenuDataRegistry();
 
@@ -93,12 +95,12 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
 
     public abstract void defineDefaultLayout();
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public void load(@NonNull NightPlugin plugin) {
         this.load(plugin, null);
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public void load(@NonNull NightPlugin plugin, @Nullable FileConfig config) {
         this.plugin = plugin;
         this.load0(config);
@@ -225,7 +227,8 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
     }
 
     @NonNull
-    private MenuItem loadItem(@NonNull FileConfig config, @NonNull String path, @Nullable MenuItem defaultItem, @NonNull ItemType type) {
+    private MenuItem loadItem(@NonNull FileConfig config, @NonNull String path, @Nullable MenuItem defaultItem,
+                              @NonNull ItemType type) {
         MenuItem.Builder builder = MenuItem.builder(type);
 
         this.loadItemStates(config, path + ".States", builder, defaultItem, type);
@@ -236,7 +239,8 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         return builder.build();
     }
 
-    private void loadItemStates(@NonNull FileConfig config, @NonNull String path, MenuItem.@NonNull Builder builder, @Nullable MenuItem defaultItem, @NonNull ItemType type) {
+    private void loadItemStates(@NonNull FileConfig config, @NonNull String path, MenuItem.@NonNull Builder builder,
+                                @Nullable MenuItem defaultItem, @NonNull ItemType type) {
 
         boolean hasSection = !config.getSection(path).isEmpty();
 
@@ -278,7 +282,11 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         });
     }
 
-    private void loadStateActions(@NonNull FileConfig config, @NonNull String path, ItemState.@NonNull Builder builder, @Nullable ItemState defaultState, @NonNull ItemType type) {
+    private void loadStateActions(@NonNull FileConfig config,
+                                  @NonNull String path,
+                                  ItemState.@NonNull Builder builder,
+                                  @Nullable ItemState defaultState,
+                                  @NonNull ItemType type) {
 
         if (type.isActionLocked()) {
             MenuItemAction defaultAction = defaultState == null ? null : defaultState.getAction();
@@ -298,15 +306,15 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         }
 
         if (type.isClickCommandsAllowed()) {
-            Map<ClickType, List<String>> commandMap = new HashMap<>();
+            Map<ClickType, List<String>> commandMap = new EnumMap<>(ClickType.class);
             for (String sType : config.getSection(path + ".Click-Commands")) {
                 ClickType clickType = Enums.get(sType, ClickType.class);
                 if (clickType == null) continue;
 
                 List<String> commands = config.getStringList(path + ".Click-Commands." + sType);
-                if (commands.isEmpty()) continue;
-
-                commandMap.put(clickType, commands);
+                if (!commands.isEmpty()) {
+                    commandMap.put(clickType, commands);
+                }
             }
 
             if (!commandMap.isEmpty()) {
@@ -315,7 +323,11 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         }
     }
 
-    private void loadStateConditions(@NonNull FileConfig config, @NonNull String path, ItemState.@NonNull Builder builder, @Nullable ItemState defaultState, @NonNull ItemType type) {
+    private void loadStateConditions(@NonNull FileConfig config,
+                                     @NonNull String path,
+                                     ItemState.@NonNull Builder builder,
+                                     @Nullable ItemState defaultState,
+                                     @NonNull ItemType type) {
 
         ItemStateCondition condition = null;
         ItemStateCondition defaultCondition = defaultState == null ? null : defaultState.getCondition();
@@ -336,7 +348,9 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         builder.condition(condition);
     }
 
-    private void loadStateDisplayModifiers(@NonNull FileConfig config, @NonNull String path, ItemState.@NonNull Builder builder, @Nullable ItemState defaultState, @NonNull ItemType type) {
+    private void loadStateDisplayModifiers(@NonNull FileConfig config, @NonNull String path,
+                                           ItemState.@NonNull Builder builder, @Nullable ItemState defaultState,
+                                           @NonNull ItemType type) {
 
         List<DisplayModifier> modifiers = new ArrayList<>();
 
@@ -385,7 +399,9 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         return this.menuType.get();
     }
 
-    protected final boolean showMenu(@NonNull MenuRegistry registry, @NonNull Player player, @Nullable Consumer<MenuViewer> preRender) {
+    protected final boolean showMenu(@NonNull MenuRegistry registry,
+                                     @NonNull Player player,
+                                     @Nullable Consumer<MenuViewer> preRender) {
         if (player.isSleeping()) {
             this.close(player);
             return false;
@@ -491,7 +507,8 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
     }
 
     @Override
-    public void handleClose(@NonNull Player player, @NonNull InventoryCloseEvent event, @NonNull MenuRegistry menuRegistry) {
+    public void handleClose(@NonNull Player player, @NonNull InventoryCloseEvent event,
+                            @NonNull MenuRegistry menuRegistry) {
         MenuViewer viewer = this.viewers.get(player.getUniqueId());
         if (viewer == null || viewer.isRefreshing()) return;
 
@@ -582,17 +599,17 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         );
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     protected void addNextPageItem(@NonNull Material material, int... slots) {
         this.addNextPageButton(slots);
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     protected void addPreviousPageItem(@NonNull Material material, int... slots) {
         this.addPreviousPageButton(slots);
     }
 
-    protected void addBackgroundItem(@NonNull Material material, int... slots) {
+    public void addBackgroundItem(@NonNull Material material, int... slots) {
         this.addDefaultButton(BukkitThing.getValue(material) + "_" + UUID.randomUUID().toString().substring(0, 5),
             MenuItem.custom()
                 .defaultState(NightItem.fromType(material).hideAllComponents().setHideTooltip(true))
@@ -601,11 +618,11 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         );
     }
 
-    protected void addDefaultButton(@NonNull String id, @NonNull MenuItem menuItem) {
+    public void addDefaultButton(@NonNull String id, @NonNull MenuItem menuItem) {
         this.defaultButtons.put(id, menuItem);
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     protected void addDefaultItem(@NonNull String id, @NonNull MenuItem menuItem) {
         this.addDefaultButton(id, menuItem);
     }
@@ -621,11 +638,9 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
     public Map<String, MenuItem> getItemsToDisplay() {
         Map<String, MenuItem> items = new LinkedHashMap<>();
         if (this.configured) {
-            //items.putAll(this.configItems);
             items.putAll(this.configButtons);
         }
         else {
-            //items.putAll(this.defaultItems);
             items.putAll(this.defaultButtons);
         }
         return items;
@@ -645,14 +660,14 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
 
     @Override
     @NonNull
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public Map<String, MenuItem> getDefaultItems() {
         return this.getDefaultButtons();
     }
 
     @Override
     @NonNull
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public Map<String, MenuItem> getConfigItems() {
         return this.getConfigButtons();
     }

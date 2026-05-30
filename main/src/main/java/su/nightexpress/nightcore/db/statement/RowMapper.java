@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.db.statement;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,5 +9,6 @@ import java.sql.SQLException;
 @FunctionalInterface
 public interface RowMapper<R> {
 
-    @Nullable R map(@NotNull ResultSet resultSet) throws SQLException;
+    @Nullable
+    R map(@NonNull ResultSet resultSet) throws SQLException;
 }

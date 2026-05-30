@@ -1,17 +1,27 @@
 package su.nightexpress.nightcore;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEventHandler;
 import su.nightexpress.nightcore.bridge.paper.PaperBridge;
 import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 import su.nightexpress.nightcore.chat.ChatManager;
+import su.nightexpress.nightcore.commands.ArgumentRegistry;
+import su.nightexpress.nightcore.commands.Arguments;
 import su.nightexpress.nightcore.commands.command.NightCommand;
 import su.nightexpress.nightcore.config.PluginDetails;
+import su.nightexpress.nightcore.configuration.codec.CodecRegistry;
+import su.nightexpress.nightcore.configuration.codec.ConfigCodecs;
 import su.nightexpress.nightcore.core.CoreConfig;
+import su.nightexpress.nightcore.core.CoreDatabase;
 import su.nightexpress.nightcore.core.CoreManager;
 import su.nightexpress.nightcore.core.CorePerms;
 import su.nightexpress.nightcore.core.command.CoreCommands;
@@ -22,14 +32,16 @@ import su.nightexpress.nightcore.language.LangAssets;
 import su.nightexpress.nightcore.ui.UIUtils;
 import su.nightexpress.nightcore.ui.dialog.DialogWatcher;
 import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
-import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.userdata.UserDataManager;
+import su.nightexpress.nightcore.util.ItemTag;
+import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.Plugins;
+import su.nightexpress.nightcore.util.TimeUtil;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 public class NightCore extends NightPlugin {
 
@@ -37,15 +49,20 @@ public class NightCore extends NightPlugin {
 
     private static NightCore core;
 
-    private final ChatManager chatManager;
+    private final ArgumentRegistry argumentRegistry;
+    private final CodecRegistry    codecRegistry;
+    private final ChatManager      chatManager;
 
-    private TagManager    tagManager;
-    private CoreManager   coreManager;
-    private MenuRegistry menuRegistry;
-    private DialogWatcher dialogWatcher;
+    private CoreDatabase    database;
+    private UserDataManager userDataManager;
+
+    private TagManager      tagManager;
+    private CoreManager     coreManager;
+    private MenuRegistry    menuRegistry;
+    private DialogWatcher   dialogWatcher;
     private CurrencyManager currencyManager;
 
-    @NotNull
+    @NonNull
     public static NightCore get() {
         if (core == null) throw new IllegalStateException("NightCore is not initialized!");
 
@@ -53,11 +70,13 @@ public class NightCore extends NightPlugin {
     }
 
     public NightCore() {
+        this.argumentRegistry = new ArgumentRegistry();
+        this.codecRegistry = new CodecRegistry();
         this.chatManager = new ChatManager(this);
     }
 
     @Override
-    @NotNull
+    @NonNull
     protected PluginDetails getDefaultDetails() {
         return PluginDetails.create("nightcore", new String[]{"nightcore", "ncore"})
             .setConfigClass(CoreConfig.class)
@@ -81,7 +100,8 @@ public class NightCore extends NightPlugin {
         Version version = Version.detect();
         if (!version.isDropped()) {
             Software.INSTANCE.load(Version.isPaper() ? new PaperBridge() : new SpigotBridge());
-            this.info("Server version detected as " + version.getLocalized() + ". Using " + Software.get().getName() + ".");
+            this.info("Server version detected as " + version.getLocalized() + ". Using " + Software.get().getName() +
+                ".");
 
             if (!testNbt()) {
                 this.error("Could not initialize NBT Utils.");
@@ -98,6 +118,9 @@ public class NightCore extends NightPlugin {
     protected void onStartup() {
         super.onStartup();
 
+        Arguments.init(this.argumentRegistry);
+        ConfigCodecs.init(this.codecRegistry);
+
         this.menuRegistry = new MenuRegistry(this);
         this.chatManager.setup();
 
@@ -110,6 +133,12 @@ public class NightCore extends NightPlugin {
         LangAssets.load(this);
         UIUtils.load(this);
         this.info("Time zone set as " + TimeUtil.getTimeZone().getID());
+
+        this.database = new CoreDatabase(this);
+        this.database.setup();
+
+        this.userDataManager = new UserDataManager(this, this.database);
+        this.userDataManager.setup();
 
         this.tagManager = new TagManager(this);
         this.tagManager.setup();
@@ -131,7 +160,8 @@ public class NightCore extends NightPlugin {
         if (this.menuRegistry != null) this.menuRegistry.shutdown();
         if (this.coreManager != null) this.coreManager.shutdown();
         if (this.tagManager != null) this.tagManager.shutdown();
-
+        if (this.userDataManager != null) this.userDataManager.shutdown();
+        if (this.database != null) this.database.shutdown();
 
         UIUtils.clear();
         LangAssets.shutdown();
@@ -154,17 +184,17 @@ public class NightCore extends NightPlugin {
         this.rootCommand = NightCommand.forPlugin(this, builder -> CoreCommands.load(this, builder));
     }
 
-    @NotNull
+    @NonNull
     public Optional<DialogWatcher> getDialogWatcher() {
         return Optional.ofNullable(this.dialogWatcher);
     }
 
-    @NotNull
+    @NonNull
     public TagManager getTagManager() {
         return this.tagManager;
     }
 
-    @NotNull
+    @NonNull
     public CurrencyManager getCurrencyManager() {
         return this.currencyManager;
     }
@@ -190,22 +220,30 @@ public class NightCore extends NightPlugin {
     }
 
     @Override
-    public void addChatHandler(@NotNull EventPriority priority, @NotNull UniversalChatEventHandler handler) {
+    public void addChatHandler(@NonNull EventPriority priority, @NonNull UniversalChatEventHandler handler) {
         this.chatManager.addHandler(priority, handler);
     }
 
     @Override
-    public void removeChatHandler(@NotNull UniversalChatEventHandler handler) {
+    public void removeChatHandler(@NonNull UniversalChatEventHandler handler) {
         this.chatManager.removeHandler(handler);
     }
 
-    @NotNull
+    @NonNull
     public MenuRegistry getMenuRegistry() {
         return this.menuRegistry;
     }
 
-    @NotNull
+    @NonNull
     public ChatManager getChatManager() {
         return this.chatManager;
+    }
+
+    public @NonNull CoreDatabase getDatabase() {
+        return this.database;
+    }
+
+    public @NonNull UserDataManager getUserDataManager() {
+        return this.userDataManager;
     }
 }

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.text.tag;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
@@ -31,26 +31,25 @@ public class TagUtils {
         .replace("&m", Tags.STRIKETHROUGH::getBracketsName)
         .replace("&n", Tags.UNDERLINED::getBracketsName)
         .replace("&o", Tags.ITALIC::getBracketsName)
-        .replace("&r", Tags.RESET::getBracketsName)
-        ;
+        .replace("&r", Tags.RESET::getBracketsName);
 
-    @NotNull
-    public static String replaceLegacyColors(@NotNull String string) {
+    @NonNull
+    public static String replaceLegacyColors(@NonNull String string) {
         return LEGACY_REPLACER.apply(string);
     }
 
-    @NotNull
-    public static String brackets(@NotNull String str) {
+    @NonNull
+    public static String brackets(@NonNull String str) {
         return ParserUtils.OPEN_BRACKET + str + ParserUtils.CLOSE_BRACKET;
     }
 
-    @NotNull
-    public static String closedBrackets(@NotNull String str) {
+    @NonNull
+    public static String closedBrackets(@NonNull String str) {
         return brackets(ParserUtils.CLOSE_SLASH + str);
     }
 
-    @NotNull
-    public static String wrapContent(@NotNull Tag tag, @NotNull String string, @NotNull String content) {
+    @NonNull
+    public static String wrapContent(@NonNull Tag tag, @NonNull String string, @NonNull String content) {
         String tagOpen = TagUtils.brackets(tag.getName() + ParserUtils.DELIMITER + content);
         String tagClose = tag.getClosingName();
 

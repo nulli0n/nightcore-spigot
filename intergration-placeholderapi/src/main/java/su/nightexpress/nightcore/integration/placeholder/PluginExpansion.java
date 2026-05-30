@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.integration.placeholder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.placeholder.PlaceholderRegistry;
 
@@ -14,26 +14,27 @@ public class PluginExpansion extends PlaceholderExpansion implements Expansion {
     private final PlaceholderRegistry registry;
     private final String              identifier;
 
-    public PluginExpansion(@NonNull JavaPlugin plugin, @NonNull PlaceholderRegistry registry, @NonNull String identifier) {
+    public PluginExpansion(@NonNull JavaPlugin plugin, @NonNull PlaceholderRegistry registry,
+                           @NonNull String identifier) {
         this.plugin = plugin;
         this.registry = registry;
         this.identifier = identifier;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getIdentifier() {
         return this.identifier;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getAuthor() {
         return this.plugin.getDescription().getAuthors().getFirst();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getVersion() {
         return this.plugin.getDescription().getVersion();
     }
@@ -45,7 +46,7 @@ public class PluginExpansion extends PlaceholderExpansion implements Expansion {
 
     @Override
     @Nullable
-    public String onPlaceholderRequest(Player player, @NotNull String params) {
+    public String onPlaceholderRequest(Player player, @NonNull String params) {
         if (player == null) return null;
 
         if (!this.registry.isEmpty()) {

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.database.AbstractUserDataHandler;
 import su.nightexpress.nightcore.database.AbstractUserManager;
 import su.nightexpress.nightcore.database.DataUser;
@@ -21,9 +21,9 @@ public abstract class NightDataPlugin<U extends DataUser> extends NightPlugin {
         this.getData().shutdown();
     }
 
-    @NotNull
+    @NonNull
     public abstract AbstractUserDataHandler<? extends NightDataPlugin<U>, U> getData();
 
-    @NotNull
+    @NonNull
     public abstract AbstractUserManager<? extends NightDataPlugin<U>, U> getUserManager();
 }

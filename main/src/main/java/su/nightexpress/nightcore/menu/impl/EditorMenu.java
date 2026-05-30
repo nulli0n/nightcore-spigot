@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.dialog.Dialog;
@@ -29,35 +29,36 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
     protected final ViewLink<T> link;
 
     @Deprecated
-    public EditorMenu(@NotNull P plugin, @NotNull String title, int size) {
+    public EditorMenu(@NonNull P plugin, @NonNull String title, int size) {
         super(plugin, title, size);
         this.link = new ViewLink<>();
     }
 
-    public EditorMenu(@NotNull P plugin, @NotNull String title, @NotNull MenuSize size) {
+    public EditorMenu(@NonNull P plugin, @NonNull String title, @NonNull MenuSize size) {
         super(plugin, title, size);
         this.link = new ViewLink<>();
     }
 
-    @NotNull
+    @NonNull
     @Override
     public ViewLink<T> getLink() {
         return link;
     }
 
-    @NotNull
+    @NonNull
     protected MenuItem addNextPage(int... slots) {
         ItemStack item = ItemUtil.getSkinHead("f32ca66056b72863e98f7f32bd7d94c7a0d796af691c9ac3a9136331352288f9");
         return this.addItem(item, CoreLang.EDITOR_ITEM_NEXT_PAGE, slots).setHandler(ItemHandler.forNextPage(this));
     }
 
-    @NotNull
+    @NonNull
     protected MenuItem addPreviousPage(int... slots) {
         ItemStack item = ItemUtil.getSkinHead("86971dd881dbaf4fd6bcaa93614493c612f869641ed59d1c9363a3666a5fa6");
-        return this.addItem(item, CoreLang.EDITOR_ITEM_PREVIOUS_PAGE, slots).setHandler(ItemHandler.forPreviousPage(this));
+        return this.addItem(item, CoreLang.EDITOR_ITEM_PREVIOUS_PAGE, slots).setHandler(ItemHandler.forPreviousPage(
+            this));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     protected MenuItem addReturn(int... slots) {
         ItemStack item = ItemUtil.getSkinHead("be9ae7a4be65fcbaee65181389a2f7d47e2e326db59ea3eb789a92c85ea46");
@@ -66,28 +67,28 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         return this.addItem(item, CoreLang.EDITOR_ITEM_RETURN, slots);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    protected MenuItem addCreation(@NotNull LangItem locale, int... slots) {
+    protected MenuItem addCreation(@NonNull LangItem locale, int... slots) {
         ItemStack item = ItemUtil.getSkinHead("5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1");
         //ItemStack item = new ItemStack(Material.PLAYER_HEAD);
         //ItemUtil.setSkullTexture(item, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
         return this.addItem(item, locale, slots);
     }
 
-    @NotNull
-    protected MenuItem addReturn(int slot, @NotNull EditorHandler<T> handler) {
+    @NonNull
+    protected MenuItem addReturn(int slot, @NonNull EditorHandler<T> handler) {
         ItemStack item = ItemUtil.getSkinHead("be9ae7a4be65fcbaee65181389a2f7d47e2e326db59ea3eb789a92c85ea46");
         return this.addItem(item, CoreLang.EDITOR_ITEM_RETURN, slot, handler);
     }
 
-    @NotNull
-    protected MenuItem addCreation(@NotNull LangItem locale, int slot, @NotNull EditorHandler<T> handler) {
+    @NonNull
+    protected MenuItem addCreation(@NonNull LangItem locale, int slot, @NonNull EditorHandler<T> handler) {
         ItemStack item = ItemUtil.getSkinHead("5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1");
         return this.addItem(item, locale, slot, handler);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     protected MenuItem addExit(int[] slots) {
         //ItemStack item = ItemUtil.getSkinHead("27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065");
@@ -95,34 +96,37 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         return this.addExit(slots[0]);
     }
 
-    @NotNull
+    @NonNull
     protected MenuItem addExit(int slot) {
         ItemStack item = ItemUtil.getSkinHead("27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065");
-        return this.addItem(item, CoreLang.EDITOR_ITEM_CLOSE, slot, (viewer, event, obj) -> this.runNextTick(() -> viewer.getPlayer().closeInventory()));
+        return this.addItem(item, CoreLang.EDITOR_ITEM_CLOSE, slot, (viewer, event, obj) -> this.runNextTick(
+            () -> viewer.getPlayer().closeInventory()));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public MenuItem addItem(@NotNull Material material, @NotNull LangItem locale, int... slots) {
+    public MenuItem addItem(@NonNull Material material, @NonNull LangItem locale, int... slots) {
         return this.addItem(new ItemStack(material), locale, slots);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public MenuItem addItem(@NotNull ItemStack item, @NotNull LangItem locale, int... slots) {
+    public MenuItem addItem(@NonNull ItemStack item, @NonNull LangItem locale, int... slots) {
         ItemReplacer.create(item).trimmed().hideFlags().readLocale(locale).writeMeta();
         MenuItem menuItem = new MenuItem(item).setPriority(100).setSlots(slots);
         this.addItem(menuItem);
         return menuItem;
     }
 
-    @NotNull
-    public MenuItem addItem(@NotNull Material material, @NotNull LangItem locale, int slot, @NotNull EditorHandler<T> handler) {
+    @NonNull
+    public MenuItem addItem(@NonNull Material material, @NonNull LangItem locale, int slot,
+                            @NonNull EditorHandler<T> handler) {
         return this.addItem(new ItemStack(material), locale, slot, handler);
     }
 
-    @NotNull
-    public MenuItem addItem(@NotNull ItemStack item, @NotNull LangItem locale, int slot, @NotNull EditorHandler<T> handler) {
+    @NonNull
+    public MenuItem addItem(@NonNull ItemStack item, @NonNull LangItem locale, int slot,
+                            @NonNull EditorHandler<T> handler) {
         ItemReplacer.create(item).trimmed().hideFlags().readLocale(locale).writeMeta();
         MenuItem menuItem = new MenuItem(item).setPriority(100).setSlots(slot)
             .setHandler((viewer, event) -> handler.handle(viewer, event, this.getLink(viewer)));
@@ -130,18 +134,18 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         return menuItem;
     }
 
-    @NotNull
-    public Dialog handleInput(@NotNull MenuViewer viewer, @NotNull LangString prompt, @NotNull DialogHandler handler) {
+    @NonNull
+    public Dialog handleInput(@NonNull MenuViewer viewer, @NonNull LangString prompt, @NonNull DialogHandler handler) {
         return this.handleInput(viewer.getPlayer(), prompt, handler);
     }
 
-    @NotNull
-    public Dialog handleInput(@NotNull Player player, @NotNull LangString prompt, @NotNull DialogHandler handler) {
+    @NonNull
+    public Dialog handleInput(@NonNull Player player, @NonNull LangString prompt, @NonNull DialogHandler handler) {
         return this.handleInput(player, prompt.getMessage(), handler);
     }
 
-    @NotNull
-    public Dialog handleInput(@NotNull Player player, @NotNull TextRoot prompt, @NotNull DialogHandler handler) {
+    @NonNull
+    public Dialog handleInput(@NonNull Player player, @NonNull TextRoot prompt, @NonNull DialogHandler handler) {
         this.runNextTick(player::closeInventory);
 
         Dialog dialog = Dialog.create(player, handler);
@@ -149,9 +153,9 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
         return dialog;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public Dialog handleInput(@NotNull Player player, @NotNull String prompt, @NotNull DialogHandler handler) {
+    public Dialog handleInput(@NonNull Player player, @NonNull String prompt, @NonNull DialogHandler handler) {
         this.runNextTick(player::closeInventory);
 
         Dialog dialog = Dialog.create(player, handler);
@@ -160,29 +164,29 @@ public abstract class EditorMenu<P extends NightCorePlugin, T> extends AbstractM
     }
 
     @Deprecated
-    public void editObject(@NotNull MenuViewer viewer, @NotNull Consumer<T> consumer) {
+    public void editObject(@NonNull MenuViewer viewer, @NonNull Consumer<T> consumer) {
         this.editObject(viewer.getPlayer(), consumer);
     }
 
     @Deprecated
-    public void editObject(@NotNull Player player, @NotNull Consumer<T> consumer) {
+    public void editObject(@NonNull Player player, @NonNull Consumer<T> consumer) {
         consumer.accept(this.getLink(player));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public T getObject(@NotNull MenuViewer viewer) {
+    public T getObject(@NonNull MenuViewer viewer) {
         return this.getLink().get(viewer);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public T getObject(@NotNull Player player) {
+    public T getObject(@NonNull Player player) {
         return this.getLink().get(player);
     }
 
     public interface EditorHandler<T> {
 
-        void handle(@NotNull MenuViewer viewer, @NotNull InventoryClickEvent event, @NotNull T obj);
+        void handle(@NonNull MenuViewer viewer, @NonNull InventoryClickEvent event, @NonNull T obj);
     }
 }

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.locale;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.locale.entry.MessageLocale;
@@ -27,7 +27,7 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
 
     private FileConfig config;
 
-    public LangRegistry(@NotNull NightPlugin plugin) {
+    public LangRegistry(@NonNull NightPlugin plugin) {
         super(plugin);
         this.elements = new ArrayList<>();
     }
@@ -49,16 +49,17 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         }
     }
 
-    @NotNull
-    public static List<LangElement> getElements(@NotNull Class<?> source) {
+    @NonNull
+    public static List<LangElement> getElements(@NonNull Class<?> source) {
         return Reflex.getStaticFields(source, LangElement.class, false);
     }
 
-    public static void loadEntries(@NotNull Class<?> source, @NotNull NightPlugin plugin, @NotNull FileConfig config) {
+    public static void loadEntries(@NonNull Class<?> source, @NonNull NightPlugin plugin, @NonNull FileConfig config) {
         loadEntries(getElements(source), plugin, config);
     }
 
-    public static void loadEntries(@NotNull Collection<LangElement> elements, @NotNull NightPlugin plugin, @NotNull FileConfig config) {
+    public static void loadEntries(@NonNull Collection<LangElement> elements, @NonNull NightPlugin plugin,
+                                   @NonNull FileConfig config) {
         elements.forEach(element -> {
             element.load(plugin, config);
         });
@@ -68,28 +69,32 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         return !this.elements.isEmpty();
     }
 
-    public void register(@NotNull Class<? extends LangContainer> clazz) {
+    public void register(@NonNull Class<? extends LangContainer> clazz) {
         this.elements.addAll(getElements(clazz));
     }
 
     /**
-     * Saves and loads {@link LangElement} objects from the provided {@link LangContainer} object into the lang config file according to selected
-     * language during the "enable" plugin's phase if the same can not be achieved through {@link NightPlugin#registerLang(Class)}
+     * Saves and loads {@link LangElement} objects from the provided {@link LangContainer} object into the lang config
+     * file according to selected
+     * language during the "enable" plugin's phase if the same can not be achieved through
+     * {@link NightPlugin#registerLang(Class)}
      * <br>
      * <b>Note:</b> This can not be used outside of the {@link NightPlugin#enable()} phase.
+     * 
      * @param langContainer LangContainer object with some LangElement fields defined.
      * @see NightPlugin#registerLang(Class)
      */
-    public void inject(@NotNull LangContainer langContainer) {
+    public void inject(@NonNull LangContainer langContainer) {
         this.inject(langContainer.getClass());
     }
 
-    public void inject(@NotNull Class<? extends LangContainer> langClass) {
+    public void inject(@NonNull Class<? extends LangContainer> langClass) {
         if (this.config != null) {
             loadEntries(langClass, this.plugin, this.config);
         }
         else {
-            this.plugin.warn("Lang Container " + langClass.getSimpleName() + " is not injected due to be out of the #enable() phase.");
+            this.plugin.warn("Lang Container " + langClass.getSimpleName() +
+                " is not injected due to be out of the #enable() phase.");
         }
     }
 
@@ -108,7 +113,8 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         this.config = FileConfig.loadOrExtract(this.plugin, DIRECTORY, this.getFileName(langCode));
 
         if (!isSupportedLocale) {
-            this.plugin.warn("Lang file for the '" + userLocale + "' locale does not exist. Will use the '" + langCode + "' one.");
+            this.plugin.warn("Lang file for the '" + userLocale + "' locale does not exist. Will use the '" + langCode +
+                "' one.");
         }
 
         loadEntries(this.elements, this.plugin, this.config);
@@ -167,8 +173,8 @@ public class LangRegistry extends SimpleManager<NightPlugin> {
         });
     }
 
-    @NotNull
-    public String getFileName(@NotNull String langCode) {
+    @NonNull
+    public String getFileName(@NonNull String langCode) {
         return FileConfig.withExtension("lang_" + langCode);
     }
 }

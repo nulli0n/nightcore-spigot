@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.command.experimental;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.language.entry.LangText;
@@ -24,7 +24,8 @@ public class CommandContext {
 
     private int argumentIndex;
 
-    public CommandContext(@NotNull NightCorePlugin plugin, @NotNull CommandSender sender, @NotNull String label, String[] args) {
+    public CommandContext(@NonNull NightCorePlugin plugin, @NonNull CommandSender sender, @NonNull String label,
+                          String[] args) {
         this.plugin = plugin;
         this.sender = sender;
         this.executor = sender instanceof Player player ? player : null;
@@ -33,59 +34,59 @@ public class CommandContext {
         this.argumentIndex = 0;
     }
 
-    public void send(@NotNull String string) {
+    public void send(@NonNull String string) {
         this.sender.sendMessage(string);
     }
 
     @Deprecated
-    public boolean sendSuccess(@NotNull String string) {
+    public boolean sendSuccess(@NonNull String string) {
         this.send(string);
         return true;
     }
 
     @Deprecated
-    public boolean sendFailure(@NotNull String string) {
+    public boolean sendFailure(@NonNull String string) {
         this.send(string);
         return false;
     }
 
-    public void send(@NotNull LangText text) {
+    public void send(@NonNull LangText text) {
         this.send(text, null);
     }
 
-    public void send(@NotNull LangText text, @Nullable Consumer<Replacer> consumer) {
+    public void send(@NonNull LangText text, @Nullable Consumer<Replacer> consumer) {
         this.send(text.getMessage(), consumer);
     }
 
-    public void send(@NotNull LangMessage message) {
+    public void send(@NonNull LangMessage message) {
         this.send(message, null);
     }
 
-    public void send(@NotNull LangMessage message, @Nullable Consumer<Replacer> consumer) {
+    public void send(@NonNull LangMessage message, @Nullable Consumer<Replacer> consumer) {
         message.send(this.sender, consumer);
     }
 
-//    public void send(@NotNull LangMessage message) {
-//        message.send(this.sender);
-//    }
+    //    public void send(@NonNull LangMessage message) {
+    //        message.send(this.sender);
+    //    }
 
     @Deprecated
-    public boolean sendSuccess(@NotNull LangMessage message) {
+    public boolean sendSuccess(@NonNull LangMessage message) {
         this.send(message);
         return true;
     }
 
     @Deprecated
-    public boolean sendFailure(@NotNull LangMessage message) {
+    public boolean sendFailure(@NonNull LangMessage message) {
         this.send(message);
         return false;
     }
 
-    public boolean checkPermission(@NotNull Permission permission) {
+    public boolean checkPermission(@NonNull Permission permission) {
         return this.sender.hasPermission(permission);
     }
 
-    public boolean checkPermission(@NotNull String permission) {
+    public boolean checkPermission(@NonNull String permission) {
         return this.sender.hasPermission(permission);
     }
 
@@ -101,7 +102,7 @@ public class CommandContext {
         this.argumentIndex = argumentIndex;
     }
 
-    @NotNull
+    @NonNull
     public CommandSender getSender() {
         return this.sender;
     }
@@ -111,7 +112,7 @@ public class CommandContext {
         return this.executor;
     }
 
-    @NotNull
+    @NonNull
     public Player getPlayerOrThrow() {
         if (this.isPlayer()) return this.executor;
 
@@ -122,7 +123,7 @@ public class CommandContext {
         return this.args.length;
     }
 
-    @NotNull
+    @NonNull
     public String getLabel() {
         return this.label;
     }

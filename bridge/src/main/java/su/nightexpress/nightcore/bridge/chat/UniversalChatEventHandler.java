@@ -1,9 +1,9 @@
 package su.nightexpress.nightcore.bridge.chat;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @FunctionalInterface
 public interface UniversalChatEventHandler {
 
-    void handle(@NotNull UniversalChatEvent event);
+    void handle(@NonNull UniversalChatEvent event);
 }

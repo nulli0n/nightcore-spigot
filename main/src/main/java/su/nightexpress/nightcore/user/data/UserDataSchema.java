@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.user.data;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.column.Column;
 import su.nightexpress.nightcore.db.statement.template.InsertStatement;
 import su.nightexpress.nightcore.db.statement.template.SelectStatement;
@@ -12,17 +12,24 @@ import java.util.UUID;
 
 public interface UserDataSchema<U extends UserTemplate> {
 
-    @NotNull Table getUsersTable();
+    @NonNull
+    Table getUsersTable();
 
-    @NotNull Column<UUID> getUserIdColumn();
+    @NonNull
+    Column<UUID> getUserIdColumn();
 
-    @NotNull Column<String> getUserNameColumn();
+    @NonNull
+    Column<String> getUserNameColumn();
 
-    @NotNull SelectStatement<U> getUserSelectStatement();
+    @NonNull
+    SelectStatement<U> getUserSelectStatement();
 
-    @NotNull InsertStatement<U> getUserInsertStatement();
+    @NonNull
+    InsertStatement<U> getUserInsertStatement();
 
-    @NotNull UpdateStatement<U> getUserUpdateStatement();
+    @NonNull
+    UpdateStatement<U> getUserUpdateStatement();
 
-    @NotNull UpdateStatement<U> getUserTinyUpdateStatement();
+    @NonNull
+    UpdateStatement<U> getUserTinyUpdateStatement();
 }

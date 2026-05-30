@@ -1,11 +1,11 @@
 package su.nightexpress.nightcore.command.experimental.node;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
 
 @Deprecated
 public interface DirectExecutor {
 
-    boolean execute(@NotNull CommandContext context, @NotNull ParsedArguments arguments);
+    boolean execute(@NonNull CommandContext context, @NonNull ParsedArguments arguments);
 }

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.query.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.sql.column.Column;
 import su.nightexpress.nightcore.db.sql.query.type.ConditionalQuery;
 import su.nightexpress.nightcore.db.sql.query.QueryValue;
@@ -33,7 +33,7 @@ public class UpdateQuery<T> extends ConditionalQuery<UpdateQuery<T>, T> implemen
     }
 
     @Override
-    public void onExecute(@NotNull PreparedStatement statement, @NotNull T entity) throws SQLException {
+    public void onExecute(@NonNull PreparedStatement statement, @NonNull T entity) throws SQLException {
         int paramCount = 1;
 
         for (int index = 0; index < this.countDataColumns(); index++) {
@@ -46,8 +46,8 @@ public class UpdateQuery<T> extends ConditionalQuery<UpdateQuery<T>, T> implemen
     }
 
     @Override
-    @NotNull
-    protected String buildSQL(@NotNull String table) {
+    @NonNull
+    protected String buildSQL(@NonNull String table) {
         String columns = this.dataColumns.stream().map(QueryValue::getSQLPart).collect(Collectors.joining(","));
         String wheres = this.buildWhereSQLPart();
 
@@ -61,8 +61,8 @@ public class UpdateQuery<T> extends ConditionalQuery<UpdateQuery<T>, T> implemen
     }
 
     @Override
-    @NotNull
-    public UpdateQuery<T> setValue(@NotNull Column column, @NotNull Function<T, String> function) {
+    @NonNull
+    public UpdateQuery<T> setValue(@NonNull Column column, @NonNull Function<T, String> function) {
         this.dataColumns.add(new QueryValue<>(column.getNameEscaped() + " = ?", function));
         return this;
     }
@@ -71,8 +71,8 @@ public class UpdateQuery<T> extends ConditionalQuery<UpdateQuery<T>, T> implemen
         return this.dataColumns.size();
     }
 
-    @NotNull
-    public String getColumnValue(@NotNull T entity, int index) {
+    @NonNull
+    public String getColumnValue(@NonNull T entity, int index) {
         return this.dataColumns.get(index).getStatementPart(entity);
     }
 }

@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.dialog;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
@@ -16,11 +16,11 @@ public class WrappedInput {
     private final String textRaw;
     private final String textColored;
 
-    public WrappedInput(@NotNull AsyncPlayerChatEvent event) {
+    public WrappedInput(@NonNull AsyncPlayerChatEvent event) {
         this(event.getMessage());
     }
 
-    public WrappedInput(@NotNull String text) {
+    public WrappedInput(@NonNull String text) {
         this.text = text;
         this.textRaw = NightMessage.stripTags(text);
         this.textColored = NightMessage.asLegacy(text);
@@ -46,18 +46,19 @@ public class WrappedInput {
         return NumberUtil.getDoubleAbs(this.getTextRaw(), def);
     }
 
-    @NotNull
+    @NonNull
     public UniDouble asUniDouble() {
         return this.asUniDouble(0, 0);
     }
 
-    @NotNull
+    @NonNull
     public UniDouble asUniDouble(double min, double max) {
         String[] split = this.getTextRaw().split(" ");
-        return UniDouble.of(NumberUtil.getDoubleAbs(split[0], min), NumberUtil.getDoubleAbs(split.length >= 2 ? split[1] : split[0], max));
+        return UniDouble.of(NumberUtil.getDoubleAbs(split[0], min), NumberUtil.getDoubleAbs(
+            split.length >= 2 ? split[1] : split[0], max));
     }
 
-    @NotNull
+    @NonNull
     public UniInt asUniInt() {
         return this.asUniDouble().asInt();
     }
@@ -67,26 +68,26 @@ public class WrappedInput {
     }
 
     @Nullable
-    public <E extends Enum<E>> E asEnum(@NotNull Class<E> clazz) {
+    public <E extends Enum<E>> E asEnum(@NonNull Class<E> clazz) {
         return StringUtil.getEnum(this.getTextRaw(), clazz).orElse(null);
     }
 
-    @NotNull
-    public <E extends Enum<E>> E asEnum(@NotNull Class<E> clazz, @NotNull E def) {
+    @NonNull
+    public <E extends Enum<E>> E asEnum(@NonNull Class<E> clazz, @NonNull E def) {
         return StringUtil.getEnum(this.getTextRaw(), clazz).orElse(def);
     }
 
-    @NotNull
+    @NonNull
     public String getText() {
         return text;
     }
 
-    @NotNull
+    @NonNull
     public String getTextRaw() {
         return textRaw;
     }
 
-    @NotNull
+    @NonNull
     public String getTextColored() {
         return textColored;
     }

@@ -1,23 +1,23 @@
 package su.nightexpress.nightcore.command.experimental.builder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.command.experimental.flag.SimpleFlag;
 
 @Deprecated
 public class SimpleFlagBuilder extends FlagBuilder<SimpleFlag, SimpleFlagBuilder> {
 
-    public SimpleFlagBuilder(@NotNull String name) {
+    public SimpleFlagBuilder(@NonNull String name) {
         super(name);
     }
 
     @Override
-    @NotNull
+    @NonNull
     protected SimpleFlagBuilder getThis() {
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public SimpleFlag build() {
         return new SimpleFlag(this.name, this.permission);
     }

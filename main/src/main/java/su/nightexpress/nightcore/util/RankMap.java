@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.util;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 
@@ -19,33 +19,36 @@ public class RankMap<T extends Number> {
     private final Map<String, T> values;
 
     public enum Mode {
-        RANK, PERMISSION
+        RANK,
+        PERMISSION
     }
 
-    public RankMap(@NotNull Mode mode, @NotNull String permissionPrefix, @NotNull T defaultValue, @NotNull Map<String, T> values) {
+    public RankMap(@NonNull Mode mode, @NonNull String permissionPrefix, @NonNull T defaultValue,
+                   @NonNull Map<String, T> values) {
         this.mode = mode;
         this.permissionPrefix = permissionPrefix;
         this.defaultValue = defaultValue;
         this.values = new HashMap<>(values);
     }
 
-    @NotNull
-    public static RankMap<Integer> readInt(@NotNull FileConfig cfg, @NotNull String path, int defaultValue) {
+    @NonNull
+    public static RankMap<Integer> readInt(@NonNull FileConfig cfg, @NonNull String path, int defaultValue) {
         return read(cfg, path, Integer.class, defaultValue);
     }
 
-    @NotNull
-    public static RankMap<Double> readDouble(@NotNull FileConfig cfg, @NotNull String path, double defaultValue) {
+    @NonNull
+    public static RankMap<Double> readDouble(@NonNull FileConfig cfg, @NonNull String path, double defaultValue) {
         return read(cfg, path, Double.class, defaultValue);
     }
 
-    @NotNull
-    public static RankMap<Long> readLong(@NotNull FileConfig cfg, @NotNull String path, long defaultValue) {
+    @NonNull
+    public static RankMap<Long> readLong(@NonNull FileConfig cfg, @NonNull String path, long defaultValue) {
         return read(cfg, path, Long.class, defaultValue);
     }
 
-    @NotNull
-    public static <T extends Number> RankMap<T> read(@NotNull FileConfig config, @NotNull String path, @NotNull Class<T> clazz, @NotNull T defaultValue) {
+    @NonNull
+    public static <T extends Number> RankMap<T> read(@NonNull FileConfig config, @NonNull String path,
+                                                     @NonNull Class<T> clazz, @NonNull T defaultValue) {
         Map<String, T> oldMap = new HashMap<>();
 
         if (!config.contains(path + ".Mode")) {
@@ -115,7 +118,7 @@ public class RankMap<T extends Number> {
         return new RankMap<>(mode, permissionPrefix, fallback, values);
     }
 
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Mode", this.mode.name());
         config.set(path + ".Permission_Prefix", this.permissionPrefix);
         config.set(path + ".Default_Value", this.defaultValue);
@@ -124,22 +127,22 @@ public class RankMap<T extends Number> {
         });
     }
 
-    @NotNull
-    public T getRankValue(@NotNull Player player) {
+    @NonNull
+    public T getRankValue(@NonNull Player player) {
         String group = Players.getPermissionGroup(player);
         return this.values.getOrDefault(group, this.defaultValue);
     }
 
-    @NotNull
-    public T getGreatestOrNegative(@NotNull Player player) {
+    @NonNull
+    public T getGreatestOrNegative(@NonNull Player player) {
         T best = this.getGreatest(player);
         T lowest = this.getSmallest(player);
 
         return lowest.doubleValue() < 0D ? lowest : best;
     }
 
-    @NotNull
-    public T getGreatest(@NotNull Player player) {
+    @NonNull
+    public T getGreatest(@NonNull Player player) {
         if (this.mode == Mode.RANK) {
             return this.getRankValue(player);
         }
@@ -149,8 +152,8 @@ public class RankMap<T extends Number> {
             .max(Comparator.comparingDouble(Number::doubleValue)).orElse(this.defaultValue);
     }
 
-    @NotNull
-    public T getSmallest(@NotNull Player player) {
+    @NonNull
+    public T getSmallest(@NonNull Player player) {
         if (this.mode == Mode.RANK) {
             return this.getRankValue(player);
         }
@@ -160,7 +163,7 @@ public class RankMap<T extends Number> {
             .min(Comparator.comparingDouble(Number::doubleValue)).orElse(this.defaultValue);
     }
 
-    @NotNull
+    @NonNull
     public Mode getMode() {
         return mode;
     }
@@ -170,7 +173,7 @@ public class RankMap<T extends Number> {
         return permissionPrefix;
     }
 
-    @NotNull
+    @NonNull
     public T getDefaultValue() {
         return defaultValue;
     }

@@ -1,18 +1,18 @@
 package su.nightexpress.nightcore.command.experimental.flag;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.builder.SimpleFlagBuilder;
 
 @Deprecated
 public class SimpleFlag extends CommandFlag {
 
-    public SimpleFlag(@NotNull String name, @Nullable String permission) {
+    public SimpleFlag(@NonNull String name, @Nullable String permission) {
         super(name, permission);
     }
 
-    @NotNull
-    public static SimpleFlagBuilder builder(@NotNull String name) {
+    @NonNull
+    public static SimpleFlagBuilder builder(@NonNull String name) {
         return new SimpleFlagBuilder(name);
     }
 }

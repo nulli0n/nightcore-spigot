@@ -2,11 +2,14 @@ package su.nightexpress.nightcore.bridge.chat;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 public interface UniversalChatRenderer {
 
-    @NotNull NightComponent render(@NotNull Player source, @NotNull String sourceDisplayName, @NotNull String message, @Nullable CommandSender viewer);
+    @NonNull
+    NightComponent render(@NonNull Player source, @NonNull String sourceDisplayName, @NonNull String message,
+                          @Nullable CommandSender viewer);
 }

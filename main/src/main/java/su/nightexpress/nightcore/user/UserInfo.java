@@ -2,31 +2,31 @@ package su.nightexpress.nightcore.user;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
-public record UserInfo(@NotNull UUID id, @NotNull String name) {
+public record UserInfo(@NonNull UUID id, @NonNull String name) {
 
-    @NotNull
-    public static UserInfo of(@NotNull Player player) {
+    @NonNull
+    public static UserInfo of(@NonNull Player player) {
         return new UserInfo(player.getUniqueId(), player.getName());
     }
 
-    @NotNull
-    public static UserInfo of(@NotNull UserTemplate user) {
+    @NonNull
+    public static UserInfo of(@NonNull UserTemplate user) {
         return new UserInfo(user.getId(), user.getName());
     }
 
-    public boolean isUser(@NotNull Player player) {
+    public boolean isUser(@NonNull Player player) {
         return player.getUniqueId().equals(this.id);
     }
 
-    public boolean isUser(@NotNull CommandSender sender) {
+    public boolean isUser(@NonNull CommandSender sender) {
         return sender instanceof Player player && this.isUser(player);
     }
 
-    public boolean isUser(@NotNull String name) {
+    public boolean isUser(@NonNull String name) {
         return this.name.equalsIgnoreCase(name);
     }
 }

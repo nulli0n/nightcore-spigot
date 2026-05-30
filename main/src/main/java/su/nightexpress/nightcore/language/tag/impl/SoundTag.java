@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.language.tag.impl;
 
 import org.bukkit.Sound;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.wrap.NightSound;
 import su.nightexpress.nightcore.language.message.MessageOptions;
 import su.nightexpress.nightcore.language.tag.MessageTag;
@@ -16,36 +16,36 @@ public class SoundTag extends MessageTag {
         super("sound");
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull Sound sound) {
+    public String enclose(@NonNull Sound sound) {
         return this.wrap(sound);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull su.nightexpress.nightcore.util.bukkit.NightSound sound) {
+    public String enclose(su.nightexpress.nightcore.util.bukkit.@NonNull NightSound sound) {
         return this.wrap(sound);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String wrap(@NotNull su.nightexpress.nightcore.util.bukkit.NightSound sound) {
+    public String wrap(su.nightexpress.nightcore.util.bukkit.@NonNull NightSound sound) {
         return this.wrap(sound.serialize());
     }
 
-    @NotNull
-    public String wrap(@NotNull Sound sound) {
+    @NonNull
+    public String wrap(@NonNull Sound sound) {
         return this.wrap(VanillaSound.of(sound));
     }
 
-    @NotNull
-    public String wrap(@NotNull NightSound sound) {
+    @NonNull
+    public String wrap(@NonNull NightSound sound) {
         return this.wrap(sound.serialize());
     }
 
     @Override
-    public void apply(@NotNull MessageOptions options, @Nullable String tagContent) {
+    public void apply(@NonNull MessageOptions options, @Nullable String tagContent) {
         if (tagContent == null) return;
 
         options.setSound(AbstractSound.deserialize(tagContent));

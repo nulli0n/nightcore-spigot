@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.menu.api;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.menu.click.ClickAction;
 
 import java.util.ArrayList;
@@ -13,16 +13,17 @@ import java.util.function.Function;
 @Deprecated
 public class AutoFill<T> {
 
-    private int[] slots;
-    private List<T> items;
-    private Function<T, ItemStack> itemCreator;
+    private int[]                    slots;
+    private List<T>                  items;
+    private Function<T, ItemStack>   itemCreator;
     private Function<T, ClickAction> clickAction;
 
     public AutoFill() {
         this.setSlots();
         this.setItems(new ArrayList<>());
         this.setItemCreator(obj -> new ItemStack(Material.AIR));
-        this.setClickAction(obj -> (viewer, event) -> {});
+        this.setClickAction(obj -> (viewer, event) -> {
+        });
     }
 
     public int[] getSlots() {
@@ -33,34 +34,34 @@ public class AutoFill<T> {
         this.slots = slots;
     }
 
-    @NotNull
+    @NonNull
     public List<T> getItems() {
         return items;
     }
 
-    public void setItems(@NotNull Collection<T> items) {
+    public void setItems(@NonNull Collection<T> items) {
         this.setItems(new ArrayList<>(items));
     }
 
-    public void setItems(@NotNull List<T> items) {
+    public void setItems(@NonNull List<T> items) {
         this.items = items;
     }
 
-    @NotNull
+    @NonNull
     public Function<T, ItemStack> getItemCreator() {
         return itemCreator;
     }
 
-    public void setItemCreator(@NotNull Function<T, ItemStack> itemCreator) {
+    public void setItemCreator(@NonNull Function<T, ItemStack> itemCreator) {
         this.itemCreator = itemCreator;
     }
 
-    @NotNull
+    @NonNull
     public Function<T, ClickAction> getClickAction() {
         return clickAction;
     }
 
-    public void setClickAction(@NotNull Function<T, ClickAction> clickAction) {
+    public void setClickAction(@NonNull Function<T, ClickAction> clickAction) {
         this.clickAction = clickAction;
     }
 }

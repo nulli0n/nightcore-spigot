@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.bridge.registry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
@@ -9,13 +9,13 @@ public class Holder<T> {
 
     private T value;
 
-    public void set(@NotNull T value) {
+    public void set(@NonNull T value) {
         if (this.value != null) throw new IllegalStateException("Holder value already set: " + value);
 
         this.value = value;
     }
 
-    @NotNull
+    @NonNull
     public T get() {
         if (this.value == null) throw new IllegalStateException("Holder value is not set");
 
@@ -26,7 +26,7 @@ public class Holder<T> {
         this.value = null;
     }
 
-    public void ifPresent(@NotNull Consumer<T> consumer) {
+    public void ifPresent(@NonNull Consumer<T> consumer) {
         if (this.value != null) {
             consumer.accept(this.value);
         }

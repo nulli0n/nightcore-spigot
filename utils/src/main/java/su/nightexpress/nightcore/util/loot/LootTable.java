@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.loot;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.Randomizer;
 
 import java.util.*;
@@ -12,12 +12,12 @@ public class LootTable<T, C> {
     private final List<LootEntry<T, C>> entries;
     private final RandomGenerator       rnd;
 
-    public LootTable(@NotNull RandomGenerator rnd) {
+    public LootTable(@NonNull RandomGenerator rnd) {
         this.entries = new ArrayList<>();
         this.rnd = rnd;
     }
 
-    @NotNull
+    @NonNull
     public static <T, C> LootTable<T, C> create() {
         return new LootTable<>(Randomizer.getSource());
     }
@@ -26,8 +26,8 @@ public class LootTable<T, C> {
         return this.entries.isEmpty();
     }
 
-    @NotNull
-    public Optional<T> pick(@NotNull C context) {
+    @NonNull
+    public Optional<T> pick(@NonNull C context) {
         if (this.isEmpty()) return Optional.empty();
 
         double totalWeight = 0D;
@@ -53,14 +53,14 @@ public class LootTable<T, C> {
         return Optional.empty();
     }
 
-    @NotNull
-    public LootTable<T, C> add(@NotNull T item, double weight) {
+    @NonNull
+    public LootTable<T, C> add(@NonNull T item, double weight) {
         this.entries.add(LootEntry.of(item, weight));
         return this;
     }
 
-    @NotNull
-    public LootTable<T, C> add(@NotNull T item, double weight, @NotNull Predicate<C> predicate) {
+    @NonNull
+    public LootTable<T, C> add(@NonNull T item, double weight, @NonNull Predicate<C> predicate) {
         this.entries.add(LootEntry.of(item, weight, predicate));
         return this;
     }

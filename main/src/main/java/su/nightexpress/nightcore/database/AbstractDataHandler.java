@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.database;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.database.serialize.ItemStackSerializer;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
@@ -31,19 +31,19 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
     protected final AbstractConnector connector;
     protected final Gson              gson;
 
-    public AbstractDataHandler(@NotNull P plugin) {
+    public AbstractDataHandler(@NonNull P plugin) {
         this(plugin, getDataConfig(plugin));
     }
 
-    public AbstractDataHandler(@NotNull P plugin, @NotNull DatabaseConfig config) {
+    public AbstractDataHandler(@NonNull P plugin, @NonNull DatabaseConfig config) {
         super(plugin);
         this.config = config;
         this.connector = AbstractConnector.create(plugin, config);
         this.gson = this.registerAdapters(new GsonBuilder().setPrettyPrinting()).create();
     }
 
-    @NotNull
-    protected static DatabaseConfig getDataConfig(@NotNull NightCorePlugin plugin) {
+    @NonNull
+    protected static DatabaseConfig getDataConfig(@NonNull NightCorePlugin plugin) {
         DatabaseConfig dataConfig = plugin.getDetails().getDatabaseConfig();
         if (dataConfig == null) {
             plugin.warn("The plugin didn't have database configuration. Fixing it now...");
@@ -55,11 +55,13 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
     @Override
     protected void onLoad() {
         if (this.config.getSaveInterval() > 0) {
-            this.addTask(this.plugin.createAsyncTask(this::onSave).setSecondsInterval(this.config.getSaveInterval() * 60));
+            this.addTask(this.plugin.createAsyncTask(this::onSave).setSecondsInterval(this.config
+                .getSaveInterval() * 60));
         }
 
         if (this.config.getSyncInterval() > 0 && this.getDatabaseType() != DatabaseType.SQLITE) {
-            this.addTask(this.plugin.createAsyncTask(this::onSynchronize).setSecondsInterval(this.config.getSyncInterval()));
+            this.addTask(this.plugin.createAsyncTask(this::onSynchronize).setSecondsInterval(this.config
+                .getSyncInterval()));
             this.plugin.info("Enabled data synchronization with " + config.getSyncInterval() + " seconds interval.");
         }
 
@@ -80,132 +82,131 @@ public abstract class AbstractDataHandler<P extends NightCorePlugin> extends Abs
 
     public abstract void onPurge();
 
-    @NotNull
+    @NonNull
     public DatabaseConfig getConfig() {
         return this.config;
     }
 
-    @NotNull
+    @NonNull
     public DatabaseType getDatabaseType() {
         return this.config.getStorageType();
     }
 
-    @NotNull
+    @NonNull
     public String getTablePrefix() {
         return this.config.getTablePrefix();
     }
 
-    @NotNull
+    @NonNull
     public AbstractConnector getConnector() {
         return this.connector;
     }
 
-    @NotNull
-    protected GsonBuilder registerAdapters(@NotNull GsonBuilder builder) {
+    @NonNull
+    protected GsonBuilder registerAdapters(@NonNull GsonBuilder builder) {
         return builder.registerTypeAdapter(ItemStack.class, new ItemStackSerializer());
     }
 
-    @NotNull
+    @NonNull
     protected final Connection getConnection() throws SQLException {
         return this.getConnector().getConnection();
     }
 
-    public void createTable(@NotNull String table, @NotNull List<SQLColumn> columns) {
+    public void createTable(@NonNull String table, @NonNull List<SQLColumn> columns) {
         CreateTableExecutor.builder(table, this.getDatabaseType()).columns(columns).execute(this.getConnector());
     }
 
-    public void renameTable(@NotNull String from, @NotNull String to) {
+    public void renameTable(@NonNull String from, @NonNull String to) {
         RenameTableExecutor.builder(from, this.getDatabaseType()).renameTo(to).execute(this.getConnector());
     }
 
-    public void addColumn(@NotNull String table, @NotNull SQLValue... columns) {
+    public void addColumn(@NonNull String table, @NonNull SQLValue... columns) {
         AlterTableExecutor.builder(table, this.getDatabaseType()).addColumn(columns).execute(this.getConnector());
     }
 
-    public void renameColumn(@NotNull String table, @NotNull SQLValue... columns) {
+    public void renameColumn(@NonNull String table, @NonNull SQLValue... columns) {
         AlterTableExecutor.builder(table, this.getDatabaseType()).renameColumn(columns).execute(this.getConnector());
     }
 
-    public void dropColumn(@NotNull String table, @NotNull SQLColumn... columns) {
+    public void dropColumn(@NonNull String table, @NonNull SQLColumn... columns) {
         AlterTableExecutor.builder(table, this.getDatabaseType()).dropColumn(columns).execute(this.getConnector());
     }
 
-    public boolean hasColumn(@NotNull String table, @NotNull SQLColumn column) {
+    public boolean hasColumn(@NonNull String table, @NonNull SQLColumn column) {
         return SQLQueries.hasColumn(this.getConnector(), table, column);
     }
 
-    public void insert(@NotNull String table, @NotNull List<SQLValue> values) {
+    public void insert(@NonNull String table, @NonNull List<SQLValue> values) {
         InsertQueryExecutor.builder(table).values(values).execute(this.getConnector());
     }
 
 
-
-
     @Deprecated
-    public void update(@NotNull String table, @NotNull List<SQLValue> values, @NotNull SQLCondition... conditions) {
+    public void update(@NonNull String table, @NonNull List<SQLValue> values, @NonNull SQLCondition... conditions) {
         UpdateQueryExecutor.builder(table).values(values).where(conditions).execute(this.getConnector());
     }
 
-    @NotNull
-    public UpdateEntity createUpdateEntity(@NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+    @NonNull
+    public UpdateEntity createUpdateEntity(@NonNull List<SQLValue> values, @NonNull List<SQLCondition> conditions) {
         return UpdateEntity.create(values, conditions);
     }
 
-    public void executeUpdate(@NotNull String table, @NotNull List<SQLValue> values, @NotNull List<SQLCondition> conditions) {
+    public void executeUpdate(@NonNull String table, @NonNull List<SQLValue> values,
+                              @NonNull List<SQLCondition> conditions) {
         this.executeUpdate(UpdateQuery.create(table, values, conditions));
     }
 
-    public void executeUpdate(@NotNull UpdateQuery query) {
+    public void executeUpdate(@NonNull UpdateQuery query) {
         SQLQueries.executeUpdate(this.connector, query);
     }
 
 
-
-
-    public void delete(@NotNull String table, @NotNull SQLCondition... conditions) {
+    public void delete(@NonNull String table, @NonNull SQLCondition... conditions) {
         DeleteQueryExecutor.builder(table).where(conditions).execute(this.getConnector());
     }
 
-    public boolean contains(@NotNull String table, @NotNull SQLCondition... conditions) {
+    public boolean contains(@NonNull String table, @NonNull SQLCondition... conditions) {
         return this.load(table, (resultSet -> true), Collections.emptyList(), Arrays.asList(conditions)).isPresent();
     }
 
-    public boolean contains(@NotNull String table, @NotNull List<SQLColumn> columns, @NotNull SQLCondition... conditions) {
+    public boolean contains(@NonNull String table, @NonNull List<SQLColumn> columns,
+                            @NonNull SQLCondition... conditions) {
         return this.load(table, (resultSet -> true), columns, Arrays.asList(conditions)).isPresent();
     }
 
-    @NotNull
-    public <T> Optional<T> load(@NotNull String table, @NotNull Function<ResultSet, T> function,
-                                @NotNull List<SQLColumn> columns,
-                                @NotNull List<SQLCondition> conditions) {
+    @NonNull
+    public <T> Optional<T> load(@NonNull String table, @NonNull Function<ResultSet, T> function,
+                                @NonNull List<SQLColumn> columns,
+                                @NonNull List<SQLCondition> conditions) {
         List<T> list = this.load(table, function, columns, conditions, 1);
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
     }
 
-    @NotNull
-    public <T> List<T> load(@NotNull String table, @NotNull Function<ResultSet, T> dataFunction) {
+    @NonNull
+    public <T> List<T> load(@NonNull String table, @NonNull Function<ResultSet, T> dataFunction) {
         return this.load(table, dataFunction, -1);
     }
 
-    @NotNull
-    public <T> List<T> load(@NotNull String table, @NotNull Function<ResultSet, T> dataFunction, int amount) {
+    @NonNull
+    public <T> List<T> load(@NonNull String table, @NonNull Function<ResultSet, T> dataFunction, int amount) {
         return this.load(table, dataFunction, Collections.emptyList(), amount);
     }
 
-    @NotNull
-    public <T> List<T> load(@NotNull String table,
-                            @NotNull Function<ResultSet, T> dataFunction,
-                            @NotNull List<SQLColumn> columns,
+    @NonNull
+    public <T> List<T> load(@NonNull String table,
+                            @NonNull Function<ResultSet, T> dataFunction,
+                            @NonNull List<SQLColumn> columns,
                             int amount) {
         return this.load(table, dataFunction, columns, Collections.emptyList(), amount);
     }
 
-    @NotNull
-    public <T> List<T> load(@NotNull String table,
-                            @NotNull Function<ResultSet, T> dataFunction,
-                            @NotNull List<SQLColumn> columns,
-                            @NotNull List<SQLCondition> conditions,
+    @NonNull
+    public <T> List<T> load(@NonNull String table,
+                            @NonNull Function<ResultSet, T> dataFunction,
+                            @NonNull List<SQLColumn> columns,
+                            @NonNull List<SQLCondition> conditions,
                             int amount) {
-        return SelectQueryExecutor.builder(table, dataFunction).columns(columns).where(conditions).execute(this.getConnector());
+        return SelectQueryExecutor.builder(table, dataFunction).columns(columns).where(conditions).execute(this
+            .getConnector());
     }
 }

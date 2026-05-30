@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.ui.inventory.item;
 
 import org.bukkit.Material;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
 import su.nightexpress.nightcore.ui.inventory.condition.ItemStateCondition;
@@ -125,12 +125,14 @@ public class MenuItem {
         }
 
         @NonNull
-        public Builder defaultState(@NonNull NightItem icon, @Nullable MenuItemAction action, @Nullable ItemStateCondition condition) {
+        public Builder defaultState(@NonNull NightItem icon, @Nullable MenuItemAction action,
+                                    @Nullable ItemStateCondition condition) {
             return this.defaultState(icon, action, condition, null);
         }
 
         @NonNull
-        public Builder defaultState(@NonNull NightItem icon, @Nullable MenuItemAction action, @Nullable ItemStateCondition condition, @Nullable DisplayModifier displayModifier) {
+        public Builder defaultState(@NonNull NightItem icon, @Nullable MenuItemAction action,
+                                    @Nullable ItemStateCondition condition, @Nullable DisplayModifier displayModifier) {
             return this.defaultState(new ItemState(icon, action, condition, displayModifier));
         }
 

@@ -1,13 +1,13 @@
 package su.nightexpress.nightcore.bridge.paper.text;
 
 import net.kyori.adventure.key.Key;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.common.NightKey;
 
 public abstract class PaperAdapter {
 
-    @NotNull
-    protected Key adaptKey(@NotNull NightKey key) {
+    @NonNull
+    protected Key adaptKey(@NonNull NightKey key) {
         return Key.key(key.namespace(), key.value());
     }
 }

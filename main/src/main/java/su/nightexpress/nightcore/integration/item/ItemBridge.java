@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.integration.item;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.Registries;
 import su.nightexpress.nightcore.bridge.item.ItemAdapter;
 import su.nightexpress.nightcore.bridge.registry.NightRegistry;
@@ -19,51 +19,52 @@ public class ItemBridge {
         registry().clear();
     }
 
-    @NotNull
+    @NonNull
     public static NightRegistry<String, ItemAdapter<?>> registry() {
         return Registries.ITEM_ADAPTER;
     }
 
-    public static void register(@NotNull ItemAdapter<?> adapter) {
+    public static void register(@NonNull ItemAdapter<?> adapter) {
         registry().register(adapter.getName(), adapter);
     }
 
-    @NotNull
+    @NonNull
     public static Set<ItemAdapter<?>> getAdapters() {
         return registry().values();
     }
 
-    @NotNull
+    @NonNull
     public static VanillaItemAdapter getVanillaAdapter() {
         return VanillaItemAdapter.INSTANCE;
     }
 
     @Nullable
-    public static ItemAdapter<?> getAdapter(@NotNull String name) {
+    public static ItemAdapter<?> getAdapter(@NonNull String name) {
         return registry().byKey(LowerCase.INTERNAL.apply(name));
     }
 
-    @NotNull
-    public static ItemAdapter<?> getAdapterOrVanilla(@NotNull String name) {
+    @NonNull
+    public static ItemAdapter<?> getAdapterOrVanilla(@NonNull String name) {
         return registry().lookup(LowerCase.INTERNAL.apply(name)).orElse(VanillaItemAdapter.INSTANCE);
     }
 
-    @NotNull
-    public static Optional<ItemAdapter<?>> adapter(@NotNull ItemStack itemStack) {
-        return getAdapters().stream().filter(handler -> handler.canHandle(itemStack)).max(Comparator.comparingInt(ItemAdapter::getWeight));
+    @NonNull
+    public static Optional<ItemAdapter<?>> adapter(@NonNull ItemStack itemStack) {
+        return getAdapters().stream().filter(handler -> handler.canHandle(itemStack)).max(Comparator.comparingInt(
+            ItemAdapter::getWeight));
     }
 
     @Nullable
-    public static ItemAdapter<?> getAdapter(@NotNull ItemStack itemStack) {
+    public static ItemAdapter<?> getAdapter(@NonNull ItemStack itemStack) {
         return adapter(itemStack).orElse(null);
     }
 
-    @NotNull
-    public static ItemAdapter<?> getAdapterOrVanilla(@NotNull ItemStack itemStack) {
+    @NonNull
+    public static ItemAdapter<?> getAdapterOrVanilla(@NonNull ItemStack itemStack) {
         return adapter(itemStack).orElse(VanillaItemAdapter.INSTANCE);
     }
 
-    public static boolean hasAdapter(@NotNull ItemStack itemStack) {
+    public static boolean hasAdapter(@NonNull ItemStack itemStack) {
         return getAdapter(itemStack) != null;
     }
 }

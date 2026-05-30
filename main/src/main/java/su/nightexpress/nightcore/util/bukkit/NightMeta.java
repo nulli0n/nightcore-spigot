@@ -1,16 +1,34 @@
 package su.nightexpress.nightcore.util.bukkit;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
+
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
@@ -18,16 +36,17 @@ import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.locale.entry.IconLocale;
-import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.BukkitThing;
+import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.Players;
+import su.nightexpress.nightcore.util.StringUtil;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderContext;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
-
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.function.Consumer;
 
 public class NightMeta implements Writeable {
 
@@ -37,9 +56,9 @@ public class NightMeta implements Writeable {
     private Map<Enchantment, Integer> enchants;
     private Set<String>               hiddenComponents;
 
-    private Integer       damage;
-    private CachedProfile playerProfile;
-    private Color         color;
+    private Integer damage;
+    private String  skinUrl;
+    private Color   color;
 
     private Float         modelData;
     private NamespacedKey modelPath;
@@ -49,14 +68,14 @@ public class NightMeta implements Writeable {
     private boolean enchantGlint;
     private boolean hideTooltip;
 
-    private Replacer replacer;
+    private Replacer           replacer;
     private PlaceholderContext placeholderContext;
 
     public NightMeta() {
 
     }
 
-    @NotNull
+    @NonNull
     public NightMeta copy() {
         return new NightMeta()
             .setDamage(this.damage)
@@ -66,7 +85,7 @@ public class NightMeta implements Writeable {
             .setLore(this.lore == null ? null : new ArrayList<>(this.lore))
             .setEnchants(this.enchants)
             //.setSkinURL(this.skinURL)
-            .setPlayerProfile(this.playerProfile)
+            .setSkinURL(this.skinUrl)
             .setColor(this.color)
             .setCustomModelData(this.modelData)
             .setModelPath(this.modelPath)
@@ -78,9 +97,9 @@ public class NightMeta implements Writeable {
             .setPlaceholderContext(this.placeholderContext);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public NightMeta inherit(@NotNull NightMeta other) {
+    public NightMeta inherit(@NonNull NightMeta other) {
         return this
             .setDamage(other.damage)
             .setUnbreakable(other.unbreakable)
@@ -89,7 +108,7 @@ public class NightMeta implements Writeable {
             .setLore(other.lore == null ? null : new ArrayList<>(other.lore))
             .setEnchants(other.enchants)
             //.setSkinURL(other.skinURL)
-            .setPlayerProfile(other.playerProfile)
+            .setSkinURL(other.skinUrl)
             .setColor(other.color)
             .setCustomModelData(other.modelData)
             .setModelPath(other.modelPath)
@@ -100,8 +119,8 @@ public class NightMeta implements Writeable {
             .setReplacer(other.replacer == null ? null : new Replacer(other.replacer));
     }
 
-    @NotNull
-    public static NightMeta fromItemStack(@NotNull ItemStack itemStack) {
+    @NonNull
+    public static NightMeta fromItemStack(@NonNull ItemStack itemStack) {
         NightMeta displayMeta = new NightMeta();
 
         ItemMeta meta = itemStack.getItemMeta();
@@ -118,7 +137,8 @@ public class NightMeta implements Writeable {
         displayMeta.setUnbreakable(meta.isUnbreakable());
         displayMeta.setPlayerProfile(ItemUtil.getOwnerProfile(itemStack));
         displayMeta.setCustomModelData(ItemUtil.getCustomModelData(meta));
-        displayMeta.setEnchantGlint((meta.hasEnchantmentGlintOverride() && meta.getEnchantmentGlintOverride())/* || meta.hasEnchants()*/);
+        displayMeta.setEnchantGlint((meta.hasEnchantmentGlintOverride() && meta
+            .getEnchantmentGlintOverride())/* || meta.hasEnchants()*/);
         displayMeta.setHideTooltip(meta.isHideTooltip());
         displayMeta.setModelPath(meta.getItemModel());
         displayMeta.setTooltipStyle(meta.getTooltipStyle());
@@ -133,14 +153,15 @@ public class NightMeta implements Writeable {
                     displayMeta.setColor(effect.getColors().getFirst());
                 }
             }
-            default -> {}
+            default -> {
+            }
         }
 
         return displayMeta;
     }
 
-    @NotNull
-    public static NightMeta read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static NightMeta read(@NonNull FileConfig config, @NonNull String path) {
         // -------- UPDATE OLD FIELDS - START --------
         String headTexture = config.getString(path + ".Head_Texture");
         if (headTexture != null && !headTexture.isEmpty()) {
@@ -149,7 +170,8 @@ public class NightMeta implements Writeable {
                 String decodedStr = new String(decoded, StandardCharsets.UTF_8);
                 JsonElement element = JsonParser.parseString(decodedStr);
 
-                String url = element.getAsJsonObject().getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
+                String url = element.getAsJsonObject().getAsJsonObject("textures").getAsJsonObject("SKIN").get("url")
+                    .getAsString();
                 url = url.substring(ItemUtil.TEXTURES_HOST.length());
 
                 config.set(path + ".SkinURL", url);
@@ -195,9 +217,9 @@ public class NightMeta implements Writeable {
         displayMeta.setDisplayName(config.getString(path + ".Display_Name"));
         displayMeta.setLore(config.getStringList(path + ".Lore"));
 
-        String skinURL = config.getString(path + ".SkinURL");
-        if (skinURL != null) {
-            displayMeta.setProfileBySkinURL(skinURL);
+        String skinUrl = config.getString(path + ".SkinURL");
+        if (skinUrl != null) {
+            displayMeta.setSkinURL(skinUrl);
         }
 
         Map<Enchantment, Integer> enchants = new HashMap<>();
@@ -244,31 +266,34 @@ public class NightMeta implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.remove(path + ".Enchants");
 
         config.set(path + ".Item_Name", this.itemName);
         config.set(path + ".Display_Name", this.displayName);
         config.set(path + ".Lore", this.lore);
         if (this.enchants != null) {
-            this.enchants.forEach((enchantment, level) -> config.set(path + ".Enchants." + BukkitThing.getAsString(enchantment), level));
+            this.enchants.forEach((enchantment, level) -> config.set(path + ".Enchants." + BukkitThing.getAsString(
+                enchantment), level));
         }
-        config.set(path + ".SkinURL", this.playerProfile == null ? null : PlayerProfiles.getProfileSkinURL(this.playerProfile.queryNoUpdate()));
+        config.set(path + ".SkinURL", this.skinUrl);
         config.set(path + ".Model.Data", this.modelData);
         config.set(path + ".Model.Path", this.modelPath == null ? null : this.modelPath.getKey());
         config.set(path + ".Tooltip.Style", this.tooltipStyle == null ? null : this.tooltipStyle.getKey());
         config.set(path + ".Durabilities.Damage", this.damage);
         config.set(path + ".Durabilities.Unbreakable", this.unbreakable ? true : null);
         config.set(path + ".Enchant_Glint", this.enchantGlint ? true : null);
-        config.set(path + ".Hide_Components", this.hiddenComponents != null && !this.hiddenComponents.isEmpty() ? true : null);
+        config.set(path + ".Hide_Components", this.hiddenComponents != null && !this.hiddenComponents
+            .isEmpty() ? true : null);
         config.set(path + ".Hide_Tooltip", this.hideTooltip ? true : null);
-        config.set(path + ".Color", this.color == null ? null : color.getRed() + "," + color.getGreen() + "," + color.getBlue());
+        config.set(path + ".Color", this.color == null ? null : color.getRed() + "," + color.getGreen() + "," + color
+            .getBlue());
     }
 
-    public void apply(@NotNull ItemStack itemStack) {
+    public void apply(@NonNull ItemStack itemStack) {
         ItemUtil.editMeta(itemStack, meta -> {
-            if (meta instanceof SkullMeta skullMeta) {
-                if (this.playerProfile != null) this.playerProfile.query().apply(skullMeta);
+            if (meta instanceof SkullMeta skullMeta && this.skinUrl != null) {
+                PlayerProfiles.createStaticTexturedProfile(this.skinUrl).apply(skullMeta);
             }
 
             if (this.displayName != null) {
@@ -324,8 +349,10 @@ public class NightMeta implements Writeable {
                 switch (meta) {
                     case LeatherArmorMeta armorMeta -> armorMeta.setColor(this.color);
                     case PotionMeta potionMeta -> potionMeta.setColor(this.color);
-                    case FireworkEffectMeta effectMeta -> effectMeta.setEffect(FireworkEffect.builder().withColor(this.color).build());
-                    default -> {}
+                    case FireworkEffectMeta effectMeta -> effectMeta.setEffect(FireworkEffect.builder().withColor(
+                        this.color).build());
+                    default -> {
+                    }
                 }
             }
         });
@@ -335,8 +362,8 @@ public class NightMeta implements Writeable {
         }
     }
 
-    @NotNull
-    private List<String> addEmptyLines(@NotNull List<String> lore) {
+    @NonNull
+    private List<String> addEmptyLines(@NonNull List<String> lore) {
         for (int index = 0; index < lore.size(); index++) {
             String line = lore.get(index);
             if (line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE)) {
@@ -360,24 +387,26 @@ public class NightMeta implements Writeable {
         return lore;
     }
 
-    private boolean isEmpty(@NotNull String line) {
-        return line.isBlank() || line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE) || line.equalsIgnoreCase(Placeholders.EMPTY_IF_BELOW);
+    private boolean isEmpty(@NonNull String line) {
+        return line.isBlank() || line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE) || line.equalsIgnoreCase(
+            Placeholders.EMPTY_IF_BELOW);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public NightMeta localized(@NotNull LangItem langItem) {
+    public NightMeta localized(@NonNull LangItem langItem) {
         this.setDisplayName(langItem.getLocalizedName());
         this.setLore(langItem.getLocalizedLore());
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public NightMeta localized(@NotNull LangUIButton locale) {
+    public NightMeta localized(@NonNull LangUIButton locale) {
         boolean formatted = locale.isFormatted();
 
-        String name = formatted ? CoreLang.EDITOR_BUTTON_NAME.getString().replace(Placeholders.GENERIC_NAME, locale.getName()) : locale.getName();
+        String name = formatted ? CoreLang.EDITOR_BUTTON_NAME.getString().replace(Placeholders.GENERIC_NAME, locale
+            .getName()) : locale.getName();
         List<String> lore = new ArrayList<>();
 
         locale.getCurrentInfo().forEach((title, value) -> {
@@ -388,7 +417,8 @@ public class NightMeta implements Writeable {
         lore.add(Placeholders.EMPTY_IF_ABOVE);
 
         for (String entry : locale.getDescription()) {
-            lore.add(formatted ? CoreLang.EDITOR_BUTTON_DESCRIPTION.getString().replace(Placeholders.GENERIC_ENTRY, entry) : entry);
+            lore.add(formatted ? CoreLang.EDITOR_BUTTON_DESCRIPTION.getString().replace(Placeholders.GENERIC_ENTRY,
+                entry) : entry);
         }
         lore.add(Placeholders.EMPTY_IF_BELOW);
 
@@ -404,14 +434,14 @@ public class NightMeta implements Writeable {
         return this;
     }
 
-    @NotNull
-    public NightMeta localized(@NotNull IconLocale locale) {
+    @NonNull
+    public NightMeta localized(@NonNull IconLocale locale) {
         this.setDisplayName(locale.getName());
         this.setLore(locale.getLore());
         return this;
     }
 
-    @NotNull
+    @NonNull
     public NightMeta ignoreNameAndLore() {
         this.setItemName(null);
         this.setDisplayName(null);
@@ -469,7 +499,7 @@ public class NightMeta implements Writeable {
         return this;
     }
 
-    @NotNull
+    @NonNull
     public Set<String> getHiddenComponents() {
         return this.hiddenComponents;
     }
@@ -479,7 +509,7 @@ public class NightMeta implements Writeable {
         return this;
     }
 
-    public NightMeta addHiddenComponent(@NotNull String component) {
+    public NightMeta addHiddenComponent(@NonNull String component) {
         this.hiddenComponents.add(component);
         return this;
     }
@@ -494,58 +524,63 @@ public class NightMeta implements Writeable {
         return this;
     }
 
-    @Deprecated
-    @Nullable
-    public String getSkinURL() {
-        return this.playerProfile == null ? null : PlayerProfiles.getProfileSkinURL(this.playerProfile.queryNoUpdate());
-    }
-
-    @Deprecated
-    public NightMeta setSkinURL(@Nullable String skinURL) {
-        return skinURL == null ? this.setPlayerProfile((NightProfile) null) : this.setProfileBySkinURL(skinURL);
-    }
-
-    @NotNull
-    @Deprecated
+    @NonNull
+    @Deprecated(forRemoval = true)
     public NightMeta setSkullOwner(@Nullable OfflinePlayer owner) {
         return this.setPlayerProfile(owner == null ? null : Players.getProfile(owner));
     }
 
-    @NotNull
-    @Deprecated
+    @NonNull
+    @Deprecated(forRemoval = true)
     public NightMeta setSkullOwner(@Nullable NightProfile skullOwner) {
         return this.setPlayerProfile(skullOwner);
     }
 
-    @Nullable
-    public CachedProfile getPlayerProfile() {
-        return this.playerProfile;
+
+    @Deprecated(forRemoval = true)
+    public @Nullable CachedProfile getPlayerProfile() {
+        return this.skinUrl == null ? null : PlayerProfiles.createProfileBySkinURL(this.skinUrl);
     }
 
-    @NotNull
-    public NightMeta setProfileBySkinURL(@NotNull String skinURL) {
-        return this.setPlayerProfile(PlayerProfiles.createProfileBySkinURL(skinURL));
+    @Deprecated(forRemoval = true)
+    public @NonNull NightMeta setPlayerProfile(@Nullable CachedProfile profile) {
+        if (profile == null) {
+            return this.setSkinURL((URL) null);
+        }
+
+        return this.setPlayerProfile(profile.query());
     }
 
-    @NotNull
-    public NightMeta setPlayerProfile(@NotNull OfflinePlayer player) {
+    @Deprecated(forRemoval = true)
+    public @NonNull NightMeta setProfileBySkinURL(@NonNull String skinUrl) {
+        return this.setSkinURL(skinUrl);
+    }
+
+
+    @Deprecated(forRemoval = true)
+    public @NonNull NightMeta setPlayerProfile(@NonNull OfflinePlayer player) {
         return this.setPlayerProfile(PlayerProfiles.getProfile(player));
     }
 
-    @NotNull
-    public NightMeta setPlayerProfile(@Nullable NightProfile profile) {
-        CachedProfile cached = null;
-        if (profile != null && profile.getId() != null) {
-            cached = PlayerProfiles.cacheExact(profile); // Do not try to fetch properties of profiles with random UUID and custom textures set.
+    public @NonNull NightMeta setPlayerProfile(@Nullable NightProfile profile) {
+        if (profile == null) {
+            return this.setSkinURL((URL) null);
         }
 
-        return this.setPlayerProfile(cached);
+        return this.setSkinURL(profile.getTextures().getSkin());
     }
 
-    @NotNull
-    public NightMeta setPlayerProfile(@Nullable CachedProfile profile) {
-        this.playerProfile = profile;
+    public @NonNull NightMeta setSkinURL(@Nullable URL skinUrl) {
+        return this.setSkinURL(skinUrl == null ? null : skinUrl.toString());
+    }
+
+    public @NonNull NightMeta setSkinURL(@Nullable String skinUrl) {
+        this.skinUrl = skinUrl;
         return this;
+    }
+
+    public @Nullable String getSkinURL() {
+        return this.skinUrl;
     }
 
     @Nullable
@@ -564,7 +599,7 @@ public class NightMeta implements Writeable {
         return this.modelData;
     }
 
-    @NotNull
+    @NonNull
     public NightMeta setCustomModelData(@Nullable Float modelData) {
         this.modelData = modelData;
         return this;
@@ -617,12 +652,12 @@ public class NightMeta implements Writeable {
         return this;
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public boolean isHideComponents() {
         return !this.hiddenComponents.isEmpty();// hideComponents;
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public NightMeta setHideComponents(boolean hideComponents) {
         return hideComponents ? this.hideAllComponents() : this.showAllComponents();
     }
@@ -636,6 +671,19 @@ public class NightMeta implements Writeable {
         return this;
     }
 
+    public NightMeta replaceNameWithLore(UnaryOperator<String> operator) {
+        if (this.itemName != null) {
+            this.itemName = operator.apply(this.itemName);
+        }
+        if (this.displayName != null) {
+            this.displayName = operator.apply(this.displayName);
+        }
+        if (this.lore != null) {
+            this.lore = Lists.modify(this.lore, operator);
+        }
+        return this;
+    }
+
     @Nullable
     public Replacer getReplacer() {
         return this.replacer;
@@ -646,8 +694,8 @@ public class NightMeta implements Writeable {
         return this;
     }
 
-    @NotNull
-    public NightMeta replacement(@NotNull Consumer<Replacer> consumer) {
+    @NonNull
+    public NightMeta replacement(@NonNull Consumer<Replacer> consumer) {
         if (this.replacer == null) this.replacer = Replacer.create();
 
         consumer.accept(this.replacer);
@@ -659,14 +707,14 @@ public class NightMeta implements Writeable {
         return this.placeholderContext;
     }
 
-    @NotNull
+    @NonNull
     public NightMeta setPlaceholderContext(@Nullable PlaceholderContext placeholderContext) {
         this.placeholderContext = placeholderContext;
         return this;
     }
 
-    @NotNull
-    public NightMeta replace(@NotNull Consumer<PlaceholderContext.Builder> consumer) {
+    @NonNull
+    public NightMeta replace(@NonNull Consumer<PlaceholderContext.Builder> consumer) {
         PlaceholderContext.Builder builder = PlaceholderContext.builder();
 
         consumer.accept(builder);

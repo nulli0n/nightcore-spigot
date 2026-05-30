@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.integration.permission;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
 import java.util.UUID;
@@ -12,21 +12,30 @@ public interface PermissionProvider {
 
     //void setup();
 
-    @NotNull String getName();
+    @NonNull
+    String getName();
 
-    @Nullable String getPrimaryGroup(@NotNull Player player);
+    @Nullable
+    String getPrimaryGroup(@NonNull Player player);
 
-    @NotNull Set<String> getPermissionGroups(@NotNull Player player);
+    @NonNull
+    Set<String> getPermissionGroups(@NonNull Player player);
 
-    @Nullable String getPrefix(@NotNull Player player);
+    @Nullable
+    String getPrefix(@NonNull Player player);
 
-    @Nullable String getSuffix(@NotNull Player player);
+    @Nullable
+    String getSuffix(@NonNull Player player);
 
-    @NotNull CompletableFuture<String> getPrimaryGroup(@NotNull UUID playerId);
+    @NonNull
+    CompletableFuture<String> getPrimaryGroup(@NonNull UUID playerId);
 
-    @NotNull CompletableFuture<Set<String>> getPermissionGroups(@NotNull UUID playerId);
+    @NonNull
+    CompletableFuture<Set<String>> getPermissionGroups(@NonNull UUID playerId);
 
-    @NotNull CompletableFuture<String> getPrefix(@NotNull UUID playerId);
+    @NonNull
+    CompletableFuture<String> getPrefix(@NonNull UUID playerId);
 
-    @NotNull CompletableFuture<String> getSuffix(@NotNull UUID playerId);
+    @NonNull
+    CompletableFuture<String> getSuffix(@NonNull UUID playerId);
 }

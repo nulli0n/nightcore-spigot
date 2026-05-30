@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input.single;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedDialogInput;
@@ -9,22 +9,23 @@ import su.nightexpress.nightcore.util.Strings;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public record WrappedSingleOptionDialogInput(@NotNull String key,
-                                             @NotNull String label,
-                                             @NotNull List<WrappedSingleOptionEntry> entries,
+public record WrappedSingleOptionDialogInput(@NonNull String key,
+                                             @NonNull String label,
+                                             @NonNull List<WrappedSingleOptionEntry> entries,
                                              int width,
                                              boolean labelVisible) implements WrappedDialogInput {
 
     @Override
-    @NotNull
-    public <I> I adapt(@NotNull DialogInputAdapter<I> adapter) {
+    @NonNull
+    public <I> I adapt(@NonNull DialogInputAdapter<I> adapter) {
         return adapter.adaptInput(this);
     }
 
     @Override
-    @NotNull
-    public WrappedSingleOptionDialogInput replace(@NotNull UnaryOperator<String> operator) {
-        return new WrappedSingleOptionDialogInput(this.key, operator.apply(this.label), List.copyOf(this.entries), this.width, this.labelVisible);
+    @NonNull
+    public WrappedSingleOptionDialogInput replace(@NonNull UnaryOperator<String> operator) {
+        return new WrappedSingleOptionDialogInput(this.key, operator.apply(this.label), List.copyOf(
+            this.entries), this.width, this.labelVisible);
     }
 
     public static final class Builder {
@@ -36,25 +37,25 @@ public record WrappedSingleOptionDialogInput(@NotNull String key,
         private int     width        = DialogDefaults.DEFAULT_SINGLE_INPUT_WIDTH;
         private boolean labelVisible = true;
 
-        public Builder(@NotNull String key, @NotNull String label, @NotNull List<WrappedSingleOptionEntry> entries) {
+        public Builder(@NonNull String key, @NonNull String label, @NonNull List<WrappedSingleOptionEntry> entries) {
             this.key = Strings.filterForVariable(key);
             this.entries = entries;
             this.label = label;
         }
 
-        @NotNull
+        @NonNull
         public Builder width(int width) {
             this.width = DialogDefaults.clampWidth(width);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder labelVisible(boolean labelVisible) {
             this.labelVisible = labelVisible;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public WrappedSingleOptionDialogInput build() {
             return new WrappedSingleOptionDialogInput(this.key, this.label, this.entries, this.width, this.labelVisible);
         }

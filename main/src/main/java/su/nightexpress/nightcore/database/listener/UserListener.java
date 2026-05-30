@@ -4,7 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightDataPlugin;
 import su.nightexpress.nightcore.database.AbstractUserManager;
 import su.nightexpress.nightcore.database.DataUser;
@@ -17,7 +17,7 @@ public class UserListener<P extends NightDataPlugin<U>, U extends DataUser> exte
 
     private final AbstractUserManager<? extends NightDataPlugin<U>, U> userManager;
 
-    public UserListener(@NotNull P plugin) {
+    public UserListener(@NonNull P plugin) {
         super(plugin);
         this.userManager = plugin.getUserManager();
     }
@@ -32,7 +32,7 @@ public class UserListener<P extends NightDataPlugin<U>, U extends DataUser> exte
             user = this.userManager.createUserData(uuid, event.getName());
             plugin.getData().addUser(user);
             //if (CoreConfig.USER_DEBUG_ENABLED.get()) {
-                plugin.info("Created new data for: '" + uuid + "'");
+            plugin.info("Created new data for: '" + uuid + "'");
             //}
         }
         else user = this.userManager.getUserData(uuid);

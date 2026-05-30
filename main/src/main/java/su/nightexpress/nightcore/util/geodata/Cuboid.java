@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.geodata.pos.BlockPos;
 import su.nightexpress.nightcore.util.geodata.pos.ChunkPos;
 import su.nightexpress.nightcore.util.geodata.pos.ExactPos;
@@ -31,7 +31,7 @@ public class Cuboid {
 
     private final Set<ChunkPos> intersectingChunks;
 
-    public Cuboid(@NotNull BlockPos min, @NotNull BlockPos max) {
+    public Cuboid(@NonNull BlockPos min, @NonNull BlockPos max) {
         int minX = Math.min(min.getX(), max.getX());
         int minY = Math.min(min.getY(), max.getY());
         int minZ = Math.min(min.getZ(), max.getZ());
@@ -63,18 +63,18 @@ public class Cuboid {
         this.intersectingChunks = new HashSet<>(this.getIntersectingChunks());
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public Cuboid maxHeight(@NotNull World world) {
+    public Cuboid maxHeight(@NonNull World world) {
         return this.setHeight(world);
     }
 
-    @NotNull
-    public Cuboid setHeight(@NotNull World world) {
+    @NonNull
+    public Cuboid setHeight(@NonNull World world) {
         return this.setHeight(world.getMinHeight(), world.getMaxHeight());
     }
 
-    @NotNull
+    @NonNull
     public Cuboid setHeight(int minHeight, int maxHeight) {
         BlockPos min = new BlockPos(this.min.getX(), minHeight, this.min.getZ());
         BlockPos max = new BlockPos(this.max.getX(), maxHeight, this.max.getZ());
@@ -82,7 +82,7 @@ public class Cuboid {
         return new Cuboid(min, max);
     }
 
-    public boolean isSimilar(@NotNull Cuboid other) {
+    public boolean isSimilar(@NonNull Cuboid other) {
         if (this.isEmpty() || other.isEmpty()) return false;
 
         return this.min.equals(other.min) && this.max.equals(other.max);
@@ -92,27 +92,27 @@ public class Cuboid {
         return this.empty;
     }
 
-    public boolean contains(@NotNull Location location) {
+    public boolean contains(@NonNull Location location) {
         return this.contains(location, DimensionType._3D);
     }
 
-    public boolean contains(@NotNull Location location, @NotNull DimensionType type) {
+    public boolean contains(@NonNull Location location, @NonNull DimensionType type) {
         return this.contains(BlockPos.from(location), type);
     }
 
-    public boolean contains(@NotNull ExactPos pos) {
+    public boolean contains(@NonNull ExactPos pos) {
         return this.contains(pos.toBlockPos());
     }
 
-    public boolean contains(@NotNull BlockPos pos) {
+    public boolean contains(@NonNull BlockPos pos) {
         return this.contains(pos, DimensionType._3D);
     }
 
-    public boolean contains(@NotNull ChunkPos pos) {
+    public boolean contains(@NonNull ChunkPos pos) {
         return this.containsX(GeoUtils.shiftToCoord(pos.getX())) && this.containsZ(GeoUtils.shiftToCoord(pos.getZ()));
     }
 
-    public boolean contains(@NotNull BlockPos pos, @NotNull DimensionType type) {
+    public boolean contains(@NonNull BlockPos pos, @NonNull DimensionType type) {
         if (!this.containsX(pos.getX())) return false;
         if (!this.containsZ(pos.getZ())) return false;
 
@@ -134,8 +134,8 @@ public class Cuboid {
         return z >= this.min.getZ() && z <= this.max.getZ();
     }
 
-    @NotNull
-    public List<Block> getBlocks(@NotNull World world) {
+    @NonNull
+    public List<Block> getBlocks(@NonNull World world) {
         List<Block> blocks = new ArrayList<>();
 
         for (int x = this.min.getX(); x <= this.max.getX(); x++) {
@@ -150,7 +150,7 @@ public class Cuboid {
         return blocks;
     }
 
-    @NotNull
+    @NonNull
     public List<BlockPos> getCorners() {
         List<BlockPos> list = new ArrayList<>();
 
@@ -166,7 +166,7 @@ public class Cuboid {
         return list;
     }
 
-    @NotNull
+    @NonNull
     public List<BlockPos> getCornerWiresY() {
         List<BlockPos> list = new ArrayList<>();
 
@@ -189,7 +189,7 @@ public class Cuboid {
         return list;
     }
 
-    @NotNull
+    @NonNull
     public List<BlockPos> getCornerWiresX() {
         List<BlockPos> list = new ArrayList<>();
 
@@ -205,7 +205,7 @@ public class Cuboid {
         return list;
     }
 
-    @NotNull
+    @NonNull
     public List<BlockPos> getCornerWiresZ() {
         List<BlockPos> list = new ArrayList<>();
 
@@ -221,11 +221,11 @@ public class Cuboid {
         return list;
     }
 
-    public boolean isIntersectingWith(@NotNull Cuboid other) {
+    public boolean isIntersectingWith(@NonNull Cuboid other) {
         return this.isIntersectingWith(other, DimensionType._3D);
     }
 
-    public boolean isIntersectingWith(@NotNull Cuboid other, @NotNull DimensionType type) {
+    public boolean isIntersectingWith(@NonNull Cuboid other, @NonNull DimensionType type) {
         return other.includedIn(this, type) || this.includedIn(other, type);
     }
 
@@ -233,9 +233,11 @@ public class Cuboid {
         return min1 <= max2 && max1 >= min2;
     }
 
-    public boolean includedIn(@NotNull Cuboid other, @NotNull DimensionType dimensionType) {
-        if (!this.checkIntersect(this.min.getX(), this.max.getX(), other.getMin().getX(), other.getMax().getX())) return false;
-        if (!this.checkIntersect(this.min.getZ(), this.max.getZ(), other.getMin().getZ(), other.getMax().getZ())) return false;
+    public boolean includedIn(@NonNull Cuboid other, @NonNull DimensionType dimensionType) {
+        if (!this.checkIntersect(this.min.getX(), this.max.getX(), other.getMin().getX(), other.getMax().getX()))
+            return false;
+        if (!this.checkIntersect(this.min.getZ(), this.max.getZ(), other.getMin().getZ(), other.getMax().getZ()))
+            return false;
 
         if (dimensionType == DimensionType._3D) {
             return this.checkIntersect(this.min.getY(), this.max.getY(), other.getMin().getY(), other.getMax().getY());
@@ -244,17 +246,18 @@ public class Cuboid {
         return true;
     }
 
-    @NotNull
-    public Set<Chunk> getIntersectingChunks(@NotNull World world) {
-        return this.getIntersectingChunkPositions().stream().map(pos -> pos.getChunk(world)).collect(Collectors.toSet());
+    @NonNull
+    public Set<Chunk> getIntersectingChunks(@NonNull World world) {
+        return this.getIntersectingChunkPositions().stream().map(pos -> pos.getChunk(world)).collect(Collectors
+            .toSet());
     }
 
-    @NotNull
+    @NonNull
     public Set<ChunkPos> getIntersectingChunkPositions() {
         return this.intersectingChunks;
     }
 
-    @NotNull
+    @NonNull
     private Collection<ChunkPos> getIntersectingChunks() {
         List<ChunkPos> chunks = new ArrayList<>();
         if (this.isEmpty()) return chunks;
@@ -273,17 +276,17 @@ public class Cuboid {
         return chunks;
     }
 
-    @NotNull
+    @NonNull
     public BlockPos getMin() {
         return this.min;
     }
 
-    @NotNull
+    @NonNull
     public BlockPos getMax() {
         return this.max;
     }
 
-    @NotNull
+    @NonNull
     public BlockPos getCenter() {
         return this.center;
     }
@@ -292,7 +295,7 @@ public class Cuboid {
         return this.getVolume(DimensionType._3D);
     }
 
-    public int getVolume(@NotNull DimensionType dimensionType) {
+    public int getVolume(@NonNull DimensionType dimensionType) {
         int xLength = this.max.getX() - this.min.getX() + 1;
         int yLength = dimensionType == DimensionType._2D ? 1 : this.max.getY() - this.min.getY() + 1;
         int zLength = this.max.getZ() - this.min.getZ() + 1;

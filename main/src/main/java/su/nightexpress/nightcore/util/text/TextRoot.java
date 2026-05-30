@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.util.text;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.util.LegacyColors;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
@@ -35,12 +35,12 @@ public class TextRoot {
 
     private NightComponent component;
 
-    public TextRoot(@NotNull String string, @NotNull TagPool tagPool) {
+    public TextRoot(@NonNull String string, @NonNull TagPool tagPool) {
         this.tagPool = tagPool;
         this.setString(string);
     }
 
-    public void setString(@NotNull String string) {
+    public void setString(@NonNull String string) {
         if (CoreConfig.LEGACY_COLOR_SUPPORT.get()) {
             string = LegacyColors.plainColors(string); // Translate legacy colors to plain values: '§a' -> '&a', '§x§f§f§f§f§f§f' -> '#ffffff'.
             string = ParserUtils.wrapHexCodesAsTags(string); // Wrap HEX colors in tags: '#ffffff' -> '<#ffffff>'.
@@ -51,24 +51,24 @@ public class TextRoot {
         this.component = null;
     }
 
-    @NotNull
+    @NonNull
     public TextRoot copy() {
         return new TextRoot(this.string, this.tagPool);
     }
 
-    @NotNull
+    @NonNull
     public TextRoot compile() {
         this.parseIfAbsent();
         return this;
     }
 
-    @NotNull
+    @NonNull
     public TextRoot recompile() {
         this.parse();
         return this;
     }
 
-    @NotNull
+    @NonNull
     public String toLegacy() {
         this.parseIfAbsent();
 
@@ -77,37 +77,37 @@ public class TextRoot {
         return this.component.toLegacy();
     }
 
-    @NotNull
+    @NonNull
     public String toJson() {
         return this.parseIfAbsent().toJson();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public NightComponent toComponent() {
         return this.parseIfAbsent();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public TextRoot replace(@NotNull String what, @NotNull Object object) {
+    public TextRoot replace(@NonNull String what, @NonNull Object object) {
         return this.replace(str -> str.replace(what, String.valueOf(object)));
     }
 
-    @NotNull
-    public TextRoot replace(@NotNull UnaryOperator<String> operator) {
+    @NonNull
+    public TextRoot replace(@NonNull UnaryOperator<String> operator) {
         this.setString(operator.apply(this.string));
         return this;
     }
 
-    public void send(@NotNull CommandSender... senders) {
+    public void send(@NonNull CommandSender... senders) {
         this.parseIfAbsent();
         for (CommandSender sender : senders) {
             this.component.send(sender);
         }
     }
 
-    @NotNull
+    @NonNull
     public TextGroup toParentGroup() {
         this.currentGroup = this.currentGroup.getParent();
         if (this.currentGroup == null) this.currentGroup = this.rootGroup;
@@ -115,8 +115,8 @@ public class TextRoot {
         return this.currentGroup;
     }
 
-    @NotNull
-    public TextGroup toParentGroup(@NotNull String name) {
+    @NonNull
+    public TextGroup toParentGroup(@NonNull String name) {
         TextGroup lastGroup = this.currentGroup;
 
         while (this.currentGroup != null && !this.currentGroup.getName().equalsIgnoreCase(name)) {
@@ -133,7 +133,7 @@ public class TextRoot {
         return this.currentGroup;
     }
 
-    @NotNull
+    @NonNull
     public TextNode currentNode() {
         if (this.currentNode == null) this.currentNode = this.currentGroup.createNode();
 
@@ -145,10 +145,11 @@ public class TextRoot {
     }
 
     public enum Mode {
-        PARSE, STRIP
+        PARSE,
+        STRIP
     }
 
-    @NotNull
+    @NonNull
     public NightComponent parse() {
         this.rootGroup = new TextGroup(ROOT_NAME);
         this.currentGroup = this.rootGroup;
@@ -165,7 +166,7 @@ public class TextRoot {
         return this.component;
     }
 
-    @NotNull
+    @NonNull
     public String strip() {
         StringBuilder builder = new StringBuilder();
 
@@ -174,7 +175,7 @@ public class TextRoot {
         return builder.toString();
     }
 
-    private void doJob(@NotNull Mode mode, @NotNull Consumer<Character> consumer) {
+    private void doJob(@NonNull Mode mode, @NonNull Consumer<Character> consumer) {
         int length = string.length();
         for (int index = 0; index < length; index++) {
             char letter = string.charAt(index);
@@ -248,7 +249,7 @@ public class TextRoot {
         }
     }
 
-    private void proceedTag(@NotNull Tag tag, boolean closeTag, @Nullable String tagContent) {
+    private void proceedTag(@NonNull Tag tag, boolean closeTag, @Nullable String tagContent) {
         if (closeTag && !tag.isCloseable()) return;
 
         if (tag instanceof PlaceholderTag placeholderTag) {
@@ -261,7 +262,8 @@ public class TextRoot {
 
                 int index = ParserUtils.findUnescapedUnquotedChar(tagContent, ParserUtils.DELIMITER, 0);
                 String key = index < 0 ? tagContent : tagContent.substring(0, index);
-                String fallback = index < 0 || index >= tagContent.length() ? null : ParserUtils.unquoted(tagContent.substring(index + 1));
+                String fallback = index < 0 || index >= tagContent.length() ? null : ParserUtils.unquoted(tagContent
+                    .substring(index + 1));
 
                 // Create a new node exclusively for translation text.
                 this.currentGroup.createLangNode(ParserUtils.unquoted(key), fallback);
@@ -311,24 +313,24 @@ public class TextRoot {
         return component;
     }
 
-//    public static boolean isEmpty(@NotNull BaseComponent component) {
-//        return component instanceof TextComponent textComponent && textComponent.getText().isBlank() && textComponent.getExtra() == null;
-//    }
+    //    public static boolean isEmpty(@NonNull BaseComponent component) {
+    //        return component instanceof TextComponent textComponent && textComponent.getText().isBlank() && textComponent.getExtra() == null;
+    //    }
 
-/*    public static int indexOfIgnoreEscaped(@NotNull String string, char what, int from) {
+    /*    public static int indexOfIgnoreEscaped(@NonNull String string, char what, int from) {
         int length = string.length();
         if (from >= length) return -1;
-
+    
         Character foundQuote = null;
         int quoteCount = 0;
-
+    
         for (int index = from; index < length; index++) {
             char letter = string.charAt(index);
             if (letter == '\\') {
                 index++;
                 continue;
             }
-
+    
             if (letter == '\'' || letter == '"') {
                 quoteCount++;
                 if (foundQuote != null) {
@@ -338,22 +340,22 @@ public class TextRoot {
                 }
                 else foundQuote = letter;
             }
-
+    
             if (letter == what) {
                 if (foundQuote != null && quoteCount < 2) continue;
                 return index;
             }
         }
-
+    
         return -1;
     }*/
 
-    /*@NotNull
-    public static String substringOfQuotes(@NotNull String string) {
+    /*@NonNull
+    public static String substringOfQuotes(@NonNull String string) {
         char quote = string.charAt(0);
         if (quote != '\'' && quote != '"') return string;
         if (string.length() < 3) return string;
-
+    
         //int indexEnd = -1;
         for (int index = 1; index < string.length(); index++) {
             char letter = string.charAt(index);
@@ -366,7 +368,7 @@ public class TextRoot {
             }
         }
         //if (indexEnd == -1) return string;
-
+    
         return string;//.substring(1, indexEnd);
     }*/
 }

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.statement.template;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.statement.ColumnMapping;

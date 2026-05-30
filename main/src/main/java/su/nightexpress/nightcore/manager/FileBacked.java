@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.manager;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -9,16 +9,20 @@ public interface FileBacked {
 
     /**
      * Gets the file associated with the given object.
+     * 
      * @return the file.
      */
     @Deprecated
-    @NotNull default File getFile() {
+    @NonNull
+    default File getFile() {
         return this.getPath().toFile();
     }
 
     /**
      * Gets the file associated with the given object.
+     * 
      * @return the file.
      */
-    @NotNull Path getPath();
+    @NonNull
+    Path getPath();
 }

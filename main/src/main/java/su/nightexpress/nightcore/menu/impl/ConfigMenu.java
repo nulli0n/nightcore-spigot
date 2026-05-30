@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.menu.impl;
 
 import org.bukkit.event.inventory.InventoryType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -31,7 +31,7 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
     protected String  itemSection;
     protected boolean applyPAPI;
 
-    public ConfigMenu(@NotNull P plugin, @NotNull FileConfig config) {
+    public ConfigMenu(@NonNull P plugin, @NonNull FileConfig config) {
         super(plugin);
         this.cfg = config;
         this.handlerMap = new HashMap<>();
@@ -44,10 +44,10 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
         }
     }
 
-    @NotNull
+    @NonNull
     protected abstract MenuOptions createDefaultOptions();
 
-    @NotNull
+    @NonNull
     protected abstract List<MenuItem> createDefaultItems();
 
     public void load() {
@@ -68,7 +68,8 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
             "Useful for '" + InventoryType.CHEST.name() + "' Inventory Type only."
         ).read(cfg);
 
-        InventoryType type = ConfigValue.create("Settings.Inventory_Type", InventoryType.class, defaultOptions.getType(),
+        InventoryType type = ConfigValue.create("Settings.Inventory_Type", InventoryType.class, defaultOptions
+            .getType(),
             "GUI type.",
             "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/inventory/InventoryType.html"
         ).read(cfg);
@@ -79,7 +80,8 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
 
         boolean applyPAPI = ConfigValue.create("Settings.PlaceholderAPI.Enabled",
             this.applyPAPI,
-            "Sets whether " + PAPI.NAME + " placeholders will be applied on all items from the '" + this.itemSection + "' section of this GUI.",
+            "Sets whether " + PAPI.NAME + " placeholders will be applied on all items from the '" + this.itemSection +
+                "' section of this GUI.",
             "[*] Disable if you don't use any " + PAPI.NAME + " placeholders on your items to improve GUI performance."
         ).read(cfg);
 
@@ -110,7 +112,8 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
             this.addItem(menuItem);
 
             if (applyPAPI) {
-                menuItem.getOptions().addDisplayModifier((viewer, itemStack) -> ItemReplacer.replacePlaceholderAPI(itemStack, viewer.getPlayer()));
+                menuItem.getOptions().addDisplayModifier((viewer, itemStack) -> ItemReplacer.replacePlaceholderAPI(
+                    itemStack, viewer.getPlayer()));
             }
         });
 
@@ -142,25 +145,25 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
         this.handlerMap.clear();
     }
 
-    public void addHandler(@NotNull ItemHandler handler) {
+    public void addHandler(@NonNull ItemHandler handler) {
         this.handlerMap.put(handler.getName(), handler);
     }
 
-    public void addHandler(@NotNull String name, @NotNull ClickAction action) {
+    public void addHandler(@NonNull String name, @NonNull ClickAction action) {
         this.addHandler(new ItemHandler(name, action));
     }
 
     @Nullable
-    public ItemHandler getHandler(@NotNull String name) {
+    public ItemHandler getHandler(@NonNull String name) {
         return this.handlerMap.get(name.toLowerCase());
     }
 
-    public boolean removeHandler(@NotNull String name) {
+    public boolean removeHandler(@NonNull String name) {
         return this.handlerMap.remove(name.toLowerCase()) != null;
     }
 
-    @NotNull
-    protected MenuItem readItem(@NotNull String path) {
+    @NonNull
+    protected MenuItem readItem(@NonNull String path) {
         String handlerName = cfg.getString(path + ".Type", Placeholders.DEFAULT);
         NightItem item = cfg.getCosmeticItem(path + ".Item");
         int[] slots = cfg.getIntArray(path + ".Slots");
@@ -196,7 +199,7 @@ public abstract class ConfigMenu<P extends NightCorePlugin> extends AbstractMenu
         return menuItem;
     }
 
-    protected void writeItem(@NotNull MenuItem menuItem, @NotNull String path) {
+    protected void writeItem(@NonNull MenuItem menuItem, @NonNull String path) {
         this.cfg.set(path + ".Priority", menuItem.getPriority());
         this.cfg.setItem(path + ".Item", menuItem.getItemStack());
         this.cfg.setIntArray(path + ".Slots", menuItem.getSlots());

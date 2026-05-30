@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.ui.inventory;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.ui.inventory.listener.MenuInventoryListener;
@@ -16,7 +16,7 @@ public class MenuRegistry extends AbstractManager<NightCore> {
 
     private final Map<UUID, Menu> activeMenus;
 
-    public MenuRegistry(@NotNull NightCore core) {
+    public MenuRegistry(@NonNull NightCore core) {
         super(core);
         this.activeMenus = new HashMap<>();
     }
@@ -37,25 +37,25 @@ public class MenuRegistry extends AbstractManager<NightCore> {
         this.getActiveMenus().forEach(Menu::tick);
     }
 
-    public void registerViewer(@NotNull Player player, @NotNull Menu menu) {
+    public void registerViewer(@NonNull Player player, @NonNull Menu menu) {
         this.activeMenus.put(player.getUniqueId(), menu);
     }
 
-    public void unregisterViewer(@NotNull Player player) {
+    public void unregisterViewer(@NonNull Player player) {
         this.activeMenus.remove(player.getUniqueId());
     }
 
     @Nullable
-    public Menu getActiveMenu(@NotNull Player player) {
+    public Menu getActiveMenu(@NonNull Player player) {
         return this.getActiveMenu(player.getUniqueId());
     }
 
     @Nullable
-    public Menu getActiveMenu(@NotNull UUID playerId) {
+    public Menu getActiveMenu(@NonNull UUID playerId) {
         return this.activeMenus.get(playerId);
     }
 
-    @NotNull
+    @NonNull
     public Set<Menu> getActiveMenus() {
         return Set.copyOf(this.activeMenus.values());
     }

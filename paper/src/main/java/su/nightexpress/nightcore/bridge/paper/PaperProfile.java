@@ -1,22 +1,23 @@
 package su.nightexpress.nightcore.bridge.paper;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.profile.PlayerTextures;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
-import su.nightexpress.nightcore.bridge.wrap.NightProfile;
-
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerTextures;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
+import com.destroystokyo.paper.profile.PlayerProfile;
+
+import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 
 public class PaperProfile implements NightProfile {
 
     private final PlayerProfile backend;
 
-    public PaperProfile(@NotNull PlayerProfile backend) {
+    public PaperProfile(@NonNull PlayerProfile backend) {
         this.backend = backend;
     }
 
@@ -26,7 +27,7 @@ public class PaperProfile implements NightProfile {
     }
 
     @Override
-    public void apply(@NotNull SkullMeta meta) {
+    public void apply(@NonNull SkullMeta meta) {
         meta.setPlayerProfile(this.backend);
     }
 
@@ -37,7 +38,7 @@ public class PaperProfile implements NightProfile {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Optional<UUID> id() {
         return Optional.ofNullable(this.getId());
     }
@@ -49,13 +50,13 @@ public class PaperProfile implements NightProfile {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Optional<String> name() {
         return Optional.ofNullable(this.getName());
     }
 
     @Override
-    @NotNull
+    @NonNull
     public PlayerTextures getTextures() {
         return this.backend.getTextures();
     }
@@ -71,7 +72,7 @@ public class PaperProfile implements NightProfile {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public CompletableFuture<NightProfile> update() {
         return this.backend.update().thenApplyAsync(PaperProfile::new);
     }

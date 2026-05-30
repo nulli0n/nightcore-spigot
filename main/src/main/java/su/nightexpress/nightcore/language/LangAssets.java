@@ -7,7 +7,7 @@ import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.*;
@@ -25,7 +25,7 @@ public class LangAssets {
 
     private static FileConfig config;
 
-    public static void load(@NotNull NightCore core) {
+    public static void load(@NonNull NightCore core) {
         String langCode = core.getLanguage();
 
         String assetsCode = downloadAssets(core, langCode);
@@ -43,16 +43,17 @@ public class LangAssets {
         BukkitThing.getAll(RegistryType.DAMAGE_TYPE).forEach(damageType -> getOrCreate("DamageType", damageType));
     }
 
-    @NotNull
-    private static String downloadAssets(@NotNull NightCore plugin, @NotNull String langCode) {
+    @NonNull
+    private static String downloadAssets(@NonNull NightCore plugin, @NonNull String langCode) {
         File file = new File(plugin.getDataFolder().getAbsolutePath() + LangManager.DIR_LANG, getFileName(langCode));
         if (file.exists()) return langCode;
 
         FileUtil.create(file);
 
         String url = Placeholders.GITHUB_URL + "/raw/master/assets/" + langCode + ".yml";
-        try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+        try (
+            BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             plugin.info("Downloading '" + langCode + "' assets from github...");
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
@@ -68,72 +69,72 @@ public class LangAssets {
         }
     }
 
-    @NotNull
-    private static String getFileName(@NotNull String langCode) {
+    @NonNull
+    private static String getFileName(@NonNull String langCode) {
         return "assets_" + langCode + ".yml";
     }
 
-    @NotNull
+    @NonNull
     public static FileConfig getConfig() {
         return config;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String get(@NotNull PotionEffectType type) {
+    public static String get(@NonNull PotionEffectType type) {
         return getAsset("PotionEffectType", type);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String get(@NotNull EntityType type) {
+    public static String get(@NonNull EntityType type) {
         return getAsset("EntityType", type);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String get(@NotNull Material type) {
+    public static String get(@NonNull Material type) {
         return getAsset("Material", type);
     }
 
-    @NotNull
-    public static String get(@NotNull World world) {
+    @NonNull
+    public static String get(@NonNull World world) {
         return getOrCreate("World", world);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String get(@NotNull Enchantment enchantment) {
+    public static String get(@NonNull Enchantment enchantment) {
         return getOrCreate("Enchantment", enchantment);
     }
 
-    @NotNull
-    public static String get(@NotNull DamageType damageType) {
+    @NonNull
+    public static String get(@NonNull DamageType damageType) {
         return getOrCreate("DamageType", damageType);
     }
 
-    @NotNull
-    public static String getAsset(@NotNull String path, @NotNull Keyed keyed) {
+    @NonNull
+    public static String getAsset(@NonNull String path, @NonNull Keyed keyed) {
         return getAsset(path, BukkitThing.toString(keyed));
     }
 
-    @NotNull
-    public static String getAsset(@NotNull String path, @NotNull String nameRaw) {
+    @NonNull
+    public static String getAsset(@NonNull String path, @NonNull String nameRaw) {
         return getAsset(path + "." + nameRaw).orElse(nameRaw);
     }
 
-    @NotNull
-    public static Optional<String> getAsset(@NotNull String path) {
+    @NonNull
+    public static Optional<String> getAsset(@NonNull String path) {
         return Optional.ofNullable(config.getString(path));
     }
 
-    @NotNull
-    public static String getOrCreate(@NotNull String path, @NotNull Keyed keyed) {
+    @NonNull
+    public static String getOrCreate(@NonNull String path, @NonNull Keyed keyed) {
         return getOrCreate(path, BukkitThing.toString(keyed));
     }
 
-    @NotNull
-    public static String getOrCreate(@NotNull String path, @NotNull String nameRaw) {
+    @NonNull
+    public static String getOrCreate(@NonNull String path, @NonNull String nameRaw) {
         config.addMissing(path + "." + nameRaw, StringUtil.capitalizeUnderscored(nameRaw));
 
         return getAsset(path, nameRaw);

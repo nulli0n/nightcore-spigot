@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.ui.menu.item;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
@@ -20,17 +20,17 @@ public class ItemOptions {
         this.displayModifier = displayModifier;
     }
 
-    public boolean canSee(@NotNull MenuViewer viewer) {
+    public boolean canSee(@NonNull MenuViewer viewer) {
         return this.visibilityPolicy == null || this.visibilityPolicy.test(viewer);
     }
 
-    public void modifyDisplay(@NotNull MenuViewer viewer, @NotNull NightItem item) {
+    public void modifyDisplay(@NonNull MenuViewer viewer, @NonNull NightItem item) {
         if (this.displayModifier != null) {
             this.displayModifier.accept(viewer, item);
         }
     }
 
-    @NotNull
+    @NonNull
     public static Builder builder() {
         return new Builder();
     }
@@ -54,18 +54,18 @@ public class ItemOptions {
 
         }
 
-        @NotNull
+        @NonNull
         public ItemOptions build() {
             return new ItemOptions(this.visibilityPolicy, this.displayModifier);
         }
 
-        @NotNull
+        @NonNull
         public Builder setVisibilityPolicy(@Nullable Predicate<MenuViewer> visibilityPolicy) {
             this.visibilityPolicy = visibilityPolicy;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder setDisplayModifier(@Nullable BiConsumer<MenuViewer, NightItem> displayModifier) {
             this.displayModifier = displayModifier;
             return this;

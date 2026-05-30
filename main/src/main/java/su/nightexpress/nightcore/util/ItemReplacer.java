@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.util;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.language.entry.LangItem;
 import su.nightexpress.nightcore.util.placeholder.CommonPlaceholders;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderList;
@@ -30,17 +30,18 @@ public class ItemReplacer {
 
     private final Replacer replacer;
 
-    private String displayName;
+    private String       displayName;
     private List<String> lore;
 
-    @Deprecated private boolean trimLore;
+    @Deprecated
+    private boolean trimLore;
     private boolean hideFlags;
 
-    public ItemReplacer(@NotNull ItemStack item) {
+    public ItemReplacer(@NonNull ItemStack item) {
         this(item, item.getItemMeta());
     }
 
-    public ItemReplacer(@NotNull ItemMeta meta) {
+    public ItemReplacer(@NonNull ItemMeta meta) {
         this(null, meta);
     }
 
@@ -52,17 +53,17 @@ public class ItemReplacer {
         //this.operatorCache = new ArrayList<>();
     }
 
-    @NotNull
-    public static ItemReplacer create(@NotNull ItemStack item) {
+    @NonNull
+    public static ItemReplacer create(@NonNull ItemStack item) {
         return new ItemReplacer(item);
     }
 
-    @NotNull
-    public static ItemReplacer create(@NotNull ItemMeta meta) {
+    @NonNull
+    public static ItemReplacer create(@NonNull ItemMeta meta) {
         return new ItemReplacer(meta);
     }
 
-    @NotNull
+    @NonNull
     public ItemReplacer readMeta() {
         if (this.hasMeta()) {
             this.setDisplayName(this.meta.getDisplayName());
@@ -71,8 +72,8 @@ public class ItemReplacer {
         return this;
     }
 
-    @NotNull
-    public ItemReplacer readLocale(@NotNull LangItem locale) {
+    @NonNull
+    public ItemReplacer readLocale(@NonNull LangItem locale) {
         if (this.hasMeta()) {
             this.setDisplayName(locale.getLocalizedName());
             this.setLore(locale.getLocalizedLore());
@@ -91,9 +92,9 @@ public class ItemReplacer {
             this.meta.setLore(this.packTrimmedLore());
         }
 
-//        if (this.isHideFlags()) {
-//            ItemUtil.hideAttributes(this.meta, this.item.getType());
-//        }
+        //        if (this.isHideFlags()) {
+        //            ItemUtil.hideAttributes(this.meta, this.item.getType());
+        //        }
 
         if (this.hasItem()) {
             this.item.setItemMeta(this.meta);
@@ -107,38 +108,39 @@ public class ItemReplacer {
     }
 
     @Deprecated
-    public static void replace(@NotNull ItemMeta meta, @NotNull UnaryOperator<String> replacer) {
+    public static void replace(@NonNull ItemMeta meta, @NonNull UnaryOperator<String> replacer) {
         create(meta).trimmed().readMeta().replace(replacer).writeMeta();
     }
 
     @Deprecated
-    public static void replace(@NotNull ItemStack item, @NotNull PlaceholderMap replacer) {
+    public static void replace(@NonNull ItemStack item, @NonNull PlaceholderMap replacer) {
         create(item).trimmed().readMeta().replace(replacer).writeMeta();
     }
 
     @Deprecated
-    public static void replace(@NotNull ItemMeta meta, @NotNull PlaceholderMap replacer) {
+    public static void replace(@NonNull ItemMeta meta, @NonNull PlaceholderMap replacer) {
         create(meta).trimmed().readMeta().replace(replacer).writeMeta();
     }
 
     @Deprecated
-    public static void replacePlaceholderAPI(@NotNull ItemMeta meta, @NotNull Player player) {
+    public static void replacePlaceholderAPI(@NonNull ItemMeta meta, @NonNull Player player) {
         create(meta).trimmed().readMeta().replacePlaceholderAPI(player).writeMeta();
     }
 
-    public static void replace(@NotNull ItemStack itemStack, @NotNull UnaryOperator<String> operator) {
+    public static void replace(@NonNull ItemStack itemStack, @NonNull UnaryOperator<String> operator) {
         //create(itemStack).trimmed().readMeta().replace(replacer).writeMeta();
 
         create(itemStack).readMeta().replacement(replacer -> replacer.replace(operator)).writeMeta();
     }
 
-    public static <T> void replace(@NotNull ItemStack itemStack, @NotNull PlaceholderList<T> placeholderList, @NotNull T source) {
+    public static <T> void replace(@NonNull ItemStack itemStack, @NonNull PlaceholderList<T> placeholderList,
+                                   @NonNull T source) {
         //create(itemStack).trimmed().readMeta().replace(placeholderList.replacer(source)).writeMeta();
 
         create(itemStack).readMeta().replacement(replacer -> replacer.replace(source, placeholderList)).writeMeta();
     }
 
-    public static void replacePlaceholderAPI(@NotNull ItemStack item, @NotNull Player player) {
+    public static void replacePlaceholderAPI(@NonNull ItemStack item, @NonNull Player player) {
         create(item).readMeta().replacement(replacer -> replacer.replacePlaceholderAPI(player)).writeMeta();
 
         //create(item).trimmed().readMeta().replacePlaceholderAPI(player).writeMeta();
@@ -161,89 +163,90 @@ public class ItemReplacer {
         return hideFlags;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public ItemReplacer trimmed() {
         this.setTrimLore(true);
         return this;
     }
 
-    @NotNull
+    @NonNull
     public ItemReplacer hideFlags() {
         this.hideFlags = true;
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public ItemReplacer setHideFlags(boolean hideFlags) {
         this.hideFlags = hideFlags;
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public ItemReplacer setTrimLore(boolean trimLore) {
         this.trimLore = trimLore;
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    private ItemReplacer cachePlaceholder(@NotNull String placeholder, @NotNull Supplier<String> value) {
+    private ItemReplacer cachePlaceholder(@NonNull String placeholder, @NonNull Supplier<String> value) {
         this.replacer.replace(placeholder, value);
         //this.placeholderCache.add(placeholder, value);
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    private ItemReplacer cachePlaceholder(@NotNull String placeholder, @NotNull String value) {
+    private ItemReplacer cachePlaceholder(@NonNull String placeholder, @NonNull String value) {
         this.replacer.replace(placeholder, value);
         //this.placeholderCache.add(placeholder, value);
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    private ItemReplacer cacheOperator(@NotNull UnaryOperator<String> operator) {
+    private ItemReplacer cacheOperator(@NonNull UnaryOperator<String> operator) {
         this.replacer.replace(operator);
         //this.operatorCache.add(operator);
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replace(@NotNull String placeholder, @NotNull String value) {
+    public ItemReplacer replace(@NonNull String placeholder, @NonNull String value) {
         return this.cachePlaceholder(placeholder, value);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replace(@NotNull String placeholder, @NotNull Supplier<String> value) {
+    public ItemReplacer replace(@NonNull String placeholder, @NonNull Supplier<String> value) {
         return this.cachePlaceholder(placeholder, value);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replace(@NotNull String placeholder, @NotNull List<String> replacer) {
+    public ItemReplacer replace(@NonNull String placeholder, @NonNull List<String> replacer) {
         return this.cacheOperator(str -> str.replace(placeholder, String.join("\n", replacer)));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public <T> ItemReplacer replace(@NotNull String placeholder, @NotNull PlaceholderList<T> placeholderList, @NotNull T source) {
+    public <T> ItemReplacer replace(@NonNull String placeholder, @NonNull PlaceholderList<T> placeholderList,
+                                    @NonNull T source) {
         return this.cacheOperator(placeholderList.replacer(source));
     }
 
-    public ItemReplacer replacement(@NotNull Consumer<Replacer> consumer) {
+    public ItemReplacer replacement(@NonNull Consumer<Replacer> consumer) {
         consumer.accept(this.replacer);
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replace(@NotNull PlaceholderMap... placeholderMaps) {
+    public ItemReplacer replace(@NonNull PlaceholderMap... placeholderMaps) {
         for (PlaceholderMap placeholder : placeholderMaps) {
             //this.placeholderCache.add(placeholder);
             this.replacer.replace(placeholder.replacer());
@@ -251,48 +254,48 @@ public class ItemReplacer {
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replace(@NotNull UnaryOperator<String> replacer) {
+    public ItemReplacer replace(@NonNull UnaryOperator<String> replacer) {
         return cacheOperator(replacer);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replacePlaceholderAPI(@NotNull Player player) {
+    public ItemReplacer replacePlaceholderAPI(@NonNull Player player) {
         if (Plugins.hasPlaceholderAPI()) {
             this.cacheOperator(str -> CommonPlaceholders.setPAPIPlaceholders(player, str));
         }
         return this;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replaceLoreExact(@NotNull String placeholder, @NotNull List<String> replacer) {
+    public ItemReplacer replaceLoreExact(@NonNull String placeholder, @NonNull List<String> replacer) {
         return this.replace(placeholder, replacer);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replaceLore(@NotNull String placeholder, @NotNull Supplier<List<String>> replacer) {
+    public ItemReplacer replaceLore(@NonNull String placeholder, @NonNull Supplier<List<String>> replacer) {
         return this.replace(placeholder, replacer.get());
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer injectLore(@NotNull String placeholder, @NotNull List<String> replacer) {
+    public ItemReplacer injectLore(@NonNull String placeholder, @NonNull List<String> replacer) {
         return this.replace(placeholder, replacer);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer injectPlaceholderAPI(@NotNull Player player) {
+    public ItemReplacer injectPlaceholderAPI(@NonNull Player player) {
         return this.replacePlaceholderAPI(player);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public ItemReplacer replaceLoreTrail(@NotNull String placeholder, @NotNull List<String> replacer) {
+    public ItemReplacer replaceLoreTrail(@NonNull String placeholder, @NonNull List<String> replacer) {
         if (this.getLore() == null) return this;
 
         List<String> loreReplaced = new ArrayList<>();
@@ -309,15 +312,15 @@ public class ItemReplacer {
         return this;
     }
 
-    @NotNull
+    @NonNull
     public List<String> packLore() {
-//        if (this.lore == null) return new ArrayList<>();
-//
-//        return Splitter.on("\n").splitToList(this.lore);
+        //        if (this.lore == null) return new ArrayList<>();
+        //
+        //        return Splitter.on("\n").splitToList(this.lore);
         return this.lore == null ? new ArrayList<>() : this.lore;
     }
 
-    private void replaceLore(@NotNull UnaryOperator<String> operator) {
+    private void replaceLore(@NonNull UnaryOperator<String> operator) {
         List<String> replaced = new ArrayList<>();
         for (String line : this.lore) {
             if (!line.isBlank()) {
@@ -331,7 +334,7 @@ public class ItemReplacer {
         this.setLore(replaced);
     }
 
-    @NotNull
+    @NonNull
     public List<String> packTrimmedLore() {
         List<String> lore = this.packLore();
         if (this.isTrimLore()) {
@@ -345,8 +348,8 @@ public class ItemReplacer {
         //return su.nightexpress.nightcore.util.text.NightMessage.asLegacy(fixed);
     }
 
-    @NotNull
-    private List<String> addEmptyLines(@NotNull List<String> lore) {
+    @NonNull
+    private List<String> addEmptyLines(@NonNull List<String> lore) {
         for (int index = 0; index < lore.size(); index++) {
             String line = lore.get(index);
             if (line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE)) {
@@ -370,8 +373,9 @@ public class ItemReplacer {
         return lore;
     }
 
-    private boolean isEmpty(@NotNull String line) {
-        return line.isBlank() || line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE) || line.equalsIgnoreCase(Placeholders.EMPTY_IF_BELOW);
+    private boolean isEmpty(@NonNull String line) {
+        return line.isBlank() || line.equalsIgnoreCase(Placeholders.EMPTY_IF_ABOVE) || line.equalsIgnoreCase(
+            Placeholders.EMPTY_IF_BELOW);
     }
 
     @Nullable
@@ -379,7 +383,7 @@ public class ItemReplacer {
         return this.displayName;
     }
 
-    @NotNull
+    @NonNull
     public ItemReplacer setDisplayName(@Nullable String displayName) {
         this.displayName = displayName;
         return this;
@@ -390,14 +394,14 @@ public class ItemReplacer {
         return this.lore;
     }
 
-    @NotNull
+    @NonNull
     public ItemReplacer setLore(@Nullable List<String> lore) {
         this.lore = lore;
         return this;
         //return this.setLore(lore == null ? null : String.join("\n", lore));
     }
 
-    @NotNull
+    @NonNull
     public ItemReplacer setLore(@Nullable String lore) {
         this.lore = lore == null ? null : Lists.newList(lore.split("\n"));
         //this.lore = lore;

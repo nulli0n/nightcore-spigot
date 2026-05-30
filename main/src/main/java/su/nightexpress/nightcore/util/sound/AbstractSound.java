@@ -1,8 +1,9 @@
 package su.nightexpress.nightcore.util.sound;
 
 import org.bukkit.Sound;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.wrap.NightSound;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
@@ -19,18 +20,18 @@ public abstract class AbstractSound implements NightSound, Writeable {
     protected static final float MAX_VOLUME = 1.0f;
 
     protected static final float DEFAULT_VOLUME = 0.8f;
-    protected static final float DEFAULT_PITCH = 1f;
+    protected static final float DEFAULT_PITCH  = 1f;
 
-    protected final float  volume;
-    protected final float  pitch;
+    protected final float volume;
+    protected final float pitch;
 
     public AbstractSound(float volume, float pitch) {
         this.volume = NumberUtil.clamp(volume, MIN_VOLUME, MAX_VOLUME);
         this.pitch = NumberUtil.clamp(pitch, MIN_PITCH, MAX_PITCH);
     }
 
-    @NotNull
-    public static NightSound deserialize(@NotNull String from) {
+    @NonNull
+    public static NightSound deserialize(@NonNull String from) {
         String[] split = from.split(DELIMITER);
 
         String name = split[0];
@@ -42,13 +43,13 @@ public abstract class AbstractSound implements NightSound, Writeable {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String serialize() {
         return this.getName() + DELIMITER + this.volume + DELIMITER + this.pitch;
     }
 
     @Nullable
-    public static NightSound read(@NotNull FileConfig config, @NotNull String path) {
+    public static NightSound read(@NonNull FileConfig config, @NonNull String path) {
         String raw = config.getString(path);
         if (raw == null) return null;
 
@@ -56,7 +57,7 @@ public abstract class AbstractSound implements NightSound, Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path, this.serialize());
     }
 

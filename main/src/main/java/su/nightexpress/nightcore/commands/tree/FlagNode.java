@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.commands.tree;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.commands.argument.ArgumentReader;
 import su.nightexpress.nightcore.commands.context.CommandContext;
 import su.nightexpress.nightcore.commands.context.CommandContextBuilder;
@@ -16,13 +16,13 @@ public class FlagNode extends CommandNode {
 
     private static final String PREFIX = "-";
 
-    public FlagNode(@NotNull String name) {
+    public FlagNode(@NonNull String name) {
         super(name, null, Collections.emptyList());
     }
 
     @Override
-    @NotNull
-    public Collection<? extends CommandNode> getRelevantNodes(@NotNull ArgumentReader reader) {
+    @NonNull
+    public Collection<? extends CommandNode> getRelevantNodes(@NonNull ArgumentReader reader) {
         return this.getChildren(); // Only one (or none) children node is expected.
     }
 
@@ -40,7 +40,8 @@ public class FlagNode extends CommandNode {
     // In #provideSuggestions, we obtain a list of all flags of the LiteralNode and suggest only missing ones.
 
     @Override
-    public void parse(@NotNull ArgumentReader reader, @NotNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
+    public void parse(@NonNull ArgumentReader reader,
+                      @NonNull CommandContextBuilder contextBuilder) throws CommandSyntaxException {
         int cursor = reader.getCursor();
         String string = reader.getCursorArgument();
 
@@ -61,20 +62,22 @@ public class FlagNode extends CommandNode {
     }
 
     @Override
-    protected void provideSuggestions(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
+    protected void provideSuggestions(@NonNull ArgumentReader reader, @NonNull CommandContext context,
+                                      @NonNull Suggestions suggestions) {
         ExecutableNode executable = context.getExecutor();
         if (!(executable instanceof LiteralNode parent)) return;
 
-        suggestions.setSuggestions(parent.getFlags().stream().filter(flagNode -> !context.hasFlag(flagNode.getName())).map(FlagNode::getPrefixed).toList());
+        suggestions.setSuggestions(parent.getFlags().stream().filter(flagNode -> !context.hasFlag(flagNode.getName()))
+            .map(FlagNode::getPrefixed).toList());
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getUsage() {
         return CoreLang.COMMAND_USAGE_OPTIONAL_FLAG.text().replace(Placeholders.GENERIC_NAME, this.getPrefixed());
     }
 
-    @NotNull
+    @NonNull
     public String getPrefixed() {
         return PREFIX + this.name;
     }

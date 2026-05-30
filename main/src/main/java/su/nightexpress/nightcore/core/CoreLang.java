@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.core;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.language.entry.*;
 import su.nightexpress.nightcore.ui.dialog.DialogManager;
@@ -34,16 +34,26 @@ public class CoreLang {
     public static final LangString COMMAND_FLAG_FORMAT = LangString.of("Command.Flag.Format",
         LIGHT_GRAY.wrap("[" + GENERIC_NAME + "]"));
 
-    public static final LangString COMMAND_ARGUMENT_NAME_GENERIC        = LangString.of("Command.Argument.Name.Generic", "value");
-    public static final LangString COMMAND_ARGUMENT_NAME_TYPE           = LangString.of("Command.Argument.Name.Type", "type");
-    public static final LangString COMMAND_ARGUMENT_NAME_NAME           = LangString.of("Command.Argument.Name.Name", "name");
-    public static final LangString COMMAND_ARGUMENT_NAME_PLAYER         = LangString.of("Command.Argument.Name.Player", "player");
-    public static final LangString COMMAND_ARGUMENT_NAME_WORLD          = LangString.of("Command.Argument.Name.World", "world");
-    public static final LangString COMMAND_ARGUMENT_NAME_AMOUNT         = LangString.of("Command.Argument.Name.Amount", "amount");
-    public static final LangString COMMAND_ARGUMENT_NAME_MATERIAL       = LangString.of("Command.Argument.Name.Material", "material");
-    public static final LangString COMMAND_ARGUMENT_NAME_ITEM_MATERIAL  = LangString.of("Command.Argument.Name.ItemMaterial", "item type");
-    public static final LangString COMMAND_ARGUMENT_NAME_BLOCK_MATERIAL = LangString.of("Command.Argument.Name.BlockMaterial", "block type");
-    public static final LangString COMMAND_ARGUMENT_NAME_ENCHANTMENT    = LangString.of("Command.Argument.Name.Enchantment", "enchantment");
+    public static final LangString COMMAND_ARGUMENT_NAME_GENERIC        = LangString.of("Command.Argument.Name.Generic",
+        "value");
+    public static final LangString COMMAND_ARGUMENT_NAME_TYPE           = LangString.of("Command.Argument.Name.Type",
+        "type");
+    public static final LangString COMMAND_ARGUMENT_NAME_NAME           = LangString.of("Command.Argument.Name.Name",
+        "name");
+    public static final LangString COMMAND_ARGUMENT_NAME_PLAYER         = LangString.of("Command.Argument.Name.Player",
+        "player");
+    public static final LangString COMMAND_ARGUMENT_NAME_WORLD          = LangString.of("Command.Argument.Name.World",
+        "world");
+    public static final LangString COMMAND_ARGUMENT_NAME_AMOUNT         = LangString.of("Command.Argument.Name.Amount",
+        "amount");
+    public static final LangString COMMAND_ARGUMENT_NAME_MATERIAL       = LangString.of(
+        "Command.Argument.Name.Material", "material");
+    public static final LangString COMMAND_ARGUMENT_NAME_ITEM_MATERIAL  = LangString.of(
+        "Command.Argument.Name.ItemMaterial", "item type");
+    public static final LangString COMMAND_ARGUMENT_NAME_BLOCK_MATERIAL = LangString.of(
+        "Command.Argument.Name.BlockMaterial", "block type");
+    public static final LangString COMMAND_ARGUMENT_NAME_ENCHANTMENT    = LangString.of(
+        "Command.Argument.Name.Enchantment", "enchantment");
     //public static final LangString COMMAND_ARGUMENT_NAME_POTION_EFFECT  = LangString.of("Command.Argument.Name.Effect", "effect");
     //public static final LangString COMMAND_ARGUMENT_NAME_ATTRIBUTE      = LangString.of("Command.Argument.Name.Attribute", "attribute");
 
@@ -59,12 +69,15 @@ public class CoreLang {
     );
 
     public static final LangString COMMAND_HELP_ENTRY = LangString.of("Command.Help.Entry",
-        "  " + YELLOW.wrap("/" + COMMAND_LABEL) + " " + ORANGE.wrap(COMMAND_USAGE) + GRAY.wrap(" - " + COMMAND_DESCRIPTION)
+        "  " + YELLOW.wrap("/" + COMMAND_LABEL) + " " + ORANGE.wrap(COMMAND_USAGE) + GRAY.wrap(" - " +
+            COMMAND_DESCRIPTION)
     );
 
     public static final LangString COMMAND_HELP_DESC      = LangString.of("Command.Help.Desc", "Show help page.");
-    public static final LangString COMMAND_CHECKPERM_DESC = LangString.of("Command.CheckPerm.Desc", "Print player permission info.");
-    public static final LangString COMMAND_DUMPITEM_DESC  = LangString.of("Command.DumpItem.Desc", "Print item components info.");
+    public static final LangString COMMAND_CHECKPERM_DESC = LangString.of("Command.CheckPerm.Desc",
+        "Print player permission info.");
+    public static final LangString COMMAND_DUMPITEM_DESC  = LangString.of("Command.DumpItem.Desc",
+        "Print item components info.");
     public static final LangString COMMAND_RELOAD_DESC    = LangString.of("Command.Reload.Desc", "Reload the plugin.");
 
     public static final LangText COMMAND_RELOAD_DONE = LangText.of("Command.Reload.Done",
@@ -87,9 +100,12 @@ public class CoreLang {
     public static final LangString OTHER_UNLIMITED = LangString.of("Other.Unlimited", "Unlimited");
     public static final LangString OTHER_INFINITY  = LangString.of("Other.Infinity", "∞");
 
-    public static final LangString ENTRY_GOOD = LangString.of("Entry.Good", GREEN.wrap("✔") + " " + GRAY.wrap(GENERIC_ENTRY));
-    public static final LangString ENTRY_BAD  = LangString.of("Entry.Bad", RED.wrap("✘") + " " + GRAY.wrap(GENERIC_ENTRY));
-    public static final LangString ENTRY_WARN = LangString.of("Entry.Warn", ORANGE.wrap("[❗]") + " " + GRAY.wrap(GENERIC_ENTRY));
+    public static final LangString ENTRY_GOOD = LangString.of("Entry.Good", GREEN.wrap("✔") + " " + GRAY.wrap(
+        GENERIC_ENTRY));
+    public static final LangString ENTRY_BAD  = LangString.of("Entry.Bad", RED.wrap("✘") + " " + GRAY.wrap(
+        GENERIC_ENTRY));
+    public static final LangString ENTRY_WARN = LangString.of("Entry.Warn", ORANGE.wrap("[❗]") + " " + GRAY.wrap(
+        GENERIC_ENTRY));
 
     public static final LangText ERROR_INVALID_PLAYER = LangText.of("Error.Invalid_Player",
         RED.wrap("Invalid player!"));
@@ -110,7 +126,7 @@ public class CoreLang {
 
     /*public static final LangText ERROR_INVALID_POTION_EFFECT = LangText.of("Error.InvalidPotionEffectType",
         LIGHT_GRAY.wrap(LIGHT_RED.wrap(GENERIC_VALUE) + " is not a valid potion effect type!"));
-
+    
     public static final LangText ERROR_INVALID_ATTRIBUTE = LangText.of("Error.InvalidAttribute",
         LIGHT_GRAY.wrap(LIGHT_RED.wrap(GENERIC_VALUE) + " is not a valid attribute!"));*/
 
@@ -118,24 +134,31 @@ public class CoreLang {
         RED.wrap("You don't have permissions to do that!"));
 
     public static final LangText ERROR_COMMAND_PARSE_FLAG = LangText.of("Error.Command.ParseFlag",
-        LIGHT_GRAY.wrap("Invalid value " + LIGHT_RED.wrap(GENERIC_VALUE) + " for " + LIGHT_RED.wrap(GENERIC_NAME) + " flag."));
+        LIGHT_GRAY.wrap("Invalid value " + LIGHT_RED.wrap(GENERIC_VALUE) + " for " + LIGHT_RED.wrap(GENERIC_NAME) +
+            " flag."));
 
     public static final LangText ERROR_COMMAND_PARSE_ARGUMENT = LangText.of("Error.Command.ParseArgument",
-        LIGHT_GRAY.wrap("Invalid value " + LIGHT_RED.wrap(GENERIC_VALUE) + " for " + LIGHT_RED.wrap(GENERIC_NAME) + " argument."));
+        LIGHT_GRAY.wrap("Invalid value " + LIGHT_RED.wrap(GENERIC_VALUE) + " for " + LIGHT_RED.wrap(GENERIC_NAME) +
+            " argument."));
 
-    public static final LangText ERROR_COMMAND_INVALID_PLAYER_ARGUMENT = LangText.of("Error.Command.Argument.InvalidPlayer",
+    public static final LangText ERROR_COMMAND_INVALID_PLAYER_ARGUMENT = LangText.of(
+        "Error.Command.Argument.InvalidPlayer",
         LIGHT_GRAY.wrap(LIGHT_RED.wrap("Can not find player " + GENERIC_VALUE) + "!"));
 
-    public static final LangText ERROR_COMMAND_INVALID_WORLD_ARGUMENT = LangText.of("Error.Command.Argument.InvalidWorld",
+    public static final LangText ERROR_COMMAND_INVALID_WORLD_ARGUMENT = LangText.of(
+        "Error.Command.Argument.InvalidWorld",
         LIGHT_GRAY.wrap(LIGHT_RED.wrap("Can not find world " + GENERIC_VALUE) + "!"));
 
-    public static final LangText ERROR_COMMAND_INVALID_NUMBER_ARGUMENT = LangText.of("Error.Command.Argument.InvalidNumber",
+    public static final LangText ERROR_COMMAND_INVALID_NUMBER_ARGUMENT = LangText.of(
+        "Error.Command.Argument.InvalidNumber",
         LIGHT_GRAY.wrap(LIGHT_RED.wrap(GENERIC_VALUE) + " is not a valid number!"));
 
-    public static final LangText ERROR_COMMAND_INVALID_MATERIAL_ARGUMENT = LangText.of("Error.Command.Argument.InvalidMaterial",
+    public static final LangText ERROR_COMMAND_INVALID_MATERIAL_ARGUMENT = LangText.of(
+        "Error.Command.Argument.InvalidMaterial",
         LIGHT_GRAY.wrap(LIGHT_RED.wrap(GENERIC_VALUE) + " is not a valid material!"));
 
-    public static final LangText ERROR_COMMAND_INVALID_ENCHANTMENT_ARGUMENT = LangText.of("Error.Command.Argument.InvalidEnchantment",
+    public static final LangText ERROR_COMMAND_INVALID_ENCHANTMENT_ARGUMENT = LangText.of(
+        "Error.Command.Argument.InvalidEnchantment",
         LIGHT_GRAY.wrap(LIGHT_RED.wrap(GENERIC_VALUE) + " is not a valid enchantment!"));
 
     public static final LangText ERROR_COMMAND_NOT_YOURSELF = LangText.of("Error.Command.NotYourself",
@@ -160,8 +183,7 @@ public class CoreLang {
             CLICK.wrap(
                 HOVER.wrap(GREEN.wrap("[Here]"), HoverEventType.SHOW_TEXT, GRAY.wrap("Click to cancel")),
                 ClickEventType.RUN_COMMAND, "/" + Dialog.EXIT
-            )
-            + " to leave input mode."),
+            ) + " to leave input mode."),
         "");
 
     @Deprecated
@@ -180,18 +202,21 @@ public class CoreLang {
             CLICK.wrapRunCommand(
                 HOVER.wrapShowText(GREEN.wrap("[Here]"), GRAY.wrap("Click to cancel.")),
                 "/" + DialogManager.EXIT
-            )
-            + " to leave input mode."),
+            ) + " to leave input mode."),
         "");
 
     @Deprecated
-    public static final LangString EDITOR_INPUT_HEADER_MAIN       = LangString.of("Editor.Input.Header.Main", GREEN.wrap(BOLD.wrap("Input Mode")));
+    public static final LangString EDITOR_INPUT_HEADER_MAIN       = LangString.of("Editor.Input.Header.Main", GREEN
+        .wrap(BOLD.wrap("Input Mode")));
     @Deprecated
-    public static final LangString EDITOR_INPUT_HEADER_ERROR      = LangString.of("Editor.Input.Header.Error", RED.wrap(BOLD.wrap("ERROR")));
+    public static final LangString EDITOR_INPUT_HEADER_ERROR      = LangString.of("Editor.Input.Header.Error", RED.wrap(
+        BOLD.wrap("ERROR")));
     @Deprecated
-    public static final LangString EDITOR_INPUT_ERROR_NOT_INTEGER = LangString.of("Editor.Input.Error.NotInteger", GRAY.wrap("Expecting " + RED.wrap("whole") + " number!"));
+    public static final LangString EDITOR_INPUT_ERROR_NOT_INTEGER = LangString.of("Editor.Input.Error.NotInteger", GRAY
+        .wrap("Expecting " + RED.wrap("whole") + " number!"));
     @Deprecated
-    public static final LangString EDITOR_INPUT_ERROR_GENERIC     = LangString.of("Editor.Input.Error.Generic", GRAY.wrap("Invalid value!"));
+    public static final LangString EDITOR_INPUT_ERROR_GENERIC     = LangString.of("Editor.Input.Error.Generic", GRAY
+        .wrap("Invalid value!"));
 
     @Deprecated
     public static final LangString EDITOR_BUTTON_NAME = LangString.of("Editor.Button.Name",
@@ -204,7 +229,8 @@ public class CoreLang {
     );
 
     @Deprecated
-    public static final LangString EDITOR_BUTTON_CURRENT_DEFAULT_NAME = LangString.of("Editor.Button.Current.DefaultName",
+    public static final LangString EDITOR_BUTTON_CURRENT_DEFAULT_NAME = LangString.of(
+        "Editor.Button.Current.DefaultName",
         "Current"
     );
 
@@ -220,41 +246,49 @@ public class CoreLang {
 
 
     @Deprecated
-    public static final LangItem EDITOR_ITEM_CLOSE         = LangItem.of("Editor.Generic.Close", LIGHT_RED.wrap(BOLD.wrap("Exit")));
+    public static final LangItem EDITOR_ITEM_CLOSE         = LangItem.of("Editor.Generic.Close", LIGHT_RED.wrap(BOLD
+        .wrap("Exit")));
     @Deprecated
-    public static final LangItem EDITOR_ITEM_RETURN        = LangItem.of("Editor.Generic.Return", LIGHT_GRAY.wrap(BOLD.wrap("Return")));
+    public static final LangItem EDITOR_ITEM_RETURN        = LangItem.of("Editor.Generic.Return", LIGHT_GRAY.wrap(BOLD
+        .wrap("Return")));
     @Deprecated
-    public static final LangItem EDITOR_ITEM_NEXT_PAGE     = LangItem.of("Editor.Generic.NextPage", LIGHT_GRAY.wrap("Next Page →"));
+    public static final LangItem EDITOR_ITEM_NEXT_PAGE     = LangItem.of("Editor.Generic.NextPage", LIGHT_GRAY.wrap(
+        "Next Page →"));
     @Deprecated
-    public static final LangItem EDITOR_ITEM_PREVIOUS_PAGE = LangItem.of("Editor.Generic.PreviousPage", LIGHT_GRAY.wrap("← Previous Page"));
+    public static final LangItem EDITOR_ITEM_PREVIOUS_PAGE = LangItem.of("Editor.Generic.PreviousPage", LIGHT_GRAY.wrap(
+        "← Previous Page"));
 
-    public static final LangUIButton EDITOR_ITEM_EXIT     = LangUIButton.builder("Editor.Item.Exit", LIGHT_RED.wrap(UNDERLINED.wrap("Exit"))).formatted(false).build();
-    public static final LangUIButton EDITOR_ITEM_BACK     = LangUIButton.builder("Editor.Item.Return", WHITE.wrap(UNDERLINED.wrap("Return"))).formatted(false).build();
-    public static final LangUIButton EDITOR_ITEM_NEXT     = LangUIButton.builder("Editor.Item.NextPage", LIGHT_YELLOW.wrap(UNDERLINED.wrap("Next Page") + " →")).formatted(false).build();
-    public static final LangUIButton EDITOR_ITEM_PREVIOUS = LangUIButton.builder("Editor.Item.PreviousPage", LIGHT_YELLOW.wrap("← " + UNDERLINED.wrap("Previous Page"))).formatted(false).build();
+    public static final LangUIButton EDITOR_ITEM_EXIT     = LangUIButton.builder("Editor.Item.Exit", LIGHT_RED.wrap(
+        UNDERLINED.wrap("Exit"))).formatted(false).build();
+    public static final LangUIButton EDITOR_ITEM_BACK     = LangUIButton.builder("Editor.Item.Return", WHITE.wrap(
+        UNDERLINED.wrap("Return"))).formatted(false).build();
+    public static final LangUIButton EDITOR_ITEM_NEXT     = LangUIButton.builder("Editor.Item.NextPage", LIGHT_YELLOW
+        .wrap(UNDERLINED.wrap("Next Page") + " →")).formatted(false).build();
+    public static final LangUIButton EDITOR_ITEM_PREVIOUS = LangUIButton.builder("Editor.Item.PreviousPage",
+        LIGHT_YELLOW.wrap("← " + UNDERLINED.wrap("Previous Page"))).formatted(false).build();
 
-    @NotNull
+    @NonNull
     public static String getYesOrNo(boolean value) {
         return (value ? OTHER_YES : OTHER_NO).getString();
     }
 
-    @NotNull
+    @NonNull
     public static String getEnabledOrDisabled(boolean value) {
         return (value ? OTHER_ENABLED : OTHER_DISABLED).getString();
     }
 
-    @NotNull
-    public static String goodEntry(@NotNull String str) {
+    @NonNull
+    public static String goodEntry(@NonNull String str) {
         return ENTRY_GOOD.getString().replace(GENERIC_ENTRY, str);
     }
 
-    @NotNull
-    public static String badEntry(@NotNull String str) {
+    @NonNull
+    public static String badEntry(@NonNull String str) {
         return ENTRY_BAD.getString().replace(GENERIC_ENTRY, str);
     }
 
-    @NotNull
-    public static String warnEntry(@NotNull String str) {
+    @NonNull
+    public static String warnEntry(@NonNull String str) {
         return ENTRY_WARN.getString().replace(GENERIC_ENTRY, str);
     }
 }

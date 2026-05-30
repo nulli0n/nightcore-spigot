@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.ItemNbt;
 import su.nightexpress.nightcore.util.bridge.wrapper.HoverEventType;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
@@ -22,55 +22,55 @@ public class HoverTag extends Tag implements ContentTag {
         super(NAME);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull String text, @NotNull String hint) {
+    public String enclose(@NonNull String text, @NonNull String hint) {
         return this.encloseHint(text, hint);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull HoverEventType action, @NotNull String text, @NotNull String content) {
+    public String enclose(@NonNull HoverEventType action, @NonNull String text, @NonNull String content) {
         return this.enclose(text, action, content);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String encloseHint(@NotNull String text, @NotNull String hint) {
+    public String encloseHint(@NonNull String text, @NonNull String hint) {
         return this.wrap(text, HoverEventType.SHOW_TEXT, hint);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull String text, @NotNull HoverEventType action, @NotNull String content) {
+    public String enclose(@NonNull String text, @NonNull HoverEventType action, @NonNull String content) {
         //String data = action.name().toLowerCase() + TagUtils.SEMICOLON + TagUtils.quoted(content);
         return this.wrap(text, action, content);//TagUtils.wrapContent(this, text, data);
     }
 
-    @NotNull
-    public String wrapShowText(@NotNull String string, @NotNull String text) {
+    @NonNull
+    public String wrapShowText(@NonNull String string, @NonNull String text) {
         return this.wrap(string, HoverEventType.SHOW_TEXT, text);
     }
 
-    @NotNull
-    public String wrapShowItem(@NotNull String string, @NotNull ItemStack itemStack) {
+    @NonNull
+    public String wrapShowItem(@NonNull String string, @NonNull ItemStack itemStack) {
         return this.wrapShowItem(string, String.valueOf(ItemNbt.compress(itemStack)));
     }
 
-    @NotNull
-    public String wrapShowItem(@NotNull String string, @NotNull String compressed) {
+    @NonNull
+    public String wrapShowItem(@NonNull String string, @NonNull String compressed) {
         return this.wrap(string, HoverEventType.SHOW_ITEM, compressed);
     }
 
-    @NotNull
-    public String wrap(@NotNull String string, @NotNull HoverEventType type, @NotNull String content) {
+    @NonNull
+    public String wrap(@NonNull String string, @NonNull HoverEventType type, @NonNull String content) {
         String data = type.name().toLowerCase() + ParserUtils.DELIMITER + ParserUtils.quoted(content);
         return TagUtils.wrapContent(this, string, data);
     }
 
     @Override
     @Nullable
-    public Decorator parse(@NotNull String tagContent) {
+    public Decorator parse(@NonNull String tagContent) {
         HoverEventType action = null;
         for (HoverEventType global : HoverEventType.values()) {
             if (tagContent.startsWith(global.name().toLowerCase())) {

@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.world.*;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.manager.AbstractListener;
 
@@ -22,7 +22,7 @@ public class TrackListener<P extends NightCorePlugin> extends AbstractListener<P
 
     private static final String META_TRACK_FALLING_BLOCK = "tracker_falling_block";
 
-    public TrackListener(@NotNull P plugin) {
+    public TrackListener(@NonNull P plugin) {
         super(plugin);
     }
 

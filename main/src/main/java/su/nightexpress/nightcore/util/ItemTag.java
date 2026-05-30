@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.util;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
@@ -13,15 +13,15 @@ public class ItemTag implements Writeable {
     private static final String EMPTY = "{}";
 
     private final String tag;
-    private final int dataVersion;
+    private final int    dataVersion;
 
-    public ItemTag(@NotNull String tag, int dataVersion) {
+    public ItemTag(@NonNull String tag, int dataVersion) {
         this.tag = tag;
         this.dataVersion = dataVersion;
     }
 
-    @NotNull
-    public static ItemTag read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static ItemTag read(@NonNull FileConfig config, @NonNull String path) {
         String value = ConfigValue.create(path + ".Value", EMPTY).read(config);
         int dataVersion = ConfigValue.create(path + ".DataVersion", -1).read(config);
 
@@ -29,25 +29,25 @@ public class ItemTag implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Value", this.tag);
         config.set(path + ".DataVersion", this.dataVersion);
     }
 
-    @NotNull
-    public static ItemTag of(@NotNull ItemStack itemStack) {
+    @NonNull
+    public static ItemTag of(@NonNull ItemStack itemStack) {
         Object compoundTag = NbtUtil.tagFromItemStack(itemStack);
 
         return new ItemTag(compoundTag.toString(), Version.getCurrent().getDataVersion());
     }
 
-    @NotNull
-    public static String getTagString(@NotNull ItemStack itemStack) {
+    @NonNull
+    public static String getTagString(@NonNull ItemStack itemStack) {
         return of(itemStack).getTag();
     }
 
-    @NotNull
-    public static String getTagStringEncoded(@NotNull ItemStack itemStack) {
+    @NonNull
+    public static String getTagStringEncoded(@NonNull ItemStack itemStack) {
         return Strings.toBase64(getTagString(itemStack));
     }
 
@@ -62,7 +62,7 @@ public class ItemTag implements Writeable {
         return this.tag.isBlank() || this.tag.equalsIgnoreCase(EMPTY);
     }
 
-    @NotNull
+    @NonNull
     public String getTag() {
         return this.tag;
     }

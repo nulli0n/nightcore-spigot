@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.locale.message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.locale.LangValue;
 import su.nightexpress.nightcore.locale.message.impl.ActionBarMessage;
@@ -30,18 +30,18 @@ public abstract class LangMessage implements LangValue {
     protected final String      text;
     protected final MessageData data;
 
-    public LangMessage(@NotNull String text, @Nullable MessageData data) {
+    public LangMessage(@NonNull String text, @Nullable MessageData data) {
         this.text = text;
         this.data = data;
     }
 
-    @NotNull
+    @NonNull
     public String getText() {
         return this.text;
     }
 
-    @NotNull
-    public static LangMessage createFromData(@NotNull String text, @NotNull MessageData data) {
+    @NonNull
+    public static LangMessage createFromData(@NonNull String text, @NonNull MessageData data) {
         return switch (data.type()) {
             case CHAT -> new ChatMessage(text, data);
             case SILENT -> new SilentMessage(text, data);
@@ -50,8 +50,8 @@ public abstract class LangMessage implements LangValue {
         };
     }
 
-    @NotNull
-    public static LangMessage read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static LangMessage read(@NonNull FileConfig config, @NonNull String path) {
         List<String> text = new ArrayList<>(config.getStringList(path));
         if (text.isEmpty()) {
             text.add(config.getString(path, path));
@@ -70,7 +70,7 @@ public abstract class LangMessage implements LangValue {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         String[] textLines = ParserUtils.breakDownLineSplitters(this.text);
         String dataRaw = this.data == null ? "" : this.data.serialize();
 
@@ -116,21 +116,21 @@ public abstract class LangMessage implements LangValue {
         this.sendWith(Bukkit.getServer().getConsoleSender(), context);
     }
 
-    public void send(@NotNull CommandSender sender) {
+    public void send(@NonNull CommandSender sender) {
         this.sendWith(sender, (PlaceholderContext) null);
     }
 
-    public void send(@NotNull Collection<? extends CommandSender> receivers) {
+    public void send(@NonNull Collection<? extends CommandSender> receivers) {
         this.sendWith(receivers, (PlaceholderContext) null);
     }
 
     @Deprecated
-    public void send(@NotNull CommandSender sender, @Nullable Consumer<Replacer> consumer) {
+    public void send(@NonNull CommandSender sender, @Nullable Consumer<Replacer> consumer) {
         this.send(Collections.singleton(sender), consumer);
     }
 
     @Deprecated
-    public void send(@NotNull Collection<? extends CommandSender> receivers, @Nullable Consumer<Replacer> consumer) {
+    public void send(@NonNull Collection<? extends CommandSender> receivers, @Nullable Consumer<Replacer> consumer) {
         Replacer replacer = new Replacer();
         if (consumer != null) consumer.accept(replacer);
 
@@ -141,7 +141,8 @@ public abstract class LangMessage implements LangValue {
         }
         if (this.data != null && this.data.replacePlaceholders()) {
             receivers.forEach(sender -> {
-                if (sender instanceof Player player) this.send(Collections.singleton(player), replacer.replacePlaceholderAPI(player).apply(this.text));
+                if (sender instanceof Player player) this.send(Collections.singleton(player), replacer
+                    .replacePlaceholderAPI(player).apply(this.text));
             });
         }
         else {
@@ -150,12 +151,12 @@ public abstract class LangMessage implements LangValue {
     }
 
 
-
-    public void sendWith(@NotNull CommandSender sender, @Nullable Consumer<PlaceholderContext.Builder> consumer) {
+    public void sendWith(@NonNull CommandSender sender, @Nullable Consumer<PlaceholderContext.Builder> consumer) {
         this.sendWith(Collections.singleton(sender), consumer);
     }
 
-    public void sendWith(@NotNull Collection<? extends CommandSender> receivers, @Nullable Consumer<PlaceholderContext.Builder> consumer) {
+    public void sendWith(@NonNull Collection<? extends CommandSender> receivers,
+                         @Nullable Consumer<PlaceholderContext.Builder> consumer) {
         PlaceholderContext context = null;
         if (consumer != null) {
             PlaceholderContext.Builder builder = PlaceholderContext.builder();
@@ -166,11 +167,12 @@ public abstract class LangMessage implements LangValue {
         this.sendWith(receivers, context);
     }
 
-    public void sendWith(@NotNull CommandSender sender, @Nullable PlaceholderContext context) {
+    public void sendWith(@NonNull CommandSender sender, @Nullable PlaceholderContext context) {
         this.sendWith(Collections.singleton(sender), context);
     }
 
-    public void sendWith(@NotNull Collection<? extends CommandSender> receivers, @Nullable PlaceholderContext placeholderContext) {
+    public void sendWith(@NonNull Collection<? extends CommandSender> receivers,
+                         @Nullable PlaceholderContext placeholderContext) {
         if (this.data != null && this.data.sound() != null) {
             receivers.forEach(sender -> {
                 if (sender instanceof Player player) this.data.sound().play(player);
@@ -183,7 +185,8 @@ public abstract class LangMessage implements LangValue {
         if (this.data != null && this.data.replacePlaceholders()) {
             recipients.removeIf(sender -> {
                 if (sender instanceof Player player) {
-                    this.send(Collections.singleton(player), CommonPlaceholders.forPlaceholderAPI(player).apply(replaced));
+                    this.send(Collections.singleton(player), CommonPlaceholders.forPlaceholderAPI(player).apply(
+                        replaced));
                     return true;
                 }
                 return false;
@@ -195,5 +198,5 @@ public abstract class LangMessage implements LangValue {
         this.send(recipients, replaced);
     }
 
-    protected abstract void send(@NotNull Collection<? extends CommandSender> receivers, @NotNull String text);
+    protected abstract void send(@NonNull Collection<? extends CommandSender> receivers, @NonNull String text);
 }

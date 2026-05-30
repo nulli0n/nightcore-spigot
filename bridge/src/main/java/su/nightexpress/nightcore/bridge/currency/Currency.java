@@ -12,16 +12,19 @@ public interface Currency {
 
     boolean isDummy();
 
-    @NonNull UnaryOperator<String> replacePlaceholders();
+    @NonNull
+    UnaryOperator<String> replacePlaceholders();
 
     double floorIfNeeded(double amount);
 
-    @NonNull String formatValue(double amount);
+    @NonNull
+    String formatValue(double amount);
 
-    @NonNull String format(double amount);
+    @NonNull
+    String format(double amount);
 
-    @NonNull String applyFormat(@NonNull String format, double amount);
-
+    @NonNull
+    String applyFormat(@NonNull String format, double amount);
 
 
     @Deprecated(forRemoval = true)
@@ -55,32 +58,52 @@ public interface Currency {
     }
 
 
+    default boolean canAfford(@NonNull Player player, double amount) {
+        return this.queryBalance(player) >= amount;
+    }
+
+    default boolean canAfford(@NonNull UUID playerId, double amount) {
+        return this.queryBalance(playerId) >= amount;
+    }
+
+    default @NonNull CompletableFuture<Boolean> canAffordAsync(@NonNull Player player, double amount) {
+        return this.queryBalanceAsync(player).thenApply(balance -> balance >= amount);
+    }
+
+    default @NonNull CompletableFuture<Boolean> canAffordAsync(@NonNull UUID playerId, double amount) {
+        return this.queryBalanceAsync(playerId).thenApply(balance -> balance >= amount);
+    }
 
 
     double queryBalance(@NonNull Player player);
 
     double queryBalance(@NonNull UUID playerId);
 
-    @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull Player player);
+    @NonNull
+    CompletableFuture<Double> queryBalanceAsync(@NonNull Player player);
 
-    @NonNull CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId);
+    @NonNull
+    CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId);
 
     void deposit(@NonNull Player player, double amount);
 
     void deposit(@NonNull UUID playerId, double amount);
 
-    @NonNull CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount);
+    @NonNull
+    CompletableFuture<Boolean> depositAsync(@NonNull Player player, double amount);
 
-    @NonNull CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount);
+    @NonNull
+    CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, double amount);
 
     void withdraw(@NonNull Player player, double amount);
 
     void withdraw(@NonNull UUID playerId, double amount);
 
-    @NonNull CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount);
+    @NonNull
+    CompletableFuture<Boolean> withdrawAsync(@NonNull Player player, double amount);
 
-    @NonNull CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount);
-
+    @NonNull
+    CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, double amount);
 
 
     boolean canHandleDecimals();
@@ -88,14 +111,18 @@ public interface Currency {
     boolean canHandleOffline();
 
 
+    @NonNull
+    String getOriginalId();
 
-    @NonNull String getOriginalId();
+    @NonNull
+    String getInternalId();
 
-    @NonNull String getInternalId();
+    @NonNull
+    String getName();
 
-    @NonNull String getName();
+    @NonNull
+    String getFormat();
 
-    @NonNull String getFormat();
-
-    @NonNull ItemStack getIcon(); // TODO NightItem
+    @NonNull
+    ItemStack getIcon(); // TODO NightItem
 }

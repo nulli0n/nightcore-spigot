@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 
@@ -133,10 +133,10 @@ public class FileUtil {
     }
 
 
-
     @NonNull
     public static List<Path> findYamlFiles(@NonNull Path directoryPath) {
-        return findFiles(directoryPath, path -> Files.isRegularFile(path) && path.toString().endsWith(FileConfig.EXTENSION));
+        return findFiles(directoryPath, path -> Files.isRegularFile(path) && path.toString().endsWith(
+            FileConfig.EXTENSION));
     }
 
     @NonNull

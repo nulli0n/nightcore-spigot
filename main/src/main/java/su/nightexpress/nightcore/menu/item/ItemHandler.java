@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.menu.item;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.menu.api.Menu;
 import su.nightexpress.nightcore.menu.MenuViewer;
 import su.nightexpress.nightcore.menu.click.ClickAction;
@@ -28,15 +28,16 @@ public class ItemHandler {
         this(Placeholders.DEFAULT, null, null);
     }
 
-    public ItemHandler(@NotNull String name) {
+    public ItemHandler(@NonNull String name) {
         this(name, null, null);
     }
 
-    public ItemHandler(@NotNull String name, @Nullable ClickAction clickAction) {
+    public ItemHandler(@NonNull String name, @Nullable ClickAction clickAction) {
         this(name, clickAction, null);
     }
 
-    public ItemHandler(@NotNull String name, @Nullable ClickAction clickAction, @Nullable Predicate<MenuViewer> visibilityPolicy) {
+    public ItemHandler(@NonNull String name, @Nullable ClickAction clickAction,
+                       @Nullable Predicate<MenuViewer> visibilityPolicy) {
         this.name = name.toLowerCase();
         this.clickActions = new ArrayList<>();
         this.visibilityPolicy = visibilityPolicy;
@@ -50,56 +51,53 @@ public class ItemHandler {
      * The main purpose of this method is to quickly create ItemHandler object for non-configurable GUIs.
      * <br><br>
      * Do NOT use this for items requiring specific handler name.
+     * 
      * @param action Click action
      * @return ItemHandler with a random UUID as a name.
      */
-    @NotNull
-    public static ItemHandler forClick(@NotNull ClickAction action) {
+    @NonNull
+    public static ItemHandler forClick(@NonNull ClickAction action) {
         return new ItemHandler(UUID.randomUUID().toString(), action);
     }
 
-    @NotNull
-    public static ItemHandler forNextPage(@NotNull Menu menu) {
-        return new ItemHandler(NEXT_PAGE,
-            (viewer, event) -> {
-                if (viewer.getPage() < viewer.getPages()) {
-                    viewer.setPage(viewer.getPage() + 1);
-                    viewer.setUpdateTitle(true);
-                    menu.open(viewer.getPlayer());
-                }
-            },
-            viewer -> viewer.getPage() < viewer.getPages());
+    @NonNull
+    public static ItemHandler forNextPage(@NonNull Menu menu) {
+        return new ItemHandler(NEXT_PAGE, (viewer, event) -> {
+            if (viewer.getPage() < viewer.getPages()) {
+                viewer.setPage(viewer.getPage() + 1);
+                viewer.setUpdateTitle(true);
+                menu.open(viewer.getPlayer());
+            }
+        }, viewer -> viewer.getPage() < viewer.getPages());
     }
 
-    @NotNull
-    public static ItemHandler forPreviousPage(@NotNull Menu menu) {
-        return new ItemHandler(PREVIOUS_PAGE,
-            (viewer, event) -> {
-                if (viewer.getPage() > 1) {
-                    viewer.setPage(viewer.getPage() - 1);
-                    viewer.setUpdateTitle(true);
-                    menu.open(viewer.getPlayer());
-                }
-            },
-            viewer -> viewer.getPage() > 1);
+    @NonNull
+    public static ItemHandler forPreviousPage(@NonNull Menu menu) {
+        return new ItemHandler(PREVIOUS_PAGE, (viewer, event) -> {
+            if (viewer.getPage() > 1) {
+                viewer.setPage(viewer.getPage() - 1);
+                viewer.setUpdateTitle(true);
+                menu.open(viewer.getPlayer());
+            }
+        }, viewer -> viewer.getPage() > 1);
     }
 
-    @NotNull
-    public static ItemHandler forClose(@NotNull Menu menu) {
+    @NonNull
+    public static ItemHandler forClose(@NonNull Menu menu) {
         return new ItemHandler(CLOSE, (viewer, event) -> menu.runNextTick(() -> viewer.getPlayer().closeInventory()));
     }
 
-    @NotNull
-    public static ItemHandler forReturn(@NotNull Menu menu, @NotNull ClickAction action) {
+    @NonNull
+    public static ItemHandler forReturn(@NonNull Menu menu, @NonNull ClickAction action) {
         return new ItemHandler(RETURN, action);
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return name;
     }
 
-    @NotNull
+    @NonNull
     public List<ClickAction> getClickActions() {
         return clickActions;
     }

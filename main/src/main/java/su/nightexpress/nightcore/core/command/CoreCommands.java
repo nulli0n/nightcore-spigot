@@ -1,8 +1,14 @@
 package su.nightexpress.nightcore.core.command;
 
+import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.BOLD;
+import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.BR;
+import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.SOFT_ORANGE;
+import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.SOFT_YELLOW;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.commands.Arguments;
 import su.nightexpress.nightcore.commands.Commands;
@@ -15,15 +21,13 @@ import su.nightexpress.nightcore.integration.permission.PermissionBridge;
 import su.nightexpress.nightcore.util.ItemTag;
 import su.nightexpress.nightcore.util.Players;
 
-import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.*;
-
 public class CoreCommands {
 
     private static final String CMD_CHECKPERM = "checkperm";
 
     private static final String ARG_PLAYER = "player";
 
-    public static void load(@NotNull NightCore core, @NotNull HubNodeBuilder builder) {
+    public static void load(@NonNull NightCore core, @NonNull HubNodeBuilder builder) {
         if (PermissionBridge.hasProvider()) {
             builder.branch(Commands.literal(CMD_CHECKPERM)
                 .permission(CorePerms.COMMAND_CHECK_PERM)
@@ -50,23 +54,19 @@ public class CoreCommands {
         );
     }
 
-    private static boolean checkPermissions(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+    private static boolean checkPermissions(@NonNull CommandContext context, @NonNull ParsedArguments arguments) {
         Player player = arguments.getPlayer(ARG_PLAYER);
-        String builder =
-            BOLD.wrap(SOFT_YELLOW.wrap("Permissions report for ") + SOFT_ORANGE.wrap(player.getName() + ":")) +
-                BR +
-                SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Primary Group: ") + Players.getPrimaryGroup(player)) +
-                BR +
-                SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("All Groups: ") + String.join(", ", Players.getInheritanceGroups(player))) +
-                BR +
-                SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Prefix: ") + Players.getRawPrefix(player)) +
-                BR +
-                SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Suffix: ") + Players.getRawSuffix(player));
+        String builder = BOLD.wrap(SOFT_YELLOW.wrap("Permissions report for ") + SOFT_ORANGE.wrap(player.getName() +
+            ":")) + BR + SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Primary Group: ") + Players.getPrimaryGroup(
+                player)) + BR + SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("All Groups: ") + String.join(", ", Players
+                    .getInheritanceGroups(player))) + BR + SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Prefix: ") +
+                        Players.getRawPrefix(player)) + BR + SOFT_ORANGE.wrap("▪ " + SOFT_YELLOW.wrap("Suffix: ") +
+                            Players.getRawSuffix(player));
         Players.sendMessage(context.getSender(), builder);
         return true;
     }
 
-    private static boolean dumpItem(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+    private static boolean dumpItem(@NonNull CommandContext context, @NonNull ParsedArguments arguments) {
         Player player = context.getPlayerOrThrow();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         ItemTag tag = ItemTag.of(itemStack); // TODO try catch
@@ -76,6 +76,4 @@ public class CoreCommands {
 
         return true;
     }
-
-
 }

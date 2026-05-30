@@ -1,43 +1,61 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.time.TimeFormatType;
-import su.nightexpress.nightcore.util.time.TimeFormats;
-
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.util.time.TimeFormatType;
+import su.nightexpress.nightcore.util.time.TimeFormats;
 
 public class TimeUtil {
 
     private static TimeZone timeZone;
 
-    public static void setTimeZone(@NotNull String name) {
+    public static void setTimeZone(@NonNull String name) {
         timeZone = TimeZone.getTimeZone(name);
     }
 
-    @NotNull
+    @NonNull
     public static TimeZone getTimeZone() {
         return timeZone;
     }
 
-    @NotNull
+    @NonNull
     public static ZoneId getZoneId() {
         return timeZone.toZoneId();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static String formatTime(long time) {
         return TimeFormats.toLiteral(time);
     }
 
+    /**
+     * Checks whether specified timestamp is positive and is passed (timestamp < System.currentTimeMillis()).
+     *
+     * @param timestamp Timestamp to check.
+     * @return True if passed.
+     */
     public static boolean isPassed(long timestamp) {
         return timestamp >= 0 && System.currentTimeMillis() > timestamp;
     }
 
     public static long createFutureTimestamp(double seconds) {
         return seconds < 0 ? -1L : createTimestamp(Math.abs(seconds));
+    }
+
+    public static long createFutureTimestamp(long duration, @NonNull TimeUnit timeUnit) {
+        if (duration < 0L) return -1L;
+
+        long millis = TimeUnit.MILLISECONDS.convert(duration, timeUnit);
+        return System.currentTimeMillis() + millis;
     }
 
     public static long createPastTimestamp(double seconds) {
@@ -53,10 +71,10 @@ public class TimeUtil {
     }
 
     public static double ticksToSeconds(long ticks) {
-        return (double) ticks / 20D;
+        return ticks / 20D;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static String formatDuration(long from, long to) {
         long time = to - from;
@@ -64,14 +82,14 @@ public class TimeUtil {
         return TimeFormats.toLiteral(time);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public static String formatDuration(long until) {
         return TimeFormats.formatDuration(until, TimeFormatType.LITERAL);
         //return formatTime(until - System.currentTimeMillis());
     }
 
-    @NotNull
+    @NonNull
     public static LocalTime getLocalTimeOf(long ms) {
         long hours = TimeUnit.MILLISECONDS.toHours(ms) % 24;
         long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
@@ -80,27 +98,27 @@ public class TimeUtil {
         return LocalTime.of((int) hours, (int) minutes, (int) seconds);
     }
 
-    @NotNull
+    @NonNull
     public static LocalDateTime getCurrentDateTime() {
         return LocalDateTime.now(getZoneId());
     }
 
-    @NotNull
+    @NonNull
     public static LocalDate getCurrentDate() {
         return LocalDate.now(getZoneId());
     }
 
-    @NotNull
+    @NonNull
     public static LocalTime getCurrentTime() {
         return LocalTime.now(getZoneId());
     }
 
-    @NotNull
+    @NonNull
     public static LocalDateTime getLocalDateTimeOf(long ms) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(ms), getZoneId());
     }
 
-    public static long toEpochMillis(@NotNull LocalDateTime dateTime) {
+    public static long toEpochMillis(@NonNull LocalDateTime dateTime) {
         Instant instant = dateTime.atZone(getZoneId()).toInstant();
         return instant.toEpochMilli();
     }

@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.NumberUtil;
 
 import java.util.function.Function;
@@ -12,55 +12,55 @@ public class CommandFlag<T> {
 
     public static final char PREFIX = '-';
 
-    private final String name;
+    private final String              name;
     private final Function<String, T> parser;
 
-    public CommandFlag(@NotNull String name, @NotNull Function<String, T> parser) {
+    public CommandFlag(@NonNull String name, @NonNull Function<String, T> parser) {
         this.name = name;
         this.parser = parser;
     }
 
-    @NotNull
-    public static CommandFlag<World> worldFlag(@NotNull String name) {
+    @NonNull
+    public static CommandFlag<World> worldFlag(@NonNull String name) {
         return new CommandFlag<>(name, Bukkit::getWorld);
     }
 
-    @NotNull
-    public static CommandFlag<String> stringFlag(@NotNull String name) {
+    @NonNull
+    public static CommandFlag<String> stringFlag(@NonNull String name) {
         return new CommandFlag<>(name, Function.identity());
     }
 
-    @NotNull
-    public static CommandFlag<String> textFlag(@NotNull String name) {
+    @NonNull
+    public static CommandFlag<String> textFlag(@NonNull String name) {
         return new CommandFlag<>(name, s -> s);
     }
 
-    @NotNull
-    public static CommandFlag<Integer> intFlag(@NotNull String name) {
+    @NonNull
+    public static CommandFlag<Integer> intFlag(@NonNull String name) {
         return new CommandFlag<>(name, str -> NumberUtil.getAnyInteger(str, 0));
     }
 
-    @NotNull
-    public static CommandFlag<Double> doubleFlag(@NotNull String name) {
+    @NonNull
+    public static CommandFlag<Double> doubleFlag(@NonNull String name) {
         return new CommandFlag<>(name, str -> NumberUtil.getAnyDouble(str, 0D));
     }
 
-    @NotNull
-    public static CommandFlag<Boolean> booleanFlag(@NotNull String name) {
+    @NonNull
+    public static CommandFlag<Boolean> booleanFlag(@NonNull String name) {
         return new CommandFlag<>(name, str -> true);
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return name;
     }
 
-    @NotNull
+    @NonNull
     public String getNamePrefixed() {
         return PREFIX + this.getName();
     }
 
-    @NotNull
+    @NonNull
     public Function<String, T> getParser() {
         return parser;
     }

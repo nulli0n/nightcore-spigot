@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.command.impl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.CommandFlag;
 import su.nightexpress.nightcore.command.CommandResult;
@@ -20,11 +20,11 @@ import java.util.stream.Stream;
 @Deprecated
 public abstract class AbstractCommand<P extends NightCorePlugin> implements NightCommand {
 
-    protected final P                           plugin;
-    private final   String[]                    aliases;
-    private final   Map<String, NightCommand>   childrens;
-    private final   Map<String, CommandFlag<?>> commandFlags;
-    private final   PlaceholderMap              placeholderMap;
+    protected final P                         plugin;
+    private final String[]                    aliases;
+    private final Map<String, NightCommand>   childrens;
+    private final Map<String, CommandFlag<?>> commandFlags;
+    private final PlaceholderMap              placeholderMap;
 
     private NightCommand parent;
     private String       permission;
@@ -32,15 +32,15 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
     private String       description;
     private boolean      playerOnly;
 
-    public AbstractCommand(@NotNull P plugin, @NotNull String[] aliases) {
+    public AbstractCommand(@NonNull P plugin, @NonNull String[] aliases) {
         this(plugin, aliases, (String) null);
     }
 
-    public AbstractCommand(@NotNull P plugin, @NotNull String[] aliases, @Nullable Permission permission) {
+    public AbstractCommand(@NonNull P plugin, @NonNull String[] aliases, @Nullable Permission permission) {
         this(plugin, aliases, permission == null ? null : permission.getName());
     }
 
-    public AbstractCommand(@NotNull P plugin, @NotNull String[] aliases, @Nullable String permission) {
+    public AbstractCommand(@NonNull P plugin, @NonNull String[] aliases, @Nullable String permission) {
         this.plugin = plugin;
         this.aliases = Stream.of(aliases).map(String::toLowerCase).toArray(String[]::new);
         this.permission = permission;
@@ -54,15 +54,15 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
     }
 
     @Override
-    @NotNull
+    @NonNull
     public PlaceholderMap getPlaceholders() {
         return this.placeholderMap;
     }
 
-    protected abstract void onExecute(@NotNull CommandSender sender, @NotNull CommandResult result);
+    protected abstract void onExecute(@NonNull CommandSender sender, @NonNull CommandResult result);
 
-    @NotNull
-    public List<String> getTab(@NotNull Player player, int arg, @NotNull String[] args) {
+    @NonNull
+    public List<String> getTab(@NonNull Player player, int arg, @NonNull String[] args) {
         if (player.hasPermission(CorePerms.COMMAND_FLAGS)) {
             return this.getFlags().stream().map(CommandFlag::getNamePrefixed).toList();
         }
@@ -70,7 +70,7 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
     }
 
     @Override
-    public final void execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+    public final void execute(@NonNull CommandSender sender, @NonNull String label, @NonNull String[] args) {
         if (this.isPlayerOnly() && !(sender instanceof Player)) {
             this.errorSender(sender);
             return;
@@ -110,7 +110,7 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
         this.onExecute(sender, result);
     }
 
-    public final void addChildren(@NotNull NightCommand children) {
+    public final void addChildren(@NonNull NightCommand children) {
         if (children.getParent() != null) return;
 
         Stream.of(children.getAliases()).forEach(alias -> {
@@ -120,7 +120,7 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
     }
 
     @Override
-    public final void removeChildren(@NotNull String alias) {
+    public final void removeChildren(@NonNull String alias) {
         this.childrens.keySet().removeIf(key -> key.equalsIgnoreCase(alias));
     }
 
@@ -137,18 +137,18 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
 
     @Override
     @Nullable
-    public final NightCommand getChildren(@NotNull String alias) {
+    public final NightCommand getChildren(@NonNull String alias) {
         return this.childrens.get(alias);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Collection<NightCommand> getChildrens() {
         return this.childrens.values();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public final String[] getAliases() {
         return this.aliases;
     }
@@ -166,40 +166,40 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
 
     @Override
     @Nullable
-    public CommandFlag<?> getFlag(@NotNull String name) {
+    public CommandFlag<?> getFlag(@NonNull String name) {
         return this.commandFlags.get(name.toLowerCase());
     }
 
     @Override
-    public void addFlag(@NotNull CommandFlag<?> flag) {
+    public void addFlag(@NonNull CommandFlag<?> flag) {
         this.commandFlags.put(flag.getName(), flag);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Collection<CommandFlag<?>> getFlags() {
         return this.commandFlags.values();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getUsage() {
         return this.usage == null ? "" : this.usage;
     }
 
     @Override
-    public void setUsage(@NotNull String usage) {
+    public void setUsage(@NonNull String usage) {
         this.usage = usage;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getDescription() {
         return this.description == null ? "" : this.description;
     }
 
     @Override
-    public void setDescription(@NotNull String description) {
+    public void setDescription(@NonNull String description) {
         this.description = description;
     }
 
@@ -213,23 +213,23 @@ public abstract class AbstractCommand<P extends NightCorePlugin> implements Nigh
         this.playerOnly = playerOnly;
     }
 
-    protected final void errorUsage(@NotNull CommandSender sender) {
+    protected final void errorUsage(@NonNull CommandSender sender) {
         CoreLang.ERROR_COMMAND_USAGE.getMessage(plugin).replace(this.replacePlaceholders()).send(sender);
     }
 
-    protected final void errorPermission(@NotNull CommandSender sender) {
+    protected final void errorPermission(@NonNull CommandSender sender) {
         CoreLang.ERROR_NO_PERMISSION.getMessage(plugin).send(sender);
     }
 
-    protected final void errorPlayer(@NotNull CommandSender sender) {
+    protected final void errorPlayer(@NonNull CommandSender sender) {
         CoreLang.ERROR_INVALID_PLAYER.getMessage(plugin).send(sender);
     }
 
-    protected final void errorSender(@NotNull CommandSender sender) {
+    protected final void errorSender(@NonNull CommandSender sender) {
         CoreLang.ERROR_COMMAND_PLAYER_ONLY.getMessage(plugin).send(sender);
     }
 
-    protected final void errorNumber(@NotNull CommandSender sender, @NotNull String from) {
+    protected final void errorNumber(@NonNull CommandSender sender, @NonNull String from) {
         CoreLang.ERROR_INVALID_NUMBER.getMessage(plugin).replace(Placeholders.GENERIC_VALUE, from).send(sender);
     }
 }

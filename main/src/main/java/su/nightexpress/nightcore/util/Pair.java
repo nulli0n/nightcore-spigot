@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 
@@ -10,22 +10,22 @@ public class Pair<F, S> {
     private final F first;
     private final S second;
 
-    public Pair(@NotNull F first, @NotNull S second) {
+    public Pair(@NonNull F first, @NonNull S second) {
         this.first = first;
         this.second = second;
     }
 
-    @NotNull
+    @NonNull
     public F getFirst() {
         return this.first;
     }
 
-    @NotNull
+    @NonNull
     public S getSecond() {
         return this.second;
     }
 
-    @NotNull
+    @NonNull
     public Pair<S, F> swap() {
         return of(this.second, this.first);
     }
@@ -43,8 +43,8 @@ public class Pair<F, S> {
         return false;
     }
 
-    @NotNull
-    public static <F, S> Pair<F, S> of(@NotNull F first, @NotNull S second) {
+    @NonNull
+    public static <F, S> Pair<F, S> of(@NonNull F first, @NonNull S second) {
         return new Pair<>(first, second);
     }
 }

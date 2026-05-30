@@ -1,10 +1,10 @@
 package su.nightexpress.nightcore.ui.inventory.condition;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
 
 @FunctionalInterface
 public interface ItemStateCondition {
 
-    boolean canSeenBy(@NotNull ViewerContext context);
+    boolean canSeenBy(@NonNull ViewerContext context);
 }

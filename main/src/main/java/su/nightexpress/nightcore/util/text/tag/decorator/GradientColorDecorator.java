@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.text.tag.decorator;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
@@ -15,11 +15,11 @@ public class GradientColorDecorator implements ColorDecorator {
     private Color[] gradient;
     private int     colorIndex;
 
-    public GradientColorDecorator(@NotNull Color color, @NotNull Color colorEnd) {
+    public GradientColorDecorator(@NonNull Color color, @NonNull Color colorEnd) {
         this(new Color[]{color, colorEnd});
     }
 
-    public GradientColorDecorator(@NotNull Color[] colorStops) {
+    public GradientColorDecorator(@NonNull Color[] colorStops) {
         this.colorStops = colorStops;
     }
 
@@ -35,15 +35,15 @@ public class GradientColorDecorator implements ColorDecorator {
         return this.isCreated() && this.colorIndex < this.gradient.length;
     }
 
-/*    public Color[] createGradient(int length) {
+    /*    public Color[] createGradient(int length) {
         this.colors = new Color[length];
         for (int index = 0; index < length; index++) {
             double percent = (double) index / (double) length;
-
+    
             int red = (int) (color.getRed() + percent * (colorEnd.getRed() - color.getRed()));
             int green = (int) (color.getGreen() + percent * (colorEnd.getGreen() - color.getGreen()));
             int blue = (int) (color.getBlue() + percent * (colorEnd.getBlue() - color.getBlue()));
-
+    
             java.awt.Color color = new java.awt.Color(red, green, blue);
             this.colors[index] = color;
         }
@@ -90,15 +90,16 @@ public class GradientColorDecorator implements ColorDecorator {
     }
 
     @Override
-    @NotNull
-    public NightComponent decorate(@NotNull NightComponent component) {
+    @NonNull
+    public NightComponent decorate(@NonNull NightComponent component) {
         if (component instanceof NightTextComponent textComponent) {
             String content = textComponent.content();
             char[] letters = content.toCharArray();
 
             // Count gradient length and prepare colors.
             if (!this.isCreated()) {
-                int length = Math.toIntExact(CharBuffer.wrap(content.toCharArray()).chars().filter(c -> !Character.isWhitespace(c)).count());
+                int length = Math.toIntExact(CharBuffer.wrap(content.toCharArray()).chars().filter(c -> !Character
+                    .isWhitespace(c)).count());
                 this.createGradient(length);
             }
 

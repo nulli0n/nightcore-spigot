@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database.sql;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.database.AbstractConnector;
 
 @Deprecated
@@ -8,15 +8,15 @@ public abstract class SQLExecutor<T> {
 
     protected final String table;
 
-    protected SQLExecutor(@NotNull String table) {
+    protected SQLExecutor(@NonNull String table) {
         this.table = table;
     }
 
-    @NotNull
+    @NonNull
     public String getTable() {
         return "`" + this.table + "`";
     }
 
-    @NotNull
-    public abstract T execute(@NotNull AbstractConnector connector);
+    @NonNull
+    public abstract T execute(@NonNull AbstractConnector connector);
 }

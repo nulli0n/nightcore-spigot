@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.integration.currency.type;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.currency.Currency;
 import su.nightexpress.nightcore.core.CoreConfig;
@@ -20,17 +20,17 @@ public abstract class AbstractCurrency implements Currency {
     protected final String originalId;
     protected final String internalId;
 
-    public AbstractCurrency(@NotNull String id) {
+    public AbstractCurrency(@NonNull String id) {
         this(id, id);
     }
 
-    public AbstractCurrency(@NotNull String originalId, @NotNull String internalId) {
+    public AbstractCurrency(@NonNull String originalId, @NonNull String internalId) {
         this.originalId = originalId;
         this.internalId = LowerCase.INTERNAL.apply(internalId);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public UnaryOperator<String> replacePlaceholders() {
         return Placeholders.CURRENCY.replacer(this);
     }
@@ -48,13 +48,13 @@ public abstract class AbstractCurrency implements Currency {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String formatValue(double amount) {
         return NumberUtil.format(this.floorIfNeeded(amount));
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String format(double amount) {
         String format = this.replacePlaceholders().apply(this.getFormat()
             .replace(Placeholders.GENERIC_AMOUNT, this.formatValue(amount))
@@ -69,8 +69,8 @@ public abstract class AbstractCurrency implements Currency {
     }
 
     @Override
-    @NotNull
-    public String applyFormat(@NotNull String format, double amount) {
+    @NonNull
+    public String applyFormat(@NonNull String format, double amount) {
         return this.replacePlaceholders().apply(format).replace(Placeholders.GENERIC_AMOUNT, this.format(amount));
     }
 
@@ -133,13 +133,13 @@ public abstract class AbstractCurrency implements Currency {
     protected abstract void withdrawDirect(@NonNull Player player, double amount);
 
     @Override
-    @NotNull
+    @NonNull
     public String getOriginalId() {
         return this.originalId;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getInternalId() {
         return this.internalId;
     }

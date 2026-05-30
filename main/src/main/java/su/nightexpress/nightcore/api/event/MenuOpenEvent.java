@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.ui.inventory.Menu;
 
 public class MenuOpenEvent extends Event implements Cancellable {
@@ -16,12 +16,12 @@ public class MenuOpenEvent extends Event implements Cancellable {
 
     private boolean cancelled;
 
-    public MenuOpenEvent(@NotNull Player player, @NotNull Menu menu) {
+    public MenuOpenEvent(@NonNull Player player, @NonNull Menu menu) {
         this.player = player;
         this.menu = menu;
     }
 
-    @NotNull
+    @NonNull
     @Override
     public HandlerList getHandlers() {
         return HANDLER_LIST;
@@ -31,12 +31,12 @@ public class MenuOpenEvent extends Event implements Cancellable {
         return HANDLER_LIST;
     }
 
-    @NotNull
+    @NonNull
     public Player getPlayer() {
         return this.player;
     }
 
-    @NotNull
+    @NonNull
     public Menu getMenu() {
         return this.menu;
     }

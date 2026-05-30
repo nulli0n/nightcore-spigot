@@ -1,8 +1,10 @@
 package su.nightexpress.nightcore.config;
 
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
+@Deprecated(forRemoval = true)
 public interface Writeable {
 
-    void write(@NonNull FileConfig config, @NonNull String path);
+    void write(FileConfig config, String path);
 }

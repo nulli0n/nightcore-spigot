@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.bridge.paper.event;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEvent;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatRenderer;
 import su.nightexpress.nightcore.bridge.paper.PaperBridge;
@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 
 public class PaperChatEvent implements UniversalChatEvent {
 
-    private final PaperBridge bridge;
+    private final PaperBridge    bridge;
     private final AsyncChatEvent backend;
 
-    public PaperChatEvent(@NotNull PaperBridge bridge, @NotNull AsyncChatEvent backend) {
+    public PaperChatEvent(@NonNull PaperBridge bridge, @NonNull AsyncChatEvent backend) {
         this.bridge = bridge;
         this.backend = backend;
     }
@@ -36,19 +36,20 @@ public class PaperChatEvent implements UniversalChatEvent {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Player getPlayer() {
         return this.backend.getPlayer();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Set<CommandSender> viewers() {
-        return this.backend.viewers().stream().filter(audience -> audience instanceof CommandSender).map(CommandSender.class::cast).collect(Collectors.toCollection(HashSet::new));
+        return this.backend.viewers().stream().filter(audience -> audience instanceof CommandSender).map(
+            CommandSender.class::cast).collect(Collectors.toCollection(HashSet::new));
     }
 
     @Override
-    public void editViewers(@NotNull Consumer<Set<CommandSender>> consumer) {
+    public void editViewers(@NonNull Consumer<Set<CommandSender>> consumer) {
         Set<CommandSender> viewers = this.viewers();
         consumer.accept(viewers);
         this.backend.viewers().clear();
@@ -56,7 +57,7 @@ public class PaperChatEvent implements UniversalChatEvent {
     }
 
     @Override
-    public void renderer(@NotNull UniversalChatRenderer renderer) {
+    public void renderer(@NonNull UniversalChatRenderer renderer) {
         this.backend.renderer((source, sourceDisplayName, message, viewer) -> {
             String rawDisplayName = PaperUtils.serializeComponent(sourceDisplayName);
             String rawMessage = PaperUtils.serializeComponent(message);
@@ -67,13 +68,13 @@ public class PaperChatEvent implements UniversalChatEvent {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String message() {
         return PaperUtils.serializeComponent(this.backend.message());
     }
 
     @Override
-    public void message(@NotNull NightComponent component) {
+    public void message(@NonNull NightComponent component) {
         this.backend.message(this.bridge.getTextComponentAdapter().adaptComponent(component));
     }
 }

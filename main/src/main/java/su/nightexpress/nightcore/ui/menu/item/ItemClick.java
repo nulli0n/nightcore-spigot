@@ -1,11 +1,11 @@
 package su.nightexpress.nightcore.ui.menu.item;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 
 @Deprecated
 public interface ItemClick {
 
-    void onClick(@NotNull MenuViewer viewer, @NotNull InventoryClickEvent event);
+    void onClick(@NonNull MenuViewer viewer, @NonNull InventoryClickEvent event);
 }

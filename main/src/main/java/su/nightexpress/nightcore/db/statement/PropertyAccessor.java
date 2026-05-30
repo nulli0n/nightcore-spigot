@@ -1,9 +1,11 @@
 package su.nightexpress.nightcore.db.statement;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 @FunctionalInterface
 public interface PropertyAccessor<T, R> {
 
-    @NotNull R access(@NotNull T entity);
+    @Nullable
+    R access(@NonNull T entity);
 }

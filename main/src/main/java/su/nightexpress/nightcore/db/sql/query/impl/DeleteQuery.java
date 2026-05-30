@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.query.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.sql.query.type.ConditionalQuery;
 
 import java.sql.PreparedStatement;
@@ -24,8 +24,8 @@ public class DeleteQuery<T> extends ConditionalQuery<DeleteQuery<T>, T> {
     }
 
     @Override
-    @NotNull
-    protected String buildSQL(@NotNull String table) {
+    @NonNull
+    protected String buildSQL(@NonNull String table) {
         StringBuilder builder = new StringBuilder().append("DELETE FROM ").append(table);
 
         String wheres = this.buildWhereSQLPart();
@@ -37,7 +37,7 @@ public class DeleteQuery<T> extends ConditionalQuery<DeleteQuery<T>, T> {
     }
 
     @Override
-    public void onExecute(@NotNull PreparedStatement statement, @NotNull T entity) throws SQLException {
+    public void onExecute(@NonNull PreparedStatement statement, @NonNull T entity) throws SQLException {
         int paramCount = 1;
 
         for (int index = 0; index < this.countWhereColumns(); index++) {

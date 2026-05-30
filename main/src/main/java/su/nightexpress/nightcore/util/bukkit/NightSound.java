@@ -4,8 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 import su.nightexpress.nightcore.util.BukkitThing;
@@ -27,7 +27,7 @@ public class NightSound implements Writeable {
     private final float  volume;
     private final float  pitch;
 
-    public NightSound(@NotNull String name, @Nullable Sound bukkit, float volume, float pitch) {
+    public NightSound(@NonNull String name, @Nullable Sound bukkit, float volume, float pitch) {
         this.name = name.toLowerCase();
         this.bukkit = bukkit;
 
@@ -35,30 +35,30 @@ public class NightSound implements Writeable {
         this.pitch = NumberUtil.clamp(pitch, MIN_PITCH, MAX_PITCH);
     }
 
-    @NotNull
-    public static NightSound of(@NotNull Sound sound) {
+    @NonNull
+    public static NightSound of(@NonNull Sound sound) {
         return of(sound, MAX_VOLUME);
     }
 
-    @NotNull
-    public static NightSound of(@NotNull Sound sound, float volume) {
+    @NonNull
+    public static NightSound of(@NonNull Sound sound, float volume) {
         return of(sound, volume, 1F);
     }
 
-    @NotNull
-    public static NightSound of(@NotNull Sound sound, float volume, float pitch) {
+    @NonNull
+    public static NightSound of(@NonNull Sound sound, float volume, float pitch) {
         return new NightSound(BukkitThing.toString(sound), sound, volume, pitch);
     }
 
-    @NotNull
-    public static NightSound of(@NotNull String name, float volume, float pitch) {
+    @NonNull
+    public static NightSound of(@NonNull String name, float volume, float pitch) {
         Sound bukkit = BukkitThing.getSound(StringUtil.transformForID(name));
 
         return new NightSound(name, bukkit, volume, pitch);
     }
 
-    @NotNull
-    public static NightSound deserialize(@NotNull String from) {
+    @NonNull
+    public static NightSound deserialize(@NonNull String from) {
         String[] split = fix(from).split(DELIMITER);
 
         String name = split[0];
@@ -68,13 +68,13 @@ public class NightSound implements Writeable {
         return of(name, volume, pitch);
     }
 
-    @NotNull
+    @NonNull
     public String serialize() {
         return this.name + DELIMITER + this.volume + DELIMITER + this.pitch;
     }
 
-    @NotNull
-    public static NightSound read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static NightSound read(@NonNull FileConfig config, @NonNull String path) {
         if (config.contains(path + ".Name")) {
             String oldName = config.getString(path + ".Name", "null");
             float volume = (float) config.getDouble(path + ".Volume");
@@ -101,7 +101,7 @@ public class NightSound implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path, this.serialize());
     }
 
@@ -109,7 +109,7 @@ public class NightSound implements Writeable {
         return this.volume <= 0F || this.name.isBlank();
     }
 
-    public void play(@NotNull Player player) {
+    public void play(@NonNull Player player) {
         if (this.isEmpty()) return;
 
         Location location = player.getLocation();
@@ -121,7 +121,7 @@ public class NightSound implements Writeable {
         }
     }
 
-    public void play(@NotNull Location location) {
+    public void play(@NonNull Location location) {
         if (this.isEmpty()) return;
 
         World world = location.getWorld();
@@ -135,7 +135,7 @@ public class NightSound implements Writeable {
         }
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return this.name;
     }

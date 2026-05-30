@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.bridge.paper.bossbar;
 
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
@@ -19,16 +19,16 @@ import java.util.stream.Collectors;
 public class PaperBossBar implements NightBossBar {
 
     private final PaperBridge bridge;
-    private final BossBar backend;
+    private final BossBar     backend;
 
-    public PaperBossBar(@NotNull PaperBridge bridge, @NotNull BossBar backend) {
+    public PaperBossBar(@NonNull PaperBridge bridge, @NonNull BossBar backend) {
         this.bridge = bridge;
         this.backend = backend;
     }
 
     @Override
-    @NotNull
-    public PaperBossBar setName(@NotNull NightComponent name) {
+    @NonNull
+    public PaperBossBar setName(@NonNull NightComponent name) {
         this.backend.name(this.bridge.getTextComponentAdapter().adaptComponent(name));
         return this;
     }
@@ -39,67 +39,67 @@ public class PaperBossBar implements NightBossBar {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public PaperBossBar setProgress(float progress) {
         this.backend.progress(Math.clamp(progress, MIN_PROGRESS, MAX_PROGRESS));
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightBarColor getColor() {
         return PaperBossBarAdapter.wrapColor(this.backend.color());
     }
 
     @Override
-    @NotNull
-    public PaperBossBar setColor(@NotNull NightBarColor color) {
+    @NonNull
+    public PaperBossBar setColor(@NonNull NightBarColor color) {
         this.backend.color(PaperBossBarAdapter.adaptColor(color));
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightBarOverlay getOverlay() {
         return PaperBossBarAdapter.wrapOverlay(this.backend.overlay());
     }
 
     @Override
-    @NotNull
-    public PaperBossBar setOverlay(@NotNull NightBarOverlay overlay) {
+    @NonNull
+    public PaperBossBar setOverlay(@NonNull NightBarOverlay overlay) {
         this.backend.overlay(PaperBossBarAdapter.adaptOverlay(overlay));
         return this;
     }
 
     @Override
     @UnmodifiableView
-    @NotNull
+    @NonNull
     public Set<NightBarFlag> getFlags() {
         return this.backend.flags().stream().map(PaperBossBarAdapter::wrapFlag).collect(Collectors.toSet());
     }
 
     @Override
-    @NotNull
-    public PaperBossBar setFlags(@NotNull Set<NightBarFlag> flags) {
+    @NonNull
+    public PaperBossBar setFlags(@NonNull Set<NightBarFlag> flags) {
         this.backend.flags(Lists.modify(flags, PaperBossBarAdapter::adaptFlag));
         return this;
     }
 
     @Override
-    public boolean hasFlag(@NotNull NightBarFlag flag) {
+    public boolean hasFlag(@NonNull NightBarFlag flag) {
         return this.backend.hasFlag(PaperBossBarAdapter.adaptFlag(flag));
     }
 
     @Override
-    @NotNull
-    public PaperBossBar addFlag(@NotNull NightBarFlag flag) {
+    @NonNull
+    public PaperBossBar addFlag(@NonNull NightBarFlag flag) {
         this.backend.addFlag(PaperBossBarAdapter.adaptFlag(flag));
         return this;
     }
 
     @Override
-    @NotNull
-    public PaperBossBar addFlags(@NotNull NightBarFlag... flags) {
+    @NonNull
+    public PaperBossBar addFlags(@NonNull NightBarFlag... flags) {
         for (NightBarFlag barFlag : flags) {
             this.addFlag(barFlag);
         }
@@ -107,15 +107,15 @@ public class PaperBossBar implements NightBossBar {
     }
 
     @Override
-    @NotNull
-    public PaperBossBar removeFlag(@NotNull NightBarFlag flag) {
+    @NonNull
+    public PaperBossBar removeFlag(@NonNull NightBarFlag flag) {
         this.backend.removeFlag(PaperBossBarAdapter.adaptFlag(flag));
         return this;
     }
 
     @Override
     @UnmodifiableView
-    @NotNull
+    @NonNull
     public Set<Player> getViewers() {
         Set<Player> players = new HashSet<>();
         this.backend.viewers().forEach(viewer -> {
@@ -127,21 +127,21 @@ public class PaperBossBar implements NightBossBar {
     }
 
     @Override
-    @NotNull
-    public PaperBossBar addViewer(@NotNull Player viewer) {
+    @NonNull
+    public PaperBossBar addViewer(@NonNull Player viewer) {
         this.backend.addViewer(viewer);
         return this;
     }
 
     @Override
-    @NotNull
-    public PaperBossBar removeViewer(@NotNull Player viewer) {
+    @NonNull
+    public PaperBossBar removeViewer(@NonNull Player viewer) {
         this.backend.removeViewer(viewer);
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public PaperBossBar removeViewers() {
         this.getViewers().forEach(this::removeViewer);
         return this;

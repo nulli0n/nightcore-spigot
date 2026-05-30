@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.command.experimental.builder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.command.experimental.argument.ArgumentParser;
 import su.nightexpress.nightcore.command.experimental.flag.ContentFlag;
 
@@ -11,32 +11,32 @@ public class ContentFlagBuilder<T> extends FlagBuilder<ContentFlag<T>, ContentFl
 
     private String sample;
 
-//    public ContentFlagBuilder(@NotNull String name, @NotNull Function<String , T> parser) {
-//        super(name);
-//        this.parser = parser;
-//        this.sample = "";
-//    }
+    //    public ContentFlagBuilder(@NonNull String name, @NonNull Function<String , T> parser) {
+    //        super(name);
+    //        this.parser = parser;
+    //        this.sample = "";
+    //    }
 
-    public ContentFlagBuilder(@NotNull String name, @NotNull ArgumentParser<T> parser) {
+    public ContentFlagBuilder(@NonNull String name, @NonNull ArgumentParser<T> parser) {
         super(name);
         this.parser = parser;
         this.sample = "";
     }
 
     @Override
-    @NotNull
+    @NonNull
     protected ContentFlagBuilder<T> getThis() {
         return this;
     }
 
-    @NotNull
-    public ContentFlagBuilder<T> sample(@NotNull String sample) {
+    @NonNull
+    public ContentFlagBuilder<T> sample(@NonNull String sample) {
         this.sample = sample;
         return getThis();
     }
 
     @Override
-    public @NotNull ContentFlag<T> build() {
+    public @NonNull ContentFlag<T> build() {
         return new ContentFlag<>(this.name, this.parser, this.sample, this.permission);
     }
 }

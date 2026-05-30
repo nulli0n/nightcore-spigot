@@ -97,7 +97,49 @@ public class EconomyBridgeProvider implements EconomyBridgeAPI {
     }
 
 
+    @Override
+    public boolean canAfford(@NonNull Player player, double amount) {
+        return this.canAfford(player, CurrencyId.VAULT, amount);
+    }
 
+    @Override
+    public boolean canAfford(@NonNull UUID playerId, double amount) {
+        return this.canAfford(playerId, CurrencyId.VAULT, amount);
+    }
+
+    @Override
+    public boolean canAfford(@NonNull Player player, @NonNull String id, double amount) {
+        return this.currency(id).map(currency -> currency.canAfford(player, amount)).orElse(false);
+    }
+
+    @Override
+    public boolean canAfford(@NonNull UUID playerId, @NonNull String id, double amount) {
+        return this.currency(id).map(currency -> currency.canAfford(playerId, amount)).orElse(false);
+    }
+
+    @Override
+    public @NonNull CompletableFuture<Boolean> canAffordAsync(@NonNull Player player, double amount) {
+        return this.canAffordAsync(player, CurrencyId.VAULT, amount);
+    }
+
+    @Override
+    public @NonNull CompletableFuture<Boolean> canAffordAsync(@NonNull UUID playerId, double amount) {
+        return this.canAffordAsync(playerId, CurrencyId.VAULT, amount);
+    }
+
+    @Override
+    public @NonNull CompletableFuture<Boolean> canAffordAsync(@NonNull Player player, @NonNull String id,
+                                                              double amount) {
+        return currency(id).map(currency -> currency.canAffordAsync(player, amount))
+            .orElse(CompletableFuture.completedFuture(false));
+    }
+
+    @Override
+    public @NonNull CompletableFuture<Boolean> canAffordAsync(@NonNull UUID playerId, @NonNull String id,
+                                                              double amount) {
+        return currency(id).map(currency -> currency.canAffordAsync(playerId, amount))
+            .orElse(CompletableFuture.completedFuture(false));
+    }
 
     @Override
     public double queryBalance(@NonNull Player player) {
@@ -134,15 +176,16 @@ public class EconomyBridgeProvider implements EconomyBridgeAPI {
     @Override
     @NonNull
     public CompletableFuture<Double> queryBalanceAsync(@NonNull Player player, @NonNull String id) {
-        return currency(id).map(currency -> currency.queryBalanceAsync(player)).orElse(CompletableFuture.completedFuture(0D));
+        return currency(id).map(currency -> currency.queryBalanceAsync(player)).orElse(CompletableFuture
+            .completedFuture(0D));
     }
 
     @Override
     @NonNull
     public CompletableFuture<Double> queryBalanceAsync(@NonNull UUID playerId, @NonNull String id) {
-        return currency(id).map(currency -> currency.queryBalanceAsync(playerId)).orElse(CompletableFuture.completedFuture(0D));
+        return currency(id).map(currency -> currency.queryBalanceAsync(playerId)).orElse(CompletableFuture
+            .completedFuture(0D));
     }
-
 
 
     @Override
@@ -180,15 +223,16 @@ public class EconomyBridgeProvider implements EconomyBridgeAPI {
     @Override
     @NonNull
     public CompletableFuture<Boolean> depositAsync(@NonNull Player player, @NonNull String id, double amount) {
-        return currency(id).map(currency -> currency.depositAsync(player, amount)).orElse(CompletableFuture.completedFuture(false));
+        return currency(id).map(currency -> currency.depositAsync(player, amount)).orElse(CompletableFuture
+            .completedFuture(false));
     }
 
     @Override
     @NonNull
     public CompletableFuture<Boolean> depositAsync(@NonNull UUID playerId, @NonNull String id, double amount) {
-        return currency(id).map(currency -> currency.depositAsync(playerId, amount)).orElse(CompletableFuture.completedFuture(false));
+        return currency(id).map(currency -> currency.depositAsync(playerId, amount)).orElse(CompletableFuture
+            .completedFuture(false));
     }
-
 
 
     @Override
@@ -226,12 +270,14 @@ public class EconomyBridgeProvider implements EconomyBridgeAPI {
     @Override
     @NonNull
     public CompletableFuture<Boolean> withdrawsync(@NonNull Player player, @NonNull String id, double amount) {
-        return currency(id).map(currency -> currency.withdrawAsync(player, amount)).orElse(CompletableFuture.completedFuture(false));
+        return currency(id).map(currency -> currency.withdrawAsync(player, amount)).orElse(CompletableFuture
+            .completedFuture(false));
     }
 
     @Override
     @NonNull
     public CompletableFuture<Boolean> withdrawAsync(@NonNull UUID playerId, @NonNull String id, double amount) {
-        return currency(id).map(currency -> currency.withdrawAsync(playerId, amount)).orElse(CompletableFuture.completedFuture(false));
+        return currency(id).map(currency -> currency.withdrawAsync(playerId, amount)).orElse(CompletableFuture
+            .completedFuture(false));
     }
 }

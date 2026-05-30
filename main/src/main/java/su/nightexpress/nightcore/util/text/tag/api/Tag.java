@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.text.tag.api;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 
 import java.util.HashSet;
@@ -9,18 +9,21 @@ import java.util.Set;
 @Deprecated
 public class Tag {
 
-    @Deprecated public static final char OPEN_BRACKET  = '<';
-    @Deprecated public static final char CLOSE_BRACKET = '>';
-    @Deprecated public static final char CLOSE_SLASH   = '/';
+    @Deprecated
+    public static final char OPEN_BRACKET  = '<';
+    @Deprecated
+    public static final char CLOSE_BRACKET = '>';
+    @Deprecated
+    public static final char CLOSE_SLASH   = '/';
 
     protected final String      name;
     protected final Set<String> aliases;
 
-    public Tag(@NotNull String name) {
+    public Tag(@NonNull String name) {
         this(name, new String[0]);
     }
 
-    public Tag(@NotNull String name, @NotNull String[] aliases) {
+    public Tag(@NonNull String name, @NonNull String[] aliases) {
         this.name = name.toLowerCase();
         this.aliases = new HashSet<>();
 
@@ -34,51 +37,51 @@ public class Tag {
         return true;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String brackets(@NotNull String str) {
+    public static String brackets(@NonNull String str) {
         return TagUtils.brackets(str);
         //return OPEN_BRACKET + str + CLOSE_BRACKET;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static String closedBrackets(@NotNull String str) {
+    public static String closedBrackets(@NonNull String str) {
         return TagUtils.closedBrackets(str);//brackets(CLOSE_SLASH + str);
     }
 
-    /*@NotNull
+    /*@NonNull
     @Deprecated
-    public String enclose(@NotNull String text) {
+    public String enclose(@NonNull String text) {
         return this.getBracketsName() + text + this.getClosingName();
     }*/
 
-    public final boolean isNamed(@NotNull String name) {
+    public final boolean isNamed(@NonNull String name) {
         return this.name.equalsIgnoreCase(name) || this.aliases.contains(name.toLowerCase());
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public final String getFullName() {
         return this.getBracketsName();
     }
 
-    @NotNull
+    @NonNull
     public final String getClosingName() {
         return closedBrackets(this.getName());
     }
 
-    @NotNull
+    @NonNull
     public final String getBracketsName() {
         return brackets(this.getName());
     }
 
-    @NotNull
+    @NonNull
     public final String getName() {
         return this.name;
     }
 
-    @NotNull
+    @NonNull
     public final Set<String> getAliases() {
         return this.aliases;
     }

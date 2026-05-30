@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.db.statement.template;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.db.column.Column;
 import su.nightexpress.nightcore.db.statement.RowMapper;
 import su.nightexpress.nightcore.db.statement.condition.Wheres;
@@ -18,19 +18,19 @@ public final class SelectStatement<R> implements QueryStatement<R> {
     private final RowMapper<R> rowMapper;
     private final List<String> columns;
 
-    public SelectStatement(@NotNull RowMapper<R> rowMapper, @NotNull List<String> columns) {
+    public SelectStatement(@NonNull RowMapper<R> rowMapper, @NonNull List<String> columns) {
         this.rowMapper = rowMapper;
         this.columns = columns;
     }
 
-    @NotNull
-    public static <R> Builder<R> builder(@NotNull RowMapper<R> mapper) {
+    @NonNull
+    public static <R> Builder<R> builder(@NonNull RowMapper<R> mapper) {
         return new Builder<>(mapper);
     }
 
     @Override
-    @NotNull
-    public String toSql(@NotNull String table, @Nullable Wheres where, @Nullable Integer limit) {
+    @NonNull
+    public String toSql(@NonNull String table, @Nullable Wheres where, @Nullable Integer limit) {
         String columns = this.columns.isEmpty() ? "*" : String.join(",", this.columns);
         StringBuilder builder = new StringBuilder();
 
@@ -46,7 +46,7 @@ public final class SelectStatement<R> implements QueryStatement<R> {
 
     @Override
     @Nullable
-    public R map(@NotNull ResultSet resultSet) throws SQLException {
+    public R map(@NonNull ResultSet resultSet) throws SQLException {
         return this.rowMapper.map(resultSet);
     }
 
@@ -55,26 +55,26 @@ public final class SelectStatement<R> implements QueryStatement<R> {
         private final RowMapper<R> rowMapper;
         private final List<String> columns;
 
-        public Builder(@NotNull RowMapper<R> rowMapper) {
+        public Builder(@NonNull RowMapper<R> rowMapper) {
             this.rowMapper = rowMapper;
             this.columns = new ArrayList<>();
         }
 
-        @NotNull
+        @NonNull
         public SelectStatement<R> build() {
             return new SelectStatement<>(this.rowMapper, this.columns);
         }
 
-        @NotNull
-        public Builder<R> column(@NotNull Column<?>... columns) {
+        @NonNull
+        public Builder<R> column(@NonNull Column<?>... columns) {
             for (Column<?> column : columns) {
                 this.columns.add(column.getQuotedName());
             }
             return this;
         }
 
-        @NotNull
-        public Builder<R> column(@NotNull String... columns) {
+        @NonNull
+        public Builder<R> column(@NonNull String... columns) {
             this.columns.addAll(Arrays.asList(columns));
             return this;
         }

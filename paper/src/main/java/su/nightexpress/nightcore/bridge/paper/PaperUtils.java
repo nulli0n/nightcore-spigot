@@ -2,12 +2,12 @@ package su.nightexpress.nightcore.bridge.paper;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class PaperUtils {
 
-    @NotNull
-    public static String serializeComponent(@NotNull Component component) {
+    @NonNull
+    public static String serializeComponent(@NonNull Component component) {
         return MiniMessage.miniMessage().serialize(component);
     }
 }

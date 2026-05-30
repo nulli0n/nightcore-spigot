@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.text.NightAbstractComponent;
 import su.nightexpress.nightcore.util.bridge.wrapper.ComponentBuildable;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
@@ -25,14 +25,14 @@ public class TextGroup implements ComponentBuildable {
     private ColorDecorator colorDecorator;
     private TextGroup      parent;
 
-    public TextGroup(@NotNull String name) {
+    public TextGroup(@NonNull String name) {
         this.name = name;
         this.childrens = new ArrayList<>();
         this.decorators = new LinkedHashSet<>();
     }
 
-    @NotNull
-    public TextGroup createChildren(@NotNull String name) {
+    @NonNull
+    public TextGroup createChildren(@NonNull String name) {
         TextGroup group = new TextGroup(name);
         group.parent = this;
         group.colorDecorator = this.colorDecorator;
@@ -41,21 +41,21 @@ public class TextGroup implements ComponentBuildable {
         return group;
     }
 
-    @NotNull
+    @NonNull
     public TextNode createNode() {
         TextNode node = new TextNode(this);
         this.childrens.add(node);
         return node;
     }
 
-    @NotNull
-    public LangNode createLangNode(@NotNull String key, @Nullable String fallback) {
+    @NonNull
+    public LangNode createLangNode(@NonNull String key, @Nullable String fallback) {
         LangNode node = new LangNode(this, key, fallback);
         this.childrens.add(node);
         return node;
     }
 
-    public void addDecorator(@NotNull Decorator decorator) {
+    public void addDecorator(@NonNull Decorator decorator) {
         if (decorator instanceof ColorDecorator color) {
             this.colorDecorator = color;
         }
@@ -70,7 +70,7 @@ public class TextGroup implements ComponentBuildable {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightComponent toComponent() {
         // Gradient colors must be predefined based on text length.
         // Text length is calculated from group's childrens that are TextNodes.
@@ -89,7 +89,7 @@ public class TextGroup implements ComponentBuildable {
         return NightComponent.empty().children(children);
     }
 
-    private void countLength(@NotNull TextGroup parent, @NotNull AtomicInteger length) {
+    private void countLength(@NonNull TextGroup parent, @NonNull AtomicInteger length) {
         for (ComponentBuildable buildable : parent.getChildrens()) {
             if (buildable instanceof TextNode textNode) {
                 length.addAndGet(textNode.textLength());
@@ -101,7 +101,7 @@ public class TextGroup implements ComponentBuildable {
         }
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return name;
     }
@@ -116,12 +116,12 @@ public class TextGroup implements ComponentBuildable {
         return colorDecorator;
     }
 
-    @NotNull
+    @NonNull
     public Set<Decorator> getDecorators() {
         return decorators;
     }
 
-    @NotNull
+    @NonNull
     public List<ComponentBuildable> getChildrens() {
         return childrens;
     }

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.locale.entry;
 
 import org.bukkit.Sound;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -56,25 +56,28 @@ public class MessageLocale extends LangEntry<LangMessage> {
     }
 
     @NonNull
-    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, @NonNull Sound sound) {
+    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle,
+                                      @NonNull Sound sound) {
         return title(path, title, subtitle, MessageData.titles().sound(sound).build());
     }
 
     @NonNull
-    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, int fade, int stay) {
+    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, int fade,
+                                      int stay) {
         return title(path, title, subtitle, MessageData.titles().titleTimes(fade, stay, fade).build());
     }
 
     @NonNull
-    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, int fade, int stay, @NonNull Sound sound) {
+    public static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, int fade,
+                                      int stay, @NonNull Sound sound) {
         return title(path, title, subtitle, MessageData.titles().titleTimes(fade, stay, fade).sound(sound).build());
     }
 
     @NonNull
-    private static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle, @NonNull MessageData data) {
+    private static MessageLocale title(@NonNull String path, @NonNull String title, @NonNull String subtitle,
+                                       @NonNull MessageData data) {
         return message(path, title + TagWrappers.BR + subtitle, data);
     }
-
 
 
     @NonNull
@@ -86,7 +89,6 @@ public class MessageLocale extends LangEntry<LangMessage> {
     public static MessageLocale actionBar(@NonNull String path, @NonNull String text, @NonNull Sound sound) {
         return message(path, text, MessageData.actionBar().sound(sound).build());
     }
-
 
 
     @Override

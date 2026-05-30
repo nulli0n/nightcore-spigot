@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.regex;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.Engine;
 
 import java.util.regex.Matcher;
@@ -9,41 +9,41 @@ import java.util.regex.Pattern;
 public class TimedMatcher {
 
     private final Matcher matcher;
-    private boolean debug;
+    private boolean       debug;
 
-    public TimedMatcher(@NotNull Matcher matcher) {
+    public TimedMatcher(@NonNull Matcher matcher) {
         this.matcher = matcher;
     }
 
-    @NotNull
-    public static TimedMatcher create(@NotNull String pattern, @NotNull String str) {
+    @NonNull
+    public static TimedMatcher create(@NonNull String pattern, @NonNull String str) {
         return create(pattern, str, 200);
     }
 
-    @NotNull
-    public static TimedMatcher create(@NotNull Pattern pattern, @NotNull String str) {
+    @NonNull
+    public static TimedMatcher create(@NonNull Pattern pattern, @NonNull String str) {
         return new TimedMatcher(getMatcher(pattern, str, 200));
     }
 
-    @NotNull
-    public static TimedMatcher create(@NotNull String rawPattern, @NotNull String str, long timeout) {
+    @NonNull
+    public static TimedMatcher create(@NonNull String rawPattern, @NonNull String str, long timeout) {
         return create(Pattern.compile(rawPattern), str, timeout);
     }
 
-    @NotNull
-    public static TimedMatcher create(@NotNull Pattern pattern, @NotNull String str, long timeout) {
+    @NonNull
+    public static TimedMatcher create(@NonNull Pattern pattern, @NonNull String str, long timeout) {
         return new TimedMatcher(getMatcher(pattern, str, timeout));
     }
 
-    @NotNull
-    private static Matcher getMatcher(@NotNull Pattern pattern, @NotNull String text, long timeout) {
+    @NonNull
+    private static Matcher getMatcher(@NonNull Pattern pattern, @NonNull String text, long timeout) {
         if (timeout <= 0) {
             return pattern.matcher(text);
         }
         return pattern.matcher(new TimeoutCharSequence(text, timeout));
     }
 
-    @NotNull
+    @NonNull
     public Matcher getMatcher() {
         return matcher;
     }
@@ -56,14 +56,15 @@ public class TimedMatcher {
         this.debug = debug;
     }
 
-    @NotNull
-    public String replaceAll(@NotNull String with) {
+    @NonNull
+    public String replaceAll(@NonNull String with) {
         try {
             return this.matcher.replaceAll(with);
         }
         catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
-                Engine.core().warn("Matcher " + exception.getTimeout() + "ms timeout error for replaceAll: '" + matcher.pattern().pattern() + "'.");
+                Engine.core().warn("Matcher " + exception.getTimeout() + "ms timeout error for replaceAll: '" + matcher
+                    .pattern().pattern() + "'.");
             }
             return "";
         }
@@ -75,7 +76,8 @@ public class TimedMatcher {
         }
         catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
-                Engine.core().warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern().pattern() + "'.");
+                Engine.core().warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern()
+                    .pattern() + "'.");
             }
             return false;
         }
@@ -87,7 +89,8 @@ public class TimedMatcher {
         }
         catch (MatcherTimeoutException exception) {
             if (this.isDebug()) {
-                Engine.core().warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern().pattern() + "'.");
+                Engine.core().warn("Matcher " + exception.getTimeout() + "ms timeout error for: '" + matcher.pattern()
+                    .pattern() + "'.");
             }
             return false;
         }

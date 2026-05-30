@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.command.experimental;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.experimental.builder.ChainedNodeBuilder;
 import su.nightexpress.nightcore.command.experimental.builder.DirectNodeBuilder;
@@ -26,48 +26,52 @@ public class RootCommand<P extends NightCorePlugin, S extends CommandNode> imple
 
     private WrappedCommand backend;
 
-    public RootCommand(@NotNull P plugin, @NotNull S node) {
+    public RootCommand(@NonNull P plugin, @NonNull S node) {
         this.plugin = plugin;
         this.node = node;
     }
 
-    @NotNull
-    public static <T extends NightCorePlugin> RootCommand<T, DirectNode> direct(@NotNull T plugin, @NotNull String name, @NotNull Consumer<DirectNodeBuilder> consumer) {
-        return direct(plugin, new String[] {name}, consumer);
+    @NonNull
+    public static <T extends NightCorePlugin> RootCommand<T, DirectNode> direct(@NonNull T plugin, @NonNull String name,
+                                                                                @NonNull Consumer<DirectNodeBuilder> consumer) {
+        return direct(plugin, new String[]{name}, consumer);
     }
 
-    @NotNull
-    public static <T extends NightCorePlugin> RootCommand<T, ChainedNode> chained(@NotNull T plugin, @NotNull String name, @NotNull Consumer<ChainedNodeBuilder> consumer) {
-        return chained(plugin, new String[] {name}, consumer);
+    @NonNull
+    public static <T extends NightCorePlugin> RootCommand<T, ChainedNode> chained(@NonNull T plugin,
+                                                                                  @NonNull String name,
+                                                                                  @NonNull Consumer<ChainedNodeBuilder> consumer) {
+        return chained(plugin, new String[]{name}, consumer);
     }
 
-    @NotNull
-    public static <T extends NightCorePlugin> RootCommand<T, DirectNode> direct(@NotNull T plugin, @NotNull String[] aliases, @NotNull Consumer<DirectNodeBuilder> consumer) {
+    @NonNull
+    public static <T extends NightCorePlugin> RootCommand<T, DirectNode> direct(@NonNull T plugin,
+                                                                                @NonNull String[] aliases,
+                                                                                @NonNull Consumer<DirectNodeBuilder> consumer) {
         DirectNodeBuilder builder = DirectNode.builder(plugin, aliases);
         consumer.accept(builder);
         return build(plugin, builder);
     }
 
-    @NotNull
-    public static <T extends NightCorePlugin> RootCommand<T, ChainedNode> chained(@NotNull T plugin, @NotNull String[] aliases, @NotNull Consumer<ChainedNodeBuilder> consumer) {
+    @NonNull
+    public static <T extends NightCorePlugin> RootCommand<T, ChainedNode> chained(@NonNull T plugin,
+                                                                                  @NonNull String[] aliases,
+                                                                                  @NonNull Consumer<ChainedNodeBuilder> consumer) {
         ChainedNodeBuilder builder = ChainedNode.builder(plugin, aliases);
         consumer.accept(builder);
         return build(plugin, builder);
     }
 
-    @NotNull
-    public static <T extends NightCorePlugin, S extends CommandNode, B extends NodeBuilder<S, B>> RootCommand<T, S> build(@NotNull T plugin, @NotNull B builder) {
+    @NonNull
+    public static <T extends NightCorePlugin, S extends CommandNode, B extends NodeBuilder<S, B>> RootCommand<T, S> build(@NonNull T plugin,
+                                                                                                                          @NonNull B builder) {
         return new RootCommand<>(plugin, builder.build());
     }
 
     @Override
     public boolean register() {
-        this.backend = new WrappedCommand(this.plugin, this, this,
-            this.node.getName(),
-            this.node.getAliases(),
-            this.node.getDescription(),
-            this.node.getUsage(),
-            this.node.getPermission()
+        this.backend = new WrappedCommand(this.plugin, this, this, this.node.getName(), this.node
+            .getAliases(), this.node.getDescription(), this.node.getUsage(), this.node.getPermission()
         );
         return CommandUtil.register(this.plugin, this.backend);
     }
@@ -82,7 +86,8 @@ public class RootCommand<P extends NightCorePlugin, S extends CommandNode> imple
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public List<String> onTabComplete(@NonNull CommandSender sender, @NonNull Command command, @NonNull String label,
+                                      String[] args) {
         if (args.length == 0) return Collections.emptyList();
 
         TabContext context = new TabContext(sender, label, args, 0);
@@ -92,20 +97,21 @@ public class RootCommand<P extends NightCorePlugin, S extends CommandNode> imple
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command, @NonNull String label,
+                             @NonNull String[] args) {
         CommandContext commandContext = new CommandContext(this.plugin, sender, label, args);
 
         return this.node.run(commandContext);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public S getNode() {
         return node;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public WrappedCommand getBackend() {
         return backend;
     }

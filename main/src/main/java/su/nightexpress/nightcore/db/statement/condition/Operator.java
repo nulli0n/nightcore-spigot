@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.statement.condition;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public enum Operator {
 
@@ -14,11 +14,11 @@ public enum Operator {
 
     private final String literal;
 
-    Operator(@NotNull String literal) {
+    Operator(@NonNull String literal) {
         this.literal = literal;
     }
 
-    @NotNull
+    @NonNull
     public String getLiteral() {
         return literal;
     }

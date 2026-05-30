@@ -1,13 +1,13 @@
 package su.nightexpress.nightcore.commands.context;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class ParsedArgument<T> {
 
     private final T   result;
     private final int cursor;
 
-    public ParsedArgument(@NotNull T result, int cursor) {
+    public ParsedArgument(@NonNull T result, int cursor) {
         this.result = result;
         this.cursor = cursor;
     }

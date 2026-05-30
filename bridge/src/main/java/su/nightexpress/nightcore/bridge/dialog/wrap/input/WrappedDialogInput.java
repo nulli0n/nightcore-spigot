@@ -1,16 +1,19 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 
 import java.util.function.UnaryOperator;
 
 public interface WrappedDialogInput {
 
-    @NotNull String key();
+    @NonNull
+    String key();
 
-    @NotNull <I> I adapt(@NotNull DialogInputAdapter<I> adapter);
+    @NonNull
+    <I> I adapt(@NonNull DialogInputAdapter<I> adapter);
 
     @Deprecated
-    @NotNull WrappedDialogInput replace(@NotNull UnaryOperator<String> operator);
+    @NonNull
+    WrappedDialogInput replace(@NonNull UnaryOperator<String> operator);
 }

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.text;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.tag.decorator.ColorDecorator;
 import su.nightexpress.nightcore.util.text.tag.decorator.Decorator;
@@ -10,7 +10,7 @@ public class TextNode extends TextChildren {
 
     private final StringBuilder textBuilder;
 
-    public TextNode(@NotNull TextGroup parent) {
+    public TextNode(@NonNull TextGroup parent) {
         super(parent);
         this.textBuilder = new StringBuilder();
     }
@@ -19,11 +19,11 @@ public class TextNode extends TextChildren {
         this.textBuilder.append(letter);
     }
 
-    public void append(@NotNull String str) {
+    public void append(@NonNull String str) {
         this.textBuilder.append(str);
     }
 
-    @NotNull
+    @NonNull
     public StringBuilder getTextBuilder() {
         return this.textBuilder;
     }
@@ -42,7 +42,7 @@ public class TextNode extends TextChildren {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightComponent toComponent() {
         ColorDecorator colorDecorator = this.parent.getColor();
         NightComponent component = NightComponent.text(this.textBuilder.toString());

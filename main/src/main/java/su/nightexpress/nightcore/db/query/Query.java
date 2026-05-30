@@ -1,11 +1,12 @@
 package su.nightexpress.nightcore.db.query;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Deprecated
 public interface Query {
 
-    @NotNull String toSQL(@NotNull String table);
+    @NonNull
+    String toSQL(@NonNull String table);
 
     boolean isEmpty();
 }

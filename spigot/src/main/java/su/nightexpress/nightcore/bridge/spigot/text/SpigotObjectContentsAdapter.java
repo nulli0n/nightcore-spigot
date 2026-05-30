@@ -5,7 +5,7 @@ import net.md_5.bungee.api.chat.objects.PlayerObject;
 import net.md_5.bungee.api.chat.objects.SpriteObject;
 import net.md_5.bungee.api.chat.player.Profile;
 import net.md_5.bungee.api.chat.player.Property;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.text.adapter.ObjectContentsAdapter;
 import su.nightexpress.nightcore.bridge.text.contents.NightObjectContents;
 import su.nightexpress.nightcore.bridge.text.contents.NightPlayerHeadObjectContents;
@@ -16,7 +16,7 @@ public class SpigotObjectContentsAdapter implements ObjectContentsAdapter<ChatOb
 
     private static SpigotObjectContentsAdapter instance;
 
-    @NotNull
+    @NonNull
     public static SpigotObjectContentsAdapter get() {
         if (instance == null) {
             instance = new SpigotObjectContentsAdapter();
@@ -25,26 +25,27 @@ public class SpigotObjectContentsAdapter implements ObjectContentsAdapter<ChatOb
     }
 
     @Override
-    @NotNull
-    public ChatObject adaptContents(@NotNull NightObjectContents contents) {
+    @NonNull
+    public ChatObject adaptContents(@NonNull NightObjectContents contents) {
         return contents.adapt(this);
     }
 
     @Override
-    @NotNull
-    public ChatObject adaptContents(@NotNull NightSpriteObjectContents contents) {
+    @NonNull
+    public ChatObject adaptContents(@NonNull NightSpriteObjectContents contents) {
         return new SpriteObject(contents.atlas().asString(), contents.sprite().value());
     }
 
     @Override
-    @NotNull
-    public ChatObject adaptContents(@NotNull NightPlayerHeadObjectContents contents) {
-        Profile profile = new Profile(contents.name(), contents.id(), Lists.modify(contents.profileProperties(), this::adaptProfilePropery).toArray(new Property[0]));
+    @NonNull
+    public ChatObject adaptContents(@NonNull NightPlayerHeadObjectContents contents) {
+        Profile profile = new Profile(contents.name(), contents.id(), Lists.modify(contents.profileProperties(),
+            this::adaptProfilePropery).toArray(new Property[0]));
         return new PlayerObject(profile, contents.hat());
     }
 
-    @NotNull
-    private Property adaptProfilePropery(@NotNull NightPlayerHeadObjectContents.NightProfileProperty property) {
+    @NonNull
+    private Property adaptProfilePropery(NightPlayerHeadObjectContents.@NonNull NightProfileProperty property) {
         return new Property(property.name(), property.value(), property.signature());
     }
 }

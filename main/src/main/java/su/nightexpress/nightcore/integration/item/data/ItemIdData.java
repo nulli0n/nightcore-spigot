@@ -1,21 +1,21 @@
 package su.nightexpress.nightcore.integration.item.data;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
 
 public class ItemIdData implements Writeable {
 
     private final String itemId;
-    private final int amount;
+    private final int    amount;
 
-    public ItemIdData(@NotNull String itemId, int amount) {
+    public ItemIdData(@NonNull String itemId, int amount) {
         this.itemId = itemId;
         this.amount = amount;
     }
 
-    @NotNull
-    public static ItemIdData read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static ItemIdData read(@NonNull FileConfig config, @NonNull String path) {
         String itemId = config.getString(path + ".ID", "null");
         int amount = config.getInt(path + ".Amount");
 
@@ -23,12 +23,12 @@ public class ItemIdData implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".ID", this.itemId);
         config.set(path + ".Amount", this.amount);
     }
 
-    @NotNull
+    @NonNull
     public String getItemId() {
         return this.itemId;
     }

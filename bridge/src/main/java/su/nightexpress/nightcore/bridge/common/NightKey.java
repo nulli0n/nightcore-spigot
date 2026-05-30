@@ -15,7 +15,8 @@ public class NightKey {
     private final String value;
 
     private NightKey(@NonNull String namespace, @NonNull String value) {
-        if (!parseableNamespace(namespace)) throw new IllegalArgumentException("Invalid namespace: '" + namespace + "'");
+        if (!parseableNamespace(namespace)) throw new IllegalArgumentException("Invalid namespace: '" + namespace +
+            "'");
         if (!parseableValue(value)) throw new IllegalArgumentException("Invalid value: '" + value + "'");
 
         this.namespace = namespace;
@@ -63,8 +64,10 @@ public class NightKey {
 
     @NonNull
     public static NightKey key(@NonNull String namespace, @NonNull String value) {
-        String namespaceFiltered = Strings.varStyle(namespace, NightKey::allowedInNamespace).orElseThrow(() -> new IllegalStateException("Invalid namespace: " + namespace));
-        String valueFiltered = Strings.varStyle(value, NightKey::allowedInValue).orElseThrow(() -> new IllegalStateException("Invalid value: " + value));
+        String namespaceFiltered = Strings.varStyle(namespace, NightKey::allowedInNamespace).orElseThrow(
+            () -> new IllegalStateException("Invalid namespace: " + namespace));
+        String valueFiltered = Strings.varStyle(value, NightKey::allowedInValue).orElseThrow(
+            () -> new IllegalStateException("Invalid value: " + value));
 
         return of(namespaceFiltered, valueFiltered);
     }
@@ -138,6 +141,11 @@ public class NightKey {
     @NonNull
     public NamespacedKey toBukkit() {
         return new NamespacedKey(this.namespace, this.value);
+    }
+
+    @Override
+    public String toString() {
+        return this.asString();
     }
 
     @Override

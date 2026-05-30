@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.text.contents;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.text.adapter.ObjectContentsAdapter;
 
@@ -14,15 +14,15 @@ public class NightPlayerHeadObjectContents implements NightObjectContents {
 
     public static final boolean DEFAULT_HAT = true;
 
-    private final @Nullable String                     name;
-    private final @Nullable UUID                       id;
-    private final           List<NightProfileProperty> properties;
-    private final           boolean                    hat;
-    private final @Nullable NightKey                   texture;
+    private final @Nullable String           name;
+    private final @Nullable UUID             id;
+    private final List<NightProfileProperty> properties;
+    private final boolean                    hat;
+    private final @Nullable NightKey         texture;
 
     NightPlayerHeadObjectContents(@Nullable String name,
                                   @Nullable UUID id,
-                                  @NotNull List<NightProfileProperty> properties,
+                                  @NonNull List<NightProfileProperty> properties,
                                   boolean hat,
                                   @Nullable NightKey texture) {
         this.name = name;
@@ -37,19 +37,20 @@ public class NightPlayerHeadObjectContents implements NightObjectContents {
         this.texture = texture;
     }
 
-    @NotNull
-    public static NightProfileProperty property(@NotNull String name, @NotNull String value) {
+    @NonNull
+    public static NightProfileProperty property(@NonNull String name, @NonNull String value) {
         return new NightProfileProperty(name, value, null);
     }
 
-    @NotNull
-    public static NightProfileProperty property(@NotNull String name, @NotNull String value, @Nullable String signature) {
+    @NonNull
+    public static NightProfileProperty property(@NonNull String name, @NonNull String value,
+                                                @Nullable String signature) {
         return new NightProfileProperty(name, value, signature);
     }
 
     @Override
-    @NotNull
-    public <T> T adapt(@NotNull ObjectContentsAdapter<T> adapter) {
+    @NonNull
+    public <T> T adapt(@NonNull ObjectContentsAdapter<T> adapter) {
         return adapter.adaptContents(this);
     }
 
@@ -63,7 +64,7 @@ public class NightPlayerHeadObjectContents implements NightObjectContents {
         return this.id;
     }
 
-    @NotNull
+    @NonNull
     public List<NightProfileProperty> profileProperties() {
         return this.properties;
     }
@@ -80,7 +81,8 @@ public class NightPlayerHeadObjectContents implements NightObjectContents {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof NightPlayerHeadObjectContents that)) return false;
-        return hat == that.hat && Objects.equals(name, that.name) && Objects.equals(id, that.id) && Objects.equals(properties, that.properties) && Objects.equals(texture, that.texture);
+        return hat == that.hat && Objects.equals(name, that.name) && Objects.equals(id, that.id) && Objects.equals(
+            properties, that.properties) && Objects.equals(texture, that.texture);
     }
 
     @Override
@@ -101,22 +103,22 @@ public class NightPlayerHeadObjectContents implements NightObjectContents {
 
     public static final class NightProfileProperty {
 
-        private final String name;
-        private final String value;
+        private final String           name;
+        private final String           value;
         private final @Nullable String signature;
 
-        NightProfileProperty(@NotNull String name, @NotNull String value, @Nullable String signature) {
+        NightProfileProperty(@NonNull String name, @NonNull String value, @Nullable String signature) {
             this.name = name;
             this.value = value;
             this.signature = signature;
         }
 
-        @NotNull
+        @NonNull
         public String name() {
             return this.name;
         }
 
-        @NotNull
+        @NonNull
         public String value() {
             return this.value;
         }
@@ -129,7 +131,8 @@ public class NightPlayerHeadObjectContents implements NightObjectContents {
         @Override
         public boolean equals(Object o) {
             if (!(o instanceof NightProfileProperty that)) return false;
-            return Objects.equals(name, that.name) && Objects.equals(value, that.value) && Objects.equals(signature, that.signature);
+            return Objects.equals(name, that.name) && Objects.equals(value, that.value) && Objects.equals(signature,
+                that.signature);
         }
 
         @Override

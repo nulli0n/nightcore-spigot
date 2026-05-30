@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
 
 import java.util.HashMap;
@@ -21,106 +21,106 @@ public class ParsedArguments {
         this.flags = new HashMap<>();
     }
 
-    public void add(@NotNull CommandArgument<?> argument, @NotNull ParsedArgument<?> parsedArgument) {
+    public void add(@NonNull CommandArgument<?> argument, @NonNull ParsedArgument<?> parsedArgument) {
         this.argumentMap.put(argument.getName(), parsedArgument);
     }
 
-    public void addFlag(@NotNull CommandFlag flag, @NotNull ParsedArgument<?> content) {
+    public void addFlag(@NonNull CommandFlag flag, @NonNull ParsedArgument<?> content) {
         this.flags.put(flag.getName(), content);
     }
 
-    @NotNull
+    @NonNull
     public Map<String, ParsedArgument<?>> getArgumentMap() {
         return argumentMap;
     }
 
-    @NotNull
+    @NonNull
     public Map<String, ParsedArgument<?>> getFlags() {
         return flags;
     }
 
-    public int getIntArgument(@NotNull String name, int defaultValue) {
+    public int getIntArgument(@NonNull String name, int defaultValue) {
         return this.getArgument(name, Integer.class, defaultValue);
     }
 
-    public int getIntArgument(@NotNull String name) {
+    public int getIntArgument(@NonNull String name) {
         return this.getArgument(name, Integer.class);
     }
 
-    public double getDoubleArgument(@NotNull String name, double defaultValue) {
+    public double getDoubleArgument(@NonNull String name, double defaultValue) {
         return this.getArgument(name, Double.class, defaultValue);
     }
 
-    public double getDoubleArgument(@NotNull String name) {
+    public double getDoubleArgument(@NonNull String name) {
         return this.getArgument(name, Double.class);
     }
 
-    public boolean getBooleanArgument(@NotNull String name, boolean defaultValue) {
+    public boolean getBooleanArgument(@NonNull String name, boolean defaultValue) {
         return this.getArgument(name, Boolean.class, defaultValue);
     }
 
-    public boolean getBooleanArgument(@NotNull String name) {
+    public boolean getBooleanArgument(@NonNull String name) {
         return this.getArgument(name, Boolean.class);
     }
 
-    @NotNull
-    public String getStringArgument(@NotNull String name, @NotNull String defaultValue) {
+    @NonNull
+    public String getStringArgument(@NonNull String name, @NonNull String defaultValue) {
         return this.getArgument(name, String.class, defaultValue);
     }
 
-    @NotNull
-    public String getStringArgument(@NotNull String name) {
+    @NonNull
+    public String getStringArgument(@NonNull String name) {
         return this.getArgument(name, String.class);
     }
 
-    @NotNull
-    public Material getMaterialArgument(@NotNull String name, @NotNull Material defaultValue) {
+    @NonNull
+    public Material getMaterialArgument(@NonNull String name, @NonNull Material defaultValue) {
         return this.getArgument(name, Material.class, defaultValue);
     }
 
-    @NotNull
-    public Material getMaterialArgument(@NotNull String name) {
+    @NonNull
+    public Material getMaterialArgument(@NonNull String name) {
         return this.getArgument(name, Material.class);
     }
 
-    @NotNull
-    public World getWorldArgument(@NotNull String name, @NotNull World defaultValue) {
+    @NonNull
+    public World getWorldArgument(@NonNull String name, @NonNull World defaultValue) {
         return this.getArgument(name, World.class, defaultValue);
     }
 
-    @NotNull
-    public World getWorldArgument(@NotNull String name) {
+    @NonNull
+    public World getWorldArgument(@NonNull String name) {
         return this.getArgument(name, World.class);
     }
 
-    @NotNull
-    public Enchantment getEnchantmentArgument(@NotNull String name, @NotNull Enchantment defaultValue) {
+    @NonNull
+    public Enchantment getEnchantmentArgument(@NonNull String name, @NonNull Enchantment defaultValue) {
         return this.getArgument(name, Enchantment.class, defaultValue);
     }
 
-    @NotNull
-    public Enchantment getEnchantmentArgument(@NotNull String name) {
+    @NonNull
+    public Enchantment getEnchantmentArgument(@NonNull String name) {
         return this.getArgument(name, Enchantment.class);
     }
 
-    @NotNull
-    public Player getPlayerArgument(@NotNull String name) {
+    @NonNull
+    public Player getPlayerArgument(@NonNull String name) {
         return this.getArgument(name, Player.class);
     }
 
-    public boolean hasArgument(@NotNull String name) {
+    public boolean hasArgument(@NonNull String name) {
         return this.argumentMap.containsKey(name);
     }
 
-    @NotNull
-    public <T> T getArgument(@NotNull String name, @NotNull Class<T> clazz, @NotNull T defaultValue) {
+    @NonNull
+    public <T> T getArgument(@NonNull String name, @NonNull Class<T> clazz, @NonNull T defaultValue) {
         if (!this.hasArgument(name)) return defaultValue;
 
         return this.getArgument(name, clazz);
     }
 
-    @NotNull
-    public <T> T getArgument(@NotNull String name, @NotNull Class<T> clazz) {
+    @NonNull
+    public <T> T getArgument(@NonNull String name, @NonNull Class<T> clazz) {
         ParsedArgument<?> argument = this.argumentMap.get(name);
         if (argument == null) {
             throw new IllegalArgumentException("No such argument '" + name + "' exists on this command");
@@ -131,44 +131,45 @@ public class ParsedArguments {
             return clazz.cast(result);
         }
         else {
-            throw new IllegalArgumentException("Argument '" + name + "' is defined as " + result.getClass().getSimpleName() + ", not " + clazz);
+            throw new IllegalArgumentException("Argument '" + name + "' is defined as " + result.getClass()
+                .getSimpleName() + ", not " + clazz);
         }
     }
 
-    public boolean hasFlag(@NotNull CommandFlag flag) {
+    public boolean hasFlag(@NonNull CommandFlag flag) {
         return this.hasFlag(flag.getName());
     }
 
-    public boolean hasFlag(@NotNull String name) {
+    public boolean hasFlag(@NonNull String name) {
         return this.flags.containsKey(name);
     }
 
-    public int getIntFlag(@NotNull String name, int defaultValue) {
+    public int getIntFlag(@NonNull String name, int defaultValue) {
         return this.getFlag(name, Integer.class, defaultValue);
     }
 
-    public double getDoubleFlag(@NotNull String name, double defaultValue) {
+    public double getDoubleFlag(@NonNull String name, double defaultValue) {
         return this.getFlag(name, Double.class, defaultValue);
     }
 
-    public boolean getBooleanFlag(@NotNull String name, boolean defaultValue) {
+    public boolean getBooleanFlag(@NonNull String name, boolean defaultValue) {
         return this.getFlag(name, Boolean.class, defaultValue);
     }
 
-    @NotNull
-    public String getStringFlag(@NotNull String name, @NotNull String defaultValue) {
+    @NonNull
+    public String getStringFlag(@NonNull String name, @NonNull String defaultValue) {
         return this.getFlag(name, String.class, defaultValue);
     }
 
-    @NotNull
-    public <T> T getFlag(@NotNull String name, @NotNull Class<T> clazz, @NotNull T defaultValue) {
+    @NonNull
+    public <T> T getFlag(@NonNull String name, @NonNull Class<T> clazz, @NonNull T defaultValue) {
         if (!this.hasFlag(name)) return defaultValue;
 
         return this.getFlag(name, clazz);
     }
 
-    @NotNull
-    public <T> T getFlag(@NotNull String name, @NotNull Class<T> clazz) {
+    @NonNull
+    public <T> T getFlag(@NonNull String name, @NonNull Class<T> clazz) {
         ParsedArgument<?> parsed = this.flags.get(name);
         if (parsed == null) {
             throw new IllegalArgumentException("No such flag '" + name + "' exists on this command");
@@ -179,7 +180,8 @@ public class ParsedArguments {
             return clazz.cast(result);
         }
         else {
-            throw new IllegalArgumentException("Flag '" + name + "' is defined as " + result.getClass().getSimpleName() + ", not " + clazz);
+            throw new IllegalArgumentException("Flag '" + name + "' is defined as " + result.getClass()
+                .getSimpleName() + ", not " + clazz);
         }
     }
 }

@@ -31,7 +31,7 @@ public class LangEntry<T extends LangValue> implements LangElement {
 
     @Override
     public void load(@NonNull NightPlugin plugin, @NonNull FileConfig config) {
-        this.value = config.get(this.type, this.path, this.defaultValue);//ConfigValue.create(this.path, this.loader, this.getDefaultValue()).read(config);
+        this.value = config.get(this.type, this.path, this.defaultValue);
     }
 
     @NonNull
@@ -103,7 +103,8 @@ public class LangEntry<T extends LangValue> implements LangElement {
         }
 
         @NonNull
-        public MessageLocale titleMessage(@NonNull String title, @NonNull String subtitle, int fade, int stay, @NonNull Sound sound) {
+        public MessageLocale titleMessage(@NonNull String title, @NonNull String subtitle, int fade, int stay,
+                                          @NonNull Sound sound) {
             return MessageLocale.title(this.path, title, subtitle, fade, stay, sound);
         }
 
@@ -138,7 +139,8 @@ public class LangEntry<T extends LangValue> implements LangElement {
         }
 
         @NonNull
-        public <E extends Enum<E>> EnumLocale<E> enumeration(@NonNull Class<E> clazz, @NonNull Function<E, String> defaultMapper) {
+        public <E extends Enum<E>> EnumLocale<E> enumeration(@NonNull Class<E> clazz,
+                                                             @NonNull Function<E, String> defaultMapper) {
             return EnumLocale.create(this.path, clazz, defaultMapper);
         }
 

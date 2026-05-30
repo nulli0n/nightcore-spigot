@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.command;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.NumberUtil;
 
 import java.util.HashMap;
@@ -10,11 +10,11 @@ import java.util.Map;
 @Deprecated
 public class CommandResult {
 
-    private final String label;
-    private final String[] args;
+    private final String                      label;
+    private final String[]                    args;
     private final Map<CommandFlag<?>, String> flags;
 
-    public CommandResult(@NotNull String label, String[] args, @NotNull Map<CommandFlag<?>, StringBuilder> flags) {
+    public CommandResult(@NonNull String label, String[] args, @NonNull Map<CommandFlag<?>, StringBuilder> flags) {
         this.label = label;
         this.flags = new HashMap<>();
         this.args = args;
@@ -26,13 +26,13 @@ public class CommandResult {
         return this.args.length;
     }
 
-    @NotNull
+    @NonNull
     public String getArg(int index) {
         return this.getArgs()[index];
     }
 
-    @NotNull
-    public String getArg(int index, @NotNull String def) {
+    @NonNull
+    public String getArg(int index, @NonNull String def) {
         if (index >= this.length()) return def;
 
         return this.getArgs()[index];
@@ -46,25 +46,25 @@ public class CommandResult {
         return NumberUtil.getAnyDouble(this.getArg(index, ""), def);
     }
 
-    public boolean hasFlag(@NotNull CommandFlag<?> flag) {
+    public boolean hasFlag(@NonNull CommandFlag<?> flag) {
         return this.getFlags().containsKey(flag);
     }
 
     @Nullable
-    public <T> T getFlag(@NotNull CommandFlag<T> flag) {
+    public <T> T getFlag(@NonNull CommandFlag<T> flag) {
         String value = this.getFlags().get(flag);
         if (value == null) return null;
 
         return flag.getParser().apply(value);
     }
 
-    @NotNull
-    public <T> T getFlag(@NotNull CommandFlag<T> flag, @NotNull T def) {
+    @NonNull
+    public <T> T getFlag(@NonNull CommandFlag<T> flag, @NonNull T def) {
         T value = this.getFlag(flag);
         return value == null ? def : value;
     }
 
-    @NotNull
+    @NonNull
     public String getLabel() {
         return label;
     }
@@ -73,7 +73,7 @@ public class CommandResult {
         return args;
     }
 
-    @NotNull
+    @NonNull
     public Map<CommandFlag<?>, String> getFlags() {
         return flags;
     }

@@ -4,22 +4,23 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEventCustom;
 import net.md_5.bungee.api.dialog.Dialog;
 import net.md_5.bungee.api.dialog.chat.ShowDialogClickEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 import su.nightexpress.nightcore.bridge.text.event.WrappedPayload;
 
 public class SpigotClickEventAdapter {
 
-    @NotNull
-    public static ClickEvent adaptClickEvent(@NotNull NightClickEvent event, @NotNull DialogAdapter<?> dDialogAdapter) {
+    @NonNull
+    public static ClickEvent adaptClickEvent(@NonNull NightClickEvent event, @NonNull DialogAdapter<?> dDialogAdapter) {
         WrappedPayload payload = event.payload();
 
         return switch (payload) {
-            case WrappedPayload.Custom custom -> MC_1_21_7.fromCustom(custom);
-            case WrappedPayload.Dialog dialog -> MC_1_21_7.fromDialog(dialog, dDialogAdapter);
-            case WrappedPayload.Int(int integer) -> new ClickEvent(ClickEvent.Action.CHANGE_PAGE, String.valueOf(integer));
-            case WrappedPayload.Text(@NotNull String value) -> {
+            case WrappedPayload.Custom custom -> fromCustom(custom);
+            case WrappedPayload.Dialog dialog -> fromDialog(dialog, dDialogAdapter);
+            case WrappedPayload.Int(int integer) -> new ClickEvent(ClickEvent.Action.CHANGE_PAGE, String.valueOf(
+                integer));
+            case WrappedPayload.Text(@NonNull String value) -> {
                 ClickEvent.Action action = switch (event.action()) {
                     case OPEN_URL -> ClickEvent.Action.OPEN_URL;
                     case OPEN_FILE -> ClickEvent.Action.OPEN_FILE;
@@ -35,16 +36,14 @@ public class SpigotClickEventAdapter {
         };
     }
 
-    private static class MC_1_21_7 {
+    @NonNull
+    public static ClickEvent fromCustom(WrappedPayload.@NonNull Custom custom) {
+        return new ClickEventCustom(custom.key().value(), custom.nbt().asString());
+    }
 
-        @NotNull
-        public static ClickEvent fromCustom(@NotNull WrappedPayload.Custom custom) {
-            return new ClickEventCustom(custom.key().value(), custom.nbt().asString());
-        }
-
-        @NotNull
-        public static ClickEvent fromDialog(@NotNull WrappedPayload.Dialog dialog, @NotNull DialogAdapter<?> dDialogAdapter) {
-            return new ShowDialogClickEvent((Dialog) dDialogAdapter.adaptDialog(dialog.dialog()));
-        }
+    @NonNull
+    public static ClickEvent fromDialog(WrappedPayload.@NonNull Dialog dialog,
+                                        @NonNull DialogAdapter<?> dDialogAdapter) {
+        return new ShowDialogClickEvent((Dialog) dDialogAdapter.adaptDialog(dialog.dialog()));
     }
 }

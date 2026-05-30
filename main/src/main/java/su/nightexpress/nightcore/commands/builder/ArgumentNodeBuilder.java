@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.commands.builder;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.commands.SuggestionsProvider;
 import su.nightexpress.nightcore.commands.argument.ArgumentType;
 import su.nightexpress.nightcore.commands.tree.ArgumentNode;
@@ -16,46 +16,46 @@ public class ArgumentNodeBuilder<T> extends NodeBuilder<ArgumentNodeBuilder<T>> 
     private boolean             required;
     private SuggestionsProvider suggestions;
 
-    public ArgumentNodeBuilder(@NotNull String name, @NotNull ArgumentType<T> type) {
+    public ArgumentNodeBuilder(@NonNull String name, @NonNull ArgumentType<T> type) {
         this.name = name;
         this.type = type;
         this.required = true;
     }
 
     @Override
-    @NotNull
+    @NonNull
     protected ArgumentNodeBuilder<T> getThis() {
         return this;
     }
 
-    @NotNull
+    @NonNull
     public ArgumentNode<T> build() {
         return new ArgumentNode<>(this.name, this.type, this.permission, this.requirements, this.required, this.localizedName, this.suggestions);
     }
 
-    @NotNull
-    public ArgumentNodeBuilder<T> localized(@NotNull TextLocale locale) {
+    @NonNull
+    public ArgumentNodeBuilder<T> localized(@NonNull TextLocale locale) {
         return this.localized(locale.text());
     }
 
-    @NotNull
-    public ArgumentNodeBuilder<T> localized(@NotNull String localizedName) {
+    @NonNull
+    public ArgumentNodeBuilder<T> localized(@NonNull String localizedName) {
         this.localizedName = localizedName;
         return this.getThis();
     }
 
-    @NotNull
+    @NonNull
     public ArgumentNodeBuilder<T> optional() {
         return this.optional(true);
     }
 
-    @NotNull
+    @NonNull
     public ArgumentNodeBuilder<T> optional(boolean optional) {
         this.required = !optional;
         return this.getThis();
     }
 
-    @NotNull
+    @NonNull
     public ArgumentNodeBuilder<T> suggestions(@Nullable SuggestionsProvider provider) {
         this.suggestions = provider;
         return this.getThis();
@@ -66,12 +66,12 @@ public class ArgumentNodeBuilder<T> extends NodeBuilder<ArgumentNodeBuilder<T>> 
         return this.suggestions;
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return this.name;
     }
 
-    @NotNull
+    @NonNull
     public ArgumentType<T> getType() {
         return this.type;
     }

@@ -1,15 +1,16 @@
 package su.nightexpress.nightcore.bridge.paper.scheduler;
 
-import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import su.nightexpress.nightcore.bridge.scheduler.AdaptedTask;
 
 public class FoliaScheduledTask implements AdaptedTask {
 
     private final ScheduledTask backend;
 
-    public FoliaScheduledTask(@NotNull ScheduledTask backend) {
+    public FoliaScheduledTask(@NonNull ScheduledTask backend) {
         this.backend = backend;
     }
 
@@ -24,7 +25,7 @@ public class FoliaScheduledTask implements AdaptedTask {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Plugin getOwningPlugin() {
         return this.backend.getOwningPlugin();
     }

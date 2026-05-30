@@ -1,11 +1,11 @@
 package su.nightexpress.nightcore.bridge.chat;
 
-import org.bukkit.event.EventPriority;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.function.Supplier;
+
+import org.bukkit.event.EventPriority;
+import org.jspecify.annotations.NonNull;
 
 public interface UniversalChatListenerCallback {
 
-    void run(@NotNull EventPriority priority, @NotNull Supplier<UniversalChatEvent> event);
+    void run(@NonNull EventPriority priority, @NonNull Supplier<UniversalChatEvent> event);
 }

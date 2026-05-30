@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.menu.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.menu.MenuViewer;
 import su.nightexpress.nightcore.menu.item.ItemOptions;
 import su.nightexpress.nightcore.menu.item.MenuItem;
@@ -13,25 +13,25 @@ import java.util.List;
 @Deprecated
 public interface AutoFilled<I> extends Menu {
 
-    default boolean open(@NotNull Player player, int page) {
+    default boolean open(@NonNull Player player, int page) {
         return this.open(this.getViewerOrCreate(player), page);
     }
 
-    default boolean open(@NotNull MenuViewer viewer, int page) {
+    default boolean open(@NonNull MenuViewer viewer, int page) {
         viewer.setPage(page);
         return this.open(viewer);
     }
 
-    void onAutoFill(@NotNull MenuViewer viewer, @NotNull AutoFill<I> autoFill);
+    void onAutoFill(@NonNull MenuViewer viewer, @NonNull AutoFill<I> autoFill);
 
-    default void autoFill(@NotNull MenuViewer viewer) {
+    default void autoFill(@NonNull MenuViewer viewer) {
         AutoFill<I> autoFill = new AutoFill<>();
         this.onAutoFill(viewer, autoFill);
         this.getAutoFillItems(viewer, autoFill).forEach(this::addItem);
     }
 
-    @NotNull
-    default List<MenuItem> getAutoFillItems(@NotNull MenuViewer viewer, @NotNull AutoFill<I> autoFill) {
+    @NonNull
+    default List<MenuItem> getAutoFillItems(@NonNull MenuViewer viewer, @NonNull AutoFill<I> autoFill) {
         Player player = viewer.getPlayer();
         List<MenuItem> items = new ArrayList<>();
         List<I> origin = autoFill.getItems();//this.getAutoFills(player);

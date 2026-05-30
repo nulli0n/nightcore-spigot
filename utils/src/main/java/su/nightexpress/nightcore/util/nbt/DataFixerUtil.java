@@ -4,7 +4,7 @@ import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.DynamicOps;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.Reflex;
 import su.nightexpress.nightcore.util.Version;
 
@@ -12,17 +12,21 @@ import java.lang.reflect.Method;
 
 public class DataFixerUtil {
 
-    private static final Class<?> CLS_DATA_FIXERS = Reflex.safeClass("net.minecraft.util.datafix", "DataFixers", "DataConverterRegistry");
-    private static final Class<?> CLS_REFERENCES  = Reflex.safeClass("net.minecraft.util.datafix.fixes", "References", "DataConverterTypes");
+    private static final Class<?> CLS_DATA_FIXERS = Reflex.safeClass("net.minecraft.util.datafix", "DataFixers",
+        "DataConverterRegistry");
+    private static final Class<?> CLS_REFERENCES  = Reflex.safeClass("net.minecraft.util.datafix.fixes", "References",
+        "DataConverterTypes");
 
     private static final Method GET_DATA_FIXER = Reflex.safeMethod(CLS_DATA_FIXERS, "getDataFixer", "a");
 
-    private static final DataFixer         DATA_FIXER           = (DataFixer) Reflex.invokeMethod(GET_DATA_FIXER, CLS_DATA_FIXERS);
-    private static final DSL.TypeReference ITEM_STACK_REFERENCE = (DSL.TypeReference) Reflex.getFieldValue(CLS_REFERENCES, "ITEM_STACK", "u");
+    private static final DataFixer         DATA_FIXER           = (DataFixer) Reflex.invokeMethod(GET_DATA_FIXER,
+        CLS_DATA_FIXERS);
+    private static final DSL.TypeReference ITEM_STACK_REFERENCE = (DSL.TypeReference) Reflex.getFieldValue(
+        CLS_REFERENCES, "ITEM_STACK", "u");
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    @NotNull
-    public static Object updateItemStack(@NotNull Object compoundTag, int sourceVersion) {
+    @NonNull
+    public static Object updateItemStack(@NonNull Object compoundTag, int sourceVersion) {
         if (DATA_FIXER == null) throw new IllegalStateException("DataFixer is null!");
 
         int targetVersion = Version.getCurrent().getDataVersion();
@@ -34,11 +38,11 @@ public class DataFixerUtil {
             Class<?> mcDataTypeClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCDataType");
             Class<?> mcDataConvertedClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft", "MCDataConverter");
             Class<?> mcTypeRegistryClass = Reflex.getClass("ca.spottedleaf.dataconverter.minecraft.datatypes", "MCTypeRegistry");
-
+        
             Object itemStackRegistry = Reflex.getFieldValue(mcTypeRegistryClass, "ITEM_STACK");
-
+        
             Method convert = Reflex.getMethod(mcDataConvertedClass, "convertTag", mcDataTypeClass, CLS_COMPOUND_TAG, Integer.TYPE, Integer.TYPE);
-
+        
             return Reflex.invokeMethod(convert, null, itemStackRegistry, compoundTag, sourceVersion, targetVersion);
         }*/
 

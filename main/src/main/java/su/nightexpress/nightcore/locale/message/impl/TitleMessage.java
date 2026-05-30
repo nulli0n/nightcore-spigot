@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.locale.message.impl;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.locale.message.LangMessage;
 import su.nightexpress.nightcore.locale.message.MessageData;
 import su.nightexpress.nightcore.util.Players;
@@ -18,7 +18,7 @@ public class TitleMessage extends LangMessage {
     private final int stay;
     private final int fadeOut;
 
-    public TitleMessage(@NotNull String text, @NotNull MessageData data) {
+    public TitleMessage(@NonNull String text, @NonNull MessageData data) {
         super(text, data);
 
         int[] titleTimes = data.titleTimes();
@@ -33,7 +33,7 @@ public class TitleMessage extends LangMessage {
     }
 
     @Override
-    protected void send(@NotNull Collection<? extends CommandSender> receivers, @NotNull String text) {
+    protected void send(@NonNull Collection<? extends CommandSender> receivers, @NonNull String text) {
         String[] split = ParserUtils.breakDownLineSplitters(text);
 
         String title = split[0];
@@ -43,7 +43,8 @@ public class TitleMessage extends LangMessage {
         NightComponent subtitleComp = NightMessage.parse(subTitle);
 
         receivers.forEach(sender -> {
-            if (sender instanceof Player player) Players.sendTitles(player, titleComp, subtitleComp, this.fadeIn, this.stay, this.fadeOut);
+            if (sender instanceof Player player) Players.sendTitles(player, titleComp, subtitleComp, this.fadeIn,
+                this.stay, this.fadeOut);
         });
     }
 }

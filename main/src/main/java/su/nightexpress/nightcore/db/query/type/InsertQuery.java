@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.db.query.type;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.db.query.TypedQuery;
 import su.nightexpress.nightcore.db.query.data.Values;
 import su.nightexpress.nightcore.db.query.data.Wheres;
@@ -19,8 +19,8 @@ public class InsertQuery<T> extends TypedQuery<T> {
     }
 
     @Override
-    @NotNull
-    public String toSQL(@NotNull String table) {
+    @NonNull
+    public String toSQL(@NonNull String table) {
         String columns = this.values.toSQL();
 
         StringBuilder values = new StringBuilder();
@@ -49,8 +49,8 @@ public class InsertQuery<T> extends TypedQuery<T> {
         return this.values;
     }
 
-    @NotNull
-    public InsertQuery<T> setValue(@NotNull Column column, @NotNull Function<T, String> function) {
+    @NonNull
+    public InsertQuery<T> setValue(@NonNull Column column, @NonNull Function<T, String> function) {
         this.values.setValue(column, function);
         return this;
     }

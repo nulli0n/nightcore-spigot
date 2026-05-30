@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.core.config;
 
 import org.bukkit.damage.DamageType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.entry.*;
@@ -209,18 +209,18 @@ public final class CoreLang implements LangContainer {
     public static final ButtonLocale DIALOG_BUTTON_BACK    = LangEntry.builder("Dialog.Button.Back").button(SOFT_YELLOW
         .wrap("←") + " Back");
 
-    @NotNull
-    public static String formatEntry(@NotNull String entry, boolean flag) {
+    @NonNull
+    public static String formatEntry(@NonNull String entry, boolean flag) {
         return (flag ? ENTRY_GOOD : ENTRY_BAD).text().formatted(entry);
     }
 
-    @NotNull
-    public static String goodEntry(@NotNull String entry) {
+    @NonNull
+    public static String goodEntry(@NonNull String entry) {
         return formatEntry(entry, true);
     }
 
-    @NotNull
-    public static String badEntry(@NotNull String entry) {
+    @NonNull
+    public static String badEntry(@NonNull String entry) {
         return formatEntry(entry, false);
     }
 }

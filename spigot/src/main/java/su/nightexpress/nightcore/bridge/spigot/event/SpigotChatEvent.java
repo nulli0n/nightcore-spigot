@@ -1,25 +1,24 @@
 package su.nightexpress.nightcore.bridge.spigot.event;
 
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEvent;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatRenderer;
 import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
 public class SpigotChatEvent implements UniversalChatEvent {
 
-    //private final SpigotBridge bridge;
     private final AsyncPlayerChatEvent backend;
 
-    public SpigotChatEvent(@NotNull SpigotBridge bridge, @NotNull AsyncPlayerChatEvent backend) {
-        //this.bridge = bridge;
+    public SpigotChatEvent(@NonNull SpigotBridge bridge, @NonNull AsyncPlayerChatEvent backend) {
         this.backend = backend;
     }
 
@@ -34,36 +33,37 @@ public class SpigotChatEvent implements UniversalChatEvent {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Player getPlayer() {
         return this.backend.getPlayer();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Set<CommandSender> viewers() {
         return this.backend.getRecipients().stream().map(player -> (CommandSender) player).collect(Collectors.toSet());
     }
 
     @Override
-    public void editViewers(@NotNull Consumer<Set<CommandSender>> consumer) {
+    public void editViewers(@NonNull Consumer<Set<CommandSender>> consumer) {
         consumer.accept(this.viewers());
     }
 
     @Override
-    public void renderer(@NotNull UniversalChatRenderer renderer) {
-        NightComponent component = renderer.render(this.backend.getPlayer(), this.backend.getPlayer().getDisplayName(), this.message(), null);
+    public void renderer(@NonNull UniversalChatRenderer renderer) {
+        NightComponent component = renderer.render(this.backend.getPlayer(), this.backend.getPlayer().getDisplayName(),
+            this.message(), null);
         this.backend.setFormat(component.toLegacy());
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String message() {
         return this.backend.getMessage();
     }
 
     @Override
-    public void message(@NotNull NightComponent component) {
+    public void message(@NonNull NightComponent component) {
         this.backend.setMessage(component.toLegacy());
     }
 }

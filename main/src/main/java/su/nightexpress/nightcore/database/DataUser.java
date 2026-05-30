@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.database;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -36,9 +36,11 @@ public interface DataUser {
 
     void setNextSyncIn(int seconds);
 
-    @NotNull UUID getId();
+    @NonNull
+    UUID getId();
 
-    @NotNull String getName();
+    @NonNull
+    String getName();
 
     void setName(String name);
 
@@ -52,7 +54,9 @@ public interface DataUser {
 
     boolean isOnline();
 
-    @NotNull OfflinePlayer getOfflinePlayer();
+    @NonNull
+    OfflinePlayer getOfflinePlayer();
 
-    @Nullable Player getPlayer();
+    @Nullable
+    Player getPlayer();
 }

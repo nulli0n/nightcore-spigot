@@ -1,5 +1,15 @@
 package su.nightexpress.nightcore.util;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -10,8 +20,9 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.geysermc.floodgate.api.FloodgateApi;
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.integration.permission.PermissionBridge;
@@ -21,11 +32,6 @@ import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 import su.nightexpress.nightcore.util.text.TextRoot;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
-
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class Players {
 
@@ -148,7 +154,8 @@ public class Players {
     }
 
     public static void setPlayerListHeaderFooter(
-                                                 @NonNull Player player, @Nullable String header, @Nullable String footer) {
+                                                 @NonNull Player player, @Nullable String header,
+                                                 @Nullable String footer) {
         setPlayerListHeaderFooter(
             player,
             header == null ? null : NightMessage.parse(header),
@@ -156,7 +163,8 @@ public class Players {
     }
 
     public static void setPlayerListHeaderFooter(
-                                                 @NonNull Player player, @Nullable NightComponent header, @Nullable NightComponent footer) {
+                                                 @NonNull Player player, @Nullable NightComponent header,
+                                                 @Nullable NightComponent footer) {
         Software.get().setPlayerListHeaderFooter(player, header, footer);
     }
 
@@ -182,19 +190,20 @@ public class Players {
     }
 
     public static void disallowLogin(
-                                     @NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull String message) {
+                                     @NonNull AsyncPlayerPreLoginEvent event,
+                                     AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull String message) {
         disallowLogin(event, result, NightMessage.parse(message));
     }
 
     public static void disallowLogin(
-                                     @NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull NightComponent message) {
+                                     @NonNull AsyncPlayerPreLoginEvent event,
+                                     AsyncPlayerPreLoginEvent.@NonNull Result result, @NonNull NightComponent message) {
         Software.get().disallowLogin(event, result, message);
     }
 
     @NonNull
-    @Deprecated
     public static NightProfile getProfile(@NonNull OfflinePlayer player) {
-        return PlayerProfiles.getProfile(player).query();
+        return Software.get().getProfile(player);
     }
 
     @NonNull
@@ -385,17 +394,20 @@ public class Players {
 
     @Deprecated
     public static void sendTitle(
-                                 @NonNull Player player, @NonNull String title, @NonNull String subtitle, int fadeIn, int stay, int fadeOut) {
+                                 @NonNull Player player, @NonNull String title, @NonNull String subtitle, int fadeIn,
+                                 int stay, int fadeOut) {
         sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 
     public static void sendTitles(
-                                  @NonNull Player player, @NonNull String title, @NonNull String subtitle, int fadeIn, int stay, int fadeOut) {
+                                  @NonNull Player player, @NonNull String title, @NonNull String subtitle, int fadeIn,
+                                  int stay, int fadeOut) {
         sendTitles(player, NightMessage.parse(title), NightMessage.parse(subtitle), fadeIn, stay, fadeOut);
     }
 
     public static void sendTitles(
-                                  @NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
+                                  @NonNull Player player, @NonNull NightComponent title,
+                                  @NonNull NightComponent subtitle, int fadeIn, int stay, int fadeOut) {
         Software.get().sendTitles(player, title, subtitle, fadeIn, stay, fadeOut);
     }
 

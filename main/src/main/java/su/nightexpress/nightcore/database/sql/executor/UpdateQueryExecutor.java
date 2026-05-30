@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.database.sql.executor;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.database.AbstractConnector;
 import su.nightexpress.nightcore.database.sql.SQLCondition;
 import su.nightexpress.nightcore.database.sql.SQLExecutor;
@@ -20,36 +20,36 @@ public final class UpdateQueryExecutor extends SQLExecutor<Void> {
     private final List<SQLValue>     values;
     private final List<SQLCondition> wheres;
 
-    private UpdateQueryExecutor(@NotNull String table) {
+    private UpdateQueryExecutor(@NonNull String table) {
         super(table);
         this.values = new ArrayList<>();
         this.wheres = new ArrayList<>();
     }
 
-    @NotNull
-    public static UpdateQueryExecutor builder(@NotNull String table) {
+    @NonNull
+    public static UpdateQueryExecutor builder(@NonNull String table) {
         return new UpdateQueryExecutor(table);
     }
 
-    @NotNull
-    public UpdateQueryExecutor values(@NotNull SQLValue... values) {
+    @NonNull
+    public UpdateQueryExecutor values(@NonNull SQLValue... values) {
         return this.values(Arrays.asList(values));
     }
 
-    @NotNull
-    public UpdateQueryExecutor values(@NotNull List<SQLValue> values) {
+    @NonNull
+    public UpdateQueryExecutor values(@NonNull List<SQLValue> values) {
         this.values.clear();
         this.values.addAll(values);
         return this;
     }
 
-    @NotNull
-    public UpdateQueryExecutor where(@NotNull SQLCondition... wheres) {
+    @NonNull
+    public UpdateQueryExecutor where(@NonNull SQLCondition... wheres) {
         return this.where(Arrays.asList(wheres));
     }
 
-    @NotNull
-    public UpdateQueryExecutor where(@NotNull List<SQLCondition> wheres) {
+    @NonNull
+    public UpdateQueryExecutor where(@NonNull List<SQLCondition> wheres) {
         this.wheres.clear();
         this.wheres.addAll(wheres);
         return this;
@@ -58,30 +58,31 @@ public final class UpdateQueryExecutor extends SQLExecutor<Void> {
     /*@Nullable
     public UpdateQuery createObject() {
         if (this.values.isEmpty()) return null;
-
+    
         String values = this.values.stream().map(value -> value.getColumn().getNameEscaped() + " = ?")
             .collect(Collectors.joining(","));
-
+    
         String wheres = this.wheres.stream().map(where -> where.getColumn().getNameEscaped() + " " + where.getType().getOperator() + " ?")
             .collect(Collectors.joining(" AND "));
-
+    
         String sql = "UPDATE " + this.getTable() + " SET " + values + (wheres.isEmpty() ? "" : " WHERE " + wheres);
-
+    
         List<String> values2 = this.values.stream().map(SQLValue::getValue).toList();
         List<String> whers2 = this.wheres.stream().map(SQLCondition::getValue).map(SQLValue::getValue).toList();
-
+    
         return new UpdateQuery(sql, values2, whers2);
     }*/
 
     @Override
-    @NotNull
-    public Void execute(@NotNull AbstractConnector connector) {
+    @NonNull
+    public Void execute(@NonNull AbstractConnector connector) {
         if (this.values.isEmpty()) return null;
 
         String values = this.values.stream().map(value -> value.getColumn().getNameEscaped() + " = ?")
             .collect(Collectors.joining(","));
 
-        String wheres = this.wheres.stream().map(where -> where.getColumn().getNameEscaped() + " " + where.getType().getOperator() + " ?")
+        String wheres = this.wheres.stream().map(where -> where.getColumn().getNameEscaped() + " " + where.getType()
+            .getOperator() + " ?")
             .collect(Collectors.joining(" AND "));
 
         String sql = "UPDATE " + this.getTable() + " SET " + values + (wheres.isEmpty() ? "" : " WHERE " + wheres);

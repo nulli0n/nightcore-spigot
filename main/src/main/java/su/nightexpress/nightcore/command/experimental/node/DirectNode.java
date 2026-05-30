@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.command.experimental.node;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.TabContext;
@@ -29,15 +29,15 @@ public class DirectNode extends CommandNode implements DirectExecutor {
 
     private final int requiredArguments;
 
-    public DirectNode(@NotNull NightCorePlugin plugin,
-                      @NotNull String name,
-                      @NotNull String[] aliases,
-                      @NotNull String description,
+    public DirectNode(@NonNull NightCorePlugin plugin,
+                      @NonNull String name,
+                      @NonNull String[] aliases,
+                      @NonNull String description,
                       @Nullable String permission,
                       boolean playerOnly,
-                      @NotNull List<CommandArgument<?>> arguments,
-                      @NotNull Map<String, CommandFlag> flags,
-                      @NotNull DirectExecutor executor) {
+                      @NonNull List<CommandArgument<?>> arguments,
+                      @NonNull Map<String, CommandFlag> flags,
+                      @NonNull DirectExecutor executor) {
         super(plugin, name, aliases, description, permission, playerOnly);
         this.arguments = Collections.unmodifiableList(arguments);
         this.flags = Collections.unmodifiableMap(flags);
@@ -45,18 +45,18 @@ public class DirectNode extends CommandNode implements DirectExecutor {
         this.requiredArguments = (int) this.arguments.stream().filter(CommandArgument::isRequired).count();
     }
 
-    @NotNull
-    public static DirectNodeBuilder builder(@NotNull NightCorePlugin plugin, @NotNull String... aliases) {
+    @NonNull
+    public static DirectNodeBuilder builder(@NonNull NightCorePlugin plugin, @NonNull String... aliases) {
         return new DirectNodeBuilder(plugin, aliases);
     }
 
     @Override
-    public boolean execute(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+    public boolean execute(@NonNull CommandContext context, @NonNull ParsedArguments arguments) {
         return this.executor.execute(context, arguments);
     }
 
     @Override
-    protected boolean onRun(@NotNull CommandContext context) {
+    protected boolean onRun(@NonNull CommandContext context) {
         CommandSender sender = context.getSender();
         String[] args = context.getArgs();
         int index = context.getArgumentIndex();
@@ -141,8 +141,8 @@ public class DirectNode extends CommandNode implements DirectExecutor {
     }
 
     @Override
-    @NotNull
-    public List<String> getTab(@NotNull TabContext context) {
+    @NonNull
+    public List<String> getTab(@NonNull TabContext context) {
         if (this.isPlayerOnly() && context.getPlayer() == null) return Collections.emptyList();
 
         int firstArgIndex = context.getLastCommandIndex();
@@ -197,35 +197,35 @@ public class DirectNode extends CommandNode implements DirectExecutor {
 
         return samples;
 
-//        int index = context.getArgs().length - (context.getIndex() + 1);
-//        //System.out.println("index = " + index);
-//        //System.out.println("arguments.size() = " + arguments.size());
-//        if (index >= this.arguments.size()) {
-//            if (!this.arguments.isEmpty()) {
-//                CommandArgument<?> lastArgument = this.arguments.getLast();
-//                if (lastArgument.isComplex()) return this.getArgumentSamples(lastArgument, context);
-//            }
-//
-//            List<String> samples = new ArrayList<>();
-//
-//            this.getFlags().forEach(commandFlag -> {
-//                if (!commandFlag.hasPermission(context.getSender())) return;
-//                if (commandFlag instanceof ContentFlag<?> contentFlag) {
-//                    samples.add(contentFlag.getSampled());
-//                }
-//                else {
-//                    samples.add(commandFlag.getPrefixed());
-//                }
-//            });
-//
-//            return samples;
-//        }
-//
-//        CommandArgument<?> argument = this.arguments.get(index);
-//        return this.getArgumentSamples(argument, context);
+        //        int index = context.getArgs().length - (context.getIndex() + 1);
+        //        //System.out.println("index = " + index);
+        //        //System.out.println("arguments.size() = " + arguments.size());
+        //        if (index >= this.arguments.size()) {
+        //            if (!this.arguments.isEmpty()) {
+        //                CommandArgument<?> lastArgument = this.arguments.getLast();
+        //                if (lastArgument.isComplex()) return this.getArgumentSamples(lastArgument, context);
+        //            }
+        //
+        //            List<String> samples = new ArrayList<>();
+        //
+        //            this.getFlags().forEach(commandFlag -> {
+        //                if (!commandFlag.hasPermission(context.getSender())) return;
+        //                if (commandFlag instanceof ContentFlag<?> contentFlag) {
+        //                    samples.add(contentFlag.getSampled());
+        //                }
+        //                else {
+        //                    samples.add(commandFlag.getPrefixed());
+        //                }
+        //            });
+        //
+        //            return samples;
+        //        }
+        //
+        //        CommandArgument<?> argument = this.arguments.get(index);
+        //        return this.getArgumentSamples(argument, context);
     }
 
-    private List<String> getArgumentSamples(@NotNull CommandArgument<?> argument, @NotNull TabContext context) {
+    private List<String> getArgumentSamples(@NonNull CommandArgument<?> argument, @NonNull TabContext context) {
         if (!argument.hasPermission(context.getSender())) return Collections.emptyList();
 
         //System.out.println("argument = " + argument);
@@ -233,7 +233,7 @@ public class DirectNode extends CommandNode implements DirectExecutor {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getUsage() {
         StringBuilder labelBuilder = new StringBuilder();
 
@@ -259,17 +259,17 @@ public class DirectNode extends CommandNode implements DirectExecutor {
         return labelBuilder.toString();
     }
 
-    @NotNull
+    @NonNull
     public List<CommandArgument<?>> getArguments() {
         return arguments;
     }
 
     @Nullable
-    public CommandFlag getFlag(@NotNull String name) {
+    public CommandFlag getFlag(@NonNull String name) {
         return this.flags.get(name.toLowerCase());
     }
 
-    @NotNull
+    @NonNull
     public Collection<CommandFlag> getFlags() {
         return this.flags.values();
     }

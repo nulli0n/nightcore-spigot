@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.language.entry;
 
 import org.bukkit.Keyed;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -19,28 +19,28 @@ public class LangRegistry<E extends Keyed> implements LangElement {
     private final RegistryType<E>     registry;
     private final Map<String, String> localeMap;
 
-    public LangRegistry(@NotNull String path, @NotNull RegistryType<E> registry) {
+    public LangRegistry(@NonNull String path, @NonNull RegistryType<E> registry) {
         this.path = path;
         this.registry = registry;
         this.localeMap = new HashMap<>();
     }
 
-    @NotNull
-    public static <E extends Keyed> LangRegistry<E> of(@NotNull String path, @NotNull RegistryType<E> registry) {
+    @NonNull
+    public static <E extends Keyed> LangRegistry<E> of(@NonNull String path, @NonNull RegistryType<E> registry) {
         return new LangRegistry<>(path, registry);
     }
 
     @Override
-    public void write(@NotNull FileConfig config) {
+    public void write(@NonNull FileConfig config) {
 
     }
 
-    public void load(@NotNull NightCorePlugin plugin) {
+    public void load(@NonNull NightCorePlugin plugin) {
         this.load(plugin.getLang());
     }
 
     @Override
-    public void load(@NotNull FileConfig config) {
+    public void load(@NonNull FileConfig config) {
         BukkitThing.getAll(this.registry).forEach(keyed -> {
             String value = BukkitThing.getValue(keyed);
             String localized = StringUtil.capitalizeUnderscored(value);
@@ -50,8 +50,8 @@ public class LangRegistry<E extends Keyed> implements LangElement {
         });
     }
 
-    @NotNull
-    public String getLocalized(@NotNull E keyed) {
+    @NonNull
+    public String getLocalized(@NonNull E keyed) {
         String value = BukkitThing.getValue(keyed);
 
         return this.localeMap.getOrDefault(value, value);

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.language.tag;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.language.message.MessageOptions;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
@@ -10,24 +10,24 @@ import su.nightexpress.nightcore.util.text.tag.api.Tag;
 @Deprecated
 public abstract class MessageTag extends Tag {
 
-    public MessageTag(@NotNull String name) {
+    public MessageTag(@NonNull String name) {
         super(name);
     }
 
-    public MessageTag(@NotNull String name, @NotNull String[] aliases) {
+    public MessageTag(@NonNull String name, @NonNull String[] aliases) {
         super(name, aliases);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull String content) {
+    public String enclose(@NonNull String content) {
         return this.wrap(content);//brackets(this.getName() + ":\"" + content + "\"");
     }
 
-    @NotNull
-    public String wrap(@NotNull String content) {
+    @NonNull
+    public String wrap(@NonNull String content) {
         return TagUtils.brackets(this.getName() + ParserUtils.DELIMITER + ParserUtils.quoted(content));// ":\"" + content + "\"");
     }
 
-    public abstract void apply(@NotNull MessageOptions options, @Nullable String tagContent);
+    public abstract void apply(@NonNull MessageOptions options, @Nullable String tagContent);
 }

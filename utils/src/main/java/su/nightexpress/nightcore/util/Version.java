@@ -32,8 +32,8 @@ public enum Version {
     UNKNOWN("Unknown", 10000),
     ;
 
-    private static final boolean isPaper = checkPaper();
-    private static final boolean isFolia = checkFolia();
+    private static final boolean IS_PAPER = checkPaper();
+    private static final boolean IS_FOLIA = checkFolia();
 
     private static Version current;
     private final Status   status;
@@ -84,15 +84,15 @@ public enum Version {
     }
 
     public static boolean isSpigot() {
-        return !isPaper;
+        return !IS_PAPER;
     }
 
     public static boolean isPaper() {
-        return isPaper;
+        return IS_PAPER;
     }
 
     public static boolean isFolia() {
-        return isFolia;
+        return IS_FOLIA;
     }
 
     public boolean isDeprecated() {

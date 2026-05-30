@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.bridge.dialog;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
 
 public interface DialogViewer {
@@ -13,9 +13,12 @@ public interface DialogViewer {
 
     void callback();
 
-    @NotNull Player getPlayer();
+    @NonNull
+    Player getPlayer();
 
-    @NotNull WrappedDialog getDialog();
+    @NonNull
+    WrappedDialog getDialog();
 
-    @Nullable Runnable getCallback();
+    @Nullable
+    Runnable getCallback();
 }

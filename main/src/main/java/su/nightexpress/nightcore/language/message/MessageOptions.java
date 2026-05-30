@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.language.message;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.wrap.NightSound;
 
 @Deprecated
@@ -18,7 +18,7 @@ public class MessageOptions {
         this.setHasPrefix(true);
     }
 
-    @NotNull
+    @NonNull
     public MessageOptions copy() {
         MessageOptions copy = new MessageOptions();
         copy.outputType = this.outputType;
@@ -29,7 +29,7 @@ public class MessageOptions {
         return copy;
     }
 
-    @NotNull
+    @NonNull
     public OutputType getOutputType() {
         return outputType;
     }

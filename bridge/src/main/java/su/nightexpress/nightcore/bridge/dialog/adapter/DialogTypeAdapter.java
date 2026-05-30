@@ -1,19 +1,25 @@
 package su.nightexpress.nightcore.bridge.dialog.adapter;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.wrap.type.*;
 
 public interface DialogTypeAdapter<T> {
 
-    @NotNull T adaptType(@NotNull WrappedDialogType type);
+    @NonNull
+    T adaptType(@NonNull WrappedDialogType type);
 
-    @NotNull T adaptType(@NotNull WrappedConfirmationType type);
+    @NonNull
+    T adaptType(@NonNull WrappedConfirmationType type);
 
-    @NotNull T adaptType(@NotNull WrappedDialogListType type);
+    @NonNull
+    T adaptType(@NonNull WrappedDialogListType type);
 
-    @NotNull T adaptType(@NotNull WrappedMultiActionType type);
+    @NonNull
+    T adaptType(@NonNull WrappedMultiActionType type);
 
-    @NotNull T adaptType(@NotNull WrappedNoticeType type);
+    @NonNull
+    T adaptType(@NonNull WrappedNoticeType type);
 
-    @NotNull T adaptType(@NotNull WrappedServerLinksType type);
+    @NonNull
+    T adaptType(@NonNull WrappedServerLinksType type);
 }

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.language.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.language.message.MessageOptions;
 import su.nightexpress.nightcore.language.tag.MessageTag;
 
@@ -13,7 +13,7 @@ public class PlaceholderTag extends MessageTag {
     }
 
     @Override
-    public void apply(@NotNull MessageOptions options, @Nullable String tagContent) {
+    public void apply(@NonNull MessageOptions options, @Nullable String tagContent) {
         options.setUsePlaceholderAPI(true);
     }
 }

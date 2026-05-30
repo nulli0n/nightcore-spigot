@@ -11,8 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.spigot.SpigotBridge;
 import su.nightexpress.nightcore.bridge.spigot.click.SpigotClickEventAdapter;
@@ -36,34 +36,34 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
 
     private final SpigotBridge bridge;
 
-    public SpigotTextComponentAdapter(@NotNull SpigotBridge bridge) {
+    public SpigotTextComponentAdapter(@NonNull SpigotBridge bridge) {
         this.bridge = bridge;
     }
 
     @Override
-    public void send(@NotNull CommandSender sender, @NotNull NightComponent component) {
+    public void send(@NonNull CommandSender sender, @NonNull NightComponent component) {
         sender.spigot().sendMessage(this.adaptComponent(component));
     }
 
     @Override
-    public void sendActionBar(@NotNull Player player, @NotNull NightComponent component) {
+    public void sendActionBar(@NonNull Player player, @NonNull NightComponent component) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, this.adaptComponent(component));
     }
 
     @Override
-    @NotNull
-    public String toJson(@NotNull NightComponent component) {
+    @NonNull
+    public String toJson(@NonNull NightComponent component) {
         return ComponentSerializer.toString(this.adaptComponent(component));
     }
 
     @Override
-    @NotNull
-    public String toLegacy(@NotNull NightComponent component) {
+    @NonNull
+    public String toLegacy(@NonNull NightComponent component) {
         return TextComponent.toLegacyText(this.adaptComponent(component));
     }
 
-    @NotNull
-    public ComponentStyle adaptStyle(@NotNull NightStyle nightStyle) {
+    @NonNull
+    public ComponentStyle adaptStyle(@NonNull NightStyle nightStyle) {
         NightKey font = nightStyle.font();
         Color color = nightStyle.color();
         Color shadowColor = nightStyle.shadowColor();
@@ -81,13 +81,13 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
         return builder.build();
     }
 
-    @NotNull
-    public ClickEvent adaptClickEvent(@NotNull NightClickEvent event) {
+    @NonNull
+    public ClickEvent adaptClickEvent(@NonNull NightClickEvent event) {
         return SpigotClickEventAdapter.adaptClickEvent(event, this.bridge.getDialogAdapter());
     }
 
     @Nullable
-    public HoverEvent adaptHoverEvent(@NotNull NightHoverEvent<?> event) {
+    public HoverEvent adaptHoverEvent(@NonNull NightHoverEvent<?> event) {
         Object value = event.value();
 
         if (value instanceof ItemStack itemStack) {
@@ -109,7 +109,7 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
         return null;
     }
 
-    private void adaptProperties(@NotNull BaseComponent spigot, @NotNull NightComponent component) {
+    private void adaptProperties(@NonNull BaseComponent spigot, @NonNull NightComponent component) {
         NightClickEvent clickEvent = component.clickEvent();
         NightHoverEvent<?> hoverEvent = component.hoverEvent();
 
@@ -120,36 +120,36 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
         component.children().forEach(child -> spigot.addExtra(this.adaptComponent(child)));
     }
 
-    @NotNull
-    public List<BaseComponent> adaptComponents(@NotNull List<NightComponent> components) {
+    @NonNull
+    public List<BaseComponent> adaptComponents(@NonNull List<NightComponent> components) {
         return Lists.modify(components, this::adaptComponent);
     }
 
     @Override
-    @NotNull
-    public BaseComponent adaptComponent(@NotNull NightComponent component) {
+    @NonNull
+    public BaseComponent adaptComponent(@NonNull NightComponent component) {
         return component.adapt(this);
     }
 
     @Override
-    @NotNull
-    public TextComponent adaptComponent(@NotNull NightTextComponent component) {
+    @NonNull
+    public TextComponent adaptComponent(@NonNull NightTextComponent component) {
         TextComponent spigot = new TextComponent(component.content());
         this.adaptProperties(spigot, component);
         return spigot;
     }
 
     @Override
-    @NotNull
-    public KeybindComponent adaptComponent(@NotNull NightKeybindComponent component) {
+    @NonNull
+    public KeybindComponent adaptComponent(@NonNull NightKeybindComponent component) {
         KeybindComponent spigot = new KeybindComponent(component.key());
         this.adaptProperties(spigot, component);
         return spigot;
     }
 
     @Override
-    @NotNull
-    public TranslatableComponent adaptComponent(@NotNull NightTranslatableComponent component) {
+    @NonNull
+    public TranslatableComponent adaptComponent(@NonNull NightTranslatableComponent component) {
         TranslatableComponent spigot = new TranslatableComponent(component.key());
         spigot.setFallback(component.fallback());
         spigot.setWith(Lists.modify(component.arguments(), argument -> this.adaptComponent(argument.asComponent())));
@@ -158,9 +158,10 @@ public class SpigotTextComponentAdapter implements TextComponentAdapter<BaseComp
     }
 
     @Override
-    @NotNull
-    public BaseComponent adaptComponent(@NotNull NightObjectComponent component) {
-        ObjectComponent spigot = new ObjectComponent(SpigotObjectContentsAdapter.get().adaptContents(component.contents()));
+    @NonNull
+    public BaseComponent adaptComponent(@NonNull NightObjectComponent component) {
+        ObjectComponent spigot = new ObjectComponent(SpigotObjectContentsAdapter.get().adaptContents(component
+            .contents()));
         this.adaptProperties(spigot, component);
         return spigot;
     }

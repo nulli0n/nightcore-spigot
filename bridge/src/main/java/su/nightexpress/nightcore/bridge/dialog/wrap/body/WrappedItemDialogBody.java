@@ -1,14 +1,14 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.body;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogBodyAdapter;
 
 import java.util.function.UnaryOperator;
 
-public record WrappedItemDialogBody(@NotNull ItemStack item,
+public record WrappedItemDialogBody(@NonNull ItemStack item,
                                     @Nullable WrappedPlainMessageDialogBody description,
                                     boolean showDecorations,
                                     boolean showTooltip,
@@ -16,15 +16,16 @@ public record WrappedItemDialogBody(@NotNull ItemStack item,
                                     int height) implements WrappedDialogBody {
 
     @Override
-    @NotNull
-    public <D> D adapt(@NotNull DialogBodyAdapter<D> adapter) {
+    @NonNull
+    public <D> D adapt(@NonNull DialogBodyAdapter<D> adapter) {
         return adapter.adaptBody(this);
     }
 
     @Override
-    @NotNull
-    public WrappedItemDialogBody replace(@NotNull UnaryOperator<String> operator) {
-        return new WrappedItemDialogBody(new ItemStack(this.item), this.description == null ? null : this.description.replace(operator), this.showDecorations, this.showTooltip, this.width, this.height);
+    @NonNull
+    public WrappedItemDialogBody replace(@NonNull UnaryOperator<String> operator) {
+        return new WrappedItemDialogBody(new ItemStack(this.item), this.description == null ? null : this.description
+            .replace(operator), this.showDecorations, this.showTooltip, this.width, this.height);
     }
 
     public static final class Builder {
@@ -38,41 +39,41 @@ public record WrappedItemDialogBody(@NotNull ItemStack item,
         private int     width           = DialogDefaults.DEFAULT_ITEM_BODY_WIDTH;
         private int     height          = DialogDefaults.DEFAULT_ITEM_BODY_HEIGHT;
 
-        public Builder(@NotNull ItemStack item) {
+        public Builder(@NonNull ItemStack item) {
             this.item = item;
         }
 
-        @NotNull
+        @NonNull
         public Builder description(@Nullable WrappedPlainMessageDialogBody description) {
             this.description = description;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder showDecorations(boolean showDecorations) {
             this.showDecorations = showDecorations;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder showTooltip(boolean showTooltip) {
             this.showTooltip = showTooltip;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder width(int width) {
             this.width = Math.clamp(width, DialogDefaults.MIN_WIDTH, DialogDefaults.MAX_ITEM_BODY_WIDTH);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder height(int height) {
             this.height = Math.clamp(height, DialogDefaults.MIN_WIDTH, DialogDefaults.MAX_ITEM_BODY_HEIGHT);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public WrappedItemDialogBody build() {
             return new WrappedItemDialogBody(this.item, this.description, this.showDecorations, this.showTooltip, this.width, this.height);
         }

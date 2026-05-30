@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database.sql.executor;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.database.DatabaseType;
 import su.nightexpress.nightcore.database.AbstractConnector;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
@@ -19,32 +19,32 @@ public final class CreateTableExecutor extends SQLExecutor<Void> {
     private final DatabaseType    databaseType;
     private final List<SQLColumn> columns;
 
-    private CreateTableExecutor(@NotNull String table, @NotNull DatabaseType databaseType) {
+    private CreateTableExecutor(@NonNull String table, @NonNull DatabaseType databaseType) {
         super(table);
         this.databaseType = databaseType;
         this.columns = new ArrayList<>();
     }
 
-    @NotNull
-    public static CreateTableExecutor builder(@NotNull String table, @NotNull DatabaseType databaseType) {
+    @NonNull
+    public static CreateTableExecutor builder(@NonNull String table, @NonNull DatabaseType databaseType) {
         return new CreateTableExecutor(table, databaseType);
     }
 
-    @NotNull
-    public CreateTableExecutor columns(@NotNull SQLColumn... columns) {
+    @NonNull
+    public CreateTableExecutor columns(@NonNull SQLColumn... columns) {
         return this.columns(Arrays.asList(columns));
     }
 
-    @NotNull
-    public CreateTableExecutor columns(@NotNull List<SQLColumn> columns) {
+    @NonNull
+    public CreateTableExecutor columns(@NonNull List<SQLColumn> columns) {
         this.columns.clear();
         this.columns.addAll(columns);
         return this;
     }
 
     @Override
-    @NotNull
-    public Void execute(@NotNull AbstractConnector connector) {
+    @NonNull
+    public Void execute(@NonNull AbstractConnector connector) {
         if (this.columns.isEmpty()) return null;
 
         String id = "`id` " + ColumnFormer.INTEGER.build(this.databaseType, 11);

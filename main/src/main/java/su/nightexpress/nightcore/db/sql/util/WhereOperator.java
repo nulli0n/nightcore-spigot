@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.util;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Deprecated
 public enum WhereOperator {
@@ -14,11 +14,11 @@ public enum WhereOperator {
 
     private final String literal;
 
-    WhereOperator(@NotNull String literal) {
+    WhereOperator(@NonNull String literal) {
         this.literal = literal;
     }
 
-    @NotNull
+    @NonNull
     public String getLiteral() {
         return literal;
     }

@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.command.api;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.command.CommandFlag;
 import su.nightexpress.nightcore.language.entry.LangString;
 import su.nightexpress.nightcore.util.placeholder.Placeholder;
@@ -15,19 +15,20 @@ import java.util.List;
 @Deprecated
 public interface NightCommand extends Placeholder {
 
-    @NotNull List<String> getTab(@NotNull Player player, int arg, @NotNull String[] args);
+    @NonNull
+    List<String> getTab(@NonNull Player player, int arg, @NonNull String[] args);
 
-    void execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args);
+    void execute(@NonNull CommandSender sender, @NonNull String label, @NonNull String[] args);
 
-    void addChildren(@NotNull NightCommand children);
+    void addChildren(@NonNull NightCommand children);
 
-    void removeChildren(@NotNull String alias);
+    void removeChildren(@NonNull String alias);
 
-    default boolean hasPermission(@NotNull CommandSender sender) {
+    default boolean hasPermission(@NonNull CommandSender sender) {
         return this.getPermission() == null || sender.hasPermission(this.getPermission());
     }
 
-    @NotNull
+    @NonNull
     default String getLabelWithParents() {
         StringBuilder builder = new StringBuilder();
         NightCommand parent = this.getParent();
@@ -39,17 +40,22 @@ public interface NightCommand extends Placeholder {
         return builder.toString();
     }
 
-    @Nullable NightCommand getParent();
+    @Nullable
+    NightCommand getParent();
 
     void setParent(@Nullable NightCommand parent);
 
-    @Nullable NightCommand getChildren(@NotNull String alias);
+    @Nullable
+    NightCommand getChildren(@NonNull String alias);
 
-    @NotNull Collection<NightCommand> getChildrens();
+    @NonNull
+    Collection<NightCommand> getChildrens();
 
-    @NotNull String[] getAliases();
+    @NonNull
+    String[] getAliases();
 
-    @Nullable String getPermission();
+    @Nullable
+    String getPermission();
 
     default void setPermission(@Nullable Permission permission) {
         this.setPermission(permission == null ? null : permission.getName());
@@ -57,31 +63,35 @@ public interface NightCommand extends Placeholder {
 
     void setPermission(@Nullable String permission);
 
-    @Nullable CommandFlag<?> getFlag(@NotNull String name);
+    @Nullable
+    CommandFlag<?> getFlag(@NonNull String name);
 
-    @NotNull Collection<CommandFlag<?>> getFlags();
+    @NonNull
+    Collection<CommandFlag<?>> getFlags();
 
-    default void addFlag(@NotNull CommandFlag<?>... flags) {
+    default void addFlag(@NonNull CommandFlag<?>... flags) {
         for (CommandFlag<?> flag : flags) this.addFlag(flag);
     }
 
-    void addFlag(@NotNull CommandFlag<?> flag);
+    void addFlag(@NonNull CommandFlag<?> flag);
 
-    @NotNull String getUsage();
+    @NonNull
+    String getUsage();
 
-    default void setUsage(@NotNull LangString string) {
+    default void setUsage(@NonNull LangString string) {
         this.setUsage(string.getString());
     }
 
-    void setUsage(@NotNull String usage);
+    void setUsage(@NonNull String usage);
 
-    @NotNull String getDescription();
+    @NonNull
+    String getDescription();
 
-    default void setDescription(@NotNull LangString string) {
+    default void setDescription(@NonNull LangString string) {
         this.setDescription(string.getString());
     }
 
-    void setDescription(@NotNull String description);
+    void setDescription(@NonNull String description);
 
     boolean isPlayerOnly();
 

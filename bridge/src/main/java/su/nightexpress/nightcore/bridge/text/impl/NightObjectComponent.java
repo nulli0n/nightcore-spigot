@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.bridge.text.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.text.NightAbstractComponent;
 import su.nightexpress.nightcore.bridge.text.NightStyle;
 import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
@@ -15,23 +15,24 @@ public class NightObjectComponent extends NightAbstractComponent {
 
     private final NightObjectContents contents;
 
-    private NightObjectComponent(@NotNull List<? extends NightComponent> children, @NotNull NightStyle style, @NotNull NightObjectContents contents) {
+    private NightObjectComponent(@NonNull List<? extends NightComponent> children, @NonNull NightStyle style,
+                                 @NonNull NightObjectContents contents) {
         super(children, style);
         this.contents = contents;
     }
 
-    @NotNull
-    public static NightObjectComponent create(@NotNull NightStyle style, @NotNull NightObjectContents contents) {
+    @NonNull
+    public static NightObjectComponent create(@NonNull NightStyle style, @NonNull NightObjectContents contents) {
         return new NightObjectComponent(Collections.emptyList(), style, contents);
     }
 
     @Override
-    @NotNull
-    public <T> T adapt(@NotNull TextComponentAdapter<T> adapter) {
+    @NonNull
+    public <T> T adapt(@NonNull TextComponentAdapter<T> adapter) {
         return adapter.adaptComponent(this);
     }
 
-    @NotNull
+    @NonNull
     public NightObjectContents contents() {
         return this.contents;
     }
@@ -53,21 +54,21 @@ public class NightObjectComponent extends NightAbstractComponent {
     }
 
     @Override
-    @NotNull
-    public NightObjectComponent children(@NotNull List<? extends NightComponent> children) {
+    @NonNull
+    public NightObjectComponent children(@NonNull List<? extends NightComponent> children) {
         return new NightObjectComponent(children, this.style, this.contents);
     }
 
     @Override
-    @NotNull
-    public NightObjectComponent style(@NotNull NightStyle style) {
+    @NonNull
+    public NightObjectComponent style(@NonNull NightStyle style) {
         if (Objects.equals(this.style, style)) return this;
 
         return new NightObjectComponent(this.children, style, this.contents);
     }
 
-    @NotNull
-    public NightObjectComponent contents(@NotNull NightObjectContents contents) {
+    @NonNull
+    public NightObjectComponent contents(@NonNull NightObjectContents contents) {
         if (Objects.equals(this.contents, contents)) return this;
 
         return new NightObjectComponent(this.children, this.style, contents);

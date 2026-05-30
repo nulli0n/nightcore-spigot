@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.language.entry;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.ItemUtil;
@@ -27,7 +27,7 @@ public class LangItem extends LangEntry {
     private TextRoot       wrappedName;
     private List<TextRoot> wrappedLore;
 
-    public LangItem(@NotNull String key, @NotNull String defaultName, @NotNull List<String> defaultLore) {
+    public LangItem(@NonNull String key, @NonNull String defaultName, @NonNull List<String> defaultLore) {
         super(key, defaultName);
         this.defaultLore = defaultLore;
 
@@ -35,24 +35,24 @@ public class LangItem extends LangEntry {
         this.setLocalizedLore(defaultLore);
     }
 
-    @NotNull
-    public static LangItem of(@NotNull String key, @NotNull String name, @NotNull String... lore) {
+    @NonNull
+    public static LangItem of(@NonNull String key, @NonNull String name, @NonNull String... lore) {
         return new LangItem(key, name, Arrays.asList(lore));
     }
 
     @Override
-    public void write(@NotNull FileConfig config) {
+    public void write(@NonNull FileConfig config) {
         config.set(this.path + ".Name", this.defaultText);
         config.set(this.path + ".Lore", this.defaultLore);
     }
 
     @Override
-    public void load(@NotNull NightCorePlugin plugin) {
+    public void load(@NonNull NightCorePlugin plugin) {
         this.load(plugin.getLang());
     }
 
     @Override
-    public void load(@NotNull FileConfig config) {
+    public void load(@NonNull FileConfig config) {
         if (!config.contains(this.path)) {
             this.write(config);
         }
@@ -61,7 +61,7 @@ public class LangItem extends LangEntry {
         this.setLocalizedLore(config.getStringList(this.path + ".Lore"));
     }
 
-    public void apply(@NotNull ItemStack item) {
+    public void apply(@NonNull ItemStack item) {
         ItemUtil.editMeta(item, meta -> {
             meta.setDisplayName(this.wrappedName.toLegacy());
             meta.setLore(this.wrappedLore.stream().map(TextRoot::toLegacy).toList());
@@ -69,48 +69,48 @@ public class LangItem extends LangEntry {
     }
 
     @Deprecated
-    public void apply(@NotNull NightItem item) {
+    public void apply(@NonNull NightItem item) {
         item.setDisplayName(this.localizedName);
         item.setLore(this.localizedLore);
     }
 
-    @NotNull
+    @NonNull
     public String getDefaultName() {
         return this.defaultText;
     }
 
-    @NotNull
+    @NonNull
     public List<String> getDefaultLore() {
         return this.defaultLore;
     }
 
-    @NotNull
+    @NonNull
     public String getLocalizedName() {
         return this.localizedName;
     }
 
-    public void setLocalizedName(@NotNull String localizedName) {
+    public void setLocalizedName(@NonNull String localizedName) {
         this.localizedName = localizedName;
         this.wrappedName = NightMessage.create(localizedName);
     }
 
-    @NotNull
+    @NonNull
     public List<String> getLocalizedLore() {
         return this.localizedLore;
     }
 
-    public void setLocalizedLore(@NotNull List<String> localizedLore) {
+    public void setLocalizedLore(@NonNull List<String> localizedLore) {
         this.localizedLore = localizedLore;
         this.wrappedLore = new ArrayList<>();
         localizedLore.forEach(line -> wrappedLore.add(NightMessage.create(line)));
     }
 
-    @NotNull
+    @NonNull
     public TextRoot getWrappedName() {
         return this.wrappedName;
     }
 
-    @NotNull
+    @NonNull
     public List<TextRoot> getWrappedLore() {
         return this.wrappedLore;
     }
@@ -124,122 +124,123 @@ public class LangItem extends LangEntry {
     public static final String SHIFT_RMB = "Shift-Right";
     public static final String DRAG_DROP = "Drag & Drop";
 
-    @NotNull
-    public static Builder builder(@NotNull String key) {
+    @NonNull
+    public static Builder builder(@NonNull String key) {
         return new Builder(key);
     }
 
     public static final class Builder {
 
-        private final String key;
-        private       String       name;
+        private final String       key;
+        private String             name;
         private final List<String> lore;
 
-        public Builder(@NotNull String key) {
+        public Builder(@NonNull String key) {
             this.key = key;
             this.name = "";
             this.lore = new ArrayList<>();
         }
 
-        @NotNull
+        @NonNull
         public LangItem build() {
             return new LangItem(this.key, this.name, this.lore);
         }
 
-        @NotNull
-        public Builder name(@NotNull String name) {
+        @NonNull
+        public Builder name(@NonNull String name) {
             this.name = LIGHT_YELLOW.enclose(BOLD.enclose(name));
             return this;
         }
 
-        @NotNull
-        public Builder text(@NotNull String... text) {
+        @NonNull
+        public Builder text(@NonNull String... text) {
             for (String str : text) {
                 this.addLore(LIGHT_GRAY.enclose(str));
             }
             return this;
         }
 
-        @NotNull
-        public Builder textRaw(@NotNull String... text) {
+        @NonNull
+        public Builder textRaw(@NonNull String... text) {
             return this.addLore(text);
         }
 
-        @NotNull
+        @NonNull
         public Builder currentHeader() {
             return this.addLore(LIGHT_YELLOW.enclose(BOLD.enclose("Current:")));
         }
 
-        @NotNull
-        public Builder current(@NotNull String type, @NotNull String value) {
+        @NonNull
+        public Builder current(@NonNull String type, @NonNull String value) {
             return this.addLore(LIGHT_YELLOW.enclose("● " + LIGHT_GRAY.enclose(type + ": ") + value));
         }
 
-        @NotNull
-        public Builder current(@NotNull String value) {
+        @NonNull
+        public Builder current(@NonNull String value) {
             return this.addLore(LIGHT_YELLOW.enclose("● " + LIGHT_GRAY.enclose(value)));
         }
 
-        @NotNull
-        public Builder click(@NotNull String action) {
+        @NonNull
+        public Builder click(@NonNull String action) {
             return this.click(CLICK, action);
         }
 
-        @NotNull
-        public Builder leftClick(@NotNull String action) {
+        @NonNull
+        public Builder leftClick(@NonNull String action) {
             return this.click(LMB, action);
         }
 
-        @NotNull
-        public Builder rightClick(@NotNull String action) {
+        @NonNull
+        public Builder rightClick(@NonNull String action) {
             return this.click(RMB, action);
         }
 
-        @NotNull
-        public Builder shiftLeft(@NotNull String action) {
+        @NonNull
+        public Builder shiftLeft(@NonNull String action) {
             return this.click(SHIFT_LMB, action);
         }
 
-        @NotNull
-        public Builder shiftRight(@NotNull String action) {
+        @NonNull
+        public Builder shiftRight(@NonNull String action) {
             return this.click(SHIFT_RMB, action);
         }
 
-        @NotNull
-        public Builder dropKey(@NotNull String action) {
+        @NonNull
+        public Builder dropKey(@NonNull String action) {
             return this.click(DROP_KEY, action);
         }
 
-        @NotNull
-        public Builder swapKey(@NotNull String action) {
+        @NonNull
+        public Builder swapKey(@NonNull String action) {
             return this.click(SWAP_KEY, action);
         }
 
-        @NotNull
-        public Builder dragAndDrop(@NotNull String action) {
+        @NonNull
+        public Builder dragAndDrop(@NonNull String action) {
             return this.click(DRAG_DROP, action);
         }
 
-        @NotNull
-        public Builder click(@NotNull String click, @NotNull String action) {
-            return this.addLore(LIGHT_YELLOW.enclose("[▶]") + " " + LIGHT_GRAY.enclose(click + " to " + LIGHT_YELLOW.enclose(action) + "."));
+        @NonNull
+        public Builder click(@NonNull String click, @NonNull String action) {
+            return this.addLore(LIGHT_YELLOW.enclose("[▶]") + " " + LIGHT_GRAY.enclose(click + " to " + LIGHT_YELLOW
+                .enclose(action) + "."));
         }
 
-        @NotNull
+        @NonNull
         public Builder emptyLine() {
             return this.addLore("");
         }
 
-        /*@NotNull
-        private Builder addLore(@NotNull String prefix, @NotNull String... text) {
+        /*@NonNull
+        private Builder addLore(@NonNull String prefix, @NonNull String... text) {
             for (String str : text) {
                 this.lore.add(prefix + str);
             }
             return this;
         }*/
 
-        @NotNull
-        private Builder addLore(@NotNull String... text) {
+        @NonNull
+        private Builder addLore(@NonNull String... text) {
             Collections.addAll(this.lore, text);
             return this;
         }

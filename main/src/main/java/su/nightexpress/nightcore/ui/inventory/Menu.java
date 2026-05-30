@@ -7,7 +7,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.MenuType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.ui.inventory.item.MenuItem;
@@ -23,7 +23,8 @@ import java.util.UUID;
 
 public interface Menu {
 
-    void onPrepare(@NonNull ViewerContext context, @NonNull InventoryView view, @NonNull Inventory inventory, @NonNull List<MenuItem> items);
+    void onPrepare(@NonNull ViewerContext context, @NonNull InventoryView view, @NonNull Inventory inventory,
+                   @NonNull List<MenuItem> items);
 
     void onReady(@NonNull ViewerContext context, @NonNull InventoryView view, @NonNull Inventory inventory);
 
@@ -59,33 +60,42 @@ public interface Menu {
 
     boolean isViewer(@NonNull UUID playerId);
 
-    @NonNull NightComponent getTitle(@NonNull ViewerContext context);
+    @NonNull
+    NightComponent getTitle(@NonNull ViewerContext context);
 
-    @NonNull MenuType getType(@NonNull MenuViewer viewer);
-
-
-
-    @Nullable MenuViewer getViewer(@NonNull Player player);
-
-    @Nullable MenuViewer getViewer(@NonNull UUID playerId);
-
-    @NonNull Collection<MenuViewer> getViewers();
+    @NonNull
+    MenuType getType(@NonNull MenuViewer viewer);
 
 
+    @Nullable
+    MenuViewer getViewer(@NonNull Player player);
 
-    @NonNull MenuDataRegistry getDataRegistry();
+    @Nullable
+    MenuViewer getViewer(@NonNull UUID playerId);
 
-    @NonNull Map<String, MenuItem> getItemsToDisplay();
+    @NonNull
+    Collection<MenuViewer> getViewers();
 
-    @NonNull Map<String, MenuItem> getDefaultButtons();
 
-    @NonNull Map<String, MenuItem> getConfigButtons();
+    @NonNull
+    MenuDataRegistry getDataRegistry();
+
+    @NonNull
+    Map<String, MenuItem> getItemsToDisplay();
+
+    @NonNull
+    Map<String, MenuItem> getDefaultButtons();
+
+    @NonNull
+    Map<String, MenuItem> getConfigButtons();
 
     @Deprecated
-    @NonNull Map<String, MenuItem> getDefaultItems();
+    @NonNull
+    Map<String, MenuItem> getDefaultItems();
 
     @Deprecated
-    @NonNull Map<String, MenuItem> getConfigItems();
+    @NonNull
+    Map<String, MenuItem> getConfigItems();
 
     int getAutoRefreshInterval();
 

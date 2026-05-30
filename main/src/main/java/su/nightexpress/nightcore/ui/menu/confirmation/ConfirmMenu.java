@@ -3,7 +3,7 @@ package su.nightexpress.nightcore.ui.menu.confirmation;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.MenuType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -25,14 +25,14 @@ public class ConfirmMenu extends LinkedMenu<NightPlugin, Confirmation> implement
 
     private int iconSlot;
 
-    public ConfirmMenu(@NotNull NightPlugin plugin) {
+    public ConfirmMenu(@NonNull NightPlugin plugin) {
         super(plugin, MenuType.HOPPER, BLACK.wrap("Are you sure?"));
 
         this.load(FileConfig.loadOrExtract(plugin, CoreConfig.DIR_UI, FILE_NAME));
     }
 
     @Override
-    protected void onPrepare(@NotNull MenuViewer viewer, @NotNull InventoryView view) {
+    protected void onPrepare(@NonNull MenuViewer viewer, @NonNull InventoryView view) {
         Confirmation confirmation = this.getLink(viewer);
         NightItem icon = confirmation.getIcon();
         if (icon != null) {
@@ -41,12 +41,12 @@ public class ConfirmMenu extends LinkedMenu<NightPlugin, Confirmation> implement
     }
 
     @Override
-    protected void onReady(@NotNull MenuViewer viewer, @NotNull Inventory inventory) {
+    protected void onReady(@NonNull MenuViewer viewer, @NonNull Inventory inventory) {
 
     }
 
     @Override
-    public void loadConfiguration(@NotNull FileConfig config, @NotNull MenuLoader loader) {
+    public void loadConfiguration(@NonNull FileConfig config, @NonNull MenuLoader loader) {
         this.iconSlot = ConfigValue.create("Settings.IconSlot", 2).read(config);
 
         loader.addDefaultItem(NightItem.asCustomHead(Placeholders.SKIN_WRONG_MARK)

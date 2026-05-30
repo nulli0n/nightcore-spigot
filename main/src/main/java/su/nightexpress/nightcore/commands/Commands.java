@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.commands;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.commands.argument.ArgumentType;
 import su.nightexpress.nightcore.commands.builder.ArgumentNodeBuilder;
 import su.nightexpress.nightcore.commands.builder.HubNodeBuilder;
@@ -13,49 +13,51 @@ import java.util.function.Consumer;
 
 public class Commands {
 
-    @NotNull
-    public static HubNodeBuilder hub(@NotNull String name) {
+    @NonNull
+    public static HubNodeBuilder hub(@NonNull String name) {
         return new HubNodeBuilder(name);
     }
 
-    @NotNull
-    public static HubNode hub(@NotNull String name, @NotNull Consumer<HubNodeBuilder> consumer) {
+    @NonNull
+    public static HubNode hub(@NonNull String name, @NonNull Consumer<HubNodeBuilder> consumer) {
         HubNodeBuilder builder = hub(name);
         consumer.accept(builder);
         return builder.build();
     }
 
-    @NotNull
-    public static LiteralNodeBuilder literal(@NotNull String name) {
+    @NonNull
+    public static LiteralNodeBuilder literal(@NonNull String name) {
         return new LiteralNodeBuilder(name);
     }
 
-    @NotNull
-    public static LiteralNode literal(@NotNull String name, @NotNull Consumer<LiteralNodeBuilder> consumer) {
+    @NonNull
+    public static LiteralNode literal(@NonNull String name, @NonNull Consumer<LiteralNodeBuilder> consumer) {
         LiteralNodeBuilder builder = literal(name);
         consumer.accept(builder);
         return builder.build();
     }
 
-    @NotNull
-    public static <T> ArgumentNodeBuilder<T> argument(@NotNull String name, @NotNull ArgumentType<T> type) {
+    @NonNull
+    public static <T> ArgumentNodeBuilder<T> argument(@NonNull String name, @NonNull ArgumentType<T> type) {
         return new ArgumentNodeBuilder<>(name, type);
     }
 
-    @NotNull
-    public static <T> ArgumentNode<T> argument(@NotNull String name, @NotNull ArgumentType<T> type, @NotNull Consumer<ArgumentNodeBuilder<T>> consumer) {
+    @NonNull
+    public static <T> ArgumentNode<T> argument(@NonNull String name, @NonNull ArgumentType<T> type,
+                                               @NonNull Consumer<ArgumentNodeBuilder<T>> consumer) {
         ArgumentNodeBuilder<T> builder = argument(name, type);
         consumer.accept(builder);
         return builder.build();
     }
 
-    @NotNull
-    public static <T> ArgumentNodeBuilder<T> optionalArgument(@NotNull String name, @NotNull ArgumentType<T> type) {
+    @NonNull
+    public static <T> ArgumentNodeBuilder<T> optionalArgument(@NonNull String name, @NonNull ArgumentType<T> type) {
         return argument(name, type).optional();
     }
 
-    @NotNull
-    public static <T> ArgumentNode<T> optionalArgument(@NotNull String name, @NotNull ArgumentType<T> type, @NotNull Consumer<ArgumentNodeBuilder<T>> consumer) {
+    @NonNull
+    public static <T> ArgumentNode<T> optionalArgument(@NonNull String name, @NonNull ArgumentType<T> type,
+                                                       @NonNull Consumer<ArgumentNodeBuilder<T>> consumer) {
         ArgumentNodeBuilder<T> builder = argument(name, type).optional();
         consumer.accept(builder);
         return builder.build();

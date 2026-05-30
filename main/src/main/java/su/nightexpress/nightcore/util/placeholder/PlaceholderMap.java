@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.placeholder;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.Pair;
 import su.nightexpress.nightcore.util.StringUtil;
 
@@ -18,16 +18,16 @@ public class PlaceholderMap {
         this(new ArrayList<>());
     }
 
-    public PlaceholderMap(@NotNull PlaceholderMap other) {
+    public PlaceholderMap(@NonNull PlaceholderMap other) {
         this(other.getKeys());
     }
 
-    public PlaceholderMap(@NotNull List<Pair<String, Supplier<String>>> keys) {
+    public PlaceholderMap(@NonNull List<Pair<String, Supplier<String>>> keys) {
         this.keys = new ArrayList<>(keys);
     }
 
-    @NotNull
-    public static PlaceholderMap fusion(@NotNull PlaceholderMap... others) {
+    @NonNull
+    public static PlaceholderMap fusion(@NonNull PlaceholderMap... others) {
         PlaceholderMap map = new PlaceholderMap();
         for (PlaceholderMap other : others) {
             map.add(other);
@@ -35,8 +35,8 @@ public class PlaceholderMap {
         return map;
     }
 
-    @NotNull
-    public static PlaceholderMap fusion(@NotNull Placeholder... others) {
+    @NonNull
+    public static PlaceholderMap fusion(@NonNull Placeholder... others) {
         PlaceholderMap map = new PlaceholderMap();
         for (Placeholder other : others) {
             map.add(other.getPlaceholders());
@@ -44,25 +44,25 @@ public class PlaceholderMap {
         return map;
     }
 
-    @NotNull
+    @NonNull
     public List<Pair<String, Supplier<String>>> getKeys() {
         return keys;
     }
 
-    @NotNull
-    public PlaceholderMap add(@NotNull PlaceholderMap other) {
+    @NonNull
+    public PlaceholderMap add(@NonNull PlaceholderMap other) {
         this.keys.addAll(other.getKeys());
         return this;
     }
 
-    @NotNull
-    public PlaceholderMap add(@NotNull String key, @NotNull String replacer) {
+    @NonNull
+    public PlaceholderMap add(@NonNull String key, @NonNull String replacer) {
         this.add(key, () -> replacer);
         return this;
     }
 
-    @NotNull
-    public PlaceholderMap add(@NotNull String key, @NotNull Supplier<String> replacer) {
+    @NonNull
+    public PlaceholderMap add(@NonNull String key, @NonNull Supplier<String> replacer) {
         this.keys.add(Pair.of(key, replacer));
         return this;
     }
@@ -71,7 +71,7 @@ public class PlaceholderMap {
         this.keys.clear();
     }
 
-    @NotNull
+    @NonNull
     public UnaryOperator<String> replacer() {
         return str -> StringUtil.replaceEach(str, this.keys);
     }

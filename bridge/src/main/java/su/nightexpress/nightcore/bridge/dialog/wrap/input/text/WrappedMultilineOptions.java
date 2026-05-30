@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input.text;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public record WrappedMultilineOptions(@Nullable Integer maxLines, @Nullable Integer height) {
 

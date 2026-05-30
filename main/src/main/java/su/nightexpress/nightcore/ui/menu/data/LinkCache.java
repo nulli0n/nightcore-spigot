@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.ui.menu.data;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 
 import java.util.*;
@@ -17,43 +17,43 @@ public class LinkCache<T> {
         this.anchors = new HashSet<>();
     }
 
-    public boolean hasAnchor(@NotNull Player player) {
+    public boolean hasAnchor(@NonNull Player player) {
         return this.anchors.contains(player.getUniqueId());
     }
 
-    public void addAnchor(@NotNull Player player) {
+    public void addAnchor(@NonNull Player player) {
         this.anchors.add(player.getUniqueId());
     }
 
-    public void removeAnchor(@NotNull Player player) {
+    public void removeAnchor(@NonNull Player player) {
         this.anchors.remove(player.getUniqueId());
     }
 
-    public void set(@NotNull MenuViewer viewer, @NotNull T object) {
+    public void set(@NonNull MenuViewer viewer, @NonNull T object) {
         this.set(viewer.getPlayer(), object);
     }
 
-    public void set(@NotNull Player player, @NotNull T object) {
+    public void set(@NonNull Player player, @NonNull T object) {
         this.map.put(player.getUniqueId(), object);
     }
 
-    public boolean contains(@NotNull Player player) {
+    public boolean contains(@NonNull Player player) {
         return this.map.containsKey(player.getUniqueId());
     }
 
-    public T get(@NotNull MenuViewer viewer) {
+    public T get(@NonNull MenuViewer viewer) {
         return this.get(viewer.getPlayer());
     }
 
-    public T get(@NotNull Player player) {
+    public T get(@NonNull Player player) {
         return this.map.get(player.getUniqueId());
     }
 
-    public void clear(@NotNull MenuViewer viewer) {
+    public void clear(@NonNull MenuViewer viewer) {
         this.clear(viewer.getPlayer());
     }
 
-    public void clear(@NotNull Player player) {
+    public void clear(@NonNull Player player) {
         this.map.remove(player.getUniqueId());
         this.removeAnchor(player);
     }

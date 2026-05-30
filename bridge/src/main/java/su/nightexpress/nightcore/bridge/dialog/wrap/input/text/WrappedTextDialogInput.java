@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.input.text;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogInputAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.input.WrappedDialogInput;
@@ -9,29 +9,30 @@ import su.nightexpress.nightcore.util.Strings;
 
 import java.util.function.UnaryOperator;
 
-public record WrappedTextDialogInput(@NotNull String key,
-                                     @NotNull String label,
-                                     @NotNull String initial,
+public record WrappedTextDialogInput(@NonNull String key,
+                                     @NonNull String label,
+                                     @NonNull String initial,
                                      boolean labelVisible,
                                      int width,
                                      int maxLength,
                                      @Nullable WrappedMultilineOptions multiline) implements WrappedDialogInput {
 
     @Override
-    @NotNull
-    public <I> I adapt(@NotNull DialogInputAdapter<I> adapter) {
+    @NonNull
+    public <I> I adapt(@NonNull DialogInputAdapter<I> adapter) {
         return adapter.adaptInput(this);
     }
 
     @Override
-    @NotNull
-    public WrappedTextDialogInput replace(@NotNull UnaryOperator<String> operator) {
-        return new WrappedTextDialogInput(this.key, operator.apply(this.label), operator.apply(this.initial), this.labelVisible, this.width, this.maxLength, this.multiline);
+    @NonNull
+    public WrappedTextDialogInput replace(@NonNull UnaryOperator<String> operator) {
+        return new WrappedTextDialogInput(this.key, operator.apply(this.label), operator.apply(
+            this.initial), this.labelVisible, this.width, this.maxLength, this.multiline);
     }
 
     public static final class Builder {
 
-        private final String    key;
+        private final String key;
         private final String label;
 
         private boolean                 labelVisible = true;
@@ -40,42 +41,42 @@ public record WrappedTextDialogInput(@NotNull String key,
         private int                     maxLength    = DialogDefaults.DEFAULT_TEXT_INPUT_LENGTH;
         private WrappedMultilineOptions multiline    = null;
 
-        public Builder(@NotNull String key, @NotNull String label) {
+        public Builder(@NonNull String key, @NonNull String label) {
             this.key = Strings.filterForVariable(key);
             this.label = label;
         }
 
-        @NotNull
+        @NonNull
         public Builder width(int width) {
             this.width = DialogDefaults.clampWidth(width);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder labelVisible(boolean labelVisible) {
             this.labelVisible = labelVisible;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder initial(String initial) {
             this.initial = initial;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder maxLength(int maxLength) {
             this.maxLength = Math.max(1, maxLength);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder multiline(@Nullable WrappedMultilineOptions multiline) {
             this.multiline = multiline;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public WrappedTextDialogInput build() {
             if (this.initial.length() >= this.maxLength) {
                 this.initial = this.initial.substring(0, this.maxLength);

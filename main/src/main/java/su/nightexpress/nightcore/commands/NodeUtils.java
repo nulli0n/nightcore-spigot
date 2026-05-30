@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.commands;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.commands.context.CommandContext;
 import su.nightexpress.nightcore.commands.context.CommandContextBuilder;
 import su.nightexpress.nightcore.commands.tree.CommandNode;
@@ -13,26 +13,26 @@ import java.util.stream.Collectors;
 
 public class NodeUtils {
 
-    @NotNull
-    public static String formatLabel(@NotNull ExecutableNode node, @NotNull CommandContext context) {
+    @NonNull
+    public static String formatLabel(@NonNull ExecutableNode node, @NonNull CommandContext context) {
         return formatLabel(node, context.getNodesPriorTo(node));
     }
 
-    @NotNull
-    public static String formatLabel(@NotNull ExecutableNode node, @NotNull CommandContextBuilder context) {
+    @NonNull
+    public static String formatLabel(@NonNull ExecutableNode node, @NonNull CommandContextBuilder context) {
         return formatLabel(node, context.getNodesPriorTo(node));
     }
 
-    @NotNull
-    private static String formatLabel(@NotNull ExecutableNode node, @NotNull List<CommandNode> priors) {
+    @NonNull
+    private static String formatLabel(@NonNull ExecutableNode node, @NonNull List<CommandNode> priors) {
         String parent = priors.stream().map(CommandNode::getName).collect(Collectors.joining(" "));
         String current = node.getUsage();
 
         return (parent + " " + current).trim();
     }
 
-    @NotNull
-    public static List<CommandNode> getArguments(@NotNull CommandNode source) {
+    @NonNull
+    public static List<CommandNode> getArguments(@NonNull CommandNode source) {
         List<CommandNode> args = new ArrayList<>();
 
         CommandNode parent = source;
@@ -47,8 +47,9 @@ public class NodeUtils {
         return args;
     }
 
-    @NotNull
-    public static List<CommandNode> getNodesPriorTo(@NotNull Collection<? extends CommandNode> source, @NotNull CommandNode target) {
+    @NonNull
+    public static List<CommandNode> getNodesPriorTo(@NonNull Collection<? extends CommandNode> source,
+                                                    @NonNull CommandNode target) {
         List<CommandNode> list = new ArrayList<>();
 
         for (CommandNode node : source) {

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.language.entry;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Deprecated
 public abstract class LangEntry implements LangElement {
@@ -8,17 +8,17 @@ public abstract class LangEntry implements LangElement {
     protected final String path;
     protected final String defaultText;
 
-    public LangEntry(@NotNull String path, @NotNull String defaultText) {
+    public LangEntry(@NonNull String path, @NonNull String defaultText) {
         this.path = path;
         this.defaultText = defaultText;
     }
 
-    @NotNull
+    @NonNull
     public String getPath() {
         return this.path;
     }
 
-    @NotNull
+    @NonNull
     public String getDefaultText() {
         return this.defaultText;
     }

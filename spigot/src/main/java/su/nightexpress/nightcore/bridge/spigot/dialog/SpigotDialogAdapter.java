@@ -8,7 +8,7 @@ import net.md_5.bungee.api.dialog.action.*;
 import net.md_5.bungee.api.dialog.body.DialogBody;
 import net.md_5.bungee.api.dialog.body.PlainMessageBody;
 import net.md_5.bungee.api.dialog.input.*;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.common.NightNbtHolder;
 import su.nightexpress.nightcore.bridge.dialog.DialogKeys;
@@ -39,36 +39,29 @@ import su.nightexpress.nightcore.util.text.night.NightMessage;
 
 import java.util.List;
 
-public class SpigotDialogAdapter implements
-    DialogAdapter<Dialog>,
-    DialogActionAdapter<Action>,
-    DialogBaseAdapter<DialogBase>,
-    DialogBodyAdapter<DialogBody>,
-    DialogButtonAdapter<ActionButton>,
-    DialogInputAdapter<DialogInput>,
-    DialogTypeAdapter<Dialog> {
+public class SpigotDialogAdapter implements DialogAdapter<Dialog>, DialogActionAdapter<Action>, DialogBaseAdapter<DialogBase>, DialogBodyAdapter<DialogBody>, DialogButtonAdapter<ActionButton>, DialogInputAdapter<DialogInput>, DialogTypeAdapter<Dialog> {
 
     private final SpigotBridge bridge;
 
     private DialogBase tempBase; // Spigot don't have 'DialogType', what a shame...
 
-    public SpigotDialogAdapter(@NotNull SpigotBridge bridge) {
+    public SpigotDialogAdapter(@NonNull SpigotBridge bridge) {
         this.bridge = bridge;
     }
 
-    @NotNull
-    private BaseComponent adaptComponent(@NotNull String component) {
+    @NonNull
+    private BaseComponent adaptComponent(@NonNull String component) {
         return this.adaptComponent(NightMessage.parse(component));
     }
 
-    @NotNull
-    private BaseComponent adaptComponent(@NotNull NightComponent component) {
+    @NonNull
+    private BaseComponent adaptComponent(@NonNull NightComponent component) {
         return this.bridge.getTextComponentAdapter().adaptComponent(component);
     }
 
     @Override
-    @NotNull
-    public Dialog adaptDialog(@NotNull WrappedDialog wrappedDialog) {
+    @NonNull
+    public Dialog adaptDialog(@NonNull WrappedDialog wrappedDialog) {
         WrappedDialogBase wrappedBase = wrappedDialog.base();
         WrappedDialogType wrappedType = wrappedDialog.type();
 
@@ -80,36 +73,34 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public Action adaptAction(@NotNull WrappedDialogAction action) {
+    @NonNull
+    public Action adaptAction(@NonNull WrappedDialogAction action) {
         return action.adapt(this);
     }
 
     @Override
-    @NotNull
-    public StaticAction adaptAction(@NotNull WrappedDialogStaticAction action) {
+    @NonNull
+    public StaticAction adaptAction(@NonNull WrappedDialogStaticAction action) {
         ClickEvent clickEvent = this.bridge.getTextComponentAdapter().adaptClickEvent(action.clickEvent());
         return new StaticAction(clickEvent);
     }
 
     @Override
-    @NotNull
-    public CustomClickAction adaptAction(@NotNull WrappedDialogCustomAction action) {
+    @NonNull
+    public CustomClickAction adaptAction(@NonNull WrappedDialogCustomAction action) {
         CustomClickAction handle = new CustomClickAction(NightKey.key(DialogKeys.NAMESPACE, action.id()).asString());
         handle.additions(action.nbt() == null ? null : action.nbt().payload());
         return handle;
     }
 
     @Override
-    @NotNull
-    public RunCommandAction adaptAction(@NotNull WrappedDialogCommandTemplateAction action) {
+    @NonNull
+    public RunCommandAction adaptAction(@NonNull WrappedDialogCommandTemplateAction action) {
         return new RunCommandAction(action.template());
     }
 
 
-
-    @NotNull
-    private DialogBase.AfterAction adaptAfterAction(@NotNull WrappedDialogAfterAction action) {
+    private DialogBase.@NonNull AfterAction adaptAfterAction(@NonNull WrappedDialogAfterAction action) {
         return switch (action) {
             case NONE -> DialogBase.AfterAction.NONE;
             case CLOSE -> DialogBase.AfterAction.CLOSE;
@@ -118,8 +109,8 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogBase adaptBase(@NotNull WrappedDialogBase base) {
+    @NonNull
+    public DialogBase adaptBase(@NonNull WrappedDialogBase base) {
         BaseComponent title = this.adaptComponent(base.title());
         BaseComponent externalTitle = base.externalTitle() == null ? null : this.adaptComponent(base.externalTitle());
         boolean canCloseWithEscape = base.canCloseWithEscape();
@@ -132,20 +123,21 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogBody adaptBody(@NotNull WrappedDialogBody body) {
+    @NonNull
+    public DialogBody adaptBody(@NonNull WrappedDialogBody body) {
         return body.adapt(this);
     }
 
     @Override
-    @NotNull
-    public DialogBody adaptBody(@NotNull WrappedItemDialogBody body) {
-        return new PlainMessageBody(this.adaptComponent(body.description() == null ? "" : body.description().contents()), body.width());
+    @NonNull
+    public DialogBody adaptBody(@NonNull WrappedItemDialogBody body) {
+        return new PlainMessageBody(this.adaptComponent(body.description() == null ? "" : body.description()
+            .contents()), body.width());
     }
 
     @Override
-    @NotNull
-    public PlainMessageBody adaptBody(@NotNull WrappedPlainMessageDialogBody body) {
+    @NonNull
+    public PlainMessageBody adaptBody(@NonNull WrappedPlainMessageDialogBody body) {
         BaseComponent contents = this.adaptComponent(body.contents());
         int width = body.width();
 
@@ -153,10 +145,11 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public ActionButton adaptButton(@NotNull WrappedActionButton wrappedButton) {
+    @NonNull
+    public ActionButton adaptButton(@NonNull WrappedActionButton wrappedButton) {
         WrappedDialogAction wrappedAction = wrappedButton.action();
-        if (wrappedAction == null) wrappedAction = new WrappedDialogCustomAction("empty", NightNbtHolder.fromJson(new JsonObject())); // Spigot does not allow null actions.
+        if (wrappedAction == null) wrappedAction = new WrappedDialogCustomAction("empty", NightNbtHolder.fromJson(
+            new JsonObject())); // Spigot does not allow null actions.
 
         BaseComponent label = this.adaptComponent(wrappedButton.label());
         BaseComponent tooltip = wrappedButton.tooltip() == null ? null : this.adaptComponent(wrappedButton.tooltip());
@@ -169,14 +162,14 @@ public class SpigotDialogAdapter implements
 
 
     @Override
-    @NotNull
-    public DialogInput adaptInput(@NotNull WrappedDialogInput input) {
+    @NonNull
+    public DialogInput adaptInput(@NonNull WrappedDialogInput input) {
         return input.adapt(this);
     }
 
     @Override
-    @NotNull
-    public TextInput adaptInput(@NotNull WrappedTextDialogInput input) {
+    @NonNull
+    public TextInput adaptInput(@NonNull WrappedTextDialogInput input) {
         String key = input.key();
         int width = input.width();
         BaseComponent label = this.adaptComponent(input.label());
@@ -185,13 +178,14 @@ public class SpigotDialogAdapter implements
         int maxLength = input.maxLength();
         WrappedMultilineOptions wrappedMultiline = input.multiline();
 
-        TextInput.Multiline multilineOptions = wrappedMultiline == null ? null : new TextInput.Multiline(wrappedMultiline.maxLines(), wrappedMultiline.height());
+        TextInput.Multiline multilineOptions = wrappedMultiline == null ? null : new TextInput.Multiline(wrappedMultiline
+            .maxLines(), wrappedMultiline.height());
 
         return new TextInput(key, width, label, labelVisible, initial, maxLength, multilineOptions);
     }
 
-    @NotNull
-    private InputOption adaptEntry(@NotNull WrappedSingleOptionEntry wrappedEntry) {
+    @NonNull
+    private InputOption adaptEntry(@NonNull WrappedSingleOptionEntry wrappedEntry) {
         String id = wrappedEntry.id();
         BaseComponent display = this.adaptComponent(wrappedEntry.display());
         boolean initial = wrappedEntry.initial();
@@ -200,8 +194,8 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public SingleOptionInput adaptInput(@NotNull WrappedSingleOptionDialogInput input) {
+    @NonNull
+    public SingleOptionInput adaptInput(@NonNull WrappedSingleOptionDialogInput input) {
         String key = input.key();
         int width = input.width();
         List<InputOption> entries = Lists.modify(input.entries(), this::adaptEntry);
@@ -212,8 +206,8 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public BooleanInput adaptInput(@NotNull WrappedBooleanDialogInput input) {
+    @NonNull
+    public BooleanInput adaptInput(@NonNull WrappedBooleanDialogInput input) {
         String key = input.key();
         BaseComponent label = this.adaptComponent(input.label());
         boolean initial = input.initial();
@@ -224,8 +218,8 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public NumberRangeInput adaptInput(@NotNull WrappedNumberRangeDialogInput input) {
+    @NonNull
+    public NumberRangeInput adaptInput(@NonNull WrappedNumberRangeDialogInput input) {
         String key = input.key();
         int width = input.width();
         BaseComponent label = this.adaptComponent(input.label());
@@ -239,14 +233,14 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public Dialog adaptType(@NotNull WrappedDialogType type) {
+    @NonNull
+    public Dialog adaptType(@NonNull WrappedDialogType type) {
         return type.adapt(this);
     }
 
     @Override
-    @NotNull
-    public ConfirmationDialog adaptType(@NotNull WrappedConfirmationType type) {
+    @NonNull
+    public ConfirmationDialog adaptType(@NonNull WrappedConfirmationType type) {
         WrappedActionButton wrappedYes = type.yesButton();
         WrappedActionButton wrappedNo = type.noButton();
 
@@ -254,8 +248,8 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public DialogListDialog adaptType(@NotNull WrappedDialogListType type) {
+    @NonNull
+    public DialogListDialog adaptType(@NonNull WrappedDialogListType type) {
         List<WrappedDialog> wrappedDialogs = type.dialogs();
         WrappedActionButton exitAction = type.exitAction();
         int buttonWidth = type.buttonWidth();
@@ -268,8 +262,8 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public MultiActionDialog adaptType(@NotNull WrappedMultiActionType type) {
+    @NonNull
+    public MultiActionDialog adaptType(@NonNull WrappedMultiActionType type) {
         List<WrappedActionButton> wrappedActions = type.actions();
         WrappedActionButton wrappedExit = type.exitAction();
 
@@ -281,8 +275,8 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public NoticeDialog adaptType(@NotNull WrappedNoticeType type) {
+    @NonNull
+    public NoticeDialog adaptType(@NonNull WrappedNoticeType type) {
         WrappedActionButton wrappedAction = type.action();
         ActionButton action = this.adaptButton(wrappedAction);
 
@@ -290,8 +284,8 @@ public class SpigotDialogAdapter implements
     }
 
     @Override
-    @NotNull
-    public ServerLinksDialog adaptType(@NotNull WrappedServerLinksType type) {
+    @NonNull
+    public ServerLinksDialog adaptType(@NonNull WrappedServerLinksType type) {
         WrappedActionButton wrappedExit = type.exitAction();
 
         ActionButton exitAction = wrappedExit == null ? null : this.adaptButton(wrappedExit);

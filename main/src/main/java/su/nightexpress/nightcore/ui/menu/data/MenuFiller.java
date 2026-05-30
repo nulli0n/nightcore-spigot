@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.ui.menu.data;
 
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 import su.nightexpress.nightcore.ui.menu.item.ItemClick;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
@@ -21,21 +21,21 @@ public class MenuFiller<I> {
     private final Function<I, ItemClick> itemClick;
 
     public MenuFiller(int[] slots,
-                      @NotNull Collection<I> items,
-                      @NotNull Function<I, NightItem> itemCreator,
-                      @NotNull Function<I, ItemClick> itemClick) {
+                      @NonNull Collection<I> items,
+                      @NonNull Function<I, NightItem> itemCreator,
+                      @NonNull Function<I, ItemClick> itemClick) {
         this.slots = slots;
         this.items = items;
         this.itemCreator = itemCreator;
         this.itemClick = itemClick;
     }
 
-    @NotNull
-    public static <I> Builder<I> builder(@NotNull Filled<I> menu) {
+    @NonNull
+    public static <I> Builder<I> builder(@NonNull Filled<I> menu) {
         return new Builder<>();
     }
 
-    public void addItems(@NotNull MenuViewer viewer) {
+    public void addItems(@NonNull MenuViewer viewer) {
         int limit = this.slots.length;
         int pages = (int) Math.ceil((double) items.size() / (double) limit);
         viewer.setPages(pages);
@@ -48,30 +48,31 @@ public class MenuFiller<I> {
         int count = 0;
         for (I object : list) {
             NightItem item = this.itemCreator.apply(object);
-            MenuItem menuItem = MenuItem.builder(item).setPriority(MenuItem.HIGH_PRIORITY).setSlots(this.slots[count++]).setHandler(this.itemClick.apply(object)).build();
+            MenuItem menuItem = MenuItem.builder(item).setPriority(MenuItem.HIGH_PRIORITY).setSlots(this.slots[count++])
+                .setHandler(this.itemClick.apply(object)).build();
 
             viewer.addItem(menuItem);
         }
     }
 
-//    public int[] getSlots() {
-//        return slots;
-//    }
-//
-//    @NotNull
-//    public Collection<I> getItems() {
-//        return items;
-//    }
-//
-//    @NotNull
-//    public Function<I, NightItem> getItemCreator() {
-//        return itemCreator;
-//    }
-//
-//    @NotNull
-//    public Function<I, ItemClick> getItemClick() {
-//        return itemClick;
-//    }
+    //    public int[] getSlots() {
+    //        return slots;
+    //    }
+    //
+    //    @NonNull
+    //    public Collection<I> getItems() {
+    //        return items;
+    //    }
+    //
+    //    @NonNull
+    //    public Function<I, NightItem> getItemCreator() {
+    //        return itemCreator;
+    //    }
+    //
+    //    @NonNull
+    //    public Function<I, ItemClick> getItemClick() {
+    //        return itemClick;
+    //    }
 
     public static class Builder<I> {
 
@@ -84,7 +85,8 @@ public class MenuFiller<I> {
             this.slots = new int[0];
             this.items = Collections.emptyList();
             this.itemCreator = obj -> new NightItem(Material.AIR);
-            this.itemClick = obj -> (viewer, event) -> {};
+            this.itemClick = obj -> (viewer, event) -> {
+            };
         }
 
         public MenuFiller<I> build() {
@@ -96,21 +98,21 @@ public class MenuFiller<I> {
             return this;
         }
 
-//        public Builder<I> setItems(@NotNull Collection<I> items) {
-//            return this.setItems(new ArrayList<>(items));
-//        }
+        //        public Builder<I> setItems(@NonNull Collection<I> items) {
+        //            return this.setItems(new ArrayList<>(items));
+        //        }
 
-        public Builder<I> setItems(@NotNull Collection<I> items) {
+        public Builder<I> setItems(@NonNull Collection<I> items) {
             this.items = items;
             return this;
         }
 
-        public Builder<I> setItemCreator(@NotNull Function<I, NightItem> itemCreator) {
+        public Builder<I> setItemCreator(@NonNull Function<I, NightItem> itemCreator) {
             this.itemCreator = itemCreator;
             return this;
         }
 
-        public Builder<I> setItemClick(@NotNull Function<I, ItemClick> itemClick) {
+        public Builder<I> setItemClick(@NonNull Function<I, ItemClick> itemClick) {
             this.itemClick = itemClick;
             return this;
         }

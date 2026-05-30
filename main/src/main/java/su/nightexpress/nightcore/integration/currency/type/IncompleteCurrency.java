@@ -1,49 +1,49 @@
 package su.nightexpress.nightcore.integration.currency.type;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.integration.currency.CurrencySettings;
 
 public abstract class IncompleteCurrency extends AbstractCurrency {
 
     protected CurrencySettings settings;
 
-    public IncompleteCurrency(@NotNull String id) {
+    public IncompleteCurrency(@NonNull String id) {
         super(id);
     }
 
-    public IncompleteCurrency(@NotNull String originalId, @NotNull String internalId) {
+    public IncompleteCurrency(@NonNull String originalId, @NonNull String internalId) {
         super(originalId, internalId);
         //this.setSettings(this.getDefaultSettings());
     }
 
-    @NotNull
+    @NonNull
     public abstract CurrencySettings getDefaultSettings();
 
-    @NotNull
+    @NonNull
     public CurrencySettings getSettings() {
         return this.settings;
     }
 
-    public void setSettings(@NotNull CurrencySettings settings) {
+    public void setSettings(@NonNull CurrencySettings settings) {
         this.settings = settings;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getName() {
         return this.settings.getName();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getFormat() {
         return this.settings.getFormat();
     }
 
     @Override
-    @NotNull
-    public  ItemStack getIcon() {
+    @NonNull
+    public ItemStack getIcon() {
         return this.settings.getIcon().getItemStack();
     }
 }

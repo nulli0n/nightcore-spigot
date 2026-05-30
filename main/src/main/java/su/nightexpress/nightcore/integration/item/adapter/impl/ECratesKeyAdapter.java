@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.integration.item.adapter.impl;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.key.CrateKey;
 import su.nightexpress.nightcore.integration.item.data.ItemIdData;
@@ -16,7 +16,7 @@ public class ECratesKeyAdapter extends IdentifiableItemAdapter {
 
     @Override
     @Nullable
-    public String getItemId(@NotNull ItemStack itemStack) {
+    public String getItemId(@NonNull ItemStack itemStack) {
         if (!CratesAPI.isLoaded()) return null;
 
         CrateKey key = CratesAPI.getKeyManager().getKeyByItem(itemStack);
@@ -25,7 +25,7 @@ public class ECratesKeyAdapter extends IdentifiableItemAdapter {
 
     @Override
     @Nullable
-    public ItemStack createItem(@NotNull String itemId) {
+    public ItemStack createItem(@NonNull String itemId) {
         if (!CratesAPI.isLoaded()) return null;
 
         CrateKey key = CratesAPI.getKeyManager().getKeyById(itemId);
@@ -33,12 +33,12 @@ public class ECratesKeyAdapter extends IdentifiableItemAdapter {
     }
 
     @Override
-    public boolean canHandle(@NotNull ItemStack itemStack) {
+    public boolean canHandle(@NonNull ItemStack itemStack) {
         return CratesAPI.isLoaded() && CratesAPI.getKeyManager().getKeyByItem(itemStack) != null;
     }
 
     @Override
-    public boolean canHandle(@NotNull ItemIdData data) {
+    public boolean canHandle(@NonNull ItemIdData data) {
         return CratesAPI.isLoaded() && CratesAPI.getKeyManager().getKeyById(data.getItemId()) != null;
     }
 }

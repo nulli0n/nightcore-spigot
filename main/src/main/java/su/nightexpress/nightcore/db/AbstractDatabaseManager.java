@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.db.column.Column;
@@ -28,22 +28,23 @@ import java.util.function.Consumer;
 
 public abstract class AbstractDatabaseManager<P extends NightPlugin> extends AbstractManager<P> {
 
-    private static final SelectStatement<Boolean> ROW_LOOKUP = SelectStatement.builder(resultSet -> true).column("1").build(); // SELECT 1 FROM ...
+    private static final SelectStatement<Boolean> ROW_LOOKUP = SelectStatement.builder(resultSet -> true).column("1")
+        .build(); // SELECT 1 FROM ...
 
     protected final DatabaseConfig    config;
     protected final AbstractConnector connector;
     protected final DataSynchronizer  synchronizer;
     protected final DatabaseType      databaseType;
 
-    public AbstractDatabaseManager(@NonNull P plugin) {
+    protected AbstractDatabaseManager(@NonNull P plugin) {
         this(plugin, getDataConfig(plugin));
     }
 
-    public AbstractDatabaseManager(@NonNull P plugin, @NonNull DatabaseConfig config) {
+    protected AbstractDatabaseManager(@NonNull P plugin, @NonNull DatabaseConfig config) {
         super(plugin);
         this.config = config;
         this.connector = AbstractConnector.create(plugin, config);
-        this.synchronizer = new DataSynchronizer(this.connector);
+        this.synchronizer = new DataSynchronizer(config.getServerId(), this.connector);
         this.databaseType = config.getStorageType();
     }
 
@@ -150,12 +151,12 @@ public abstract class AbstractDatabaseManager<P extends NightPlugin> extends Abs
     }
 
 
-
     public <T> void insert(@NonNull Table table, @NonNull InsertStatement<T> statement, @NonNull T entity) {
         this.executeBatch(table, statement, entity, null);
     }
 
-    public <T> void insert(@NonNull Table table, @NonNull InsertStatement<T> statement, @NonNull Collection<T> entities) {
+    public <T> void insert(@NonNull Table table, @NonNull InsertStatement<T> statement,
+                           @NonNull Collection<T> entities) {
         this.executeBatch(table, statement, entities, null);
     }
 
@@ -163,15 +164,18 @@ public abstract class AbstractDatabaseManager<P extends NightPlugin> extends Abs
         this.update(table, statement, entity, null);
     }
 
-    public <T> void update(@NonNull Table table, @NonNull UpdateStatement<T> statement, @NonNull Collection<T> entities) {
+    public <T> void update(@NonNull Table table, @NonNull UpdateStatement<T> statement,
+                           @NonNull Collection<T> entities) {
         this.update(table, statement, entities, null);
     }
 
-    public <T> void update(@NonNull Table table, @NonNull UpdateStatement<T> statement, @NonNull T entity, @Nullable Wheres<T> wheres) {
+    public <T> void update(@NonNull Table table, @NonNull UpdateStatement<T> statement, @NonNull T entity,
+                           @Nullable Wheres<T> wheres) {
         this.executeBatch(table, statement, entity, wheres);
     }
 
-    public <T> void update(@NonNull Table table, @NonNull UpdateStatement<T> statement, @NonNull Collection<T> entities, @Nullable Wheres<T> wheres) {
+    public <T> void update(@NonNull Table table, @NonNull UpdateStatement<T> statement, @NonNull Collection<T> entities,
+                           @Nullable Wheres<T> wheres) {
         this.executeBatch(table, statement, entities, wheres);
     }
 
@@ -199,27 +203,43 @@ public abstract class AbstractDatabaseManager<P extends NightPlugin> extends Abs
         this.executeBatch(table, new DeleteStatement<>(), entities, wheres);
     }
 
-    public <T> void executeBatch(@NonNull Table table, @NonNull BatchStatement<T> query, @NonNull T entity, @Nullable Wheres<T> wheres) {
+    public <T> void executeBatch(@NonNull Table table, @NonNull BatchStatement<T> query, @NonNull T entity,
+                                 @Nullable Wheres<T> wheres) {
         this.executeBatch(table.getName(), query, entity, wheres);
     }
 
-    public <T> void executeBatch(@NonNull String table, @NonNull BatchStatement<T> query, @NonNull T entity, @Nullable Wheres<T> wheres) {
+    public <T> void executeBatch(@NonNull String table, @NonNull BatchStatement<T> query, @NonNull T entity,
+                                 @Nullable Wheres<T> wheres) {
         this.executeBatch(table, query, Collections.singletonList(entity), wheres);
     }
 
-    public <T> void executeBatch(@NonNull Table table, @NonNull BatchStatement<T> query, @NonNull Collection<T> entities, @Nullable Wheres<T> wheres) {
+    public <T> void executeBatch(@NonNull Table table, @NonNull BatchStatement<T> query,
+                                 @NonNull Collection<T> entities, @Nullable Wheres<T> wheres) {
         this.executeBatch(table.getName(), query, entities, wheres);
     }
 
-    public <T> void executeBatch(@NonNull String table, @NonNull BatchStatement<T> query, @NonNull Collection<T> entities, @Nullable Wheres<T> wheres) {
+    public <T> void executeBatch(@NonNull String table, @NonNull BatchStatement<T> query,
+                                 @NonNull Collection<T> entities, @Nullable Wheres<T> wheres) {
         SQLStatements.executeBatch(this.connector, table, query, entities, wheres);
     }
 
+    /**
+     * @deprecated Unused table argument.
+     */
+    @Deprecated(since = "2.15.3")
     public void executeStatement(@NonNull Table table, @NonNull String statement, @Nullable Wheres<Object> wheres) {
         this.executeStatement(table.getName(), statement, wheres);
     }
 
+    /**
+     * @deprecated Unused table argument.
+     */
+    @Deprecated(since = "2.15.3")
     public void executeStatement(@NonNull String table, @NonNull String statement, @Nullable Wheres<Object> wheres) {
+        this.executeStatement(statement, wheres);
+    }
+
+    public void executeStatement(@NonNull String statement, @Nullable Wheres<Object> wheres) {
         StringBuilder sql = new StringBuilder(statement);
         if (wheres != null && !wheres.isEmpty()) {
             sql.append(" WHERE ").append(wheres.toSql());
@@ -238,7 +258,8 @@ public abstract class AbstractDatabaseManager<P extends NightPlugin> extends Abs
     }
 
     @NonNull
-    public <R> Optional<R> selectFirst(@NonNull Table table, @NonNull SelectStatement<R> query, @NonNull Wheres<Object> wheres) {
+    public <R> Optional<R> selectFirst(@NonNull Table table, @NonNull SelectStatement<R> query,
+                                       @NonNull Wheres<Object> wheres) {
         return SQLStatements.selectFirst(this.connector, table.getName(), query, wheres);
     }
 
@@ -248,7 +269,8 @@ public abstract class AbstractDatabaseManager<P extends NightPlugin> extends Abs
     }
 
     @NonNull
-    public <R> List<R> selectWhere(@NonNull Table table, @NonNull SelectStatement<R> query, @NonNull Wheres<Object> wheres) {
+    public <R> List<R> selectWhere(@NonNull Table table, @NonNull SelectStatement<R> query,
+                                   @NonNull Wheres<Object> wheres) {
         return SQLStatements.select(this.connector, table.getName(), query, wheres, null);
     }
 }

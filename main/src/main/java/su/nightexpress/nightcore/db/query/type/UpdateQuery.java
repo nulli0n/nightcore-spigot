@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.db.query.type;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.db.query.TypedQuery;
 import su.nightexpress.nightcore.db.query.data.Values;
 import su.nightexpress.nightcore.db.query.data.Wheres;
@@ -22,8 +22,8 @@ public class UpdateQuery<T> extends TypedQuery<T> {
     }
 
     @Override
-    @NotNull
-    public String toSQL(@NotNull String table) {
+    @NonNull
+    public String toSQL(@NonNull String table) {
         String columns = this.values.toSQL();
 
         return "UPDATE " + table + " SET " + columns + " " + this.wheres.toSQL();
@@ -46,35 +46,38 @@ public class UpdateQuery<T> extends TypedQuery<T> {
         return this.wheres;
     }
 
-    @NotNull
-    public String getDataValue(@NotNull T entity, int index) {
+    @NonNull
+    public String getDataValue(@NonNull T entity, int index) {
         return this.values.getValue(entity, index);
     }
 
-    @NotNull
-    public UpdateQuery<T> setValue(@NotNull Column column, @NotNull Function<T, String> function) {
+    @NonNull
+    public UpdateQuery<T> setValue(@NonNull Column column, @NonNull Function<T, String> function) {
         this.values.setValue(column, function);
         return this;
     }
 
-    @NotNull
-    public UpdateQuery<T> where(@NotNull Column column, @NotNull WhereOperator operator, @NotNull String string) {
+    @NonNull
+    public UpdateQuery<T> where(@NonNull Column column, @NonNull WhereOperator operator, @NonNull String string) {
         return this.where(column, operator, o -> string);
     }
 
-    @NotNull
-    public UpdateQuery<T> where(@NotNull Column column, @NotNull WhereOperator operator, @NotNull Function<T, String> function) {
+    @NonNull
+    public UpdateQuery<T> where(@NonNull Column column, @NonNull WhereOperator operator,
+                                @NonNull Function<T, String> function) {
         this.wheres.where(column, operator, function);
         return this;
     }
 
-    @NotNull
-    public UpdateQuery<T> whereIgnoreCase(@NotNull Column column, @NotNull WhereOperator operator, @NotNull String string) {
+    @NonNull
+    public UpdateQuery<T> whereIgnoreCase(@NonNull Column column, @NonNull WhereOperator operator,
+                                          @NonNull String string) {
         return this.whereIgnoreCase(column, operator, o -> string);
     }
 
-    @NotNull
-    public UpdateQuery<T> whereIgnoreCase(@NotNull Column column, @NotNull WhereOperator operator, @NotNull Function<T, String> function) {
+    @NonNull
+    public UpdateQuery<T> whereIgnoreCase(@NonNull Column column, @NonNull WhereOperator operator,
+                                          @NonNull Function<T, String> function) {
         this.wheres.whereIgnoreCase(column, operator, function);
         return this;
     }

@@ -1,13 +1,13 @@
 package su.nightexpress.nightcore.ui.menu.data;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.ui.menu.Menu;
 
 @Deprecated
 public interface ConfigBased extends Menu {
 
-    default void load(@NotNull FileConfig config) {
+    default void load(@NonNull FileConfig config) {
         MenuLoader loader = new MenuLoader(this, config);
         loader.loadSettings();
         this.loadConfiguration(config, loader);
@@ -16,5 +16,5 @@ public interface ConfigBased extends Menu {
         config.saveChanges();
     }
 
-    void loadConfiguration(@NotNull FileConfig config, @NotNull MenuLoader loader);
+    void loadConfiguration(@NonNull FileConfig config, @NonNull MenuLoader loader);
 }

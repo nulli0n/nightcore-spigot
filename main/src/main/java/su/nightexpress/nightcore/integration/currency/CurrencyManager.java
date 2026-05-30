@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.integration.currency;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.bridge.currency.Currency;
 import su.nightexpress.nightcore.config.ConfigValue;
@@ -31,7 +31,7 @@ public class CurrencyManager extends AbstractManager<NightCore> {
 
     private FileConfig config;
 
-    public CurrencyManager(@NotNull NightCore plugin) {
+    public CurrencyManager(@NonNull NightCore plugin) {
         super(plugin);
         this.registry = new CurrencyRegistry();
         this.pluginProviders = new HashMap<>();
@@ -63,7 +63,7 @@ public class CurrencyManager extends AbstractManager<NightCore> {
         CurrencyCommands.shutdown();
     }
 
-    public void handlePluginLoad(@NotNull String pluginName) {
+    public void handlePluginLoad(@NonNull String pluginName) {
         var provider = this.pluginProviders.get(pluginName);
         if (provider != null) {
             plugin.info(pluginName + " detected! Loading currency...");
@@ -118,7 +118,7 @@ public class CurrencyManager extends AbstractManager<NightCore> {
     }
 
     @Nullable
-    public ItemStackCurrency createItemCurrency(@NotNull String name, @NotNull ItemStack itemStack) {
+    public ItemStackCurrency createItemCurrency(@NonNull String name, @NonNull ItemStack itemStack) {
         String id = Strings.filterForVariable(name);
         if (this.registry.contains(id)) return null;
 
@@ -129,18 +129,18 @@ public class CurrencyManager extends AbstractManager<NightCore> {
         return currency;
     }
 
-    private void saveCurrency(@NotNull ItemStackCurrency currency) {
+    private void saveCurrency(@NonNull ItemStackCurrency currency) {
         this.config.set("Items." + currency.getInternalId(), currency);
         this.config.save();
     }
 
-    private void addExternalLoader(@NotNull String pluginName, @NotNull Runnable runnable) {
+    private void addExternalLoader(@NonNull String pluginName, @NonNull Runnable runnable) {
         if (!Plugins.isInstalled(pluginName)) return;
 
         this.pluginProviders.put(pluginName, runnable);
     }
 
-    public <T extends IncompleteCurrency> void loadIncompleted(@NotNull Supplier<T> supplier) {
+    public <T extends IncompleteCurrency> void loadIncompleted(@NonNull Supplier<T> supplier) {
         this.register(supplier.get(), currency -> {
             String path = currency instanceof ItemStackCurrency ? "Items" : "Currencies";
             CurrencySettings settings = ConfigValue.create(path + "." + currency.getInternalId() + ".Settings",
@@ -149,11 +149,11 @@ public class CurrencyManager extends AbstractManager<NightCore> {
         });
     }
 
-    private void register(@NotNull Currency currency) {
+    private void register(@NonNull Currency currency) {
         this.register(currency, null);
     }
 
-    private <T extends Currency> void register(@NotNull T currency, @Nullable Consumer<T> preRegister) {
+    private <T extends Currency> void register(@NonNull T currency, @Nullable Consumer<T> preRegister) {
         String id = currency.getInternalId();
         if (CoreConfig.ECONOMY_DISABLED_PROVIDERS.get().contains(id)) return;
 

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -21,8 +21,8 @@ public class UserdataConfig {
         this.saveSyncPause = saveSyncPause;
     }
 
-    @NotNull
-    public static UserdataConfig read(@NotNull NightPlugin plugin) {
+    @NonNull
+    public static UserdataConfig read(@NonNull NightPlugin plugin) {
         FileConfig config = plugin.getConfig();
 
         long cacheLifetime = ConfigValue.create("Database.UserData.Cache_LifeTime",

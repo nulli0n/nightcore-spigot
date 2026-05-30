@@ -4,7 +4,7 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.paper.PaperBridge;
 
@@ -13,7 +13,7 @@ public class PaperChatListener implements Listener {
     private final PaperBridge                   bridge;
     private final UniversalChatListenerCallback callback;
 
-    public PaperChatListener(@NotNull PaperBridge bridge, @NotNull UniversalChatListenerCallback callback) {
+    public PaperChatListener(@NonNull PaperBridge bridge, @NonNull UniversalChatListenerCallback callback) {
         this.bridge = bridge;
         this.callback = callback;
     }
@@ -48,7 +48,7 @@ public class PaperChatListener implements Listener {
         this.handleChat(EventPriority.MONITOR, event);
     }
 
-    private void handleChat(@NotNull EventPriority eventPriority, @NotNull AsyncChatEvent event) {
+    private void handleChat(@NonNull EventPriority eventPriority, @NonNull AsyncChatEvent event) {
         this.callback.run(eventPriority, () -> new PaperChatEvent(this.bridge, event));
     }
 }

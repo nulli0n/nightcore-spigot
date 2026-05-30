@@ -1,50 +1,55 @@
 package su.nightexpress.nightcore.util.bukkit;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.bridge.scheduler.AdaptedTask;
 import su.nightexpress.nightcore.util.TimeUtil;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-
 public class NightTask {
 
-    //private final NightCorePlugin plugin;
-    private final AdaptedTask     scheduledTask;
+    private final AdaptedTask scheduledTask;
 
-    public NightTask(@NotNull NightCorePlugin plugin, @Nullable AdaptedTask scheduledTask) {
-        //this.plugin = plugin;
+    public NightTask(@NonNull NightCorePlugin plugin, @Nullable AdaptedTask scheduledTask) {
         this.scheduledTask = scheduledTask;
     }
 
-    @NotNull
-    public static NightTask create(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, int interval) {
+    @NonNull
+    public static NightTask create(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable, int interval) {
         return create(plugin, runnable, TimeUtil.secondsToTicks(interval));
     }
 
-    @NotNull
-    public static NightTask create(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval) {
+    @NonNull
+    public static NightTask create(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable, long interval) {
         return createTask(plugin, () -> interval <= 0 ? null : plugin.scheduler().runTaskTimer(runnable, 0L, interval));
     }
 
-    @NotNull
-    public static NightTask createAsync(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, int interval) {
+    @NonNull
+    public static NightTask createAsync(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable, int interval) {
         return createAsync(plugin, runnable, TimeUtil.secondsToTicks(interval));
     }
 
-    @NotNull
-    public static NightTask createAsync(@NotNull NightCorePlugin plugin, @NotNull Runnable runnable, long interval) {
+    @NonNull
+    public static NightTask createAsync(@NonNull NightCorePlugin plugin, @NonNull Runnable runnable, long interval) {
         return createTask(plugin, () -> {
             if (interval <= 0) return null;
 
-            return plugin.scheduler().runTaskTimer(() -> CompletableFuture.runAsync(runnable), 0L, interval);
+            return plugin.scheduler().runTaskTimer(() -> {
+                CompletableFuture.runAsync(runnable).whenComplete((empty, throwable) -> {
+                    if (throwable != null) {
+                        throwable.printStackTrace();
+                    }
+                });
+            }, 0L, interval);
         });
     }
 
-    @NotNull
-    private static NightTask createTask(@NotNull NightCorePlugin plugin, @NotNull Supplier<AdaptedTask> supplier) {
+    @NonNull
+    private static NightTask createTask(@NonNull NightCorePlugin plugin, @NonNull Supplier<AdaptedTask> supplier) {
         AdaptedTask scheduledTask = supplier.get();
         return new NightTask(plugin, scheduledTask);
     }

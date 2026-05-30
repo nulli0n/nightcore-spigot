@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
@@ -20,25 +20,25 @@ public class GradientTag extends Tag implements ContentTag {
         super(NAME);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull String hexStart, @NotNull String hexEnd, @NotNull String text) {
+    public String enclose(@NonNull String hexStart, @NonNull String hexEnd, @NonNull String text) {
         return this.wrap(text, hexStart, hexEnd);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String wrap(@NotNull String string, @NotNull String fromHex, @NotNull String toHex) {
+    public String wrap(@NonNull String string, @NonNull String fromHex, @NonNull String toHex) {
         return this.wrap(string, new String[]{fromHex, toHex});
     }
 
-    @NotNull
-    public String wrap(@NotNull String string, @NotNull Color... colors) {
+    @NonNull
+    public String wrap(@NonNull String string, @NonNull Color... colors) {
         return this.wrap(string, Stream.of(colors).map(ParserUtils::colorToHexString).toArray(String[]::new));
     }
 
-    @NotNull
-    public String wrap(@NotNull String string, @NotNull String... hexCodes) {
+    @NonNull
+    public String wrap(@NonNull String string, @NonNull String... hexCodes) {
         String joined = String.join(String.valueOf(ParserUtils.DELIMITER), hexCodes);
         String tagOpen = TagUtils.brackets(this.getName() + ParserUtils.DELIMITER + joined);
         String tagClose = this.getClosingName();
@@ -48,7 +48,7 @@ public class GradientTag extends Tag implements ContentTag {
 
     @Override
     @Nullable
-    public GradientColorDecorator parse(@NotNull String content) {
+    public GradientColorDecorator parse(@NonNull String content) {
         String[] split = content.split(String.valueOf(ParserUtils.DELIMITER));
 
         int length = split.length;

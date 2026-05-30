@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.query;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.AbstractUser;
 import su.nightexpress.nightcore.db.AbstractUserDataManager;
 import su.nightexpress.nightcore.db.sql.util.WhereOperator;
@@ -13,17 +13,19 @@ import java.util.UUID;
 @Deprecated
 public class UserQueries {
 
-    @NotNull
+    @NonNull
     public static DeleteQuery<Long> deleteByLastOnline() {
-        return new DeleteQuery<Long>().where(AbstractUserDataManager.COLUMN_USER_LAST_ONLINE, WhereOperator.SMALLER, String::valueOf);
+        return new DeleteQuery<Long>().where(AbstractUserDataManager.COLUMN_USER_LAST_ONLINE, WhereOperator.SMALLER,
+            String::valueOf);
     }
 
-    @NotNull
+    @NonNull
     public static DeleteQuery<UUID> deleteByUUID() {
-        return new DeleteQuery<UUID>().where(AbstractUserDataManager.COLUMN_USER_ID, WhereOperator.EQUAL, String::valueOf);
+        return new DeleteQuery<UUID>().where(AbstractUserDataManager.COLUMN_USER_ID, WhereOperator.EQUAL,
+            String::valueOf);
     }
 
-    @NotNull
+    @NonNull
     public static <U extends AbstractUser> UpdateQuery<U> updateCommons() {
         return new UpdateQuery<U>()
             .setValue(AbstractUserDataManager.COLUMN_USER_NAME, AbstractUser::getName)
@@ -32,7 +34,7 @@ public class UserQueries {
             .where(AbstractUserDataManager.COLUMN_USER_ID, WhereOperator.EQUAL, user -> user.getId().toString());
     }
 
-    @NotNull
+    @NonNull
     public static <U extends AbstractUser> InsertQuery<U> insert() {
         return new InsertQuery<U>()
             .setValue(AbstractUserDataManager.COLUMN_USER_ID, user -> user.getId().toString())

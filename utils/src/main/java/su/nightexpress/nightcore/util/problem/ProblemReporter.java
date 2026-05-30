@@ -1,31 +1,35 @@
 package su.nightexpress.nightcore.util.problem;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.logging.Logger;
 
 public interface ProblemReporter {
 
-    @NotNull String getSubject();
+    @NonNull
+    String getSubject();
 
-    @NotNull String getPath();
+    @NonNull
+    String getPath();
 
-    @NotNull List<Problem> getProblems();
+    @NonNull
+    List<Problem> getProblems();
 
-    @NotNull String getReport();
+    @NonNull
+    String getReport();
 
     List<Problem.ChildReport> getChildren();
 
     boolean isEmpty();
 
-    void print(@NotNull Logger logger);
+    void print(@NonNull Logger logger);
 
-    void report(@NotNull Problem problem);
+    void report(@NonNull Problem problem);
 
-    void report(@NotNull String problem);
+    void report(@NonNull String problem);
 
-    void children(@NotNull String description, @NotNull ProblemReporter reporter);
+    void children(@NonNull String description, @NonNull ProblemReporter reporter);
 
     int countProblems();
 

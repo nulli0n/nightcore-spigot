@@ -1,9 +1,15 @@
 package su.nightexpress.nightcore.util.bridge.wrapper;
 
+import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.common.NightKey;
 import su.nightexpress.nightcore.bridge.text.NightStyle;
 import su.nightexpress.nightcore.bridge.text.NightTextDecoration;
@@ -11,174 +17,203 @@ import su.nightexpress.nightcore.bridge.text.adapter.TextComponentAdapter;
 import su.nightexpress.nightcore.bridge.text.contents.NightObjectContents;
 import su.nightexpress.nightcore.bridge.text.event.NightClickEvent;
 import su.nightexpress.nightcore.bridge.text.event.NightHoverEvent;
-import su.nightexpress.nightcore.bridge.text.impl.*;
-
-import java.awt.*;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import su.nightexpress.nightcore.bridge.text.impl.NightKeybindComponent;
+import su.nightexpress.nightcore.bridge.text.impl.NightObjectComponent;
+import su.nightexpress.nightcore.bridge.text.impl.NightTextComponent;
+import su.nightexpress.nightcore.bridge.text.impl.NightTranslatableComponent;
+import su.nightexpress.nightcore.bridge.text.impl.NightTranslationArgument;
 
 public interface NightComponent {
 
-    @NotNull
+    @NonNull
     static NightTextComponent empty() {
         return NightTextComponent.EMPTY;
     }
 
-    @NotNull
+    @NonNull
     static NightTextComponent newline() {
         return NightTextComponent.NEWLINE;
     }
 
-    @NotNull
+    @NonNull
     static NightTextComponent space() {
         return NightTextComponent.SPACE;
     }
 
-    @NotNull
-    static NightKeybindComponent keybind(@NotNull String keybind) {
+    @NonNull
+    static NightKeybindComponent keybind(@NonNull String keybind) {
         return keybind(keybind, NightStyle.EMPTY);
     }
 
-    @NotNull
-    static NightKeybindComponent keybind(@NotNull String keybind, @NotNull NightStyle style) {
+    @NonNull
+    static NightKeybindComponent keybind(@NonNull String keybind, @NonNull NightStyle style) {
         return NightKeybindComponent.create(keybind, style);
     }
 
-    @NotNull
-    static NightObjectComponent object(@NotNull NightStyle style, @NotNull NightObjectContents contents) {
+    @NonNull
+    static NightObjectComponent object(@NonNull NightStyle style, @NonNull NightObjectContents contents) {
         return NightObjectComponent.create(style, contents);
     }
 
-    @NotNull
-    static NightTextComponent text(@NotNull String content, @NotNull NightStyle style) {
+    @NonNull
+    static NightTextComponent text(@NonNull String content, @NonNull NightStyle style) {
         return content.isEmpty() ? empty() : NightTextComponent.create(content, style);
     }
 
-    @NotNull
-    static NightTextComponent text(@NotNull String content) {
+    @NonNull
+    static NightTextComponent text(@NonNull String content) {
         return text(content, NightStyle.EMPTY);
     }
 
-    @NotNull
+    @NonNull
     static NightTextComponent text(boolean value) {
         return text(String.valueOf(value));
     }
 
-    @NotNull
+    @NonNull
     static NightTextComponent text(char value) {
         if (value == '\n') return newline();
         if (value == ' ') return space();
         return text(String.valueOf(value));
     }
 
-    @NotNull
+    @NonNull
     static NightTextComponent text(double value) {
         return text(String.valueOf(value));
     }
 
-    @NotNull
+    @NonNull
     static NightTextComponent text(float value) {
         return text(String.valueOf(value));
     }
 
-    @NotNull
+    @NonNull
     static NightTextComponent text(int value) {
         return text(String.valueOf(value));
     }
 
-    @NotNull
+    @NonNull
     static NightTextComponent text(long value) {
         return text(String.valueOf(value));
     }
 
-    @NotNull
-    static NightTranslatableComponent translatable(@NotNull String key) {
+    @NonNull
+    static NightTranslatableComponent translatable(@NonNull String key) {
         return translatable(key, null);
     }
 
-    @NotNull
-    static NightTranslatableComponent translatable(@NotNull String key, @Nullable String fallback) {
+    @NonNull
+    static NightTranslatableComponent translatable(@NonNull String key, @Nullable String fallback) {
         return translatable(key, fallback, NightStyle.EMPTY);
     }
 
-    @NotNull
-    static NightTranslatableComponent translatable(@NotNull String key, @Nullable String fallback, @NotNull NightStyle style) {
+    @NonNull
+    static NightTranslatableComponent translatable(@NonNull String key, @Nullable String fallback,
+                                                   @NonNull NightStyle style) {
         return translatable(key, fallback, Collections.emptyList(), style);
     }
 
-    @NotNull
-    static NightTranslatableComponent translatable(@NotNull String key, @Nullable String fallback, @NotNull List<NightTranslationArgument> args, @NotNull NightStyle style) {
+    @NonNull
+    static NightTranslatableComponent translatable(@NonNull String key, @Nullable String fallback,
+                                                   @NonNull List<NightTranslationArgument> args,
+                                                   @NonNull NightStyle style) {
         return NightTranslatableComponent.create(key, fallback, args, style);
     }
 
 
+    @NonNull
+    <T> T adapt(@NonNull TextComponentAdapter<T> adapter);
 
-    @NotNull<T> T adapt(@NotNull TextComponentAdapter<T> adapter);
+    @NonNull
+    String toJson();
 
-    @NotNull String toJson();
+    @NonNull
+    String toLegacy();
 
-    @NotNull String toLegacy();
+    void send(@NonNull CommandSender sender);
 
-    void send(@NotNull CommandSender sender);
-
-    void sendActionBar(@NotNull Player player);
+    void sendActionBar(@NonNull Player player);
 
     boolean isEmpty();
 
     boolean hasStyling();
 
-    @NotNull NightComponent appendNewline();
+    @NonNull
+    NightComponent appendNewline();
 
-    @NotNull NightComponent appendSpace();
+    @NonNull
+    NightComponent appendSpace();
 
-    @NotNull NightComponent append(@NotNull NightComponent component);
+    @NonNull
+    NightComponent append(@NonNull NightComponent component);
 
-    @NotNull NightComponent append(@NotNull NightComponent... components);
+    @NonNull
+    NightComponent append(@NonNull NightComponent... components);
 
-    @NotNull NightComponent append(@NotNull List<? extends NightComponent> components);
+    @NonNull
+    NightComponent append(@NonNull List<? extends NightComponent> components);
 
-    @NotNull List<NightComponent> children();
+    @NonNull
+    List<NightComponent> children();
 
-    @NotNull NightComponent children(@NotNull List<? extends NightComponent> children);
+    @NonNull
+    NightComponent children(@NonNull List<? extends NightComponent> children);
 
-    @NotNull NightStyle style();
+    @NonNull
+    NightStyle style();
 
-    @NotNull NightComponent style(@NotNull NightStyle style);
+    @NonNull
+    NightComponent style(@NonNull NightStyle style);
 
-    @Nullable NightKey font();
+    @Nullable
+    NightKey font();
 
-    @NotNull NightComponent font(@Nullable NightKey key);
+    @NonNull
+    NightComponent font(@Nullable NightKey key);
 
-    @Nullable Color color();
+    @Nullable
+    Color color();
 
-    @Nullable Color shadowColor();
+    @Nullable
+    Color shadowColor();
 
-    @NotNull NightComponent color(@Nullable Color color);
+    @NonNull
+    NightComponent color(@Nullable Color color);
 
-    @NotNull NightComponent shadowColor(@Nullable Color color);
+    @NonNull
+    NightComponent shadowColor(@Nullable Color color);
 
-    boolean hasDecoration(@NotNull NightTextDecoration decoration);
+    boolean hasDecoration(@NonNull NightTextDecoration decoration);
 
-    @NotNull NightComponent decorate(@NotNull NightTextDecoration decoration);
+    @NonNull
+    NightComponent decorate(@NonNull NightTextDecoration decoration);
 
-    @NotNull NightTextDecoration.State decoration(@NotNull NightTextDecoration decoration);
+    NightTextDecoration.@NonNull State decoration(@NonNull NightTextDecoration decoration);
 
-    @NotNull NightComponent decoration(@NotNull NightTextDecoration decoration, boolean flag);
+    @NonNull
+    NightComponent decoration(@NonNull NightTextDecoration decoration, boolean flag);
 
-    @NotNull NightComponent decoration(@NotNull NightTextDecoration decoration, @NotNull NightTextDecoration.State state);
+    @NonNull
+    NightComponent decoration(@NonNull NightTextDecoration decoration, NightTextDecoration.@NonNull State state);
 
-    @NotNull Map<NightTextDecoration, NightTextDecoration.State> decorations();
+    @NonNull
+    Map<NightTextDecoration, NightTextDecoration.State> decorations();
 
-    @Nullable NightClickEvent clickEvent();
+    @Nullable
+    NightClickEvent clickEvent();
 
-    @NotNull NightComponent clickEvent(@Nullable NightClickEvent event);
+    @NonNull
+    NightComponent clickEvent(@Nullable NightClickEvent event);
 
-    @Nullable NightHoverEvent<?> hoverEvent();
+    @Nullable
+    NightHoverEvent<?> hoverEvent();
 
-    @NotNull NightComponent hoverEvent(@Nullable NightHoverEvent<?> hoverEvent);
+    @NonNull
+    NightComponent hoverEvent(@Nullable NightHoverEvent<?> hoverEvent);
 
-    @Nullable String insertion();
+    @Nullable
+    String insertion();
 
-    @NotNull NightComponent insertion(@Nullable String insertion);
+    @NonNull
+    NightComponent insertion(@Nullable String insertion);
 }

@@ -1,22 +1,24 @@
 package su.nightexpress.nightcore.db.statement;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.UUID;
+
+import org.jspecify.annotations.NonNull;
 
 @FunctionalInterface
 public interface ParameterBinder<R> {
 
-    ParameterBinder<Integer> INT     = PreparedStatement::setInt;
-    ParameterBinder<Long>    LONG    = PreparedStatement::setLong;
-    ParameterBinder<Float>   FLOAT   = PreparedStatement::setFloat;
-    ParameterBinder<Double>  DOUBLE  = PreparedStatement::setDouble;
-    ParameterBinder<Boolean> BOOLEAN = PreparedStatement::setBoolean;
-    ParameterBinder<String>  STRING  = PreparedStatement::setString;
-    ParameterBinder<UUID>    UUID    = (statement, index, data) -> statement.setString(index, data.toString());
-    ParameterBinder<Object>  GENERIC = PreparedStatement::setObject;
+    ParameterBinder<Integer>   INT       = PreparedStatement::setInt;
+    ParameterBinder<Long>      LONG      = PreparedStatement::setLong;
+    ParameterBinder<Float>     FLOAT     = PreparedStatement::setFloat;
+    ParameterBinder<Double>    DOUBLE    = PreparedStatement::setDouble;
+    ParameterBinder<Boolean>   BOOLEAN   = PreparedStatement::setBoolean;
+    ParameterBinder<String>    STRING    = PreparedStatement::setString;
+    ParameterBinder<UUID>      UUID      = (statement, index, data) -> statement.setString(index, data.toString());
+    ParameterBinder<Timestamp> TIMESTAMP = PreparedStatement::setTimestamp;
+    ParameterBinder<Object>    GENERIC   = PreparedStatement::setObject;
 
-    void bind(@NotNull PreparedStatement statement, int index, @NotNull R data) throws SQLException;
+    void bind(@NonNull PreparedStatement statement, int index, @NonNull R data) throws SQLException;
 }

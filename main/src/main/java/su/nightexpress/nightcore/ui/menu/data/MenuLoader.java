@@ -2,7 +2,7 @@ package su.nightexpress.nightcore.ui.menu.data;
 
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.MenuType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.integration.placeholder.PAPI;
@@ -28,7 +28,7 @@ public class MenuLoader {
     private final Map<String, MenuItem>    defaultItems;
     private final Map<String, ItemHandler> handlerMap;
 
-    public MenuLoader(@NotNull Menu menu, @NotNull FileConfig config) {
+    public MenuLoader(@NonNull Menu menu, @NonNull FileConfig config) {
         this.menu = menu;
         this.config = config;
         this.defaultItems = new LinkedHashMap<>();
@@ -42,11 +42,11 @@ public class MenuLoader {
         }
     }
 
-    public void addDefaultItem(@NotNull MenuItem.Builder builder) {
+    public void addDefaultItem(MenuItem.@NonNull Builder builder) {
         this.addDefaultItem(builder.build());
     }
 
-    public void addDefaultItem(@NotNull MenuItem menuItem) {
+    public void addDefaultItem(@NonNull MenuItem menuItem) {
         NightItem item = menuItem.getItem();
         ItemHandler handler = menuItem.getHandler();
 
@@ -57,7 +57,8 @@ public class MenuLoader {
         }
         else {
             String displayName = item.getDisplayName();
-            String stripped = displayName == null ? null : Strings.filterForVariable(NightMessage.stripTags(displayName));
+            String stripped = displayName == null ? null : Strings.filterForVariable(NightMessage.stripTags(
+                displayName));
             if (stripped != null && !stripped.isBlank()) {
                 name = stripped;
             }
@@ -73,13 +74,13 @@ public class MenuLoader {
         this.defaultItems.put(name, menuItem);
     }
 
-    @NotNull
-    public ItemHandler addHandler(@NotNull String name, @NotNull ItemClick click) {
+    @NonNull
+    public ItemHandler addHandler(@NonNull String name, @NonNull ItemClick click) {
         return this.addHandler(new ItemHandler(name, click));
     }
 
-    @NotNull
-    public ItemHandler addHandler(@NotNull ItemHandler handler) {
+    @NonNull
+    public ItemHandler addHandler(@NonNull ItemHandler handler) {
         this.handlerMap.put(handler.getName(), handler);
         return handler;
     }
@@ -96,12 +97,15 @@ public class MenuLoader {
             config.remove("Settings.Size");
         }
 
-        MenuType menuType = BukkitThing.getMenuType(ConfigValue.create("Settings.MenuType", BukkitThing.getAsString(this.menu.getMenuType())).read(config));
+        MenuType menuType = BukkitThing.getMenuType(ConfigValue.create("Settings.MenuType", BukkitThing.getAsString(
+            this.menu.getMenuType())).read(config));
 
         this.menu.setMenuType(menuType == null ? MenuType.GENERIC_9X3 : menuType);
         this.menu.setTitle(ConfigValue.create("Settings.Title", this.menu.getTitle()).read(config));
-        this.menu.setAutoRefreshInterval(ConfigValue.create("Settings.Auto_Refresh", this.menu.getAutoRefreshInterval()).read(config));
-        this.menu.setApplyPlaceholderAPI(ConfigValue.create("Settings.PlaceholderAPI.Enabled", this.menu.isApplyPlaceholderAPI()).read(config));
+        this.menu.setAutoRefreshInterval(ConfigValue.create("Settings.Auto_Refresh", this.menu.getAutoRefreshInterval())
+            .read(config));
+        this.menu.setApplyPlaceholderAPI(ConfigValue.create("Settings.PlaceholderAPI.Enabled", this.menu
+            .isApplyPlaceholderAPI()).read(config));
     }
 
     private static MenuType getNewType(InventoryType oldType, int oldSize) {
@@ -156,7 +160,8 @@ public class MenuLoader {
             "> [MenuType] : String | Represents the menu type. Allowed values: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/MenuType.html",
             "> [Title] : String | Sets menu title.",
             "> [Auto_Refresh] : Integer | Defines menu refresh rate in seconds. Set 0 to disable.",
-            "> [PlaceholderAPI -> Enabled] : Boolean | When enabled, applies " + PAPI.NAME + " placeholders for all items in the menu per player.",
+            "> [PlaceholderAPI -> Enabled] : Boolean | When enabled, applies " + PAPI.NAME +
+                " placeholders for all items in the menu per player.",
             " ",
             "=".repeat(20) + " [SECTION] CONTENT " + "=".repeat(20),
             "You can freely edit items in this section as you wish (add, remove, modify items).",
@@ -166,7 +171,8 @@ public class MenuLoader {
             "> [Slots] : Int Array | Item slots, starts from 0. Split with commas.",
             "    Slots: '0,4,9,10'",
             "> [Type] : String | Defines item click action.",
-            "    [*] Available types: [" + String.join(", ", handlerMap.keySet().stream().map(str -> "'" + str + "'").toList()) + "]",
+            "    [*] Available types: [" + String.join(", ", handlerMap.keySet().stream().map(str -> "'" + str + "'")
+                .toList()) + "]",
             "> [Click_Commands] : Section | Executes commands on click with " + PAPI.NAME + " support.",
             "    [*] Works only if [Type] is not set (null).",
             "    [*] Available click types: [" + Enums.inline(ClickKey.class) + "]",
@@ -182,8 +188,8 @@ public class MenuLoader {
         this.config.setComments("Settings", list);
     }
 
-    @NotNull
-    protected MenuItem readItem(@NotNull String path) {
+    @NonNull
+    protected MenuItem readItem(@NonNull String path) {
         NightItem item = config.getCosmeticItem(path + ".Item");
         int priority = config.getInt(path + ".Priority");
         int[] slots = config.getIntArray(path + ".Slots");
@@ -218,7 +224,7 @@ public class MenuLoader {
         return new MenuItem(item, priority, slots, handler);
     }
 
-    protected void writeItem(@NotNull MenuItem menuItem, @NotNull String path) {
+    protected void writeItem(@NonNull MenuItem menuItem, @NonNull String path) {
         this.config.set(path + ".Priority", menuItem.getPriority());
         this.config.set(path + ".Item", menuItem.getItem());
         this.config.setIntArray(path + ".Slots", menuItem.getSlots());

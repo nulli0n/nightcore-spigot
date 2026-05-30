@@ -1,12 +1,13 @@
 package su.nightexpress.nightcore.bridge.chat;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
-
 import java.util.Set;
 import java.util.function.Consumer;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
 public interface UniversalChatEvent {
 
@@ -14,15 +15,18 @@ public interface UniversalChatEvent {
 
     void setCancelled(boolean cancelled);
 
-    @NotNull Player getPlayer();
+    @NonNull
+    Player getPlayer();
 
-    @NotNull Set<CommandSender> viewers();
+    @NonNull
+    Set<CommandSender> viewers();
 
-    void editViewers(@NotNull Consumer<Set<CommandSender>> consumer);
+    void editViewers(@NonNull Consumer<Set<CommandSender>> consumer);
 
-    void renderer(@NotNull UniversalChatRenderer renderer);
+    void renderer(@NonNull UniversalChatRenderer renderer);
 
-    @NotNull String message();
+    @NonNull
+    String message();
 
-    void message(@NotNull NightComponent component);
+    void message(@NonNull NightComponent component);
 }

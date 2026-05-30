@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.manager.AbstractListener;
 import su.nightexpress.nightcore.util.NumberUtil;
@@ -16,7 +16,7 @@ import java.util.HashSet;
 @Deprecated
 public class DialogListener extends AbstractListener<NightCore> {
 
-    public DialogListener(@NotNull NightCore plugin) {
+    public DialogListener(@NonNull NightCore plugin) {
         super(plugin);
     }
 

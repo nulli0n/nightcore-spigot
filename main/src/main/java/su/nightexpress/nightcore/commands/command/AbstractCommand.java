@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.commands.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.commands.CommandRequirement;
@@ -27,28 +27,28 @@ import java.util.List;
 public abstract class AbstractCommand<N extends ExecutableNode> extends Command implements NightCommand {
 
     private final NightPlugin plugin;
-    private final N root;
+    private final N           root;
 
-    public AbstractCommand(@NotNull NightPlugin plugin, @NotNull N root, @NotNull List<String> aliases) {
+    public AbstractCommand(@NonNull NightPlugin plugin, @NonNull N root, @NonNull List<String> aliases) {
         super(clean(root.getName()), clean(root.getDescription()), clean(root.getUsage()), aliases);
         this.plugin = plugin;
         this.root = root;
         this.setPermission(root.getPermission());
     }
 
-    @NotNull
-    private static String clean(@NotNull String string) {
+    @NonNull
+    private static String clean(@NonNull String string) {
         return NightMessage.stripTags(string);
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightPlugin getPlugin() {
         return this.plugin;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public N getRoot() {
         return this.root;
     }
@@ -69,7 +69,7 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getName() {
         return super.getName();
     }
@@ -81,31 +81,32 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getLabel() {
         return super.getLabel();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public List<String> getAliases() {
         return super.getAliases();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getDescription() {
         return super.getDescription();
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getUsage() {
         return super.getUsage();
     }
 
     @Nullable
-    private CommandContext parseNodes(@NotNull CommandNode node, @NotNull ArgumentReader reader, @NotNull CommandContextBuilder builder, boolean forExecution) {
+    private CommandContext parseNodes(@NonNull CommandNode node, @NonNull ArgumentReader reader,
+                                      @NonNull CommandContextBuilder builder, boolean forExecution) {
         CommandSender sender = builder.getSender();
         if (!this.testRequirements(sender, node, forExecution)) return null;
 
@@ -161,7 +162,8 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
         return true;
     }
 
-    private void listSuggestions(@NotNull CommandNode node, @NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
+    private void listSuggestions(@NonNull CommandNode node, @NonNull ArgumentReader reader,
+                                 @NonNull CommandContext context, @NonNull Suggestions suggestions) {
         if (reader.isEnd()) return;
 
         reader.moveForward();
@@ -181,15 +183,16 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
     }
 
     @Nullable
-    private CommandContext parse(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, boolean forExecution) {
+    private CommandContext parse(@NonNull CommandSender sender, @NonNull String label, @NonNull String[] args,
+                                 boolean forExecution) {
         ArgumentReader reader = ArgumentReader.forArgumentsWithLabel(label, args);
         CommandContextBuilder builder = new CommandContextBuilder(this.plugin, sender, this.root, reader.getString());
 
         return this.parseNodes(this.root, reader, builder, forExecution);
     }
-    
+
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {
+    public boolean execute(@NonNull CommandSender sender, @NonNull String label, @NonNull String @NonNull [] args) {
         CommandContext context = this.parse(sender, label, args, true);
         if (context == null) return false;
 
@@ -200,8 +203,9 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
     }
 
     @Override
-    @NotNull
-    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {
+    @NonNull
+    public List<String> tabComplete(@NonNull CommandSender sender, @NonNull String label,
+                                    @NonNull String @NonNull [] args) {
         if (args.length == 0) return Collections.emptyList();
 
         CommandContext context = this.parse(sender, label, args, false);

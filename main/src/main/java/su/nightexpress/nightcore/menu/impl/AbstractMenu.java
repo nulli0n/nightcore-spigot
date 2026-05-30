@@ -7,8 +7,8 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.event.PlayerOpenMenuEvent;
 import su.nightexpress.nightcore.dialog.Dialog;
@@ -33,11 +33,11 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         getActiveMenus().forEach(Menu::close);
     }
 
-    public static void closeAll(@NotNull NightCorePlugin plugin) {
+    public static void closeAll(@NonNull NightCorePlugin plugin) {
         getActiveMenus().forEach(menu -> menu.close(plugin));
     }
 
-    public static void clearAll(@NotNull NightCorePlugin plugin) {
+    public static void clearAll(@NonNull NightCorePlugin plugin) {
         getActiveMenus().stream().distinct().forEach(Menu::clear);
     }
 
@@ -45,7 +45,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         return new HashSet<>(PLAYER_MENUS.values());
     }
 
-    public static void purge(@NotNull Player player) {
+    public static void purge(@NonNull Player player) {
         Menu menu = getMenu(player);
         if (menu == null) return;
 
@@ -58,24 +58,24 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     protected final Map<UUID, MenuViewer> viewers;
     protected final Set<MenuItem>         items;
 
-    public AbstractMenu(@NotNull P plugin) {
+    public AbstractMenu(@NonNull P plugin) {
         this(plugin, "NC Inventory", InventoryType.CHEST);
     }
 
-    public AbstractMenu(@NotNull P plugin, @NotNull String title, @NotNull InventoryType type) {
+    public AbstractMenu(@NonNull P plugin, @NonNull String title, @NonNull InventoryType type) {
         this(plugin, new MenuOptions(title, type));
     }
 
     @Deprecated
-    public AbstractMenu(@NotNull P plugin, @NotNull String title, int size) {
+    public AbstractMenu(@NonNull P plugin, @NonNull String title, int size) {
         this(plugin, new MenuOptions(title, size, InventoryType.CHEST));
     }
 
-    public AbstractMenu(@NotNull P plugin, @NotNull String title, @NotNull MenuSize size) {
+    public AbstractMenu(@NonNull P plugin, @NonNull String title, @NonNull MenuSize size) {
         this(plugin, new MenuOptions(title, size));
     }
 
-    public AbstractMenu(@NotNull P plugin, @NotNull MenuOptions options) {
+    public AbstractMenu(@NonNull P plugin, @NonNull MenuOptions options) {
         this.plugin = plugin;
         this.id = UUID.randomUUID();
         this.options = new MenuOptions(options);
@@ -84,7 +84,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     @Nullable
-    public static Menu getMenu(@NotNull Player player) {
+    public static Menu getMenu(@NonNull Player player) {
         return PLAYER_MENUS.get(player.getUniqueId());
     }
 
@@ -102,10 +102,11 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     @Override
-    public void close(@NotNull Player player) {
+    public void close(@NonNull Player player) {
         Menu current = getMenu(player);
 
-        if (current == this && player.getOpenInventory().getType() != InventoryType.CRAFTING && player.getOpenInventory().getType() != InventoryType.CREATIVE) {
+        if (current == this && player.getOpenInventory().getType() != InventoryType.CRAFTING && player
+            .getOpenInventory().getType() != InventoryType.CREATIVE) {
             player.closeInventory();
         }
         else {
@@ -114,7 +115,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     @Override
-    public boolean close(@NotNull NightCorePlugin plugin) {
+    public boolean close(@NonNull NightCorePlugin plugin) {
         if (this.plugin == plugin) {
             this.close();
             return true;
@@ -123,27 +124,27 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     @Override
-    public void runNextTick(@NotNull Runnable runnable) {
+    public void runNextTick(@NonNull Runnable runnable) {
         this.plugin.runTask(runnable);
     }
 
     @Override
-    public void flush(@NotNull Player player) {
+    public void flush(@NonNull Player player) {
         this.open(player);
     }
 
     @Override
-    public boolean canOpen(@NotNull Player player) {
+    public boolean canOpen(@NonNull Player player) {
         return !player.isSleeping();
     }
 
     @Override
-    public boolean open(@NotNull MenuViewer viewer) {
+    public boolean open(@NonNull MenuViewer viewer) {
         return this.open(viewer.getPlayer());
     }
 
     @Override
-    public boolean open(@NotNull Player player) {
+    public boolean open(@NonNull Player player) {
         if (!this.canOpen(player)) {
             this.purgeViewer(player);
             return false;
@@ -172,12 +173,14 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
         Inventory inventory = viewer.getInventory();
         if (inventory == null) {
-            this.plugin.debug("Could not create " + this.getClass().getSimpleName() + " menu for '" + player.getName() + "'.");
+            this.plugin.debug("Could not create " + this.getClass().getSimpleName() + " menu for '" + player.getName() +
+                "'.");
             this.purgeViewer(player);
             return false;
         }
         if (inventory.getType() == InventoryType.CRAFTING) {
-            this.plugin.warn("Got CRAFTING inventory when trying to open " + this.getClass().getSimpleName() + " menu for '" + player.getName() + "'.");
+            this.plugin.warn("Got CRAFTING inventory when trying to open " + this.getClass().getSimpleName() +
+                " menu for '" + player.getName() + "'.");
             this.purgeViewer(player);
             return false;
         }
@@ -198,12 +201,12 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
         return true;
     }
 
-    protected abstract void onPrepare(@NotNull MenuViewer viewer, @NotNull MenuOptions options);
+    protected abstract void onPrepare(@NonNull MenuViewer viewer, @NonNull MenuOptions options);
 
-    protected abstract void onReady(@NotNull MenuViewer viewer, @NotNull Inventory inventory);
+    protected abstract void onReady(@NonNull MenuViewer viewer, @NonNull Inventory inventory);
 
     @Override
-    public void onClick(@NotNull MenuViewer viewer, @NotNull ClickResult result, @NotNull InventoryClickEvent event) {
+    public void onClick(@NonNull MenuViewer viewer, @NonNull ClickResult result, @NonNull InventoryClickEvent event) {
         event.setCancelled(true);
 
         if (result.isInventory()) return;
@@ -217,20 +220,21 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     @Override
-    public void onDrag(@NotNull MenuViewer viewer, @NotNull InventoryDragEvent event) {
+    public void onDrag(@NonNull MenuViewer viewer, @NonNull InventoryDragEvent event) {
         event.setCancelled(true);
     }
 
     @Override
-    public void onClose(@NotNull MenuViewer viewer, @NotNull InventoryCloseEvent event) {
+    public void onClose(@NonNull MenuViewer viewer, @NonNull InventoryCloseEvent event) {
         this.onClose(viewer.getPlayer());
     }
 
-    public void onClose(@NotNull Player player) {
+    public void onClose(@NonNull Player player) {
         MenuViewer viewer = this.purgeViewer(player);
 
         // Do not clear link if entered Editor, so it can reopen menu without data loss when done.
-        if (viewer != null && this instanceof Linked<?> linked && (!linked.isLinkPersistent() && !Dialog.contains(player))) {
+        if (viewer != null && this instanceof Linked<?> linked && (!linked.isLinkPersistent() && !Dialog.contains(
+            player))) {
             linked.getLink().clear(viewer);
         }
 
@@ -242,7 +246,7 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     @Nullable
-    private MenuViewer purgeViewer(@NotNull Player player) {
+    private MenuViewer purgeViewer(@NonNull Player player) {
         MenuViewer viewer = this.viewers.remove(player.getUniqueId());
         if (viewer != null) {
             this.getItems().removeIf(menuItem -> menuItem.getOptions().canBeDestroyed(viewer));
@@ -256,28 +260,27 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Collection<MenuViewer> getViewers() {
         return this.getViewersMap().values();
     }
 
     @Override
     @Nullable
-    public MenuViewer getViewer(@NotNull Player player) {
+    public MenuViewer getViewer(@NonNull Player player) {
         return this.getViewersMap().get(player.getUniqueId());
     }
 
     @Override
-    @NotNull
-    public MenuViewer getViewerOrCreate(@NotNull Player player) {
+    @NonNull
+    public MenuViewer getViewerOrCreate(@NonNull Player player) {
         return this.getViewersMap().computeIfAbsent(player.getUniqueId(), k -> new MenuViewer(player));
     }
 
 
-
     @Override
-    @NotNull
-    public List<MenuItem> getItems(@NotNull MenuViewer viewer) {
+    @NonNull
+    public List<MenuItem> getItems(@NonNull MenuViewer viewer) {
         return this.getItems().stream()
             .filter(menuItem -> menuItem.canSee(viewer))
             .sorted(Comparator.comparingInt(MenuItem::getPriority)).toList();
@@ -293,52 +296,52 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
 
     @Override
     @Nullable
-    public MenuItem getItem(@NotNull MenuViewer viewer, int slot) {
+    public MenuItem getItem(@NonNull MenuViewer viewer, int slot) {
         return this.getItems(viewer).stream()
             .filter(menuItem -> Lists.contains(menuItem.getSlots(), slot))
             .max(Comparator.comparingInt(MenuItem::getPriority)).orElse(null);
     }
 
     @Override
-    @NotNull
-    public MenuItem addItem(@NotNull ItemStack item, int... slots) {
+    @NonNull
+    public MenuItem addItem(@NonNull ItemStack item, int... slots) {
         return this.addItem(new MenuItem(item, slots));
     }
 
     @Override
-    @NotNull
-    public MenuItem addWeakItem(@NotNull Player player, @NotNull ItemStack item, int... slots) {
+    @NonNull
+    public MenuItem addWeakItem(@NonNull Player player, @NonNull ItemStack item, int... slots) {
         MenuItem menuItem = new MenuItem(item, slots);
         menuItem.setOptions(ItemOptions.personalWeak(player));
         return this.addItem(menuItem);
     }
 
     @Override
-    @NotNull
-    public MenuItem addItem(@NotNull MenuItem menuItem) {
+    @NonNull
+    public MenuItem addItem(@NonNull MenuItem menuItem) {
         this.getItems().add(menuItem);
         return menuItem;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public UUID getId() {
         return id;
     }
 
-    @NotNull
+    @NonNull
     private Map<UUID, MenuViewer> getViewersMap() {
         return viewers;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Set<MenuItem> getItems() {
         return items;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public MenuOptions getOptions() {
         return options;
     }

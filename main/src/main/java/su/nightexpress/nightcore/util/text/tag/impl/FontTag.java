@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.ContentTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
@@ -16,12 +16,12 @@ public class FontTag extends Tag implements ContentTag {
 
     @Override
     @Nullable
-    public FontDecorator parse(@NotNull String str) {
+    public FontDecorator parse(@NonNull String str) {
         return new FontDecorator(str);
     }
 
-    @NotNull
-    public String wrap(@NotNull String text, @NotNull String fontName) {
+    @NonNull
+    public String wrap(@NonNull String text, @NonNull String fontName) {
         return TagUtils.wrapContent(this, text, fontName);
     }
 }

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.type;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogTypeAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
@@ -10,21 +10,22 @@ import su.nightexpress.nightcore.bridge.dialog.wrap.button.WrappedActionButton;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public record WrappedDialogListType(@NotNull List<WrappedDialog> dialogs,
+public record WrappedDialogListType(@NonNull List<WrappedDialog> dialogs,
                                     @Nullable WrappedActionButton exitAction,
                                     int columns,
                                     int buttonWidth) implements WrappedDialogType {
 
     @Override
-    @NotNull
-    public <T> T adapt(@NotNull DialogTypeAdapter<T> factory) {
+    @NonNull
+    public <T> T adapt(@NonNull DialogTypeAdapter<T> factory) {
         return factory.adaptType(this);
     }
 
     @Override
-    @NotNull
-    public WrappedDialogListType replace(@NotNull UnaryOperator<String> operator) {
-        return new WrappedDialogListType(List.copyOf(this.dialogs), this.exitAction == null ? null : this.exitAction.replace(operator), this.columns, this.buttonWidth);
+    @NonNull
+    public WrappedDialogListType replace(@NonNull UnaryOperator<String> operator) {
+        return new WrappedDialogListType(List.copyOf(this.dialogs), this.exitAction == null ? null : this.exitAction
+            .replace(operator), this.columns, this.buttonWidth);
     }
 
     public static final class Builder {
@@ -35,29 +36,29 @@ public record WrappedDialogListType(@NotNull List<WrappedDialog> dialogs,
         private int                 columns     = 2;
         private int                 buttonWidth = DialogDefaults.DEFAULT_BUTTON_WIDTH;
 
-        public Builder(@NotNull List<WrappedDialog> dialogs) {
+        public Builder(@NonNull List<WrappedDialog> dialogs) {
             this.dialogs = dialogs;
         }
 
-        @NotNull
+        @NonNull
         public Builder exitAction(@Nullable WrappedActionButton exitAction) {
             this.exitAction = exitAction;
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder columns(int columns) {
             this.columns = Math.max(1, columns);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public Builder buttonWidth(int buttonWidth) {
             this.buttonWidth = DialogDefaults.clampWidth(buttonWidth);
             return this;
         }
 
-        @NotNull
+        @NonNull
         public WrappedDialogListType build() {
             return new WrappedDialogListType(this.dialogs, this.exitAction, this.columns, this.buttonWidth);
         }

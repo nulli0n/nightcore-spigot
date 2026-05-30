@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.commands.command;
 
 import org.bukkit.command.PluginIdentifiableCommand;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.commands.Commands;
 import su.nightexpress.nightcore.commands.builder.ExecutableNodeBuilder;
@@ -22,9 +22,11 @@ import java.util.function.Function;
 
 public interface NightCommand extends PluginIdentifiableCommand {
 
-    @NotNull NightPlugin getPlugin();
+    @NonNull
+    NightPlugin getPlugin();
 
-    @NotNull CommandNode getRoot();
+    @NonNull
+    CommandNode getRoot();
 
     boolean register();
 
@@ -32,20 +34,26 @@ public interface NightCommand extends PluginIdentifiableCommand {
 
     boolean isRegistered();
 
-    @NotNull String getName();
+    @NonNull
+    String getName();
 
-    @Nullable String getPermission();
+    @Nullable
+    String getPermission();
 
-    @NotNull String getLabel();
+    @NonNull
+    String getLabel();
 
-    @NotNull List<String> getAliases();
+    @NonNull
+    List<String> getAliases();
 
-    @NotNull String getDescription();
+    @NonNull
+    String getDescription();
 
-    @NotNull String getUsage();
+    @NonNull
+    String getUsage();
 
-    @NotNull
-    static HubCommand forPlugin(@NotNull NightPlugin plugin, @NotNull Consumer<HubNodeBuilder> consumer) {
+    @NonNull
+    static HubCommand forPlugin(@NonNull NightPlugin plugin, @NonNull Consumer<HubNodeBuilder> consumer) {
         String[] aliases = plugin.getDetails().getCommandAliases();
 
         return hub(plugin, aliases, builder -> {
@@ -54,45 +62,51 @@ public interface NightCommand extends PluginIdentifiableCommand {
         });
     }
 
-    @NotNull
-    static LiteralCommand literal(@NotNull NightPlugin plugin, @NotNull LiteralNode node) {
+    @NonNull
+    static LiteralCommand literal(@NonNull NightPlugin plugin, @NonNull LiteralNode node) {
         return new LiteralCommand(plugin, node, Collections.emptyList());
     }
 
-    @NotNull
-    static LiteralCommand literal(@NotNull NightPlugin plugin, @NotNull String name, @NotNull Consumer<LiteralNodeBuilder> consumer) {
+    @NonNull
+    static LiteralCommand literal(@NonNull NightPlugin plugin, @NonNull String name,
+                                  @NonNull Consumer<LiteralNodeBuilder> consumer) {
         return literal(plugin, new String[]{name}, consumer);
     }
 
-    @NotNull
-    static LiteralCommand literal(@NotNull NightPlugin plugin, @NotNull String[] names, @NotNull Consumer<LiteralNodeBuilder> consumer) {
-        return create(plugin, names, Commands::literal, (root, aliases) -> new LiteralCommand(plugin, root, aliases),consumer);
+    @NonNull
+    static LiteralCommand literal(@NonNull NightPlugin plugin, @NonNull String[] names,
+                                  @NonNull Consumer<LiteralNodeBuilder> consumer) {
+        return create(plugin, names, Commands::literal, (root, aliases) -> new LiteralCommand(plugin, root, aliases),
+            consumer);
     }
 
-    @NotNull
-    static HubCommand hub(@NotNull NightPlugin plugin, @NotNull HubNode node) {
+    @NonNull
+    static HubCommand hub(@NonNull NightPlugin plugin, @NonNull HubNode node) {
         return new HubCommand(plugin, node, Collections.emptyList());
     }
 
-    @NotNull
-    static HubCommand hub(@NotNull NightPlugin plugin, @NotNull String name, @NotNull Consumer<HubNodeBuilder> consumer) {
+    @NonNull
+    static HubCommand hub(@NonNull NightPlugin plugin, @NonNull String name,
+                          @NonNull Consumer<HubNodeBuilder> consumer) {
         return hub(plugin, new String[]{name}, consumer);
     }
 
-    @NotNull
-    static HubCommand hub(@NotNull NightPlugin plugin, @NotNull String[] names, @NotNull Consumer<HubNodeBuilder> consumer) {
-        return create(plugin, names, Commands::hub, (root, aliases) -> new HubCommand(plugin, root, aliases),consumer);
+    @NonNull
+    static HubCommand hub(@NonNull NightPlugin plugin, @NonNull String[] names,
+                          @NonNull Consumer<HubNodeBuilder> consumer) {
+        return create(plugin, names, Commands::hub, (root, aliases) -> new HubCommand(plugin, root, aliases), consumer);
     }
 
-    @NotNull
+    @NonNull
     static <C extends NightCommand, N extends ExecutableNode, B extends ExecutableNodeBuilder<N, B>> C create(
-        @NotNull NightPlugin plugin,
-        @NotNull String[] names,
-        @NotNull Function<String, B> builderFunction,
-        @NotNull BiFunction<N, List<String>, C> commandFunction,
-        @NotNull Consumer<B> consumer
+                                                                                                              @NonNull NightPlugin plugin,
+                                                                                                              @NonNull String[] names,
+                                                                                                              @NonNull Function<String, B> builderFunction,
+                                                                                                              @NonNull BiFunction<N, List<String>, C> commandFunction,
+                                                                                                              @NonNull Consumer<B> consumer
     ) {
-        if (names == null || names.length == 0) throw new IllegalStateException("Could not create root node for empty aliases!");
+        if (names == null || names.length == 0)
+            throw new IllegalStateException("Could not create root node for empty aliases!");
 
         List<String> aliases = Lists.newList(names);
 

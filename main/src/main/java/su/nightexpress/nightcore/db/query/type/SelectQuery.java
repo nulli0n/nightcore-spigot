@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.query.type;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.connection.AbstractConnector;
 import su.nightexpress.nightcore.db.query.Query;
 import su.nightexpress.nightcore.db.query.data.Wheres;
@@ -25,16 +25,16 @@ public class SelectQuery<T> implements Query {
 
     private int amount;
 
-    public SelectQuery(@NotNull Function<ResultSet, T> rowMapper) {
+    public SelectQuery(@NonNull Function<ResultSet, T> rowMapper) {
         this.columns = new ArrayList<>();
         this.wheres = new Wheres<>();
         this.rowMapper = rowMapper;
         this.amount = -1;
     }
-    
+
     @Override
-    @NotNull
-    public String toSQL(@NotNull String table) {
+    @NonNull
+    public String toSQL(@NonNull String table) {
         String columns = String.join(",", this.columns);
 
         return "SELECT " + columns + " FROM " + table + " " + this.wheres.toSQL();
@@ -45,14 +45,15 @@ public class SelectQuery<T> implements Query {
         return this.columns.isEmpty();
     }
 
-    @NotNull
-    public List<T> execute(@NotNull AbstractConnector connector, @NotNull String table) throws SQLException {
+    @NonNull
+    public List<T> execute(@NonNull AbstractConnector connector, @NonNull String table) throws SQLException {
         if (this.isEmpty()) return Collections.emptyList();
 
         String sql = this.toSQL(table).trim();
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             int paramCount = 1;
 
@@ -78,33 +79,34 @@ public class SelectQuery<T> implements Query {
         return Collections.emptyList();
     }
 
-    @NotNull
+    @NonNull
     public SelectQuery<T> limit(int amount) {
         this.amount = Math.abs(amount);
         return this;
     }
 
-    @NotNull
+    @NonNull
     public SelectQuery<T> all() {
         this.columns.clear();
         this.columns.add("*");
         return this;
     }
 
-    @NotNull
-    public SelectQuery<T> column(@NotNull Column column) {
+    @NonNull
+    public SelectQuery<T> column(@NonNull Column column) {
         this.columns.add(column.getNameEscaped());
         return this;
     }
 
-    @NotNull
-    public SelectQuery<T> where(@NotNull Column column, @NotNull WhereOperator operator, @NotNull String string) {
+    @NonNull
+    public SelectQuery<T> where(@NonNull Column column, @NonNull WhereOperator operator, @NonNull String string) {
         this.wheres.where(column, operator, string);
         return this;
     }
 
-    @NotNull
-    public SelectQuery<T> whereIgnoreCase(@NotNull Column column, @NotNull WhereOperator operator, @NotNull String string) {
+    @NonNull
+    public SelectQuery<T> whereIgnoreCase(@NonNull Column column, @NonNull WhereOperator operator,
+                                          @NonNull String string) {
         this.wheres.whereIgnoreCase(column, operator, string);
         return this;
     }

@@ -1,37 +1,37 @@
 package su.nightexpress.nightcore.commands.argument;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class ArgumentReader {
 
     private static final String ARGUMENT_SEPARATOR = " ";
 
     private final String[] args;
-    private final int length;
-    private final String string;
+    private final int      length;
+    private final String   string;
 
     private int cursor;
 
-    public ArgumentReader(@NotNull String[] args) {
+    public ArgumentReader(@NonNull String[] args) {
         this.args = args;
         this.length = args.length;
         this.cursor = 0;
         this.string = String.join(ARGUMENT_SEPARATOR, this.args);
     }
 
-    @NotNull
-    public static ArgumentReader forArgumentsWithLabel(@NotNull String label, @NotNull String[] args) {
+    @NonNull
+    public static ArgumentReader forArgumentsWithLabel(@NonNull String label, @NonNull String[] args) {
         return new ArgumentReader(argumentsWithLabel(label, args));
     }
 
-    private static String[] argumentsWithLabel(@NotNull String label, String[] args) {
+    private static String[] argumentsWithLabel(@NonNull String label, String[] args) {
         String[] withLabel = new String[args.length + 1];
         withLabel[0] = label;
         System.arraycopy(args, 0, withLabel, 1, args.length);
         return withLabel;
     }
 
-    @NotNull
+    @NonNull
     public String getString() {
         return this.string;
     }
@@ -52,12 +52,12 @@ public class ArgumentReader {
         this.setCursor(0);
     }
 
-    @NotNull
+    @NonNull
     public String getArgument(int cursor) {
         return this.args[cursor];
     }
 
-    @NotNull
+    @NonNull
     public String getCursorArgument() {
         return this.getArgument(this.cursor);
     }

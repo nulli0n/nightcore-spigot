@@ -5,8 +5,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.menu.MenuOptions;
 import su.nightexpress.nightcore.menu.MenuViewer;
@@ -24,63 +24,74 @@ public interface Menu {
         this.getViewers().forEach(this::flush);
     }
 
-    default void flush(@NotNull MenuViewer viewer) {
+    default void flush(@NonNull MenuViewer viewer) {
         this.flush(viewer.getPlayer());
     }
 
-    void flush(@NotNull Player player);
+    void flush(@NonNull Player player);
 
-    default boolean isViewer(@NotNull Player player) {
+    default boolean isViewer(@NonNull Player player) {
         return this.getViewer(player) != null;
     }
 
     void close();
 
-    void close(@NotNull Player player);
+    void close(@NonNull Player player);
 
-    boolean close(@NotNull NightCorePlugin plugin);
+    boolean close(@NonNull NightCorePlugin plugin);
 
-    void runNextTick(@NotNull Runnable runnable);
+    void runNextTick(@NonNull Runnable runnable);
 
-    void onClick(@NotNull MenuViewer viewer, @NotNull ClickResult result, @NotNull InventoryClickEvent event);
+    void onClick(@NonNull MenuViewer viewer, @NonNull ClickResult result, @NonNull InventoryClickEvent event);
 
-    void onDrag(@NotNull MenuViewer viewer, @NotNull InventoryDragEvent event);
+    void onDrag(@NonNull MenuViewer viewer, @NonNull InventoryDragEvent event);
 
-    void onClose(@NotNull MenuViewer viewer, @NotNull InventoryCloseEvent event);
+    void onClose(@NonNull MenuViewer viewer, @NonNull InventoryCloseEvent event);
 
-    boolean open(@NotNull MenuViewer viewer);
+    boolean open(@NonNull MenuViewer viewer);
 
-    boolean open(@NotNull Player player);
+    boolean open(@NonNull Player player);
 
-    boolean canOpen(@NotNull Player player);
+    boolean canOpen(@NonNull Player player);
 
     boolean isPersistent();
 
-    @NotNull Collection<MenuViewer> getViewers();
+    @NonNull
+    Collection<MenuViewer> getViewers();
 
-    @Nullable MenuViewer getViewer(@NotNull Player player);
+    @Nullable
+    MenuViewer getViewer(@NonNull Player player);
 
-    @NotNull MenuViewer getViewerOrCreate(@NotNull Player player);
+    @NonNull
+    MenuViewer getViewerOrCreate(@NonNull Player player);
 
 
+    @NonNull
+    List<MenuItem> getItems(@NonNull MenuViewer viewer);
 
-    @NotNull List<MenuItem> getItems(@NotNull MenuViewer viewer);
+    @Nullable
+    MenuItem getItem(int slot);
 
-    @Nullable MenuItem getItem(int slot);
+    @Nullable
+    MenuItem getItem(@NonNull MenuViewer viewer, int slot);
 
-    @Nullable MenuItem getItem(@NotNull MenuViewer viewer, int slot);
+    @NonNull
+    MenuItem addItem(@NonNull ItemStack item, int... slots);
 
-    @NotNull MenuItem addItem(@NotNull ItemStack item, int... slots);
+    @NonNull
+    MenuItem addWeakItem(@NonNull Player player, @NonNull ItemStack item, int... slots);
 
-    @NotNull MenuItem addWeakItem(@NotNull Player player, @NotNull ItemStack item, int... slots);
+    @NonNull
+    MenuItem addItem(@NonNull MenuItem menuItem);
 
-    @NotNull MenuItem addItem(@NotNull MenuItem menuItem);
+    @NonNull
+    UUID getId();
 
-    @NotNull UUID getId();
+    //@NonNull Map<UUID, MenuViewer> getViewersMap();
 
-    //@NotNull Map<UUID, MenuViewer> getViewersMap();
+    @NonNull
+    Set<MenuItem> getItems();
 
-    @NotNull Set<MenuItem> getItems();
-
-    @NotNull MenuOptions getOptions();
+    @NonNull
+    MenuOptions getOptions();
 }

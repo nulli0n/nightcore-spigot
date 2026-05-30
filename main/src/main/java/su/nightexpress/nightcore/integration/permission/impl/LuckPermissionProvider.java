@@ -6,8 +6,8 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.InheritanceNode;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.integration.permission.PermissionPlugins;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
 import su.nightexpress.nightcore.util.LowerCase;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class LuckPermissionProvider implements PermissionProvider {
 
     @Override
-    @NotNull
+    @NonNull
     public String getName() {
         return PermissionPlugins.LUCK_PERMS;
     }
@@ -31,24 +31,24 @@ public class LuckPermissionProvider implements PermissionProvider {
     }
 
     @Nullable
-    private User getUser(@NotNull Player player) {
+    private User getUser(@NonNull Player player) {
         return this.api().getUserManager().getUser(player.getUniqueId());
     }
 
-    @NotNull
-    private CompletableFuture<User> loadUser(@NotNull UUID playerId) {
+    @NonNull
+    private CompletableFuture<User> loadUser(@NonNull UUID playerId) {
         return api().getUserManager().loadUser(playerId);
     }
 
     @Override
     @Nullable
-    public String getPrimaryGroup(@NotNull Player player) {
+    public String getPrimaryGroup(@NonNull Player player) {
         return this.getPrimaryGroup(this.getUser(player));
     }
 
     @Override
-    @NotNull
-    public CompletableFuture<String> getPrimaryGroup(@NotNull UUID playerId) {
+    @NonNull
+    public CompletableFuture<String> getPrimaryGroup(@NonNull UUID playerId) {
         return this.loadUser(playerId).thenApplyAsync(this::getPrimaryGroup);
     }
 
@@ -61,33 +61,34 @@ public class LuckPermissionProvider implements PermissionProvider {
     }
 
     @Override
-    @NotNull
-    public Set<String> getPermissionGroups(@NotNull Player player) {
+    @NonNull
+    public Set<String> getPermissionGroups(@NonNull Player player) {
         return this.getPermissionGroups(this.getUser(player));
     }
 
     @Override
-    @NotNull
-    public CompletableFuture<Set<String>> getPermissionGroups(@NotNull UUID playerId) {
+    @NonNull
+    public CompletableFuture<Set<String>> getPermissionGroups(@NonNull UUID playerId) {
         return this.loadUser(playerId).thenApplyAsync(this::getPermissionGroups);
     }
 
-    @NotNull
+    @NonNull
     private Set<String> getPermissionGroups(@Nullable User user) {
         if (user == null) return Collections.emptySet();
 
-        return user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName).map(LowerCase.USER_LOCALE::apply).collect(Collectors.toSet());
+        return user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName).map(
+            LowerCase.USER_LOCALE::apply).collect(Collectors.toSet());
     }
 
     @Override
     @Nullable
-    public String getPrefix(@NotNull Player player) {
+    public String getPrefix(@NonNull Player player) {
         return this.getPrefix(this.getUser(player));
     }
 
     @Override
-    @NotNull
-    public CompletableFuture<String> getPrefix(@NotNull UUID playerId) {
+    @NonNull
+    public CompletableFuture<String> getPrefix(@NonNull UUID playerId) {
         return this.loadUser(playerId).thenApplyAsync(this::getPrefix);
     }
 
@@ -98,13 +99,13 @@ public class LuckPermissionProvider implements PermissionProvider {
 
     @Override
     @Nullable
-    public String getSuffix(@NotNull Player player) {
+    public String getSuffix(@NonNull Player player) {
         return this.getSuffix(this.getUser(player));
     }
 
     @Override
-    @NotNull
-    public CompletableFuture<String> getSuffix(@NotNull UUID playerId) {
+    @NonNull
+    public CompletableFuture<String> getSuffix(@NonNull UUID playerId) {
         return this.loadUser(playerId).thenApplyAsync(this::getSuffix);
     }
 

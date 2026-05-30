@@ -1,14 +1,8 @@
 package su.nightexpress.nightcore.util.profile;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.profile.PlayerTextures;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.bridge.wrap.NightProfile;
-import su.nightexpress.nightcore.core.CoreConfig;
-import su.nightexpress.nightcore.util.bridge.Software;
-
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,29 +11,44 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
+import org.bukkit.OfflinePlayer;
+import org.bukkit.profile.PlayerTextures;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import su.nightexpress.nightcore.bridge.wrap.NightProfile;
+import su.nightexpress.nightcore.util.bridge.Software;
+
 public class PlayerProfiles {
+
+    private PlayerProfiles() {
+    }
 
     public static final String TEXTURES_HOST = "http://textures.minecraft.net/texture/";
 
+    @Deprecated
     private static final Map<UUID, CachedProfile> CACHED_PROFILES = new ConcurrentHashMap<>();
 
-    @NotNull
-    private static CachedProfile cacheTemporary(@NotNull NightProfile profile) {
+    @NonNull
+    @Deprecated
+    private static CachedProfile cacheTemporary(@NonNull NightProfile profile) {
         return cacheProfile(profile, false, false);
     }
 
-    @NotNull
-    private static CachedProfile cachePermanent(@NotNull NightProfile profile) {
+    /* @NonNull
+    private static CachedProfile cachePermanent(@NonNull NightProfile profile) {
         return cacheProfile(profile, true, false);
-    }
+    } */
 
-    @NotNull
-    public static CachedProfile cacheExact(@NotNull NightProfile profile) {
+    @NonNull
+    @Deprecated
+    public static CachedProfile cacheExact(@NonNull NightProfile profile) {
         return cacheProfile(profile, true, true);
     }
 
-    @NotNull
-    private static CachedProfile cacheProfile(@NotNull NightProfile profile, boolean permanent, boolean noUpdate) {
+    @NonNull
+    @Deprecated
+    private static CachedProfile cacheProfile(@NonNull NightProfile profile, boolean permanent, boolean noUpdate) {
         if (profile.getId() == null) {
             return new CachedProfile(profile, true, true);
         }
@@ -49,8 +58,9 @@ public class PlayerProfiles {
         return cachedProfile;
     }
 
-    @NotNull
-    private static CachedProfile queryOrCache(@NotNull UUID id, @NotNull Supplier<NightProfile> supplier) {
+    @NonNull
+    @Deprecated
+    private static CachedProfile queryOrCache(@NonNull UUID id, @NonNull Supplier<NightProfile> supplier) {
         CachedProfile cached = getCachedProfile(id);
         if (cached != null) {
             return cached;
@@ -60,59 +70,68 @@ public class PlayerProfiles {
     }
 
     @Nullable
-    public static CachedProfile getCachedProfile(@NotNull UUID id) {
+    @Deprecated
+    public static CachedProfile getCachedProfile(@NonNull UUID id) {
         return CACHED_PROFILES.get(id);
     }
 
-    @NotNull
+    @NonNull
+    @Deprecated
     public static Set<CachedProfile> getCachedProfiles() {
         return new HashSet<>(CACHED_PROFILES.values());
     }
 
+    @Deprecated
     public static void clear() {
         CACHED_PROFILES.clear();
     }
 
-    /*public static void inspectProfiles() {
-        purgeProfiles();
-        updateProfiles();
-    }
-
-    public static void updateProfiles() {
-        getCachedProfiles().forEach(cachedProfile -> {
-            if (cachedProfile.isUpdateTime()) {
-                cachedProfile.update();
-            }
-        });
-    }*/
-
+    @Deprecated
     public static void purgeProfiles() {
         CACHED_PROFILES.values().removeIf(CachedProfile::isPurgeTime);
     }
 
-    @NotNull
-    public static CachedProfile getProfile(@NotNull OfflinePlayer player) {
+    @NonNull
+    @Deprecated
+    public static CachedProfile getProfile(@NonNull OfflinePlayer player) {
         return queryOrCache(player.getUniqueId(), () -> Software.get().getProfile(player));
     }
 
-    @NotNull
-    public static CachedProfile createProfile(@NotNull UUID uuid) {
+    @NonNull
+    @Deprecated
+    public static CachedProfile createProfile(@NonNull UUID uuid) {
         return queryOrCache(uuid, () -> Software.get().createProfile(uuid));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static NightProfile createProfile(@NotNull String name) {
-        return Software.get().createProfile(name);
+    public static NightProfile createProfile(@NonNull String name) {
+        return create(name);
     }
 
-    @NotNull
-    public static CachedProfile createProfile(@NotNull UUID uuid, @Nullable String name) {
+    @NonNull
+    @Deprecated
+    public static CachedProfile createProfile(@NonNull UUID uuid, @Nullable String name) {
         return queryOrCache(uuid, () -> Software.get().createProfile(uuid, name));
     }
 
+    public static @NonNull NightProfile create(@NonNull UUID uuid) {
+        return Software.get().createProfile(uuid);
+    }
+
+
+    public static @NonNull NightProfile create(@NonNull String name) {
+        return Software.get().createProfile(name);
+    }
+
+
+    public static @NonNull NightProfile create(@NonNull UUID uuid, @Nullable String name) {
+        return Software.get().createProfile(uuid, name);
+    }
+
     @Nullable
-    public static CachedProfile createProfileBySkinURL(@NotNull String urlData) {
+    @Deprecated
+    public static CachedProfile createProfileBySkinURL(@NonNull String urlData) {
         if (urlData.isBlank()) return null;
 
         String name = urlData.substring(0, 16);
@@ -133,7 +152,7 @@ public class PlayerProfiles {
 
             textures.setSkin(url);
             profile.setTextures(textures);
-            return CoreConfig.PROFILE_FETCH_CUSTOM.get() ? cachePermanent(profile) : cacheExact(profile);
+            return cacheExact(profile);
         }
         catch (Exception exception) {
             exception.printStackTrace();
@@ -141,8 +160,32 @@ public class PlayerProfiles {
         }
     }
 
+
+    public static @NonNull NightProfile createStaticTexturedProfile(@NonNull String url) {
+        try {
+            if (!url.startsWith(TEXTURES_HOST)) {
+                url = TEXTURES_HOST + url;
+            }
+
+            URL skinUrl = new URI(url).toURL();
+            return createStaticTexturedProfile(skinUrl);
+        }
+        catch (URISyntaxException | MalformedURLException exception) {
+            throw new IllegalArgumentException("Could not create profile", exception);
+        }
+    }
+
+    public static @NonNull NightProfile createStaticTexturedProfile(@NonNull URL skinUrl) {
+        NightProfile profile = Software.get().createProfile(null, null);
+        PlayerTextures textures = profile.getTextures();
+
+        textures.setSkin(skinUrl);
+        profile.setTextures(textures);
+        return profile;
+    }
+
     @Nullable
-    public static String getProfileSkinURL(@NotNull NightProfile profile) {
+    public static String getProfileSkinURL(@NonNull NightProfile profile) {
         URL skin = profile.getTextures().getSkin();
         if (skin == null) return null;
 

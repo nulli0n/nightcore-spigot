@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.placeholder;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.StringUtil;
 
 import java.util.ArrayList;
@@ -13,25 +13,23 @@ import java.util.function.UnaryOperator;
 
 public class PlaceholderContext {
 
-    private final int maxRecursion;
+    private final int                         maxRecursion;
     private final List<PlaceholderResolver>   resolvers;
     private final List<UnaryOperator<String>> postReplacers;
 
-    private PlaceholderContext(@NotNull List<PlaceholderResolver> resolvers,
-                               @NotNull List<UnaryOperator<String>> postReplacers,
+    private PlaceholderContext(@NonNull List<PlaceholderResolver> resolvers,
+                               @NonNull List<UnaryOperator<String>> postReplacers,
                                int maxRecursion) {
         this.resolvers = resolvers;
         this.postReplacers = postReplacers;
         this.maxRecursion = maxRecursion;
     }
 
-    @NotNull
-    public static PlaceholderContext.Builder builder() {
+    public static PlaceholderContext.@NonNull Builder builder() {
         return new Builder();
     }
 
-    @NotNull
-    public List<String> apply(@NotNull List<String> list) {
+    public @NonNull List<String> apply(@NonNull List<String> list) {
         if (list.isEmpty()) return List.of();
 
         List<String> result = new ArrayList<>(list.size() + 16);
@@ -46,8 +44,7 @@ public class PlaceholderContext {
         return result;
     }
 
-    @NotNull
-    public String apply(@NotNull String string) {
+    public @NonNull String apply(@NonNull String string) {
         String replaced = StringUtil.replacePlaceholders(string, new RecursiveResolver(0));
 
         for (UnaryOperator<String> postReplacer : this.postReplacers) {
@@ -66,8 +63,7 @@ public class PlaceholderContext {
         }
 
         @Override
-        @Nullable
-        public String resolve(@NotNull String key) {
+        public @Nullable String resolve(@NonNull String key) {
             String value = null;
             for (PlaceholderResolver resolver : PlaceholderContext.this.resolvers) {
                 value = resolver.resolve(key);
@@ -96,10 +92,10 @@ public class PlaceholderContext {
 
         private int maxRecursion = 0;
 
-        private Builder() {}
+        private Builder() {
+        }
 
-        @NotNull
-        public PlaceholderContext build() {
+        public @NonNull PlaceholderContext build() {
             this.resolvers.add(key -> {
                 var supplier = this.directValues.get(key);
                 return supplier == null ? null : supplier.get();
@@ -108,36 +104,30 @@ public class PlaceholderContext {
             return new PlaceholderContext(this.resolvers, this.postReplacers, this.maxRecursion);
         }
 
-        @NotNull
-        public Builder maxRecursion(int maxRecursion) {
+        public @NonNull Builder maxRecursion(int maxRecursion) {
             this.maxRecursion = Math.max(0, maxRecursion);
             return this;
         }
 
-        @NotNull
-        public <T> Builder with(@NotNull TypedPlaceholder<T> placeholder, @NotNull T source) {
+        public <T> @NonNull Builder with(@NonNull TypedPlaceholder<T> placeholder, @NonNull T source) {
             return this.with(placeholder.resolver(source));
         }
 
-        @NotNull
-        public Builder with(@NotNull PlaceholderResolver resolver) {
+        public @NonNull Builder with(@NonNull PlaceholderResolver resolver) {
             this.resolvers.add(resolver);
             return this;
         }
 
-        @NotNull
-        public Builder with(@NotNull Map<String, String> staticValues) {
+        public @NonNull Builder with(@NonNull Map<String, String> staticValues) {
             return this.with(staticValues::get);
         }
 
-        @NotNull
-        public Builder with(@NotNull String key, @NotNull Supplier<String> replacement) {
+        public @NonNull Builder with(@NonNull String key, @NonNull Supplier<String> replacement) {
             this.directValues.put(key, replacement);
             return this;
         }
 
-        @NotNull
-        public Builder andThen(@NotNull UnaryOperator<String> operator) {
+        public @NonNull Builder andThen(@NonNull UnaryOperator<String> operator) {
             this.postReplacers.add(operator);
             return this;
         }

@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.ui.inventory.condition;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.ui.inventory.action.ActionContext;
 import su.nightexpress.nightcore.util.LowerCase;
 
@@ -19,7 +19,7 @@ public class ConditionRegistry {
         this.conditionMap = new HashMap<>();
     }
 
-    public void register(@NotNull String name, @NotNull ItemStateCondition condition) {
+    public void register(@NonNull String name, @NonNull ItemStateCondition condition) {
         String id = LowerCase.INTERNAL.apply(name);
         if (this.conditionMap.containsKey(id)) {
             // TODO Warn or exception
@@ -29,12 +29,12 @@ public class ConditionRegistry {
     }
 
     @Nullable
-    public ItemStateCondition getById(@NotNull String id) {
+    public ItemStateCondition getById(@NonNull String id) {
         return this.conditionMap.get(LowerCase.INTERNAL.apply(id));
     }
 
-    @NotNull
-    public Optional<ItemStateCondition> byId(@NotNull String id) {
+    @NonNull
+    public Optional<ItemStateCondition> byId(@NonNull String id) {
         return Optional.ofNullable(this.getById(id));
     }
 }

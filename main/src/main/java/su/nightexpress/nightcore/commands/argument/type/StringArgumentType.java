@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.commands.argument.type;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.commands.SuggestionsProvider;
 import su.nightexpress.nightcore.commands.argument.ArgumentReader;
 import su.nightexpress.nightcore.commands.argument.ArgumentType;
@@ -20,14 +20,15 @@ public class StringArgumentType implements ArgumentType<String>, SuggestionsProv
     }
 
     @Override
-    @NotNull
-    public String parse(@NotNull CommandContextBuilder contextBuilder, @NotNull String string) throws CommandSyntaxException {
+    @NonNull
+    public String parse(@NonNull CommandContextBuilder contextBuilder,
+                        @NonNull String string) throws CommandSyntaxException {
         return string;
     }
 
     @Override
-    @NotNull
-    public List<String> suggest(@NotNull ArgumentReader reader, @NotNull CommandContext context) {
+    @NonNull
+    public List<String> suggest(@NonNull ArgumentReader reader, @NonNull CommandContext context) {
         return Lists.newList("...");
     }
 

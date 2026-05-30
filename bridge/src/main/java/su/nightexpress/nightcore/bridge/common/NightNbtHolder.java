@@ -1,47 +1,45 @@
 package su.nightexpress.nightcore.bridge.common;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.util.Numbers;
-
 import java.util.Optional;
 
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import su.nightexpress.nightcore.util.Numbers;
+
+@NullMarked
 public class NightNbtHolder {
 
     private final JsonObject payload;
 
-    private NightNbtHolder(@NotNull JsonObject payload) {
+    private NightNbtHolder(JsonObject payload) {
         this.payload = payload;
     }
 
-    @NotNull
-    public static NightNbtHolder fromJson(@NotNull JsonElement nbt) {
+    public static NightNbtHolder fromJson(JsonElement nbt) {
         return new NightNbtHolder(nbt instanceof JsonObject object ? object : nbt.getAsJsonObject());
     }
 
-    @NotNull
     public static Builder builder() {
         return new Builder();
     }
 
-    @NotNull
     public JsonElement payload() {
         return this.payload;
     }
 
-    @NotNull
     public String asString() {
         return this.payload.toString();
     }
 
-    @NotNull
-    public Optional<JsonElement> get(@NotNull String key) {
+    public Optional<JsonElement> get(String key) {
         return !this.payload.has(key) ? Optional.empty() : Optional.of(this.payload.get(key));
     }
 
-    private static boolean asBoolean(JsonElement element) {
+    private static boolean asBoolean(@Nullable JsonElement element) {
         if (element == null || element.isJsonNull()) return false;
 
         if (element.isJsonPrimitive()) {
@@ -62,7 +60,7 @@ public class NightNbtHolder {
     }
 
     @Nullable
-    private static Integer asInt(JsonElement element) {
+    private static Integer asInt(@Nullable JsonElement element) {
         if (element == null || element.isJsonNull()) return null;
 
         if (element.isJsonPrimitive()) {
@@ -80,7 +78,7 @@ public class NightNbtHolder {
     }
 
     @Nullable
-    private static Float asFloat(JsonElement element) {
+    private static Float asFloat(@Nullable JsonElement element) {
         if (element == null || element.isJsonNull()) return null;
 
         if (element.isJsonPrimitive()) {
@@ -98,7 +96,7 @@ public class NightNbtHolder {
     }
 
     @Nullable
-    private static Double asDouble(JsonElement element) {
+    private static Double asDouble(@Nullable JsonElement element) {
         if (element == null || element.isJsonNull()) return null;
 
         if (element.isJsonPrimitive()) {
@@ -115,52 +113,47 @@ public class NightNbtHolder {
         return null;
     }
 
-    @NotNull
-    public Optional<String> getText(@NotNull String key) {
+    public Optional<String> getText(String key) {
         return this.get(key).map(JsonElement::getAsString);
     }
 
-    @NotNull
-    public String getText(@NotNull String key, @NotNull String fallback) {
+    public String getText(String key, String fallback) {
         return this.getText(key).orElse(fallback);
     }
 
-    @NotNull
-    public Optional<Boolean> getBoolean(@NotNull String key) {
+    public Optional<Boolean> getBoolean(String key) {
         return this.get(key).map(NightNbtHolder::asBoolean);
     }
 
-    public boolean getBoolean(@NotNull String key, boolean fallback) {
-        return this.getBoolean(key).orElse(false);
+    public boolean getBoolean(String key, boolean fallback) {
+        return this.getBoolean(key).orElse(fallback);
     }
 
-    @NotNull
-    public Optional<Double> getDouble(@NotNull String key) {
+    public Optional<Double> getDouble(String key) {
         return this.get(key).map(NightNbtHolder::asDouble);
     }
 
-    public double getDouble(@NotNull String key, double fallback) {
+    public double getDouble(String key, double fallback) {
         return this.getDouble(key).orElse(fallback);
     }
 
-    @NotNull
-    public Optional<Float> getFloat(@NotNull String key) {
+    public Optional<Float> getFloat(String key) {
         return this.get(key).map(NightNbtHolder::asFloat);
     }
 
-    public float getFloat(@NotNull String key, float fallback) {
+    public float getFloat(String key, float fallback) {
         return this.getFloat(key).orElse(fallback);
     }
 
-    @NotNull
-    public Optional<Integer> getInt(@NotNull String key) {
+    public Optional<Integer> getInt(String key) {
         return this.get(key).map(NightNbtHolder::asInt);
     }
 
-    public int getInt(@NotNull String key, int fallback) {
+    public int getInt(String key, int fallback) {
         return this.getInt(key).orElse(fallback);
     }
 
+    @NullMarked
     public static class Builder {
 
         private final JsonObject object;
@@ -169,25 +162,21 @@ public class NightNbtHolder {
             this.object = new JsonObject();
         }
 
-        @NotNull
-        public Builder put(@NotNull String key, @NotNull String string) {
+        public Builder put(String key, String string) {
             this.object.addProperty(key, string);
             return this;
         }
 
-        @NotNull
-        public Builder put(@NotNull String key, boolean value) {
+        public Builder put(String key, boolean value) {
             this.object.addProperty(key, value);
             return this;
         }
 
-        @NotNull
-        public Builder put(@NotNull String key, float value) {
+        public Builder put(String key, float value) {
             this.object.addProperty(key, value);
             return this;
         }
 
-        @NotNull
         public NightNbtHolder build() {
             return NightNbtHolder.fromJson(this.object);
         }

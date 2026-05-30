@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.command.experimental.builder;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.flag.CommandFlag;
 import su.nightexpress.nightcore.util.wrapper.UniPermission;
 
@@ -12,24 +12,24 @@ public abstract class FlagBuilder<F extends CommandFlag, B extends FlagBuilder<F
 
     protected String permission;
 
-    public FlagBuilder(@NotNull String name) {
+    public FlagBuilder(@NonNull String name) {
         this.name = name;
     }
 
-    @NotNull
+    @NonNull
     protected abstract FlagBuilder<F, B> getThis();
 
-    @NotNull
-    public FlagBuilder<F, B> permission(@NotNull UniPermission permission) {
+    @NonNull
+    public FlagBuilder<F, B> permission(@NonNull UniPermission permission) {
         return this.permission(permission.getName());
     }
 
-    @NotNull
+    @NonNull
     public FlagBuilder<F, B> permission(@Nullable String permission) {
         this.permission = permission;
         return this.getThis();
     }
 
-    @NotNull
+    @NonNull
     public abstract F build();
 }

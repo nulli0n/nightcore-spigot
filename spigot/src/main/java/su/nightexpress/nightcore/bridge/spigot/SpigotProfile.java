@@ -1,15 +1,16 @@
 package su.nightexpress.nightcore.bridge.spigot;
 
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.profile.PlayerProfile;
-import org.bukkit.profile.PlayerTextures;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.nightcore.bridge.wrap.NightProfile;
-
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 
 public class SpigotProfile implements NightProfile {
 
@@ -20,7 +21,7 @@ public class SpigotProfile implements NightProfile {
     }
 
     @Override
-    public void apply(@NotNull SkullMeta meta) {
+    public void apply(@NonNull SkullMeta meta) {
         if (this.backend == null || !this.backend.getTextures().isEmpty()) { // spigot moment
             meta.setOwnerProfile(this.backend);
         }
@@ -33,7 +34,7 @@ public class SpigotProfile implements NightProfile {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Optional<UUID> id() {
         return Optional.ofNullable(this.getId());
     }
@@ -45,13 +46,13 @@ public class SpigotProfile implements NightProfile {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public Optional<String> name() {
         return Optional.ofNullable(this.getName());
     }
 
     @Override
-    @NotNull
+    @NonNull
     public PlayerTextures getTextures() {
         return this.backend.getTextures();
     }
@@ -67,7 +68,7 @@ public class SpigotProfile implements NightProfile {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public CompletableFuture<NightProfile> update() {
         return this.backend.update().thenApplyAsync(SpigotProfile::new);
     }

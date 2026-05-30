@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.profile;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
 import su.nightexpress.nightcore.core.CoreConfig;
 
@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
+@Deprecated
 public class CachedProfile {
 
     private static final ConcurrentLinkedQueue<CachedProfile> UPDATE_CANDIDATES = new ConcurrentLinkedQueue<>();
@@ -16,11 +17,11 @@ public class CachedProfile {
     private final boolean noUpdate;
 
     private NightProfile profile;
-    private long lastQueried;
-    private long lastUpdated;
-    private boolean inUpdate;
+    private long         lastQueried;
+    private long         lastUpdated;
+    private boolean      inUpdate;
 
-    public CachedProfile(@NotNull NightProfile profile, boolean permanent, boolean noUpdate) {
+    public CachedProfile(@NonNull NightProfile profile, boolean permanent, boolean noUpdate) {
         this.profile = profile;
         this.lastQueried = 0L;
         this.lastUpdated = 0L;
@@ -36,7 +37,7 @@ public class CachedProfile {
         }
     }
 
-    @NotNull
+    @NonNull
     public NightProfile query() {
         if (this.isUpdateTime()) {
             this.scheduleUpdate();
@@ -45,7 +46,7 @@ public class CachedProfile {
         return this.queryNoUpdate();
     }
 
-    @NotNull
+    @NonNull
     public NightProfile queryNoUpdate() {
         this.updateQueryTime();
         return this.profile;
@@ -58,7 +59,7 @@ public class CachedProfile {
         UPDATE_CANDIDATES.add(this);
     }
 
-    @NotNull
+    @NonNull
     public CompletableFuture<CachedProfile> update() {
         return this.profile.update().thenApply(updated -> {
             this.update(updated);
@@ -66,23 +67,23 @@ public class CachedProfile {
         });
     }
 
-    public void update(@NotNull NightProfile updated) {
+    public void update(@NonNull NightProfile updated) {
         this.profile = updated;
         this.inUpdate = false;
         this.updateUpdateTime();
     }
 
-    /*@NotNull
+    /*@NonNull
     public CompletableFuture<CachedProfile> update() {
         if (this.noUpdate || this.inUpdate) {
             return CompletableFuture.supplyAsync(() -> this);
         }
-
+    
         this.inUpdate = true;
         this.updateQueryTime();
         this.updateUpdateTime();
         UPDATE_CANDIDATES.add(this);
-
+    
         return this.profile.update().thenApply(updated -> {
             this.profile = updated;
             this.inUpdate = false;
@@ -99,7 +100,8 @@ public class CachedProfile {
     }
 
     public boolean isUpdateTime() {
-        return !this.inUpdate && !this.noUpdate && this.checkTime(this.lastUpdated, CoreConfig.PROFILE_CACHE_UPDATE_TIME.get());
+        return !this.inUpdate && !this.noUpdate && this.checkTime(this.lastUpdated, CoreConfig.PROFILE_CACHE_UPDATE_TIME
+            .get());
     }
 
     public boolean isPurgeTime() {

@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.integration.item.adapter.impl;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.integration.item.data.ItemIdData;
 import su.nightexpress.nightcore.integration.item.adapter.IdentifiableItemAdapter;
 
@@ -18,24 +18,26 @@ public class ExecutableItemsAdapter extends IdentifiableItemAdapter {
 
     @Override
     @Nullable
-    public ItemStack createItem(@NotNull String itemId) {
-        ExecutableItemInterface itemInterface = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(itemId).orElse(null);
+    public ItemStack createItem(@NonNull String itemId) {
+        ExecutableItemInterface itemInterface = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(itemId)
+            .orElse(null);
         return itemInterface == null ? null : itemInterface.buildItem(1, Optional.empty());
     }
 
     @Override
-    public boolean canHandle(@NotNull ItemStack itemStack) {
+    public boolean canHandle(@NonNull ItemStack itemStack) {
         return ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(itemStack).isPresent();
     }
 
     @Override
-    public boolean canHandle(@NotNull ItemIdData data) {
+    public boolean canHandle(@NonNull ItemIdData data) {
         return ExecutableItemsAPI.getExecutableItemsManager().isValidID(data.getItemId());
     }
 
     @Override
     @Nullable
-    public String getItemId(@NotNull ItemStack itemStack) {
-        return ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(itemStack).map(ExecutableItemInterface::getId).orElse(null);
+    public String getItemId(@NonNull ItemStack itemStack) {
+        return ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(itemStack).map(
+            ExecutableItemInterface::getId).orElse(null);
     }
 }

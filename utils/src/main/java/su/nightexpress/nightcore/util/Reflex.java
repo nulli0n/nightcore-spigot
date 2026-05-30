@@ -1,38 +1,38 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.*;
 import java.util.*;
 
 public class Reflex {
 
-    public static boolean classExists(@NotNull String path) {
+    public static boolean classExists(@NonNull String path) {
         return findClass(path).isPresent();
     }
 
     @Nullable
     @Deprecated
-    public static Class<?> getClass(@NotNull String path, @NotNull String name) {
+    public static Class<?> getClass(@NonNull String path, @NonNull String name) {
         return getClass(path + "." + name);
     }
 
     @Nullable
     @Deprecated
-    public static Class<?> getInnerClass(@NotNull String path, @NotNull String name) {
+    public static Class<?> getInnerClass(@NonNull String path, @NonNull String name) {
         return getClass(path + "$" + name);
     }
 
     @Nullable
     @Deprecated
-    public static Class<?> getNMSClass(@NotNull String path, @NotNull String realName) {
+    public static Class<?> getNMSClass(@NonNull String path, @NonNull String realName) {
         return getNMSClass(path, realName, null);
     }
 
     @Nullable
     @Deprecated
-    public static Class<?> getNMSClass(@NotNull String path, @NotNull String realName, @Nullable String obfName) {
+    public static Class<?> getNMSClass(@NonNull String path, @NonNull String realName, @Nullable String obfName) {
         Class<?> byRealName = getClass(path + "." + realName, false);
         if (byRealName != null) {
             return byRealName;
@@ -46,12 +46,12 @@ public class Reflex {
     }
 
     @Deprecated
-    private static Class<?> getClass(@NotNull String path) {
+    private static Class<?> getClass(@NonNull String path) {
         return getClass(path, true);
     }
 
     @Deprecated
-    private static Class<?> getClass(@NotNull String path, boolean printError) {
+    private static Class<?> getClass(@NonNull String path, boolean printError) {
         try {
             return Class.forName(path);
         }
@@ -61,43 +61,46 @@ public class Reflex {
         }
     }
 
-    @NotNull
-    public static Class<?> safeClass(@NotNull String path, @NotNull String name, @NotNull String altName) {
-        return findClass(path, name, altName).orElseThrow(() -> new IllegalStateException("Could not load classes: '" + name + "' and '" + altName + "' in '" + path + "'"));
+    @NonNull
+    public static Class<?> safeClass(@NonNull String path, @NonNull String name, @NonNull String altName) {
+        return findClass(path, name, altName).orElseThrow(() -> new IllegalStateException("Could not load classes: '" +
+            name + "' and '" + altName + "' in '" + path + "'"));
     }
 
-    @NotNull
-    public static Class<?> safeClass(@NotNull String path, @NotNull String name) {
-        return findClass(path, name).orElseThrow(() -> new IllegalStateException("Could not load class: '" + name + "' in '" + path + "'"));
+    @NonNull
+    public static Class<?> safeClass(@NonNull String path, @NonNull String name) {
+        return findClass(path, name).orElseThrow(() -> new IllegalStateException("Could not load class: '" + name +
+            "' in '" + path + "'"));
     }
 
-    @NotNull
-    public static Class<?> safeInnerClass(@NotNull String path, @NotNull String name) {
-        return findInnerClass(path, name).orElseThrow(() -> new IllegalStateException("Could not load inner class: '" + name + "' in '" + path + "'"));
+    @NonNull
+    public static Class<?> safeInnerClass(@NonNull String path, @NonNull String name) {
+        return findInnerClass(path, name).orElseThrow(() -> new IllegalStateException("Could not load inner class: '" +
+            name + "' in '" + path + "'"));
     }
 
-    @NotNull
-    public static Class<?> safeClass(@NotNull String path) {
+    @NonNull
+    public static Class<?> safeClass(@NonNull String path) {
         return findClass(path).orElseThrow(() -> new IllegalStateException("Could not load class: '" + path + "'"));
     }
 
-    @NotNull
-    public static Optional<Class<?>> findClass(@NotNull String path, @NotNull String name, @NotNull String altName) {
+    @NonNull
+    public static Optional<Class<?>> findClass(@NonNull String path, @NonNull String name, @NonNull String altName) {
         return findClass(path, name).or(() -> findClass(path, altName));
     }
 
-    @NotNull
-    public static Optional<Class<?>> findClass(@NotNull String path, @NotNull String name) {
+    @NonNull
+    public static Optional<Class<?>> findClass(@NonNull String path, @NonNull String name) {
         return findClass(path + "." + name);
     }
 
-    @NotNull
-    public static Optional<Class<?>> findInnerClass(@NotNull String path, @NotNull String name) {
+    @NonNull
+    public static Optional<Class<?>> findInnerClass(@NonNull String path, @NonNull String name) {
         return findClass(path + "$" + name);
     }
 
-    @NotNull
-    public static Optional<Class<?>> findClass(@NotNull String path) {
+    @NonNull
+    public static Optional<Class<?>> findClass(@NonNull String path) {
         try {
             return Optional.of(Class.forName(path));
         }
@@ -106,7 +109,7 @@ public class Reflex {
         }
     }
 
-    public static Constructor<?> getConstructor(@NotNull Class<?> source, Class<?>... types) {
+    public static Constructor<?> getConstructor(@NonNull Class<?> source, Class<?>... types) {
         try {
             Constructor<?> constructor = source.getDeclaredConstructor(types);
             constructor.setAccessible(true);
@@ -118,7 +121,7 @@ public class Reflex {
         return null;
     }
 
-    public static Object invokeConstructor(@NotNull Constructor<?> constructor, Object... obj) {
+    public static Object invokeConstructor(@NonNull Constructor<?> constructor, Object... obj) {
         try {
             return constructor.newInstance(obj);
         }
@@ -128,8 +131,8 @@ public class Reflex {
         return null;
     }
 
-    @NotNull
-    public static <T> List<T> getStaticFields(@NotNull Class<?> source, @NotNull Class<T> type, boolean includeParent) {
+    @NonNull
+    public static <T> List<T> getStaticFields(@NonNull Class<?> source, @NonNull Class<T> type, boolean includeParent) {
         List<T> list = new ArrayList<>();
 
         for (Field field : Reflex.getFields(source, includeParent)) {
@@ -151,13 +154,13 @@ public class Reflex {
         return list;
     }
 
-    @NotNull
-    public static List<Field> getFields(@NotNull Class<?> source) {
+    @NonNull
+    public static List<Field> getFields(@NonNull Class<?> source) {
         return getFields(source, true);
     }
 
-    @NotNull
-    public static List<Field> getFields(@NotNull Class<?> source, boolean includeParent) {
+    @NonNull
+    public static List<Field> getFields(@NonNull Class<?> source, boolean includeParent) {
         List<Field> result = new ArrayList<>();
 
         Class<?> lookupClass = source;
@@ -177,7 +180,7 @@ public class Reflex {
         return result;
     }
 
-    public static Field getField(@NotNull Class<?> source, @NotNull String name) {
+    public static Field getField(@NonNull Class<?> source, @NonNull String name) {
         try {
             return source.getDeclaredField(name);
         }
@@ -187,12 +190,12 @@ public class Reflex {
         }
     }
 
-    public static Object getFieldValue(@NotNull Object source, @NotNull String realName, @NotNull String obfName) {
+    public static Object getFieldValue(@NonNull Object source, @NonNull String realName, @NonNull String obfName) {
         Object byName = getFieldValue(source, realName);
         return byName == null ? getFieldValue(source, obfName) : byName;
     }
 
-    public static Object getFieldValue(@NotNull Object source, @NotNull String name) {
+    public static Object getFieldValue(@NonNull Object source, @NonNull String name) {
         try {
             Class<?> clazz = source instanceof Class<?> ? (Class<?>) source : source.getClass();
             Field field = getField(clazz, name);
@@ -207,7 +210,7 @@ public class Reflex {
         return null;
     }
 
-    public static boolean setFieldValue(@NotNull Object source, @NotNull String name, @Nullable Object value) {
+    public static boolean setFieldValue(@NonNull Object source, @NonNull String name, @Nullable Object value) {
         try {
             boolean isStatic = source instanceof Class;
             Class<?> clazz = isStatic ? (Class<?>) source : source.getClass();
@@ -226,13 +229,14 @@ public class Reflex {
     }
 
     @Deprecated
-    public static Method getMethod(@NotNull Class<?> source, @NotNull String realName, @NotNull String obfName, @NotNull Class<?>... params) {
+    public static Method getMethod(@NonNull Class<?> source, @NonNull String realName, @NonNull String obfName,
+                                   @NonNull Class<?>... params) {
         Method byName = getMethod(source, realName, params);
         return byName == null ? getMethod(source, obfName, params) : byName;
     }
 
     @Deprecated
-    public static Method getMethod(@NotNull Class<?> source, @NotNull String name, @NotNull Class<?>... params) {
+    public static Method getMethod(@NonNull Class<?> source, @NonNull String name, @NonNull Class<?>... params) {
         try {
             return source.getDeclaredMethod(name, params);
         }
@@ -242,23 +246,29 @@ public class Reflex {
         }
     }
 
-    @NotNull
-    public static Method safeMethod(@NotNull Class<?> source, @NotNull String name, @NotNull String altName, @NotNull Class<?>... params) {
-        return findMethod(source, name, altName, params).orElseThrow(() -> new IllegalStateException("Could not find methods: '" + name + "' and '" + altName + "' in '" + source.getName() + "'"));
+    @NonNull
+    public static Method safeMethod(@NonNull Class<?> source, @NonNull String name, @NonNull String altName,
+                                    @NonNull Class<?>... params) {
+        return findMethod(source, name, altName, params).orElseThrow(
+            () -> new IllegalStateException("Could not find methods: '" + name + "' and '" + altName + "' in '" + source
+                .getName() + "'"));
     }
 
-    @NotNull
-    public static Method safeMethod(@NotNull Class<?> source, @NotNull String name, @NotNull Class<?>... params) {
-        return findMethod(source, name, params).orElseThrow(() -> new IllegalStateException("Could not find method: '" + name + "' in '" + source.getName() + "'"));
+    @NonNull
+    public static Method safeMethod(@NonNull Class<?> source, @NonNull String name, @NonNull Class<?>... params) {
+        return findMethod(source, name, params).orElseThrow(() -> new IllegalStateException("Could not find method: '" +
+            name + "' in '" + source.getName() + "'"));
     }
 
-    @NotNull
-    public static Optional<Method> findMethod(@NotNull Class<?> source, @NotNull String name, @NotNull String altName, @NotNull Class<?>... params) {
+    @NonNull
+    public static Optional<Method> findMethod(@NonNull Class<?> source, @NonNull String name, @NonNull String altName,
+                                              @NonNull Class<?>... params) {
         return findMethod(source, name, params).or(() -> findMethod(source, altName, params));
     }
 
-    @NotNull
-    public static Optional<Method> findMethod(@NotNull Class<?> source, @NotNull String name, @NotNull Class<?>... params) {
+    @NonNull
+    public static Optional<Method> findMethod(@NonNull Class<?> source, @NonNull String name,
+                                              @NonNull Class<?>... params) {
         try {
             return Optional.of(source.getDeclaredMethod(name, params));
         }
@@ -268,8 +278,8 @@ public class Reflex {
         }
     }
 
-    @NotNull
-    public static Optional<Object> safeInvoke(@NotNull Method method, @Nullable Object by, @Nullable Object... param) {
+    @NonNull
+    public static Optional<Object> safeInvoke(@NonNull Method method, @Nullable Object by, @Nullable Object... param) {
         try {
             method.setAccessible(true);
             return Optional.ofNullable(method.invoke(by, param));
@@ -281,7 +291,7 @@ public class Reflex {
     }
 
     @Nullable
-    public static Object invokeMethod(@NotNull Method method, @Nullable Object by, @Nullable Object... param) {
+    public static Object invokeMethod(@NonNull Method method, @Nullable Object by, @Nullable Object... param) {
         return safeInvoke(method, by, param).orElse(null);
     }
 }

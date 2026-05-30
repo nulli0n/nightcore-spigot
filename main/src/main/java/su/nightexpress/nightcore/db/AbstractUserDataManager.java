@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.db;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.db.config.DatabaseConfig;
 import su.nightexpress.nightcore.db.sql.column.Column;
@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Deprecated
-public abstract class AbstractUserDataManager <P extends NightPlugin, U extends AbstractUser> extends AbstractDataManager<P> {
+public abstract class AbstractUserDataManager<P extends NightPlugin, U extends AbstractUser> extends AbstractDataManager<P> {
 
     public static final Column COLUMN_USER_ID           = Column.of("uuid", ColumnType.STRING);
     public static final Column COLUMN_USER_NAME         = Column.of("name", ColumnType.STRING);
@@ -33,11 +33,11 @@ public abstract class AbstractUserDataManager <P extends NightPlugin, U extends 
 
     protected final Function<ResultSet, U> userFunction;
 
-    public AbstractUserDataManager(@NotNull P plugin) {
+    public AbstractUserDataManager(@NonNull P plugin) {
         this(plugin, getDataConfig(plugin));
     }
 
-    public AbstractUserDataManager(@NotNull P plugin, @NotNull DatabaseConfig config) {
+    public AbstractUserDataManager(@NonNull P plugin, @NonNull DatabaseConfig config) {
         super(plugin, config);
         this.tableUsers = this.getTablePrefix() + "_users";
 
@@ -62,7 +62,7 @@ public abstract class AbstractUserDataManager <P extends NightPlugin, U extends 
         this.delete(this.tableUsers, UserQueries.deleteByLastOnline(), deadlineMs);
     }
 
-    @NotNull
+    @NonNull
     protected abstract Function<ResultSet, U> createUserFunction();
 
     protected void createUserTable() {
@@ -76,33 +76,34 @@ public abstract class AbstractUserDataManager <P extends NightPlugin, U extends 
         this.createTable(this.tableUsers, columns);
     }
 
-    protected abstract void addUpsertQueryData(@NotNull ValuedQuery<?, U> query);
+    protected abstract void addUpsertQueryData(@NonNull ValuedQuery<?, U> query);
 
-    protected abstract void addSelectQueryData(@NotNull SelectQuery<U> query);
+    protected abstract void addSelectQueryData(@NonNull SelectQuery<U> query);
 
-    protected abstract void addTableColumns(@NotNull List<Column> columns);
+    protected abstract void addTableColumns(@NonNull List<Column> columns);
 
-    @NotNull
+    @NonNull
     public List<U> getUsers() {
         return this.select(this.tableUsers, this.userFunction, SelectQuery::all);
     }
 
     @Nullable
-    public U getUser(@NotNull Player player) {
+    public U getUser(@NonNull Player player) {
         return this.getUser(player.getUniqueId());
     }
 
     @Nullable
-    public final U getUser(@NotNull String name) {
-        return this.selectUser(query -> query.whereIgnoreCase(COLUMN_USER_NAME, WhereOperator.EQUAL, name.toLowerCase()));
+    public final U getUser(@NonNull String name) {
+        return this.selectUser(query -> query.whereIgnoreCase(COLUMN_USER_NAME, WhereOperator.EQUAL, name
+            .toLowerCase()));
     }
 
     @Nullable
-    public final U getUser(@NotNull UUID uuid) {
+    public final U getUser(@NonNull UUID uuid) {
         return this.selectUser(query -> query.where(COLUMN_USER_ID, WhereOperator.EQUAL, uuid.toString()));
     }
 
-    private U selectUser(@NotNull Consumer<SelectQuery<U>> consumer) {
+    private U selectUser(@NonNull Consumer<SelectQuery<U>> consumer) {
         SelectQuery<U> query = new SelectQuery<>(this.userFunction);
         query.column(COLUMN_USER_ID);
         query.column(COLUMN_USER_NAME);
@@ -115,14 +116,14 @@ public abstract class AbstractUserDataManager <P extends NightPlugin, U extends 
         return this.selectFirst(this.tableUsers, query);
     }
 
-    public boolean isUserExists(@NotNull String name) {
+    public boolean isUserExists(@NonNull String name) {
         return this.contains(this.tableUsers, query -> query
             .column(COLUMN_USER_NAME)
             .whereIgnoreCase(COLUMN_USER_NAME, WhereOperator.EQUAL, name.toLowerCase())
         );
     }
 
-    public boolean isUserExists(@NotNull UUID uuid) {
+    public boolean isUserExists(@NonNull UUID uuid) {
         return this.contains(this.tableUsers, query -> query
             .column(COLUMN_USER_ID)
             .where(COLUMN_USER_ID, WhereOperator.EQUAL, uuid.toString())
@@ -130,46 +131,46 @@ public abstract class AbstractUserDataManager <P extends NightPlugin, U extends 
     }
 
     @Deprecated
-    public void saveUser(@NotNull U user) {
+    public void saveUser(@NonNull U user) {
         this.saveUsersFully(Collections.singletonList(user));
     }
 
     @Deprecated
-    public void saveUsers(@NotNull Collection<U> users) {
+    public void saveUsers(@NonNull Collection<U> users) {
         this.saveUsersFully(users);
     }
 
-    public void saveUserCommons(@NotNull U user) {
+    public void saveUserCommons(@NonNull U user) {
         this.saveUsersCommons(Collections.singletonList(user));
     }
 
-    public void saveUsersCommons(@NotNull Collection<U> users) {
+    public void saveUsersCommons(@NonNull Collection<U> users) {
         this.update(this.tableUsers, UserQueries.updateCommons(), users);
     }
 
-    public void saveUserFully(@NotNull U user) {
+    public void saveUserFully(@NonNull U user) {
         this.saveUsersFully(Collections.singletonList(user));
     }
 
-    public void saveUsersFully(@NotNull Collection<U> users) {
+    public void saveUsersFully(@NonNull Collection<U> users) {
         UpdateQuery<U> query = UserQueries.updateCommons();
         this.addUpsertQueryData(query);
 
         this.update(this.tableUsers, query, users);
     }
 
-    public void insertUser(@NotNull U user) {
+    public void insertUser(@NonNull U user) {
         InsertQuery<U> query = UserQueries.insert();
         this.addUpsertQueryData(query);
 
         this.insert(this.tableUsers, query, user);
     }
 
-    public void deleteUser(@NotNull U user) {
+    public void deleteUser(@NonNull U user) {
         this.deleteUser(user.getId());
     }
 
-    public void deleteUser(@NotNull UUID userId) {
+    public void deleteUser(@NonNull UUID userId) {
         this.delete(this.tableUsers, UserQueries.deleteByUUID(), userId);
     }
 }

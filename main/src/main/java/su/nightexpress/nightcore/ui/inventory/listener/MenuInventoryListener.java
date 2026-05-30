@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.manager.AbstractListener;
 import su.nightexpress.nightcore.ui.inventory.Menu;
@@ -16,7 +16,7 @@ public class MenuInventoryListener extends AbstractListener<NightCore> {
 
     private final MenuRegistry registry;
 
-    public MenuInventoryListener(@NotNull NightCore plugin, @NotNull MenuRegistry registry) {
+    public MenuInventoryListener(@NonNull NightCore plugin, @NonNull MenuRegistry registry) {
         super(plugin);
         this.registry = registry;
     }

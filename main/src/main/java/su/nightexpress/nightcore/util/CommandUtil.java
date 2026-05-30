@@ -4,8 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
@@ -16,24 +16,24 @@ import java.util.*;
 
 public class CommandUtil {
 
-    @NotNull
+    @NonNull
     private static SimpleCommandMap getCommandMap() {
         return Software.instance().getCommandMap();
     }
 
     @Deprecated
-    public static void register(@NotNull Plugin plugin, @NotNull NightPluginCommand command) {
+    public static void register(@NonNull Plugin plugin, @NonNull NightPluginCommand command) {
         WrappedCommand wrappedCommand = new WrappedCommand(plugin, command);
         if (getCommandMap().register(plugin.getName(), wrappedCommand)) {
             command.setBackend(wrappedCommand);
         }
     }
 
-    public static boolean register(@NotNull Plugin plugin, @NotNull WrappedCommand wrappedCommand) {
+    public static boolean register(@NonNull Plugin plugin, @NonNull WrappedCommand wrappedCommand) {
         return getCommandMap().register(plugin.getName(), wrappedCommand);
     }
 
-    public static boolean register(@NotNull Command command, @NotNull String fallbackPrefix) {
+    public static boolean register(@NonNull Command command, @NonNull String fallbackPrefix) {
         return getCommandMap().register(fallbackPrefix, command);
     }
 
@@ -42,33 +42,34 @@ public class CommandUtil {
         Server server = Bukkit.getServer();
         Method method = Reflex.getMethod(server.getClass(), "syncCommands");
         if (method == null) return;
-
+    
         Reflex.invokeMethod(method, server);
     }*/
 
-    public static boolean unregister(@NotNull String name) {
+    public static boolean unregister(@NonNull String name) {
         Command command = getCommand(name).orElse(null);
         if (command == null) return false;
 
         return unregister(command);
     }
 
-    public static boolean unregister(@NotNull Command command) {
+    public static boolean unregister(@NonNull Command command) {
         SimpleCommandMap commandMap = getCommandMap();
 
         Map<String, Command> knownCommands = Software.instance().getKnownCommands(commandMap);
         if (!command.unregister(commandMap)) return false;
 
-        return knownCommands.keySet().removeIf(key -> key.equalsIgnoreCase(command.getName()) || command.getAliases().contains(key));
+        return knownCommands.keySet().removeIf(key -> key.equalsIgnoreCase(command.getName()) || command.getAliases()
+            .contains(key));
     }
 
-    @NotNull
-    public static Set<String> getAliases(@NotNull String name) {
+    @NonNull
+    public static Set<String> getAliases(@NonNull String name) {
         return getAliases(name, false);
     }
 
-    @NotNull
-    public static Set<String> getAliases(@NotNull String name, boolean inclusive) {
+    @NonNull
+    public static Set<String> getAliases(@NonNull String name, boolean inclusive) {
         Command command = getCommand(name).orElse(null);
         if (command == null) return Collections.emptySet();
 
@@ -77,15 +78,16 @@ public class CommandUtil {
         return aliases;
     }
 
-    @NotNull
-    public static Optional<Command> getCommand(@NotNull String name) {
+    @NonNull
+    public static Optional<Command> getCommand(@NonNull String name) {
         return getCommandMap().getCommands().stream()
-            .filter(command -> command.getName().equalsIgnoreCase(name) || command.getLabel().equalsIgnoreCase(name) || command.getAliases().contains(name))
+            .filter(command -> command.getName().equalsIgnoreCase(name) || command.getLabel().equalsIgnoreCase(
+                name) || command.getAliases().contains(name))
             .findFirst();
     }
 
-    @NotNull
-    public static String getCommandName(@NotNull String string) {
+    @NonNull
+    public static String getCommandName(@NonNull String string) {
         String name = string.split(" ")[0].substring(1);
 
         String[] pluginPrefix = name.split(":");
@@ -97,7 +99,8 @@ public class CommandUtil {
     }
 
     @Nullable
-    public static Player getPlayerOrSender(@NotNull CommandContext context, @NotNull ParsedArguments arguments, @NotNull String name) {
+    public static Player getPlayerOrSender(@NonNull CommandContext context, @NonNull ParsedArguments arguments,
+                                           @NonNull String name) {
         Player player;
         if (arguments.hasArgument(name)) {
             player = arguments.getPlayerArgument(name);

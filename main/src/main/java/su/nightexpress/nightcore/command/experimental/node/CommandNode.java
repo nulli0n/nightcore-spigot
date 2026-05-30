@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.command.experimental.node;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.TabContext;
@@ -23,10 +23,10 @@ public abstract class CommandNode implements NodeExecutor {
 
     protected CommandNode parent;
 
-    public CommandNode(@NotNull NightCorePlugin plugin,
-                       @NotNull String name,
-                       @NotNull String[] aliases,
-                       @NotNull String description,
+    public CommandNode(@NonNull NightCorePlugin plugin,
+                       @NonNull String name,
+                       @NonNull String[] aliases,
+                       @NonNull String description,
                        @Nullable String permission,
                        boolean playerOnly) {
         this.plugin = plugin;
@@ -37,11 +37,11 @@ public abstract class CommandNode implements NodeExecutor {
         this.playerOnly = playerOnly;
     }
 
-    @NotNull
-    public abstract List<String> getTab(@NotNull TabContext context);
+    @NonNull
+    public abstract List<String> getTab(@NonNull TabContext context);
 
     @Override
-    public boolean run(@NotNull CommandContext context) {
+    public boolean run(@NonNull CommandContext context) {
         if (this.isPlayerOnly() && !(context.getSender() instanceof Player)) {
             context.errorPlayerOnly();
             return false;
@@ -54,13 +54,13 @@ public abstract class CommandNode implements NodeExecutor {
         return this.onRun(context);
     }
 
-    protected abstract boolean onRun(@NotNull CommandContext context);
+    protected abstract boolean onRun(@NonNull CommandContext context);
 
-    public boolean hasPermission(@NotNull CommandSender sender) {
+    public boolean hasPermission(@NonNull CommandSender sender) {
         return this.permission == null || sender.hasPermission(this.permission);
     }
 
-    @NotNull
+    @NonNull
     public String getNameWithParents() {
         StringBuilder builder = new StringBuilder();
 
@@ -78,22 +78,22 @@ public abstract class CommandNode implements NodeExecutor {
         return builder.toString().strip();
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return name;
     }
 
-    @NotNull
+    @NonNull
     public String[] getAliases() {
         return this.aliases;
     }
 
-    @NotNull
+    @NonNull
     public String getUsage() {
         return "";
     }
 
-    @NotNull
+    @NonNull
     public String getDescription() {
         return description;
     }

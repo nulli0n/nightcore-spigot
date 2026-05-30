@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.decorator.BaseColorDecorator;
@@ -19,30 +19,30 @@ public class HexColorTag extends Tag implements ContentTag {
         super("c", new String[]{"color", "colour"});
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull String text, @NotNull String hex) {
+    public String enclose(@NonNull String text, @NonNull String hex) {
         return this.wrap(text, hex);//brackets(this.name + ":" + hex) + text + closedBrackets(this.name);
     }
 
-    @NotNull
-    public String open(@NotNull String hex) {
+    @NonNull
+    public String open(@NonNull String hex) {
         return TagUtils.brackets(this.name + ParserUtils.DELIMITER + hex);
     }
 
-    @NotNull
-    public String wrap(@NotNull String string, @NotNull Color color) {
+    @NonNull
+    public String wrap(@NonNull String string, @NonNull Color color) {
         return this.wrap(string, ParserUtils.colorToHexString(color));
     }
 
-    @NotNull
-    public String wrap(@NotNull String string, @NotNull String hex) {
+    @NonNull
+    public String wrap(@NonNull String string, @NonNull String hex) {
         return this.open(hex) + string + TagUtils.closedBrackets(this.name);
     }
 
     @Override
     @Nullable
-    public BaseColorDecorator parse(@NotNull String tagContent) {
+    public BaseColorDecorator parse(@NonNull String tagContent) {
         Color color = ParserUtils.colorFromSchemeOrHex(tagContent);
         if (color == null) return null;
 

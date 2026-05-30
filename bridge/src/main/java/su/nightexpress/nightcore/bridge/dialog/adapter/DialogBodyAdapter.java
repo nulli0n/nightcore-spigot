@@ -1,15 +1,19 @@
 package su.nightexpress.nightcore.bridge.dialog.adapter;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.dialog.wrap.body.WrappedDialogBody;
 import su.nightexpress.nightcore.bridge.dialog.wrap.body.WrappedItemDialogBody;
 import su.nightexpress.nightcore.bridge.dialog.wrap.body.WrappedPlainMessageDialogBody;
 
 public interface DialogBodyAdapter<D> {
 
-    @NotNull D adaptBody(@NotNull WrappedDialogBody body);
+    @NonNull
+    D adaptBody(@NonNull WrappedDialogBody body);
 
-    @NotNull D adaptBody(@NotNull WrappedPlainMessageDialogBody body);
+    @NonNull
+    D adaptBody(@NonNull WrappedPlainMessageDialogBody body);
 
-    @NotNull D adaptBody(@NotNull WrappedItemDialogBody body);
+    @NonNull
+    D adaptBody(@NonNull WrappedItemDialogBody body);
 }

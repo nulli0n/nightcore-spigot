@@ -11,22 +11,24 @@ import su.nightexpress.nightcore.config.FileConfig;
 
 public class ConfigProperty<T> {
 
-    private final ConfigType<T> type;
+    private final ConfigType<T> codec;
     private final String        path;
     private final T             defaultValue;
     private final String[]      description;
 
     private T configuredValue;
 
-    public ConfigProperty(@NonNull ConfigType<T> type, @NonNull String path, @NonNull T defaultValue, @Nullable String... description) {
-        this.type = type;
+    public ConfigProperty(@NonNull ConfigType<T> type, @NonNull String path, @NonNull T defaultValue,
+                          @Nullable String... description) {
+        this.codec = type;
         this.path = path;
         this.description = description;
         this.defaultValue = defaultValue;
     }
 
     @NonNull
-    public static <T> ConfigProperty<T> of(@NonNull ConfigType<T> type, @NonNull String path, @NonNull T defaultValue, @Nullable String... description) {
+    public static <T> ConfigProperty<T> of(@NonNull ConfigType<T> type, @NonNull String path, @NonNull T defaultValue,
+                                           @Nullable String... description) {
         return new ConfigProperty<>(type, path, defaultValue, description);
     }
 
@@ -53,14 +55,15 @@ public class ConfigProperty<T> {
             this.writeValue(config, this.defaultValue);
         }
 
-        if (this.description != null && this.description.length > 0 && Stream.of(this.description).anyMatch(Predicate.not(String::isBlank))) {
+        if (this.description != null && this.description.length > 0 && Stream.of(this.description).anyMatch(Predicate
+            .not(String::isBlank))) {
             config.setComments(this.path, this.description);
         }
     }
 
     @NonNull
     public T resolve(@NonNull FileConfig config) {
-        return this.type.read(config, this.path, this.defaultValue);
+        return config.get(this.path, this.codec, this.defaultValue);
     }
 
     @NonNull
@@ -95,25 +98,26 @@ public class ConfigProperty<T> {
     }
 
     public void writeValue(@NonNull FileConfig config, @NonNull T value) {
-        this.type.write(config, this.path, value);
+        this.codec.write(config, this.path, value);
     }
 
     public void remove(@NonNull FileConfig config) {
         config.set(this.path, null);
     }
 
-    @NonNull
-    public String getPath() {
+    public @NonNull ConfigType<T> getCodec() {
+        return this.codec;
+    }
+
+    public @NonNull String getPath() {
         return this.path;
     }
 
-    @NonNull
-    public String[] getDescription() {
+    public @NonNull String[] getDescription() {
         return this.description;
     }
 
-    @NonNull
-    public T getDefaultValue() {
+    public @NonNull T getDefaultValue() {
         return this.defaultValue;
     }
 }

@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.command.experimental.node;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.TabContext;
@@ -22,15 +22,15 @@ public class ChainedNode extends CommandNode {
 
     private NodeExecutor fallback;
 
-    public ChainedNode(@NotNull NightCorePlugin plugin,
-                       @NotNull String name,
-                       @NotNull String[] aliases,
-                       @NotNull String description,
+    public ChainedNode(@NonNull NightCorePlugin plugin,
+                       @NonNull String name,
+                       @NonNull String[] aliases,
+                       @NonNull String description,
                        @Nullable String localized,
                        @Nullable String permission,
                        boolean playerOnly,
                        @Nullable NodeExecutor fallback,
-                       @NotNull Map<String, CommandNode> commandMap) {
+                       @NonNull Map<String, CommandNode> commandMap) {
         super(plugin, name, aliases, description, permission, playerOnly);
         this.localized = localized == null ? StringUtil.capitalizeUnderscored(name) : localized;
         this.commandMap = new HashMap<>();
@@ -45,13 +45,13 @@ public class ChainedNode extends CommandNode {
         commandMap.values().forEach(this::addChildren);
     }
 
-    @NotNull
-    public static ChainedNodeBuilder builder(@NotNull NightCorePlugin plugin, @NotNull String... aliases) {
+    @NonNull
+    public static ChainedNodeBuilder builder(@NonNull NightCorePlugin plugin, @NonNull String... aliases) {
         return new ChainedNodeBuilder(plugin, aliases);
     }
 
     @Override
-    protected boolean onRun(@NotNull CommandContext context) {
+    protected boolean onRun(@NonNull CommandContext context) {
         if (context.length() == 0 || context.getArgumentIndex() >= context.length()) {
             return this.onFallback(context);
         }
@@ -70,14 +70,14 @@ public class ChainedNode extends CommandNode {
         this.fallback = fallback;
     }
 
-    private boolean onFallback(@NotNull CommandContext context) {
+    private boolean onFallback(@NonNull CommandContext context) {
         if (this.fallback != null) {
             return this.fallback.run(context);
         }
         return this.sendCommandList(context);
     }
 
-    private boolean sendCommandList(@NotNull CommandContext context) {
+    private boolean sendCommandList(@NonNull CommandContext context) {
         CommandSender sender = context.getSender();
 
         context.send(CoreLang.COMMAND_HELP_LIST.getMessage(), replacer -> replacer
@@ -98,12 +98,13 @@ public class ChainedNode extends CommandNode {
     }
 
     @Override
-    @NotNull
-    public List<String> getTab(@NotNull TabContext context) {
+    @NonNull
+    public List<String> getTab(@NonNull TabContext context) {
         int index = context.getLastCommandIndex();
 
         if (index == context.length() - 1) {
-            return this.getChildrens().stream().filter(node -> node.hasPermission(context.getSender())).map(CommandNode::getName).toList();
+            return this.getChildrens().stream().filter(node -> node.hasPermission(context.getSender())).map(
+                CommandNode::getName).toList();
         }
         if (index >= context.length()) {
             return Collections.emptyList();
@@ -118,11 +119,11 @@ public class ChainedNode extends CommandNode {
         return children.getTab(context);
     }
 
-    public void addChildren(@NotNull NodeBuilder<?, ?> builder) {
+    public void addChildren(@NonNull NodeBuilder<?, ?> builder) {
         this.addChildren(builder.build());
     }
 
-    public void addChildren(@NotNull CommandNode children) {
+    public void addChildren(@NonNull CommandNode children) {
         if (children.getParent() != null) return;
 
         this.commandMap.put(children.getName(), children);
@@ -132,26 +133,26 @@ public class ChainedNode extends CommandNode {
         children.setParent(this);
     }
 
-    public void removeChildren(@NotNull String alias) {
+    public void removeChildren(@NonNull String alias) {
         this.commandMap.keySet().removeIf(key -> key.equalsIgnoreCase(alias));
     }
 
     @Nullable
-    public CommandNode getChildren(@NotNull String alias) {
+    public CommandNode getChildren(@NonNull String alias) {
         return this.commandMap.get(alias);
     }
 
-    @NotNull
+    @NonNull
     public Set<CommandNode> getChildrens() {
         return new HashSet<>(this.commandMap.values());
     }
 
-    @NotNull
+    @NonNull
     public String getLocalized() {
         return this.localized;
     }
 
-    @NotNull
+    @NonNull
     public Map<String, CommandNode> getCommandMap() {
         return this.commandMap;
     }

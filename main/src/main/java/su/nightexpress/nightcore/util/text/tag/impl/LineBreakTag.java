@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
 import su.nightexpress.nightcore.util.text.tag.api.PlaceholderTag;
 import su.nightexpress.nightcore.util.text.tag.api.Tag;
@@ -18,13 +18,13 @@ public class LineBreakTag extends Tag implements PlaceholderTag {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getValue() {
         return "\n";
     }
 
     @Deprecated
-    public String[] split(@NotNull String string) {
+    public String[] split(@NonNull String string) {
         for (String alias : this.getAliases()) {
             string = string.replace(TagUtils.brackets(alias), "\n");
         }

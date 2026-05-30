@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.user.data;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.user.UserInfo;
 import su.nightexpress.nightcore.user.UserTemplate;
 
@@ -12,33 +12,37 @@ import java.util.function.Consumer;
 
 public interface UserDataAccessor<U extends UserTemplate> {
 
-    void addSynchronization(@NotNull Consumer<U> consumer);
+    void addSynchronization(@NonNull Consumer<U> consumer);
 
-    @NotNull List<U> loadAll();
+    @NonNull
+    List<U> loadAll();
 
-    @NotNull List<UserInfo> loadProfiles();
+    @NonNull
+    List<UserInfo> loadProfiles();
 
-    @NotNull Optional<U> loadByName(@NotNull String name);
+    @NonNull
+    Optional<U> loadByName(@NonNull String name);
 
-    @NotNull Optional<U> loadById(@NotNull UUID uuid);
+    @NonNull
+    Optional<U> loadById(@NonNull UUID uuid);
 
-    boolean isExists(@NotNull String name);
+    boolean isExists(@NonNull String name);
 
-    boolean isExists(@NotNull UUID uuid);
+    boolean isExists(@NonNull UUID uuid);
 
-    void update(@NotNull U user);
+    void update(@NonNull U user);
 
-    void update(@NotNull Collection<U> users);
+    void update(@NonNull Collection<U> users);
 
-    void tinyUpdate(@NotNull U user);
+    void tinyUpdate(@NonNull U user);
 
-    void tinyUpdate(@NotNull Collection<U> users);
+    void tinyUpdate(@NonNull Collection<U> users);
 
-    void insert(@NotNull U user);
+    void insert(@NonNull U user);
 
-    void insert(@NotNull Collection<U> users);
+    void insert(@NonNull Collection<U> users);
 
-    void deleteByName(@NotNull String username);
+    void deleteByName(@NonNull String username);
 
-    void deleteById(@NotNull UUID userId);
+    void deleteById(@NonNull UUID userId);
 }

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.database.sql.executor;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.database.DatabaseType;
 import su.nightexpress.nightcore.database.AbstractConnector;
 import su.nightexpress.nightcore.database.connection.SQLiteConnector;
@@ -19,54 +19,56 @@ public final class AlterTableExecutor extends SQLExecutor<Void> {
 
     private final DatabaseType   databaseType;
     private final List<SQLValue> columns;
-    private Type type;
+    private Type                 type;
 
-    private AlterTableExecutor(@NotNull String table, @NotNull DatabaseType databaseType) {
+    private AlterTableExecutor(@NonNull String table, @NonNull DatabaseType databaseType) {
         super(table);
         this.databaseType = databaseType;
         this.columns = new ArrayList<>();
     }
 
     private enum Type {
-        ADD_COLUMN, RENAME_COLUMN, DROP_COLUMN
+        ADD_COLUMN,
+        RENAME_COLUMN,
+        DROP_COLUMN
     }
 
-    @NotNull
-    public static AlterTableExecutor builder(@NotNull String table, @NotNull DatabaseType databaseType) {
+    @NonNull
+    public static AlterTableExecutor builder(@NonNull String table, @NonNull DatabaseType databaseType) {
         return new AlterTableExecutor(table, databaseType);
     }
 
-    @NotNull
-    public AlterTableExecutor addColumn(@NotNull SQLValue... columns) {
+    @NonNull
+    public AlterTableExecutor addColumn(@NonNull SQLValue... columns) {
         return this.addColumn(Arrays.asList(columns));
     }
 
-    @NotNull
-    public AlterTableExecutor addColumn(@NotNull List<SQLValue> columns) {
+    @NonNull
+    public AlterTableExecutor addColumn(@NonNull List<SQLValue> columns) {
         return this.columns(columns, Type.ADD_COLUMN);
     }
 
-    @NotNull
-    public AlterTableExecutor renameColumn(@NotNull SQLValue... columns) {
+    @NonNull
+    public AlterTableExecutor renameColumn(@NonNull SQLValue... columns) {
         return this.addColumn(Arrays.asList(columns));
     }
 
-    @NotNull
-    public AlterTableExecutor renameColumn(@NotNull List<SQLValue> columns) {
+    @NonNull
+    public AlterTableExecutor renameColumn(@NonNull List<SQLValue> columns) {
         return this.columns(columns, Type.RENAME_COLUMN);
     }
 
-    @NotNull
-    public AlterTableExecutor dropColumn(@NotNull SQLColumn... columns) {
+    @NonNull
+    public AlterTableExecutor dropColumn(@NonNull SQLColumn... columns) {
         return this.dropColumn(Arrays.asList(columns));
     }
 
-    @NotNull
-    public AlterTableExecutor dropColumn(@NotNull List<SQLColumn> columns) {
+    @NonNull
+    public AlterTableExecutor dropColumn(@NonNull List<SQLColumn> columns) {
         return this.columns(columns.stream().map(column -> column.toValue("dummy")).toList(), Type.DROP_COLUMN);
     }
 
-    private AlterTableExecutor columns(@NotNull List<SQLValue> values, @NotNull Type type) {
+    private AlterTableExecutor columns(@NonNull List<SQLValue> values, @NonNull Type type) {
         this.columns.clear();
         this.columns.addAll(values);
         this.type = type;
@@ -74,16 +76,16 @@ public final class AlterTableExecutor extends SQLExecutor<Void> {
     }
 
     @Override
-    @NotNull
-    public Void execute(@NotNull AbstractConnector connector) {
+    @NonNull
+    public Void execute(@NonNull AbstractConnector connector) {
         if (this.columns.isEmpty()) return null;
 
         if (this.type == Type.ADD_COLUMN) {
             this.columns.forEach(value -> {
                 if (SQLQueries.hasColumn(connector, this.getTable(), value.getColumn())) return;
 
-                String sql = "ALTER TABLE " + this.getTable() + " ADD "
-                    + value.getColumn().getName() + " " + value.getColumn().formatType(this.databaseType);
+                String sql = "ALTER TABLE " + this.getTable() + " ADD " + value.getColumn().getName() + " " + value
+                    .getColumn().formatType(this.databaseType);
 
                 if (connector instanceof SQLiteConnector || value.getColumn().getType() != ColumnType.STRING) {
                     sql = sql + " DEFAULT '" + value.getValue() + "'";
@@ -96,7 +98,8 @@ public final class AlterTableExecutor extends SQLExecutor<Void> {
             this.columns.forEach(value -> {
                 if (!SQLQueries.hasColumn(connector, this.getTable(), value.getColumn())) return;
 
-                String sql = "ALTER TABLE " + this.getTable() + " RENAME COLUMN " + value.getColumn().getName() + " TO " + value.getValue();
+                String sql = "ALTER TABLE " + this.getTable() + " RENAME COLUMN " + value.getColumn().getName() +
+                    " TO " + value.getValue();
                 SQLQueries.executeStatement(connector, sql);
             });
         }

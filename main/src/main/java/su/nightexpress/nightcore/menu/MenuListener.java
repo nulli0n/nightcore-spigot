@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.menu.api.Menu;
@@ -20,7 +20,7 @@ import su.nightexpress.nightcore.menu.impl.AbstractMenu;
 @Deprecated
 public class MenuListener extends AbstractListener<NightCore> {
 
-    public MenuListener(@NotNull NightCore core) {
+    public MenuListener(@NonNull NightCore core) {
         super(core);
     }
 

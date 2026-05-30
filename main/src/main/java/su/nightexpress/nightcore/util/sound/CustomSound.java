@@ -3,44 +3,43 @@ package su.nightexpress.nightcore.util.sound;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import su.nightexpress.nightcore.bridge.common.NightKey;
-import su.nightexpress.nightcore.util.Strings;
 
 public class CustomSound extends AbstractSound {
 
     private final String sound;
 
-    public CustomSound(@NotNull String sound, float volume, float pitch) {
+    public CustomSound(@NonNull String sound, float volume, float pitch) {
         super(volume, pitch);
-        this.sound = Strings.varStyle(sound, NightKey::allowedInValue).orElse("null");
+        this.sound = NightKey.parse(sound).map(NightKey::toString).orElse("null");
     }
 
-    @NotNull
-    public static CustomSound of(@NotNull String sound) {
+    @NonNull
+    public static CustomSound of(@NonNull String sound) {
         return of(sound, DEFAULT_VOLUME);
     }
 
-    @NotNull
-    public static CustomSound of(@NotNull String sound, float volume) {
+    @NonNull
+    public static CustomSound of(@NonNull String sound, float volume) {
         return of(sound, volume, DEFAULT_PITCH);
     }
 
-    @NotNull
-    public static CustomSound of(@NotNull String sound, float volume, float pitch) {
+    @NonNull
+    public static CustomSound of(@NonNull String sound, float volume, float pitch) {
         return new CustomSound(sound, volume, pitch);
     }
 
     @Override
-    public void play(@NotNull Player player) {
+    public void play(@NonNull Player player) {
         if (this.isSilent()) return;
 
-        Location location = player.getLocation();
-        player.playSound(location, this.sound, this.volume, this.pitch);
+        player.playSound(player, this.sound, this.volume, this.pitch);
     }
 
     @Override
-    public void play(@NotNull Location location) {
+    public void play(@NonNull Location location) {
         if (this.isSilent()) return;
 
         World world = location.getWorld();
@@ -50,7 +49,7 @@ public class CustomSound extends AbstractSound {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getName() {
         return this.sound;
     }

@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.locale.entry;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -35,13 +35,15 @@ public class ButtonLocale extends LangEntry<ButtonLocale.Value> {
     }
 
     @NonNull
-    public static ButtonLocale create(@NonNull String path, @NonNull String label, @Nullable String tooltip, int width) {
+    public static ButtonLocale create(@NonNull String path, @NonNull String label, @Nullable String tooltip,
+                                      int width) {
         return new ButtonLocale(path, new Value(label, tooltip, width));
     }
 
     @NonNull
     public ButtonLocale replace(@NonNull UnaryOperator<String> operator) {
-        return create(this.path, operator.apply(this.value.label()), this.value.tooltip == null ? null : operator.apply(this.value.tooltip()), this.value.width());
+        return create(this.path, operator.apply(this.value.label()), this.value.tooltip == null ? null : operator.apply(
+            this.value.tooltip()), this.value.width());
     }
 
     @NonNull

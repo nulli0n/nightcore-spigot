@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.language;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.Engine;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -16,11 +16,11 @@ import java.io.InputStream;
 public class LangManager extends SimpleManager<NightCorePlugin> {
 
     public static final String DEFAULT_LANGUAGE = "en";
-    public static final String DIR_LANG = "/lang/";
+    public static final String DIR_LANG         = "/lang/";
 
     private FileConfig config;
 
-    public LangManager(@NotNull NightCorePlugin plugin) {
+    public LangManager(@NonNull NightCorePlugin plugin) {
         super(plugin);
     }
 
@@ -37,7 +37,7 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
 
     }
 
-    private boolean isPacked(@NotNull String filePath) {
+    private boolean isPacked(@NonNull String filePath) {
         if (!filePath.startsWith("/")) {
             filePath = "/" + filePath;
         }
@@ -45,13 +45,14 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
         try (InputStream inputStream = plugin.getClass().getResourceAsStream(filePath)) {
             return inputStream != null;
         }
-        catch (Exception ignored) {}
+        catch (Exception ignored) {
+        }
 
         return false;
     }
 
-    @NotNull
-    private String validateConfig(@NotNull String langCode) {
+    @NonNull
+    private String validateConfig(@NonNull String langCode) {
         String fileName = this.getFileName(langCode);
 
         File file = new File(plugin.getDataFolder() + DIR_LANG, fileName);
@@ -60,26 +61,27 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
                 return langCode;
             }
 
-            this.plugin.warn("Locale file for '" + langCode + "' language not found. Using default '" + DEFAULT_LANGUAGE + "' locale.");
+            this.plugin.warn("Locale file for '" + langCode + "' language not found. Using default '" +
+                DEFAULT_LANGUAGE + "' locale.");
             return DEFAULT_LANGUAGE;
         }
         return langCode;
     }
 
-    public void loadEntries(@NotNull Class<?> clazz) {
+    public void loadEntries(@NonNull Class<?> clazz) {
         Reflex.getStaticFields(clazz, LangElement.class, false).forEach(entry -> {
             entry.load(this.plugin);
         });
-//        Reflex.getFields(clazz, LangEntry.class).forEach(entry -> {
-//            entry.load(this.plugin);
-//        });
-//        Reflex.getFields(clazz, LangEnum.class).forEach(langEnum -> {
-//            langEnum.load(this.plugin);
-//        });
+        //        Reflex.getFields(clazz, LangEntry.class).forEach(entry -> {
+        //            entry.load(this.plugin);
+        //        });
+        //        Reflex.getFields(clazz, LangEnum.class).forEach(langEnum -> {
+        //            langEnum.load(this.plugin);
+        //        });
     }
 
     @Deprecated
-    public void loadEnum(@NotNull Class<? extends Enum<?>> clazz) {
+    public void loadEnum(@NonNull Class<? extends Enum<?>> clazz) {
         for (Object eName : clazz.getEnumConstants()) {
             String name = eName.toString();
             String path = clazz.getSimpleName() + "." + name;
@@ -88,9 +90,9 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
         }
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String getEnum(@NotNull Enum<?> entry) {
+    public String getEnum(@NonNull Enum<?> entry) {
         String path = entry.getDeclaringClass().getSimpleName() + "." + entry.name();
         String locEnum = this.config.getString(path);
         if (locEnum == null && Engine.core() != plugin) {
@@ -99,16 +101,16 @@ public class LangManager extends SimpleManager<NightCorePlugin> {
         return locEnum == null ? StringUtil.capitalizeFully(entry.name()) : locEnum;
     }
 
-    public static boolean isDefault(@NotNull String langCode) {
+    public static boolean isDefault(@NonNull String langCode) {
         return langCode.equalsIgnoreCase(DEFAULT_LANGUAGE);
     }
 
-    @NotNull
-    public String getFileName(@NotNull String langCode) {
+    @NonNull
+    public String getFileName(@NonNull String langCode) {
         return "messages_" + langCode + ".yml";
     }
 
-    @NotNull
+    @NonNull
     public FileConfig getConfig() {
         return config;
     }

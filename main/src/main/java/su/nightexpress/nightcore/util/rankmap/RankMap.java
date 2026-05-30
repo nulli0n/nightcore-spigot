@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.util.rankmap;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.Enums;
@@ -22,47 +22,55 @@ public abstract class RankMap<T extends Number> {
     private final Map<String, T> values;
 
     public enum Mode {
-        RANK, PERMISSION
+        RANK,
+        PERMISSION
     }
 
     public interface Creator<T extends Number, R extends RankMap<T>> {
-        @NotNull R create(@NotNull Mode mode, @NotNull String permissionPrefix, @NotNull T defaultValue, @NotNull Map<String, T> values);
+
+        @NonNull
+        R create(@NonNull Mode mode, @NonNull String permissionPrefix, @NonNull T defaultValue,
+                 @NonNull Map<String, T> values);
     }
 
-    public RankMap(@NotNull Mode mode, @NotNull String permissionPrefix, @NotNull T defaultValue, @NotNull Map<String, T> values) {
+    public RankMap(@NonNull Mode mode, @NonNull String permissionPrefix, @NonNull T defaultValue,
+                   @NonNull Map<String, T> values) {
         this.mode = mode;
         this.permissionPrefix = permissionPrefix;
         this.defaultValue = defaultValue;
         this.values = new HashMap<>(values);
     }
 
-    @NotNull
-    protected static <T extends Number, R extends RankMap<T>> R ranked(@NotNull Creator<T, R> creator, @NotNull T defaultValue) {
+    @NonNull
+    protected static <T extends Number, R extends RankMap<T>> R ranked(@NonNull Creator<T, R> creator,
+                                                                       @NonNull T defaultValue) {
         return creator.create(Mode.RANK, "", defaultValue, new HashMap<>());
     }
 
-    @NotNull
-    protected static <T extends Number, R extends RankMap<T>> R permissioned(@NotNull Creator<T, R> creator, @NotNull String prefix, @NotNull T defaultValue) {
+    @NonNull
+    protected static <T extends Number, R extends RankMap<T>> R permissioned(@NonNull Creator<T, R> creator,
+                                                                             @NonNull String prefix,
+                                                                             @NonNull T defaultValue) {
         return creator.create(Mode.PERMISSION, prefix, defaultValue, new HashMap<>());
     }
 
-    @NotNull
-    protected static <T extends Number, R extends RankMap<T>> ConfigValue<R> asConfigValue(@NotNull String path,
-                                                                                           @NotNull R defaultValue,
-                                                                                           @NotNull Creator<T, R> creator,
-                                                                                           @NotNull Function<Double, T> converter,
-                                                                                           @NotNull String... description) {
+    @NonNull
+    protected static <T extends Number, R extends RankMap<T>> ConfigValue<R> asConfigValue(@NonNull String path,
+                                                                                           @NonNull R defaultValue,
+                                                                                           @NonNull Creator<T, R> creator,
+                                                                                           @NonNull Function<Double, T> converter,
+                                                                                           @NonNull String... description) {
         ConfigValue.Loader<R> reader = (config, path2) -> read(config, path2, creator, converter);
         ConfigValue.Writer<R> writer = (config, path2, obj) -> obj.write(config, path2);
 
         return ConfigValue.create(path, reader, writer, () -> defaultValue, description);
     }
 
-    @NotNull
-    protected static <T extends Number, R extends RankMap<T>> R read(@NotNull FileConfig config,
-                                                                  @NotNull String path,
-                                                                  @NotNull Creator<T, R> creator,
-                                                                  @NotNull Function<Double, T> converter) {
+    @NonNull
+    protected static <T extends Number, R extends RankMap<T>> R read(@NonNull FileConfig config,
+                                                                     @NonNull String path,
+                                                                     @NonNull Creator<T, R> creator,
+                                                                     @NonNull Function<Double, T> converter) {
         Mode mode = ConfigValue.create(path + ".Mode", Mode.class, Mode.RANK,
             "Available values: " + Enums.inline(Mode.class),
             "=".repeat(20) + " " + Mode.RANK.name() + " MODE " + "=".repeat(20),
@@ -99,7 +107,7 @@ public abstract class RankMap<T extends Number> {
         return creator.create(mode, permissionPrefix, defaultValue, values);
     }
 
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Mode", this.mode.name());
         config.set(path + ".Permission_Prefix", this.permissionPrefix);
         config.set(path + ".Default_Value", this.defaultValue);
@@ -108,28 +116,28 @@ public abstract class RankMap<T extends Number> {
         });
     }
 
-    @NotNull
-    public RankMap<T> addValue(@NotNull String key, @NotNull T value) {
+    @NonNull
+    public RankMap<T> addValue(@NonNull String key, @NonNull T value) {
         this.values.put(key.toLowerCase(), value);
         return this;
     }
 
-    @NotNull
-    public T getRankValue(@NotNull Player player) {
+    @NonNull
+    public T getRankValue(@NonNull Player player) {
         String group = Players.getPermissionGroup(player);
         return this.values.getOrDefault(group, this.defaultValue);
     }
 
-    @NotNull
-    public T getGreatestOrNegative(@NotNull Player player) {
+    @NonNull
+    public T getGreatestOrNegative(@NonNull Player player) {
         T best = this.getGreatest(player);
         T lowest = this.getSmallest(player);
 
         return lowest.doubleValue() < 0D ? lowest : best;
     }
 
-    @NotNull
-    public T getGreatest(@NotNull Player player) {
+    @NonNull
+    public T getGreatest(@NonNull Player player) {
         if (this.mode == Mode.RANK) {
             return this.getRankValue(player);
         }
@@ -139,8 +147,8 @@ public abstract class RankMap<T extends Number> {
             .max(Comparator.comparingDouble(Number::doubleValue)).orElse(this.defaultValue);
     }
 
-    @NotNull
-    public T getSmallest(@NotNull Player player) {
+    @NonNull
+    public T getSmallest(@NonNull Player player) {
         if (this.mode == Mode.RANK) {
             return this.getRankValue(player);
         }
@@ -150,7 +158,7 @@ public abstract class RankMap<T extends Number> {
             .min(Comparator.comparingDouble(Number::doubleValue)).orElse(this.defaultValue);
     }
 
-    @NotNull
+    @NonNull
     public Mode getMode() {
         return mode;
     }
@@ -160,7 +168,7 @@ public abstract class RankMap<T extends Number> {
         return permissionPrefix;
     }
 
-    @NotNull
+    @NonNull
     public T getDefaultValue() {
         return defaultValue;
     }

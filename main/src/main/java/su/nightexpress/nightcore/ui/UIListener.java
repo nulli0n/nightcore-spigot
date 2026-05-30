@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightCore;
 import su.nightexpress.nightcore.core.CoreConfig;
 import su.nightexpress.nightcore.manager.AbstractListener;
@@ -26,11 +26,11 @@ import su.nightexpress.nightcore.util.NumberUtil;
 @Deprecated
 public class UIListener extends AbstractListener<NightCore> {
 
-    public UIListener(@NotNull NightCore plugin) {
+    public UIListener(@NonNull NightCore plugin) {
         super(plugin);
     }
 
-    private void handleDialogInput(@NotNull Player player, @NotNull Dialog dialog, @NotNull DialogInput input) {
+    private void handleDialogInput(@NonNull Player player, @NonNull Dialog dialog, @NonNull DialogInput input) {
         // Jump back to the main thread from async chat thread.
         this.plugin.runTask(() -> {
             if (input.getTextRaw().equalsIgnoreCase(DialogManager.EXIT) || dialog.getHandler().handle(input)) {

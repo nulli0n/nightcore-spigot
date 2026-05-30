@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.commands.context;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.commands.NodeUtils;
 import su.nightexpress.nightcore.commands.tree.CommandNode;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CommandContextBuilder {
 
-    private final NightPlugin plugin;
+    private final NightPlugin   plugin;
     private final CommandSender sender;
     private final CommandNode   root;
     private final String        input;
@@ -25,7 +25,8 @@ public class CommandContextBuilder {
 
     private ExecutableNode executor;
 
-    public CommandContextBuilder(@NotNull NightPlugin plugin, @NotNull CommandSender sender, @NotNull CommandNode root, @NotNull String input) {
+    public CommandContextBuilder(@NonNull NightPlugin plugin, @NonNull CommandSender sender, @NonNull CommandNode root,
+                                 @NonNull String input) {
         this.plugin = plugin;
         this.sender = sender;
         this.root = root;
@@ -35,46 +36,46 @@ public class CommandContextBuilder {
         this.nodes = new ArrayList<>();
     }
 
-    @NotNull
+    @NonNull
     public CommandContext build() {
         return new CommandContext(this.plugin, this.sender, this.root, this.input, this.arguments, this.flags, this.executor, this.nodes);
     }
 
-    @NotNull
-    public CommandContextBuilder withArgument(@NotNull String name, @NotNull ParsedArgument<?> argument) {
+    @NonNull
+    public CommandContextBuilder withArgument(@NonNull String name, @NonNull ParsedArgument<?> argument) {
         this.arguments.add(name, argument);
         return this;
     }
 
-    @NotNull
-    public CommandContextBuilder withFlag(@NotNull String name) {
+    @NonNull
+    public CommandContextBuilder withFlag(@NonNull String name) {
         this.flags.add(name);
         return this;
     }
 
-    @NotNull
+    @NonNull
     public CommandContextBuilder withExecutor(@Nullable ExecutableNode executable) {
         this.executor = executable;
         return this;
     }
 
-    @NotNull
-    public CommandContextBuilder withNode(@NotNull CommandNode node, int cursor) {
+    @NonNull
+    public CommandContextBuilder withNode(@NonNull CommandNode node, int cursor) {
         this.nodes.add(new ParsedCommandNode(node, cursor));
         return this;
     }
 
-    @NotNull
+    @NonNull
     public CommandSender getSender() {
         return this.sender;
     }
 
-    @NotNull
+    @NonNull
     public CommandNode getRoot() {
         return this.root;
     }
 
-    @NotNull
+    @NonNull
     public ParsedArguments getArguments() {
         return this.arguments;
     }
@@ -84,13 +85,13 @@ public class CommandContextBuilder {
         return this.executor;
     }
 
-    @NotNull
+    @NonNull
     public List<ParsedCommandNode> getNodes() {
         return this.nodes;
     }
 
-    @NotNull
-    public List<CommandNode> getNodesPriorTo(@NotNull CommandNode target) {
+    @NonNull
+    public List<CommandNode> getNodesPriorTo(@NonNull CommandNode target) {
         return NodeUtils.getNodesPriorTo(Lists.modify(this.nodes, ParsedCommandNode::getNode), target);
     }
 }

@@ -1,11 +1,12 @@
 package su.nightexpress.nightcore.command.experimental.argument;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 
 @Deprecated
 public interface ArgumentParser<T> {
 
-    @Nullable T parse(@NotNull String string, @NotNull CommandContext context);
+    @Nullable
+    T parse(@NonNull String string, @NonNull CommandContext context);
 }

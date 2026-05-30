@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.database;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 
 import java.util.UUID;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Deprecated
 public abstract class AbstractUser<P extends NightCorePlugin> implements DataUser {
 
-    protected final P plugin;
+    protected final P    plugin;
     protected final UUID uuid;
 
     protected String name;
@@ -21,7 +21,8 @@ public abstract class AbstractUser<P extends NightCorePlugin> implements DataUse
     protected long   autoSaveIn;
     protected long   nextSyncIn;
 
-    public AbstractUser(@NotNull P plugin, @NotNull UUID uuid, @NotNull String name, long dateCreated, long lastOnline) {
+    public AbstractUser(@NonNull P plugin, @NonNull UUID uuid, @NonNull String name, long dateCreated,
+                        long lastOnline) {
         this.plugin = plugin;
         this.uuid = uuid;
         this.name = name;
@@ -96,12 +97,12 @@ public abstract class AbstractUser<P extends NightCorePlugin> implements DataUse
         this.nextSyncIn = this.getTimestamp(seconds);
     }
 
-    @NotNull
+    @NonNull
     public final UUID getId() {
         return this.uuid;
     }
 
-    @NotNull
+    @NonNull
     public final String getName() {
         return this.name;
     }
@@ -130,7 +131,7 @@ public abstract class AbstractUser<P extends NightCorePlugin> implements DataUse
         return this.getPlayer() != null;
     }
 
-    @NotNull
+    @NonNull
     public final OfflinePlayer getOfflinePlayer() {
         return this.plugin.getServer().getOfflinePlayer(this.getId());
     }

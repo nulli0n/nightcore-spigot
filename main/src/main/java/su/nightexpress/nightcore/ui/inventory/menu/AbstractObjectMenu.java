@@ -18,24 +18,28 @@ public abstract class AbstractObjectMenu<T> extends AbstractMenuBase {
 
     protected final Class<T> type;
 
-    @Deprecated
-    public AbstractObjectMenu(@NonNull MenuType defaultType, @NonNull String  defaultTitle, @NonNull Class<T> type) {
+    @Deprecated(forRemoval = true)
+    public AbstractObjectMenu(@NonNull MenuType defaultType, @NonNull String defaultTitle, @NonNull Class<T> type) {
         super(defaultType, defaultTitle);
         this.type = type;
     }
 
-    public AbstractObjectMenu(@NonNull NightPlugin plugin, @NonNull MenuType defaultType, @NonNull String  defaultTitle, @NonNull Class<T> type) {
+    protected AbstractObjectMenu(@NonNull NightPlugin plugin,
+                                 @NonNull MenuType defaultType,
+                                 @NonNull String defaultTitle,
+                                 @NonNull Class<T> type) {
         super(plugin, defaultType, defaultTitle);
         this.type = type;
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public boolean show(@NonNull NightPlugin plugin, @NonNull Player player, @NonNull T object) {
         return this.show(plugin, player, object, null);
     }
 
-    @Deprecated
-    public boolean show(@NonNull NightPlugin plugin, @NonNull Player player, @NonNull T object, @Nullable Consumer<MenuViewer> preRender) {
+    @Deprecated(forRemoval = true)
+    public boolean show(@NonNull NightPlugin plugin, @NonNull Player player, @NonNull T object,
+                        @Nullable Consumer<MenuViewer> preRender) {
         return this.showMenu(plugin.getMenuRegistry(), player, viewer -> {
             viewer.setCurrentObject(object);
             if (preRender != null) preRender.accept(viewer);
@@ -53,28 +57,24 @@ public abstract class AbstractObjectMenu<T> extends AbstractMenuBase {
         });
     }
 
-
     protected void registerObjectAction(@NonNull String id, @NonNull ObjectAction<T> action) {
         this.dataRegistry.registerAction(id, this.createObjectAction(action));
     }
 
-    @NonNull
-    protected MenuItemAction createObjectAction(@NonNull ObjectAction<T> action) {
+    protected @NonNull MenuItemAction createObjectAction(@NonNull ObjectAction<T> action) {
         return context -> {
             T boundObject = this.getObject(context);
-            ObjectActionContext<T> objectContext = new ObjectActionContext<>(context.getViewer(), boundObject, context.getEvent());
+            ObjectActionContext<T> objectContext = new ObjectActionContext<>(context.getViewer(), boundObject, context
+                .getEvent());
             action.execute(objectContext);
         };
     }
 
-    @NonNull
-    protected Optional<T> object(@NonNull ViewerContext context) {
+    public @NonNull Optional<T> object(@NonNull ViewerContext context) {
         return context.object(this.type);
     }
 
-    @NonNull
-    protected T getObject(@NonNull ViewerContext context) {
-        return context.object(this.type)
-            .orElseThrow(() -> new IllegalArgumentException("Viewer's object is defined as " + context.object().map(o -> o.getClass().getSimpleName()).orElse("null") + ", but " + this.type.getSimpleName() + " was expected"));
+    public @NonNull T getObject(@NonNull ViewerContext context) {
+        return context.getObject(this.type);
     }
 }

@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.bridge.dialog.response;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public interface DialogClickHandler {
 
-    void handleClick(@NotNull DialogClickResult result);
+    void handleClick(@NonNull DialogClickResult result);
 }

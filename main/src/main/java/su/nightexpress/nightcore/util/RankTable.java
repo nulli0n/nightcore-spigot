@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.util;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.config.Writeable;
@@ -19,33 +19,35 @@ public class RankTable implements Writeable {
     private final Map<String, Double> values;
 
     public enum Mode {
-        RANK, PERMISSION
+        RANK,
+        PERMISSION
     }
 
-    RankTable(@NotNull Mode mode, @NotNull String permissionPrefix, double defaultValue, @NotNull Map<String, Double> values) {
+    RankTable(@NonNull Mode mode, @NonNull String permissionPrefix, double defaultValue,
+              @NonNull Map<String, Double> values) {
         this.mode = mode;
         this.permissionPrefix = permissionPrefix;
         this.defaultValue = defaultValue;
         this.values = new HashMap<>(values);
     }
 
-    @NotNull
+    @NonNull
     public static Builder ranked(double defaultValue) {
         return builder(Mode.RANK, defaultValue);
     }
 
-    @NotNull
+    @NonNull
     public static Builder permissioned(double defaultValue) {
         return builder(Mode.PERMISSION, defaultValue);
     }
 
-    @NotNull
-    public static Builder builder(@NotNull Mode mode, double defaultValue) {
+    @NonNull
+    public static Builder builder(@NonNull Mode mode, double defaultValue) {
         return new Builder(mode, defaultValue);
     }
 
-    @NotNull
-    public static RankTable read(@NotNull FileConfig config, @NotNull String path) {
+    @NonNull
+    public static RankTable read(@NonNull FileConfig config, @NonNull String path) {
         Mode mode = ConfigValue.create(path + ".Mode", Mode.class, Mode.RANK,
             "Available values: " + Enums.inline(Mode.class),
             "=".repeat(20) + " " + Mode.RANK.name() + " MODE " + "=".repeat(20),
@@ -83,7 +85,7 @@ public class RankTable implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Mode", this.mode.name());
         config.set(path + ".Permission_Prefix", this.permissionPrefix);
         config.set(path + ".Default_Value", this.defaultValue);
@@ -93,22 +95,22 @@ public class RankTable implements Writeable {
         });
     }
 
-    @NotNull
-    public Double getRankValue(@NotNull Player player) {
+    @NonNull
+    public Double getRankValue(@NonNull Player player) {
         String group = Players.getPrimaryGroupOrDefault(player);
         return this.values.getOrDefault(group, this.defaultValue);
     }
 
-    @NotNull
-    public Double getGreatestOrNegative(@NotNull Player player) {
+    @NonNull
+    public Double getGreatestOrNegative(@NonNull Player player) {
         Double best = this.getGreatest(player);
         Double lowest = this.getSmallest(player);
 
         return lowest < 0D ? lowest : best;
     }
 
-    @NotNull
-    public Double getGreatest(@NotNull Player player) {
+    @NonNull
+    public Double getGreatest(@NonNull Player player) {
         if (this.mode == RankTable.Mode.RANK) {
             return this.getRankValue(player);
         }
@@ -118,8 +120,8 @@ public class RankTable implements Writeable {
             .max(Comparator.comparingDouble(Number::doubleValue)).orElse(this.defaultValue);
     }
 
-    @NotNull
-    public Double getSmallest(@NotNull Player player) {
+    @NonNull
+    public Double getSmallest(@NonNull Player player) {
         if (this.mode == RankTable.Mode.RANK) {
             return this.getRankValue(player);
         }
@@ -129,8 +131,7 @@ public class RankTable implements Writeable {
             .min(Comparator.comparingDouble(Number::doubleValue)).orElse(this.defaultValue);
     }
 
-    @NotNull
-    public RankTable.Mode getMode() {
+    public RankTable.@NonNull Mode getMode() {
         return this.mode;
     }
 
@@ -139,7 +140,7 @@ public class RankTable implements Writeable {
         return this.permissionPrefix;
     }
 
-    @NotNull
+    @NonNull
     public Double getDefaultValue() {
         return this.defaultValue;
     }
@@ -152,25 +153,25 @@ public class RankTable implements Writeable {
 
         private String permissionPrefix;
 
-        public Builder(@NotNull Mode mode, double defaultValue) {
+        public Builder(@NonNull Mode mode, double defaultValue) {
             this.mode = mode;
             this.defaultValue = defaultValue;
             this.values = new HashMap<>();
         }
 
-        @NotNull
+        @NonNull
         public RankTable build() {
             return new RankTable(this.mode, this.permissionPrefix, this.defaultValue, this.values);
         }
 
-        @NotNull
-        public Builder permissionPrefix(@NotNull String prefix) {
+        @NonNull
+        public Builder permissionPrefix(@NonNull String prefix) {
             this.permissionPrefix = prefix;
             return this;
         }
 
-        @NotNull
-        public Builder addRankValue(@NotNull String rank, double value) {
+        @NonNull
+        public Builder addRankValue(@NonNull String rank, double value) {
             this.values.put(rank.toLowerCase(), value);
             return this;
         }

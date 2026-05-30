@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.statement.template;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.statement.PropertyAccessor;
@@ -25,7 +25,8 @@ public final class DeleteStatement<T> implements BatchStatement<T> {
     }
 
     @Override
-    public void prepare(@NonNull PreparedStatement statement, @NonNull T entity, @Nullable Wheres<T> where) throws SQLException {
+    public void prepare(@NonNull PreparedStatement statement, @NonNull T entity,
+                        @Nullable Wheres<T> where) throws SQLException {
         int paramCount = 1;
 
         if (where != null && !where.isEmpty()) {

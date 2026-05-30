@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.query;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.Function;
 
@@ -15,17 +15,17 @@ public class QueryValue<T> {
         this.statementPart = statementPart;
     }
 
-    @NotNull
+    @NonNull
     public String getSQLPart() {
         return this.sqlPart;
     }
 
-    @NotNull
+    @NonNull
     public String getStatementPart(T entity) {
         return this.statementPart.apply(entity);
     }
 
-    @NotNull
+    @NonNull
     public Function<T, String> getStatementPart() {
         return this.statementPart;
     }

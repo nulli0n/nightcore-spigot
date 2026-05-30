@@ -3,8 +3,8 @@ package su.nightexpress.nightcore.language.message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.language.tag.MessageTag;
 import su.nightexpress.nightcore.language.tag.MessageTags;
@@ -29,50 +29,52 @@ import java.util.function.UnaryOperator;
 public class LangMessage {
 
     //private final NightCorePlugin plugin;
-    private final String          defaultText;
-    private final MessageOptions  options;
+    private final String         defaultText;
+    private final MessageOptions options;
 
     //private TextRoot message;
     private String message;
 
     @Deprecated
-    public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options) {
+    public LangMessage(@NonNull NightCorePlugin plugin, @NonNull String defaultText, @NonNull MessageOptions options) {
         this(defaultText, options);
     }
 
     @Deprecated
-    public LangMessage(@NotNull NightCorePlugin plugin, @NotNull String defaultText, @NotNull MessageOptions options, @Nullable String prefix) {
+    public LangMessage(@NonNull NightCorePlugin plugin, @NonNull String defaultText, @NonNull MessageOptions options,
+                       @Nullable String prefix) {
         this(defaultText, options, prefix);
     }
 
-    public LangMessage(@NotNull String defaultText, @NotNull MessageOptions options) {
+    public LangMessage(@NonNull String defaultText, @NonNull MessageOptions options) {
         this(defaultText, options, null);
     }
 
-    public LangMessage(@NotNull String defaultText, @NotNull MessageOptions options, @Nullable String prefix) {
+    public LangMessage(@NonNull String defaultText, @NonNull MessageOptions options, @Nullable String prefix) {
         //this.plugin = plugin;
         this.defaultText = defaultText;
         this.options = options;
 
         this.setPrefix(prefix);
-//        this.message = NightMessage.from(prefix == null || !options.hasPrefix() ? defaultText : prefix + defaultText);
-//        if (CoreConfig.MODERN_TEXT_PRECOMPILE_LANG.get() && options.getOutputType() != OutputType.TITLES) {
-//            this.message.compile();
-//        }
+        //        this.message = NightMessage.from(prefix == null || !options.hasPrefix() ? defaultText : prefix + defaultText);
+        //        if (CoreConfig.MODERN_TEXT_PRECOMPILE_LANG.get() && options.getOutputType() != OutputType.TITLES) {
+        //            this.message.compile();
+        //        }
     }
 
-    @NotNull
-    public LangMessage setPrefix(@NotNull NightCorePlugin plugin) {
+    @NonNull
+    public LangMessage setPrefix(@NonNull NightCorePlugin plugin) {
         return this.setPrefix(plugin.getPrefix());
     }
 
-    @NotNull
+    @NonNull
     public LangMessage setPrefix(@Nullable String prefix) {
         OutputType type = this.options.getOutputType();
         if (type != OutputType.CHAT) prefix = null;
 
         //boolean notCompiled = this.message == null;
-        this.message = /*NightMessage.from(*/prefix == null || !this.options.hasPrefix() ? this.defaultText : prefix + this.defaultText/*)*/;
+        this.message = /*NightMessage.from(*/prefix == null || !this.options
+            .hasPrefix() ? this.defaultText : prefix + this.defaultText/*)*/;
 
         /*if (notCompiled && type != OutputType.TITLES) {
             this.message.compile();
@@ -81,21 +83,21 @@ public class LangMessage {
     }
 
     @Deprecated
-    private LangMessage(@NotNull LangMessage from) {
+    private LangMessage(@NonNull LangMessage from) {
         //this.plugin = from.plugin;
         this.defaultText = from.defaultText;
         this.options = from.options.copy();
         this.message = from.message;//.copy();
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static LangMessage parse(@NotNull NightCorePlugin plugin, @NotNull String string) {
+    public static LangMessage parse(@NonNull NightCorePlugin plugin, @NonNull String string) {
         return parse(string, plugin.getPrefix());
     }
 
-    @NotNull
-    public static LangMessage parse(@NotNull String string, @Nullable String defPrefix) {
+    @NonNull
+    public static LangMessage parse(@NonNull String string, @Nullable String defPrefix) {
         MessageOptions options = new MessageOptions();
         StringBuilder builder = new StringBuilder();
 
@@ -201,59 +203,59 @@ public class LangMessage {
         return new LangMessage(strippedText, options, prefix);
     }
 
-//    @NotNull
-//    public LangMessage setPrefix(@NotNull String prefix) {
-//        return new LangMessage(this.plugin, this.defaultText, this.options, prefix);
-//    }
+    //    @NonNull
+    //    public LangMessage setPrefix(@NonNull String prefix) {
+    //        return new LangMessage(this.plugin, this.defaultText, this.options, prefix);
+    //    }
 
-    @NotNull
+    @NonNull
     public String getDefaultText() {
         return this.defaultText;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public TextRoot getMessage() {
         return su.nightexpress.nightcore.util.text.NightMessage.from(this.message);
     }
 
-    @NotNull
+    @NonNull
     public MessageOptions getOptions() {
         return this.options;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public TextRoot getMessage(@NotNull CommandSender sender) {
+    public TextRoot getMessage(@NonNull CommandSender sender) {
         if (!this.options.usePlaceholderAPI() || !(sender instanceof Player player)) return this.getMessage();
 
         return this.getMessage().copy().replace(line -> CommonPlaceholders.setPAPIPlaceholders(player, line));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public LangMessage replace(@NotNull String var, @NotNull Object replacer) {
+    public LangMessage replace(@NonNull String var, @NonNull Object replacer) {
         return this.replace(str -> str.replace(var, String.valueOf(replacer)));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public LangMessage replace(@NotNull String var, @NotNull Consumer<List<String>> replacer) {
+    public LangMessage replace(@NonNull String var, @NonNull Consumer<List<String>> replacer) {
         List<String> list = new ArrayList<>();
         replacer.accept(list);
 
         return this.replace(var, list);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public LangMessage replace(@NotNull String var, @NotNull List<String> replacer) {
+    public LangMessage replace(@NonNull String var, @NonNull List<String> replacer) {
         return this.replace(str -> str.replace(var, String.join(Placeholders.TAG_LINE_BREAK, replacer)));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public LangMessage replace(@NotNull UnaryOperator<String> replacer) {
+    public LangMessage replace(@NonNull UnaryOperator<String> replacer) {
         if (this.isDisabled()) return this;
 
         LangMessage copy = new LangMessage(this);
@@ -278,11 +280,12 @@ public class LangMessage {
         this.send(Bukkit.getServer().getConsoleSender(), consumer);
     }
 
-    public void send(@NotNull CommandSender sender) {
-        this.send(sender, replacer -> {});
+    public void send(@NonNull CommandSender sender) {
+        this.send(sender, replacer -> {
+        });
     }
 
-    public void send(@NotNull CommandSender sender, @Nullable Consumer<Replacer> consumer) {
+    public void send(@NonNull CommandSender sender, @Nullable Consumer<Replacer> consumer) {
         if (this.isDisabled()) return;
 
         if (this.options.getSound() != null && sender instanceof Player player) {
@@ -310,7 +313,8 @@ public class LangMessage {
                 String title = split[0];
                 String subtitle = split.length >= 2 ? split[1] : "";
 
-                Players.sendTitles(player, title, subtitle, this.options.getTitleTimes()[0], this.options.getTitleTimes()[1], this.options.getTitleTimes()[2]);
+                Players.sendTitles(player, title, subtitle, this.options.getTitleTimes()[0], this.options
+                    .getTitleTimes()[1], this.options.getTitleTimes()[2]);
             }
         }
     }

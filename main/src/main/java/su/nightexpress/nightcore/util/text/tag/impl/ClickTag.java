@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util.text.tag.impl;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.util.bridge.wrapper.ClickEventType;
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.tag.TagUtils;
@@ -18,45 +18,45 @@ public class ClickTag extends Tag implements ContentTag {
         super(NAME);
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String encloseRun(@NotNull String text, @NotNull String command) {
+    public String encloseRun(@NonNull String text, @NonNull String command) {
         return this.wrapRunCommand(text, command);
         //return this.enclose(text, ClickEventType.RUN_COMMAND, command);
     }
 
-//    @NotNull
-//    @Deprecated
-//    public String enclose(@NotNull ClickEventType action, @NotNull String text, @NotNull String content) {
-//        return this.enclose(text, action, content);
-//    }
+    //    @NonNull
+    //    @Deprecated
+    //    public String enclose(@NonNull ClickEventType action, @NonNull String text, @NonNull String content) {
+    //        return this.enclose(text, action, content);
+    //    }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public String enclose(@NotNull String text, @NotNull ClickEventType action, @NotNull String content) {
-//        String data = action.name().toLowerCase() + TagUtils.SEMICOLON + TagUtils.quotedContent(content);
-//
-//        return TagUtils.wrapContent(this, text, data);
+    public String enclose(@NonNull String text, @NonNull ClickEventType action, @NonNull String content) {
+        //        String data = action.name().toLowerCase() + TagUtils.SEMICOLON + TagUtils.quotedContent(content);
+        //
+        //        return TagUtils.wrapContent(this, text, data);
         return this.wrap(text, action, content);
     }
 
-    @NotNull
-    public String wrapRunCommand(@NotNull String string, @NotNull String command) {
+    @NonNull
+    public String wrapRunCommand(@NonNull String string, @NonNull String command) {
         return this.enclose(string, ClickEventType.RUN_COMMAND, command);
     }
 
-    @NotNull
-    public String wrapSuggestCommand(@NotNull String string, @NotNull String command) {
+    @NonNull
+    public String wrapSuggestCommand(@NonNull String string, @NonNull String command) {
         return this.enclose(string, ClickEventType.SUGGEST_COMMAND, command);
     }
 
-    @NotNull
-    public String wrapOpenRUL(@NotNull String string, @NotNull String url) {
+    @NonNull
+    public String wrapOpenRUL(@NonNull String string, @NonNull String url) {
         return this.enclose(string, ClickEventType.OPEN_URL, url);
     }
 
-    @NotNull
-    public String wrap(@NotNull String string, @NotNull ClickEventType type, @NotNull String content) {
+    @NonNull
+    public String wrap(@NonNull String string, @NonNull ClickEventType type, @NonNull String content) {
         String data = type.name().toLowerCase() + ParserUtils.DELIMITER + ParserUtils.quoted(content);
 
         return TagUtils.wrapContent(this, string, data);
@@ -64,7 +64,7 @@ public class ClickTag extends Tag implements ContentTag {
 
     @Override
     @Nullable
-    public ClickDecorator parse(@NotNull String tagContent) {
+    public ClickDecorator parse(@NonNull String tagContent) {
         ClickEventType action = null;
         for (ClickEventType global : ClickEventType.values()) {
             if (tagContent.startsWith(global.name().toLowerCase())) {

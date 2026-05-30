@@ -5,8 +5,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.MenuType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.ui.dialog.Dialog;
 import su.nightexpress.nightcore.ui.menu.click.ClickResult;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
@@ -24,64 +24,72 @@ public interface Menu {
 
     void flush();
 
-    void flush(@NotNull MenuViewer viewer);
+    void flush(@NonNull MenuViewer viewer);
 
-    void flush(@NotNull Player player);
+    void flush(@NonNull Player player);
 
-    void flush(@NotNull Player player, @NotNull Consumer<MenuViewer> consumer);
+    void flush(@NonNull Player player, @NonNull Consumer<MenuViewer> consumer);
 
-    boolean isViewer(@NotNull Player player);
+    boolean isViewer(@NonNull Player player);
 
     void close();
 
-    void close(@NotNull Player player);
+    void close(@NonNull Player player);
 
-    void runNextTick(@NotNull Runnable runnable);
+    void runNextTick(@NonNull Runnable runnable);
 
-    void onClick(@NotNull MenuViewer viewer, @NotNull ClickResult result, @NotNull InventoryClickEvent event);
+    void onClick(@NonNull MenuViewer viewer, @NonNull ClickResult result, @NonNull InventoryClickEvent event);
 
-    void onDrag(@NotNull MenuViewer viewer, @NotNull InventoryDragEvent event);
+    void onDrag(@NonNull MenuViewer viewer, @NonNull InventoryDragEvent event);
 
-    void onClose(@NotNull MenuViewer viewer, @NotNull InventoryCloseEvent event);
+    void onClose(@NonNull MenuViewer viewer, @NonNull InventoryCloseEvent event);
 
     @Deprecated
-    void handleInput(@NotNull Dialog.Builder builder);
+    void handleInput(Dialog.@NonNull Builder builder);
 
-    boolean canOpen(@NotNull Player player);
+    boolean canOpen(@NonNull Player player);
 
     boolean isPersistent();
 
-    @NotNull Set<MenuViewer> getViewers();
+    @NonNull
+    Set<MenuViewer> getViewers();
 
-    @Nullable MenuViewer getViewer(@NotNull Player player);
+    @Nullable
+    MenuViewer getViewer(@NonNull Player player);
 
-    //@NotNull MenuViewer getViewerOrCreate(@NotNull Player player);
+    //@NonNull MenuViewer getViewerOrCreate(@NonNull Player player);
 
-    @NotNull List<MenuItem> getItems(@NotNull MenuViewer viewer);
+    @NonNull
+    List<MenuItem> getItems(@NonNull MenuViewer viewer);
 
-    @Nullable MenuItem getItem(int slot);
+    @Nullable
+    MenuItem getItem(int slot);
 
-    @Nullable MenuItem getItem(@NotNull MenuViewer viewer, int slot);
-
-
-    void addItem(@NotNull MenuViewer viewer, @NotNull MenuItem.Builder builder);
-
-    void addItem(@NotNull MenuViewer viewer, @NotNull MenuItem menuItem);
-
-    void addItem(@NotNull MenuItem.Builder builder);
-
-    void addItem(@NotNull MenuItem menuItem);
+    @Nullable
+    MenuItem getItem(@NonNull MenuViewer viewer, int slot);
 
 
-    @NotNull Set<MenuItem> getItems();
+    void addItem(@NonNull MenuViewer viewer, MenuItem.@NonNull Builder builder);
 
-    @NotNull MenuType getMenuType();
+    void addItem(@NonNull MenuViewer viewer, @NonNull MenuItem menuItem);
 
-    void setMenuType(@NotNull MenuType menuType);
+    void addItem(MenuItem.@NonNull Builder builder);
 
-    @NotNull String getTitle();
+    void addItem(@NonNull MenuItem menuItem);
 
-    void setTitle(@NotNull String title);
+
+    @NonNull
+    Set<MenuItem> getItems();
+
+    @NonNull
+    MenuType getMenuType();
+
+    void setMenuType(@NonNull MenuType menuType);
+
+    @NonNull
+    String getTitle();
+
+    void setTitle(@NonNull String title);
 
     int getAutoRefreshInterval();
 

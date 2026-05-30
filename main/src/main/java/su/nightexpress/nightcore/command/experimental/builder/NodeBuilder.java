@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.command.experimental.builder;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.command.experimental.node.CommandNode;
 import su.nightexpress.nightcore.language.entry.LangString;
@@ -13,14 +13,14 @@ import java.util.stream.Stream;
 public abstract class NodeBuilder<S extends CommandNode, B extends NodeBuilder<S, B>> {
 
     protected final NightCorePlugin plugin;
-    protected final String name;
+    protected final String          name;
 
     protected String[] aliases;
-    protected String description;
-    protected String permission;
-    protected boolean playerOnly;
+    protected String   description;
+    protected String   permission;
+    protected boolean  playerOnly;
 
-    public NodeBuilder(@NotNull NightCorePlugin plugin, @NotNull String... aliases) {
+    public NodeBuilder(@NonNull NightCorePlugin plugin, @NonNull String... aliases) {
         this.plugin = plugin;
         this.name = aliases[0];
         this.aliases = Stream.of(aliases).skip(1).toArray(String[]::new);
@@ -29,41 +29,41 @@ public abstract class NodeBuilder<S extends CommandNode, B extends NodeBuilder<S
         this.playerOnly = false;
     }
 
-    @NotNull
+    @NonNull
     protected abstract B getThis();
 
-    @NotNull
+    @NonNull
     public abstract S build();
 
-    @NotNull
-    public B aliases(@NotNull String... aliases) {
+    @NonNull
+    public B aliases(@NonNull String... aliases) {
         this.aliases = aliases;
         return this.getThis();
     }
 
-    @NotNull
-    public B description(@NotNull LangString description) {
+    @NonNull
+    public B description(@NonNull LangString description) {
         return this.description(description.getString());
     }
 
-    @NotNull
-    public B description(@NotNull String description) {
+    @NonNull
+    public B description(@NonNull String description) {
         this.description = description;
         return this.getThis();
     }
 
-    @NotNull
-    public B permission(@NotNull UniPermission permission) {
+    @NonNull
+    public B permission(@NonNull UniPermission permission) {
         return this.permission(permission.getName());
     }
 
-    @NotNull
+    @NonNull
     public B permission(@Nullable String permission) {
         this.permission = permission;
         return this.getThis();
     }
 
-    @NotNull
+    @NonNull
     public B playerOnly() {
         this.playerOnly = true;
         return this.getThis();

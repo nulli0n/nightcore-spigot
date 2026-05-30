@@ -1,54 +1,54 @@
 package su.nightexpress.nightcore.util.sound;
 
+import java.util.function.Function;
+
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundGroup;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import su.nightexpress.nightcore.util.BukkitThing;
+import org.jspecify.annotations.NonNull;
 
-import java.util.function.Function;
+import su.nightexpress.nightcore.util.BukkitThing;
 
 public class VanillaSound extends AbstractSound {
 
     private final Sound sound;
 
-    public VanillaSound(@NotNull Sound sound, float volume, float pitch) {
+    public VanillaSound(@NonNull Sound sound, float volume, float pitch) {
         super(volume, pitch);
         this.sound = sound;
     }
 
-    @NotNull
-    public static VanillaSound of(@NotNull SoundGroup group, @NotNull Function<SoundGroup, Sound> function) {
+    @NonNull
+    public static VanillaSound of(@NonNull SoundGroup group, @NonNull Function<SoundGroup, Sound> function) {
         return of(function.apply(group), group.getVolume(), group.getPitch());
     }
 
-    @NotNull
-    public static VanillaSound of(@NotNull Sound sound) {
+    @NonNull
+    public static VanillaSound of(@NonNull Sound sound) {
         return of(sound, DEFAULT_VOLUME);
     }
 
-    @NotNull
-    public static VanillaSound of(@NotNull Sound sound, float volume) {
+    @NonNull
+    public static VanillaSound of(@NonNull Sound sound, float volume) {
         return of(sound, volume, DEFAULT_PITCH);
     }
 
-    @NotNull
-    public static VanillaSound of(@NotNull Sound sound, float volume, float pitch) {
+    @NonNull
+    public static VanillaSound of(@NonNull Sound sound, float volume, float pitch) {
         return new VanillaSound(sound, volume, pitch);
     }
 
     @Override
-    public void play(@NotNull Player player) {
+    public void play(@NonNull Player player) {
         if (this.isSilent()) return;
 
-        Location location = player.getLocation();
-        player.playSound(location, this.sound, this.volume, this.pitch);
+        player.playSound(player, this.sound, this.volume, this.pitch);
     }
 
     @Override
-    public void play(@NotNull Location location) {
+    public void play(@NonNull Location location) {
         if (this.isSilent()) return;
 
         World world = location.getWorld();
@@ -58,12 +58,12 @@ public class VanillaSound extends AbstractSound {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public String getName() {
         return BukkitThing.getAsString(this.sound);
     }
 
-    @NotNull
+    @NonNull
     public Sound getSound() {
         return this.sound;
     }

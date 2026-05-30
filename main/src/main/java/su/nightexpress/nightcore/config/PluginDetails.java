@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.config;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightDataPlugin;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.configuration.ConfigProperty;
@@ -28,10 +28,10 @@ public class PluginDetails implements Writeable {
     private Class<?> permissionsClass;
 
     public PluginDetails(
-        @NotNull String name,
-        @NotNull String prefix,
-        @NotNull String[] commandAliases,
-        @NotNull String language
+                         @NonNull String name,
+                         @NonNull String prefix,
+                         @NonNull String[] commandAliases,
+                         @NonNull String language
     ) {
         this.name = name;
         this.prefix = prefix;
@@ -39,16 +39,18 @@ public class PluginDetails implements Writeable {
         this.language = language.toLowerCase();
     }
 
-    @NotNull
-    public static PluginDetails create(@NotNull String name, @NotNull String[] commandAliases) {
-        String prefix = Tags.LIGHT_YELLOW.enclose(Tags.BOLD.enclose(name)) + Tags.DARK_GRAY.enclose(" » ") + Tags.GRAY.getBracketsName();
+    @NonNull
+    public static PluginDetails create(@NonNull String name, @NonNull String[] commandAliases) {
+        String prefix = Tags.LIGHT_YELLOW.enclose(Tags.BOLD.enclose(name)) + Tags.DARK_GRAY.enclose(" » ") + Tags.GRAY
+            .getBracketsName();
         String language = Locale.getDefault().getLanguage();
 
         return new PluginDetails(name, prefix, commandAliases, language);
     }
 
-    @NotNull
-    public static PluginDetails read(@NotNull NightPlugin plugin, @NotNull FileConfig config, @NotNull PluginDetails defaults) {
+    @NonNull
+    public static PluginDetails read(@NonNull NightPlugin plugin, @NonNull FileConfig config,
+                                     @NonNull PluginDetails defaults) {
         //FileConfig config = plugin.getConfig();
         //PluginDetails defaults = plugin.getDetails();
 
@@ -67,7 +69,8 @@ public class PluginDetails implements Writeable {
 
         String languageCode = ConfigValue.create("Plugin.Language", defaults.getLanguage(),
             "Sets the plugin language.",
-            "Basically it tells the plugin to use certain messages config from the '" + LangManager.DIR_LANG + "' sub-folder.",
+            "Basically it tells the plugin to use certain messages config from the '" + LangManager.DIR_LANG +
+                "' sub-folder.",
             "If specified language is not available, default one (English) will be used instead.",
             "[Default is System Locale]")
             .read(config);
@@ -86,29 +89,29 @@ public class PluginDetails implements Writeable {
     }
 
     @Override
-    public void write(@NotNull FileConfig config, @NotNull String path) {
+    public void write(@NonNull FileConfig config, @NonNull String path) {
         config.set(path + ".Plugin.Name", this.name);
         config.set(path + ".Plugin.Prefix", this.prefix);
         config.setStringArray(path + ".Plugin.Command_Aliases", this.commandAliases);
         config.set(path + ".Plugin.Language", this.language);
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return name;
     }
 
-    @NotNull
+    @NonNull
     public String getPrefix() {
         return prefix;
     }
 
-    @NotNull
+    @NonNull
     public String[] getCommandAliases() {
         return commandAliases;
     }
 
-    @NotNull
+    @NonNull
     public String getLanguage() {
         return language;
     }
@@ -119,7 +122,7 @@ public class PluginDetails implements Writeable {
         return databaseConfig;
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
     public PluginDetails setDatabaseConfig(@Nullable DatabaseConfig databaseConfig) {
         this.databaseConfig = databaseConfig;
@@ -127,10 +130,12 @@ public class PluginDetails implements Writeable {
     }
 
     @Nullable
+    @Deprecated
     public Class<?> getConfigClass() {
         return configClass;
     }
 
+    @Deprecated
     public PluginDetails setConfigClass(@Nullable Class<?> configClass) {
         this.configClass = configClass;
         return this;
@@ -148,11 +153,13 @@ public class PluginDetails implements Writeable {
         return this;
     }
 
+    @Deprecated
     @Nullable
     public Class<?> getPermissionsClass() {
         return permissionsClass;
     }
 
+    @Deprecated
     public PluginDetails setPermissionsClass(@Nullable Class<?> permissionsClass) {
         this.permissionsClass = permissionsClass;
         return this;

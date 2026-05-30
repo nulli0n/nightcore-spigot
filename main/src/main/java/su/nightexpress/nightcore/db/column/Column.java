@@ -1,12 +1,13 @@
 package su.nightexpress.nightcore.db.column;
 
 import com.google.gson.Gson;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class Column<R> {
@@ -25,7 +26,7 @@ public class Column<R> {
                   @NonNull ColumnDataType dataType,
                   @NonNull ColumnDataReader<R> dataReader,
                   @NonNull NullOption nullOption,
-                  @Nullable String  defaultValue,
+                  @Nullable String defaultValue,
                   boolean primaryKey,
                   boolean autoIncrement,
                   boolean unique) {
@@ -40,7 +41,9 @@ public class Column<R> {
     }
 
     @NonNull
-    public static <T> Builder<T> builder(@NonNull String name, @NonNull ColumnDataType dataType, @NonNull ColumnDataReader<T> dataReader) {
+    public static <T> Builder<T> builder(@NonNull String name,
+                                         @NonNull ColumnDataType dataType,
+                                         @NonNull ColumnDataReader<T> dataReader) {
         return new Builder<>(name, dataType, dataReader);
     }
 
@@ -95,12 +98,18 @@ public class Column<R> {
     }
 
     @NonNull
+    public static Builder<Timestamp> timestamp(@NonNull String name) {
+        return builder(name, ColumnDataType.TIMESTAMP, ColumnDataReader.TIMESTAMP);
+    }
+
+    @NonNull
     public static <R> Builder<R> json(@NonNull String name, @NonNull ColumnDataReader<R> dataReader) {
         return builder(name, ColumnDataType.JSON, dataReader);
     }
 
     @NonNull
-    public static <K, V> Builder<Map<K, V>> jsonMap(@NonNull String name, @NonNull Gson gson, @NonNull Class<K> keyType, @NonNull Class<V> valType) {
+    public static <K, V> Builder<Map<K, V>> jsonMap(@NonNull String name, @NonNull Gson gson, @NonNull Class<K> keyType,
+                                                    @NonNull Class<V> valType) {
         return json(name, ColumnDataReader.jsonMap(gson, keyType, valType));
     }
 
@@ -113,8 +122,6 @@ public class Column<R> {
     public static <V> Builder<Set<V>> jsonSet(@NonNull String name, @NonNull Gson gson, @NonNull Class<V> valType) {
         return json(name, ColumnDataReader.jsonSet(gson, valType));
     }
-
-
 
     @NonNull
     public String toSqlNameType(@NonNull DatabaseType type) {
@@ -135,7 +142,8 @@ public class Column<R> {
 
         if (this.autoIncrement) {
             if (!this.primaryKey) {
-                throw new IllegalStateException("Column '" + this.name + "' cannot be AUTO_INCREMENT unless it is also the PRIMARY KEY.");
+                throw new IllegalStateException("Column '" + this.name +
+                    "' cannot be AUTO_INCREMENT unless it is also the PRIMARY KEY.");
             }
 
             // SQLite requires the primary key to be defined inline if it auto-increments
@@ -160,9 +168,7 @@ public class Column<R> {
         }
 
         // Don't throw the missing default exception if the column is an auto-incrementing PK
-        boolean requiresDefault = this.defaultValue == null
-            && this.nullOption == NullOption.NOT_NULL
-            && !this.autoIncrement;
+        boolean requiresDefault = this.defaultValue == null && this.nullOption == NullOption.NOT_NULL && !this.autoIncrement;
 
         if (requiresDefault) {
             throw new IllegalStateException("NOT NULL columns ('%s') must have a DEFAULT value".formatted(this.name));
@@ -233,12 +239,14 @@ public class Column<R> {
         private final ColumnDataReader<R> dataReader;
 
         private NullOption nullOption;
-        private String defaultValue;
+        private String     defaultValue;
         private boolean    primaryKey;
         private boolean    autoIncrement;
-        private boolean unqiue;
+        private boolean    unqiue;
 
-        public Builder(@NonNull String name, @NonNull ColumnDataType dataType, @NonNull ColumnDataReader<R> dataReader) {
+        public Builder(@NonNull String name,
+                       @NonNull ColumnDataType dataType,
+                       @NonNull ColumnDataReader<R> dataReader) {
             this.name = name;
             this.dataType = dataType;
             this.dataReader = dataReader;
@@ -285,7 +293,8 @@ public class Column<R> {
 
         @NonNull
         public Builder<R> autoIncrement() {
-            if (this.dataType != ColumnDataType.INTEGER) throw new IllegalStateException("Auto increment is for int only");
+            if (this.dataType != ColumnDataType.INTEGER)
+                throw new IllegalStateException("Auto increment is for int only");
 
             this.autoIncrement = true;
             return this;

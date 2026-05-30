@@ -3,8 +3,7 @@ package su.nightexpress.nightcore.bridge.spigot.bossbar;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.UnmodifiableView;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarFlag;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarOverlay;
@@ -18,13 +17,13 @@ public class SpigotBossBar implements NightBossBar {
 
     private final BossBar backend;
 
-    public SpigotBossBar(@NotNull BossBar backend) {
+    public SpigotBossBar(@NonNull BossBar backend) {
         this.backend = backend;
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar setName(@NotNull NightComponent name) {
+    @NonNull
+    public SpigotBossBar setName(@NonNull NightComponent name) {
         this.backend.setTitle(name.toLegacy());
         return this;
     }
@@ -35,41 +34,40 @@ public class SpigotBossBar implements NightBossBar {
     }
 
     @Override
-    @NotNull
+    @NonNull
     public SpigotBossBar setProgress(float progress) {
         this.backend.setProgress(Math.clamp(progress, MIN_PROGRESS, MAX_PROGRESS));
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightBarColor getColor() {
         return SpigotBossBarAdapter.wrapColor(this.backend.getColor());
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar setColor(@NotNull NightBarColor color) {
+    @NonNull
+    public SpigotBossBar setColor(@NonNull NightBarColor color) {
         this.backend.setColor(SpigotBossBarAdapter.adaptColor(color));
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public NightBarOverlay getOverlay() {
         return SpigotBossBarAdapter.wrapOverlay(this.backend.getStyle());
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar setOverlay(@NotNull NightBarOverlay overlay) {
+    @NonNull
+    public SpigotBossBar setOverlay(@NonNull NightBarOverlay overlay) {
         this.backend.setStyle(SpigotBossBarAdapter.adaptOverlay(overlay));
         return this;
     }
 
     @Override
-    @UnmodifiableView
-    @NotNull
+    @NonNull
     public Set<NightBarFlag> getFlags() {
         Set<NightBarFlag> flags = new HashSet<>();
         for (BarFlag value : BarFlag.values()) {
@@ -81,27 +79,27 @@ public class SpigotBossBar implements NightBossBar {
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar setFlags(@NotNull Set<NightBarFlag> flags) {
+    @NonNull
+    public SpigotBossBar setFlags(@NonNull Set<NightBarFlag> flags) {
         flags.forEach(nightFlag -> this.backend.addFlag(SpigotBossBarAdapter.adaptFlag(nightFlag)));
         return this;
     }
 
     @Override
-    public boolean hasFlag(@NotNull NightBarFlag flag) {
+    public boolean hasFlag(@NonNull NightBarFlag flag) {
         return this.backend.hasFlag(SpigotBossBarAdapter.adaptFlag(flag));
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar addFlag(@NotNull NightBarFlag flag) {
+    @NonNull
+    public SpigotBossBar addFlag(@NonNull NightBarFlag flag) {
         this.backend.addFlag(SpigotBossBarAdapter.adaptFlag(flag));
         return this;
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar addFlags(@NotNull NightBarFlag... flags) {
+    @NonNull
+    public SpigotBossBar addFlags(@NonNull NightBarFlag... flags) {
         for (NightBarFlag barFlag : flags) {
             this.addFlag(barFlag);
         }
@@ -109,35 +107,34 @@ public class SpigotBossBar implements NightBossBar {
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar removeFlag(@NotNull NightBarFlag flag) {
+    @NonNull
+    public SpigotBossBar removeFlag(@NonNull NightBarFlag flag) {
         this.backend.removeFlag(SpigotBossBarAdapter.adaptFlag(flag));
         return this;
     }
 
     @Override
-    @UnmodifiableView
-    @NotNull
+    @NonNull
     public Set<Player> getViewers() {
         return new HashSet<>(this.backend.getPlayers());
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar addViewer(@NotNull Player viewer) {
+    @NonNull
+    public SpigotBossBar addViewer(@NonNull Player viewer) {
         this.backend.removePlayer(viewer);
         return this;
     }
 
     @Override
-    @NotNull
-    public SpigotBossBar removeViewer(@NotNull Player viewer) {
+    @NonNull
+    public SpigotBossBar removeViewer(@NonNull Player viewer) {
         this.backend.addPlayer(viewer);
         return this;
     }
 
     @Override
-    @NotNull
+    @NonNull
     public SpigotBossBar removeViewers() {
         this.backend.removeAll();
         return this;

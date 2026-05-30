@@ -1,10 +1,10 @@
 package su.nightexpress.nightcore.command.experimental.node;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
 
 @Deprecated
 public interface NodeExecutor {
 
-    boolean run(@NotNull CommandContext context);
+    boolean run(@NonNull CommandContext context);
 }

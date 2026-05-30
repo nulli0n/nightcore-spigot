@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.command.experimental.flag;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.core.CoreLang;
 import su.nightexpress.nightcore.util.Placeholders;
 
@@ -15,26 +15,26 @@ public abstract class CommandFlag {
     private final String name;
     private final String permission;
 
-    public CommandFlag(@NotNull String name, @Nullable String permission) {
+    public CommandFlag(@NonNull String name, @Nullable String permission) {
         this.name = name.toLowerCase();
         this.permission = permission;
     }
 
-    public boolean hasPermission(@NotNull CommandSender sender) {
+    public boolean hasPermission(@NonNull CommandSender sender) {
         return this.permission == null || sender.hasPermission(this.permission);
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return name;
     }
 
-    @NotNull
+    @NonNull
     public String getPrefixed() {
         return PREFIX + this.getName();
     }
 
-    @NotNull
+    @NonNull
     public String getPrefixedFormatted() {
         return CoreLang.COMMAND_FLAG_FORMAT.getString().replace(Placeholders.GENERIC_NAME, this.getPrefixed());
     }

@@ -2,8 +2,8 @@ package su.nightexpress.nightcore.db;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.db.config.DatabaseConfig;
 import su.nightexpress.nightcore.db.config.DatabaseType;
@@ -30,26 +30,26 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
 
     protected final DatabaseConfig    config;
     protected final AbstractConnector connector;
-    protected final DataSynchronizer synchronizer;
+    protected final DataSynchronizer  synchronizer;
 
     @Deprecated
-    protected final Gson              gson;
+    protected final Gson gson;
 
-    public AbstractDataManager(@NotNull P plugin) {
+    public AbstractDataManager(@NonNull P plugin) {
         this(plugin, getDataConfig(plugin));
     }
 
-    public AbstractDataManager(@NotNull P plugin, @NotNull DatabaseConfig config) {
+    public AbstractDataManager(@NonNull P plugin, @NonNull DatabaseConfig config) {
         super(plugin);
         this.config = config;
         this.connector = AbstractConnector.create(plugin, config);
-        this.synchronizer = new DataSynchronizer(this.connector);
+        this.synchronizer = new DataSynchronizer(config.getServerId(), this.connector);
 
         this.gson = this.registerAdapters(new GsonBuilder().setPrettyPrinting()).create();
     }
 
-    @NotNull
-    protected static DatabaseConfig getDataConfig(@NotNull NightPlugin plugin) {
+    @NonNull
+    protected static DatabaseConfig getDataConfig(@NonNull NightPlugin plugin) {
         return DatabaseConfig.read(plugin);
     }
 
@@ -73,8 +73,8 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
         this.connector.close();
     }
 
-    @NotNull
-    protected abstract GsonBuilder registerAdapters(@NotNull GsonBuilder builder);
+    @NonNull
+    protected abstract GsonBuilder registerAdapters(@NonNull GsonBuilder builder);
 
     protected abstract void onInitialize();
 
@@ -84,115 +84,115 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
 
     public abstract void onPurge();
 
-    @NotNull
+    @NonNull
     public DatabaseConfig getConfig() {
         return this.config;
     }
 
-    @NotNull
+    @NonNull
     public DatabaseType getStorageType() {
         return this.config.getStorageType();
     }
 
-    @NotNull
+    @NonNull
     public String getTablePrefix() {
         return this.config.getTablePrefix();
     }
 
-    @NotNull
+    @NonNull
     public AbstractConnector getConnector() {
         return this.connector;
     }
 
-    @NotNull
+    @NonNull
     protected final Connection getConnection() throws SQLException {
         return this.getConnector().getConnection();
     }
 
-    public void addTableSync(@NotNull String tableName, @NotNull Consumer<ResultSet> consumer) {
+    public void addTableSync(@NonNull String tableName, @NonNull Consumer<ResultSet> consumer) {
         if (this.config.getSyncInterval() > 0 && this.getStorageType() == DatabaseType.MYSQL) {
             this.synchronizer.addTable(tableName, consumer);
         }
     }
 
-    public void createTable(@NotNull String table, @NotNull List<Column> columns) {
+    public void createTable(@NonNull String table, @NonNull List<Column> columns) {
         SQLQueries.createTable(this.connector, this.getStorageType(), table, columns);
     }
 
-    public void renameTable(@NotNull String table, @NotNull String toName) {
+    public void renameTable(@NonNull String table, @NonNull String toName) {
         SQLQueries.renameTable(this.connector, this.getStorageType(), toName, toName);
     }
 
-    public void addColumn(@NotNull String table, @NotNull Column column, @NotNull String defaultValue) {
+    public void addColumn(@NonNull String table, @NonNull Column column, @NonNull String defaultValue) {
         SQLQueries.addColumn(this.connector, this.getStorageType(), table, column, defaultValue);
     }
 
-    public void renameColumn(@NotNull String table, @NotNull Column column, @NotNull String toName) {
+    public void renameColumn(@NonNull String table, @NonNull Column column, @NonNull String toName) {
         SQLQueries.renameColumn(this.connector, table, column, toName);
     }
 
-    public void renameColumn(@NotNull String table, @NotNull String column, @NotNull String toName) {
+    public void renameColumn(@NonNull String table, @NonNull String column, @NonNull String toName) {
         SQLQueries.renameColumn(this.connector, table, column, toName);
     }
 
-    public void dropColumn(@NotNull String table, @NotNull Column... columns) {
+    public void dropColumn(@NonNull String table, @NonNull Column... columns) {
         for (Column column : columns) {
             SQLQueries.dropColumn(this.connector, table, column);
         }
     }
 
-    public void dropColumn(@NotNull String table, @NotNull String... columns) {
+    public void dropColumn(@NonNull String table, @NonNull String... columns) {
         for (String column : columns) {
             SQLQueries.dropColumn(this.connector, table, column);
         }
     }
 
-    public boolean hasColumn(@NotNull String table, @NotNull Column column) {
+    public boolean hasColumn(@NonNull String table, @NonNull Column column) {
         return SQLQueries.hasColumn(this.connector, table, column);
     }
 
 
-
-    public <T> void insert(@NotNull String table, @NotNull InsertQuery<T> query, @NotNull T entity) {
+    public <T> void insert(@NonNull String table, @NonNull InsertQuery<T> query, @NonNull T entity) {
         this.executeUpdate(table, query, entity);
     }
 
-    public <T> void insert(@NotNull String table, @NotNull InsertQuery<T> query, @NotNull Collection<T> entities) {
+    public <T> void insert(@NonNull String table, @NonNull InsertQuery<T> query, @NonNull Collection<T> entities) {
         this.executeUpdate(table, query, entities);
     }
 
-    public <T> void update(@NotNull String table, @NotNull UpdateQuery<T> query, @NotNull T entity) {
+    public <T> void update(@NonNull String table, @NonNull UpdateQuery<T> query, @NonNull T entity) {
         this.executeUpdate(table, query, entity);
     }
 
-    public <T> void update(@NotNull String table, @NotNull UpdateQuery<T> query, @NotNull Collection<T> entities) {
+    public <T> void update(@NonNull String table, @NonNull UpdateQuery<T> query, @NonNull Collection<T> entities) {
         this.executeUpdate(table, query, entities);
     }
 
-    public <T> void delete(@NotNull String table, @NotNull DeleteQuery<T> query, @NotNull T entity) {
+    public <T> void delete(@NonNull String table, @NonNull DeleteQuery<T> query, @NonNull T entity) {
         this.executeUpdate(table, query, entity);
     }
 
-    public <T> void delete(@NotNull String table, @NotNull DeleteQuery<T> query, @NotNull Collection<T> entities) {
+    public <T> void delete(@NonNull String table, @NonNull DeleteQuery<T> query, @NonNull Collection<T> entities) {
         this.executeUpdate(table, query, entities);
     }
 
-    public <T> void executeUpdate(@NotNull String table, @NotNull AbstractQuery<T> query, @NotNull T entity) {
+    public <T> void executeUpdate(@NonNull String table, @NonNull AbstractQuery<T> query, @NonNull T entity) {
         SQLQueries.executeQuery(this.connector, table, query, entity);
     }
 
-    public <T> void executeUpdate(@NotNull String table, @NotNull AbstractQuery<T> query, @NotNull Collection<T> entities) {
+    public <T> void executeUpdate(@NonNull String table, @NonNull AbstractQuery<T> query,
+                                  @NonNull Collection<T> entities) {
         SQLQueries.executeQuery(this.connector, table, query, entities);
     }
 
 
-
-    public boolean contains(@NotNull String table, @NotNull Consumer<SelectQuery<Boolean>> consumer) {
+    public boolean contains(@NonNull String table, @NonNull Consumer<SelectQuery<Boolean>> consumer) {
         return this.selectFirst(table, resultSet -> true, consumer) != null;
     }
 
     @Nullable
-    public <T> T selectFirst(@NotNull String table, @NotNull Function<ResultSet, T> function, @NotNull Consumer<SelectQuery<T>> consumer) {
+    public <T> T selectFirst(@NonNull String table, @NonNull Function<ResultSet, T> function,
+                             @NonNull Consumer<SelectQuery<T>> consumer) {
         SelectQuery<T> query = new SelectQuery<>(function);
 
         consumer.accept(query);
@@ -200,8 +200,9 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
         return this.selectFirst(table, query);
     }
 
-    @NotNull
-    public <T> List<T> select(@NotNull String table, @NotNull Function<ResultSet, T> function, @NotNull Consumer<SelectQuery<T>> consumer) {
+    @NonNull
+    public <T> List<T> select(@NonNull String table, @NonNull Function<ResultSet, T> function,
+                              @NonNull Consumer<SelectQuery<T>> consumer) {
         SelectQuery<T> query = new SelectQuery<>(function);
 
         consumer.accept(query);
@@ -210,13 +211,13 @@ public abstract class AbstractDataManager<P extends NightPlugin> extends Abstrac
     }
 
     @Nullable
-    public <T> T selectFirst(@NotNull String table, @NotNull SelectQuery<T> query) {
+    public <T> T selectFirst(@NonNull String table, @NonNull SelectQuery<T> query) {
         List<T> list = this.select(table, query.limit(1));
         return list.isEmpty() ? null : list.getFirst();
     }
 
-    @NotNull
-    public <T> List<T> select(@NotNull String table, @NotNull SelectQuery<T> query) {
+    @NonNull
+    public <T> List<T> select(@NonNull String table, @NonNull SelectQuery<T> query) {
         return SQLQueries.executeSelect(this.connector, table, query);
     }
 }

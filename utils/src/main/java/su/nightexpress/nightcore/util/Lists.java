@@ -1,7 +1,7 @@
 package su.nightexpress.nightcore.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 public class Lists {
 
-    public static int indexOf(Object[] array, @NotNull Object objectToFind) {
+    public static int indexOf(Object[] array, @NonNull Object objectToFind) {
         return indexOf(array, objectToFind, 0);
     }
 
-    public static int indexOf(Object[] array, @NotNull Object objectToFind, int startIndex) {
+    public static int indexOf(Object[] array, @NonNull Object objectToFind, int startIndex) {
         if (array == null || array.length == 0) return -1;
         if (!array.getClass().getComponentType().isInstance(objectToFind)) return -1;
 
@@ -56,18 +56,18 @@ public class Lists {
         return indexOf(array, valueToFind) != -1;
     }
 
-    @NotNull
-    public static <T, R> Set<R> modify(@NotNull Set<T> set, @NotNull Function<T, R> function) {
+    @NonNull
+    public static <T, R> Set<R> modify(@NonNull Set<T> set, @NonNull Function<T, R> function) {
         return set.stream().map(function).collect(Collectors.toCollection(HashSet::new));
     }
 
-    @NotNull
-    public static <T, R> List<R> modify(@NotNull List<T> set, @NotNull Function<T, R> function) {
+    @NonNull
+    public static <T, R> List<R> modify(@NonNull List<T> set, @NonNull Function<T, R> function) {
         return set.stream().map(function).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    @NotNull
-    public static <T> List<List<T>> split(@NotNull List<T> list, int targetSize) {
+    @NonNull
+    public static <T> List<List<T>> split(@NonNull List<T> list, int targetSize) {
         List<List<T>> lists = new ArrayList<>();
         if (targetSize <= 0) return lists;
 
@@ -77,13 +77,13 @@ public class Lists {
         return lists;
     }
 
-    @NotNull
-    public static List<String> replace(@NotNull List<String> origin, @NotNull String var, String... with) {
+    @NonNull
+    public static List<String> replace(@NonNull List<String> origin, @NonNull String var, String... with) {
         return replace(origin, var, Arrays.asList(with));
     }
 
-    @NotNull
-    public static List<String> replace(@NotNull List<String> origin, @NotNull String var, @NotNull List<String> with) {
+    @NonNull
+    public static List<String> replace(@NonNull List<String> origin, @NonNull String var, @NonNull List<String> with) {
         List<String> replaced = new ArrayList<>();
         for (String line : origin) {
             if (line.equalsIgnoreCase(var)) {
@@ -98,9 +98,9 @@ public class Lists {
      * @param original List to remove empty lines from.
      * @return A list with no multiple empty lines in a row.
      */
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> stripEmpty(@NotNull List<String> original) {
+    public static List<String> stripEmpty(@NonNull List<String> original) {
         List<String> stripped = new ArrayList<>();
 
         for (int index = 0; index < original.size(); index++) {
@@ -115,8 +115,8 @@ public class Lists {
         return stripped;
     }
 
-    @NotNull
-    public static List<String> getSequentialMatches(@NotNull List<String> results, @NotNull String input) {
+    @NonNull
+    public static List<String> getSequentialMatches(@NonNull List<String> results, @NonNull String input) {
         if (input.isBlank()) return results;
 
         char[] inputChars = input.toCharArray();
@@ -151,18 +151,18 @@ public class Lists {
         return goods;
     }
 
-    @NotNull
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortAscent(@NotNull Map<K, V> map) {
+    @NonNull
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortAscent(@NonNull Map<K, V> map) {
         return sort(map, Map.Entry.comparingByValue());
     }
 
-    @NotNull
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortDescent(@NotNull Map<K, V> map) {
+    @NonNull
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortDescent(@NonNull Map<K, V> map) {
         return sort(map, Collections.reverseOrder(Map.Entry.comparingByValue()));
     }
 
     @SafeVarargs
-    @NotNull
+    @NonNull
     public static <T> List<T> newList(T... values) {
         List<T> list = new ArrayList<>();
         Collections.addAll(list, values);
@@ -170,65 +170,68 @@ public class Lists {
     }
 
     @SafeVarargs
-    @NotNull
+    @NonNull
     public static <T> Set<T> newSet(T... values) {
         Set<T> list = new HashSet<>();
         Collections.addAll(list, values);
         return list;
     }
 
-    @NotNull
-    public static <K, V extends Comparable<? super V>> Map<K, V> sort(@NotNull Map<K, V> map, @NotNull Comparator<Map.Entry<K, V>> comparator) {
+    @NonNull
+    public static <K, V extends Comparable<? super V>> Map<K, V> sort(@NonNull Map<K, V> map,
+                                                                      @NonNull Comparator<Map.Entry<K, V>> comparator) {
         return new LinkedList<>(map.entrySet()).stream().sorted(comparator)
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (old, nev) -> nev, LinkedHashMap::new));
     }
 
-    @NotNull
+    @NonNull
     @Deprecated
-    public static List<String> getEnums(@NotNull Class<? extends Enum<?>> clazz) {
+    public static List<String> getEnums(@NonNull Class<? extends Enum<?>> clazz) {
         return Enums.getNames(clazz);
         //return new ArrayList<>(Stream.of(clazz.getEnumConstants()).map(Object::toString).toList());
     }
 
-//    @NotNull
-//    @Deprecated
-//    public static String getEnums(@NotNull Class<? extends Enum<?>> clazz, @NotNull String delimiter) {
-//        return StringUtil.inlineEnum(clazz, delimiter);
-//    }
+    //    @NonNull
+    //    @Deprecated
+    //    public static String getEnums(@NonNull Class<? extends Enum<?>> clazz, @NonNull String delimiter) {
+    //        return StringUtil.inlineEnum(clazz, delimiter);
+    //    }
 
-    @NotNull
-    public static <T extends Enum<T>> T next(@NotNull Enum<T> numeration) {
+    @NonNull
+    public static <T extends Enum<T>> T next(@NonNull Enum<T> numeration) {
         return shifted(numeration, 1);
     }
 
-    @NotNull
-    public static <T extends Enum<T>> T next(@NotNull Enum<T> numeration, @NotNull Predicate<T> predicate) {
+    @NonNull
+    public static <T extends Enum<T>> T next(@NonNull Enum<T> numeration, @NonNull Predicate<T> predicate) {
         return shifted(numeration, 1, predicate);
     }
 
-    @NotNull
-    public static <T extends Enum<T>> T previous(@NotNull Enum<T> numeration) {
+    @NonNull
+    public static <T extends Enum<T>> T previous(@NonNull Enum<T> numeration) {
         return shifted(numeration, -1);
     }
 
-    @NotNull
-    public static <T extends Enum<T>> T previous(@NotNull Enum<T> numeration, @NotNull Predicate<T> predicate) {
+    @NonNull
+    public static <T extends Enum<T>> T previous(@NonNull Enum<T> numeration, @NonNull Predicate<T> predicate) {
         return shifted(numeration, -1, predicate);
     }
 
-    @NotNull
-    public static <T extends Enum<T>> T shifted(@NotNull Enum<T> numeration, int shift) {
+    @NonNull
+    public static <T extends Enum<T>> T shifted(@NonNull Enum<T> numeration, int shift) {
         return shifted(numeration, shift, null);
     }
 
-    @NotNull
-    private static <T extends Enum<T>> T shifted(@NotNull Enum<T> numeration, int shift, @Nullable Predicate<T> predicate) {
+    @NonNull
+    private static <T extends Enum<T>> T shifted(@NonNull Enum<T> numeration, int shift,
+                                                 @Nullable Predicate<T> predicate) {
         T[] values = numeration.getDeclaringClass().getEnumConstants();
         return shifted(values, numeration, shift, predicate);
     }
 
-    @NotNull
-    private static <T extends Enum<T>> T shifted(T[] values, @NotNull Enum<T> origin, int shift, @Nullable Predicate<T> predicate) {
+    @NonNull
+    private static <T extends Enum<T>> T shifted(T[] values, @NonNull Enum<T> origin, int shift,
+                                                 @Nullable Predicate<T> predicate) {
         if (predicate != null) {
             T source = origin.getDeclaringClass().cast(origin);
             List<T> filtered = new ArrayList<>(Arrays.asList(values));
@@ -242,14 +245,14 @@ public class Lists {
         return shifted(values, origin.ordinal(), shift);
     }
 
-    @NotNull
+    @NonNull
     public static <T> T shifted(T[] values, int currentIndex, int shift) {
         int index = currentIndex + shift;
         return values[index >= values.length || index < 0 ? 0 : index];
     }
 
-    @NotNull
-    public static <T> T shifted(@NotNull List<T> values, int currentIndex, int shift) {
+    @NonNull
+    public static <T> T shifted(@NonNull List<T> values, int currentIndex, int shift) {
         int index = currentIndex + shift;
         if (index < 0) return values.getLast();
 

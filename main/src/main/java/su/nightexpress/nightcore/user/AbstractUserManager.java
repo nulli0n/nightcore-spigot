@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.manager.AbstractManager;
@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 public abstract class AbstractUserManager<P extends NightPlugin, U extends UserTemplate> extends AbstractManager<P> {
 
     protected final UserDataAccessor<U> dataAccessor;
-    protected final UserRepository<U> repository;
-    protected final UserDataSettings settings;
+    protected final UserRepository<U>   repository;
+    protected final UserDataSettings    settings;
 
-    public AbstractUserManager(@NotNull P plugin, @NotNull UserDataAccessor<U> dataAccessor) {
+    public AbstractUserManager(@NonNull P plugin, @NonNull UserDataAccessor<U> dataAccessor) {
         super(plugin);
         this.dataAccessor = dataAccessor;
         this.repository = new UserRepository<>();
@@ -46,8 +46,8 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
 
         this.plugin.runTaskAsync(() -> {
             this.dataAccessor
-                    .loadProfiles()
-                    .forEach(userInfo -> this.repository.addNameIdMapping(userInfo.name(), userInfo.id()));
+                .loadProfiles()
+                .forEach(userInfo -> this.repository.addNameIdMapping(userInfo.name(), userInfo.id()));
         });
 
         this.plugin.onPostLoad(() -> {
@@ -64,14 +64,14 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
 
     private void loadOnline() {
         Players.stream()
-                .map(Entity::getUniqueId)
-                .map(this::getOrFetch)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .forEach(this::cachePermanent);
+            .map(Entity::getUniqueId)
+            .map(this::getOrFetch)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .forEach(this::cachePermanent);
     }
 
-    private void synchronizeUserData(@NotNull U user) {
+    private void synchronizeUserData(@NonNull U user) {
         // Temporary cache new users that were created on another server.
         if (!this.repository.contains(user.getId())) {
             this.cacheTemporary(user);
@@ -85,30 +85,30 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         });
     }
 
-    @NotNull
-    protected abstract U create(@NotNull UUID uuid, @NotNull String name, @NotNull InetAddress address);
+    @NonNull
+    protected abstract U create(@NonNull UUID uuid, @NonNull String name, @NonNull InetAddress address);
 
-    protected abstract void synchronize(@NotNull U fetched, @NotNull U cached);
+    protected abstract void synchronize(@NonNull U fetched, @NonNull U cached);
 
-    @NotNull
+    @NonNull
     public UserDataAccessor<U> getDataAccessor() {
         return this.dataAccessor;
     }
 
-    @NotNull
+    @NonNull
     public UserRepository<U> getRepository() {
         return this.repository;
     }
 
-    protected void cacheTemporary(@NotNull U user) {
+    protected void cacheTemporary(@NonNull U user) {
         this.repository.addTemporary(user, this.settings.getCacheLifetime());
     }
 
-    protected void cachePermanent(@NotNull U user) {
+    protected void cachePermanent(@NonNull U user) {
         this.repository.addPermanent(user);
     }
 
-    public final void handlePreLogin(@NotNull AsyncPlayerPreLoginEvent event) {
+    public final void handlePreLogin(@NonNull AsyncPlayerPreLoginEvent event) {
         if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) return;
 
         UUID uuid = event.getUniqueId();
@@ -122,7 +122,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         this.getOrFetch(uuid); // Fetch and cache temporary.
     }
 
-    public final void handleJoin(@NotNull PlayerJoinEvent event) {
+    public final void handleJoin(@NonNull PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
         this.repository.getById(player.getUniqueId()).ifPresent(user -> {
@@ -132,7 +132,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         });
     }
 
-    public final void handleQuit(@NotNull PlayerQuitEvent event) {
+    public final void handleQuit(@NonNull PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
         this.repository.getById(player.getUniqueId()).ifPresent(user -> {
@@ -140,7 +140,8 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
             if (user.isDirty()) {
                 this.plugin.runTaskAsync(() -> this.dataAccessor.update(user));
                 user.markClean();
-            } else {
+            }
+            else {
                 this.plugin.runTaskAsync(() -> this.dataAccessor.tinyUpdate(user));
             }
 
@@ -149,22 +150,24 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
     }
 
     // TODO abstract
-    protected void handleJoin(@NonNull U user) {}
+    protected void handleJoin(@NonNull U user) {
+    }
 
-    protected void handleQuit(@NonNull U user) {}
+    protected void handleQuit(@NonNull U user) {
+    }
 
     public void saveDirty() {
         Set<U> users = this.repository.getAll().stream()
-                .filter(UserTemplate::isDirty)
-                .peek(UserTemplate::markClean)
-                .collect(Collectors.toSet());
+            .filter(UserTemplate::isDirty)
+            .peek(UserTemplate::markClean)
+            .collect(Collectors.toSet());
         if (users.isEmpty()) return;
 
         this.dataAccessor.update(users);
     }
 
-    @NotNull
-    public final U getOrFetch(@NotNull Player player) {
+    @NonNull
+    public final U getOrFetch(@NonNull Player player) {
         UUID uuid = player.getUniqueId();
 
         U byId = this.repository.getById(uuid).orElse(null);
@@ -178,15 +181,15 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         }
 
         InetAddress address = Optional.ofNullable(player.getAddress())
-                .map(InetSocketAddress::getAddress)
-                .orElse(null);
+            .map(InetSocketAddress::getAddress)
+            .orElse(null);
         if (address == null) throw new IllegalStateException("%s is not a real player?".formatted(player));
 
         return this.create(uuid, player.getName(), address);
     }
 
-    @NotNull
-    public final Optional<U> getOrFetch(@NotNull String name) {
+    @NonNull
+    public final Optional<U> getOrFetch(@NonNull String name) {
         Player player = Players.getExactPlayer(name);
         if (player != null) return this.getOrFetch(player.getUniqueId());
 
@@ -202,8 +205,8 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         return Optional.empty();
     }
 
-    @NotNull
-    public final Optional<U> getOrFetch(@NotNull UUID uuid) {
+    @NonNull
+    public final Optional<U> getOrFetch(@NonNull UUID uuid) {
         Optional<U> byName = this.repository.getById(uuid);
         if (byName.isPresent()) return byName;
 
@@ -216,26 +219,27 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
         return Optional.empty();
     }
 
-    @NotNull
-    public final CompletableFuture<Optional<U>> loadByIdAsync(@NotNull UUID uuid) {
+    @NonNull
+    public final CompletableFuture<Optional<U>> loadByIdAsync(@NonNull UUID uuid) {
         return CompletableFuture.supplyAsync(() -> this.getOrFetch(uuid));
     }
 
-    @NotNull
-    public final CompletableFuture<Optional<U>> loadByNameAsync(@NotNull String name) {
+    @NonNull
+    public final CompletableFuture<Optional<U>> loadByNameAsync(@NonNull String name) {
         return CompletableFuture.supplyAsync(() -> this.getOrFetch(name));
     }
 
     /**
      * @return Fetches all users from the database and returns them in as a single set.<br>
-     * Users that are already loaded won't be replaced by ones from the database, however they will be fetched anyway.
+     *         Users that are already loaded won't be replaced by ones from the database, however they will be fetched
+     *         anyway.
      */
-    @NotNull
+    @NonNull
     public Set<U> getAll() {
         Set<U> users = this.repository.getAll();
         this.dataAccessor.loadAll().stream()
-                .filter(user -> !this.repository.contains(user.getId()))
-                .forEach(users::add);
+            .filter(user -> !this.repository.contains(user.getId()))
+            .forEach(users::add);
         return users;
     }
 }

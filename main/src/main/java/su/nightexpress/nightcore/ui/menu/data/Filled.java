@@ -1,14 +1,15 @@
 package su.nightexpress.nightcore.ui.menu.data;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
 
 @Deprecated
 public interface Filled<I> {
 
-    @NotNull MenuFiller<I> createFiller(@NotNull MenuViewer viewer);
+    @NonNull
+    MenuFiller<I> createFiller(@NonNull MenuViewer viewer);
 
-    default void autoFill(@NotNull MenuViewer viewer) {
+    default void autoFill(@NonNull MenuViewer viewer) {
         this.createFiller(viewer).addItems(viewer);
     }
 }

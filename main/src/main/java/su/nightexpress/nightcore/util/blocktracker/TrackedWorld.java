@@ -6,8 +6,8 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public class TrackedWorld {
 
@@ -17,32 +17,32 @@ public class TrackedWorld {
         this.chunkMap = Long2ObjectMaps.synchronize(new Long2ObjectOpenHashMap<>());
     }
 
-    protected boolean isTracked(@NotNull Block block) {
+    protected boolean isTracked(@NonNull Block block) {
         TrackedChunk trackedChunk = this.getChunkOf(block);
         return trackedChunk != null && trackedChunk.isTracked(block);
     }
 
-    protected void add(@NotNull Block block) {
+    protected void add(@NonNull Block block) {
         TrackedChunk trackedChunk = this.getChunkOf(block);
         if (trackedChunk == null) return;
 
         trackedChunk.add(block);
     }
 
-    protected void remove(@NotNull Block block) {
+    protected void remove(@NonNull Block block) {
         TrackedChunk trackedChunk = this.getChunkOf(block);
         if (trackedChunk == null) return;
 
         trackedChunk.remove(block);
     }
 
-    protected void initChunk(@NotNull Chunk chunk) {
+    protected void initChunk(@NonNull Chunk chunk) {
         PersistentDataContainer container = chunk.getPersistentDataContainer();
         TrackedChunk trackedChunk = new TrackedChunk(container);
         this.chunkMap.put(TrackUtil.getChunkKey(chunk), trackedChunk);
     }
 
-    protected void terminateChunk(@NotNull Chunk chunk) {
+    protected void terminateChunk(@NonNull Chunk chunk) {
         TrackedChunk trackedChunk = this.chunkMap.remove(TrackUtil.getChunkKey(chunk));
         if (trackedChunk == null) {
             return;
@@ -57,7 +57,7 @@ public class TrackedWorld {
     }
 
     @Nullable
-    private TrackedChunk getChunkOf(@NotNull Block block) {
+    private TrackedChunk getChunkOf(@NonNull Block block) {
         return this.chunkMap.get(TrackUtil.getChunkKeyOfBlock(block));
     }
 }

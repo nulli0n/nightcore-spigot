@@ -1,8 +1,8 @@
 package su.nightexpress.nightcore.commands.tree;
 
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.commands.context.CommandContextBuilder;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.argument.ArgumentReader;
@@ -21,18 +21,20 @@ public abstract class CommandNode {
     protected final List<CommandRequirement> requirements;
     protected final Map<String, CommandNode> children;
 
-    public CommandNode(@NotNull String name, @Nullable String permission, @NotNull List<CommandRequirement> requirements) {
+    public CommandNode(@NonNull String name, @Nullable String permission,
+                       @NonNull List<CommandRequirement> requirements) {
         this.name = LowerCase.USER_LOCALE.apply(name);
         this.permission = permission;
         this.children = new LinkedHashMap<>();
         this.requirements = requirements;
     }
 
-    public boolean canUse(@NotNull CommandSender sender) {
+    public boolean canUse(@NonNull CommandSender sender) {
         return this.requirements.stream().allMatch(requirement -> requirement.test(sender));
     }
 
-    public void suggests(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions) {
+    public void suggests(@NonNull ArgumentReader reader, @NonNull CommandContext context,
+                         @NonNull Suggestions suggestions) {
         // The cursor at this time is set at new (next argument) position. But the CommandNode here is bound to the previous argument.
         // So LiteralNode will provide suggestions for its children ArgumentNode, and so on.
         // Only one children is allowed for all nodes except the Hub one. The HubNode overrides this method accordingly.
@@ -46,15 +48,17 @@ public abstract class CommandNode {
         nextNode.provideSuggestions(reader, context, suggestions);
     }
 
-    public abstract void parse(@NotNull ArgumentReader reader, @NotNull CommandContextBuilder contextBuilder) throws CommandSyntaxException;
+    public abstract void parse(@NonNull ArgumentReader reader,
+                               @NonNull CommandContextBuilder contextBuilder) throws CommandSyntaxException;
 
-    protected abstract void provideSuggestions(@NotNull ArgumentReader reader, @NotNull CommandContext context, @NotNull Suggestions suggestions);
+    protected abstract void provideSuggestions(@NonNull ArgumentReader reader, @NonNull CommandContext context,
+                                               @NonNull Suggestions suggestions);
 
-    public boolean hasPermission(@NotNull CommandSender sender) {
+    public boolean hasPermission(@NonNull CommandSender sender) {
         return this.permission == null || sender.hasPermission(this.permission);
     }
 
-    @NotNull
+    @NonNull
     public Collection<? extends CommandNode> getChildren() {
         return this.children.values();
     }
@@ -63,15 +67,15 @@ public abstract class CommandNode {
         return !this.children.isEmpty();
     }
 
-    @NotNull
-    public abstract Collection<? extends CommandNode> getRelevantNodes(@NotNull ArgumentReader reader);
+    @NonNull
+    public abstract Collection<? extends CommandNode> getRelevantNodes(@NonNull ArgumentReader reader);
 
     @Nullable
-    public CommandNode getChild(@NotNull String name) {
+    public CommandNode getChild(@NonNull String name) {
         return this.children.get(name);
     }
 
-    protected void addChildren(@NotNull CommandNode node) {
+    protected void addChildren(@NonNull CommandNode node) {
         this.children.put(node.getName(), node);
     }
 
@@ -83,17 +87,17 @@ public abstract class CommandNode {
         return false;
     }
 
-    @NotNull
+    @NonNull
     public String getName() {
         return this.name;
     }
 
-    @NotNull
+    @NonNull
     public String getLocalizedName() {
         return this.name;
     }
 
-    @NotNull
+    @NonNull
     public String getUsage() {
         return "";
     }
@@ -103,7 +107,7 @@ public abstract class CommandNode {
         return this.permission;
     }
 
-    @NotNull
+    @NonNull
     public List<CommandRequirement> getRequirements() {
         return this.requirements;
     }

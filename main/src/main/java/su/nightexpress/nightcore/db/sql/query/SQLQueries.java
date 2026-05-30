@@ -1,6 +1,6 @@
 package su.nightexpress.nightcore.db.sql.query;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import su.nightexpress.nightcore.db.config.DatabaseType;
 import su.nightexpress.nightcore.db.connection.AbstractConnector;
 import su.nightexpress.nightcore.db.connection.impl.SQLiteConnector;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Deprecated
 public class SQLQueries {
 
-    public static boolean hasTable(@NotNull AbstractConnector connector, @NotNull String table) {
+    public static boolean hasTable(@NonNull AbstractConnector connector, @NonNull String table) {
         try (Connection connection = connector.getConnection()) {
 
             boolean has;
@@ -34,14 +34,17 @@ public class SQLQueries {
         }
     }
 
-    public static boolean hasColumn(@NotNull AbstractConnector connector, @NotNull String table, @NotNull Column column) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector, @NonNull String table,
+                                    @NonNull Column column) {
         return hasColumn(connector, table, column.getName());
     }
 
-    public static boolean hasColumn(@NotNull AbstractConnector connector, @NotNull String table, @NotNull String columnName) {
+    public static boolean hasColumn(@NonNull AbstractConnector connector, @NonNull String table,
+                                    @NonNull String columnName) {
         String sql = "SELECT * FROM " + table;
-        try (Connection connection = connector.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (
+            Connection connection = connector.getConnection();
+            Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(sql);
             ResultSetMetaData metaData = resultSet.getMetaData();
@@ -59,11 +62,11 @@ public class SQLQueries {
         }
     }
 
-    public static void addColumn(@NotNull AbstractConnector connector,
-                                 @NotNull DatabaseType type,
-                                 @NotNull String table,
-                                 @NotNull Column column,
-                                 @NotNull String defVal) {
+    public static void addColumn(@NonNull AbstractConnector connector,
+                                 @NonNull DatabaseType type,
+                                 @NonNull String table,
+                                 @NonNull Column column,
+                                 @NonNull String defVal) {
         if (SQLQueries.hasColumn(connector, table, column)) return;
 
         StringBuilder builder = new StringBuilder()
@@ -77,11 +80,13 @@ public class SQLQueries {
         SQLQueries.executeSimpleQuery(connector, builder.toString());
     }
 
-    public static void renameColumn(@NotNull AbstractConnector connector, @NotNull String table, @NotNull Column column, @NotNull String toName) {
+    public static void renameColumn(@NonNull AbstractConnector connector, @NonNull String table, @NonNull Column column,
+                                    @NonNull String toName) {
         renameColumn(connector, table, column.getName(), toName);
     }
 
-    public static void renameColumn(@NotNull AbstractConnector connector, @NotNull String table, @NotNull String columnName, @NotNull String toName) {
+    public static void renameColumn(@NonNull AbstractConnector connector, @NonNull String table,
+                                    @NonNull String columnName, @NonNull String toName) {
         if (!SQLQueries.hasColumn(connector, table, columnName)) return;
 
         String sql = "ALTER TABLE " + table + " RENAME COLUMN " + columnName + " TO " + toName;
@@ -89,11 +94,12 @@ public class SQLQueries {
         SQLQueries.executeSimpleQuery(connector, sql);
     }
 
-    public static void dropColumn(@NotNull AbstractConnector connector, @NotNull String table, @NotNull Column column) {
+    public static void dropColumn(@NonNull AbstractConnector connector, @NonNull String table, @NonNull Column column) {
         dropColumn(connector, table, column.getName());
     }
 
-    public static void dropColumn(@NotNull AbstractConnector connector, @NotNull String table, @NotNull String columnName) {
+    public static void dropColumn(@NonNull AbstractConnector connector, @NonNull String table,
+                                  @NonNull String columnName) {
         if (!SQLQueries.hasColumn(connector, table, columnName)) return;
 
         String sql = "ALTER TABLE " + table + " DROP COLUMN " + columnName;
@@ -101,10 +107,12 @@ public class SQLQueries {
         SQLQueries.executeSimpleQuery(connector, sql);
     }
 
-    public static void createTable(@NotNull AbstractConnector connector, @NotNull DatabaseType type, @NotNull String table, @NotNull List<Column> columns) {
+    public static void createTable(@NonNull AbstractConnector connector, @NonNull DatabaseType type,
+                                   @NonNull String table, @NonNull List<Column> columns) {
         if (columns.isEmpty()) return;
 
-        StringBuilder idBuilder = new StringBuilder(SQLUtils.escape("id")).append(" ").append(ColumnType.INTEGER.build(type, 11));
+        StringBuilder idBuilder = new StringBuilder(SQLUtils.escape("id")).append(" ").append(ColumnType.INTEGER.build(
+            type, 11));
 
         if (type == DatabaseType.SQLITE) {
             idBuilder.append(" PRIMARY KEY AUTOINCREMENT");
@@ -122,8 +130,9 @@ public class SQLQueries {
 
         SQLQueries.executeSimpleQuery(connector, sql);
     }
-    
-    public static void renameTable(@NotNull AbstractConnector connector, @NotNull DatabaseType type, @NotNull String table, @NotNull String toName) {
+
+    public static void renameTable(@NonNull AbstractConnector connector, @NonNull DatabaseType type,
+                                   @NonNull String table, @NonNull String toName) {
         if (!SQLQueries.hasTable(connector, table)) return;
 
         StringBuilder sql = new StringBuilder();
@@ -136,9 +145,10 @@ public class SQLQueries {
         SQLQueries.executeSimpleQuery(connector, sql.toString());
     }
 
-    public static void executeSimpleQuery(@NotNull AbstractConnector connector, @NotNull String sql) {
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+    public static void executeSimpleQuery(@NonNull AbstractConnector connector, @NonNull String sql) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             //System.out.println("simpleQuery: " + statement.toString());
 
@@ -149,17 +159,20 @@ public class SQLQueries {
         }
     }
 
-    public static <T> void executeQuery(@NotNull AbstractConnector connector, @NotNull String table, @NotNull AbstractQuery<T> query, @NotNull T entity) {
+    public static <T> void executeQuery(@NonNull AbstractConnector connector, @NonNull String table,
+                                        @NonNull AbstractQuery<T> query, @NonNull T entity) {
         executeQuery(connector, table, query, Lists.newList(entity));
     }
 
-    public static <T> void executeQuery(@NotNull AbstractConnector connector, @NotNull String table, @NotNull AbstractQuery<T> query, @NotNull Collection<T> entities) {
+    public static <T> void executeQuery(@NonNull AbstractConnector connector, @NonNull String table,
+                                        @NonNull AbstractQuery<T> query, @NonNull Collection<T> entities) {
         if (query.isEmpty()) return;
 
         String sql = query.createSQL(table);
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             int entityCount = 0;
             for (T entity : entities) {
@@ -178,16 +191,18 @@ public class SQLQueries {
         }
     }
 
-    @NotNull
-    public static <T> List<T> executeSelect(@NotNull AbstractConnector connector, @NotNull String table, @NotNull SelectQuery<T> query) {
+    @NonNull
+    public static <T> List<T> executeSelect(@NonNull AbstractConnector connector, @NonNull String table,
+                                            @NonNull SelectQuery<T> query) {
         ArrayList<T> list = new ArrayList<>();
 
         if (query.isEmpty()) return list;
 
         String sql = query.createSQL(table);
 
-        try (Connection connection = connector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (
+            Connection connection = connector.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             query.onExecute(statement, list);
             //System.out.println("selectQuery: " + statement);

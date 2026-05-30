@@ -1,16 +1,20 @@
 package su.nightexpress.nightcore.core;
 
-import su.nightexpress.nightcore.config.ConfigValue;
-import su.nightexpress.nightcore.integration.placeholder.PAPI;
-import su.nightexpress.nightcore.util.*;
-import su.nightexpress.nightcore.util.number.NumberShortcut;
-import su.nightexpress.nightcore.util.time.TimeFormats;
-import su.nightexpress.nightcore.util.wrapper.UniFormatter;
-
 import java.math.RoundingMode;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+
+import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.integration.placeholder.PAPI;
+import su.nightexpress.nightcore.util.Enums;
+import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.LowerCase;
+import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.TimeUtil;
+import su.nightexpress.nightcore.util.number.NumberShortcut;
+import su.nightexpress.nightcore.util.time.TimeFormats;
+import su.nightexpress.nightcore.util.wrapper.UniFormatter;
 
 public class CoreConfig {
 
@@ -26,17 +30,20 @@ public class CoreConfig {
         "[Default is 150ms]"
     );
 
-    public static final ConfigValue<Set<String>> ECONOMY_DISABLED_PROVIDERS = ConfigValue.create("Integrations.Economy.DisabledProviders",
+    public static final ConfigValue<Set<String>> ECONOMY_DISABLED_PROVIDERS = ConfigValue.create(
+        "Integrations.Economy.DisabledProviders",
         Lists.newSet("example_currency", "custom_economy"),
         "List of economy/currency IDs that will not be handled by the nightcore and it's child plugins."
     ).onRead(set -> Lists.modify(set, LowerCase.INTERNAL::apply));
 
-    public static final ConfigValue<Boolean> ECONOMY_PLACEHOLDERS_API_FORMAT = ConfigValue.create("Integrations.Economy.PlaceholderAPI_In_Format",
+    public static final ConfigValue<Boolean> ECONOMY_PLACEHOLDERS_API_FORMAT = ConfigValue.create(
+        "Integrations.Economy.PlaceholderAPI_In_Format",
         true,
         "Whether to apply " + PAPI.NAME + " placeholders in currency's Format setting."
     );
 
-    public static final ConfigValue<Set<String>> ITEMS_DISABLED_PROVIDERS = ConfigValue.create("Integrations.Items.DisabledProviders",
+    public static final ConfigValue<Set<String>> ITEMS_DISABLED_PROVIDERS = ConfigValue.create(
+        "Integrations.Items.DisabledProviders",
         Lists.newSet("CustomSuperItems", "UltimateItemsPlugin"),
         "List of custom item plugins that will not be handled by the nightcore and it's child plugins."
     ).onRead(set -> Lists.modify(set, LowerCase.INTERNAL::apply));
@@ -75,7 +82,8 @@ public class CoreConfig {
         "[Default is 1000]"
     );
 
-    public static final ConfigValue<Map<String, NumberShortcut>> NUMBER_SHORTCUT_LIST = ConfigValue.forMapById("Number.Shortcut_List",
+    public static final ConfigValue<Map<String, NumberShortcut>> NUMBER_SHORTCUT_LIST = ConfigValue.forMapById(
+        "Number.Shortcut_List",
         NumberShortcut::read,
         map -> {
             map.put("thousand", new NumberShortcut(1, "k"));
@@ -128,13 +136,5 @@ public class CoreConfig {
         true,
         "Controls whether cached player profiles should force update when their owner joins the server.",
         "[Default is true]"
-    );
-
-    public static final ConfigValue<Boolean> PROFILE_FETCH_CUSTOM = ConfigValue.create("Profiles.FetchCustom",
-        false,
-        "Controls whether profiles with custom textures can query Mojang API to fetch missing properties.",
-        "[*] Enable this only if you're experiencing issues with texture loading for custom heads.",
-        "[*] Enabling this setting may get you rate limited from Mojang.",
-        "[Default is false]"
     );
 }
