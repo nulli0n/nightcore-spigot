@@ -477,6 +477,8 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
 
     @Override
     public void handleClick(@NonNull Player player, @NonNull InventoryClickEvent event) {
+        event.setCancelled(true);
+        event.setCancelled(true);
         MenuViewer viewer = this.getViewer(player);
         if (viewer == null) return;
 

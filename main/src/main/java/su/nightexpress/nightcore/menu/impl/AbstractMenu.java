@@ -178,12 +178,6 @@ public abstract class AbstractMenu<P extends NightCorePlugin> implements Menu {
             this.purgeViewer(player);
             return false;
         }
-        if (inventory.getType() == InventoryType.CRAFTING) {
-            this.plugin.warn("Got CRAFTING inventory when trying to open " + this.getClass().getSimpleName() +
-                " menu for '" + player.getName() + "'.");
-            this.purgeViewer(player);
-            return false;
-        }
 
         this.getItems(viewer).forEach(menuItem -> {
             ItemStack item = menuItem.getItemStack();
