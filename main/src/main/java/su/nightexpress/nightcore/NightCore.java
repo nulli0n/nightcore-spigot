@@ -49,9 +49,7 @@ public class NightCore extends NightPlugin {
 
     private static NightCore core;
 
-    private final ArgumentRegistry argumentRegistry;
-    private final CodecRegistry    codecRegistry;
-    private final ChatManager      chatManager;
+    private final ChatManager chatManager;
 
     private CoreDatabase    database;
     private UserDataManager userDataManager;
@@ -70,9 +68,12 @@ public class NightCore extends NightPlugin {
     }
 
     public NightCore() {
-        this.argumentRegistry = new ArgumentRegistry();
-        this.codecRegistry = new CodecRegistry();
         this.chatManager = new ChatManager(this);
+
+        if (Version.isSpigot()) {
+            Arguments.init(new ArgumentRegistry());
+            ConfigCodecs.init(new CodecRegistry());
+        }
     }
 
     @Override
@@ -117,9 +118,6 @@ public class NightCore extends NightPlugin {
     @Override
     protected void onStartup() {
         super.onStartup();
-
-        Arguments.init(this.argumentRegistry);
-        ConfigCodecs.init(this.codecRegistry);
 
         this.menuRegistry = new MenuRegistry(this);
         this.chatManager.setup();

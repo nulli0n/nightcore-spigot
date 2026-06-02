@@ -43,6 +43,7 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 @NullMarked
 public class ConfigCodecs {
 
+    @Nullable
     private static CodecRegistry registry;
 
     protected ConfigCodecs() {

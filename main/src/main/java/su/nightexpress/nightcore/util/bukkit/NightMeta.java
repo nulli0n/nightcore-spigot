@@ -278,8 +278,8 @@ public class NightMeta implements Writeable {
         }
         config.set(path + ".SkinURL", this.skinUrl);
         config.set(path + ".Model.Data", this.modelData);
-        config.set(path + ".Model.Path", this.modelPath == null ? null : this.modelPath.getKey());
-        config.set(path + ".Tooltip.Style", this.tooltipStyle == null ? null : this.tooltipStyle.getKey());
+        config.set(path + ".Model.Path", this.modelPath == null ? null : this.modelPath.asString());
+        config.set(path + ".Tooltip.Style", this.tooltipStyle == null ? null : this.tooltipStyle.asString());
         config.set(path + ".Durabilities.Damage", this.damage);
         config.set(path + ".Durabilities.Unbreakable", this.unbreakable ? true : null);
         config.set(path + ".Enchant_Glint", this.enchantGlint ? true : null);

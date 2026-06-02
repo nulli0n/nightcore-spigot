@@ -8,17 +8,8 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 import su.nightexpress.nightcore.commands.argument.ArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.BlockTypeArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.BoolArgumentType;
 import su.nightexpress.nightcore.commands.argument.type.DoubleArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.EnchantmentArgumentType;
 import su.nightexpress.nightcore.commands.argument.type.IntegerArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.ItemTypeArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.PlayerArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.PlayerExactArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.PlayerNameArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.StringArgumentType;
-import su.nightexpress.nightcore.commands.argument.type.WorldArgumentType;
 import su.nightexpress.nightcore.commands.builder.ArgumentNodeBuilder;
 import su.nightexpress.nightcore.core.config.CoreLang;
 
@@ -28,17 +19,7 @@ public class Arguments {
     private Arguments() {
     }
 
-    public static final BlockTypeArgumentType   BLOCK_TYPE    = new BlockTypeArgumentType();
-    public static final BoolArgumentType        BOOLEAN       = new BoolArgumentType();
-    public static final EnchantmentArgumentType ENCHANTMENT   = new EnchantmentArgumentType();
-    public static final ItemTypeArgumentType    ITEM_TYPE     = new ItemTypeArgumentType();
-    public static final PlayerArgumentType      PLAYER        = new PlayerArgumentType();
-    public static final PlayerExactArgumentType PLAYER_EXACT  = new PlayerExactArgumentType();
-    public static final PlayerNameArgumentType  PLAYER_NAME   = new PlayerNameArgumentType();
-    public static final StringArgumentType      STRING        = new StringArgumentType(false);
-    public static final StringArgumentType      GREEDY_STRING = new StringArgumentType(true);
-    public static final WorldArgumentType       WORLD         = new WorldArgumentType();
-
+    @Nullable
     private static ArgumentRegistry registry;
 
     public static void init(ArgumentRegistry registry) {
@@ -79,7 +60,7 @@ public class Arguments {
     }
 
     public static ArgumentNodeBuilder<Boolean> bool(String name) {
-        return Commands.argument(name, BOOLEAN).localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC);
+        return Commands.argument(name, ArgumentTypes.BOOLEAN).localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC);
     }
 
     public static ArgumentNodeBuilder<Double> decimal(String name) {
@@ -135,38 +116,38 @@ public class Arguments {
     }
 
     public static ArgumentNodeBuilder<Player> player(String name) {
-        return Commands.argument(name, PLAYER).localized(CoreLang.COMMAND_ARGUMENT_NAME_PLAYER);
+        return Commands.argument(name, ArgumentTypes.PLAYER).localized(CoreLang.COMMAND_ARGUMENT_NAME_PLAYER);
     }
 
     public static ArgumentNodeBuilder<Player> playerExact(String name) {
-        return Commands.argument(name, PLAYER_EXACT).localized(CoreLang.COMMAND_ARGUMENT_NAME_PLAYER);
+        return Commands.argument(name, ArgumentTypes.PLAYER_EXACT).localized(CoreLang.COMMAND_ARGUMENT_NAME_PLAYER);
     }
 
     public static ArgumentNodeBuilder<String> playerName(String name) {
-        return Commands.argument(name, PLAYER_NAME).localized(CoreLang.COMMAND_ARGUMENT_NAME_PLAYER);
+        return Commands.argument(name, ArgumentTypes.PLAYER_NAME).localized(CoreLang.COMMAND_ARGUMENT_NAME_PLAYER);
     }
 
     public static ArgumentNodeBuilder<String> string(String name) {
-        return Commands.argument(name, STRING).localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC);
+        return Commands.argument(name, ArgumentTypes.STRING).localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC);
     }
 
     public static ArgumentNodeBuilder<String> greedyString(String name) {
-        return Commands.argument(name, GREEDY_STRING).localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC);
+        return Commands.argument(name, ArgumentTypes.GREEDY_STRING).localized(CoreLang.COMMAND_ARGUMENT_NAME_GENERIC);
     }
 
     public static ArgumentNodeBuilder<Material> itemType(String name) {
-        return Commands.argument(name, ITEM_TYPE).localized(CoreLang.COMMAND_ARGUMENT_NAME_ITEM_TYPE);
+        return Commands.argument(name, ArgumentTypes.ITEM_TYPE).localized(CoreLang.COMMAND_ARGUMENT_NAME_ITEM_TYPE);
     }
 
     public static ArgumentNodeBuilder<Material> blockType(String name) {
-        return Commands.argument(name, BLOCK_TYPE).localized(CoreLang.COMMAND_ARGUMENT_NAME_BLOCK_TYPE);
+        return Commands.argument(name, ArgumentTypes.BLOCK_TYPE).localized(CoreLang.COMMAND_ARGUMENT_NAME_BLOCK_TYPE);
     }
 
     public static ArgumentNodeBuilder<Enchantment> enchantment(String name) {
-        return Commands.argument(name, ENCHANTMENT).localized(CoreLang.COMMAND_ARGUMENT_NAME_ENCHANTMENT);
+        return Commands.argument(name, ArgumentTypes.ENCHANTMENT).localized(CoreLang.COMMAND_ARGUMENT_NAME_ENCHANTMENT);
     }
 
     public static ArgumentNodeBuilder<World> world(String name) {
-        return Commands.argument(name, WORLD).localized(CoreLang.COMMAND_ARGUMENT_NAME_WORLD);
+        return Commands.argument(name, ArgumentTypes.WORLD).localized(CoreLang.COMMAND_ARGUMENT_NAME_WORLD);
     }
 }

@@ -1,17 +1,19 @@
 package su.nightexpress.nightcore;
 
-import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
-import io.papermc.paper.plugin.loader.PluginLoader;
-import io.papermc.paper.plugin.loader.library.impl.MavenLibraryResolver;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 
+import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
+import io.papermc.paper.plugin.loader.PluginLoader;
+import io.papermc.paper.plugin.loader.library.impl.MavenLibraryResolver;
+
+@NullMarked
 public class NightCoreLoader implements PluginLoader {
 
     @Override
-    public void classloader(@NonNull PluginClasspathBuilder classpathBuilder) {
+    public void classloader(PluginClasspathBuilder classpathBuilder) {
         MavenLibraryResolver resolver = new MavenLibraryResolver();
 
         try {
