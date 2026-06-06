@@ -20,7 +20,7 @@ public class UserDataQueries {
     public static final RowMapper<UserData> USER_ROW_MAPPER = resultSet -> {
         UUID userId = USER_ID_COLUMN.readOrThrow(resultSet);
         String userName = USER_NAME_COLUMN.readOrThrow(resultSet);
-        String lastSkinUrl = LAST_SKIN_COLUMN.readOrThrow(resultSet);
+        String lastSkinUrl = LAST_SKIN_COLUMN.read(resultSet).orElse(null);
         long lastSeen = LAST_SEEN_COLUMN.readOrThrow(resultSet);
 
         UserData data = new UserData(userId, userName);
