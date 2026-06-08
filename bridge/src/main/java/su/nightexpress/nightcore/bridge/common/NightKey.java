@@ -7,7 +7,8 @@ import su.nightexpress.nightcore.util.Strings;
 import java.util.Objects;
 import java.util.Optional;
 
-public class NightKey {
+@Deprecated
+public final class NightKey {
 
     public static final char DELIMITER = ':';
 

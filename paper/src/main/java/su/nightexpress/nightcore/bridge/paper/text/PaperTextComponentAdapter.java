@@ -79,7 +79,7 @@ public class PaperTextComponentAdapter implements TextComponentAdapter<Component
             case CUSTOM -> {
                 WrappedPayload.Custom custom = (WrappedPayload.Custom) payload;
                 NightKey namespacedKey = custom.key();
-                Key key = Key.key(namespacedKey.namespace(), namespacedKey.value());
+                Key key = namespacedKey.toBukkit();//Key.key(namespacedKey.namespace(), namespacedKey.value());
                 BinaryTagHolder nbt = BinaryTagHolder.binaryTagHolder(custom.nbt().asString());
 
                 yield ClickEvent.custom(key, nbt);

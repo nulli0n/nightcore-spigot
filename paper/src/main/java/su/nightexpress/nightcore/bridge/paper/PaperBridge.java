@@ -28,9 +28,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
@@ -40,6 +41,8 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.dialog.DialogLike;
+import net.kyori.adventure.key.InvalidKeyException;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -52,12 +55,14 @@ import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.key.AdaptedKey;
 import su.nightexpress.nightcore.bridge.paper.bossbar.PaperBossBar;
 import su.nightexpress.nightcore.bridge.paper.bossbar.PaperBossBarAdapter;
 import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogAdapter;
 import su.nightexpress.nightcore.bridge.paper.dialog.PaperDialogListener;
 import su.nightexpress.nightcore.bridge.paper.event.PaperChatListener;
 import su.nightexpress.nightcore.bridge.paper.event.PaperEventAdapter;
+import su.nightexpress.nightcore.bridge.paper.key.PaperKey;
 import su.nightexpress.nightcore.bridge.paper.scheduler.FoliaScheduler;
 import su.nightexpress.nightcore.bridge.paper.scheduler.PaperScheduler;
 import su.nightexpress.nightcore.bridge.paper.text.PaperTextComponentAdapter;
@@ -72,6 +77,7 @@ import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 import su.nightexpress.nightcore.util.text.night.tag.TagPool;
 
+@NullMarked
 public class PaperBridge implements Software {
 
     private DialogAdapter<?>          dialogAdapter;
@@ -81,7 +87,6 @@ public class PaperBridge implements Software {
     private Set<DataComponentType> commonComponentsToHide;
 
     @Override
-    @NonNull
     public String getName() {
         return "paper-bridge";
     }
@@ -110,42 +115,42 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    @NonNull
+
     public PaperEventAdapter eventAdapter() {
         return this.eventAdapter;
     }
 
     @Override
-    @NonNull
-    public AdaptedScheduler getScheduler(@NonNull JavaPlugin plugin) {
+
+    public AdaptedScheduler getScheduler(JavaPlugin plugin) {
         return Version.isFolia() ? new FoliaScheduler(plugin) : new PaperScheduler(plugin);
     }
 
     @Override
-    @NonNull
-    public Listener createChatListener(@NonNull UniversalChatListenerCallback callback) {
+
+    public Listener createChatListener(UniversalChatListenerCallback callback) {
         return new PaperChatListener(this, callback);
     }
 
     @Override
-    @NonNull
-    public Listener createDialogListener(@NonNull DialogClickHandler handler) {
+
+    public Listener createDialogListener(DialogClickHandler handler) {
         return new PaperDialogListener(handler);
     }
 
     @Override
-    public void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result,
-                              @NonNull NightComponent message) {
+    public void disallowLogin(AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.Result result,
+                              NightComponent message) {
         event.disallow(result, this.textComponentAdapter.adaptComponent(message));
     }
 
     @Override
-    public void closeDialog(@NonNull Player player) {
+    public void closeDialog(Player player) {
         player.closeDialog();
     }
 
     @Override
-    public void showDialog(@NonNull Player player, @NonNull WrappedDialog dialog) {
+    public void showDialog(Player player, WrappedDialog dialog) {
         player.showDialog((DialogLike) this.dialogAdapter.adaptDialog(dialog));
     }
 
@@ -155,65 +160,114 @@ public class PaperBridge implements Software {
         return Bukkit.getUnsafe().nextEntityId();
     }
 
-    @NonNull
+
     public DialogAdapter<?> getDialogAdapter() {
         return this.dialogAdapter;
     }
 
     @Override
-    @NonNull
+
     public PaperTextComponentAdapter getTextComponentAdapter() {
         return this.textComponentAdapter;
     }
 
     @Override
-    @NonNull
+
     public SimpleCommandMap getCommandMap() {
         return (SimpleCommandMap) Bukkit.getCommandMap();
     }
 
     @Override
-    @NonNull
-    public Map<String, Command> getKnownCommands(@NonNull SimpleCommandMap commandMap) {
+
+    public Map<String, Command> getKnownCommands(SimpleCommandMap commandMap) {
         return commandMap.getKnownCommands();
     }
 
-    @NonNull
-    private Component adaptComponent(@NonNull NightComponent component) {
+
+    private Component adaptComponent(NightComponent component) {
         return this.textComponentAdapter.adaptComponent(component);
     }
 
-    @NonNull
-    public static String serializeComponent(@NonNull Component component) {
+
+    public static String serializeComponent(Component component) {
         return NightMessage.stripTags(MiniMessage.miniMessage().serialize(component), TagPool.NO_INVERTED_DECORATIONS);
     }
 
+
     @Override
-    @NonNull
-    public NightProfile createProfile(@NonNull UUID uuid) {
+    public boolean isValidKeyNamespace(String namespace) {
+        return Key.parseableNamespace(namespace);
+    }
+
+    @Override
+    public boolean isValidKeyValue(String value) {
+        return Key.parseableValue(value);
+    }
+
+    @Override
+    public boolean allowedInNamespace(char character) {
+        return Key.allowedInNamespace(character);
+    }
+
+    @Override
+    public boolean allowedInValue(char character) {
+        return Key.allowedInValue(character);
+    }
+
+    @Override
+    public AdaptedKey createKey(Plugin plugin, String value) {
+        try {
+            return new PaperKey(Key.key(plugin, value));
+        }
+        catch (InvalidKeyException exception) {
+            throw new su.nightexpress.nightcore.bridge.key.exception.InvalidKeyException(exception);
+        }
+    }
+
+    @Override
+    public AdaptedKey createKey(String namespace, String value) {
+        try {
+            return new PaperKey(Key.key(namespace, value));
+        }
+        catch (InvalidKeyException exception) {
+            throw new su.nightexpress.nightcore.bridge.key.exception.InvalidKeyException(exception);
+        }
+    }
+
+    @Override
+    public AdaptedKey createKey(String string) {
+        try {
+            return new PaperKey(Key.key(string));
+        }
+        catch (InvalidKeyException exception) {
+            throw new su.nightexpress.nightcore.bridge.key.exception.InvalidKeyException(exception);
+        }
+    }
+
+    @Override
+    public NightProfile createProfile(UUID uuid) {
         return new PaperProfile(Bukkit.createProfile(uuid));
     }
 
     @Override
-    @NonNull
-    public NightProfile createProfile(@NonNull String name) {
+    public NightProfile createProfile(String name) {
         return new PaperProfile(Bukkit.createProfile(name));
     }
 
     @Override
-    @NonNull
+
     public NightProfile createProfile(@Nullable UUID uuid, @Nullable String name) {
         return new PaperProfile(Bukkit.createProfile(uuid, name));
     }
 
     @Override
-    @NonNull
-    public NightProfile getProfile(@NonNull OfflinePlayer player) {
+
+    public NightProfile getProfile(OfflinePlayer player) {
         return new PaperProfile(player.getPlayerProfile());
     }
 
     @Override
-    public void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle,
+    public void sendTitles(Player player, NightComponent title, NightComponent subtitle,
                            int fadeIn, int stay, int fadeOut) {
         Component titleComp = adaptComponent(title);
         Component subComp = adaptComponent(subtitle);
@@ -225,74 +279,74 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    @NonNull
-    public InventoryView createView(@NonNull MenuType menuType, @NonNull NightComponent title, @NonNull Player player) {
+
+    public InventoryView createView(MenuType menuType, NightComponent title, Player player) {
         return menuType.typed().builder().title(adaptComponent(title)).build(player);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull Material material) {
+
+    public String getTranslationKey(Material material) {
         return getTranslation(material);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull Attribute attribute) {
+
+    public String getTranslationKey(Attribute attribute) {
         return getTranslation(attribute);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull EntityType entityType) {
+
+    public String getTranslationKey(EntityType entityType) {
         return getTranslation(entityType);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull Enchantment enchantment) {
+
+    public String getTranslationKey(Enchantment enchantment) {
         return getTranslation(enchantment);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull PotionEffectType effectType) {
+
+    public String getTranslationKey(PotionEffectType effectType) {
         return getTranslation(effectType);
     }
 
-    @NonNull
-    public static String getTranslation(@NonNull Translatable translatable) {
+
+    public static String getTranslation(Translatable translatable) {
         return translatable.translationKey();
     }
 
 
     @Override
-    @NonNull
-    public String getDisplayNameSerialized(@NonNull Player player) {
+
+    public String getDisplayNameSerialized(Player player) {
         return serializeComponent(player.displayName());
     }
 
     @Override
-    public void setDisplayName(@NonNull Player player, @Nullable NightComponent component) {
+    public void setDisplayName(Player player, @Nullable NightComponent component) {
         player.displayName(component == null ? null : this.adaptComponent(component));
     }
 
     @Override
     @Nullable
-    public String getPlayerListHeaderSerialized(@NonNull Player player) {
+    public String getPlayerListHeaderSerialized(Player player) {
         Component header = player.playerListHeader();
         return header == null ? null : serializeComponent(header);
     }
 
     @Override
     @Nullable
-    public String getPlayerListFooterSerialized(@NonNull Player player) {
+    public String getPlayerListFooterSerialized(Player player) {
         Component footer = player.playerListFooter();
         return footer == null ? null : serializeComponent(footer);
     }
 
     @Override
-    public void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header,
+    public void setPlayerListHeaderFooter(Player player, @Nullable NightComponent header,
                                           @Nullable NightComponent footer) {
         Component paperHeader = header == null ? Component.empty() : this.adaptComponent(header);
         Component paperFooter = footer == null ? Component.empty() : this.adaptComponent(footer);
@@ -301,96 +355,96 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    @NonNull
-    public String getPlayerListNameSerialized(@NonNull Player player) {
+
+    public String getPlayerListNameSerialized(Player player) {
         return serializeComponent(player.playerListName());
     }
 
     @Override
-    public void setPlayerListName(@NonNull Player player, @NonNull NightComponent name) {
+    public void setPlayerListName(Player player, NightComponent name) {
         player.playerListName(this.adaptComponent(name));
     }
 
     @Override
-    public void kick(@NonNull Player player, @Nullable NightComponent component) {
+    public void kick(Player player, @Nullable NightComponent component) {
         player.kick(component == null ? null : this.adaptComponent(component));
     }
 
     @Override
-    public void setCustomName(@NonNull Nameable entity, @Nullable NightComponent component) {
+    public void setCustomName(Nameable entity, @Nullable NightComponent component) {
         entity.customName(component == null ? null : this.adaptComponent(component));
     }
 
     @Override
     @Nullable
-    public String getCustomName(@NonNull Nameable entity) {
+    public String getCustomName(Nameable entity) {
         Component component = entity.customName();
         return component == null ? null : serializeComponent(component);
     }
 
 
     @Override
-    @NonNull
-    public ItemStack setType(@NonNull ItemStack itemStack, @NonNull Material material) {
+
+    public ItemStack setType(ItemStack itemStack, Material material) {
         return itemStack.withType(material);
     }
 
     @Override
-    public void editMeta(@NonNull ItemStack itemStack, @NonNull Consumer<ItemMeta> consumer) {
+    public void editMeta(ItemStack itemStack, Consumer<ItemMeta> consumer) {
         itemStack.editMeta(consumer);
     }
 
     @Override
-    public <T extends ItemMeta> void editMeta(@NonNull ItemStack itemStack, @NonNull Class<T> clazz,
-                                              @NonNull Consumer<T> consumer) {
+    public <T extends ItemMeta> void editMeta(ItemStack itemStack, Class<T> clazz,
+                                              Consumer<T> consumer) {
         itemStack.editMeta(clazz, consumer);
     }
 
     @Override
     @Nullable
-    public String getCustomName(@NonNull ItemMeta meta) {
+    public String getCustomName(ItemMeta meta) {
         Component component = meta.customName();
         return component == null ? null : serializeComponent(component);
     }
 
     @Override
-    public void setCustomName(@NonNull ItemMeta meta, @Nullable NightComponent name) {
+    public void setCustomName(ItemMeta meta, @Nullable NightComponent name) {
         meta.customName(name == null ? null : this.adaptComponent(name));
     }
 
     @Override
     @Nullable
-    public String getItemName(@NonNull ItemMeta meta) {
+    public String getItemName(ItemMeta meta) {
         return meta.hasItemName() ? serializeComponent(meta.itemName()) : null;
     }
 
     @Override
-    public void setItemName(@NonNull ItemMeta meta, @NonNull NightComponent name) {
+    public void setItemName(ItemMeta meta, NightComponent name) {
         meta.itemName(adaptComponent(name));
     }
 
     @Override
     @Nullable
-    public List<String> getLore(@NonNull ItemMeta meta) {
+    public List<String> getLore(ItemMeta meta) {
         List<Component> lore = meta.lore();
         return lore == null ? null : Lists.modify(lore, PaperBridge::serializeComponent);
     }
 
     @Override
-    public void setLore(@NonNull ItemMeta meta, @Nullable List<NightComponent> lore) {
+    public void setLore(ItemMeta meta, @Nullable List<NightComponent> lore) {
         meta.lore(lore == null ? null : Lists.modify(lore, this::adaptComponent));
     }
 
     @Override
     @Nullable
-    public NightProfile getOwnerProfile(@NonNull ItemStack itemStack) {
+    public NightProfile getOwnerProfile(ItemStack itemStack) {
         if (!(itemStack.getItemMeta() instanceof SkullMeta skullMeta)) return null;
 
         PlayerProfile profile = skullMeta.getPlayerProfile();
         return profile == null ? null : new PaperProfile(profile);
     }
 
-    @NonNull
+
     public Set<String> getCommonComponentsToHide() {
         if (this.commonComponentsToHide == null) return new HashSet<>(); // Fix for <= 1.21.4
 
@@ -399,8 +453,8 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    @NonNull
-    public Set<String> getHiddenComponents(@NonNull ItemStack itemStack) {
+
+    public Set<String> getHiddenComponents(ItemStack itemStack) {
         TooltipDisplay tooltipDisplay = itemStack.getData(DataComponentTypes.TOOLTIP_DISPLAY);
         if (tooltipDisplay == null) return Collections.emptySet();
 
@@ -408,14 +462,14 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    public void hideComponents(@NonNull ItemStack itemStack) {
+    public void hideComponents(ItemStack itemStack) {
         if (commonComponentsToHide == null) return;
 
         hidePaperComponents(itemStack, this.commonComponentsToHide);
     }
 
     @Override
-    public void hideComponents(@NonNull ItemStack itemStack, @NonNull Set<String> componentNames) {
+    public void hideComponents(ItemStack itemStack, Set<String> componentNames) {
         Set<DataComponentType> componentTypes = componentNames.stream().map(name -> BukkitThing.getByString(
             RegistryType.Paper.DATA_COMPONENT_TYPE, name))
             .filter(Objects::nonNull)
@@ -424,8 +478,8 @@ public class PaperBridge implements Software {
         hidePaperComponents(itemStack, componentTypes);
     }
 
-    public static void hidePaperComponents(@NonNull ItemStack itemStack,
-                                           @NonNull Set<DataComponentType> componentTypes) {
+    public static void hidePaperComponents(ItemStack itemStack,
+                                           Set<DataComponentType> componentTypes) {
         try {
             TooltipDisplay tooltipDisplay = TooltipDisplay.tooltipDisplay().hiddenComponents(componentTypes).build();
             itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, tooltipDisplay);
@@ -436,9 +490,9 @@ public class PaperBridge implements Software {
     }
 
     @Override
-    @NonNull
-    public PaperBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor,
-                                      @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags) {
+
+    public PaperBossBar createBossBar(NightComponent title, NightBarColor barColor,
+                                      NightBarOverlay barOverlay, NightBarFlag... barFlags) {
         Component name = this.textComponentAdapter.adaptComponent(title);
         BossBar.Color color = PaperBossBarAdapter.adaptColor(barColor);
         BossBar.Overlay overlay = PaperBossBarAdapter.adaptOverlay(barOverlay);

@@ -10,7 +10,7 @@ import su.nightexpress.nightcore.commands.argument.type.PlayerNameArgumentType;
 import su.nightexpress.nightcore.commands.argument.type.StringArgumentType;
 import su.nightexpress.nightcore.commands.argument.type.WorldArgumentType;
 
-public class ArgumentTypes {
+public final class ArgumentTypes {
 
     public static final BlockTypeArgumentType   BLOCK_TYPE    = new BlockTypeArgumentType();
     public static final BoolArgumentType        BOOLEAN       = new BoolArgumentType();

@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore;
 
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -98,6 +99,14 @@ public interface NightCorePlugin extends Plugin {
 
     default void error(@NonNull String msg) {
         this.getLogger().severe(msg);
+    }
+
+    default void warn(@NonNull String msg, Throwable t) {
+        this.getLogger().log(Level.WARNING, msg, t);
+    }
+
+    default void error(@NonNull String msg, Throwable t) {
+        this.getLogger().log(Level.SEVERE, msg, t);
     }
 
     default void debug(@NonNull String msg) {

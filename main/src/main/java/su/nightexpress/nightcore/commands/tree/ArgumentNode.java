@@ -40,8 +40,8 @@ public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
         super(name, permission, requirements);
         this.type = type;
         this.required = required;
-        this.setLocalizedName(localizedName);
-        this.setCustomSuggestions(customSuggestions);
+        this.localizedName = localizedName;
+        this.customSuggestions = customSuggestions;
     }
 
     public void setLocalizedName(@Nullable String localizedName) {
@@ -64,7 +64,7 @@ public class ArgumentNode<T> extends CommandNode /*implements ArgumentTree*/ {
         int cursor = reader.getCursor();
         StringBuilder string = new StringBuilder(reader.getCursorArgument());
 
-        // TODO Quick workaround to avoid custom argument types breaking in other plugins by adding ArgumentReader to the parse method.
+        // FIXME Quick workaround to avoid custom argument types breaking in other plugins by adding ArgumentReader to the parse method.
         if (this.type == ArgumentTypes.GREEDY_STRING) {
             while (!reader.isEnd()) {
                 reader.moveForward();

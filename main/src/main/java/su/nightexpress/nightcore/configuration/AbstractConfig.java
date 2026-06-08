@@ -9,6 +9,7 @@ import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.config.FileConfig;
 
 @NullMarked
+@Deprecated
 public class AbstractConfig {
 
     protected final List<ConfigProperty<?>> properties = new ArrayList<>();

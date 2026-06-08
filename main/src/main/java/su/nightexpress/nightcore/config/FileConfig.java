@@ -252,6 +252,34 @@ public class FileConfig extends YamlConfiguration {
         return type.read(this, path, def);
     }
 
+    public <T> T getOrSet(String path, su.nightexpress.nightcore.configuration.property.ConfigProperty<T> property) {
+        String relativePath = property.getRelativePath();
+        String fullPath = path + "." + relativePath;
+        ConfigCodec<T> codec = property.getCodec();
+        T def = property.getDefaultValue();
+
+        /* if (!this.contains(fullPath)) {
+            this.set(fullPath, codec, def);
+            this.setComments(fullPath, property.getDescription());
+            return def;
+        } */
+
+        // Update comments
+        this.setComments(fullPath, property.getDescription());
+
+        return this.getOrSet(fullPath, codec, def);
+    }
+
+    public <T> void set(String path, su.nightexpress.nightcore.configuration.property.ConfigProperty<T> property,
+                        T value) {
+        String relativePath = property.getRelativePath();
+        String fullPath = path + "." + relativePath;
+        ConfigCodec<T> codec = property.getCodec();
+
+        this.set(fullPath, codec, value);
+
+    }
+
     private <T> ConfigCodec<T> resolveCodec(Class<T> type) {
         ConfigCodec<T> codec = ConfigCodecs.getCodec(type);
         if (codec == null) {

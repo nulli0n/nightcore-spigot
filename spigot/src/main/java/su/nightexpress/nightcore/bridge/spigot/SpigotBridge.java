@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Nameable;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Translatable;
 import org.bukkit.attribute.Attribute;
@@ -33,11 +34,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.profile.PlayerProfile;
+import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
 
 import net.md_5.bungee.api.dialog.Dialog;
 import su.nightexpress.nightcore.bridge.bossbar.NightBarColor;
@@ -47,6 +49,8 @@ import su.nightexpress.nightcore.bridge.chat.UniversalChatListenerCallback;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogAdapter;
 import su.nightexpress.nightcore.bridge.dialog.response.DialogClickHandler;
 import su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog;
+import su.nightexpress.nightcore.bridge.key.AdaptedKey;
+import su.nightexpress.nightcore.bridge.key.exception.InvalidKeyException;
 import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBar;
 import su.nightexpress.nightcore.bridge.spigot.bossbar.SpigotBossBarAdapter;
@@ -54,6 +58,7 @@ import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogAdapter;
 import su.nightexpress.nightcore.bridge.spigot.dialog.SpigotDialogListener;
 import su.nightexpress.nightcore.bridge.spigot.event.SpigotChatListener;
 import su.nightexpress.nightcore.bridge.spigot.event.SpigotEventAdapter;
+import su.nightexpress.nightcore.bridge.spigot.key.SpigotKey;
 import su.nightexpress.nightcore.bridge.spigot.scheduler.SpigotScheduler;
 import su.nightexpress.nightcore.bridge.spigot.text.SpigotTextComponentAdapter;
 import su.nightexpress.nightcore.bridge.wrap.NightProfile;
@@ -64,6 +69,7 @@ import su.nightexpress.nightcore.util.Reflex;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
+@NullMarked
 public class SpigotBridge implements Software {
 
     private static final String FIELD_COMMAND_MAP    = "commandMap";
@@ -116,47 +122,47 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    @NonNull
+
     public SpigotEventAdapter eventAdapter() {
         return this.eventAdapter;
     }
 
     @Override
-    @NonNull
-    public AdaptedScheduler getScheduler(@NonNull JavaPlugin plugin) {
+
+    public AdaptedScheduler getScheduler(JavaPlugin plugin) {
         return new SpigotScheduler(plugin);
     }
 
     @Override
-    @NonNull
-    public Listener createChatListener(@NonNull UniversalChatListenerCallback callback) {
+
+    public Listener createChatListener(UniversalChatListenerCallback callback) {
         return new SpigotChatListener(this, callback);
     }
 
     @Override
-    @NonNull
-    public Listener createDialogListener(@NonNull DialogClickHandler handler) {
+
+    public Listener createDialogListener(DialogClickHandler handler) {
         return new SpigotDialogListener(handler);
     }
 
     @Override
-    public void disallowLogin(@NonNull AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.@NonNull Result result,
-                              @NonNull NightComponent message) {
+    public void disallowLogin(AsyncPlayerPreLoginEvent event, AsyncPlayerPreLoginEvent.Result result,
+                              NightComponent message) {
         event.disallow(result, message.toLegacy());
     }
 
     @Override
-    public void closeDialog(@NonNull Player player) {
+    public void closeDialog(Player player) {
         player.clearDialog();
     }
 
     @Override
-    public void showDialog(@NonNull Player player, @NonNull WrappedDialog dialog) {
+    public void showDialog(Player player, WrappedDialog dialog) {
         player.showDialog((Dialog) this.dialogAdapter.adaptDialog(dialog));
     }
 
     @Override
-    @NonNull
+
     public String getName() {
         return "spigot-bridge";
     }
@@ -172,17 +178,17 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    @NonNull
+
     public SpigotTextComponentAdapter getTextComponentAdapter() {
         return this.textComponentAdapter;
     }
 
-    @NonNull
+
     public DialogAdapter<?> getDialogAdapter() {
         return this.dialogAdapter;
     }
 
-    @NonNull
+
     @Override
     public SimpleCommandMap getCommandMap() {
         if (commandMap == null) throw new IllegalStateException("Command map is null!");
@@ -192,46 +198,115 @@ public class SpigotBridge implements Software {
 
     @SuppressWarnings("unchecked")
     @Override
-    @NonNull
-    public Map<String, Command> getKnownCommands(@NonNull SimpleCommandMap commandMap) {
+
+    public Map<String, Command> getKnownCommands(SimpleCommandMap commandMap) {
         Map<String, Command> knownCommands = (Map<String, Command>) Reflex.getFieldValue(commandMap,
             FIELD_KNOWN_COMMANDS);
         return knownCommands == null ? Collections.emptyMap() : knownCommands;
     }
 
+
     @Override
-    @NonNull
-    public NightProfile createProfile(@NonNull UUID uuid) {
+    public boolean allowedInNamespace(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '.' || c == '_' || c == '-';
+    }
+
+    @Override
+    public boolean allowedInValue(char c) {
+        return allowedInNamespace(c) || c == '/';
+    }
+
+    @Override
+    public boolean isValidKeyNamespace(String namespace) {
+        int len = namespace.length();
+        if (len == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < len; i++) {
+            if (!allowedInNamespace(namespace.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean isValidKeyValue(String key) {
+        int len = key.length();
+        if (len == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < len; i++) {
+            if (!allowedInValue(key.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public AdaptedKey createKey(Plugin plugin, String value) {
+        try {
+            return new SpigotKey(new NamespacedKey(plugin, value));
+        }
+        catch (IllegalArgumentException exception) {
+            throw new InvalidKeyException(exception);
+        }
+    }
+
+    @Override
+    public AdaptedKey createKey(String namespace, String value) {
+        try {
+            return new SpigotKey(new NamespacedKey(namespace, value));
+        }
+        catch (IllegalArgumentException exception) {
+            throw new InvalidKeyException(exception);
+        }
+    }
+
+    @Override
+    public AdaptedKey createKey(String string) {
+        try {
+            return new SpigotKey(NamespacedKey.fromString(string));
+        }
+        catch (IllegalArgumentException exception) {
+            throw new InvalidKeyException(exception);
+        }
+    }
+
+    @Override
+    public NightProfile createProfile(UUID uuid) {
         return new SpigotProfile(Bukkit.createPlayerProfile(uuid));
     }
 
     @Override
-    @NonNull
-    public NightProfile createProfile(@NonNull String name) {
+    public NightProfile createProfile(String name) {
         return new SpigotProfile(Bukkit.createPlayerProfile(name));
     }
 
     @Override
-    @NonNull
     public NightProfile createProfile(@Nullable UUID uuid, @Nullable String name) {
         return new SpigotProfile(Bukkit.createPlayerProfile(uuid, name));
     }
 
     @Override
-    @NonNull
-    public NightProfile getProfile(@NonNull OfflinePlayer player) {
+    public NightProfile getProfile(OfflinePlayer player) {
         return new SpigotProfile(player.getPlayerProfile());
     }
 
     @Override
-    public void sendTitles(@NonNull Player player, @NonNull NightComponent title, @NonNull NightComponent subtitle,
+    public void sendTitles(Player player, NightComponent title, NightComponent subtitle,
                            int fadeIn, int stay, int fadeOut) {
         player.sendTitle(title.toLegacy(), subtitle.toLegacy(), fadeIn, stay, fadeOut);
     }
 
     @Override
-    @NonNull
-    public InventoryView createView(@NonNull MenuType menuType, @NonNull NightComponent title, @NonNull Player player) {
+
+    public InventoryView createView(MenuType menuType, NightComponent title, Player player) {
         String legacy = title.toLegacy();
 
         var builder = menuType.typed().builder();
@@ -241,155 +316,155 @@ public class SpigotBridge implements Software {
 
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull Material material) {
+
+    public String getTranslationKey(Material material) {
         return getTranslation(material);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull Attribute attribute) {
+
+    public String getTranslationKey(Attribute attribute) {
         return getTranslation(attribute);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull EntityType entityType) {
+
+    public String getTranslationKey(EntityType entityType) {
         return getTranslation(entityType);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull Enchantment enchantment) {
+
+    public String getTranslationKey(Enchantment enchantment) {
         return getTranslation(enchantment);
     }
 
     @Override
-    @NonNull
-    public String getTranslationKey(@NonNull PotionEffectType effectType) {
+
+    public String getTranslationKey(PotionEffectType effectType) {
         return getTranslation(effectType);
     }
 
-    @NonNull
-    public static String getTranslation(@NonNull Translatable translatable) {
+
+    public static String getTranslation(Translatable translatable) {
         return translatable.getTranslationKey();
     }
 
 
     @Override
-    @NonNull
-    public String getDisplayNameSerialized(@NonNull Player player) {
+
+    public String getDisplayNameSerialized(Player player) {
         return LegacyColors.plainColors(player.getDisplayName());
     }
 
     @Override
-    public void setDisplayName(@NonNull Player player, @Nullable NightComponent component) {
+    public void setDisplayName(Player player, @Nullable NightComponent component) {
         player.setDisplayName(component == null ? null : component.toLegacy());
     }
 
     @Override
     @Nullable
-    public String getPlayerListHeaderSerialized(@NonNull Player player) {
+    public String getPlayerListHeaderSerialized(Player player) {
         String header = player.getPlayerListHeader();
         return header == null ? null : LegacyColors.plainColors(header);
     }
 
     @Override
     @Nullable
-    public String getPlayerListFooterSerialized(@NonNull Player player) {
+    public String getPlayerListFooterSerialized(Player player) {
         String footer = player.getPlayerListFooter();
         return footer == null ? null : LegacyColors.plainColors(footer);
     }
 
     @Override
-    public void setPlayerListHeaderFooter(@NonNull Player player, @Nullable NightComponent header,
+    public void setPlayerListHeaderFooter(Player player, @Nullable NightComponent header,
                                           @Nullable NightComponent footer) {
         player.setPlayerListHeaderFooter(header == null ? null : header.toLegacy(), footer == null ? null : footer
             .toLegacy());
     }
 
     @Override
-    @NonNull
-    public String getPlayerListNameSerialized(@NonNull Player player) {
+
+    public String getPlayerListNameSerialized(Player player) {
         return LegacyColors.plainColors(player.getPlayerListName());
     }
 
     @Override
-    public void setPlayerListName(@NonNull Player player, @NonNull NightComponent name) {
+    public void setPlayerListName(Player player, NightComponent name) {
         player.setPlayerListName(name.toLegacy());
     }
 
     @Override
-    public void kick(@NonNull Player player, @Nullable NightComponent component) {
+    public void kick(Player player, @Nullable NightComponent component) {
         player.kickPlayer(component == null ? null : component.toLegacy());
     }
 
     @Override
-    public void setCustomName(@NonNull Nameable entity, @Nullable NightComponent component) {
+    public void setCustomName(Nameable entity, @Nullable NightComponent component) {
         entity.setCustomName(component == null ? null : component.toLegacy());
     }
 
     @Override
     @Nullable
-    public String getCustomName(@NonNull Nameable entity) {
+    public String getCustomName(Nameable entity) {
         String name = entity.getCustomName();
         return name == null ? null : LegacyColors.plainColors(name);
     }
 
 
     @Override
-    @NonNull
-    public ItemStack setType(@NonNull ItemStack itemStack, @NonNull Material material) {
+
+    public ItemStack setType(ItemStack itemStack, Material material) {
         itemStack.setType(material);
         return itemStack;
     }
 
-    public void editMeta(@NonNull ItemStack item, @NonNull Consumer<ItemMeta> consumer) {
+    public void editMeta(ItemStack item, Consumer<ItemMeta> consumer) {
         editItemMeta(item, ItemMeta.class, consumer);
     }
 
-    public <T extends ItemMeta> void editMeta(@NonNull ItemStack item, @NonNull Class<T> clazz,
-                                              @NonNull Consumer<T> consumer) {
+    public <T extends ItemMeta> void editMeta(ItemStack item, Class<T> clazz,
+                                              Consumer<T> consumer) {
         editItemMeta(item, clazz, consumer);
     }
 
     @Override
     @Nullable
-    public String getCustomName(@NonNull ItemMeta meta) {
+    public String getCustomName(ItemMeta meta) {
         return meta.hasDisplayName() ? LegacyColors.plainColors(meta.getDisplayName()) : null;
     }
 
     @Override
-    public void setCustomName(@NonNull ItemMeta meta, @Nullable NightComponent name) {
+    public void setCustomName(ItemMeta meta, @Nullable NightComponent name) {
         meta.setDisplayName(name == null ? null : name.toLegacy());
     }
 
     @Override
     @Nullable
-    public String getItemName(@NonNull ItemMeta meta) {
+    public String getItemName(ItemMeta meta) {
         return meta.hasItemName() ? LegacyColors.plainColors(meta.getItemName()) : null;
     }
 
     @Override
-    public void setItemName(@NonNull ItemMeta meta, @NonNull NightComponent name) {
+    public void setItemName(ItemMeta meta, NightComponent name) {
         meta.setItemName(name.toLegacy());
     }
 
     @Override
     @Nullable
-    public List<String> getLore(@NonNull ItemMeta meta) {
+    public List<String> getLore(ItemMeta meta) {
         List<String> lore = meta.getLore();
         return lore == null ? null : Lists.modify(lore, LegacyColors::plainColors);
     }
 
     @Override
-    public void setLore(@NonNull ItemMeta meta, @Nullable List<NightComponent> lore) {
+    public void setLore(ItemMeta meta, @Nullable List<NightComponent> lore) {
         meta.setLore(lore == null ? null : lore.stream().map(NightComponent::toLegacy).toList());
     }
 
     @Override
     @Nullable
-    public NightProfile getOwnerProfile(@NonNull ItemStack itemStack) {
+    public NightProfile getOwnerProfile(ItemStack itemStack) {
         if (!(itemStack.getItemMeta() instanceof SkullMeta meta)) return null;
 
         PlayerProfile profile = meta.getOwnerProfile();
@@ -397,7 +472,7 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    @NonNull
+
     public Set<String> getCommonComponentsToHide() {
         if (this.commonFlagsToHide == null) return new HashSet<>(); // Fix for <= 1.21.4
 
@@ -405,8 +480,8 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    @NonNull
-    public Set<String> getHiddenComponents(@NonNull ItemStack itemStack) {
+
+    public Set<String> getHiddenComponents(ItemStack itemStack) {
         ItemMeta meta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : null;
         if (meta == null) return Collections.emptySet();
 
@@ -414,17 +489,17 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    public void hideComponents(@NonNull ItemStack itemStack) {
+    public void hideComponents(ItemStack itemStack) {
         if (commonFlagsToHide == null) return;
 
         hideSpigotComponents(itemStack, this.commonFlagsToHide);
     }
 
-    public void hideComponents(@NonNull ItemStack itemStack, @NonNull Set<String> componentNames) {
+    public void hideComponents(ItemStack itemStack, Set<String> componentNames) {
         hideComponentsByName(itemStack, componentNames);
     }
 
-    public static void hideComponentsByName(@NonNull ItemStack itemStack, @NonNull Set<String> componentNames) {
+    public static void hideComponentsByName(ItemStack itemStack, Set<String> componentNames) {
         Set<ItemFlag> componentTypes = componentNames.stream().map(name -> Enums.parse(name, ItemFlag.class).orElse(
             null))
             .filter(Objects::nonNull)
@@ -433,16 +508,16 @@ public class SpigotBridge implements Software {
         hideSpigotComponents(itemStack, componentTypes);
     }
 
-    public static void hideSpigotComponents(@NonNull ItemStack itemStack, @NonNull Set<ItemFlag> componentTypes) {
+    public static void hideSpigotComponents(ItemStack itemStack, Set<ItemFlag> componentTypes) {
         editItemMeta(itemStack, meta -> componentTypes.forEach(meta::addItemFlags));
     }
 
-    private static void editItemMeta(@NonNull ItemStack item, @NonNull Consumer<ItemMeta> consumer) {
+    private static void editItemMeta(ItemStack item, Consumer<ItemMeta> consumer) {
         editItemMeta(item, ItemMeta.class, consumer);
     }
 
-    private static <T extends ItemMeta> void editItemMeta(@NonNull ItemStack item, @NonNull Class<T> clazz,
-                                                          @NonNull Consumer<T> consumer) {
+    private static <T extends ItemMeta> void editItemMeta(ItemStack item, Class<T> clazz,
+                                                          Consumer<T> consumer) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         if (!clazz.isAssignableFrom(meta.getClass())) return;
@@ -454,9 +529,9 @@ public class SpigotBridge implements Software {
     }
 
     @Override
-    @NonNull
-    public SpigotBossBar createBossBar(@NonNull NightComponent title, @NonNull NightBarColor barColor,
-                                       @NonNull NightBarOverlay barOverlay, @NonNull NightBarFlag... barFlags) {
+
+    public SpigotBossBar createBossBar(NightComponent title, NightBarColor barColor,
+                                       NightBarOverlay barOverlay, NightBarFlag... barFlags) {
         BarColor color = SpigotBossBarAdapter.adaptColor(barColor);
         BarStyle overlay = SpigotBossBarAdapter.adaptOverlay(barOverlay);
 

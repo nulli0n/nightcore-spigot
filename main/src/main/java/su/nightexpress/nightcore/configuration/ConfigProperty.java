@@ -9,6 +9,7 @@ import org.jspecify.annotations.NonNull;
 
 import su.nightexpress.nightcore.config.FileConfig;
 
+@Deprecated
 public class ConfigProperty<T> {
 
     private final ConfigType<T> codec;
