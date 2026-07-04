@@ -5,6 +5,7 @@ import org.jspecify.annotations.Nullable;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.NodeExecutor;
 import su.nightexpress.nightcore.commands.context.CommandContext;
+import su.nightexpress.nightcore.commands.exceptions.CommandSyntaxException;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public abstract class ExecutableNode extends CommandNode {
         this.executor = executor;
     }
 
-    public abstract boolean run(@NonNull CommandContext context);
+    public abstract boolean run(@NonNull CommandContext context) throws CommandSyntaxException;
 
     @NonNull
     public String getDescription() {

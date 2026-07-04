@@ -1,5 +1,16 @@
 package su.nightexpress.nightcore.ui.inventory.menu;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Consumer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,8 +19,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.MenuType;
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.api.event.MenuOpenEvent;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -21,28 +34,34 @@ import su.nightexpress.nightcore.locale.LangContainer;
 import su.nightexpress.nightcore.ui.inventory.Menu;
 import su.nightexpress.nightcore.ui.inventory.MenuDataRegistry;
 import su.nightexpress.nightcore.ui.inventory.MenuRegistry;
-import su.nightexpress.nightcore.ui.inventory.action.*;
+import su.nightexpress.nightcore.ui.inventory.action.CommandsAction;
+import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
+import su.nightexpress.nightcore.ui.inventory.action.MenuItemActions;
+import su.nightexpress.nightcore.ui.inventory.action.NamedAction;
 import su.nightexpress.nightcore.ui.inventory.condition.ItemStateCondition;
 import su.nightexpress.nightcore.ui.inventory.condition.ItemStateConditions;
 import su.nightexpress.nightcore.ui.inventory.condition.NamedCondition;
 import su.nightexpress.nightcore.ui.inventory.display.CompositeDisplayModifier;
 import su.nightexpress.nightcore.ui.inventory.display.DisplayModifiers;
 import su.nightexpress.nightcore.ui.inventory.display.NamedDisplayModifier;
-import su.nightexpress.nightcore.ui.inventory.item.*;
+import su.nightexpress.nightcore.ui.inventory.item.DisplayModifier;
+import su.nightexpress.nightcore.ui.inventory.item.ItemState;
+import su.nightexpress.nightcore.ui.inventory.item.ItemType;
+import su.nightexpress.nightcore.ui.inventory.item.ItemTypes;
+import su.nightexpress.nightcore.ui.inventory.item.MenuItem;
 import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
 import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
-import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.BukkitThing;
+import su.nightexpress.nightcore.util.Enums;
+import su.nightexpress.nightcore.util.Placeholders;
+import su.nightexpress.nightcore.util.Strings;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
-import java.nio.file.Path;
-import java.util.*;
-import java.util.function.Consumer;
-
 public abstract class AbstractMenuBase implements Menu, LangContainer {
 
-    protected NightPlugin            plugin;
+    protected NightCorePlugin        plugin;
     protected final MenuDataRegistry dataRegistry;
 
     protected final Map<String, MenuItem> defaultButtons;
@@ -63,7 +82,14 @@ public abstract class AbstractMenuBase implements Menu, LangContainer {
         this(null, defaultType, defaultTitle);
     }
 
+    @Deprecated
     protected AbstractMenuBase(@Nullable NightPlugin plugin,
+                               @NonNull MenuType defaultType,
+                               @NonNull String defaultTitle) {
+        this((NightCorePlugin) plugin, defaultType, defaultTitle);
+    }
+
+    protected AbstractMenuBase(@Nullable NightCorePlugin plugin,
                                @NonNull MenuType defaultType,
                                @NonNull String defaultTitle) {
         this.plugin = plugin;

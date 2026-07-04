@@ -2,6 +2,8 @@ package su.nightexpress.nightcore.userdata;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -151,6 +153,88 @@ public class UserDataManager extends AbstractBaseDataManager<UserData> {
         Optional<UserData> optional = this.selectByName(name);
         optional.ifPresent(this::cacheTemporary);
         return optional;
+    }
+
+    /**
+     * Asynchronously loads multiple user profiles, utilizing the cache to minimize database hits.
+     */
+    public final @NonNull CompletableFuture<List<UserData>> loadAllByIdsAndCacheAsync(@NonNull Collection<UUID> uuids) {
+        return CompletableFuture.supplyAsync(() -> this.loadAllByIdsAndCache(uuids));
+    }
+
+    /**
+     * Asynchronously loads multiple user profiles, utilizing the cache to minimize database hits.
+     */
+    public final @NonNull CompletableFuture<List<UserData>> loadAllByNamesAndCacheAsync(@NonNull Collection<String> uuids) {
+        return CompletableFuture.supplyAsync(() -> this.loadAllByNamesAndCache(uuids));
+    }
+
+    /**
+     * Synchronously loads multiple user profiles.
+     */
+    public final @NonNull List<UserData> loadAllByIdsAndCache(@NonNull Collection<UUID> uuids) {
+        if (uuids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<UserData> result = new ArrayList<>(uuids.size());
+        Set<UUID> missingUuids = new HashSet<>();
+
+        // Resolve immediately available data from the cache
+        for (UUID uuid : uuids) {
+            UserData data = this.cache.getById(uuid);
+            if (data != null) {
+                result.add(data);
+            }
+            else {
+                missingUuids.add(uuid);
+            }
+        }
+
+        if (!missingUuids.isEmpty()) {
+            List<UserData> fetchedData = UserDataStatements.selectByIds(database, userTable.getName(), missingUuids);
+
+            for (UserData data : fetchedData) {
+                this.cacheTemporary(data);
+                result.add(data);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Synchronously loads multiple user profiles.
+     */
+    public final @NonNull List<UserData> loadAllByNamesAndCache(@NonNull Collection<String> names) {
+        if (names.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<UserData> result = new ArrayList<>(names.size());
+        Set<String> missingNames = new HashSet<>();
+
+        // Resolve immediately available data from the cache
+        for (String name : names) {
+            UserData data = this.cache.getByName(name);
+            if (data != null) {
+                result.add(data);
+            }
+            else {
+                missingNames.add(name);
+            }
+        }
+
+        if (!missingNames.isEmpty()) {
+            List<UserData> fetchedData = UserDataStatements.selectByNames(database, userTable.getName(), missingNames);
+
+            for (UserData data : fetchedData) {
+                this.cacheTemporary(data);
+                result.add(data);
+            }
+        }
+
+        return result;
     }
 
     /**

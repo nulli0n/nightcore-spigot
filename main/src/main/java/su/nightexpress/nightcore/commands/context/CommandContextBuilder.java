@@ -1,23 +1,25 @@
 package su.nightexpress.nightcore.commands.context;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.CommandSender;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.commands.NodeUtils;
 import su.nightexpress.nightcore.commands.tree.CommandNode;
 import su.nightexpress.nightcore.commands.tree.ExecutableNode;
 import su.nightexpress.nightcore.util.Lists;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CommandContextBuilder {
 
-    private final NightPlugin   plugin;
-    private final CommandSender sender;
-    private final CommandNode   root;
-    private final String        input;
+    private final NightCorePlugin plugin;
+    private final CommandSender   sender;
+    private final CommandNode     root;
+    private final String          input;
 
     private final ParsedArguments         arguments;
     private final List<String>            flags;
@@ -25,7 +27,20 @@ public class CommandContextBuilder {
 
     private ExecutableNode executor;
 
+    @Deprecated
     public CommandContextBuilder(@NonNull NightPlugin plugin, @NonNull CommandSender sender, @NonNull CommandNode root,
+                                 @NonNull String input) {
+        this.plugin = plugin;
+        this.sender = sender;
+        this.root = root;
+        this.input = input;
+        this.arguments = new ParsedArguments();
+        this.flags = new ArrayList<>();
+        this.nodes = new ArrayList<>();
+    }
+
+    public CommandContextBuilder(@NonNull NightCorePlugin plugin, @NonNull CommandSender sender,
+                                 @NonNull CommandNode root,
                                  @NonNull String input) {
         this.plugin = plugin;
         this.sender = sender;

@@ -1,8 +1,10 @@
 package su.nightexpress.nightcore.locale.entry;
 
 import org.bukkit.Sound;
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.configuration.ConfigType;
@@ -98,7 +100,13 @@ public class MessageLocale extends LangEntry<LangMessage> {
     }
 
     @NonNull
+    @Deprecated
     public LangMessage withPrefix(@NonNull NightPlugin plugin) {
+        return this.withPrefix(plugin.getPrefix());
+    }
+
+    @NonNull
+    public LangMessage withPrefix(@NonNull NightCorePlugin plugin) {
         return this.withPrefix(plugin.getPrefix());
     }
 

@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Nameable;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
@@ -242,6 +243,11 @@ public class PaperBridge implements Software {
         catch (InvalidKeyException exception) {
             throw new su.nightexpress.nightcore.bridge.key.exception.InvalidKeyException(exception);
         }
+    }
+
+    @Override
+    public AdaptedKey getKey(World world) {
+        return new PaperKey(world.key());
     }
 
     @Override

@@ -3,6 +3,7 @@ package su.nightexpress.nightcore.bridge;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jspecify.annotations.NullMarked;
 
@@ -26,6 +27,10 @@ public final class BukkitKeys {
 
     public static AdaptedKey create(String string) throws InvalidKeyException {
         return Software.get().createKey(string);
+    }
+
+    public static AdaptedKey getKey(World world) {
+        return Software.get().getKey(world);
     }
 
     public static Optional<AdaptedKey> parse(String namespace, String value) {

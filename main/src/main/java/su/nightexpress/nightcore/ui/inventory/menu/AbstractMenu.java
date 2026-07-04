@@ -3,6 +3,8 @@ package su.nightexpress.nightcore.ui.inventory.menu;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MenuType;
 import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.NightPlugin;
 
 public abstract class AbstractMenu extends AbstractMenuBase {
@@ -12,7 +14,12 @@ public abstract class AbstractMenu extends AbstractMenuBase {
         super(defaultType, defaultTitle);
     }
 
+    @Deprecated
     public AbstractMenu(@NonNull NightPlugin plugin, @NonNull MenuType defaultType, @NonNull String defaultTitle) {
+        super(plugin, defaultType, defaultTitle);
+    }
+
+    public AbstractMenu(@NonNull NightCorePlugin plugin, @NonNull MenuType defaultType, @NonNull String defaultTitle) {
         super(plugin, defaultType, defaultTitle);
     }
 

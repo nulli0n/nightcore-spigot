@@ -1,10 +1,15 @@
 package su.nightexpress.nightcore.commands.context;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.commands.NodeUtils;
 import su.nightexpress.nightcore.commands.tree.CommandNode;
@@ -16,12 +21,9 @@ import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public class CommandContext {
 
-    private final NightPlugin             plugin;
+    private final NightCorePlugin         plugin;
     private final CommandSender           sender;
     private final CommandNode             root;
     private final String                  input;
@@ -32,7 +34,28 @@ public class CommandContext {
 
     private final Player player;
 
+    @Deprecated
     public CommandContext(@NonNull NightPlugin plugin,
+                          @NonNull CommandSender sender,
+                          @NonNull CommandNode root,
+                          @NonNull String input,
+                          @NonNull ParsedArguments arguments,
+                          @NonNull List<String> flags,
+                          @Nullable ExecutableNode executor,
+                          @NonNull List<ParsedCommandNode> nodes) {
+        this.plugin = plugin;
+        this.sender = sender;
+        this.root = root;
+        this.input = input;
+        this.arguments = arguments;
+        this.flags = flags;
+        this.executor = executor;
+        this.nodes = nodes;
+
+        this.player = sender instanceof Player user ? user : null;
+    }
+
+    public CommandContext(@NonNull NightCorePlugin plugin,
                           @NonNull CommandSender sender,
                           @NonNull CommandNode root,
                           @NonNull String input,

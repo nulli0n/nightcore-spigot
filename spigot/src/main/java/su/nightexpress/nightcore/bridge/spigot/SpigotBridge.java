@@ -17,6 +17,7 @@ import org.bukkit.Nameable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Translatable;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -276,6 +277,11 @@ public class SpigotBridge implements Software {
         catch (IllegalArgumentException exception) {
             throw new InvalidKeyException(exception);
         }
+    }
+
+    @Override
+    public AdaptedKey getKey(World world) {
+        return new SpigotKey(world.getKey());
     }
 
     @Override

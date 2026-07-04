@@ -1,18 +1,20 @@
 package su.nightexpress.nightcore.ui.inventory.menu;
 
+import java.util.Optional;
+import java.util.function.Consumer;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MenuType;
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.ui.inventory.action.MenuItemAction;
 import su.nightexpress.nightcore.ui.inventory.action.ObjectAction;
 import su.nightexpress.nightcore.ui.inventory.action.ObjectActionContext;
 import su.nightexpress.nightcore.ui.inventory.viewer.MenuViewer;
 import su.nightexpress.nightcore.ui.inventory.viewer.ViewerContext;
-
-import java.util.Optional;
-import java.util.function.Consumer;
 
 public abstract class AbstractObjectMenu<T> extends AbstractMenuBase {
 
@@ -24,7 +26,16 @@ public abstract class AbstractObjectMenu<T> extends AbstractMenuBase {
         this.type = type;
     }
 
+    @Deprecated
     protected AbstractObjectMenu(@NonNull NightPlugin plugin,
+                                 @NonNull MenuType defaultType,
+                                 @NonNull String defaultTitle,
+                                 @NonNull Class<T> type) {
+        super(plugin, defaultType, defaultTitle);
+        this.type = type;
+    }
+
+    protected AbstractObjectMenu(@NonNull NightCorePlugin plugin,
                                  @NonNull MenuType defaultType,
                                  @NonNull String defaultTitle,
                                  @NonNull Class<T> type) {

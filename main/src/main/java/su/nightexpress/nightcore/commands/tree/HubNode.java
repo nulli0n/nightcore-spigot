@@ -64,7 +64,7 @@ public class HubNode extends ExecutableNode {
     }
 
     @Override
-    public boolean run(@NonNull CommandContext context) {
+    public boolean run(@NonNull CommandContext context) throws CommandSyntaxException {
         if (this.executor != null) {
             this.executor.run(context, context.getArguments());
             return true;

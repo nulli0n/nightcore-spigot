@@ -1,11 +1,15 @@
 package su.nightexpress.nightcore.commands.command;
 
 
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
+
+import su.nightexpress.nightcore.NightCorePlugin;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.commands.CommandRequirement;
 import su.nightexpress.nightcore.commands.NodeUtils;
@@ -21,15 +25,20 @@ import su.nightexpress.nightcore.util.CommandUtil;
 import su.nightexpress.nightcore.util.Placeholders;
 import su.nightexpress.nightcore.util.text.night.NightMessage;
 
-import java.util.Collections;
-import java.util.List;
-
 public abstract class AbstractCommand<N extends ExecutableNode> extends Command implements NightCommand {
 
-    private final NightPlugin plugin;
-    private final N           root;
+    private final NightCorePlugin plugin;
+    private final N               root;
 
+    @Deprecated
     public AbstractCommand(@NonNull NightPlugin plugin, @NonNull N root, @NonNull List<String> aliases) {
+        super(clean(root.getName()), clean(root.getDescription()), clean(root.getUsage()), aliases);
+        this.plugin = plugin;
+        this.root = root;
+        this.setPermission(root.getPermission());
+    }
+
+    public AbstractCommand(@NonNull NightCorePlugin plugin, @NonNull N root, @NonNull List<String> aliases) {
         super(clean(root.getName()), clean(root.getDescription()), clean(root.getUsage()), aliases);
         this.plugin = plugin;
         this.root = root;
@@ -43,7 +52,7 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
 
     @Override
     @NonNull
-    public NightPlugin getPlugin() {
+    public NightCorePlugin getPlugin() {
         return this.plugin;
     }
 
@@ -199,7 +208,13 @@ public abstract class AbstractCommand<N extends ExecutableNode> extends Command 
         ExecutableNode executor = context.getExecutor();
         if (executor == null) return false;
 
-        return executor.run(context);
+        try {
+            return executor.run(context);
+        }
+        catch (CommandSyntaxException exception) {
+            exception.getMessageLocale().withPrefix(this.plugin).send(sender);
+            return false;
+        }
     }
 
     @Override

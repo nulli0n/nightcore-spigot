@@ -1,5 +1,6 @@
 package su.nightexpress.nightcore;
 
+import java.nio.file.Path;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
@@ -15,6 +16,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jspecify.annotations.NonNull;
 
 import su.nightexpress.nightcore.bridge.chat.UniversalChatEventHandler;
+import su.nightexpress.nightcore.bridge.permission.PermissionNamespace;
 import su.nightexpress.nightcore.bridge.scheduler.AdaptedScheduler;
 import su.nightexpress.nightcore.command.CommandManager;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
@@ -48,6 +50,10 @@ public interface NightCorePlugin extends Plugin {
 
     @NonNull
     PluginDetails getDetails();
+
+    Path dataPath();
+
+    void registerPermissions(PermissionNamespace namespace);
 
     void extractResources(@NonNull String jarPath);
 

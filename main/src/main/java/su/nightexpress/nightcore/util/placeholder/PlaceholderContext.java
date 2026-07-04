@@ -1,35 +1,40 @@
 package su.nightexpress.nightcore.util.placeholder;
 
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
-import su.nightexpress.nightcore.util.StringUtil;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-public class PlaceholderContext {
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+
+import su.nightexpress.nightcore.bridge.placeholder.PlaceholderReplacer;
+import su.nightexpress.nightcore.util.StringUtil;
+
+@NullMarked
+public final class PlaceholderContext implements PlaceholderReplacer {
 
     private final int                         maxRecursion;
     private final List<PlaceholderResolver>   resolvers;
     private final List<UnaryOperator<String>> postReplacers;
 
-    private PlaceholderContext(@NonNull List<PlaceholderResolver> resolvers,
-                               @NonNull List<UnaryOperator<String>> postReplacers,
+    private PlaceholderContext(List<PlaceholderResolver> resolvers,
+                               List<UnaryOperator<String>> postReplacers,
                                int maxRecursion) {
         this.resolvers = resolvers;
         this.postReplacers = postReplacers;
         this.maxRecursion = maxRecursion;
     }
 
-    public static PlaceholderContext.@NonNull Builder builder() {
+    public static PlaceholderContext.Builder builder() {
         return new Builder();
     }
 
-    public @NonNull List<String> apply(@NonNull List<String> list) {
+    @Override
+    public List<String> apply(List<String> list) {
         if (list.isEmpty()) return List.of();
 
         List<String> result = new ArrayList<>(list.size() + 16);
@@ -44,7 +49,8 @@ public class PlaceholderContext {
         return result;
     }
 
-    public @NonNull String apply(@NonNull String string) {
+    @Override
+    public String apply(String string) {
         String replaced = StringUtil.replacePlaceholders(string, new RecursiveResolver(0));
 
         for (UnaryOperator<String> postReplacer : this.postReplacers) {
@@ -63,7 +69,7 @@ public class PlaceholderContext {
         }
 
         @Override
-        public @Nullable String resolve(@NonNull String key) {
+        public @Nullable String resolve(String key) {
             String value = null;
             for (PlaceholderResolver resolver : PlaceholderContext.this.resolvers) {
                 value = resolver.resolve(key);
@@ -84,7 +90,7 @@ public class PlaceholderContext {
         }
     }
 
-    public static class Builder {
+    public static final class Builder {
 
         private final List<PlaceholderResolver>     resolvers     = new ArrayList<>();
         private final Map<String, Supplier<String>> directValues  = new LinkedHashMap<>();
@@ -95,7 +101,7 @@ public class PlaceholderContext {
         private Builder() {
         }
 
-        public @NonNull PlaceholderContext build() {
+        public PlaceholderContext build() {
             this.resolvers.add(key -> {
                 var supplier = this.directValues.get(key);
                 return supplier == null ? null : supplier.get();
@@ -104,30 +110,37 @@ public class PlaceholderContext {
             return new PlaceholderContext(this.resolvers, this.postReplacers, this.maxRecursion);
         }
 
-        public @NonNull Builder maxRecursion(int maxRecursion) {
+        public Builder maxRecursion(int maxRecursion) {
             this.maxRecursion = Math.max(0, maxRecursion);
             return this;
         }
 
-        public <T> @NonNull Builder with(@NonNull TypedPlaceholder<T> placeholder, @NonNull T source) {
+        public Builder apply(@Nullable Consumer<Builder> other) {
+            if (other != null) {
+                other.accept(this);
+            }
+            return this;
+        }
+
+        public <T> Builder with(TypedPlaceholder<T> placeholder, T source) {
             return this.with(placeholder.resolver(source));
         }
 
-        public @NonNull Builder with(@NonNull PlaceholderResolver resolver) {
+        public Builder with(PlaceholderResolver resolver) {
             this.resolvers.add(resolver);
             return this;
         }
 
-        public @NonNull Builder with(@NonNull Map<String, String> staticValues) {
+        public Builder with(Map<String, String> staticValues) {
             return this.with(staticValues::get);
         }
 
-        public @NonNull Builder with(@NonNull String key, @NonNull Supplier<String> replacement) {
+        public Builder with(String key, Supplier<String> replacement) {
             this.directValues.put(key, replacement);
             return this;
         }
 
-        public @NonNull Builder andThen(@NonNull UnaryOperator<String> operator) {
+        public Builder andThen(UnaryOperator<String> operator) {
             this.postReplacers.add(operator);
             return this;
         }

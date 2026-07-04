@@ -41,12 +41,14 @@ public class ButtonLocale extends LangEntry<ButtonLocale.Value> {
     }
 
     @NonNull
+    @Deprecated
     public ButtonLocale replace(@NonNull UnaryOperator<String> operator) {
         return create(this.path, operator.apply(this.value.label()), this.value.tooltip == null ? null : operator.apply(
             this.value.tooltip()), this.value.width());
     }
 
     @NonNull
+    @Deprecated
     public ButtonLocale replace(@NonNull PlaceholderContext context) {
         return this.replace(context::apply);
     }

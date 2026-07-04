@@ -68,10 +68,11 @@ public class UserData extends StatefulData {
     public void refreshProfile() {
         this.profile = PlayerProfiles.create(this.id, this.name);
 
-        PlayerTextures textures = this.profile.getTextures();
         if (this.lastSkinUrl != null) {
             try {
+                PlayerTextures textures = this.profile.getTextures();
                 textures.setSkin(new URI(this.lastSkinUrl).toURL());
+                this.profile.setTextures(textures);
             }
             catch (MalformedURLException | URISyntaxException e) {
                 e.printStackTrace();

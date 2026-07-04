@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 import org.bukkit.Material;
 import org.bukkit.Nameable;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
@@ -130,6 +131,8 @@ public interface Software {
     AdaptedKey createKey(String namespace, String value);
 
     AdaptedKey createKey(String string);
+
+    AdaptedKey getKey(World world);
 
     NightProfile createProfile(UUID uuid);
 

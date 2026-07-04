@@ -252,9 +252,16 @@ public class FileConfig extends YamlConfiguration {
         return type.read(this, path, def);
     }
 
-    public <T> T getOrSet(String path, su.nightexpress.nightcore.configuration.property.ConfigProperty<T> property) {
+    public <T> T getOrSet(su.nightexpress.nightcore.configuration.property.ConfigProperty<T> property) {
+        return this.getOrSet(null, property);
+    }
+
+    public <T> T getOrSet(@Nullable String path,
+                          su.nightexpress.nightcore.configuration.property.ConfigProperty<T> property) {
+        boolean hasPath = path != null && !path.isBlank();
+
         String relativePath = property.getRelativePath();
-        String fullPath = path + "." + relativePath;
+        String fullPath = hasPath ? (path + "." + relativePath) : relativePath;
         ConfigCodec<T> codec = property.getCodec();
         T def = property.getDefaultValue();
 
@@ -270,10 +277,18 @@ public class FileConfig extends YamlConfiguration {
         return this.getOrSet(fullPath, codec, def);
     }
 
-    public <T> void set(String path, su.nightexpress.nightcore.configuration.property.ConfigProperty<T> property,
+    public <T> void set(su.nightexpress.nightcore.configuration.property.ConfigProperty<T> property,
                         T value) {
+        this.set(null, property, value);
+    }
+
+    public <T> void set(@Nullable String path,
+                        su.nightexpress.nightcore.configuration.property.ConfigProperty<T> property,
+                        T value) {
+        boolean hasPath = path != null && !path.isBlank();
+
         String relativePath = property.getRelativePath();
-        String fullPath = path + "." + relativePath;
+        String fullPath = hasPath ? (path + "." + relativePath) : relativePath;
         ConfigCodec<T> codec = property.getCodec();
 
         this.set(fullPath, codec, value);

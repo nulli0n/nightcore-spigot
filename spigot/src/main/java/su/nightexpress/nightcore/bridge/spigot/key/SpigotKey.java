@@ -25,7 +25,7 @@ public class SpigotKey implements AdaptedKey {
 
     @Override
     public String asString() {
-        return this.namespace() + NAMESPACE_SEPARATOR + this.value();
+        return this.key.toString();
     }
 
     @Override

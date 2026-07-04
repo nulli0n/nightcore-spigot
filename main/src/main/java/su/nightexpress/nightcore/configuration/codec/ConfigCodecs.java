@@ -28,6 +28,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+import su.nightexpress.nightcore.bridge.reflect.TypeReference;
 import su.nightexpress.nightcore.bridge.wrap.NightSound;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.configuration.ConfigType;
@@ -66,14 +67,22 @@ public class ConfigCodecs {
         registry().register(type, codec);
     }
 
-    @SuppressWarnings("unchecked")
+    public static <T> void register(TypeReference<T> typeRef, ConfigCodec<T> codec) {
+        registry().register(typeRef, codec);
+    }
+
     public static <T> @Nullable ConfigCodec<T> getCodec(T object) {
-        return (ConfigCodec<T>) getCodec(object.getClass());
+        return registry().get(object);
     }
 
     public static <T> @Nullable ConfigCodec<T> getCodec(Class<T> type) {
         return registry().get(type);
     }
+
+    public static <T> @Nullable ConfigCodec<T> getCodec(TypeReference<T> type) {
+        return registry().get(type);
+    }
+
 
     public static boolean isRegistered(Class<?> type) {
         return registry().isRegistered(type);

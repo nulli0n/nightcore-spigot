@@ -1,25 +1,27 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.button;
 
-import org.jspecify.annotations.NonNull;
+import java.util.function.UnaryOperator;
+
+import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
+
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogButtonAdapter;
 import su.nightexpress.nightcore.bridge.dialog.wrap.action.WrappedDialogAction;
+import su.nightexpress.nightcore.bridge.placeholder.PlaceholderReplacer;
 
-import java.util.function.UnaryOperator;
-
-public record WrappedActionButton(@NonNull String label,
+@NullMarked
+public record WrappedActionButton(String label,
                                   @Nullable String tooltip,
                                   int width,
                                   @Nullable WrappedDialogAction action) {
 
-    @NonNull
-    public <B> B adapt(@NonNull DialogButtonAdapter<B> adapter) {
+    public <B> B adapt(DialogButtonAdapter<B> adapter) {
         return adapter.adaptButton(this);
     }
 
-    @NonNull
-    public WrappedActionButton replace(@NonNull UnaryOperator<String> operator) {
+    @Deprecated
+    public WrappedActionButton replace(UnaryOperator<String> operator) {
         return new WrappedActionButton(operator.apply(this.label), this.tooltip == null ? null : operator.apply(
             this.tooltip), this.width, this.action);
     }
@@ -28,40 +30,60 @@ public record WrappedActionButton(@NonNull String label,
 
         private final String label;
 
-        private String              tooltip;
-        private int                 width = DialogDefaults.DEFAULT_BUTTON_WIDTH;
+        private int width = DialogDefaults.DEFAULT_BUTTON_WIDTH;
+
+        @Nullable
+        private String tooltip;
+
+        @Nullable
         private WrappedDialogAction action;
 
-        public Builder(@NonNull String label) {
+        @Nullable
+        private PlaceholderReplacer replacer;
+
+        public Builder(String label) {
             this(label, null);
         }
 
-        public Builder(@NonNull String label, @Nullable String tooltip) {
+        public Builder(String label, @Nullable String tooltip) {
             this.label = label;
             this.tooltip(tooltip);
         }
 
-        @NonNull
+
         public Builder tooltip(@Nullable String tooltip) {
             this.tooltip = tooltip;
             return this;
         }
 
-        @NonNull
+
         public Builder width(int width) {
             this.width = DialogDefaults.clampWidth(width);
             return this;
         }
 
-        @NonNull
+
         public Builder action(@Nullable WrappedDialogAction action) {
             this.action = action;
             return this;
         }
 
-        @NonNull
+        public Builder placeholders(@Nullable PlaceholderReplacer replacer) {
+            this.replacer = replacer;
+            return this;
+        }
+
         public WrappedActionButton build() {
-            return new WrappedActionButton(this.label, this.tooltip, this.width, this.action);
+            PlaceholderReplacer replacer = this.replacer;
+            String label = this.label;
+            String tooltip = this.tooltip;
+
+            if (replacer != null) {
+                label = replacer.apply(label);
+                if (tooltip != null) tooltip = replacer.apply(tooltip);
+            }
+
+            return new WrappedActionButton(label, tooltip, this.width, this.action);
         }
     }
 }

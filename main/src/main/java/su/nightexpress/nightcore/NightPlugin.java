@@ -133,6 +133,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         return LowerCase.INTERNAL.apply(this.getDescription().getName());
     }
 
+    @Override
     @NonNull
     public Path dataPath() {
         return this.getDataFolder().toPath();
@@ -245,6 +246,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         this.registerPermissions(namespace);
     }
 
+    @Override
     public void registerPermissions(@NonNull PermissionNamespace namespace) {
         namespace.register(this.getPluginManager());
     }

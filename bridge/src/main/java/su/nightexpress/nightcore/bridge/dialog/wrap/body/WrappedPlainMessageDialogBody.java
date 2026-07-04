@@ -1,31 +1,31 @@
 package su.nightexpress.nightcore.bridge.dialog.wrap.body;
 
-import org.jspecify.annotations.NonNull;
+import java.util.function.UnaryOperator;
+
+import org.jspecify.annotations.NullMarked;
+
 import su.nightexpress.nightcore.bridge.dialog.DialogDefaults;
 import su.nightexpress.nightcore.bridge.dialog.adapter.DialogBodyAdapter;
 
-import java.util.function.UnaryOperator;
+@NullMarked
+public record WrappedPlainMessageDialogBody(String contents, int width) implements WrappedDialogBody {
 
-public record WrappedPlainMessageDialogBody(@NonNull String contents, int width) implements WrappedDialogBody {
-
-    public WrappedPlainMessageDialogBody(@NonNull String contents) {
+    public WrappedPlainMessageDialogBody(String contents) {
         this(contents, DialogDefaults.DEFAULT_PLAIN_BODY_WIDTH);
     }
 
-    public WrappedPlainMessageDialogBody(@NonNull String contents, int width) {
+    public WrappedPlainMessageDialogBody(String contents, int width) {
         this.contents = contents;
         this.width = DialogDefaults.clampWidth(width);
     }
 
     @Override
-    @NonNull
-    public <D> D adapt(@NonNull DialogBodyAdapter<D> adapter) {
+    public <D> D adapt(DialogBodyAdapter<D> adapter) {
         return adapter.adaptBody(this);
     }
 
     @Override
-    @NonNull
-    public WrappedPlainMessageDialogBody replace(@NonNull UnaryOperator<String> operator) {
+    public WrappedPlainMessageDialogBody replace(UnaryOperator<String> operator) {
         return new WrappedPlainMessageDialogBody(operator.apply(this.contents), this.width);
     }
 }
