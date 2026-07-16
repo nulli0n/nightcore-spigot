@@ -1,6 +1,7 @@
 package su.nightexpress.nightcore.util;
 
 import org.bukkit.Nameable;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
@@ -26,10 +27,14 @@ public class EntityUtil {
     public static final EquipmentSlot[] EQUIPMENT_SLOTS = {EquipmentSlot.HAND, EquipmentSlot.OFF_HAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
     };
 
+    @Deprecated
     public static int nextEntityId() {
         return Software.get().nextEntityId();
     }
 
+    public static int nextEntityId(World world) {
+        return Software.get().nextEntityId(world);
+    }
 
     public static void setCustomName(@NonNull Entity entity, @Nullable String name) {
         setCustomName((Nameable) entity, name);
