@@ -87,6 +87,8 @@ public class PaperBridge implements Software {
 
     private Set<DataComponentType> commonComponentsToHide;
 
+    private UnsafeEntityIdProvider entityIdProvider;
+
     @Override
     public String getName() {
         return "paper-bridge";
@@ -99,6 +101,8 @@ public class PaperBridge implements Software {
 
     @Override
     public boolean initialize() {
+        this.entityIdProvider = new ReflectionEntityIdProvider();
+
         this.textComponentAdapter = new PaperTextComponentAdapter(this);
         this.dialogAdapter = new PaperDialogAdapter(this);
 
@@ -158,13 +162,12 @@ public class PaperBridge implements Software {
     @Override
     @Deprecated
     public int nextEntityId() {
-        return this.nextEntityId(Bukkit.getWorlds().get(0));
+        return this.entityIdProvider.getNextEntityId(Bukkit.getWorlds().get(0));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public int nextEntityId(World world) {
-        return Bukkit.getUnsafe().nextEntityId(world);
+        return this.entityIdProvider.getNextEntityId(world);
     }
 
 
