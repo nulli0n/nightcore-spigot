@@ -85,7 +85,10 @@ public interface Software {
 
     boolean isPaper();
 
+    @Deprecated
     int nextEntityId();
+
+    int nextEntityId(World world);
 
 
     EventAdapter eventAdapter();

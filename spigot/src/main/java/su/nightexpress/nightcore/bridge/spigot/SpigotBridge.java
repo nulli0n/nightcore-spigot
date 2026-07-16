@@ -1,5 +1,8 @@
 package su.nightexpress.nightcore.bridge.spigot;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -67,6 +70,7 @@ import su.nightexpress.nightcore.util.Enums;
 import su.nightexpress.nightcore.util.LegacyColors;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Reflex;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.Software;
 import su.nightexpress.nightcore.util.bridge.wrapper.NightComponent;
 
@@ -75,6 +79,9 @@ public class SpigotBridge implements Software {
 
     private static final String FIELD_COMMAND_MAP    = "commandMap";
     private static final String FIELD_KNOWN_COMMANDS = "knownCommands";
+
+    @Nullable
+    private static MethodHandle getNextEntityIdHandle;
 
     private static SimpleCommandMap commandMap;
     private static AtomicInteger    entityCounter;
@@ -113,13 +120,28 @@ public class SpigotBridge implements Software {
     }
 
     private static void loadEntityCounter() {
-        Class<?> entityClass = Reflex.findClass("net.minecraft.world.entity", "Entity").orElse(null);
-        if (entityClass == null) return;
+        if (Version.isAtLeast(Version.MC_26_2)) {
+            try {
+                Class<?> levelClass = Class.forName("net.minecraft.world.level.Level");
+                MethodHandles.Lookup lookup = MethodHandles.lookup();
+                MethodType methodType = MethodType.methodType(int.class);
 
-        Object object = Reflex.getFieldValue(entityClass, "c");
-        if (!(object instanceof AtomicInteger atomicInteger)) return;
+                getNextEntityIdHandle = lookup.findVirtual(levelClass, "getNextEntityId", methodType);
 
-        entityCounter = atomicInteger;
+            }
+            catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
+                throw new IllegalStateException("Failed to initialize reflection for Level.getNextEntityId(). Ensure mappings are correct.", e);
+            }
+        }
+        else {
+            Class<?> entityClass = Reflex.findClass("net.minecraft.world.entity", "Entity").orElse(null);
+            if (entityClass == null) return;
+
+            Object object = Reflex.getFieldValue(entityClass, "c");
+            if (!(object instanceof AtomicInteger atomicInteger)) return;
+
+            entityCounter = atomicInteger;
+        }
     }
 
     @Override
@@ -174,7 +196,23 @@ public class SpigotBridge implements Software {
     }
 
     @Override
+    @Deprecated
     public int nextEntityId() {
+        return nextEntityId(Bukkit.getWorlds().get(0));
+    }
+
+    @Override
+    public int nextEntityId(World world) {
+        if (getNextEntityIdHandle != null) {
+            try {
+                return (int) getNextEntityIdHandle.invoke(world);
+            }
+            catch (Throwable t) {
+                t.printStackTrace();
+                return 0;
+            }
+        }
+
         return entityCounter.incrementAndGet();
     }
 

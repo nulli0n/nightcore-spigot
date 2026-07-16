@@ -155,10 +155,16 @@ public class PaperBridge implements Software {
         player.showDialog((DialogLike) this.dialogAdapter.adaptDialog(dialog));
     }
 
+    @Override
+    @Deprecated
+    public int nextEntityId() {
+        return this.nextEntityId(Bukkit.getWorlds().get(0));
+    }
+
     @SuppressWarnings("deprecation")
     @Override
-    public int nextEntityId() {
-        return Bukkit.getUnsafe().nextEntityId();
+    public int nextEntityId(World world) {
+        return Bukkit.getUnsafe().nextEntityId(world);
     }
 
 
