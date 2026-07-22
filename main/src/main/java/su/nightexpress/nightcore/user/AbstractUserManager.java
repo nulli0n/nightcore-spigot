@@ -175,7 +175,7 @@ public abstract class AbstractUserManager<P extends NightPlugin, U extends UserT
 
         U fromDb = this.dataAccessor.loadById(uuid).orElse(null);
         if (fromDb != null) {
-            this.plugin.warn("User data for '%s' was present, but not loaded.");
+            this.plugin.warn("User data for '%s' was present, but not loaded.".formatted(uuid));
             this.cachePermanent(fromDb);
             return fromDb;
         }
