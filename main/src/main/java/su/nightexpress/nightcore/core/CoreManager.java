@@ -85,6 +85,7 @@ public class CoreManager extends AbstractManager<NightCore> {
         this.registerExternalItemProvider(ItemPlugins.NEXO, NexoAdapter::new);
         this.registerExternalItemProvider(ItemPlugins.ORAXEN, OraxenAdapter::new);
         this.registerExternalItemProvider(ItemPlugins.CRAFT_ENGINE, CraftEngineAdapter::new);
+        this.registerExternalItemProvider(ItemPlugins.MYTHIC_MOBS, MythicMobsAdapter::new);
     }
 
     private <T> boolean registerExternalItemProvider(@NonNull String pluginName,

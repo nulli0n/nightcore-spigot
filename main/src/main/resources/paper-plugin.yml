@@ -55,3 +55,6 @@ dependencies:
     CraftEngine:
       load: AFTER
       required: false
+    MythicMobs:
+      load: AFTER
+      required: false

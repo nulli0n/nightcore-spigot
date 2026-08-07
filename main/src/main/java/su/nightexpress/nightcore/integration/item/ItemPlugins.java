@@ -14,9 +14,10 @@ public class ItemPlugins {
     public static final String NEXO             = "Nexo";
     public static final String ORAXEN           = "Oraxen";
     public static final String CRAFT_ENGINE     = "CraftEngine";
+    public static final String MYTHIC_MOBS      = "MythicMobs";
 
     @NonNull
     public static List<String> values() {
-        return Lists.newList(EXCELLENT_CRATES, EXECUTABLE_ITEMS, ITEMS_ADDER, MMOITEMS, NEXO, ORAXEN, CRAFT_ENGINE);
+        return Lists.newList(EXCELLENT_CRATES, EXECUTABLE_ITEMS, ITEMS_ADDER, MMOITEMS, NEXO, ORAXEN, CRAFT_ENGINE, MYTHIC_MOBS);
     }
 }
