@@ -9,6 +9,7 @@ import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+import su.nightexpress.nightcore.bridge.paper.PaperBridge;
 
 import java.nio.ByteBuffer;
 import java.util.Optional;
@@ -21,6 +22,9 @@ public class PDCUtil {
     @NonNull
     public static <Z> Optional<Z> get(@NonNull ItemStack holder, @NonNull PersistentDataType<?, Z> type,
                                       @NonNull NamespacedKey key) {
+        // getItemMeta() copies the whole meta on every call; Paper can read the data directly.
+        if (Version.isPaper()) return Optional.ofNullable(PaperBridge.getPersistentData(holder, type, key));
+
         ItemMeta meta = holder.getItemMeta();
         if (meta == null) return Optional.empty();
 
