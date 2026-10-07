@@ -335,7 +335,7 @@ public abstract class NightPlugin extends JavaPlugin implements NightCorePlugin 
         CoreLang.PLUGIN_RELOADED.withPrefix(this).send(sender);
     }
 
-    private void registerCommands() {
+    protected void registerCommands() {
         this.rootCommand = NightCommand.forPlugin(this, builder -> {
             this.commandProviders.forEach(provider -> provider.provideCommands(builder));
         });
