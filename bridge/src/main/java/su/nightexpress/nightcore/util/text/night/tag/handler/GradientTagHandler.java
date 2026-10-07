@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import su.nightexpress.nightcore.util.text.night.ParserUtils;
 import su.nightexpress.nightcore.util.text.night.entry.ChildEntry;
@@ -125,7 +125,9 @@ public class GradientTagHandler extends ClassicTagHandler {
                         EntryGroup subGroup = group.downward(String.valueOf(c));
                         TextEntry subText = subGroup.appendTextEntry(String.valueOf(c));
                         childrens.add(subGroup);
-                        if (!Character.isWhitespace(c)) {
+
+                        boolean isUnderlined = textEntry.getParent().style().isUnderlined();
+                        if (!Character.isWhitespace(c) || isUnderlined) {
                             gradientEntries.add(subText);
                         }
                     }

@@ -56,7 +56,8 @@ public class NightStyle {
     public NightStyle font(@Nullable NightKey font) {
         if (Objects.equals(this.font, font)) return this;
 
-        return new NightStyle(font, this.color, this.shadowColor, this.decorations, this.clickEvent, this.hoverEvent, this.insertion);
+        return new NightStyle(font, this.color, this.shadowColor, this.decorations, this.clickEvent, this.hoverEvent,
+            this.insertion);
     }
 
     @Nullable
@@ -68,7 +69,8 @@ public class NightStyle {
     public NightStyle color(@Nullable Color color) {
         if (Objects.equals(this.color, color)) return this;
 
-        return new NightStyle(this.font, color, this.shadowColor, this.decorations, this.clickEvent, this.hoverEvent, this.insertion);
+        return new NightStyle(this.font, color, this.shadowColor, this.decorations, this.clickEvent, this.hoverEvent,
+            this.insertion);
     }
 
     @NonNull
@@ -90,7 +92,8 @@ public class NightStyle {
     public NightStyle shadowColor(@Nullable Color color) {
         if (Objects.equals(this.shadowColor, color)) return this;
 
-        return new NightStyle(this.font, this.color, color, this.decorations, this.clickEvent, this.hoverEvent, this.insertion);
+        return new NightStyle(this.font, this.color, color, this.decorations, this.clickEvent, this.hoverEvent,
+            this.insertion);
     }
 
     @NonNull
@@ -119,12 +122,17 @@ public class NightStyle {
         var newDecorations = new HashMap<>(this.decorations);
         newDecorations.put(decoration, state);
 
-        return new NightStyle(this.font, this.color, this.shadowColor, newDecorations, this.clickEvent, this.hoverEvent, this.insertion);
+        return new NightStyle(this.font, this.color, this.shadowColor, newDecorations, this.clickEvent, this.hoverEvent,
+            this.insertion);
     }
 
     @NonNull
     public Map<NightTextDecoration, NightTextDecoration.State> decorations() {
         return this.decorations;
+    }
+
+    public boolean isUnderlined() {
+        return this.decoration(NightTextDecoration.UNDERLINED) == NightTextDecoration.State.TRUE;
     }
 
     @Nullable
@@ -134,7 +142,8 @@ public class NightStyle {
 
     @NonNull
     public NightStyle clickEvent(@Nullable NightClickEvent event) {
-        return new NightStyle(this.font, this.color, this.shadowColor, this.decorations, event, this.hoverEvent, this.insertion);
+        return new NightStyle(this.font, this.color, this.shadowColor, this.decorations, event, this.hoverEvent,
+            this.insertion);
     }
 
     @Nullable
@@ -144,7 +153,8 @@ public class NightStyle {
 
     @NonNull
     public NightStyle hoverEvent(@Nullable NightHoverEvent<?> hoverEvent) {
-        return new NightStyle(this.font, this.color, this.shadowColor, this.decorations, this.clickEvent, hoverEvent, this.insertion);
+        return new NightStyle(this.font, this.color, this.shadowColor, this.decorations, this.clickEvent, hoverEvent,
+            this.insertion);
     }
 
     @Nullable
@@ -156,7 +166,8 @@ public class NightStyle {
     public NightStyle insertion(@Nullable String insertion) {
         if (Objects.equals(this.insertion, insertion)) return this;
 
-        return new NightStyle(this.font, this.color, this.shadowColor, this.decorations, this.clickEvent, this.hoverEvent, insertion);
+        return new NightStyle(this.font, this.color, this.shadowColor, this.decorations, this.clickEvent,
+            this.hoverEvent, insertion);
     }
 
     public boolean isEmpty() {

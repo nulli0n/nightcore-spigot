@@ -23,7 +23,7 @@ public class TextEntry extends ChildEntry {
         int legnth = 0;
         for (int index = 0; index < this.text.length(); index++) {
             char letter = this.text.charAt(index);
-            if (Character.isWhitespace(letter)) continue;
+            if (Character.isWhitespace(letter) && !this.parent.style().isUnderlined()) continue;
 
             legnth++;
         }
