@@ -258,8 +258,8 @@
 
         <dependency>
             <groupId>su.nightexpress.excellentcrates</groupId>
-            <artifactId>ExcellentCrates</artifactId>
-            <version>6.4.1</version>
+            <artifactId>crates-api</artifactId>
+            <version>7.0.0</version>
             <scope>provided</scope>
         </dependency>
 

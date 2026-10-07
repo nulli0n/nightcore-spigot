@@ -1,16 +1,24 @@
 package su.nightexpress.nightcore.util;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.jspecify.annotations.NonNull;
-
 import java.util.Optional;
 
-public class ServerUtils {
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
-    @NonNull
-    public static <T> Optional<T> serviceProvider(@NonNull Class<T> type) {
+@NullMarked
+public final class ServerUtils {
+
+    private ServerUtils() {
+    }
+
+    public static <T> Optional<T> serviceProvider(Class<T> type) {
         RegisteredServiceProvider<T> provider = Bukkit.getServer().getServicesManager().getRegistration(type);
         return provider == null ? Optional.empty() : Optional.of(provider.getProvider());
+    }
+
+    public static <T> @Nullable T getProvider(Class<T> type) {
+        return serviceProvider(type).orElse(null);
     }
 }

@@ -1,25 +1,26 @@
 package su.nightexpress.nightcore.bridge.item;
 
-import org.bukkit.inventory.ItemStack;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
-
 import java.util.Optional;
 
+import org.bukkit.inventory.ItemStack;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+
+@NullMarked
 public interface AdaptedItem {
 
-    @NonNull
-    ItemAdapter<?> getAdapter();
+    default @Nullable ItemStack getItemStack() {
+        return itemStack().orElse(null);
+    }
 
-    @Nullable
-    ItemStack getItemStack();
-
-    @NonNull
     Optional<ItemStack> itemStack();
 
-    boolean isSimilar(@NonNull ItemStack other);
+    @Deprecated
+    default boolean isSimilar(ItemStack other) {
+        return this.isChildren(other);
+    }
+
+    boolean isChildren(ItemStack itemStack);
 
     boolean isValid();
-
-    int getAmount();
 }

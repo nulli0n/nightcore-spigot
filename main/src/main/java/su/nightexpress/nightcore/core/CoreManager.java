@@ -1,15 +1,25 @@
 package su.nightexpress.nightcore.core;
 
-import org.jspecify.annotations.NonNull;
+import java.util.HashSet;
+import java.util.function.Supplier;
+
+import org.jspecify.annotations.NullMarked;
+
 import su.nightexpress.nightcore.NightCore;
-import su.nightexpress.nightcore.bridge.item.ItemAdapter;
 import su.nightexpress.nightcore.core.listener.CoreListener;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.dialog.DialogListener;
-import su.nightexpress.nightcore.integration.currency.EconomyBridge;
 import su.nightexpress.nightcore.integration.item.ItemBridge;
-import su.nightexpress.nightcore.integration.item.ItemPlugins;
-import su.nightexpress.nightcore.integration.item.adapter.impl.*;
+import su.nightexpress.nightcore.integration.item.ItemBridgeProvider;
+import su.nightexpress.nightcore.integration.item.ItemProvider;
+import su.nightexpress.nightcore.integration.item.bukkit.BukkitItemProvider;
+import su.nightexpress.nightcore.integration.item.craftengine.CraftEngineItemProvider;
+import su.nightexpress.nightcore.integration.item.excellentcrates.ExcellentCratesItemProvider;
+import su.nightexpress.nightcore.integration.item.executableitems.ExecutableItemsItemProvider;
+import su.nightexpress.nightcore.integration.item.itemsadder.ItemsAdderItemProvider;
+import su.nightexpress.nightcore.integration.item.mmoitems.MMOItemsItemProvider;
+import su.nightexpress.nightcore.integration.item.nexo.NexoItemProvider;
+import su.nightexpress.nightcore.integration.item.oraxen.OraxenItemProvider;
 import su.nightexpress.nightcore.integration.permission.PermissionBridge;
 import su.nightexpress.nightcore.integration.permission.PermissionPlugins;
 import su.nightexpress.nightcore.integration.permission.PermissionProvider;
@@ -27,17 +37,17 @@ import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
 import su.nightexpress.nightcore.util.profile.PlayerProfiles;
 
-import java.util.HashSet;
-import java.util.function.Supplier;
-
+@NullMarked
 public class CoreManager extends AbstractManager<NightCore> {
 
-    public CoreManager(@NonNull NightCore core) {
+    public CoreManager(NightCore core) {
         super(core);
     }
 
     @Override
     protected void onLoad() {
+        ItemBridge.setProvider(new ItemBridgeProvider());
+
         this.loadPermissionIntegrations();
         this.loadItemIntegrations();
 
@@ -56,7 +66,7 @@ public class CoreManager extends AbstractManager<NightCore> {
         Dialog.shutdown();
         DialogManager.shutdown();
 
-        ItemBridge.unregisterAll();
+        ItemBridge.get().unregisterAllProviders();
         PermissionBridge.unregisterAll();
     }
 
@@ -69,38 +79,36 @@ public class CoreManager extends AbstractManager<NightCore> {
         }
     }
 
-    private void registerPermissionProvider(@NonNull PermissionProvider provider) {
+    private void registerPermissionProvider(PermissionProvider provider) {
         PermissionBridge.register(provider);
         this.plugin.info("Registered permissions provider: " + provider.getName());
     }
 
     private void loadItemIntegrations() {
-        this.registerItemProvider(VanillaItemAdapter.INSTANCE);
-        this.registerExternalItemProvider(ItemPlugins.EXCELLENT_CRATES, ExcellentCratesHandler::new);
-        this.registerExternalItemProvider(ItemPlugins.EXCELLENT_CRATES, ECratesCrateAdapter::new);
-        this.registerExternalItemProvider(ItemPlugins.EXCELLENT_CRATES, ECratesKeyAdapter::new);
-        this.registerExternalItemProvider(ItemPlugins.EXECUTABLE_ITEMS, ExecutableItemsAdapter::new);
-        this.registerExternalItemProvider(ItemPlugins.ITEMS_ADDER, ItemsAdderAdapter::new);
-        this.registerExternalItemProvider(ItemPlugins.MMOITEMS, MMOItemsAdapter::new);
-        this.registerExternalItemProvider(ItemPlugins.NEXO, NexoAdapter::new);
-        this.registerExternalItemProvider(ItemPlugins.ORAXEN, OraxenAdapter::new);
-        this.registerExternalItemProvider(ItemPlugins.CRAFT_ENGINE, CraftEngineAdapter::new);
+        this.registerItemProvider(BukkitItemProvider.INSTANCE);
+        this.registerExternalItemProvider("ExcellentCrates", ExcellentCratesItemProvider::new);
+        this.registerExternalItemProvider("ExecutableItems", ExecutableItemsItemProvider::new);
+        this.registerExternalItemProvider("ItemsAdder", ItemsAdderItemProvider::new);
+        this.registerExternalItemProvider("MMOItems", MMOItemsItemProvider::new);
+        this.registerExternalItemProvider("nexo", NexoItemProvider::new);
+        this.registerExternalItemProvider("Oraxen", OraxenItemProvider::new);
+        this.registerExternalItemProvider("CraftEngine", CraftEngineItemProvider::new);
     }
 
-    private <T> boolean registerExternalItemProvider(@NonNull String pluginName,
-                                                     @NonNull Supplier<ItemAdapter<T>> supplier) {
+    private <T> boolean registerExternalItemProvider(String pluginName,
+                                                     Supplier<ItemProvider> supplier) {
         if (!Plugins.isInstalled(pluginName)) return false;
 
-        return registerItemProvider(supplier.get());
+        return this.registerItemProvider(supplier.get());
     }
 
-    private <T> boolean registerItemProvider(@NonNull ItemAdapter<T> provider) {
-        String name = provider.getName();
+    private <T> boolean registerItemProvider(ItemProvider provider) {
+        String name = provider.getId();
         if (CoreConfig.ITEMS_DISABLED_PROVIDERS.get().contains(name)) {
             return false;
         }
 
-        ItemBridge.register(provider);
+        ItemBridge.get().registerProvider(provider);
         this.plugin.info("Registered item provider: '" + name + "'.");
         return true;
     }
