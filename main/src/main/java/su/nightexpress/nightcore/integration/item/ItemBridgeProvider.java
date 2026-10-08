@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
@@ -11,20 +12,32 @@ import org.jspecify.annotations.Nullable;
 
 import su.nightexpress.nightcore.bridge.item.AdaptedItem;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.configuration.codec.ConfigCodec;
 import su.nightexpress.nightcore.integration.item.bukkit.BukkitItemProvider;
+import su.nightexpress.nightcore.integration.item.codec.AdaptedItemCodec;
+import su.nightexpress.nightcore.integration.item.dummy.DummyItem;
+import su.nightexpress.nightcore.integration.item.registry.RegisteredItemProvider;
 import su.nightexpress.nightcore.util.LowerCase;
 
 @NullMarked
 public class ItemBridgeProvider {
 
-    private final Map<String, ItemProvider> providers = new HashMap<>();
+    private final Map<String, RegisteredItemProvider<?>> providers = new HashMap<>();
 
-    public void registerProvider(ItemProvider provider) {
-        this.providers.put(LowerCase.internal(provider.getId()), provider);
+    public <I extends AdaptedItem> void register(ItemProvider provider, ConfigCodec<I> codec) {
+        this.providers.put(LowerCase.internal(provider.getId()), new RegisteredItemProvider<>(provider, codec));
+    }
+
+    public @Nullable RegisteredItemProvider<?> getRegisteredProvider(String id) {
+        return this.providers.get(LowerCase.internal(id));
+    }
+
+    public Optional<RegisteredItemProvider<?>> findRegisteredProvider(String id) {
+        return Optional.ofNullable(this.getRegisteredProvider(id));
     }
 
     public @Nullable ItemProvider getProvider(String id) {
-        return this.providers.get(LowerCase.internal(id));
+        return this.findRegisteredProvider(id).map(RegisteredItemProvider::provider).orElse(null);
     }
 
     public Optional<ItemProvider> findProvider(String id) {
@@ -32,7 +45,7 @@ public class ItemBridgeProvider {
     }
 
     public Set<ItemProvider> getProviders() {
-        return Set.copyOf(this.providers.values());
+        return this.providers.values().stream().map(RegisteredItemProvider::provider).collect(Collectors.toSet());
     }
 
     public void unregisterProvider(String id) {
@@ -72,21 +85,27 @@ public class ItemBridgeProvider {
         return provider.isAvailable() && provider.isProducedBy(itemStack);
     }
 
+    public AdaptedItem adaptOrDummy(ItemStack itemStack) {
+        return this.findProvider(itemStack)
+            .flatMap(provider -> provider.wrapItem(itemStack))
+            .orElse(DummyItem.INSTANCE);
+    }
+
+    public Optional<AdaptedItem> adapt(ItemStack itemStack) {
+        return this.findProvider(itemStack)
+            .flatMap(provider -> provider.wrapItem(itemStack));
+    }
+
+    @Deprecated
     public Optional<AdaptedItem> read(FileConfig config, String path) {
-        String providerId = config.getString(path + ".Provider", ItemProviderKeys.BUKKIT);
-        ItemProvider provider = this.getProvider(providerId);
-
-        if (provider == null || !provider.isAvailable()) {
-            return Optional.empty();
-        }
-
-        return provider.readItem(config, path);
+        return Optional.of(AdaptedItemCodec.read(config, path));
     }
 
     public Optional<ItemProvider> findProvider(ItemStack itemStack) {
         BukkitItemProvider bukkitProvider = this.getBukkitProvider();
 
-        for (ItemProvider provider : this.providers.values()) {
+        for (RegisteredItemProvider<?> registered : this.providers.values()) {
+            ItemProvider provider = registered.provider();
             if (provider == bukkitProvider) continue;
             if (provider.isAvailable() && provider.isProducedBy(itemStack)) {
                 return Optional.of(provider);

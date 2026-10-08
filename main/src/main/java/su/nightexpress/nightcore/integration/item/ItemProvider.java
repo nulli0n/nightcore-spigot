@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
 
 import su.nightexpress.nightcore.bridge.item.AdaptedItem;
-import su.nightexpress.nightcore.config.FileConfig;
 
 @NullMarked
 public interface ItemProvider {
@@ -20,8 +19,6 @@ public interface ItemProvider {
     boolean isAvailable();
 
     boolean isProducedBy(ItemStack itemStack);
-
-    Optional<AdaptedItem> readItem(FileConfig config, String path);
 
     Optional<AdaptedItem> wrapItem(ItemStack itemStack);
 }

@@ -9,25 +9,31 @@ import org.jspecify.annotations.Nullable;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.item.template.MMOItemTemplate;
-import su.nightexpress.nightcore.integration.item.BaseIdentifiableItem;
+import su.nightexpress.nightcore.integration.item.BaseProviderDataItem;
+import su.nightexpress.nightcore.integration.item.ItemProviderKeys;
 import su.nightexpress.nightcore.integration.item.data.ItemIdData;
 
 @NullMarked
-public class MMOItemsItem extends BaseIdentifiableItem {
+public class MMOItemsItem extends BaseProviderDataItem<ItemIdData> {
 
     public MMOItemsItem(ItemIdData idData) {
-        super(idData);
+        super(ItemProviderKeys.MMOITEMS, idData);
+    }
+
+    @Override
+    public int getAmount() {
+        return this.data.getAmount();
     }
 
     @Override
     public boolean isChildren(ItemStack itemStack) {
         String itemId = getItemId(itemStack);
-        return itemId != null && itemId.equalsIgnoreCase(this.idData.getItemId());
+        return itemId != null && itemId.equalsIgnoreCase(this.data.getItemId());
     }
 
     @Override
     public boolean isValid() {
-        String[] split = this.idData.getItemId().split(":");
+        String[] split = this.data.getItemId().split(":");
 
         Type type = Type.get(split[0]);
         if (type == null || split.length < 2) return false;
@@ -40,7 +46,7 @@ public class MMOItemsItem extends BaseIdentifiableItem {
 
     @Override
     public Optional<ItemStack> itemStack() {
-        String[] split = this.idData.getItemId().split(":");
+        String[] split = this.data.getItemId().split(":");
 
         Type type = Type.get(split[0]);
         if (type == null || split.length < 2) return Optional.empty();
@@ -50,7 +56,7 @@ public class MMOItemsItem extends BaseIdentifiableItem {
         MMOItemTemplate template = MMOItems.plugin.getTemplates().getTemplate(type, id);
         if (template != null) {
             ItemStack itemStack = template.newBuilder().build().newBuilder().buildSilently();
-            itemStack.setAmount(this.idData.getAmount());
+            itemStack.setAmount(this.data.getAmount());
             return Optional.of(itemStack);
         }
 

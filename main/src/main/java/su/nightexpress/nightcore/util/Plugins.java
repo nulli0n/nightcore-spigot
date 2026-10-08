@@ -38,6 +38,12 @@ public class Plugins {
         return plugin != null;
     }
 
+    public static void ifInstalled(@NonNull String pluginName, Runnable action) {
+        if (isInstalled(pluginName)) {
+            action.run();
+        }
+    }
+
     public static boolean isLoaded(@NonNull String pluginName) {
         Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
         return plugin != null && plugin.isEnabled();

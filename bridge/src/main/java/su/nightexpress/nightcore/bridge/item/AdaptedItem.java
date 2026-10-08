@@ -9,6 +9,10 @@ import org.jspecify.annotations.Nullable;
 @NullMarked
 public interface AdaptedItem {
 
+    String getProviderId();
+
+    int getAmount();
+
     default @Nullable ItemStack getItemStack() {
         return itemStack().orElse(null);
     }

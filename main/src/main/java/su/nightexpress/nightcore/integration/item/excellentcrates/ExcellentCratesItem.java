@@ -10,15 +10,19 @@ import su.nightexpress.excellentcrates.api.ExcellentCratesAPI;
 import su.nightexpress.excellentcrates.api.crate.Crate;
 import su.nightexpress.excellentcrates.api.key.CrateKey;
 import su.nightexpress.excellentcrates.api.key.KeysAPI;
-import su.nightexpress.nightcore.bridge.item.AdaptedItem;
+import su.nightexpress.nightcore.integration.item.BaseProviderDataItem;
+import su.nightexpress.nightcore.integration.item.ItemProviderKeys;
 
 @NullMarked
-public class ExcellentCratesItem implements AdaptedItem {
-
-    private final ExcellentCratesItemContext context;
+public class ExcellentCratesItem extends BaseProviderDataItem<ExcellentCratesItemContext> {
 
     public ExcellentCratesItem(ExcellentCratesItemContext context) {
-        this.context = context;
+        super(ItemProviderKeys.EXCELLENT_CRATES, context);
+    }
+
+    @Override
+    public int getAmount() {
+        return this.data.amount();
     }
 
     private boolean isCrate(ItemStack itemStack) {
@@ -45,8 +49,8 @@ public class ExcellentCratesItem implements AdaptedItem {
             return false;
         }
 
-        ExcellentCratesItemType type = this.context.type();
-        Identifier itemId = this.context.itemId();
+        ExcellentCratesItemType type = this.data.type();
+        Identifier itemId = this.data.itemId();
 
         return switch (type) {
             case CRATE -> api.getCratesAPI().registry().contains(itemId);
@@ -61,8 +65,8 @@ public class ExcellentCratesItem implements AdaptedItem {
             return Optional.empty();
         }
 
-        ExcellentCratesItemType type = this.context.type();
-        Identifier itemId = this.context.itemId();
+        ExcellentCratesItemType type = this.data.type();
+        Identifier itemId = this.data.itemId();
 
         return switch (type) {
             case CRATE -> {

@@ -1,24 +1,43 @@
 package su.nightexpress.nightcore.core;
 
 import java.util.HashSet;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.jspecify.annotations.NullMarked;
 
 import su.nightexpress.nightcore.NightCore;
+import su.nightexpress.nightcore.bridge.item.AdaptedDataItem;
+import su.nightexpress.nightcore.bridge.item.AdaptedItem;
+import su.nightexpress.nightcore.configuration.codec.ConfigCodec;
+import su.nightexpress.nightcore.configuration.codec.ConfigCodecs;
 import su.nightexpress.nightcore.core.listener.CoreListener;
 import su.nightexpress.nightcore.dialog.Dialog;
 import su.nightexpress.nightcore.dialog.DialogListener;
 import su.nightexpress.nightcore.integration.item.ItemBridge;
 import su.nightexpress.nightcore.integration.item.ItemBridgeProvider;
 import su.nightexpress.nightcore.integration.item.ItemProvider;
+import su.nightexpress.nightcore.integration.item.bukkit.BukkitItem;
 import su.nightexpress.nightcore.integration.item.bukkit.BukkitItemProvider;
+import su.nightexpress.nightcore.integration.item.codec.BukkitItemCodec;
+import su.nightexpress.nightcore.integration.item.codec.DummyItemCodec;
+import su.nightexpress.nightcore.integration.item.codec.IdentifiableItemCodec;
+import su.nightexpress.nightcore.integration.item.craftengine.CraftEngineItem;
 import su.nightexpress.nightcore.integration.item.craftengine.CraftEngineItemProvider;
+import su.nightexpress.nightcore.integration.item.data.ItemIdData;
+import su.nightexpress.nightcore.integration.item.dummy.DummyItem;
+import su.nightexpress.nightcore.integration.item.excellentcrates.ExcellentCratesItem;
 import su.nightexpress.nightcore.integration.item.excellentcrates.ExcellentCratesItemProvider;
+import su.nightexpress.nightcore.integration.item.excellentcrates.codec.ExcellentCratesItemCodec;
+import su.nightexpress.nightcore.integration.item.executableitems.ExecutableItemsItem;
 import su.nightexpress.nightcore.integration.item.executableitems.ExecutableItemsItemProvider;
+import su.nightexpress.nightcore.integration.item.itemsadder.ItemsAdderItem;
 import su.nightexpress.nightcore.integration.item.itemsadder.ItemsAdderItemProvider;
+import su.nightexpress.nightcore.integration.item.mmoitems.MMOItemsItem;
 import su.nightexpress.nightcore.integration.item.mmoitems.MMOItemsItemProvider;
+import su.nightexpress.nightcore.integration.item.nexo.NexoItem;
 import su.nightexpress.nightcore.integration.item.nexo.NexoItemProvider;
+import su.nightexpress.nightcore.integration.item.oraxen.OraxenItem;
 import su.nightexpress.nightcore.integration.item.oraxen.OraxenItemProvider;
 import su.nightexpress.nightcore.integration.permission.PermissionBridge;
 import su.nightexpress.nightcore.integration.permission.PermissionPlugins;
@@ -85,30 +104,50 @@ public class CoreManager extends AbstractManager<NightCore> {
     }
 
     private void loadItemIntegrations() {
-        this.registerItemProvider(BukkitItemProvider.INSTANCE);
-        this.registerExternalItemProvider("ExcellentCrates", ExcellentCratesItemProvider::new);
-        this.registerExternalItemProvider("ExecutableItems", ExecutableItemsItemProvider::new);
-        this.registerExternalItemProvider("ItemsAdder", ItemsAdderItemProvider::new);
-        this.registerExternalItemProvider("MMOItems", MMOItemsItemProvider::new);
-        this.registerExternalItemProvider("nexo", NexoItemProvider::new);
-        this.registerExternalItemProvider("Oraxen", OraxenItemProvider::new);
-        this.registerExternalItemProvider("CraftEngine", CraftEngineItemProvider::new);
+        // Register dummy item codec, so config.set() can handle dummy items correctly
+        ConfigCodecs.register(DummyItem.class, DummyItemCodec.INSTANCE);
+        ConfigCodecs.register(BukkitItem.class, BukkitItemCodec.INSTANCE);
+
+        this.registerItemProvider(BukkitItemProvider.INSTANCE, BukkitItemCodec.INSTANCE);
+
+        this.registerIdentifiable("ExecutableItems",
+            ExecutableItemsItem.class,
+            ExecutableItemsItemProvider::new,
+            ExecutableItemsItem::new
+        );
+
+        this.registerIdentifiable("ItemsAdder", ItemsAdderItem.class, ItemsAdderItemProvider::new, ItemsAdderItem::new);
+        this.registerIdentifiable("MMOItems", MMOItemsItem.class, MMOItemsItemProvider::new, MMOItemsItem::new);
+        this.registerIdentifiable("nexo", NexoItem.class, NexoItemProvider::new, NexoItem::new);
+        this.registerIdentifiable("Oraxen", OraxenItem.class, OraxenItemProvider::new, OraxenItem::new);
+        this.registerIdentifiable("CraftEngine", CraftEngineItem.class, CraftEngineItemProvider::new,
+            CraftEngineItem::new);
+
+        Plugins.ifInstalled("ExcellentCrates", () -> {
+            ConfigCodecs.register(ExcellentCratesItem.class, ExcellentCratesItemCodec.INSTANCE);
+            this.registerItemProvider(new ExcellentCratesItemProvider(), ExcellentCratesItemCodec.INSTANCE);
+        });
     }
 
-    private <T> boolean registerExternalItemProvider(String pluginName,
-                                                     Supplier<ItemProvider> supplier) {
+    private <T, I extends AdaptedItem & AdaptedDataItem<ItemIdData>> boolean registerIdentifiable(String pluginName,
+                                                                                                  Class<I> itemClass,
+                                                                                                  Supplier<ItemProvider> supplier,
+                                                                                                  Function<ItemIdData, I> construct) {
         if (!Plugins.isInstalled(pluginName)) return false;
 
-        return this.registerItemProvider(supplier.get());
+        ConfigCodec<I> codec = IdentifiableItemCodec.create(construct);
+        ConfigCodecs.register(itemClass, codec);
+
+        return this.registerItemProvider(supplier.get(), codec);
     }
 
-    private <T> boolean registerItemProvider(ItemProvider provider) {
+    private <I extends AdaptedItem> boolean registerItemProvider(ItemProvider provider, ConfigCodec<I> codec) {
         String name = provider.getId();
         if (CoreConfig.ITEMS_DISABLED_PROVIDERS.get().contains(name)) {
             return false;
         }
 
-        ItemBridge.get().registerProvider(provider);
+        ItemBridge.get().register(provider, codec);
         this.plugin.info("Registered item provider: '" + name + "'.");
         return true;
     }

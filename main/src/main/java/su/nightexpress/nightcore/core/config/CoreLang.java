@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.locale.LangEntry;
 import su.nightexpress.nightcore.locale.entry.*;
 import su.nightexpress.nightcore.locale.message.MessageData;
 import su.nightexpress.nightcore.util.bridge.RegistryType;
+import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
 import static su.nightexpress.nightcore.util.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.*;
@@ -185,6 +186,16 @@ public final class CoreLang implements LangContainer {
     public static final TextLocale OTHER_ONE_TIMED = LangEntry.builder("Other.OneTimed").text("One-timed");
     public static final TextLocale OTHER_UNLIMITED = LangEntry.builder("Other.Unlimited").text("Unlimited");
     public static final TextLocale OTHER_INFINITY  = LangEntry.builder("Other.Infinity").text("∞");
+
+    public static final IconLocale BROKEN_ITEM = LangEntry.iconBuilder("BrokenItem")
+        .accentColor(TagWrappers.RED)
+        .name("Broken Item")
+        .appendInfo(
+            "Item data is invalid.",
+            "",
+            "This might be caused by corrupted data", "or an incompatible server version."
+        )
+        .build();
 
     public static final IconLocale MENU_ICON_EXIT          = LangEntry.iconBuilder("MenuItem.Exit").name("Close", RED)
         .build();

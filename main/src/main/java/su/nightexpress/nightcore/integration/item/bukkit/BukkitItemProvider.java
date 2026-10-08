@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
 
 import su.nightexpress.nightcore.bridge.item.AdaptedItem;
-import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.integration.item.ItemProvider;
 import su.nightexpress.nightcore.integration.item.ItemProviderKeys;
 import su.nightexpress.nightcore.util.ItemTag;
@@ -29,12 +28,6 @@ public class BukkitItemProvider implements ItemProvider {
     @Override
     public boolean isProducedBy(ItemStack itemStack) {
         return true;
-    }
-
-    @Override
-    public Optional<AdaptedItem> readItem(FileConfig config, String path) {
-        ItemTag tag = ItemTag.read(config, path + ".Data");
-        return Optional.of(new BukkitItem(tag));
     }
 
     @Override

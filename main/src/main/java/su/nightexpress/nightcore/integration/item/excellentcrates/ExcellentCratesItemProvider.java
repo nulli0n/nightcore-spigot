@@ -9,7 +9,6 @@ import su.nightexpress.engine.id.Identifier;
 import su.nightexpress.excellentcrates.api.ExcellentCratesAPI;
 import su.nightexpress.excellentcrates.api.key.KeysAPI;
 import su.nightexpress.nightcore.bridge.item.AdaptedItem;
-import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.integration.item.ItemProvider;
 import su.nightexpress.nightcore.integration.item.ItemProviderKeys;
 import su.nightexpress.nightcore.util.Plugins;
@@ -43,27 +42,18 @@ public class ExcellentCratesItemProvider implements ItemProvider {
     }
 
     @Override
-    public Optional<AdaptedItem> readItem(FileConfig config, String path) {
-        Identifier itemId = config.getOrSet(path + ".item_id", Identifier.class, new Identifier("null"));
-        ExcellentCratesItemType type = config.getOrSet(path + ".type",
-            ExcellentCratesItemType.class,
-            ExcellentCratesItemType.CRATE
-        );
-        ExcellentCratesItemContext context = new ExcellentCratesItemContext(type, itemId);
-
-        return Optional.of(new ExcellentCratesItem(context));
-    }
-
-    @Override
     public Optional<AdaptedItem> wrapItem(ItemStack itemStack) {
         ExcellentCratesAPI api = ExcellentCratesAPIService.resolve();
         if (api == null) {
             return Optional.empty();
         }
 
+        int amount = itemStack.getAmount();
+
         Identifier crateId = api.getCratesAPI().items().getCrateId(itemStack);
         if (crateId != null) {
-            ExcellentCratesItemContext context = new ExcellentCratesItemContext(ExcellentCratesItemType.CRATE, crateId);
+            ExcellentCratesItemContext context = new ExcellentCratesItemContext(ExcellentCratesItemType.CRATE, crateId,
+                amount);
             return Optional.of(new ExcellentCratesItem(context));
         }
 
@@ -71,7 +61,8 @@ public class ExcellentCratesItemProvider implements ItemProvider {
         if (keys != null) {
             Identifier keyId = keys.getItemAPI().getKeyIdFromItem(itemStack);
             if (keyId != null) {
-                ExcellentCratesItemContext context = new ExcellentCratesItemContext(ExcellentCratesItemType.KEY, keyId);
+                ExcellentCratesItemContext context = new ExcellentCratesItemContext(ExcellentCratesItemType.KEY, keyId,
+                    amount);
                 return Optional.of(new ExcellentCratesItem(context));
             }
         }

@@ -5,6 +5,6 @@ import org.jspecify.annotations.NullMarked;
 import su.nightexpress.engine.id.Identifier;
 
 @NullMarked
-public record ExcellentCratesItemContext(ExcellentCratesItemType type, Identifier itemId) {
+public record ExcellentCratesItemContext(ExcellentCratesItemType type, Identifier itemId, int amount) {
 
 }

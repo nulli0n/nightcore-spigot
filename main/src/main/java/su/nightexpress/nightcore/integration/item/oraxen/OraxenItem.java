@@ -7,32 +7,38 @@ import org.jspecify.annotations.NullMarked;
 
 import io.th0rgal.oraxen.api.OraxenItems;
 import io.th0rgal.oraxen.items.ItemBuilder;
-import su.nightexpress.nightcore.integration.item.BaseIdentifiableItem;
+import su.nightexpress.nightcore.integration.item.BaseProviderDataItem;
+import su.nightexpress.nightcore.integration.item.ItemProviderKeys;
 import su.nightexpress.nightcore.integration.item.data.ItemIdData;
 
 @NullMarked
-public class OraxenItem extends BaseIdentifiableItem {
+public class OraxenItem extends BaseProviderDataItem<ItemIdData> {
 
     public OraxenItem(ItemIdData idData) {
-        super(idData);
+        super(ItemProviderKeys.ORAXEN, idData);
+    }
+
+    @Override
+    public int getAmount() {
+        return this.data.getAmount();
     }
 
     @Override
     public boolean isChildren(ItemStack itemStack) {
         String itemId = OraxenItems.getIdByItem(itemStack);
-        return itemId != null && itemId.equalsIgnoreCase(this.idData.getItemId());
+        return itemId != null && itemId.equalsIgnoreCase(this.data.getItemId());
     }
 
     @Override
     public boolean isValid() {
-        return OraxenItems.exists(this.idData.getItemId());
+        return OraxenItems.exists(this.data.getItemId());
     }
 
     @Override
     public Optional<ItemStack> itemStack() {
-        ItemBuilder builder = OraxenItems.getItemById(this.idData.getItemId());
+        ItemBuilder builder = OraxenItems.getItemById(this.data.getItemId());
         if (builder != null) {
-            builder.setAmount(this.idData.getAmount());
+            builder.setAmount(this.data.getAmount());
             return Optional.of(builder.build());
         }
         return Optional.empty();

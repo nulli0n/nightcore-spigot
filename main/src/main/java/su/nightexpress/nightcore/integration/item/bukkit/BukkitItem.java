@@ -6,19 +6,23 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import su.nightexpress.nightcore.bridge.item.AdaptedItem;
+import su.nightexpress.nightcore.integration.item.BaseProviderDataItem;
+import su.nightexpress.nightcore.integration.item.ItemProviderKeys;
 import su.nightexpress.nightcore.util.ItemTag;
 
 @NullMarked
-public class BukkitItem implements AdaptedItem {
-
-    private final ItemTag tag;
+public class BukkitItem extends BaseProviderDataItem<ItemTag> {
 
     private @Nullable ItemStack cachedStack;
     private boolean             resolved;
 
     public BukkitItem(ItemTag tag) {
-        this.tag = tag;
+        super(ItemProviderKeys.BUKKIT, tag);
+    }
+
+    @Override
+    public int getAmount() {
+        return this.itemStack().map(ItemStack::getAmount).orElse(0);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class BukkitItem implements AdaptedItem {
             return this.cachedStack == null ? null : new ItemStack(this.cachedStack);
         }
 
-        ItemStack resolve = this.tag.getItemStack();
+        ItemStack resolve = this.data.getItemStack();
         this.cachedStack = resolve;
         this.resolved = true;
 
