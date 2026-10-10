@@ -12,7 +12,8 @@ import java.util.Locale;
 
 public class UniFormatter implements Writeable {
 
-    private final DecimalFormat formatter;
+    // DecimalFormat is not thread safe, so every thread gets its own instance
+    private final ThreadLocal<DecimalFormat> formatter;
 
     private final String       format;
     private final RoundingMode rounding;
@@ -22,8 +23,11 @@ public class UniFormatter implements Writeable {
         this.format = format;
         this.rounding = rounding;
         this.locale = locale;
-        this.formatter = new DecimalFormat(format, new DecimalFormatSymbols(locale));
-        this.formatter.setRoundingMode(rounding);
+        this.formatter = ThreadLocal.withInitial(() -> {
+            DecimalFormat decimalFormat = new DecimalFormat(format, new DecimalFormatSymbols(locale));
+            decimalFormat.setRoundingMode(rounding);
+            return decimalFormat;
+        });
     }
 
     @NonNull
@@ -56,7 +60,7 @@ public class UniFormatter implements Writeable {
 
     @NonNull
     public String format(double value) {
-        return this.formatter.format(value);
+        return this.formatter.get().format(value);
     }
 
     @NonNull
