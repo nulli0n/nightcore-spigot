@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Nameable;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -30,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
@@ -41,6 +43,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.key.InvalidKeyException;
@@ -499,6 +502,13 @@ public class PaperBridge implements Software {
             .collect(Collectors.toSet());
 
         hidePaperComponents(itemStack, componentTypes);
+    }
+
+    // Reads the item's custom data through a read-only view, without copying the whole ItemMeta.
+    public static <Z> @Nullable Z getPersistentData(ItemStack itemStack, PersistentDataType<?, Z> type,
+                                                    NamespacedKey key) {
+        PersistentDataContainerView container = itemStack.getPersistentDataContainer();
+        return container.has(key, type) ? container.get(key, type) : null;
     }
 
     public static void hidePaperComponents(ItemStack itemStack,
