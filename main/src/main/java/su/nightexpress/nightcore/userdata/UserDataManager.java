@@ -111,7 +111,7 @@ public class UserDataManager extends AbstractBaseDataManager<UserData> {
             if (opt.isEmpty()) return;
 
             UserData data = opt.get();
-            this.plugin.warn("User data for '%s' was present, but not loaded.");
+            this.plugin.warn("User data for '%s' was present, but not loaded.".formatted(uuid));
             this.cachePermanently(data);
         });
 
